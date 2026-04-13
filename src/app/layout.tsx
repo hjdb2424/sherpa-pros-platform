@@ -1,7 +1,16 @@
 import type { Metadata, Viewport } from "next";
-import { ClerkProvider } from "@clerk/nextjs";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+
+// Conditionally import ClerkProvider — skip when Clerk keys aren't configured
+const clerkConfigured = !!process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
+
+let ClerkProvider: React.ComponentType<{ children: React.ReactNode }> | null =
+  null;
+if (clerkConfigured) {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  ClerkProvider = require("@clerk/nextjs").ClerkProvider;
+}
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -50,7 +59,11 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-          <ClerkProvider>{children}</ClerkProvider>
+          {ClerkProvider ? (
+            <ClerkProvider>{children}</ClerkProvider>
+          ) : (
+            children
+          )}
         </body>
     </html>
   );

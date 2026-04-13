@@ -1,16 +1,37 @@
-import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
-const isProtectedRoute = createRouteMatcher([
-  "/pro(.*)",
-  "/client(.*)",
-  "/select-role",
-]);
+// Clerk middleware is only active when CLERK_SECRET_KEY is set.
+// Without it, all routes are public (dev/preview without auth configured).
+const clerkConfigured =
+  !!process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY &&
+  !!process.env.CLERK_SECRET_KEY;
 
-export default clerkMiddleware(async (auth, req) => {
-  if (isProtectedRoute(req)) {
-    await auth.protect();
+async function withClerk(req: NextRequest) {
+  const { clerkMiddleware, createRouteMatcher } = await import(
+    "@clerk/nextjs/server"
+  );
+
+  const isProtectedRoute = createRouteMatcher([
+    "/pro(.*)",
+    "/client(.*)",
+    "/select-role",
+  ]);
+
+  return clerkMiddleware(async (auth, request) => {
+    if (isProtectedRoute(request)) {
+      await auth.protect();
+    }
+  })(req, {} as any);
+}
+
+export default async function middleware(req: NextRequest) {
+  if (clerkConfigured) {
+    return withClerk(req);
   }
-});
+  // No auth configured — allow all routes
+  return NextResponse.next();
+}
 
 export const config = {
   matcher: [

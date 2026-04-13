@@ -1,9 +1,11 @@
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2026-03-25.dahlia',
-});
+function getStripe() {
+  const key = process.env.STRIPE_SECRET_KEY;
+  if (!key) throw new Error('STRIPE_SECRET_KEY is not set');
+  return new Stripe(key, { apiVersion: '2026-03-25.dahlia' });
+}
 
 // ---------------------------------------------------------------------------
 // Types
@@ -46,6 +48,7 @@ export async function POST(
     const { proId, email } = body;
 
     // 1. Create the Stripe Connect Standard account
+    const stripe = getStripe();
     const account = await stripe.accounts.create({
       type: 'standard',
       email,

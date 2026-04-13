@@ -1,11 +1,17 @@
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2026-03-25.dahlia',
-});
+function getStripe() {
+  const key = process.env.STRIPE_SECRET_KEY;
+  if (!key) throw new Error('STRIPE_SECRET_KEY is not set');
+  return new Stripe(key, { apiVersion: '2026-03-25.dahlia' });
+}
 
-const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
+function getWebhookSecret() {
+  const secret = process.env.STRIPE_WEBHOOK_SECRET;
+  if (!secret) throw new Error('STRIPE_WEBHOOK_SECRET is not set');
+  return secret;
+}
 
 // ---------------------------------------------------------------------------
 // Types
@@ -43,7 +49,7 @@ export async function POST(
   let event: Stripe.Event;
 
   try {
-    event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
+    event = getStripe().webhooks.constructEvent(body, signature, getWebhookSecret());
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Unknown error';
     console.error('[Stripe Webhook] Signature verification failed:', message);

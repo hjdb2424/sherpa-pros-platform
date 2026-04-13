@@ -2,9 +2,11 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import Stripe from 'stripe';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2026-03-25.dahlia',
-});
+function getStripe() {
+  const key = process.env.STRIPE_SECRET_KEY;
+  if (!key) throw new Error('STRIPE_SECRET_KEY is not set');
+  return new Stripe(key, { apiVersion: '2026-03-25.dahlia' });
+}
 
 // ---------------------------------------------------------------------------
 // Types
@@ -43,7 +45,7 @@ export async function GET(
 
   try {
     // Retrieve the Connect account from Stripe to check onboarding status
-    const account = await stripe.accounts.retrieve(accountId);
+    const account = await getStripe().accounts.retrieve(accountId);
 
     let status: AccountStatus = 'pending';
     if (account.charges_enabled && account.payouts_enabled) {

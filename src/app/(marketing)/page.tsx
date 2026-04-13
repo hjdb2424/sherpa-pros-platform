@@ -1,75 +1,416 @@
-import type { Metadata } from "next";
+import type { Metadata } from 'next';
+import Link from 'next/link';
+import Hero from '@/components/marketing/Hero';
+import ComparisonTable from '@/components/marketing/ComparisonTable';
+import TestimonialCard from '@/components/marketing/TestimonialCard';
+import {
+  ClipboardDocumentListIcon,
+  ShieldCheckIcon,
+  LockClosedIcon,
+  BoltIcon,
+  PhoneArrowUpRightIcon,
+  MapPinIcon,
+} from '@heroicons/react/24/outline';
 
 export const metadata: Metadata = {
-  title: "Sherpa Pros — Uber for Construction",
+  title: 'Sherpa Pros — The Construction Marketplace That Gets It',
+  description:
+    'Every Pro verified. Every project validated. AI-powered matching that protects both sides. Post a job or join as a Pro today.',
 };
+
+const howItWorksSteps = [
+  {
+    icon: ClipboardDocumentListIcon,
+    title: 'Describe Your Project',
+    description:
+      'Our AI validates scope and budget before matching — so you get accurate bids from day one.',
+    step: '01',
+  },
+  {
+    icon: ShieldCheckIcon,
+    title: 'Get Matched With Verified Pros',
+    description:
+      'Background-checked, licensed, insured — no pay-to-play. Only vetted professionals.',
+    step: '02',
+  },
+  {
+    icon: LockClosedIcon,
+    title: 'Pay Securely on Completion',
+    description:
+      'Funds held in escrow until you approve the work. Protection for both sides.',
+    step: '03',
+  },
+];
+
+const prosBenefits = [
+  'Vetted leads only — no tire-kickers, no bidding wars',
+  'Fair commission structure — you keep more of what you earn',
+  'Career dashboard with analytics and reputation tracking',
+  'Insurance network access and group rates',
+  'Emergency dispatch retainer opportunities',
+];
+
+const hubCities = [
+  { state: 'NH', cities: ['Portsmouth', 'Manchester', 'Concord'] },
+  { state: 'ME', cities: ['Portland', 'Lewiston', 'Bangor'] },
+  { state: 'MA', cities: ['Boston', 'Worcester', 'Lowell', 'Springfield'] },
+];
+
+const testimonials = [
+  {
+    name: 'Sarah Mitchell',
+    role: 'Homeowner, Portsmouth NH',
+    quote:
+      'I posted a kitchen remodel on Friday and had three verified bids by Monday. The escrow payment gave me total peace of mind. Best experience I\'ve ever had hiring a contractor.',
+    rating: 5,
+    initials: 'SM',
+  },
+  {
+    name: 'Marcus Thompson',
+    role: 'Licensed Electrician, Manchester NH',
+    quote:
+      'I was spending $400/month on Angi leads that went nowhere. Sherpa Pros sends me pre-qualified jobs in my area. No subscription, no wasted leads. My revenue is up 40% in three months.',
+    rating: 5,
+    initials: 'MT',
+  },
+  {
+    name: 'Diana Chen',
+    role: 'Property Manager, Boston MA',
+    quote:
+      'Managing 200+ units means constant maintenance. The emergency dispatch feature is a game-changer — verified pros on call 24/7. Response times went from days to hours.',
+    rating: 5,
+    initials: 'DC',
+  },
+];
 
 export default function LandingPage() {
   return (
     <div className="flex flex-col">
       {/* Hero */}
-      <section className="flex min-h-[80vh] flex-col items-center justify-center bg-[#1a1a2e] px-6 text-center text-white">
-        <h1 className="max-w-3xl text-4xl font-bold tracking-tight sm:text-6xl">
-          Find trusted pros.
-          <br />
-          Get the job done.
-        </h1>
-        <p className="mt-6 max-w-xl text-lg text-zinc-300">
-          Sherpa Pros connects you with verified contractors, handymen, and
-          tradespeople in your area — instantly.
-        </p>
-        <div className="mt-10 flex flex-col gap-4 sm:flex-row">
-          <a
-            href="/sign-up"
-            className="rounded-full bg-white px-8 py-3 font-semibold text-[#1a1a2e] transition-opacity hover:opacity-90"
-          >
-            Get Started
-          </a>
-          <a
-            href="/for-pros"
-            className="rounded-full border border-white/30 px-8 py-3 font-semibold text-white transition-colors hover:bg-white/10"
-          >
-            Join as a Pro
-          </a>
-        </div>
-      </section>
+      <Hero />
 
-      {/* How it works summary */}
-      <section className="bg-white px-6 py-20 dark:bg-zinc-950">
-        <div className="mx-auto max-w-4xl text-center">
-          <h2 className="text-3xl font-bold text-zinc-900 dark:text-zinc-50">
-            How it works
-          </h2>
-          <div className="mt-12 grid gap-8 sm:grid-cols-3">
-            {[
-              {
-                step: "1",
-                title: "Post your job",
-                desc: "Describe the work, set your budget, and choose a timeline.",
-              },
-              {
-                step: "2",
-                title: "Get matched",
-                desc: "Our dispatch system finds the best available pros near you.",
-              },
-              {
-                step: "3",
-                title: "Job done",
-                desc: "Track progress, pay securely, and leave a review.",
-              },
-            ].map((item) => (
-              <div key={item.step} className="space-y-3">
-                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#1a1a2e] text-lg font-bold text-white">
-                  {item.step}
+      {/* How It Works */}
+      <section className="bg-white px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="text-3xl font-bold text-zinc-900 sm:text-4xl">
+              How It Works
+            </h2>
+            <p className="mt-4 text-lg text-zinc-600">
+              Three simple steps from project idea to job done.
+            </p>
+          </div>
+
+          <div className="mx-auto mt-16 grid max-w-5xl gap-8 sm:grid-cols-3">
+            {howItWorksSteps.map((step) => (
+              <div
+                key={step.title}
+                className="group relative rounded-2xl border border-zinc-100 bg-white p-8 shadow-sm transition-all hover:border-amber-200 hover:shadow-md"
+              >
+                <div className="absolute -top-4 left-8 flex h-8 w-14 items-center justify-center rounded-full bg-[#1a1a2e] text-xs font-bold text-amber-500">
+                  {step.step}
                 </div>
-                <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">
-                  {item.title}
+                <div className="mb-4 mt-2 flex h-12 w-12 items-center justify-center rounded-xl bg-amber-50 text-amber-600 transition-colors group-hover:bg-amber-100">
+                  <step.icon className="h-6 w-6" aria-hidden="true" />
+                </div>
+                <h3 className="text-lg font-semibold text-zinc-900">
+                  {step.title}
                 </h3>
-                <p className="text-sm text-zinc-600 dark:text-zinc-400">
-                  {item.desc}
+                <p className="mt-2 text-sm leading-relaxed text-zinc-600">
+                  {step.description}
                 </p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Comparison Table */}
+      <ComparisonTable />
+
+      {/* For Pros Section */}
+      <section className="bg-white px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+            <div>
+              <div className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-4 py-1.5">
+                <span className="text-xs font-medium text-emerald-700 sm:text-sm">
+                  For Professionals
+                </span>
+              </div>
+              <h2 className="mt-6 text-3xl font-bold text-zinc-900 sm:text-4xl">
+                Build Your Career, Not Just Your Next Lead
+              </h2>
+              <p className="mt-4 text-lg leading-relaxed text-zinc-600">
+                No subscription fees. No lead fees. You only pay a fair
+                commission when you win work and get paid.
+              </p>
+              <ul className="mt-8 space-y-4">
+                {prosBenefits.map((benefit) => (
+                  <li key={benefit} className="flex items-start gap-3">
+                    <svg
+                      className="mt-1 h-5 w-5 shrink-0 text-emerald-500"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                    <span className="text-base text-zinc-700">{benefit}</span>
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-10">
+                <Link
+                  href="/for-pros"
+                  className="inline-flex items-center rounded-full bg-[#1a1a2e] px-8 py-3.5 text-base font-semibold text-white shadow-lg transition-all hover:bg-[#16213e] hover:shadow-xl"
+                >
+                  Apply to Join
+                  <svg
+                    className="ml-2 h-4 w-4"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </Link>
+              </div>
+            </div>
+
+            {/* Visual card */}
+            <div className="relative">
+              <div className="rounded-2xl border border-zinc-200 bg-gradient-to-br from-slate-50 to-white p-8 shadow-lg sm:p-10">
+                <div className="text-center">
+                  <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-amber-500">
+                    <BoltIcon className="h-8 w-8 text-[#1a1a2e]" aria-hidden="true" />
+                  </div>
+                  <h3 className="mt-6 text-xl font-bold text-zinc-900">
+                    Your Earnings Dashboard
+                  </h3>
+                  <p className="mt-2 text-sm text-zinc-500">Preview</p>
+                </div>
+                <div className="mt-8 space-y-4">
+                  {[
+                    { label: 'Jobs Completed', value: '47', trend: '+12 this month' },
+                    { label: 'Revenue (YTD)', value: '$68,400', trend: '+23% vs last year' },
+                    { label: 'Avg Rating', value: '4.9', trend: '142 reviews' },
+                    { label: 'Repeat Clients', value: '73%', trend: 'Top 5% of Pros' },
+                  ].map((stat) => (
+                    <div
+                      key={stat.label}
+                      className="flex items-center justify-between rounded-lg bg-white px-4 py-3 shadow-sm ring-1 ring-zinc-100"
+                    >
+                      <div>
+                        <div className="text-xs text-zinc-500">{stat.label}</div>
+                        <div className="text-lg font-bold text-zinc-900">
+                          {stat.value}
+                        </div>
+                      </div>
+                      <div className="text-xs font-medium text-emerald-600">
+                        {stat.trend}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              {/* Decorative dot */}
+              <div className="absolute -right-4 -top-4 h-24 w-24 rounded-full bg-amber-500/10 blur-2xl" aria-hidden="true" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Emergency & Insurance */}
+      <section className="relative overflow-hidden bg-[#0f172a] px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
+        <div className="pointer-events-none absolute inset-0" aria-hidden="true">
+          <div className="absolute left-0 top-0 h-[300px] w-[300px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-red-500/10 blur-3xl" />
+          <div className="absolute bottom-0 right-0 h-[300px] w-[300px] translate-x-1/2 translate-y-1/2 rounded-full bg-amber-500/10 blur-3xl" />
+        </div>
+
+        <div className="relative mx-auto max-w-7xl">
+          <div className="mx-auto max-w-2xl text-center">
+            <div className="inline-flex items-center gap-2 rounded-full border border-red-500/30 bg-red-500/10 px-4 py-1.5">
+              <PhoneArrowUpRightIcon className="h-4 w-4 text-red-400" aria-hidden="true" />
+              <span className="text-xs font-medium text-red-400 sm:text-sm">
+                24/7 Emergency Dispatch
+              </span>
+            </div>
+            <h2 className="mt-6 text-3xl font-bold text-white sm:text-4xl">
+              When Emergencies Hit, We Respond
+            </h2>
+            <p className="mt-4 text-lg text-zinc-400">
+              IICRC certified pros on call around the clock. Insurance
+              restoration network with guaranteed payment.
+            </p>
+          </div>
+
+          <div className="mx-auto mt-16 grid max-w-4xl gap-6 sm:grid-cols-3">
+            {[
+              {
+                title: '24/7 Dispatch',
+                description: 'Emergency pros dispatched within minutes, any time of day or night.',
+                icon: '🚨',
+              },
+              {
+                title: 'IICRC Certified',
+                description: 'Water, fire, and mold restoration by certified professionals.',
+                icon: '🛡️',
+              },
+              {
+                title: 'Insurance Network',
+                description: 'Direct billing to insurance carriers. Guaranteed payment for pros.',
+                icon: '💰',
+              },
+            ].map((card) => (
+              <div
+                key={card.title}
+                className="rounded-2xl border border-zinc-800 bg-zinc-900/50 p-6 backdrop-blur-sm transition-colors hover:border-zinc-700"
+              >
+                <div className="text-3xl" aria-hidden="true">{card.icon}</div>
+                <h3 className="mt-4 text-lg font-semibold text-white">
+                  {card.title}
+                </h3>
+                <p className="mt-2 text-sm leading-relaxed text-zinc-400">
+                  {card.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Hub Map Section */}
+      <section className="bg-white px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <div className="mx-auto max-w-2xl text-center">
+            <div className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-4 py-1.5">
+              <MapPinIcon className="h-4 w-4 text-blue-600" aria-hidden="true" />
+              <span className="text-xs font-medium text-blue-700 sm:text-sm">
+                Service Area
+              </span>
+            </div>
+            <h2 className="mt-6 text-3xl font-bold text-zinc-900 sm:text-4xl">
+              Now Serving New England
+            </h2>
+            <p className="mt-4 text-lg text-zinc-600">
+              Starting in New Hampshire, Maine, and Massachusetts — with more
+              states coming soon.
+            </p>
+          </div>
+
+          {/* Map placeholder + city list */}
+          <div className="mx-auto mt-16 grid max-w-5xl gap-8 lg:grid-cols-2">
+            {/* Map visual */}
+            <div className="flex aspect-square items-center justify-center rounded-2xl border border-zinc-200 bg-gradient-to-br from-slate-50 via-blue-50/30 to-slate-50 shadow-sm lg:aspect-auto lg:min-h-[400px]">
+              <div className="text-center">
+                <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-[#1a1a2e]/5">
+                  <MapPinIcon className="h-10 w-10 text-[#1a1a2e]" aria-hidden="true" />
+                </div>
+                <p className="mt-4 text-lg font-semibold text-zinc-900">
+                  New England Coverage
+                </p>
+                <p className="mt-1 text-sm text-zinc-500">
+                  NH &middot; ME &middot; MA
+                </p>
+                <p className="mt-4 text-xs text-zinc-400">
+                  Interactive map coming soon
+                </p>
+              </div>
+            </div>
+
+            {/* City list */}
+            <div className="space-y-6">
+              {hubCities.map((group) => (
+                <div key={group.state}>
+                  <h3 className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-zinc-500">
+                    <span className="flex h-6 w-6 items-center justify-center rounded bg-[#1a1a2e] text-[10px] font-bold text-amber-500">
+                      {group.state}
+                    </span>
+                    {group.state === 'NH'
+                      ? 'New Hampshire'
+                      : group.state === 'ME'
+                        ? 'Maine'
+                        : 'Massachusetts'}
+                  </h3>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {group.cities.map((city) => (
+                      <span
+                        key={city}
+                        className="rounded-full border border-zinc-200 bg-zinc-50 px-4 py-1.5 text-sm font-medium text-zinc-700"
+                      >
+                        {city}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ))}
+              <div className="rounded-xl border border-amber-200 bg-amber-50 p-4">
+                <p className="text-sm font-medium text-amber-800">
+                  Expanding across New England in 2026. Want us in your area?
+                </p>
+                <Link
+                  href="#"
+                  className="mt-2 inline-flex text-sm font-semibold text-amber-600 transition-colors hover:text-amber-700"
+                >
+                  Request your city &rarr;
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section className="bg-slate-50 px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="text-3xl font-bold text-zinc-900 sm:text-4xl">
+              Trusted by Pros and Clients Alike
+            </h2>
+            <p className="mt-4 text-lg text-zinc-600">
+              Real feedback from real people building and improving their homes.
+            </p>
+          </div>
+          <div className="mx-auto mt-16 grid max-w-5xl gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {testimonials.map((t) => (
+              <TestimonialCard key={t.name} {...t} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Final CTA */}
+      <section className="bg-[#1a1a2e] px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
+        <div className="mx-auto max-w-3xl text-center">
+          <h2 className="text-3xl font-bold text-white sm:text-4xl">
+            Ready to Get Started?
+          </h2>
+          <p className="mt-4 text-lg text-zinc-400">
+            Whether you need work done or you are the one doing the work —
+            Sherpa Pros has your back.
+          </p>
+          <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+            <Link
+              href="/client/post-job"
+              className="inline-flex w-full items-center justify-center rounded-full bg-amber-500 px-8 py-3.5 text-base font-semibold text-[#1a1a2e] shadow-lg shadow-amber-500/25 transition-all hover:bg-amber-400 hover:shadow-xl sm:w-auto"
+            >
+              Post a Job
+            </Link>
+            <Link
+              href="/for-pros"
+              className="inline-flex w-full items-center justify-center rounded-full border border-zinc-600 px-8 py-3.5 text-base font-semibold text-white transition-all hover:border-zinc-400 hover:bg-white/5 sm:w-auto"
+            >
+              Join as a Pro
+            </Link>
           </div>
         </div>
       </section>

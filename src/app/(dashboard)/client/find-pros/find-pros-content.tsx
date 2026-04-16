@@ -5,6 +5,14 @@ import { MOCK_PROS, JOB_CATEGORIES, type Pro } from '@/lib/mock-data/client-data
 import { ProCard } from '@/components/client/ProCard';
 import EmptyState from '@/components/EmptyState';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
+import GoogleMapProvider from '@/components/maps/GoogleMapProvider';
+import MapView from '@/components/maps/MapView';
+import BottomSheet from '@/components/maps/BottomSheet';
+import ProMarker from '@/components/maps/ProMarker';
+import {
+  MOCK_PROS as MAP_PROS,
+  DEFAULT_CENTER,
+} from '@/lib/mock-data/map-data';
 
 type ViewMode = 'list' | 'map';
 type BadgeFilter = 'all' | 'gold' | 'silver' | 'bronze' | 'new';
@@ -14,7 +22,9 @@ export function FindProsContent() {
   const [badgeFilter, setBadgeFilter] = useState<BadgeFilter>('all');
   const [minRating, setMinRating] = useState(0);
   const [availableOnly, setAvailableOnly] = useState(false);
-  const [view, setView] = useState<ViewMode>('list');
+  const [view, setView] = useState<ViewMode>('map');
+  const [currentZoom, setCurrentZoom] = useState(12);
+  const [selectedProId, setSelectedProId] = useState<string | null>(null);
 
   const filtered = useMemo(() => {
     let pros = [...MOCK_PROS];
@@ -133,28 +143,24 @@ export function FindProsContent() {
           </label>
 
           {/* View toggle */}
-          <div className="ml-auto flex gap-1 rounded-lg border border-zinc-200 bg-zinc-50 p-0.5">
-            <button
-              onClick={() => setView('list')}
-              className={`rounded-md p-1.5 transition-colors ${
-                view === 'list' ? 'bg-white shadow-sm' : 'text-zinc-400 hover:text-zinc-600'
-              }`}
-              aria-label="List view"
-            >
-              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zM3.75 12h.007v.008H3.75V12zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm-.375 5.25h.007v.008H3.75v-.008zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
-              </svg>
-            </button>
+          <div className="ml-auto flex items-center rounded-lg border border-zinc-200 p-0.5">
             <button
               onClick={() => setView('map')}
-              className={`rounded-md p-1.5 transition-colors ${
-                view === 'map' ? 'bg-white shadow-sm' : 'text-zinc-400 hover:text-zinc-600'
+              className={`rounded-md px-3 py-1.5 text-xs font-semibold transition-all ${
+                view === 'map' ? 'bg-[#00a9e0] text-white' : 'text-zinc-500 hover:text-zinc-700'
               }`}
               aria-label="Map view"
             >
-              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z" />
-              </svg>
+              Map
+            </button>
+            <button
+              onClick={() => setView('list')}
+              className={`rounded-md px-3 py-1.5 text-xs font-semibold transition-all ${
+                view === 'list' ? 'bg-[#00a9e0] text-white' : 'text-zinc-500 hover:text-zinc-700'
+              }`}
+              aria-label="List view"
+            >
+              List
             </button>
           </div>
         </div>
@@ -177,50 +183,91 @@ export function FindProsContent() {
         </div>
       </div>
 
-      {/* Results */}
-      <div className="mb-4 text-sm text-zinc-500">
-        {filtered.length} Pro{filtered.length !== 1 ? 's' : ''} found
-      </div>
-
       {view === 'map' ? (
-        <div className="overflow-hidden rounded-xl border border-zinc-200">
-          <div className="flex h-96 items-center justify-center bg-zinc-100">
-            <div className="text-center">
-              <svg className="mx-auto h-10 w-10 text-zinc-400" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z" />
-              </svg>
-              <p className="mt-3 text-sm font-medium text-zinc-600">Map View</p>
-              <p className="mt-1 text-xs text-zinc-400">
-                MapBox integration will show Pros on a map
-              </p>
+        <GoogleMapProvider>
+          <div className="relative h-[calc(100dvh-56px)] lg:flex -mx-4 lg:-mx-8 -mb-6">
+            <BottomSheet
+              peekContent={
+                <p className="text-sm font-semibold text-zinc-900">
+                  {filtered.length} Pro{filtered.length !== 1 ? 's' : ''} Nearby
+                </p>
+              }
+            >
+              <div className="p-4 space-y-3">
+                {filtered.length === 0 ? (
+                  <p className="py-8 text-center text-sm text-zinc-400">
+                    No pros match your filters.
+                  </p>
+                ) : (
+                  filtered.map((pro) => (
+                    <ProCard
+                      key={pro.id}
+                      pro={pro}
+                      onViewProfile={() => {
+                        /* placeholder */
+                      }}
+                      onRequestQuote={() => {
+                        /* placeholder */
+                      }}
+                    />
+                  ))
+                )}
+              </div>
+            </BottomSheet>
+            <div className="h-full w-full lg:ml-[400px]">
+              <MapView
+                center={DEFAULT_CENTER}
+                className="h-full w-full"
+                onZoomChanged={(z) => setCurrentZoom(z)}
+                onListView={() => setView('list')}
+              >
+                {MAP_PROS.map((pro) => (
+                  <ProMarker
+                    key={pro.id}
+                    pro={pro}
+                    zoom={currentZoom}
+                    selected={selectedProId === pro.id}
+                    onClick={() => setSelectedProId(pro.id)}
+                  />
+                ))}
+              </MapView>
             </div>
           </div>
-        </div>
-      ) : filtered.length === 0 ? (
-        <EmptyState
-          icon={<MagnifyingGlassIcon className="h-8 w-8" />}
-          title="No pros match your search"
-          description="Try a different trade, expand your search area, or lower the minimum rating."
-          ctaLabel="Reset Filters"
-          ctaHref="/client/find-pros"
-          secondaryLabel="Browse All Pros"
-          secondaryHref="/client/find-pros"
-        />
+        </GoogleMapProvider>
       ) : (
-        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-          {filtered.map((pro) => (
-            <ProCard
-              key={pro.id}
-              pro={pro}
-              onViewProfile={() => {
-                /* placeholder */
-              }}
-              onRequestQuote={() => {
-                /* placeholder */
-              }}
+        <>
+          {/* Results count */}
+          <div className="mb-4 text-sm text-zinc-500">
+            {filtered.length} Pro{filtered.length !== 1 ? 's' : ''} found
+          </div>
+
+          {filtered.length === 0 ? (
+            <EmptyState
+              icon={<MagnifyingGlassIcon className="h-8 w-8" />}
+              title="No pros match your search"
+              description="Try a different trade, expand your search area, or lower the minimum rating."
+              ctaLabel="Reset Filters"
+              ctaHref="/client/find-pros"
+              secondaryLabel="Browse All Pros"
+              secondaryHref="/client/find-pros"
             />
-          ))}
-        </div>
+          ) : (
+            <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+              {filtered.map((pro) => (
+                <ProCard
+                  key={pro.id}
+                  pro={pro}
+                  onViewProfile={() => {
+                    /* placeholder */
+                  }}
+                  onRequestQuote={() => {
+                    /* placeholder */
+                  }}
+                />
+              ))}
+            </div>
+          )}
+        </>
       )}
     </div>
   );

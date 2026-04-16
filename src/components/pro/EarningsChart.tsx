@@ -21,7 +21,7 @@ export default function EarningsChart({ data }: EarningsChartProps) {
               </span>
               <div className="relative w-full" style={{ height: 140 }}>
                 <div
-                  className="absolute bottom-0 w-full rounded-t-md bg-gradient-to-t from-amber-600 to-amber-400 transition-all duration-700"
+                  className="absolute bottom-0 w-full rounded-t-md bg-gradient-to-t from-[#0088b4] to-[#00a9e0] transition-all duration-700"
                   style={{ height: `${heightPct}%`, minHeight: heightPct > 0 ? 4 : 0 }}
                 />
               </div>

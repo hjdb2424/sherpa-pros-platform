@@ -40,7 +40,7 @@ export function ConversationList({
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <div className="w-6 h-6 border-2 border-amber-400 border-t-transparent rounded-full animate-spin" />
+        <div className="w-6 h-6 border-2 border-[#00a9e0] border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -73,11 +73,11 @@ export function ConversationList({
             key={item.conversation.id}
             onClick={() => onSelect(item.conversation.id)}
             className={`w-full text-left px-4 py-3 flex items-start gap-3 transition-colors hover:bg-gray-50 ${
-              isSelected ? 'bg-amber-50 border-l-3 border-amber-500' : ''
+              isSelected ? 'bg-sky-50 border-l-3 border-[#00a9e0]' : ''
             }`}
           >
             {/* Avatar placeholder */}
-            <div className="shrink-0 w-10 h-10 rounded-full bg-[#1a1a2e] flex items-center justify-center text-white text-sm font-semibold">
+            <div className="shrink-0 w-10 h-10 rounded-full bg-[#00a9e0] flex items-center justify-center text-white text-sm font-semibold">
               {item.otherPartyRole === 'pro' ? 'P' : 'C'}
             </div>
 
@@ -103,7 +103,7 @@ export function ConversationList({
                     : 'No messages yet'}
                 </p>
                 {hasUnread && (
-                  <span className="shrink-0 min-w-[18px] h-[18px] flex items-center justify-center rounded-full bg-amber-500 text-white text-[10px] font-bold px-1">
+                  <span className="shrink-0 min-w-[18px] h-[18px] flex items-center justify-center rounded-full bg-[#00a9e0] text-white text-[10px] font-bold px-1">
                     {item.unreadCount > 99 ? '99+' : item.unreadCount}
                   </span>
                 )}

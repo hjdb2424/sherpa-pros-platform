@@ -141,17 +141,17 @@ export function ChatWindow({
   return (
     <div className={containerClass}>
       {/* Header — dark navy */}
-      <div className="flex items-center justify-between px-4 py-3 bg-[#1a1a2e] text-white shrink-0">
+      <div className="flex items-center justify-between px-4 py-3 bg-white border-b border-zinc-100 text-zinc-900 shrink-0">
         <div className="min-w-0">
           <h3 className="text-sm font-semibold truncate">{jobTitle}</h3>
-          <p className="text-xs text-gray-300">
+          <p className="text-xs text-zinc-500">
             Chatting with {otherRole === 'pro' ? 'Pro' : 'Client'}
           </p>
         </div>
         {onClose && (
           <button
             onClick={onClose}
-            className="ml-3 p-1.5 rounded-full hover:bg-white/10 transition-colors"
+            className="ml-3 p-1.5 rounded-full hover:bg-zinc-100 transition-colors"
             aria-label="Close chat"
           >
             <svg
@@ -175,7 +175,7 @@ export function ChatWindow({
       <div className="flex-1 overflow-y-auto px-4 py-3 bg-white">
         {loading ? (
           <div className="flex items-center justify-center h-full">
-            <div className="w-6 h-6 border-2 border-amber-400 border-t-transparent rounded-full animate-spin" />
+            <div className="w-6 h-6 border-2 border-[#00a9e0] border-t-transparent rounded-full animate-spin" />
           </div>
         ) : messages.length === 0 ? (
           <div className="flex items-center justify-center h-full text-gray-400 text-sm">
@@ -225,13 +225,13 @@ export function ChatWindow({
             onKeyDown={handleKeyDown}
             onFocus={() => setIsTyping(false)}
             placeholder="Type a message..."
-            className="flex-1 px-4 py-2.5 text-sm rounded-full border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent placeholder:text-gray-400"
+            className="flex-1 px-4 py-2.5 text-sm rounded-full border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-[#00a9e0] focus:border-transparent placeholder:text-gray-400"
             disabled={sending}
           />
           <button
             onClick={handleSend}
             disabled={sending || !draft.trim()}
-            className="shrink-0 w-10 h-10 flex items-center justify-center rounded-full bg-amber-500 text-white hover:bg-amber-600 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            className="shrink-0 w-10 h-10 flex items-center justify-center rounded-full bg-[#00a9e0] text-white hover:bg-[#0ea5e9] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
             aria-label="Send message"
           >
             <svg

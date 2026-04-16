@@ -66,7 +66,7 @@ export function BudgetSlider({
         <div className="relative mt-8 h-2">
           <div className="absolute inset-0 rounded-full bg-zinc-200" />
           <div
-            className="absolute inset-y-0 rounded-full bg-amber-400"
+            className="absolute inset-y-0 rounded-full bg-[#00a9e0]"
             style={{
               left: `${((localMin - absoluteMin) / (absoluteMax - absoluteMin)) * 100}%`,
               right: `${100 - ((localMax - absoluteMin) / (absoluteMax - absoluteMin)) * 100}%`,
@@ -79,7 +79,7 @@ export function BudgetSlider({
             step={25}
             value={localMin}
             onChange={handleMinChange}
-            className="pointer-events-none absolute inset-0 w-full appearance-none bg-transparent [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-amber-500 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:shadow-md"
+            className="pointer-events-none absolute inset-0 w-full appearance-none bg-transparent [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-[#00a9e0] [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:shadow-md"
             aria-label="Minimum budget"
           />
           <input
@@ -89,7 +89,7 @@ export function BudgetSlider({
             step={25}
             value={localMax}
             onChange={handleMaxChange}
-            className="pointer-events-none absolute inset-0 w-full appearance-none bg-transparent [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-amber-500 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:shadow-md"
+            className="pointer-events-none absolute inset-0 w-full appearance-none bg-transparent [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-[#00a9e0] [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:shadow-md"
             aria-label="Maximum budget"
           />
         </div>
@@ -116,7 +116,7 @@ export function BudgetSlider({
         )}
 
         {isBelowMarket && !letProsSuggest && (
-          <div className="mt-3 flex items-center gap-2 rounded-lg bg-amber-50 px-4 py-2 text-xs font-medium text-amber-700">
+          <div className="mt-3 flex items-center gap-2 rounded-lg bg-sky-50 px-4 py-2 text-xs font-medium text-[#ff4500]">
             <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
             </svg>
@@ -137,7 +137,7 @@ export function BudgetSlider({
             onChange={(e) => onLetProsSuggestChange(e.target.checked)}
             className="peer sr-only"
           />
-          <div className="h-6 w-11 rounded-full bg-zinc-200 transition-colors peer-checked:bg-amber-500 peer-focus-visible:ring-2 peer-focus-visible:ring-amber-300" />
+          <div className="h-6 w-11 rounded-full bg-zinc-200 transition-colors peer-checked:bg-[#00a9e0] peer-focus-visible:ring-2 peer-focus-visible:ring-[#00a9e0]/30" />
           <div className="absolute left-0.5 top-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform peer-checked:translate-x-5" />
         </div>
       </label>

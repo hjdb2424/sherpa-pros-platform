@@ -96,7 +96,7 @@ export default function AvailabilityCalendar({ initialAvailability }: Availabili
 
       <button
         type="button"
-        className="w-full rounded-lg bg-amber-500 py-2.5 text-sm font-bold text-white shadow-sm transition-colors hover:bg-amber-600 active:bg-amber-700"
+        className="w-full rounded-lg bg-[#00a9e0] py-2.5 text-sm font-bold text-white shadow-lg shadow-[#00a9e0]/25 transition-colors hover:bg-[#0ea5e9] active:scale-[0.98]"
         onClick={() => console.log('Saving availability:', availability)}
       >
         Save Availability

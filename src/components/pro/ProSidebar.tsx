@@ -65,13 +65,13 @@ export default function ProSidebar() {
   return (
     <>
       {/* Desktop sidebar */}
-      <aside className="fixed top-0 left-0 z-40 hidden h-full w-64 flex-col border-r border-zinc-200 bg-[#1a1a2e] lg:flex dark:border-zinc-800">
+      <aside className="fixed top-0 left-0 z-40 hidden h-full w-64 flex-col border-r border-zinc-100 bg-white lg:flex dark:border-zinc-800">
         {/* Logo */}
         <div className="flex h-16 items-center gap-2 px-6">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500 text-sm font-black text-white">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#00a9e0] text-sm font-black text-white">
             SP
           </div>
-          <span className="text-lg font-bold text-white">Sherpa Pros</span>
+          <span className="text-lg font-bold text-zinc-900">Sherpa<span className="text-[#ff4500]">Pros</span></span>
         </div>
 
         {/* Nav */}
@@ -84,8 +84,8 @@ export default function ProSidebar() {
                 href={item.href}
                 className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
                   active
-                    ? 'bg-amber-500/20 text-amber-400'
-                    : 'text-zinc-400 hover:bg-white/10 hover:text-white'
+                    ? 'bg-sky-50 text-[#00a9e0]'
+                    : 'text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900'
                 }`}
                 aria-current={active ? 'page' : undefined}
               >
@@ -102,37 +102,37 @@ export default function ProSidebar() {
         </nav>
 
         {/* User section */}
-        <div className="border-t border-white/10 p-4">
+        <div className="border-t border-zinc-100 p-4">
           <div className="flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-amber-500/20 text-sm font-bold text-amber-400">
+            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-sky-50 text-sm font-bold text-[#00a9e0]">
               MR
             </div>
             <div className="min-w-0 flex-1">
-              <p className="truncate text-sm font-medium text-white">Marcus Rivera</p>
-              <p className="truncate text-xs text-zinc-400">Silver Tier</p>
+              <p className="truncate text-sm font-medium text-zinc-900">Marcus Rivera</p>
+              <p className="truncate text-xs text-zinc-600">Silver Tier</p>
             </div>
           </div>
         </div>
       </aside>
 
       {/* Mobile top header */}
-      <header className="fixed top-0 right-0 left-0 z-40 flex h-14 items-center justify-between border-b border-zinc-200 bg-[#1a1a2e] px-4 lg:left-64 dark:border-zinc-800">
+      <header className="fixed top-0 right-0 left-0 z-40 flex h-14 items-center justify-between border-b border-zinc-100 bg-white px-4 lg:left-64 dark:border-zinc-800">
         <div className="flex items-center gap-2 lg:hidden">
-          <div className="flex h-7 w-7 items-center justify-center rounded-md bg-amber-500 text-xs font-black text-white">
+          <div className="flex h-7 w-7 items-center justify-center rounded-md bg-[#00a9e0] text-xs font-black text-white">
             SP
           </div>
-          <span className="text-base font-bold text-white">Sherpa Pros</span>
+          <span className="text-base font-bold text-zinc-900">Sherpa Pros</span>
         </div>
 
         <div className="hidden lg:block">
-          <h2 className="text-sm font-medium text-white/70">Pro Dashboard</h2>
+          <h2 className="text-sm font-medium text-zinc-600">Pro Dashboard</h2>
         </div>
 
         <div className="flex items-center gap-3">
           {/* Notification bell */}
           <button
             type="button"
-            className="relative flex h-10 w-10 items-center justify-center rounded-lg text-zinc-400 transition-colors hover:bg-white/10 hover:text-white"
+            className="relative flex h-10 w-10 items-center justify-center rounded-lg text-zinc-600 transition-colors hover:bg-zinc-50 hover:text-zinc-900"
             aria-label="Notifications"
           >
             <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden="true">
@@ -146,7 +146,7 @@ export default function ProSidebar() {
           {/* Profile avatar */}
           <button
             type="button"
-            className="flex h-9 w-9 items-center justify-center rounded-full bg-amber-500/20 text-sm font-bold text-amber-400"
+            className="flex h-9 w-9 items-center justify-center rounded-full bg-sky-50 text-sm font-bold text-[#00a9e0]"
             aria-label="Open profile menu"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
@@ -168,7 +168,7 @@ export default function ProSidebar() {
               href={item.href}
               className={`relative flex flex-1 flex-col items-center gap-0.5 px-1 py-2 text-[10px] font-medium transition-colors ${
                 active
-                  ? 'text-amber-500'
+                  ? 'text-[#00a9e0]'
                   : 'text-zinc-500 dark:text-zinc-400'
               }`}
               aria-current={active ? 'page' : undefined}

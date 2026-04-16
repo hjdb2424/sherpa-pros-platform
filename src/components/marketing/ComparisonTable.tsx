@@ -62,7 +62,7 @@ export default function ComparisonTable() {
                 <th className="px-6 py-4 text-left text-sm font-semibold text-zinc-500">
                   Other Platforms
                 </th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-amber-600">
+                <th className="px-6 py-4 text-left text-sm font-semibold text-[#00a9e0]">
                   Sherpa Pros
                 </th>
               </tr>
@@ -128,7 +128,7 @@ export default function ComparisonTable() {
                   aria-hidden="true"
                 />
                 <span>
-                  <span className="font-medium text-amber-600">
+                  <span className="font-medium text-[#00a9e0]">
                     Sherpa Pros:{' '}
                   </span>
                   {row.sherpa}

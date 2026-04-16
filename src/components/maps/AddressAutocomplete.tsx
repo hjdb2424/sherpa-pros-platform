@@ -148,14 +148,14 @@ export function AddressAutocomplete({
         placeholder={placeholder}
         autoComplete="off"
         aria-label="Address search"
-        className="w-full rounded-lg border-2 border-slate-800 bg-white px-4 py-2.5 pr-10 text-sm text-slate-900 placeholder-slate-400 transition-colors focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-500/30"
+        className="w-full rounded-lg border-2 border-zinc-200 bg-white px-4 py-2.5 pr-10 text-sm text-slate-900 placeholder-slate-400 transition-colors focus:border-[#00a9e0] focus:outline-none focus:ring-2 focus:ring-[#00a9e0]/30"
       />
 
       {/* Loading spinner */}
       {loading && !value && (
         <div className="absolute right-3 top-1/2 -translate-y-1/2">
           <div
-            className="h-4 w-4 animate-spin rounded-full border-2 border-slate-300 border-t-amber-500"
+            className="h-4 w-4 animate-spin rounded-full border-2 border-slate-300 border-t-[#00a9e0]"
             aria-label="Loading address suggestions"
           />
         </div>

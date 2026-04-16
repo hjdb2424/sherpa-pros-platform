@@ -47,14 +47,14 @@ function StarSelector({
             onClick={() => onChange(star)}
             onMouseEnter={() => setHover(star)}
             onMouseLeave={() => setHover(0)}
-            className="min-h-[44px] min-w-[44px] p-0.5 transition-transform hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 rounded"
+            className="min-h-[44px] min-w-[44px] p-0.5 transition-transform hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00a9e0] rounded"
             role="radio"
             aria-checked={star === value}
             aria-label={`${star} star${star > 1 ? 's' : ''}`}
           >
             <svg
               className={`h-7 w-7 ${
-                star <= (hover || value) ? 'text-amber-400' : 'text-zinc-200'
+                star <= (hover || value) ? 'text-[#ff4500]' : 'text-zinc-200'
               } transition-colors`}
               fill="currentColor"
               viewBox="0 0 24 24"
@@ -133,14 +133,14 @@ export function RatingForm({ proName, jobTitle, onSubmit }: RatingFormProps) {
           value={ratings.review}
           onChange={(e) => setRatings((prev) => ({ ...prev, review: e.target.value }))}
           placeholder="Tell other homeowners about your experience..."
-          className="mt-2 w-full rounded-lg border border-zinc-200 px-4 py-3 text-sm text-zinc-900 placeholder:text-zinc-400 focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-100 focus-visible:ring-amber-500"
+          className="mt-2 w-full rounded-lg border border-zinc-200 px-4 py-3 text-sm text-zinc-900 placeholder:text-zinc-400 focus:border-[#00a9e0] focus:outline-none focus:ring-2 focus:ring-[#00a9e0]/10 focus-visible:ring-[#00a9e0]"
         />
       </div>
 
       <button
         onClick={handleSubmit}
         disabled={ratings.overall === 0}
-        className="mt-4 w-full rounded-lg bg-amber-500 px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-amber-600 disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2"
+        className="mt-4 w-full rounded-lg bg-[#00a9e0] px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-[#00a9e0]/25 transition-colors hover:bg-[#0ea5e9] disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00a9e0] focus-visible:ring-offset-2 active:scale-[0.98]"
       >
         Submit Review
       </button>

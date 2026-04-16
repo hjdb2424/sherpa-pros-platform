@@ -79,7 +79,7 @@ export function FindProsContent() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search by name or trade (e.g. plumbing, electrical)..."
-            className="w-full rounded-xl border border-zinc-200 bg-white py-3 pl-10 pr-4 text-sm text-zinc-900 placeholder:text-zinc-400 focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-100"
+            className="w-full rounded-xl border border-zinc-200 bg-white py-3 pl-10 pr-4 text-sm text-zinc-900 placeholder:text-zinc-400 focus:border-[#00a9e0] focus:outline-none focus:ring-2 focus:ring-[#00a9e0]/10"
             aria-label="Search Pros"
           />
         </div>
@@ -112,7 +112,7 @@ export function FindProsContent() {
           <select
             value={minRating}
             onChange={(e) => setMinRating(Number(e.target.value))}
-            className="rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-xs font-medium text-zinc-700 focus:border-amber-400 focus:outline-none"
+            className="rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-xs font-medium text-zinc-700 focus:border-[#00a9e0] focus:outline-none"
             aria-label="Minimum rating"
           >
             <option value={0}>Any rating</option>
@@ -127,7 +127,7 @@ export function FindProsContent() {
               type="checkbox"
               checked={availableOnly}
               onChange={(e) => setAvailableOnly(e.target.checked)}
-              className="h-3.5 w-3.5 rounded border-zinc-300 text-amber-500 focus:ring-amber-400"
+              className="h-3.5 w-3.5 rounded border-zinc-300 text-[#00a9e0] focus:ring-[#00a9e0]"
             />
             Available now
           </label>
@@ -167,8 +167,8 @@ export function FindProsContent() {
               onClick={() => setSearch(search === trade ? '' : trade)}
               className={`shrink-0 rounded-full border px-3 py-1 text-xs font-medium transition-colors ${
                 search === trade
-                  ? 'border-amber-300 bg-amber-50 text-amber-700'
-                  : 'border-zinc-200 bg-white text-zinc-600 hover:border-amber-200'
+                  ? 'border-[#00a9e0]/30 bg-sky-50 text-[#00a9e0]'
+                  : 'border-zinc-200 bg-white text-zinc-600 hover:border-[#00a9e0]/20'
               }`}
             >
               {trade}

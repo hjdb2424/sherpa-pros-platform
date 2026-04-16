@@ -43,7 +43,7 @@ export function MyJobsContent() {
         </div>
         <Link
           href="/client/post-job"
-          className="hidden items-center gap-2 rounded-lg bg-amber-500 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-amber-600 sm:flex"
+          className="hidden items-center gap-2 rounded-lg bg-[#00a9e0] px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-[#00a9e0]/25 transition-colors hover:bg-[#0ea5e9] sm:flex"
         >
           <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
@@ -68,7 +68,7 @@ export function MyJobsContent() {
             {t.label}
             <span
               className={`rounded-full px-1.5 py-0.5 text-[10px] font-bold ${
-                tab === t.key ? 'bg-amber-100 text-amber-700' : 'bg-zinc-200 text-zinc-500'
+                tab === t.key ? 'bg-sky-100 text-[#00a9e0]' : 'bg-zinc-200 text-zinc-500'
               }`}
             >
               {t.count}
@@ -114,7 +114,7 @@ export function MyJobsContent() {
                   </div>
                   {job.assignedPro && (
                     <div className="mt-2 flex items-center gap-2 text-xs text-zinc-600">
-                      <div className="flex h-5 w-5 items-center justify-center rounded-full bg-[#1a1a2e] text-[8px] font-bold text-white">
+                      <div className="flex h-5 w-5 items-center justify-center rounded-full bg-[#00a9e0] text-[8px] font-bold text-white">
                         {job.assignedPro.name.split(' ').map((n) => n[0]).join('')}
                       </div>
                       {job.assignedPro.name}
@@ -129,7 +129,7 @@ export function MyJobsContent() {
                     </div>
                   )}
                   {tab === 'completed' && !job.rated && (
-                    <div className="mt-2 inline-flex items-center gap-1 rounded-full bg-amber-50 px-2.5 py-1 text-xs font-medium text-amber-700">
+                    <div className="mt-2 inline-flex items-center gap-1 rounded-full bg-sky-50 px-2.5 py-1 text-xs font-medium text-[#ff4500]">
                       <svg className="h-3.5 w-3.5" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
                       </svg>

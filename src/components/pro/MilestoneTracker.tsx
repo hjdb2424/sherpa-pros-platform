@@ -14,10 +14,10 @@ const statusConfig = {
     label: 'Completed',
   },
   in_progress: {
-    bg: 'bg-amber-500',
-    ring: 'ring-amber-200 dark:ring-amber-900',
+    bg: 'bg-[#00a9e0]',
+    ring: 'ring-sky-200 dark:ring-sky-900',
     line: 'bg-zinc-300 dark:bg-zinc-600',
-    text: 'text-amber-700 dark:text-amber-400',
+    text: 'text-[#00a9e0] dark:text-sky-400',
     label: 'In Progress',
   },
   pending: {
@@ -42,14 +42,14 @@ export default function MilestoneTracker({ milestones, compact = false }: Milest
           <span className="font-medium text-zinc-700 dark:text-zinc-300">
             Progress: {completed}/{milestones.length} milestones
           </span>
-          <span className="font-semibold text-amber-600 dark:text-amber-400">{percentage}%</span>
+          <span className="font-semibold text-[#00a9e0] dark:text-sky-400">{percentage}%</span>
         </div>
       )}
 
       {/* Progress bar */}
       <div className="mb-4 h-2 overflow-hidden rounded-full bg-zinc-200 dark:bg-zinc-700" role="progressbar" aria-valuenow={percentage} aria-valuemin={0} aria-valuemax={100} aria-label={`Job progress: ${percentage}%`}>
         <div
-          className="h-full rounded-full bg-gradient-to-r from-amber-500 to-emerald-500 transition-all duration-500"
+          className="h-full rounded-full bg-gradient-to-r from-[#00a9e0] to-emerald-500 transition-all duration-500"
           style={{ width: `${percentage}%` }}
         />
       </div>

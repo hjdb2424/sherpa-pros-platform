@@ -81,12 +81,12 @@ export function EnRouteTracker({ pro, category, onCancel }: EnRouteTrackerProps)
 
       {/* Pro info card */}
       <div className="flex items-center gap-4 rounded-2xl border border-zinc-700 bg-zinc-800 p-4">
-        <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-[#1a1a2e] text-lg font-bold text-amber-400">
+        <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-zinc-900 text-lg font-bold text-[#ff4500]">
           {pro.initials}
         </div>
         <div className="min-w-0 flex-1">
           <p className="font-bold text-white">{pro.name}</p>
-          <div className="flex items-center gap-1 text-sm text-amber-400">
+          <div className="flex items-center gap-1 text-sm text-[#ff4500]">
             <svg className="h-3.5 w-3.5" fill="currentColor" viewBox="0 0 20 20">
               <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
             </svg>
@@ -142,13 +142,13 @@ export function EnRouteTracker({ pro, category, onCancel }: EnRouteTrackerProps)
               <button
                 onClick={handleCancelDismiss}
                 autoFocus
-                className="w-full sm:w-auto flex-1 rounded-xl bg-zinc-700 py-3 text-sm font-semibold text-white transition-colors hover:bg-zinc-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-800"
+                className="w-full sm:w-auto flex-1 rounded-xl bg-zinc-700 py-3 text-sm font-semibold text-white transition-colors hover:bg-zinc-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff4500] focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-800"
               >
                 Keep Dispatch
               </button>
               <button
                 onClick={handleCancelConfirm}
-                className="w-full sm:w-auto flex-1 rounded-xl bg-red-600 py-3 text-sm font-semibold text-white transition-colors hover:bg-red-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-800"
+                className="w-full sm:w-auto flex-1 rounded-xl bg-red-600 py-3 text-sm font-semibold text-white transition-colors hover:bg-red-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff4500] focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-800"
               >
                 Yes, Cancel
               </button>

@@ -169,7 +169,7 @@ export function ProMap({
               </div>
 
               <div className="mb-2 flex items-center gap-1">
-                <span className="text-amber-500" aria-hidden="true">
+                <span className="text-[#ff4500]" aria-hidden="true">
                   ★
                 </span>
                 <span className="text-xs font-medium text-slate-700">

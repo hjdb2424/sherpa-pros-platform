@@ -27,7 +27,7 @@ interface JobMapProps {
 
 const URGENCY_COLORS: Record<JobMapItem['urgency'], string> = {
   emergency: '#ef4444',
-  standard: '#f59e0b',
+  standard: '#00a9e0',
   flexible: '#22c55e',
 };
 
@@ -139,7 +139,7 @@ export function JobMap({
                 40,
               ],
               'circle-stroke-width': 2,
-              'circle-stroke-color': '#f59e0b',
+              'circle-stroke-color': '#00a9e0',
             }}
           />
 

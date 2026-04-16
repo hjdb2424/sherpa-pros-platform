@@ -107,12 +107,12 @@ export default function LandingPage() {
             {howItWorksSteps.map((step) => (
               <div
                 key={step.title}
-                className="group relative rounded-2xl border border-zinc-100 bg-white p-8 shadow-sm transition-all hover:border-amber-200 hover:shadow-md"
+                className="group relative rounded-2xl border border-zinc-100 bg-white p-8 shadow-sm transition-all hover:border-[#00a9e0]/20 hover:shadow-md"
               >
-                <div className="absolute -top-4 left-8 flex h-8 w-14 items-center justify-center rounded-full bg-[#1a1a2e] text-xs font-bold text-amber-500">
+                <div className="absolute -top-4 left-8 flex h-8 w-14 items-center justify-center rounded-full bg-[#00a9e0] text-xs font-bold text-white">
                   {step.step}
                 </div>
-                <div className="mb-4 mt-2 flex h-12 w-12 items-center justify-center rounded-xl bg-amber-50 text-amber-600 transition-colors group-hover:bg-amber-100">
+                <div className="mb-4 mt-2 flex h-12 w-12 items-center justify-center rounded-xl bg-sky-50 text-[#00a9e0] transition-colors group-hover:bg-sky-100">
                   <step.icon className="h-6 w-6" aria-hidden="true" />
                 </div>
                 <h3 className="text-lg font-semibold text-zinc-900">
@@ -169,7 +169,7 @@ export default function LandingPage() {
               <div className="mt-10">
                 <Link
                   href="/for-pros"
-                  className="inline-flex items-center rounded-full bg-[#1a1a2e] px-8 py-3.5 text-base font-semibold text-white shadow-lg transition-all hover:bg-[#16213e] hover:shadow-xl"
+                  className="inline-flex items-center rounded-full bg-[#00a9e0] px-8 py-3.5 text-base font-semibold text-white shadow-lg transition-all hover:bg-[#0ea5e9] hover:shadow-xl"
                 >
                   Apply to Join
                   <svg
@@ -192,8 +192,8 @@ export default function LandingPage() {
             <div className="relative">
               <div className="rounded-2xl border border-zinc-200 bg-gradient-to-br from-slate-50 to-white p-8 shadow-lg sm:p-10">
                 <div className="text-center">
-                  <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-amber-500">
-                    <BoltIcon className="h-8 w-8 text-[#1a1a2e]" aria-hidden="true" />
+                  <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-[#00a9e0]">
+                    <BoltIcon className="h-8 w-8 text-white" aria-hidden="true" />
                   </div>
                   <h3 className="mt-6 text-xl font-bold text-zinc-900">
                     Your Earnings Dashboard
@@ -225,17 +225,17 @@ export default function LandingPage() {
                 </div>
               </div>
               {/* Decorative dot */}
-              <div className="absolute -right-4 -top-4 h-24 w-24 rounded-full bg-amber-500/10 blur-2xl" aria-hidden="true" />
+              <div className="absolute -right-4 -top-4 h-24 w-24 rounded-full bg-[#00a9e0]/10 blur-2xl" aria-hidden="true" />
             </div>
           </div>
         </div>
       </section>
 
       {/* Emergency & Insurance */}
-      <section className="relative overflow-hidden bg-[#0f172a] px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
+      <section className="relative overflow-hidden bg-zinc-900 px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
         <div className="pointer-events-none absolute inset-0" aria-hidden="true">
           <div className="absolute left-0 top-0 h-[300px] w-[300px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-red-500/10 blur-3xl" />
-          <div className="absolute bottom-0 right-0 h-[300px] w-[300px] translate-x-1/2 translate-y-1/2 rounded-full bg-amber-500/10 blur-3xl" />
+          <div className="absolute bottom-0 right-0 h-[300px] w-[300px] translate-x-1/2 translate-y-1/2 rounded-full bg-[#00a9e0]/10 blur-3xl" />
         </div>
 
         <div className="relative mx-auto max-w-7xl">
@@ -275,7 +275,7 @@ export default function LandingPage() {
               </p>
             </div>
             <div className="rounded-2xl border border-zinc-800 bg-zinc-900/50 p-6 backdrop-blur-sm transition-colors hover:border-zinc-700">
-              <BanknotesIcon className="h-8 w-8 text-amber-400" aria-hidden="true" />
+              <BanknotesIcon className="h-8 w-8 text-[#00a9e0]" aria-hidden="true" />
               <h3 className="mt-4 text-lg font-semibold text-white">
                 Insurance Network
               </h3>
@@ -311,8 +311,8 @@ export default function LandingPage() {
             {/* Map visual */}
             <div className="flex aspect-square items-center justify-center rounded-2xl border border-zinc-200 bg-gradient-to-br from-slate-50 via-blue-50/30 to-slate-50 shadow-sm lg:aspect-auto lg:min-h-[400px]">
               <div className="text-center">
-                <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-[#1a1a2e]/5">
-                  <MapPinIcon className="h-10 w-10 text-[#1a1a2e]" aria-hidden="true" />
+                <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-[#00a9e0]/5">
+                  <MapPinIcon className="h-10 w-10 text-[#00a9e0]" aria-hidden="true" />
                 </div>
                 <p className="mt-4 text-lg font-semibold text-zinc-900">
                   New England Coverage
@@ -331,7 +331,7 @@ export default function LandingPage() {
               {hubCities.map((group) => (
                 <div key={group.state}>
                   <h3 className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-zinc-500">
-                    <span className="flex h-6 w-6 items-center justify-center rounded bg-[#1a1a2e] text-[10px] font-bold text-amber-500">
+                    <span className="flex h-6 w-6 items-center justify-center rounded bg-[#00a9e0] text-[10px] font-bold text-white">
                       {group.state}
                     </span>
                     {group.state === 'NH'
@@ -352,13 +352,13 @@ export default function LandingPage() {
                   </div>
                 </div>
               ))}
-              <div className="rounded-xl border border-amber-200 bg-amber-50 p-4">
-                <p className="text-sm font-medium text-amber-800">
+              <div className="rounded-xl border border-[#00a9e0]/20 bg-sky-50 p-4">
+                <p className="text-sm font-medium text-zinc-800">
                   Expanding across New England in 2026. Want us in your area?
                 </p>
                 <Link
                   href="#"
-                  className="mt-2 inline-flex text-sm font-semibold text-amber-600 transition-colors hover:text-amber-700"
+                  className="mt-2 inline-flex text-sm font-semibold text-[#00a9e0] transition-colors hover:text-[#0ea5e9]"
                 >
                   Request your city &rarr;
                 </Link>
@@ -388,25 +388,25 @@ export default function LandingPage() {
       </section>
 
       {/* Final CTA */}
-      <section className="bg-[#1a1a2e] px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
+      <section className="bg-[#00a9e0] px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
         <div className="mx-auto max-w-3xl text-center">
           <h2 className="text-3xl font-bold text-white sm:text-4xl">
             Ready to Get Started?
           </h2>
-          <p className="mt-4 text-lg text-zinc-400">
+          <p className="mt-4 text-lg text-white/80">
             Whether you need work done or you are the one doing the work —
             Sherpa Pros has your back.
           </p>
           <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
             <Link
               href="/client/post-job"
-              className="inline-flex w-full items-center justify-center rounded-full bg-amber-500 px-8 py-3.5 text-base font-semibold text-[#1a1a2e] shadow-lg shadow-amber-500/25 transition-all hover:bg-amber-400 hover:shadow-xl sm:w-auto"
+              className="inline-flex w-full items-center justify-center rounded-full bg-[#ff4500] px-8 py-3.5 text-base font-semibold text-white shadow-lg shadow-[#ff4500]/25 transition-all hover:bg-[#e63e00] hover:shadow-xl sm:w-auto"
             >
               Post a Job
             </Link>
             <Link
               href="/for-pros"
-              className="inline-flex w-full items-center justify-center rounded-full border border-zinc-600 px-8 py-3.5 text-base font-semibold text-white transition-all hover:border-zinc-400 hover:bg-white/5 sm:w-auto"
+              className="inline-flex w-full items-center justify-center rounded-full border border-white/30 px-8 py-3.5 text-base font-semibold text-white transition-all hover:border-white/50 hover:bg-white/10 sm:w-auto"
             >
               Join as a Pro
             </Link>

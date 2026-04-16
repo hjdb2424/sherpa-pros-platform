@@ -102,31 +102,31 @@ export default function ForProsPage() {
   return (
     <div className="flex flex-col">
       {/* Hero */}
-      <section className="relative overflow-hidden bg-[#1a1a2e] px-4 pb-16 pt-20 sm:px-6 sm:pb-20 sm:pt-28 lg:px-8">
+      <section className="relative overflow-hidden bg-gradient-to-b from-white to-zinc-50 px-4 pb-16 pt-20 sm:px-6 sm:pb-20 sm:pt-28 lg:px-8">
         <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-          <div className="absolute right-0 top-0 h-[500px] w-[500px] -translate-y-1/4 translate-x-1/4 rounded-full bg-amber-500/10 blur-3xl" />
+          <div className="absolute right-0 top-0 h-[500px] w-[500px] -translate-y-1/4 translate-x-1/4 rounded-full bg-[#00a9e0]/5 blur-3xl" />
         </div>
         <div className="relative mx-auto max-w-3xl text-center">
           <div className="animate-fade-slide-up inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-1.5">
             <span className="h-2 w-2 rounded-full bg-emerald-500" aria-hidden="true" />
-            <span className="text-xs font-medium text-emerald-400 sm:text-sm">
+            <span className="text-xs font-medium text-emerald-600 sm:text-sm">
               Now accepting applications
             </span>
           </div>
-          <h1 className="animate-fade-slide-up stagger-1 mt-8 text-4xl font-bold text-white sm:text-5xl lg:text-6xl">
+          <h1 className="animate-fade-slide-up stagger-1 mt-8 text-4xl font-bold text-zinc-900 sm:text-5xl lg:text-6xl">
             Stop Paying for Leads.{' '}
-            <span className="bg-gradient-to-r from-amber-400 to-amber-500 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-[#00a9e0] to-[#0ea5e9] bg-clip-text text-transparent">
               Start Earning.
             </span>
           </h1>
-          <p className="animate-fade-slide-up stagger-2 mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-zinc-400 sm:text-xl">
+          <p className="animate-fade-slide-up stagger-2 mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-zinc-600 sm:text-xl">
             No subscription fees. No lead fees. No bidding wars. Get matched
             with pre-qualified jobs in your area and only pay when you win work.
           </p>
           <div className="mt-10">
             <Link
               href="/sign-up"
-              className="inline-flex items-center rounded-full bg-amber-500 px-8 py-4 text-lg font-semibold text-[#1a1a2e] shadow-lg shadow-amber-500/25 transition-all hover:bg-amber-400 hover:shadow-xl hover:shadow-amber-500/30 active:scale-[0.98]"
+              className="inline-flex items-center rounded-full bg-[#00a9e0] px-8 py-4 text-lg font-semibold text-white shadow-lg shadow-[#00a9e0]/25 transition-all hover:bg-[#0ea5e9] hover:shadow-xl hover:shadow-[#00a9e0]/30 active:scale-[0.98]"
             >
               Apply in 5 Minutes
               <svg
@@ -170,7 +170,7 @@ export default function ForProsPage() {
                   <th className="px-6 py-4 text-left text-sm font-semibold text-zinc-500">
                     Thumbtack
                   </th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-amber-600">
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-[#00a9e0]">
                     Sherpa Pros
                   </th>
                 </tr>
@@ -224,7 +224,7 @@ export default function ForProsPage() {
                   </div>
                   <div className="flex items-start gap-2 text-sm text-zinc-900">
                     <CheckCircleIcon className="mt-0.5 h-4 w-4 shrink-0 text-emerald-500" aria-hidden="true" />
-                    <span><span className="font-medium text-amber-600">Sherpa:</span> {row.sherpa}</span>
+                    <span><span className="font-medium text-[#00a9e0]">Sherpa:</span> {row.sherpa}</span>
                   </div>
                 </div>
               </div>
@@ -246,9 +246,9 @@ export default function ForProsPage() {
             {benefits.map((benefit, i) => (
               <div
                 key={benefit.title}
-                className={`group animate-fade-slide-up rounded-2xl border border-zinc-200 bg-white p-8 shadow-sm transition-all hover:-translate-y-0.5 hover:border-amber-200 hover:shadow-md stagger-${i + 1}`}
+                className={`group animate-fade-slide-up rounded-2xl border border-zinc-200 bg-white p-8 shadow-sm transition-all hover:-translate-y-0.5 hover:border-[#00a9e0]/20 hover:shadow-md stagger-${i + 1}`}
               >
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-amber-50 text-amber-600 transition-colors group-hover:bg-amber-100">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-sky-50 text-[#00a9e0] transition-colors group-hover:bg-sky-100">
                   <benefit.icon className="h-6 w-6" aria-hidden="true" />
                 </div>
                 <h3 className="mt-4 text-lg font-semibold text-zinc-900">
@@ -305,19 +305,19 @@ export default function ForProsPage() {
       </section>
 
       {/* Final CTA */}
-      <section className="bg-[#1a1a2e] px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
+      <section className="bg-[#00a9e0] px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
         <div className="mx-auto max-w-3xl text-center">
           <h2 className="text-3xl font-bold text-white sm:text-4xl">
             Ready to Build Your Career?
           </h2>
-          <p className="mt-4 text-lg text-zinc-400">
+          <p className="mt-4 text-lg text-white/80">
             Join the network of verified pros earning more and spending less on
             marketing. Apply in 5 minutes.
           </p>
           <div className="mt-10">
             <Link
               href="/sign-up"
-              className="inline-flex items-center rounded-full bg-amber-500 px-8 py-4 text-lg font-semibold text-[#1a1a2e] shadow-lg shadow-amber-500/25 transition-all hover:bg-amber-400 hover:shadow-xl active:scale-[0.98]"
+              className="inline-flex items-center rounded-full bg-white px-8 py-4 text-lg font-semibold text-[#00a9e0] shadow-lg shadow-black/10 transition-all hover:bg-zinc-50 hover:shadow-xl active:scale-[0.98]"
             >
               Apply Now — It&apos;s Free
               <svg

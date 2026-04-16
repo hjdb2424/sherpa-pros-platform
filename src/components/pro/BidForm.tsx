@@ -56,7 +56,7 @@ export default function BidForm({ jobId, budgetMin, budgetMax }: BidFormProps) {
             onChange={(e) => setAmount(e.target.value)}
             placeholder={`${budgetMin} - ${budgetMax}`}
             required
-            className="w-full rounded-lg border border-zinc-300 bg-white py-2.5 pl-7 pr-3 text-zinc-900 placeholder:text-zinc-400 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-100"
+            className="w-full rounded-lg border border-zinc-300 bg-white py-2.5 pl-7 pr-3 text-zinc-900 placeholder:text-zinc-400 focus:border-[#00a9e0] focus:ring-2 focus:ring-[#00a9e0]/20 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-100"
           />
         </div>
         <p className="mt-1 text-xs text-zinc-500">Client budget: ${budgetMin.toLocaleString()} - ${budgetMax.toLocaleString()}</p>
@@ -71,7 +71,7 @@ export default function BidForm({ jobId, budgetMin, budgetMax }: BidFormProps) {
           value={duration}
           onChange={(e) => setDuration(e.target.value)}
           required
-          className="mt-1 w-full rounded-lg border border-zinc-300 bg-white py-2.5 px-3 text-zinc-900 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-100"
+          className="mt-1 w-full rounded-lg border border-zinc-300 bg-white py-2.5 px-3 text-zinc-900 focus:border-[#00a9e0] focus:ring-2 focus:ring-[#00a9e0]/20 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-100"
         >
           <option value="">Select duration</option>
           <option value="Less than 1 day">Less than 1 day</option>
@@ -95,13 +95,13 @@ export default function BidForm({ jobId, budgetMin, budgetMax }: BidFormProps) {
           onChange={(e) => setMessage(e.target.value)}
           placeholder="Describe your approach, relevant experience, and availability..."
           required
-          className="mt-1 w-full rounded-lg border border-zinc-300 bg-white py-2.5 px-3 text-zinc-900 placeholder:text-zinc-400 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-100"
+          className="mt-1 w-full rounded-lg border border-zinc-300 bg-white py-2.5 px-3 text-zinc-900 placeholder:text-zinc-400 focus:border-[#00a9e0] focus:ring-2 focus:ring-[#00a9e0]/20 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-100"
         />
       </div>
 
       <button
         type="submit"
-        className="w-full rounded-lg bg-amber-500 py-3 text-sm font-bold text-white shadow-sm transition-colors hover:bg-amber-600 active:bg-amber-700"
+        className="w-full rounded-lg bg-[#00a9e0] py-3 text-sm font-bold text-white shadow-lg shadow-[#00a9e0]/25 transition-colors hover:bg-[#0ea5e9] active:scale-[0.98]"
       >
         Submit Bid
       </button>

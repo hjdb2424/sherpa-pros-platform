@@ -136,7 +136,7 @@ export function JobWizard() {
         <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
           <a
             href="/client/my-jobs"
-            className="rounded-lg bg-[#1a1a2e] px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#2a2a4e]"
+            className="rounded-lg bg-[#00a9e0] px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-[#00a9e0]/25 transition-colors hover:bg-[#0ea5e9]"
           >
             View My Jobs
           </a>
@@ -174,7 +174,7 @@ export function JobWizard() {
               <div
                 className={`flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold transition-colors ${
                   s.id === step
-                    ? 'bg-amber-500 text-white'
+                    ? 'bg-[#00a9e0] text-white'
                     : s.id < step
                       ? 'bg-emerald-500 text-white'
                       : 'bg-zinc-200 text-zinc-400'
@@ -190,7 +190,7 @@ export function JobWizard() {
               </div>
               <span
                 className={`hidden text-[10px] font-medium sm:block ${
-                  s.id === step ? 'text-amber-600' : s.id < step ? 'text-emerald-600' : 'text-zinc-400'
+                  s.id === step ? 'text-[#00a9e0]' : s.id < step ? 'text-emerald-600' : 'text-zinc-400'
                 }`}
               >
                 {s.label}
@@ -200,7 +200,7 @@ export function JobWizard() {
         </div>
         <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-zinc-200">
           <div
-            className="h-full rounded-full bg-amber-500 transition-all duration-300"
+            className="h-full rounded-full bg-[#00a9e0] transition-all duration-300"
             style={{ width: `${((step - 1) / (STEPS.length - 1)) * 100}%` }}
           />
         </div>
@@ -236,7 +236,7 @@ export function JobWizard() {
           <button
             onClick={() => canProceed() && setStep(step + 1)}
             disabled={!canProceed()}
-            className="flex items-center gap-2 rounded-lg bg-amber-500 px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-amber-600 disabled:cursor-not-allowed disabled:opacity-50"
+            className="flex items-center gap-2 rounded-lg bg-[#00a9e0] px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-[#00a9e0]/25 transition-colors hover:bg-[#0ea5e9] disabled:cursor-not-allowed disabled:opacity-50"
           >
             Next
             <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
@@ -306,7 +306,7 @@ function StepDetails({ data, update }: StepProps) {
           value={data.title}
           onChange={(e) => update('title', e.target.value)}
           placeholder="e.g. Fix leaking kitchen faucet"
-          className="mt-1.5 w-full rounded-lg border border-zinc-200 px-4 py-3 text-sm text-zinc-900 placeholder:text-zinc-400 focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-100"
+          className="mt-1.5 w-full rounded-lg border border-zinc-200 px-4 py-3 text-sm text-zinc-900 placeholder:text-zinc-400 focus:border-[#00a9e0] focus:outline-none focus:ring-2 focus:ring-[#00a9e0]/10"
         />
       </div>
 
@@ -320,7 +320,7 @@ function StepDetails({ data, update }: StepProps) {
           value={data.description}
           onChange={(e) => update('description', e.target.value)}
           placeholder="Describe the work you need done. Include any details like room size, materials, or specific requirements."
-          className="mt-1.5 w-full rounded-lg border border-zinc-200 px-4 py-3 text-sm text-zinc-900 placeholder:text-zinc-400 focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-100"
+          className="mt-1.5 w-full rounded-lg border border-zinc-200 px-4 py-3 text-sm text-zinc-900 placeholder:text-zinc-400 focus:border-[#00a9e0] focus:outline-none focus:ring-2 focus:ring-[#00a9e0]/10"
         />
         <p className="mt-1.5 text-xs text-zinc-400">
           Tip: Describe what you need done -- our AI will help fill in technical details for the Pros.
@@ -332,7 +332,7 @@ function StepDetails({ data, update }: StepProps) {
         <div className="mt-2 grid grid-cols-3 gap-3">
           {([
             { value: 'emergency' as const, label: 'Emergency', icon: '⚡', color: 'border-red-300 bg-red-50 text-red-700', activeColor: 'border-red-400 ring-red-200 bg-red-50' },
-            { value: 'standard' as const, label: 'Standard', icon: '📋', color: 'border-amber-300 bg-amber-50 text-amber-700', activeColor: 'border-amber-400 ring-amber-200 bg-amber-50' },
+            { value: 'standard' as const, label: 'Standard', icon: '📋', color: 'border-[#00a9e0]/30 bg-sky-50 text-[#00a9e0]', activeColor: 'border-[#00a9e0] ring-[#00a9e0]/20 bg-sky-50' },
             { value: 'flexible' as const, label: 'Flexible', icon: '🕐', color: 'border-emerald-300 bg-emerald-50 text-emerald-700', activeColor: 'border-emerald-400 ring-emerald-200 bg-emerald-50' },
           ]).map((opt) => (
             <button
@@ -367,7 +367,7 @@ function StepDetails({ data, update }: StepProps) {
               key={opt.value}
               className={`flex cursor-pointer items-center gap-3 rounded-lg border-2 px-4 py-3 transition-all ${
                 data.timeline === opt.value
-                  ? 'border-amber-400 bg-amber-50 ring-1 ring-amber-200'
+                  ? 'border-[#00a9e0] bg-sky-50 ring-1 ring-[#00a9e0]/20'
                   : 'border-zinc-200 bg-white hover:border-zinc-300'
               }`}
             >
@@ -377,7 +377,7 @@ function StepDetails({ data, update }: StepProps) {
                 value={opt.value}
                 checked={data.timeline === opt.value}
                 onChange={() => update('timeline', opt.value)}
-                className="h-4 w-4 border-zinc-300 text-amber-500 focus:ring-amber-400"
+                className="h-4 w-4 border-zinc-300 text-[#00a9e0] focus:ring-[#00a9e0]"
               />
               <span className="text-sm font-medium text-zinc-700">{opt.label}</span>
             </label>
@@ -408,7 +408,7 @@ function StepLocation({ data, update }: StepProps) {
           value={data.address}
           onChange={(e) => update('address', e.target.value)}
           placeholder="123 Main St, Concord, NH 03301"
-          className="mt-1.5 w-full rounded-lg border border-zinc-200 px-4 py-3 text-sm text-zinc-900 placeholder:text-zinc-400 focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-100"
+          className="mt-1.5 w-full rounded-lg border border-zinc-200 px-4 py-3 text-sm text-zinc-900 placeholder:text-zinc-400 focus:border-[#00a9e0] focus:outline-none focus:ring-2 focus:ring-[#00a9e0]/10"
         />
       </div>
 
@@ -420,7 +420,7 @@ function StepLocation({ data, update }: StepProps) {
         }}
         className="flex items-center gap-2 rounded-lg border border-zinc-200 px-4 py-2.5 text-sm font-medium text-zinc-600 transition-colors hover:bg-zinc-50"
       >
-        <svg className="h-4 w-4 text-amber-500" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+        <svg className="h-4 w-4 text-[#00a9e0]" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
           <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
         </svg>
@@ -552,7 +552,7 @@ function StepReview({ data, update, onEdit }: StepReviewProps) {
             <button
               type="button"
               onClick={() => onEdit(section.step)}
-              className="shrink-0 text-xs font-medium text-amber-600 hover:text-amber-700"
+              className="shrink-0 text-xs font-medium text-[#00a9e0] hover:text-[#0ea5e9]"
             >
               Edit
             </button>
@@ -593,12 +593,12 @@ function StepReview({ data, update, onEdit }: StepReviewProps) {
           type="checkbox"
           checked={data.termsAccepted}
           onChange={(e) => update('termsAccepted', e.target.checked)}
-          className="mt-0.5 h-4 w-4 rounded border-zinc-300 text-amber-500 focus:ring-amber-400"
+          className="mt-0.5 h-4 w-4 rounded border-zinc-300 text-[#00a9e0] focus:ring-[#00a9e0]"
         />
         <span className="text-sm text-zinc-600">
           I agree to the{' '}
-          <span className="font-medium text-amber-600">Terms of Service</span> and{' '}
-          <span className="font-medium text-amber-600">Payment Protection Policy</span>.
+          <span className="font-medium text-[#00a9e0]">Terms of Service</span> and{' '}
+          <span className="font-medium text-[#00a9e0]">Payment Protection Policy</span>.
         </span>
       </label>
     </div>

@@ -65,10 +65,10 @@ export function ClientSidebar() {
       {/* Desktop sidebar */}
       <aside className="hidden lg:flex lg:w-64 lg:flex-col lg:border-r lg:border-zinc-200 lg:bg-white">
         <div className="flex h-16 items-center gap-2 border-b border-zinc-200 px-6">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#1a1a2e]">
-            <span className="text-sm font-bold text-amber-400">S</span>
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#00a9e0]">
+            <span className="text-sm font-bold text-white">S</span>
           </div>
-          <span className="text-lg font-bold text-[#1a1a2e]">Sherpa Pros</span>
+          <span className="text-lg font-bold text-zinc-900">Sherpa<span className="text-[#ff4500]">Pros</span></span>
         </div>
 
         <nav className="flex-1 space-y-1 p-4" aria-label="Main navigation">
@@ -83,10 +83,10 @@ export function ClientSidebar() {
                 href={item.href}
                 className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
                   item.highlight && !isActive
-                    ? 'bg-amber-50 text-amber-700 hover:bg-amber-100'
+                    ? 'bg-sky-50 text-[#00a9e0] hover:bg-sky-100'
                     : isActive
-                      ? 'bg-[#1a1a2e] text-white'
-                      : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900'
+                      ? 'bg-sky-50 text-[#00a9e0]'
+                      : 'text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900'
                 }`}
                 aria-current={isActive ? 'page' : undefined}
               >
@@ -103,9 +103,9 @@ export function ClientSidebar() {
         </nav>
 
         <div className="border-t border-zinc-200 p-4">
-          <div className="rounded-lg bg-amber-50 p-3">
-            <p className="text-xs font-medium text-amber-800">Escrow Protected</p>
-            <p className="mt-0.5 text-[10px] text-amber-600">
+          <div className="rounded-lg bg-sky-50 p-3">
+            <p className="text-xs font-medium text-[#00a9e0]">Escrow Protected</p>
+            <p className="mt-0.5 text-[10px] text-zinc-600">
               Your payments are held safely until you approve the work.
             </p>
           </div>
@@ -128,15 +128,15 @@ export function ClientSidebar() {
               href={item.href}
               className={`relative flex flex-1 flex-col items-center gap-0.5 pb-[env(safe-area-inset-bottom,8px)] pt-2 text-[10px] font-medium transition-colors ${
                 item.highlight && !isActive
-                  ? 'text-amber-600'
+                  ? 'text-[#00a9e0]'
                   : isActive
-                    ? 'text-[#1a1a2e]'
+                    ? 'text-[#00a9e0]'
                     : 'text-zinc-400'
               }`}
               aria-current={isActive ? 'page' : undefined}
             >
               {item.highlight && !isActive && (
-                <span className="absolute -top-0.5 left-1/2 h-1 w-8 -translate-x-1/2 rounded-full bg-amber-400" />
+                <span className="absolute -top-0.5 left-1/2 h-1 w-8 -translate-x-1/2 rounded-full bg-[#00a9e0]" />
               )}
               <span className="relative">
                 {item.icon}

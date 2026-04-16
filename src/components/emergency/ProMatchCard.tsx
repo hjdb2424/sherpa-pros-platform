@@ -17,7 +17,7 @@ function StarRating({ rating, reviewCount }: { rating: number; reviewCount: numb
       {Array.from({ length: 5 }, (_, i) => (
         <svg
           key={i}
-          className={`h-4 w-4 ${i < fullStars ? 'text-amber-400' : i === fullStars && hasHalf ? 'text-amber-400' : 'text-zinc-600'}`}
+          className={`h-4 w-4 ${i < fullStars ? 'text-[#ff4500]' : i === fullStars && hasHalf ? 'text-[#ff4500]' : 'text-zinc-600'}`}
           fill="currentColor"
           viewBox="0 0 20 20"
         >
@@ -32,7 +32,7 @@ function StarRating({ rating, reviewCount }: { rating: number; reviewCount: numb
 
 const BADGE_COLORS: Record<string, string> = {
   Platinum: 'bg-purple-600/30 text-purple-300 border-purple-500/40',
-  Gold: 'bg-amber-600/30 text-amber-300 border-amber-500/40',
+  Gold: 'bg-orange-600/30 text-orange-300 border-orange-500/40',
   Silver: 'bg-zinc-600/30 text-zinc-300 border-zinc-500/40',
 };
 
@@ -42,7 +42,7 @@ export function ProMatchCard({ pro, onConfirm, onSeeOthers }: ProMatchCardProps)
       {/* Header row */}
       <div className="mb-4 flex items-start gap-4">
         {/* Avatar */}
-        <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-[#1a1a2e] text-xl font-bold text-amber-400">
+        <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-zinc-900 text-xl font-bold text-[#ff4500]">
           {pro.initials}
         </div>
         <div className="min-w-0 flex-1">

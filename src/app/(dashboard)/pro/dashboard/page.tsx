@@ -31,7 +31,7 @@ function timeAgo(dateStr: string): string {
 const activityIcons: Record<string, { bg: string; icon: string }> = {
   dispatch: { bg: 'bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400', icon: '\u26A1' },
   bid_accepted: { bg: 'bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400', icon: '\u2713' },
-  payment: { bg: 'bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400', icon: '$' },
+  payment: { bg: 'bg-sky-100 text-[#00a9e0] dark:bg-sky-900/30 dark:text-sky-400', icon: '$' },
   rating: { bg: 'bg-purple-100 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400', icon: '\u2605' },
   bid_rejected: { bg: 'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400', icon: '\u2717' },
   job_completed: { bg: 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400', icon: '\u2714' },
@@ -109,7 +109,7 @@ export default function ProDashboardPage() {
           label="Visibility Score"
           value={`${stats.visibilityScore}%`}
           trend={{ direction: 'up', label: '+3 pts' }}
-          accentColor="text-[#1a1a2e] dark:text-amber-400"
+          accentColor="text-[#00a9e0] dark:text-sky-400"
           icon={
             <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
@@ -123,7 +123,7 @@ export default function ProDashboardPage() {
       <section>
         <div className="mb-3 flex items-center justify-between">
           <h2 className="text-lg font-bold text-zinc-900 dark:text-zinc-50">Active Jobs</h2>
-          <Link href="/pro/jobs" className="text-sm font-medium text-amber-600 hover:text-amber-700 dark:text-amber-400">
+          <Link href="/pro/jobs" className="text-sm font-medium text-[#00a9e0] hover:text-[#0ea5e9] dark:text-sky-400">
             View all
           </Link>
         </div>
@@ -146,13 +146,13 @@ export default function ProDashboardPage() {
                       {job.clientName} &middot; {job.distanceMiles} mi &middot; Next: {job.milestones.find((m) => m.status === 'in_progress')?.title ?? 'N/A'}
                     </p>
                   </div>
-                  <span className="shrink-0 rounded-md bg-amber-100 px-2 py-0.5 text-xs font-semibold text-amber-700 dark:bg-amber-900/30 dark:text-amber-400">
+                  <span className="shrink-0 rounded-md bg-sky-100 px-2 py-0.5 text-xs font-semibold text-[#00a9e0] dark:bg-sky-900/30 dark:text-sky-400">
                     {pct}%
                   </span>
                 </div>
                 <div className="mt-3 h-2 overflow-hidden rounded-full bg-zinc-200 dark:bg-zinc-700">
                   <div
-                    className="h-full rounded-full bg-gradient-to-r from-amber-500 to-emerald-500 transition-all"
+                    className="h-full rounded-full bg-gradient-to-r from-[#00a9e0] to-emerald-500 transition-all"
                     style={{ width: `${pct}%` }}
                   />
                 </div>
@@ -202,7 +202,7 @@ export default function ProDashboardPage() {
               href="/pro/jobs"
               className="flex items-center gap-3 rounded-xl border border-zinc-200 bg-white p-4 shadow-sm transition-shadow hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900"
             >
-              <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400">
+              <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-sky-100 text-[#00a9e0] dark:bg-sky-900/30 dark:text-sky-400">
                 <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                 </svg>

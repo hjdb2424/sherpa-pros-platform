@@ -156,12 +156,12 @@ export default function HowItWorksPage() {
   return (
     <div className="flex flex-col">
       {/* Hero */}
-      <section className="bg-[#1a1a2e] px-4 pb-16 pt-20 sm:px-6 sm:pb-20 sm:pt-28 lg:px-8">
+      <section className="bg-gradient-to-b from-white to-zinc-50 px-4 pb-16 pt-20 sm:px-6 sm:pb-20 sm:pt-28 lg:px-8">
         <div className="mx-auto max-w-3xl text-center">
-          <h1 className="animate-fade-slide-up text-4xl font-bold text-white sm:text-5xl">
+          <h1 className="animate-fade-slide-up text-4xl font-bold text-zinc-900 sm:text-5xl">
             How Sherpa Pros Works
           </h1>
-          <p className="animate-fade-slide-up stagger-1 mt-6 text-lg leading-relaxed text-zinc-400 sm:text-xl">
+          <p className="animate-fade-slide-up stagger-1 mt-6 text-lg leading-relaxed text-zinc-600 sm:text-xl">
             Whether you need a quick repair or a full renovation, we connect you
             with the right professional — verified, insured, and ready to work.
           </p>
@@ -194,24 +194,24 @@ export default function HowItWorksPage() {
       </section>
 
       {/* CTA */}
-      <section className="bg-[#1a1a2e] px-4 py-20 sm:px-6 lg:px-8">
+      <section className="bg-[#00a9e0] px-4 py-20 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-3xl text-center">
           <h2 className="animate-fade-slide-up text-3xl font-bold text-white sm:text-4xl">
             Ready to Get Started?
           </h2>
-          <p className="animate-fade-slide-up stagger-1 mt-4 text-lg text-zinc-400">
+          <p className="animate-fade-slide-up stagger-1 mt-4 text-lg text-white/80">
             Join thousands of clients and pros already using Sherpa Pros.
           </p>
           <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
             <Link
               href="/client/post-job"
-              className="inline-flex w-full items-center justify-center rounded-full bg-amber-500 px-8 py-3.5 text-base font-semibold text-[#1a1a2e] shadow-lg shadow-amber-500/25 transition-all hover:bg-amber-400 active:scale-[0.98] sm:w-auto"
+              className="inline-flex w-full items-center justify-center rounded-full bg-[#ff4500] px-8 py-3.5 text-base font-semibold text-white shadow-lg shadow-[#ff4500]/25 transition-all hover:bg-[#e63e00] active:scale-[0.98] sm:w-auto"
             >
               Post a Job
             </Link>
             <Link
               href="/for-pros"
-              className="inline-flex w-full items-center justify-center rounded-full border border-zinc-600 px-8 py-3.5 text-base font-semibold text-white transition-all hover:border-zinc-400 hover:bg-white/5 active:scale-[0.98] sm:w-auto"
+              className="inline-flex w-full items-center justify-center rounded-full border border-white/30 px-8 py-3.5 text-base font-semibold text-white transition-all hover:border-white/50 hover:bg-white/10 active:scale-[0.98] sm:w-auto"
             >
               Join as a Pro
             </Link>

@@ -23,17 +23,17 @@ const footerLinks = {
 
 export default function Footer() {
   return (
-    <footer className="bg-[#1a1a2e] text-zinc-400">
+    <footer className="bg-zinc-900 text-zinc-400">
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-4">
           {/* Brand column */}
           <div className="sm:col-span-2 lg:col-span-1">
-            <Link href="/" className="flex items-center gap-2 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 focus-visible:ring-offset-[#1a1a2e]">
-              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-amber-500">
+            <Link href="/" className="flex items-center gap-2 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00a9e0] focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900">
+              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#00a9e0]">
                 <svg
                   viewBox="0 0 24 24"
                   fill="none"
-                  className="h-5 w-5 text-[#1a1a2e]"
+                  className="h-5 w-5 text-white"
                   aria-hidden="true"
                 >
                   <path
@@ -46,7 +46,7 @@ export default function Footer() {
                 </svg>
               </div>
               <span className="text-lg font-bold text-white">
-                Sherpa<span className="text-amber-500">Pros</span>
+                Sherpa<span className="text-[#ff4500]">Pros</span>
               </span>
             </Link>
             <p className="mt-4 max-w-xs text-sm leading-relaxed">
@@ -88,7 +88,7 @@ export default function Footer() {
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="rounded-sm text-sm transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 focus-visible:ring-offset-[#1a1a2e]"
+                      className="rounded-sm text-sm transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00a9e0] focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900"
                     >
                       {link.label}
                     </Link>
@@ -124,7 +124,7 @@ export default function Footer() {
               <a
                 key={social.label}
                 href="#"
-                className="flex h-9 w-9 items-center justify-center rounded-full border border-zinc-700 transition-colors hover:border-amber-500 hover:text-amber-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 focus-visible:ring-offset-[#1a1a2e]"
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-zinc-700 transition-colors hover:border-[#00a9e0] hover:text-[#00a9e0] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00a9e0] focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900"
                 aria-label={social.label}
               >
                 <svg

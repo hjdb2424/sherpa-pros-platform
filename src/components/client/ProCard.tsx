@@ -2,7 +2,7 @@ import type { Pro } from '@/lib/mock-data/client-data';
 import { ShieldCheckIcon } from '@heroicons/react/24/solid';
 
 const BADGE_CONFIG: Record<Pro['badge'], { label: string; color: string; icon: string }> = {
-  gold: { label: 'Gold Pro', color: 'text-amber-600 bg-amber-50 border-amber-200', icon: '★' },
+  gold: { label: 'Gold Pro', color: 'text-[#ff4500] bg-orange-50 border-orange-200', icon: '★' },
   silver: { label: 'Silver Pro', color: 'text-zinc-500 bg-zinc-50 border-zinc-200', icon: '★' },
   bronze: { label: 'Bronze Pro', color: 'text-orange-600 bg-orange-50 border-orange-200', icon: '★' },
   new: { label: 'New Pro', color: 'text-blue-600 bg-blue-50 border-blue-200', icon: '●' },
@@ -21,7 +21,7 @@ export function ProCard({ pro, compact = false, onViewProfile, onRequestQuote }:
   if (compact) {
     return (
       <div className="flex items-center gap-3 rounded-lg border border-zinc-200 bg-white p-3">
-        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#1a1a2e] text-sm font-bold text-white">
+        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#00a9e0] text-sm font-bold text-white">
           {pro.name.split(' ').map((n) => n[0]).join('')}
         </div>
         <div className="min-w-0 flex-1">
@@ -38,7 +38,7 @@ export function ProCard({ pro, compact = false, onViewProfile, onRequestQuote }:
             </span>
           </div>
           <div className="flex items-center gap-2 text-xs text-zinc-500">
-            <span className="text-amber-500">{'★'.repeat(Math.floor(pro.rating))}</span>
+            <span className="text-[#ff4500]">{'★'.repeat(Math.floor(pro.rating))}</span>
             <span>{pro.rating}</span>
             <span>({pro.reviewCount})</span>
           </div>
@@ -48,9 +48,9 @@ export function ProCard({ pro, compact = false, onViewProfile, onRequestQuote }:
   }
 
   return (
-    <div className="rounded-xl border border-zinc-200 bg-white p-5 transition-shadow hover:shadow-md">
+    <div className="rounded-xl border border-zinc-200 bg-white p-5 transition-all hover:border-[#00a9e0]/30 hover:shadow-md">
       <div className="flex items-start gap-4">
-        <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-[#1a1a2e] text-lg font-bold text-white">
+        <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-[#00a9e0] text-lg font-bold text-white">
           {pro.name.split(' ').map((n) => n[0]).join('')}
         </div>
         <div className="min-w-0 flex-1">
@@ -74,7 +74,7 @@ export function ProCard({ pro, compact = false, onViewProfile, onRequestQuote }:
           </span>
 
           <div className="mt-2 flex items-center gap-1 text-sm">
-            <span className="text-amber-500">{'★'.repeat(Math.floor(pro.rating))}</span>
+            <span className="text-[#ff4500]">{'★'.repeat(Math.floor(pro.rating))}</span>
             <span className="font-medium text-zinc-900">{pro.rating}</span>
             <span className="text-zinc-400">({pro.reviewCount} reviews)</span>
           </div>
@@ -111,7 +111,7 @@ export function ProCard({ pro, compact = false, onViewProfile, onRequestQuote }:
         </button>
         <button
           onClick={onRequestQuote}
-          className="flex-1 rounded-lg bg-amber-500 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-amber-600"
+          className="flex-1 rounded-lg bg-[#00a9e0] px-3 py-2 text-sm font-medium text-white shadow-lg shadow-[#00a9e0]/25 transition-colors hover:bg-[#0ea5e9]"
         >
           Request Quote
         </button>

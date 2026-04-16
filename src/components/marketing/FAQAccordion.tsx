@@ -29,7 +29,7 @@ function AccordionItem({
       <button
         type="button"
         id={ids.triggerId}
-        className="flex w-full items-center justify-between gap-4 rounded-lg px-1 py-5 text-left transition-colors hover:text-amber-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2"
+        className="flex w-full items-center justify-between gap-4 rounded-lg px-1 py-5 text-left transition-colors hover:text-[#00a9e0] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00a9e0] focus-visible:ring-offset-2"
         onClick={onToggle}
         aria-expanded={isOpen}
         aria-controls={ids.panelId}

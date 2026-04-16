@@ -29,7 +29,7 @@ export function MessageBubble({
         {/* Role label */}
         <span
           className={`block text-xs font-medium mb-1 ${
-            isSender ? 'text-right text-amber-700' : 'text-left text-gray-500'
+            isSender ? 'text-right text-[#00a9e0]' : 'text-left text-gray-500'
           }`}
         >
           {role === 'pro' ? 'Pro' : 'Client'}
@@ -39,8 +39,8 @@ export function MessageBubble({
         <div
           className={`px-4 py-2.5 rounded-2xl text-sm leading-relaxed break-words ${
             isSender
-              ? 'bg-amber-100 text-amber-950 rounded-br-md'
-              : 'bg-gray-100 text-gray-900 rounded-bl-md'
+              ? 'bg-[#00a9e0] text-white rounded-br-md'
+              : 'bg-zinc-100 text-zinc-900 rounded-bl-md'
           }`}
         >
           {body}

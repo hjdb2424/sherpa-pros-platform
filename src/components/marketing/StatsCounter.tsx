@@ -46,11 +46,11 @@ function StatItem({ stat, animate }: { stat: Stat; animate: boolean }) {
 
   return (
     <div className="text-center">
-      <div className="text-3xl font-bold text-white sm:text-4xl lg:text-5xl">
+      <div className="text-3xl font-bold text-zinc-900 sm:text-4xl lg:text-5xl">
         {animate ? count : 0}
-        <span className="text-amber-500">{stat.suffix}</span>
+        <span className="text-[#00a9e0]">{stat.suffix}</span>
       </div>
-      <div className="mt-2 text-sm font-medium text-zinc-400 sm:text-base">
+      <div className="mt-2 text-sm font-medium text-zinc-600 sm:text-base">
         {stat.label}
       </div>
     </div>

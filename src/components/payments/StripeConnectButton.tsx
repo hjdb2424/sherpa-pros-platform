@@ -57,7 +57,7 @@ export default function StripeConnectButton({
         type="button"
         onClick={handleConnect}
         disabled={disabled || state === 'loading'}
-        className="inline-flex items-center gap-2 rounded-lg bg-[#1a1a2e] px-5 py-3 text-sm font-semibold text-white shadow-sm transition-all hover:bg-[#252545] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-500 disabled:cursor-not-allowed disabled:opacity-50"
+        className="inline-flex items-center gap-2 rounded-lg bg-[#00a9e0] px-5 py-3 text-sm font-semibold text-white shadow-sm transition-all hover:bg-[#0ea5e9] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#00a9e0] disabled:cursor-not-allowed disabled:opacity-50"
         aria-busy={state === 'loading'}
       >
         {state === 'loading' ? (

@@ -9,10 +9,10 @@ import { ShieldCheckIcon } from '@heroicons/react/24/solid';
 /** Widths for the visual bars — maps to the relative "weight" of each tier */
 const TIER_WIDTHS = ['w-1/4', 'w-2/5', 'w-3/5', 'w-full'] as const;
 const TIER_COLORS = [
-  'bg-amber-500',
-  'bg-amber-400',
-  'bg-amber-300',
-  'bg-amber-200 dark:bg-amber-600',
+  'bg-[#00a9e0]',
+  'bg-[#0ea5e9]',
+  'bg-sky-300',
+  'bg-sky-200 dark:bg-sky-600',
 ] as const;
 
 function formatTierRange(minCents: number, maxCents: number): string {
@@ -50,7 +50,7 @@ export default function CommissionExplainer() {
               <span className="font-medium text-zinc-700 dark:text-zinc-300">
                 {formatTierRange(tier.minCents, tier.maxCents)}
               </span>
-              <span className="font-bold text-[#1a1a2e] dark:text-amber-400">
+              <span className="font-bold text-[#00a9e0] dark:text-[#00a9e0]">
                 {(tier.rate * 100).toFixed(0)}%
               </span>
             </div>

@@ -30,17 +30,17 @@ const tierStyles: Record<
     glow: '',
   },
   emergency_ready: {
-    border: 'border-amber-400 dark:border-amber-500',
-    bg: 'bg-amber-50/50 dark:bg-amber-950/20',
-    badge: 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-400',
-    cta: 'bg-amber-500 hover:bg-amber-600 text-white',
-    glow: 'shadow-amber-200/50 dark:shadow-amber-500/10',
+    border: 'border-[#00a9e0] dark:border-sky-500',
+    bg: 'bg-sky-50/50 dark:bg-sky-950/20',
+    badge: 'bg-sky-100 text-[#00a9e0] dark:bg-sky-900/40 dark:text-sky-400',
+    cta: 'bg-[#00a9e0] hover:bg-[#0ea5e9] text-white',
+    glow: 'shadow-[#00a9e0]/25 dark:shadow-sky-500/10',
   },
   restoration_certified: {
     border: 'border-yellow-400 dark:border-yellow-500',
-    bg: 'bg-gradient-to-br from-yellow-50/80 to-amber-50/60 dark:from-yellow-950/20 dark:to-amber-950/10',
+    bg: 'bg-gradient-to-br from-yellow-50/80 to-sky-50/60 dark:from-yellow-950/20 dark:to-sky-950/10',
     badge: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/40 dark:text-yellow-400',
-    cta: 'bg-gradient-to-r from-yellow-500 to-amber-500 hover:from-yellow-600 hover:to-amber-600 text-white',
+    cta: 'bg-gradient-to-r from-yellow-500 to-[#00a9e0] hover:from-yellow-600 hover:to-[#0ea5e9] text-white',
     glow: 'shadow-yellow-200/50 dark:shadow-yellow-500/10',
   },
 };
@@ -75,7 +75,7 @@ export default function SubscriptionCard({
       {/* Popular badge */}
       {isPopular && (
         <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-          <span className="inline-block rounded-full bg-amber-500 px-4 py-1 text-xs font-bold text-white shadow-md">
+          <span className="inline-block rounded-full bg-[#00a9e0] px-4 py-1 text-xs font-bold text-white shadow-md">
             Most Popular
           </span>
         </div>

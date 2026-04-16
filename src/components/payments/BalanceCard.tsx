@@ -28,14 +28,14 @@ export default function BalanceCard({
 }: BalanceCardProps) {
   const bgClass =
     variant === 'highlight'
-      ? 'bg-[#1a1a2e] text-white'
+      ? 'bg-zinc-900 text-white'
       : variant === 'muted'
         ? 'bg-zinc-50 dark:bg-zinc-800/50'
         : 'bg-white dark:bg-zinc-900';
 
   const amountClass =
     variant === 'highlight'
-      ? 'text-amber-400'
+      ? 'text-[#00a9e0]'
       : 'text-zinc-900 dark:text-zinc-50';
 
   return (

@@ -64,7 +64,7 @@ function ConnectStatusBadge({ status }: { status: ConnectStatus }) {
     pending: {
       label: 'Pending Verification',
       className:
-        'bg-amber-50 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400',
+        'bg-sky-50 text-[#00a9e0] dark:bg-sky-900/30 dark:text-sky-400',
     },
     active: {
       label: 'Active',
@@ -84,7 +84,7 @@ function ConnectStatusBadge({ status }: { status: ConnectStatus }) {
           status === 'active'
             ? 'bg-emerald-500'
             : status === 'pending'
-              ? 'bg-amber-500'
+              ? 'bg-[#00a9e0]'
               : 'bg-zinc-400'
         }`}
         aria-hidden="true"
@@ -149,10 +149,10 @@ export default async function ProPaymentsPage() {
           </p>
         </div>
       ) : data.connectStatus === 'pending' ? (
-        <div className="mt-6 rounded-xl border border-amber-200 bg-amber-50 p-6 dark:border-amber-800/50 dark:bg-amber-900/20">
+        <div className="mt-6 rounded-xl border border-[#00a9e0]/20 bg-sky-50 p-6 dark:border-sky-800/50 dark:bg-sky-900/20">
           <div className="flex items-start gap-3">
             <svg
-              className="mt-0.5 h-5 w-5 shrink-0 text-amber-500"
+              className="mt-0.5 h-5 w-5 shrink-0 text-[#00a9e0]"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -166,10 +166,10 @@ export default async function ProPaymentsPage() {
               />
             </svg>
             <div>
-              <h3 className="text-sm font-semibold text-amber-800 dark:text-amber-300">
+              <h3 className="text-sm font-semibold text-[#00a9e0] dark:text-sky-300">
                 Verification in progress
               </h3>
-              <p className="mt-1 text-sm text-amber-700 dark:text-amber-400">
+              <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
                 Stripe is reviewing your account details. This usually takes 1-2
                 business days. You will be able to receive payouts once
                 verification is complete.

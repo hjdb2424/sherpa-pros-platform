@@ -21,7 +21,7 @@ export default function TestimonialCard({
         {Array.from({ length: 5 }, (_, i) => (
           <StarIcon
             key={i}
-            className={`h-5 w-5 ${i < rating ? 'text-amber-500' : 'text-zinc-200'}`}
+            className={`h-5 w-5 ${i < rating ? 'text-[#ff4500]' : 'text-zinc-200'}`}
             aria-hidden="true"
           />
         ))}
@@ -31,7 +31,7 @@ export default function TestimonialCard({
       </blockquote>
       <div className="mt-6 flex items-center gap-3 border-t border-zinc-100 pt-4">
         <div
-          className="flex h-10 w-10 items-center justify-center rounded-full bg-[#1a1a2e] text-sm font-bold text-amber-500"
+          className="flex h-10 w-10 items-center justify-center rounded-full bg-[#00a9e0] text-sm font-bold text-white"
           aria-hidden="true"
         >
           {initials}

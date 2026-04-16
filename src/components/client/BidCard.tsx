@@ -6,12 +6,12 @@ import { LockClosedIcon } from '@heroicons/react/24/outline';
 
 const VALIDATION_CONFIG = {
   verified: { label: 'Quote verified', icon: '✓', color: 'text-emerald-600 bg-emerald-50' },
-  above_market: { label: 'Above market rate', icon: '⚠', color: 'text-amber-600 bg-amber-50' },
+  above_market: { label: 'Above market rate', icon: '⚠', color: 'text-[#ff4500] bg-orange-50' },
   below_market: { label: 'Below market rate', icon: '⚠', color: 'text-orange-600 bg-orange-50' },
 };
 
 const BADGE_CONFIG: Record<string, { label: string; color: string }> = {
-  gold: { label: 'Gold Pro', color: 'text-amber-600 bg-amber-50 border-amber-200' },
+  gold: { label: 'Gold Pro', color: 'text-[#ff4500] bg-orange-50 border-orange-200' },
   silver: { label: 'Silver Pro', color: 'text-zinc-500 bg-zinc-50 border-zinc-200' },
   bronze: { label: 'Bronze Pro', color: 'text-orange-600 bg-orange-50 border-orange-200' },
   new: { label: 'New Pro', color: 'text-blue-600 bg-blue-50 border-blue-200' },
@@ -30,17 +30,17 @@ export function BidCard({ bid, onAccept }: BidCardProps) {
   return (
     <div
       className={`relative rounded-xl border bg-white p-5 transition-shadow hover:shadow-md ${
-        bid.recommended ? 'border-amber-300 ring-1 ring-amber-200' : 'border-zinc-200'
+        bid.recommended ? 'border-[#00a9e0]/30 ring-1 ring-[#00a9e0]/20' : 'border-zinc-200'
       }`}
     >
       {bid.recommended && (
-        <div className="absolute -top-3 left-4 rounded-full bg-amber-500 px-3 py-0.5 text-xs font-bold text-white shadow-sm">
+        <div className="absolute -top-3 left-4 rounded-full bg-[#00a9e0] px-3 py-0.5 text-xs font-bold text-white shadow-sm">
           Recommended
         </div>
       )}
 
       <div className="flex items-start gap-4">
-        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#1a1a2e] text-sm font-bold text-white">
+        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#00a9e0] text-sm font-bold text-white">
           {initials}
         </div>
         <div className="min-w-0 flex-1">
@@ -57,7 +57,7 @@ export function BidCard({ bid, onAccept }: BidCardProps) {
             </span>
           </div>
           <div className="mt-0.5 flex items-center gap-2 text-sm">
-            <span className="text-amber-500">{'★'.repeat(Math.floor(bid.pro.rating))}</span>
+            <span className="text-[#ff4500]">{'★'.repeat(Math.floor(bid.pro.rating))}</span>
             <span className="font-medium text-zinc-700">{bid.pro.rating}</span>
             <span className="text-zinc-400">({bid.pro.reviewCount} reviews)</span>
           </div>

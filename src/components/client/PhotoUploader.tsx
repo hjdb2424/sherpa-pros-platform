@@ -67,8 +67,8 @@ export function PhotoUploader({ photos, onChange, maxPhotos = 10 }: PhotoUploade
         onClick={() => fileInputRef.current?.click()}
         className={`flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed p-8 transition-colors ${
           isDragging
-            ? 'border-amber-400 bg-amber-50'
-            : 'border-zinc-300 bg-zinc-50 hover:border-amber-300 hover:bg-amber-50/50'
+            ? 'border-[#00a9e0] bg-sky-50'
+            : 'border-zinc-300 bg-zinc-50 hover:border-[#00a9e0]/30 hover:bg-sky-50/50'
         }`}
         role="button"
         tabIndex={0}

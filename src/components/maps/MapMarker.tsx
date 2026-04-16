@@ -14,7 +14,7 @@ export interface MapMarkerProps {
 }
 
 function MarkerPin({
-  color = '#f59e0b',
+  color = '#00a9e0',
   size = 32,
 }: {
   color?: string;

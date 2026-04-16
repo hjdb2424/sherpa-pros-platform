@@ -33,7 +33,7 @@ export default function EmptyState({
         <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row">
           <Link
             href={ctaHref}
-            className="inline-flex items-center rounded-full bg-amber-500 px-6 py-3 text-sm font-semibold text-[#1a1a2e] shadow-lg shadow-amber-500/25 transition-all hover:bg-amber-400 hover:shadow-xl active:scale-[0.98]"
+            className="inline-flex items-center rounded-full bg-[#00a9e0] px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-[#00a9e0]/25 transition-all hover:bg-[#0ea5e9] hover:shadow-xl active:scale-[0.98]"
           >
             {ctaLabel}
           </Link>

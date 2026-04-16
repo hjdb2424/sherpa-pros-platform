@@ -1,0 +1,111 @@
+<h2>Google Maps Integration — Design Summary</h2>
+<p class="subtitle">All decisions captured. Review and approve to proceed to spec.</p>
+
+<div class="section">
+  <h3>Decisions Made</h3>
+  <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+    <tr style="border-bottom: 1px solid rgba(0,169,224,0.15);">
+      <td style="padding: 12px 8px; font-weight: 600; color: #475569; width: 35%;">Scope</td>
+      <td style="padding: 12px 8px; color: #18181b;"><strong>All three flows</strong> — Client Find Pros, Pro Find Jobs, Emergency Dispatch</td>
+    </tr>
+    <tr style="border-bottom: 1px solid rgba(0,169,224,0.15);">
+      <td style="padding: 12px 8px; font-weight: 600; color: #475569;">Map Library</td>
+      <td style="padding: 12px 8px; color: #18181b;"><strong>Google Maps only</strong> — remove Mapbox entirely</td>
+    </tr>
+    <tr style="border-bottom: 1px solid rgba(0,169,224,0.15);">
+      <td style="padding: 12px 8px; font-weight: 600; color: #475569;">Layout</td>
+      <td style="padding: 12px 8px; color: #18181b;"><strong>Hybrid</strong> — full-screen + bottom sheet on mobile, split panel on desktop</td>
+    </tr>
+    <tr style="border-bottom: 1px solid rgba(0,169,224,0.15);">
+      <td style="padding: 12px 8px; font-weight: 600; color: #475569;">Markers</td>
+      <td style="padding: 12px 8px; color: #18181b;"><strong>Progressive Detail</strong> — clusters → avatars → mini-cards based on zoom</td>
+    </tr>
+    <tr style="border-bottom: 1px solid rgba(0,169,224,0.15);">
+      <td style="padding: 12px 8px; font-weight: 600; color: #475569;">Emergency UX</td>
+      <td style="padding: 12px 8px; color: #18181b;"><strong>Rich bottom sheet</strong> — ETA, progress bar, pro details, call/message</td>
+    </tr>
+    <tr>
+      <td style="padding: 12px 8px; font-weight: 600; color: #475569;">Theme</td>
+      <td style="padding: 12px 8px; color: #18181b;"><strong>System preference</strong> — respects light/dark mode, no forced override</td>
+    </tr>
+  </table>
+</div>
+
+<div class="section" style="margin-top: 1.5rem;">
+  <h3>Architecture Overview</h3>
+  <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; font-size: 13px; line-height: 1.8;">
+    <div style="font-weight: 600; color: #18181b; margin-bottom: 8px;">New Components (Google Maps):</div>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+      <div style="background: white; border: 1px solid #00a9e033; border-radius: 8px; padding: 8px 12px;">
+        <div style="font-weight: 600; color: #00a9e0; font-size: 11px;">GoogleMapProvider</div>
+        <div style="color: #64748b; font-size: 11px;">API loader, theme switching, shared config</div>
+      </div>
+      <div style="background: white; border: 1px solid #00a9e033; border-radius: 8px; padding: 8px 12px;">
+        <div style="font-weight: 600; color: #00a9e0; font-size: 11px;">MapView</div>
+        <div style="color: #64748b; font-size: 11px;">Core map with zoom-adaptive markers</div>
+      </div>
+      <div style="background: white; border: 1px solid #00a9e033; border-radius: 8px; padding: 8px 12px;">
+        <div style="font-weight: 600; color: #00a9e0; font-size: 11px;">BottomSheet</div>
+        <div style="color: #64748b; font-size: 11px;">Draggable mobile sheet, split panel desktop</div>
+      </div>
+      <div style="background: white; border: 1px solid #00a9e033; border-radius: 8px; padding: 8px 12px;">
+        <div style="font-weight: 600; color: #00a9e0; font-size: 11px;">DispatchTracker</div>
+        <div style="color: #64748b; font-size: 11px;">Route line, live ETA, pro position updates</div>
+      </div>
+      <div style="background: white; border: 1px solid #00a9e033; border-radius: 8px; padding: 8px 12px;">
+        <div style="font-weight: 600; color: #00a9e0; font-size: 11px;">ProMarker / JobMarker</div>
+        <div style="color: #64748b; font-size: 11px;">Custom AdvancedMarkerElement overlays</div>
+      </div>
+      <div style="background: white; border: 1px solid #00a9e033; border-radius: 8px; padding: 8px 12px;">
+        <div style="font-weight: 600; color: #00a9e0; font-size: 11px;">AddressAutocomplete</div>
+        <div style="color: #64748b; font-size: 11px;">Already exists — keep as-is</div>
+      </div>
+    </div>
+
+    <div style="font-weight: 600; color: #18181b; margin: 16px 0 8px;">Pages Wired Up:</div>
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;">
+      <div style="background: white; border: 1px solid #10b98133; border-radius: 8px; padding: 8px 12px;">
+        <div style="font-weight: 600; color: #10b981; font-size: 11px;">Client: Find Pros</div>
+        <div style="color: #64748b; font-size: 11px;">Map of nearby verified pros</div>
+      </div>
+      <div style="background: white; border: 1px solid #10b98133; border-radius: 8px; padding: 8px 12px;">
+        <div style="font-weight: 600; color: #10b981; font-size: 11px;">Pro: Browse Jobs</div>
+        <div style="color: #64748b; font-size: 11px;">Map of available jobs by urgency</div>
+      </div>
+      <div style="background: white; border: 1px solid rgba(255,69,0,0.3); border-radius: 8px; padding: 8px 12px;">
+        <div style="font-weight: 600; color: #ff4500; font-size: 11px;">Emergency: Dispatch</div>
+        <div style="color: #64748b; font-size: 11px;">Live pro tracking + ETA</div>
+      </div>
+    </div>
+
+    <div style="font-weight: 600; color: #18181b; margin: 16px 0 8px;">Removed:</div>
+    <div style="color: #dc2626; font-size: 12px;">
+      ❌ mapbox-gl · react-map-gl · @turf/circle · @deck.gl/* · MapProvider.tsx · HubMap.tsx · JobMap.tsx · ProMap.tsx · MapMarker.tsx
+    </div>
+  </div>
+</div>
+
+<div class="section" style="margin-top: 1.5rem;">
+  <h3>Graceful Degradation</h3>
+  <div style="background: #fffbeb; border: 1px solid #fde68a; border-radius: 12px; padding: 16px; font-size: 13px;">
+    <p style="margin: 0 0 8px;"><strong>No API key?</strong> → Map area shows a branded placeholder with address search input. All data still works (list view), just no map rendering.</p>
+    <p style="margin: 0;"><strong>API key set?</strong> → Full Google Maps experience lights up. Mock pro/job data populates pins. Real data when DB is connected.</p>
+  </div>
+</div>
+
+<div class="options" style="margin-top: 2rem;">
+  <div class="option" data-choice="approve" onclick="toggleSelect(this)">
+    <div class="letter" style="background: #10b981; color: white;">✓</div>
+    <div class="content">
+      <h3>Approve — Write the Spec</h3>
+      <p>This design looks right. Write the full spec document and proceed to implementation planning.</p>
+    </div>
+  </div>
+  <div class="option" data-choice="revise" onclick="toggleSelect(this)">
+    <div class="letter" style="background: #f59e0b; color: white;">✎</div>
+    <div class="content">
+      <h3>Revise — Something Needs Changing</h3>
+      <p>The direction is right but I want to adjust something before committing.</p>
+    </div>
+  </div>
+</div>

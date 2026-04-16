@@ -1,0 +1,119 @@
+<h2>Map Layout — How should the map sit in the UI?</h2>
+<p class="subtitle">The map layout defines how "Uber-like" the experience feels. This applies to all three flows.</p>
+
+<div class="cards">
+  <div class="card" data-choice="fullscreen" onclick="toggleSelect(this)">
+    <div class="card-image" style="background: #f0f9ff; padding: 1rem;">
+      <div style="display: flex; flex-direction: column; height: 220px; border-radius: 8px; overflow: hidden; border: 1px solid #e2e8f0;">
+        <!-- Nav bar -->
+        <div style="height: 48px; background: white; border-bottom: 1px solid #e2e8f0; display: flex; align-items: center; padding: 0 12px; gap: 8px;">
+          <div style="width: 28px; height: 28px; background: #00a9e0; border-radius: 6px;"></div>
+          <span style="font-size: 11px; font-weight: 700; color: #18181b;">SHERPA</span><span style="font-size: 11px; font-weight: 700; color: #ff4500;">PROS</span>
+          <div style="margin-left: auto; width: 60px; height: 24px; background: #00a9e0; border-radius: 12px;"></div>
+        </div>
+        <!-- Full map -->
+        <div style="flex: 1; background: linear-gradient(135deg, #dbeafe 0%, #e0f2fe 30%, #f0fdf4 60%, #dbeafe 100%); position: relative; display: flex; align-items: center; justify-content: center;">
+          <div style="font-size: 10px; color: #64748b; letter-spacing: 1px;">GOOGLE MAP (FULL VIEWPORT)</div>
+          <!-- Pins -->
+          <div style="position: absolute; top: 30%; left: 25%; width: 12px; height: 12px; background: #00a9e0; border-radius: 50%; border: 2px solid white; box-shadow: 0 1px 3px rgba(0,0,0,0.2);"></div>
+          <div style="position: absolute; top: 50%; left: 60%; width: 12px; height: 12px; background: #00a9e0; border-radius: 50%; border: 2px solid white; box-shadow: 0 1px 3px rgba(0,0,0,0.2);"></div>
+          <div style="position: absolute; top: 70%; left: 40%; width: 12px; height: 12px; background: #ff4500; border-radius: 50%; border: 2px solid white; box-shadow: 0 1px 3px rgba(0,0,0,0.2);"></div>
+          <!-- Bottom sheet -->
+          <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 60px; background: white; border-top-left-radius: 16px; border-top-right-radius: 16px; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); padding: 8px 12px;">
+            <div style="width: 32px; height: 4px; background: #cbd5e1; border-radius: 2px; margin: 0 auto 6px;"></div>
+            <div style="display: flex; gap: 6px; align-items: center;">
+              <div style="width: 32px; height: 32px; background: #00a9e0; border-radius: 50%;"></div>
+              <div>
+                <div style="font-size: 9px; font-weight: 600; color: #18181b;">3 Pros Nearby</div>
+                <div style="font-size: 8px; color: #64748b;">Swipe up for details</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>Full-Screen Map + Bottom Sheet</h3>
+      <p>The Uber pattern. Map fills the entire viewport. Info appears in a draggable bottom sheet that slides up. Most immersive, most mobile-native. This IS the Uber experience.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="split" onclick="toggleSelect(this)">
+    <div class="card-image" style="background: #f0f9ff; padding: 1rem;">
+      <div style="display: flex; flex-direction: column; height: 220px; border-radius: 8px; overflow: hidden; border: 1px solid #e2e8f0;">
+        <!-- Nav bar -->
+        <div style="height: 48px; background: white; border-bottom: 1px solid #e2e8f0; display: flex; align-items: center; padding: 0 12px; gap: 8px;">
+          <div style="width: 28px; height: 28px; background: #00a9e0; border-radius: 6px;"></div>
+          <span style="font-size: 11px; font-weight: 700; color: #18181b;">SHERPA</span><span style="font-size: 11px; font-weight: 700; color: #ff4500;">PROS</span>
+        </div>
+        <!-- Split view -->
+        <div style="flex: 1; display: flex;">
+          <!-- List panel -->
+          <div style="width: 40%; background: white; border-right: 1px solid #e2e8f0; padding: 8px; overflow: hidden;">
+            <div style="height: 20px; background: #f8fafc; border-radius: 6px; margin-bottom: 6px;"></div>
+            <div style="height: 50px; background: white; border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 4px; padding: 6px;">
+              <div style="width: 60%; height: 8px; background: #18181b; border-radius: 2px; margin-bottom: 4px;"></div>
+              <div style="width: 40%; height: 6px; background: #94a3b8; border-radius: 2px;"></div>
+            </div>
+            <div style="height: 50px; background: #f0f9ff; border: 1px solid #00a9e033; border-radius: 8px; margin-bottom: 4px; padding: 6px;">
+              <div style="width: 70%; height: 8px; background: #18181b; border-radius: 2px; margin-bottom: 4px;"></div>
+              <div style="width: 50%; height: 6px; background: #94a3b8; border-radius: 2px;"></div>
+            </div>
+            <div style="height: 50px; background: white; border: 1px solid #e2e8f0; border-radius: 8px; padding: 6px;">
+              <div style="width: 55%; height: 8px; background: #18181b; border-radius: 2px; margin-bottom: 4px;"></div>
+              <div style="width: 45%; height: 6px; background: #94a3b8; border-radius: 2px;"></div>
+            </div>
+          </div>
+          <!-- Map panel -->
+          <div style="width: 60%; background: linear-gradient(135deg, #dbeafe 0%, #e0f2fe 30%, #f0fdf4 60%, #dbeafe 100%); position: relative; display: flex; align-items: center; justify-content: center;">
+            <div style="font-size: 9px; color: #64748b; letter-spacing: 1px;">GOOGLE MAP</div>
+            <div style="position: absolute; top: 30%; left: 30%; width: 10px; height: 10px; background: #00a9e0; border-radius: 50%; border: 2px solid white;"></div>
+            <div style="position: absolute; top: 55%; left: 65%; width: 10px; height: 10px; background: #00a9e0; border-radius: 50%; border: 2px solid white;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>Split Panel — List + Map</h3>
+      <p>Google Maps / Airbnb pattern. List on left, map on right (stacks on mobile — list on top, map below, or toggle between). Good for browsing, less immersive than full-screen.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="hybrid" onclick="toggleSelect(this)">
+    <div class="card-image" style="background: #f0f9ff; padding: 1rem;">
+      <div style="display: flex; flex-direction: column; height: 220px; border-radius: 8px; overflow: hidden; border: 1px solid #e2e8f0;">
+        <!-- Nav bar -->
+        <div style="height: 48px; background: white; border-bottom: 1px solid #e2e8f0; display: flex; align-items: center; padding: 0 12px; gap: 8px;">
+          <div style="width: 28px; height: 28px; background: #00a9e0; border-radius: 6px;"></div>
+          <span style="font-size: 11px; font-weight: 700; color: #18181b;">SHERPA</span><span style="font-size: 11px; font-weight: 700; color: #ff4500;">PROS</span>
+          <div style="margin-left: auto; display: flex; gap: 2px;">
+            <div style="width: 28px; height: 22px; background: #00a9e0; border-radius: 4px 0 0 4px; display: flex; align-items: center; justify-content: center;"><span style="font-size: 8px; color: white;">MAP</span></div>
+            <div style="width: 28px; height: 22px; background: #f1f5f9; border-radius: 0 4px 4px 0; display: flex; align-items: center; justify-content: center;"><span style="font-size: 8px; color: #64748b;">LIST</span></div>
+          </div>
+        </div>
+        <!-- Full map on mobile, split on desktop -->
+        <div style="flex: 1; background: linear-gradient(135deg, #dbeafe 0%, #e0f2fe 30%, #f0fdf4 60%, #dbeafe 100%); position: relative; display: flex; align-items: center; justify-content: center;">
+          <div style="font-size: 9px; color: #64748b; letter-spacing: 1px;">FULL MAP (MOBILE)</div>
+          <div style="position: absolute; top: 25%; left: 35%; width: 12px; height: 12px; background: #00a9e0; border-radius: 50%; border: 2px solid white; box-shadow: 0 1px 3px rgba(0,0,0,0.2);"></div>
+          <div style="position: absolute; top: 60%; left: 55%; width: 12px; height: 12px; background: #ff4500; border-radius: 50%; border: 2px solid white; box-shadow: 0 1px 3px rgba(0,0,0,0.2);"></div>
+          <!-- Bottom sheet (mobile) -->
+          <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 50px; background: white; border-top-left-radius: 16px; border-top-right-radius: 16px; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); padding: 6px 12px;">
+            <div style="width: 32px; height: 3px; background: #cbd5e1; border-radius: 2px; margin: 0 auto 4px;"></div>
+            <div style="font-size: 8px; font-weight: 600; color: #18181b;">Full-screen map on mobile, split panel on desktop</div>
+          </div>
+          <!-- Desktop indicator -->
+          <div style="position: absolute; top: 8px; right: 8px; background: white; border-radius: 6px; padding: 3px 6px; font-size: 7px; color: #64748b; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">Desktop: split view</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>Hybrid — Full-Screen Mobile, Split Desktop</h3>
+      <p>Best of both. Mobile gets the Uber full-screen map + bottom sheet (thumb-friendly, immersive). Desktop gets the split panel (more screen real estate for list + map). MAP/LIST toggle on mobile to switch views.</p>
+    </div>
+  </div>
+</div>
+
+<div class="section" style="margin-top: 2rem; padding: 1.5rem; border: 1px solid rgba(0, 169, 224, 0.2); border-radius: 12px; background: rgba(0, 169, 224, 0.03);">
+  <h3 style="margin-top: 0;">💡 My Recommendation: Hybrid</h3>
+  <p style="margin-bottom: 0;">Sherpa Pros is mobile-first (contractors on job sites, homeowners in crisis). The full-screen map + bottom sheet IS the Uber magic on phones. But on desktop, a split panel uses the space better for browsing pros/jobs. The hybrid gives you the best UX on every screen size. Emergency dispatch always uses full-screen map regardless of device — urgency demands full immersion.</p>
+</div>

@@ -1,0 +1,117 @@
+<h2>Map Pin Style — What should pros/jobs look like on the map?</h2>
+<p class="subtitle">The markers are the most-tapped element. They need to be readable at a glance and feel premium.</p>
+
+<div class="cards">
+  <div class="card" data-choice="avatar" onclick="toggleSelect(this)">
+    <div class="card-image" style="background: #f0f9ff; padding: 1.5rem;">
+      <div style="display: flex; gap: 24px; justify-content: center; align-items: flex-end; height: 120px;">
+        <!-- Pro pin with avatar -->
+        <div style="display: flex; flex-direction: column; align-items: center;">
+          <div style="width: 48px; height: 48px; border-radius: 50%; background: #00a9e0; border: 3px solid white; box-shadow: 0 2px 8px rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 14px;">MR</div>
+          <div style="width: 2px; height: 8px; background: #00a9e0;"></div>
+          <div style="width: 8px; height: 8px; background: #00a9e0; border-radius: 50%; opacity: 0.3;"></div>
+          <div style="margin-top: 6px; font-size: 9px; color: #475569; font-weight: 600;">Pro</div>
+        </div>
+        <!-- Emergency pin -->
+        <div style="display: flex; flex-direction: column; align-items: center;">
+          <div style="width: 48px; height: 48px; border-radius: 50%; background: #ff4500; border: 3px solid white; box-shadow: 0 2px 8px rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 14px;">⚡</div>
+          <div style="width: 2px; height: 8px; background: #ff4500;"></div>
+          <div style="width: 8px; height: 8px; background: #ff4500; border-radius: 50%; opacity: 0.3;"></div>
+          <div style="margin-top: 6px; font-size: 9px; color: #475569; font-weight: 600;">Emergency</div>
+        </div>
+        <!-- Job pin -->
+        <div style="display: flex; flex-direction: column; align-items: center;">
+          <div style="width: 48px; height: 48px; border-radius: 50%; background: white; border: 3px solid #00a9e0; box-shadow: 0 2px 8px rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center; color: #00a9e0; font-weight: 700; font-size: 11px;">$450</div>
+          <div style="width: 2px; height: 8px; background: #00a9e0;"></div>
+          <div style="width: 8px; height: 8px; background: #00a9e0; border-radius: 50%; opacity: 0.3;"></div>
+          <div style="margin-top: 6px; font-size: 9px; color: #475569; font-weight: 600;">Job</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>Avatar Circles (Uber Style)</h3>
+      <p>Round pins with initials (pros), price (jobs), or icon (emergency). Clean, recognizable, tappable. Uber uses this for drivers. Color = type: blue for pros, orange-red for emergency, outlined for jobs.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="pill" onclick="toggleSelect(this)">
+    <div class="card-image" style="background: #f0f9ff; padding: 1.5rem;">
+      <div style="display: flex; gap: 16px; justify-content: center; align-items: flex-end; height: 120px; flex-wrap: wrap;">
+        <!-- Pro pill -->
+        <div style="display: flex; flex-direction: column; align-items: center;">
+          <div style="background: #00a9e0; color: white; padding: 6px 14px; border-radius: 20px; font-size: 11px; font-weight: 600; box-shadow: 0 2px 8px rgba(0,0,0,0.2); white-space: nowrap; display: flex; align-items: center; gap: 4px;">
+            <span style="font-size: 10px;">⭐ 4.9</span> Mike R.
+          </div>
+          <div style="width: 2px; height: 6px; background: #00a9e0;"></div>
+          <div style="width: 6px; height: 6px; background: #00a9e0; border-radius: 50%; opacity: 0.3;"></div>
+          <div style="margin-top: 6px; font-size: 9px; color: #475569; font-weight: 600;">Pro</div>
+        </div>
+        <!-- Emergency pill -->
+        <div style="display: flex; flex-direction: column; align-items: center;">
+          <div style="background: #ff4500; color: white; padding: 6px 14px; border-radius: 20px; font-size: 11px; font-weight: 600; box-shadow: 0 2px 8px rgba(0,0,0,0.2); white-space: nowrap;">
+            🚨 URGENT
+          </div>
+          <div style="width: 2px; height: 6px; background: #ff4500;"></div>
+          <div style="width: 6px; height: 6px; background: #ff4500; border-radius: 50%; opacity: 0.3;"></div>
+          <div style="margin-top: 6px; font-size: 9px; color: #475569; font-weight: 600;">Emergency</div>
+        </div>
+        <!-- Job pill -->
+        <div style="display: flex; flex-direction: column; align-items: center;">
+          <div style="background: white; color: #18181b; padding: 6px 14px; border-radius: 20px; font-size: 11px; font-weight: 600; box-shadow: 0 2px 8px rgba(0,0,0,0.2); border: 2px solid #00a9e0; white-space: nowrap;">
+            $450 · Plumbing
+          </div>
+          <div style="width: 2px; height: 6px; background: #00a9e0;"></div>
+          <div style="width: 6px; height: 6px; background: #00a9e0; border-radius: 50%; opacity: 0.3;"></div>
+          <div style="margin-top: 6px; font-size: 9px; color: #475569; font-weight: 600;">Job</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>Info Pill Labels</h3>
+      <p>Pill-shaped labels with key info visible without tapping — rating + name for pros, price + trade for jobs. More info density, but can get cluttered when many pins overlap. Google Maps hotel prices use this style.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="hybrid-pins" onclick="toggleSelect(this)">
+    <div class="card-image" style="background: #f0f9ff; padding: 1.5rem;">
+      <div style="display: flex; gap: 20px; justify-content: center; align-items: flex-end; height: 120px;">
+        <!-- Clustered dot (zoomed out) -->
+        <div style="display: flex; flex-direction: column; align-items: center;">
+          <div style="width: 40px; height: 40px; border-radius: 50%; background: #00a9e0; border: 3px solid white; box-shadow: 0 2px 8px rgba(0,169,224,0.3); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 14px;">5</div>
+          <div style="margin-top: 6px; font-size: 9px; color: #475569; font-weight: 600;">Zoomed Out</div>
+        </div>
+        <!-- Avatar (medium zoom) -->
+        <div style="display: flex; flex-direction: column; align-items: center;">
+          <div style="width: 48px; height: 48px; border-radius: 50%; background: #00a9e0; border: 3px solid white; box-shadow: 0 2px 8px rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 14px;">MR</div>
+          <div style="width: 2px; height: 8px; background: #00a9e0;"></div>
+          <div style="width: 8px; height: 8px; background: #00a9e0; border-radius: 50%; opacity: 0.3;"></div>
+          <div style="margin-top: 6px; font-size: 9px; color: #475569; font-weight: 600;">Medium Zoom</div>
+        </div>
+        <!-- Expanded card (zoomed in / tapped) -->
+        <div style="display: flex; flex-direction: column; align-items: center;">
+          <div style="background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); padding: 8px; width: 120px; border: 1px solid #00a9e033;">
+            <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 4px;">
+              <div style="width: 28px; height: 28px; border-radius: 50%; background: #00a9e0; display: flex; align-items: center; justify-content: center; color: white; font-size: 9px; font-weight: 700;">MR</div>
+              <div>
+                <div style="font-size: 9px; font-weight: 600; color: #18181b;">Mike R.</div>
+                <div style="font-size: 8px; color: #ff4500;">★★★★★</div>
+              </div>
+            </div>
+            <div style="font-size: 8px; color: #475569;">Plumber · 0.3 mi</div>
+            <div style="margin-top: 4px; background: #00a9e0; color: white; text-align: center; padding: 3px; border-radius: 8px; font-size: 8px; font-weight: 600;">Request</div>
+          </div>
+          <div style="margin-top: 6px; font-size: 9px; color: #475569; font-weight: 600;">Tapped / Zoomed In</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>Progressive Detail (Zoom-Adaptive)</h3>
+      <p>Markers change based on zoom level. Zoomed out = cluster count dots. Medium zoom = avatar circles. Zoomed in or tapped = expanded mini-card with name, rating, trade, and action button. Most polished, scales best with many pins.</p>
+    </div>
+  </div>
+</div>
+
+<div class="section" style="margin-top: 2rem; padding: 1.5rem; border: 1px solid rgba(0, 169, 224, 0.2); border-radius: 12px; background: rgba(0, 169, 224, 0.03);">
+  <h3 style="margin-top: 0;">💡 My Recommendation: Progressive Detail</h3>
+  <p style="margin-bottom: 0;">New England has 10 hubs with potentially hundreds of pros. Cluster dots at zoom-out prevent clutter, avatar circles at medium zoom give recognition, and the expanded mini-card on tap gives enough info to act without opening a full page. This is how Uber shows driver info — progressive reveal as you engage.</p>
+</div>

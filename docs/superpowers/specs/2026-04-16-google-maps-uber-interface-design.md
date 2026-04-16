@@ -58,7 +58,7 @@ Core map component used across all three flows.
 - Renders `<Map>` from `@vis.gl/react-google-maps`
 - Props: `center`, `zoom`, `markers[]`, `onMarkerClick`, `selectedId`, `className`
 - Theme-aware: applies dark map style when `prefers-color-scheme: dark`
-- Supports clustering via `@googlemaps/markerclusterer` (or manual zoom-based logic)
+- Uses manual zoom-based logic for progressive detail (no separate clustering library needed)
 - Full-screen on mobile (100dvh minus nav), split panel width on desktop
 - Emits `onBoundsChanged` for list filtering by visible map area
 

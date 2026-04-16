@@ -1,0 +1,41 @@
+<h2>Google Maps — Where should the map live first?</h2>
+<p class="subtitle">Pick the primary use case for the Uber-like map experience. This decides what we build first.</p>
+
+<div class="options">
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Client: Find Pros Near Me</h3>
+      <p>Client opens the app, sees a Google Map with verified pro pins nearby — like opening Uber and seeing drivers. Tap a pin to see pro profile, ratings, distance. The map IS the interface.</p>
+    </div>
+  </div>
+
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Emergency Dispatch Tracker</h3>
+      <p>Client requests emergency service → matched pro appears on map with live ETA route line (like watching your Uber driver approach). Pulsing dot shows pro's location updating in real-time.</p>
+    </div>
+  </div>
+
+  <div class="option" data-choice="c" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>Pro: Jobs Near Me</h3>
+      <p>Pro opens their dashboard and sees a map of available jobs in their service area, color-coded by urgency (red=emergency, blue=standard, gray=flexible). Tap a pin → job details + quick bid.</p>
+    </div>
+  </div>
+
+  <div class="option" data-choice="d" onclick="toggleSelect(this)">
+    <div class="letter">D</div>
+    <div class="content">
+      <h3>All Three — Full Uber Experience</h3>
+      <p>Build the complete map-first interface across client, pro, and emergency flows. Maps everywhere — the map IS the app, just like Uber. Biggest build, biggest impact.</p>
+    </div>
+  </div>
+</div>
+
+<div class="section" style="margin-top: 2rem; padding: 1.5rem; border: 1px solid rgba(0, 169, 224, 0.2); border-radius: 12px; background: rgba(0, 169, 224, 0.03);">
+  <h3 style="margin-top: 0;">💡 My Recommendation: D (All Three)</h3>
+  <p style="margin-bottom: 0;">The Uber magic comes from the map being the ENTIRE interface, not a widget on a page. Building all three creates the cohesive "construction Uber" feel. Each piece reinforces the others — pros see jobs on map, clients see pros on map, emergency shows the pro approaching. One shared Google Maps foundation powers all three.</p>
+</div>

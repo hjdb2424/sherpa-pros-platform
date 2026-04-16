@@ -1,0 +1,104 @@
+<h2>Emergency Dispatch — The "Uber Driver Approaching" Moment</h2>
+<p class="subtitle">This is the highest-stakes screen in the app. A homeowner has a flooded basement and is watching their pro approach. How should it feel?</p>
+
+<div class="cards">
+  <div class="card" data-choice="minimal" onclick="toggleSelect(this)">
+    <div class="card-image" style="background: #0f172a; padding: 1rem;">
+      <div style="height: 220px; border-radius: 8px; overflow: hidden; position: relative; background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);">
+        <!-- Map area (dark styled) -->
+        <div style="position: absolute; inset: 0; background: linear-gradient(135deg, #1a2332 0%, #0d1b2a 50%, #1a2332 100%); opacity: 0.9;"></div>
+        <!-- Route line -->
+        <svg style="position: absolute; inset: 0; width: 100%; height: 100%;" viewBox="0 0 300 220">
+          <path d="M 80 160 Q 120 100 180 80 Q 220 65 240 50" stroke="#00a9e0" stroke-width="3" fill="none" stroke-dasharray="8,4" opacity="0.8"/>
+        </svg>
+        <!-- Pro pin (moving) -->
+        <div style="position: absolute; top: 40px; right: 50px;">
+          <div style="width: 36px; height: 36px; border-radius: 50%; background: #00a9e0; border: 3px solid white; box-shadow: 0 0 12px rgba(0,169,224,0.5); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 10px;">MR</div>
+        </div>
+        <!-- Your location -->
+        <div style="position: absolute; bottom: 50px; left: 70px;">
+          <div style="width: 16px; height: 16px; border-radius: 50%; background: #ff4500; border: 3px solid white; box-shadow: 0 0 0 6px rgba(255,69,0,0.2);"></div>
+        </div>
+        <!-- ETA banner -->
+        <div style="position: absolute; top: 12px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); border-radius: 20px; padding: 6px 16px; display: flex; align-items: center; gap: 8px;">
+          <span style="color: #00a9e0; font-size: 18px; font-weight: 700;">8</span>
+          <span style="color: #94a3b8; font-size: 10px;">MIN<br>AWAY</span>
+        </div>
+        <!-- Bottom info -->
+        <div style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(15,23,42,0.95); backdrop-filter: blur(8px); padding: 10px 14px; display: flex; align-items: center; gap: 10px;">
+          <div style="width: 36px; height: 36px; border-radius: 50%; background: #00a9e0; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 10px;">MR</div>
+          <div style="flex: 1;">
+            <div style="color: white; font-size: 11px; font-weight: 600;">Mike Rodriguez</div>
+            <div style="color: #94a3b8; font-size: 9px;">Licensed Plumber · ★ 4.9</div>
+          </div>
+          <div style="display: flex; gap: 6px;">
+            <div style="width: 32px; height: 32px; border-radius: 50%; background: #1e293b; border: 1px solid #334155; display: flex; align-items: center; justify-content: center; color: #94a3b8; font-size: 12px;">📞</div>
+            <div style="width: 32px; height: 32px; border-radius: 50%; background: #1e293b; border: 1px solid #334155; display: flex; align-items: center; justify-content: center; color: #94a3b8; font-size: 12px;">💬</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>Dark Map + Floating ETA</h3>
+      <p>Dark-styled Google Map (night mode). Route line shows path. Floating ETA pill at top. Pro info bar at bottom with call/message actions. Minimal, focused, zero distraction. The Uber pattern exactly.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="detailed" onclick="toggleSelect(this)">
+    <div class="card-image" style="background: #0f172a; padding: 1rem;">
+      <div style="height: 220px; border-radius: 8px; overflow: hidden; position: relative; background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);">
+        <!-- Map area -->
+        <div style="position: absolute; inset: 0; background: linear-gradient(135deg, #1a2332 0%, #0d1b2a 50%, #1a2332 100%); opacity: 0.9;"></div>
+        <!-- Route line -->
+        <svg style="position: absolute; inset: 0; width: 100%; height: 100%;" viewBox="0 0 300 220">
+          <path d="M 100 130 Q 140 90 180 75 Q 220 60 250 45" stroke="#00a9e0" stroke-width="3" fill="none" stroke-dasharray="8,4" opacity="0.8"/>
+        </svg>
+        <!-- Pro pin -->
+        <div style="position: absolute; top: 35px; right: 40px;">
+          <div style="width: 32px; height: 32px; border-radius: 50%; background: #00a9e0; border: 3px solid white; box-shadow: 0 0 12px rgba(0,169,224,0.5); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 9px;">MR</div>
+        </div>
+        <!-- Your location -->
+        <div style="position: absolute; bottom: 80px; left: 90px;">
+          <div style="width: 14px; height: 14px; border-radius: 50%; background: #ff4500; border: 3px solid white; box-shadow: 0 0 0 6px rgba(255,69,0,0.2);"></div>
+        </div>
+        <!-- Bottom sheet (taller) -->
+        <div style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(15,23,42,0.97); backdrop-filter: blur(12px); border-top-left-radius: 16px; border-top-right-radius: 16px; padding: 10px 14px;">
+          <div style="width: 32px; height: 3px; background: #334155; border-radius: 2px; margin: 0 auto 8px;"></div>
+          <!-- ETA + Progress -->
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <div>
+              <span style="color: white; font-size: 16px; font-weight: 700;">8 min</span>
+              <span style="color: #94a3b8; font-size: 10px; margin-left: 4px;">· 2.3 mi away</span>
+            </div>
+            <div style="color: #10b981; font-size: 9px; font-weight: 600; background: rgba(16,185,129,0.15); padding: 2px 8px; border-radius: 10px;">EN ROUTE</div>
+          </div>
+          <!-- Progress bar -->
+          <div style="height: 3px; background: #1e293b; border-radius: 2px; margin-bottom: 10px;">
+            <div style="width: 65%; height: 100%; background: linear-gradient(90deg, #00a9e0, #10b981); border-radius: 2px;"></div>
+          </div>
+          <!-- Pro card -->
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <div style="width: 36px; height: 36px; border-radius: 50%; background: #00a9e0; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 10px;">MR</div>
+            <div style="flex: 1;">
+              <div style="color: white; font-size: 10px; font-weight: 600;">Mike Rodriguez · ★ 4.9</div>
+              <div style="color: #94a3b8; font-size: 8px;">Licensed Plumber · IICRC Certified · 142 jobs</div>
+            </div>
+            <div style="display: flex; gap: 4px;">
+              <div style="width: 28px; height: 28px; border-radius: 50%; background: #00a9e0; display: flex; align-items: center; justify-content: center; color: white; font-size: 10px;">📞</div>
+              <div style="width: 28px; height: 28px; border-radius: 50%; background: #334155; display: flex; align-items: center; justify-content: center; color: white; font-size: 10px;">💬</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>Dark Map + Rich Bottom Sheet</h3>
+      <p>Same dark map with route, but a richer bottom sheet: ETA + distance, progress bar showing journey completion, pro details with certs and job count, call/message buttons. More info for anxious homeowners. Draggable sheet reveals more (emergency tips, cancel option).</p>
+    </div>
+  </div>
+</div>
+
+<div class="section" style="margin-top: 2rem; padding: 1.5rem; border: 1px solid rgba(255, 69, 0, 0.2); border-radius: 12px; background: rgba(255, 69, 0, 0.03);">
+  <h3 style="margin-top: 0;">💡 My Recommendation: Rich Bottom Sheet</h3>
+  <p style="margin-bottom: 0;">When someone's basement is flooding, they're anxious. They want to know: how far away is the pro, how good are they, can I call them RIGHT NOW? The progress bar and cert details reduce anxiety. The minimal version looks cleaner but leaves the homeowner refreshing the page nervously. Uber shows driver details for the same reason — trust reduces panic.</p>
+</div>

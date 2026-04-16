@@ -42,7 +42,7 @@ export function CategoryGrid({ selected, onSelect }: CategoryGridProps) {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search categories... (e.g. plumbing, painting, deck)"
-          className="w-full rounded-xl border border-zinc-200 bg-white py-3 pl-10 pr-4 text-sm text-zinc-900 placeholder:text-zinc-400 focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-100"
+          className="w-full rounded-xl border border-zinc-200 bg-white py-3 pl-10 pr-4 text-sm text-zinc-900 placeholder:text-zinc-400 focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-100 focus-visible:ring-amber-500"
           aria-label="Search job categories"
         />
       </div>
@@ -63,7 +63,7 @@ export function CategoryGrid({ selected, onSelect }: CategoryGridProps) {
               key={category.id}
               type="button"
               onClick={() => onSelect(category)}
-              className={`flex flex-col items-center gap-2 rounded-xl border-2 p-4 text-center transition-all ${
+              className={`flex min-h-[44px] flex-col items-center gap-2 rounded-xl border-2 p-4 text-center transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 ${
                 isSelected
                   ? 'border-amber-400 bg-amber-50 shadow-sm'
                   : 'border-zinc-200 bg-white hover:border-amber-200 hover:bg-amber-50/30'

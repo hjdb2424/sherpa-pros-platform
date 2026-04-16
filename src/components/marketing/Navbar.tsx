@@ -19,7 +19,7 @@ export default function Navbar() {
         aria-label="Main navigation"
       >
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2">
+        <Link href="/" className="flex items-center gap-2 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 focus-visible:ring-offset-[#1a1a2e]">
           <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-amber-500">
             <svg
               viewBox="0 0 24 24"
@@ -47,20 +47,20 @@ export default function Navbar() {
             <Link
               key={link.href}
               href={link.href}
-              className="text-sm font-medium text-zinc-300 transition-colors hover:text-white"
+              className="rounded-md text-sm font-medium text-zinc-300 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 focus-visible:ring-offset-[#1a1a2e]"
             >
               {link.label}
             </Link>
           ))}
           <Link
             href="/sign-in"
-            className="text-sm font-medium text-zinc-300 transition-colors hover:text-white"
+            className="rounded-md text-sm font-medium text-zinc-300 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 focus-visible:ring-offset-[#1a1a2e]"
           >
             Sign In
           </Link>
           <Link
             href="/client/post-job"
-            className="rounded-full bg-amber-500 px-5 py-2 text-sm font-semibold text-[#1a1a2e] transition-all hover:bg-amber-400 hover:shadow-lg hover:shadow-amber-500/25"
+            className="rounded-full bg-amber-500 px-5 py-2 text-sm font-semibold text-[#1a1a2e] transition-all hover:bg-amber-400 hover:shadow-lg hover:shadow-amber-500/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 focus-visible:ring-offset-[#1a1a2e]"
           >
             Post a Job
           </Link>
@@ -69,7 +69,7 @@ export default function Navbar() {
         {/* Mobile toggle */}
         <button
           type="button"
-          className="flex h-10 w-10 items-center justify-center rounded-lg text-zinc-300 transition-colors hover:bg-white/10 hover:text-white md:hidden"
+          className="flex h-10 w-10 items-center justify-center rounded-lg text-zinc-300 transition-colors hover:bg-white/10 hover:text-white md:hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500"
           onClick={() => setMobileOpen(!mobileOpen)}
           aria-expanded={mobileOpen}
           aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
@@ -90,7 +90,7 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="block rounded-lg px-3 py-2.5 text-base font-medium text-zinc-300 transition-colors hover:bg-white/5 hover:text-white"
+                className="block rounded-lg px-3 py-2.5 text-base font-medium text-zinc-300 transition-colors hover:bg-white/5 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 focus-visible:ring-offset-[#1a1a2e]"
                 onClick={() => setMobileOpen(false)}
               >
                 {link.label}
@@ -98,7 +98,7 @@ export default function Navbar() {
             ))}
             <Link
               href="/sign-in"
-              className="block rounded-lg px-3 py-2.5 text-base font-medium text-zinc-300 transition-colors hover:bg-white/5 hover:text-white"
+              className="block rounded-lg px-3 py-2.5 text-base font-medium text-zinc-300 transition-colors hover:bg-white/5 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 focus-visible:ring-offset-[#1a1a2e]"
               onClick={() => setMobileOpen(false)}
             >
               Sign In
@@ -106,7 +106,7 @@ export default function Navbar() {
             <div className="pt-2">
               <Link
                 href="/client/post-job"
-                className="block rounded-full bg-amber-500 px-5 py-2.5 text-center text-base font-semibold text-[#1a1a2e] transition-all hover:bg-amber-400"
+                className="block rounded-full bg-amber-500 px-5 py-2.5 text-center text-base font-semibold text-[#1a1a2e] transition-all hover:bg-amber-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 focus-visible:ring-offset-[#1a1a2e]"
                 onClick={() => setMobileOpen(false)}
               >
                 Post a Job

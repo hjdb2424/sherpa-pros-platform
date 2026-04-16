@@ -59,10 +59,16 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
+          <a
+            href="#main-content"
+            className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-amber-500 focus:px-6 focus:py-3 focus:text-sm focus:font-semibold focus:text-[#1a1a2e] focus:shadow-lg"
+          >
+            Skip to main content
+          </a>
           {ClerkProvider ? (
-            <ClerkProvider>{children}</ClerkProvider>
+            <ClerkProvider><main id="main-content">{children}</main></ClerkProvider>
           ) : (
-            children
+            <main id="main-content">{children}</main>
           )}
         </body>
     </html>

@@ -1,6 +1,7 @@
 'use client';
 
 import type { EmergencyPro } from '@/lib/mock-data/emergency-data';
+import { ShieldCheckIcon } from '@heroicons/react/24/solid';
 
 interface ProMatchCardProps {
   pro: EmergencyPro;
@@ -47,6 +48,12 @@ export function ProMatchCard({ pro, onConfirm, onSeeOthers }: ProMatchCardProps)
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">
             <h3 className="text-lg font-bold text-white">{pro.name}</h3>
+            {pro.backgroundChecked && (
+              <span className="ml-1.5 inline-flex items-center gap-1 rounded-full bg-emerald-950/50 px-2 py-0.5 text-xs font-medium text-emerald-400">
+                <ShieldCheckIcon className="h-3.5 w-3.5 text-emerald-400" aria-hidden="true" />
+                Verified
+              </span>
+            )}
             <span className={`rounded-full border px-2 py-0.5 text-[10px] font-bold ${BADGE_COLORS[pro.badgeTier]}`}>
               {pro.badgeTier}
             </span>
@@ -86,28 +93,22 @@ export function ProMatchCard({ pro, onConfirm, onSeeOthers }: ProMatchCardProps)
       </div>
 
       {/* Trust badges */}
-      <div className="mb-5 flex gap-3">
+      <div className="mb-5 flex flex-wrap gap-3">
         {pro.backgroundChecked && (
-          <div className="flex items-center gap-1 text-xs text-emerald-400">
-            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
+          <div className="flex items-center gap-1.5 text-xs text-emerald-400">
+            <ShieldCheckIcon className="h-4 w-4 text-emerald-400" aria-hidden="true" />
             Background Checked
           </div>
         )}
         {pro.licensed && (
-          <div className="flex items-center gap-1 text-xs text-emerald-400">
-            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
+          <div className="flex items-center gap-1.5 text-xs text-emerald-400">
+            <ShieldCheckIcon className="h-4 w-4 text-emerald-400" aria-hidden="true" />
             Licensed
           </div>
         )}
         {pro.insured && (
-          <div className="flex items-center gap-1 text-xs text-emerald-400">
-            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
+          <div className="flex items-center gap-1.5 text-xs text-emerald-400">
+            <ShieldCheckIcon className="h-4 w-4 text-emerald-400" aria-hidden="true" />
             Insured
           </div>
         )}

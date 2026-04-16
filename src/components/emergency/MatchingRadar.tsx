@@ -1,8 +1,27 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import type { ComponentType, SVGProps } from 'react';
 import type { EmergencyCategory, SeverityLevel } from '@/lib/mock-data/emergency-data';
 import { EMERGENCY_CATEGORIES, SEVERITY_OPTIONS } from '@/lib/mock-data/emergency-data';
+import {
+  FireIcon,
+  BoltIcon,
+  ExclamationTriangleIcon,
+  SunIcon,
+  WrenchScrewdriverIcon,
+  ExclamationCircleIcon,
+} from '@heroicons/react/24/outline';
+
+const CATEGORY_ICONS: Record<string, ComponentType<SVGProps<SVGSVGElement>>> = {
+  water_damage: ExclamationCircleIcon,
+  fire_smoke: FireIcon,
+  storm_damage: BoltIcon,
+  hvac_emergency: SunIcon,
+  electrical: BoltIcon,
+  gas_leak: ExclamationTriangleIcon,
+  structural: WrenchScrewdriverIcon,
+};
 
 interface MatchingRadarProps {
   category: EmergencyCategory;
@@ -15,6 +34,8 @@ export function MatchingRadar({ category, severity, onMatchFound }: MatchingRada
 
   const catInfo = EMERGENCY_CATEGORIES.find((c) => c.id === category);
   const sevInfo = SEVERITY_OPTIONS.find((s) => s.level === severity);
+
+  const CenterIcon = catInfo ? (CATEGORY_ICONS[catInfo.icon] ?? ExclamationCircleIcon) : ExclamationCircleIcon;
 
   useEffect(() => {
     const dotInterval = setInterval(() => {
@@ -46,7 +67,7 @@ export function MatchingRadar({ category, severity, onMatchFound }: MatchingRada
         <div className="absolute inset-12 rounded-full border border-red-500/25" />
         {/* Center icon */}
         <div className="relative z-10 flex h-20 w-20 items-center justify-center rounded-full bg-red-600 shadow-lg shadow-red-600/40">
-          <span className="text-3xl" aria-hidden="true">{catInfo?.icon ?? '!'}</span>
+          <CenterIcon className="h-10 w-10 text-white" aria-hidden="true" />
         </div>
       </div>
 
@@ -61,8 +82,9 @@ export function MatchingRadar({ category, severity, onMatchFound }: MatchingRada
       <div className="w-full max-w-sm rounded-xl border border-zinc-700 bg-zinc-800/50 p-4">
         <div className="flex items-center justify-between text-sm">
           <span className="text-zinc-400">Category</span>
-          <span className="font-medium text-white">
-            {catInfo?.icon} {catInfo?.label}
+          <span className="flex items-center gap-1.5 font-medium text-white">
+            {catInfo && <CenterIcon className="h-4 w-4" aria-hidden="true" />}
+            {catInfo?.label}
           </span>
         </div>
         <div className="mt-2 flex items-center justify-between text-sm">

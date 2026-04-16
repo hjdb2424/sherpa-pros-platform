@@ -8,13 +8,13 @@ interface StatsCardProps {
 
 export default function StatsCard({ label, value, icon, trend, accentColor = 'text-amber-500' }: StatsCardProps) {
   return (
-    <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm transition-shadow hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900">
+    <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900">
       <div className="flex items-start justify-between">
         <div className="min-w-0 flex-1">
           <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">{label}</p>
           <p className={`mt-1 text-2xl font-bold tracking-tight ${accentColor}`}>{value}</p>
           {trend && (
-            <p className={`mt-1 text-xs font-medium ${trend.direction === 'up' ? 'text-emerald-600' : 'text-red-500'}`}>
+            <p className={`mt-1 text-xs font-medium animate-subtle-pulse ${trend.direction === 'up' ? 'text-emerald-600' : 'text-red-500'}`}>
               {trend.direction === 'up' ? '\u2191' : '\u2193'} {trend.label}
             </p>
           )}

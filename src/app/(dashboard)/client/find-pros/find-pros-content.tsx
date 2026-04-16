@@ -3,6 +3,8 @@
 import { useState, useMemo } from 'react';
 import { MOCK_PROS, JOB_CATEGORIES, type Pro } from '@/lib/mock-data/client-data';
 import { ProCard } from '@/components/client/ProCard';
+import EmptyState from '@/components/EmptyState';
+import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 
 type ViewMode = 'list' | 'map';
 type BadgeFilter = 'all' | 'gold' | 'silver' | 'bronze' | 'new';
@@ -195,13 +197,15 @@ export function FindProsContent() {
           </div>
         </div>
       ) : filtered.length === 0 ? (
-        <div className="rounded-xl border border-zinc-200 bg-white p-12 text-center">
-          <svg className="mx-auto h-12 w-12 text-zinc-300" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-          </svg>
-          <p className="mt-4 text-sm font-medium text-zinc-600">No Pros match your filters</p>
-          <p className="mt-1 text-xs text-zinc-400">Try broadening your search criteria.</p>
-        </div>
+        <EmptyState
+          icon={<MagnifyingGlassIcon className="h-8 w-8" />}
+          title="No pros match your search"
+          description="Try a different trade, expand your search area, or lower the minimum rating."
+          ctaLabel="Reset Filters"
+          ctaHref="/client/find-pros"
+          secondaryLabel="Browse All Pros"
+          secondaryHref="/client/find-pros"
+        />
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
           {filtered.map((pro) => (

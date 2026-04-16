@@ -9,6 +9,8 @@ import {
   formatDate,
 } from '@/lib/mock-data/client-data';
 import { JobStatusBadge } from '@/components/client/JobStatusBadge';
+import EmptyState from '@/components/EmptyState';
+import { ClipboardDocumentListIcon } from '@heroicons/react/24/outline';
 
 const ACTIVITY_ICONS: Record<string, { icon: string; bg: string }> = {
   bid_received: { icon: '📩', bg: 'bg-blue-100' },
@@ -84,15 +86,15 @@ export function ClientDashboardContent() {
 
           <div className="space-y-3">
             {activeJobs.length === 0 ? (
-              <div className="rounded-xl border border-zinc-200 bg-white p-8 text-center">
-                <p className="text-sm text-zinc-500">No active jobs yet.</p>
-                <Link
-                  href="/client/post-job"
-                  className="mt-3 inline-block rounded-lg bg-amber-500 px-4 py-2 text-sm font-semibold text-white hover:bg-amber-600"
-                >
-                  Post Your First Job
-                </Link>
-              </div>
+              <EmptyState
+                icon={<ClipboardDocumentListIcon className="h-8 w-8" />}
+                title="No projects yet"
+                description="Post your first job and get matched with verified pros in your area. It takes less than 60 seconds."
+                ctaLabel="Post a Job"
+                ctaHref="/client/post-job"
+                secondaryLabel="Browse Pros"
+                secondaryHref="/client/find-pros"
+              />
             ) : (
               activeJobs.map((job) => (
                 <Link

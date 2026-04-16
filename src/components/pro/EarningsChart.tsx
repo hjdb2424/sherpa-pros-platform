@@ -8,7 +8,7 @@ export default function EarningsChart({ data }: EarningsChartProps) {
   const maxAmount = Math.max(...data.map((d) => d.amount));
 
   return (
-    <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
+    <div className="animate-fade-slide-up rounded-xl border border-zinc-200 bg-white p-4 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
       <h3 className="mb-4 text-sm font-semibold text-zinc-700 dark:text-zinc-300">Monthly Earnings</h3>
 
       <div className="flex items-end gap-2" style={{ height: 180 }} role="img" aria-label="Bar chart showing monthly earnings">

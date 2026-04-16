@@ -68,8 +68,8 @@ export default function SubscriptionCard({
 
   return (
     <div
-      className={`relative flex flex-col rounded-2xl border-2 p-6 transition-shadow duration-200 ${styles.border} ${styles.bg} ${
-        isPopular ? `shadow-lg ${styles.glow}` : 'shadow-sm'
+      className={`relative flex flex-col rounded-2xl border-2 p-6 transition-all duration-200 hover:-translate-y-0.5 ${styles.border} ${styles.bg} ${
+        isPopular ? `shadow-lg ${styles.glow}` : 'shadow-sm hover:shadow-md'
       }`}
     >
       {/* Popular badge */}

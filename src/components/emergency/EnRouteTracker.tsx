@@ -138,16 +138,17 @@ export function EnRouteTracker({ pro, category, onCancel }: EnRouteTrackerProps)
             <p className="mb-5 text-sm text-zinc-400">
               {pro.name} is already on the way. Are you sure you want to cancel?
             </p>
-            <div className="flex gap-3">
+            <div className="flex flex-col sm:flex-row gap-3">
               <button
                 onClick={handleCancelDismiss}
-                className="flex-1 rounded-xl bg-zinc-700 py-3 text-sm font-semibold text-white transition-colors hover:bg-zinc-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                autoFocus
+                className="w-full sm:w-auto flex-1 rounded-xl bg-zinc-700 py-3 text-sm font-semibold text-white transition-colors hover:bg-zinc-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-800"
               >
                 Keep Dispatch
               </button>
               <button
                 onClick={handleCancelConfirm}
-                className="flex-1 rounded-xl bg-red-600 py-3 text-sm font-semibold text-white transition-colors hover:bg-red-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400"
+                className="w-full sm:w-auto flex-1 rounded-xl bg-red-600 py-3 text-sm font-semibold text-white transition-colors hover:bg-red-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-800"
               >
                 Yes, Cancel
               </button>

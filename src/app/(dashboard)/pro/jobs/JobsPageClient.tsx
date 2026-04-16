@@ -4,6 +4,8 @@ import { useState } from 'react';
 import Link from 'next/link';
 import JobCard from '@/components/pro/JobCard';
 import MilestoneTracker from '@/components/pro/MilestoneTracker';
+import EmptyState from '@/components/EmptyState';
+import { BriefcaseIcon } from '@heroicons/react/24/outline';
 import {
   mockAvailableJobs,
   mockMyBids,
@@ -113,8 +115,14 @@ export default function JobsPageClient() {
             {filteredAvailable.length > 0 ? (
               filteredAvailable.map((job) => <JobCard key={job.id} job={job} />)
             ) : (
-              <div className="col-span-full rounded-xl border border-zinc-200 bg-white p-8 text-center dark:border-zinc-800 dark:bg-zinc-900">
-                <p className="text-zinc-500">No jobs match your filters.</p>
+              <div className="col-span-full">
+                <EmptyState
+                  icon={<BriefcaseIcon className="h-8 w-8" />}
+                  title="No jobs available right now"
+                  description="New jobs are posted daily. Make sure your profile is complete and your service area is set to get notified."
+                  ctaLabel="Update Profile"
+                  ctaHref="/pro/profile"
+                />
               </div>
             )}
           </div>

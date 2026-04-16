@@ -71,9 +71,9 @@ export default function ComparisonTable() {
               {rows.map((row, i) => (
                 <tr
                   key={row.feature}
-                  className={
+                  className={`transition-colors hover:bg-zinc-50 ${
                     i < rows.length - 1 ? 'border-b border-zinc-100' : ''
-                  }
+                  }`}
                 >
                   <td className="px-6 py-4 text-sm font-medium text-zinc-900">
                     {row.feature}

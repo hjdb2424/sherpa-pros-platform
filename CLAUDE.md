@@ -89,6 +89,17 @@ public/
 - `npm run lint` -- Run ESLint
 - `npx vitest` -- Run tests
 
+## Design Skills
+
+This project uses four design skill systems to ensure design-forward, anti-AI-slop UI/UX:
+
+- **DESIGN.md** — Uber-inspired design system (colors, typography, components, spacing). Read this BEFORE writing any UI code.
+- **Impeccable** — 7 reference files (typography, color, spatial, motion, interaction, responsive, UX writing) + skills: `/audit`, `/polish`, `/animate`, `/distill`, `/layout`, `/typeset`, `/critique`, `/delight`, `/harden`, `/bolder`, `/adapt`, `/shape`, `/clarify`, `/optimize`, `/quieter`, `/colorize`, `/overdrive`
+- **Taste Skill** — Design engineering with anti-slop bias correction. Tuned for construction marketplace: DESIGN_VARIANCE=5 (confident, not experimental), MOTION_INTENSITY=7 (emergency dispatch urgency), VISUAL_DENSITY=6 (Uber-density, no wasted space). Also: `/redesign-skill`, `/soft-skill`, `/output-skill`
+- **UI/UX Pro Max** — 161 reasoning rules, 67 UI styles, design system generator. Skills: `/ui-ux-pro-max`, `/design`, `/ui-styling`, `/design-system`, `/brand`
+
+**Design-forward mandate:** Every UI component must be reviewed against DESIGN.md before shipping. Prioritize simplicity, thumb-friendly interactions, and zero-friction access.
+
 ## Spec
 
 Full platform design: `docs/superpowers/specs/2026-04-13-sherpa-pros-platform-design.md`

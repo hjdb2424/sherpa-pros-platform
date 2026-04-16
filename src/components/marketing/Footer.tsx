@@ -28,7 +28,7 @@ export default function Footer() {
         <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-4">
           {/* Brand column */}
           <div className="sm:col-span-2 lg:col-span-1">
-            <Link href="/" className="flex items-center gap-2">
+            <Link href="/" className="flex items-center gap-2 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 focus-visible:ring-offset-[#1a1a2e]">
               <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-amber-500">
                 <svg
                   viewBox="0 0 24 24"
@@ -88,7 +88,7 @@ export default function Footer() {
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="text-sm transition-colors hover:text-white"
+                      className="rounded-sm text-sm transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 focus-visible:ring-offset-[#1a1a2e]"
                     >
                       {link.label}
                     </Link>
@@ -124,7 +124,7 @@ export default function Footer() {
               <a
                 key={social.label}
                 href="#"
-                className="flex h-9 w-9 items-center justify-center rounded-full border border-zinc-700 transition-colors hover:border-amber-500 hover:text-amber-500"
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-zinc-700 transition-colors hover:border-amber-500 hover:text-amber-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 focus-visible:ring-offset-[#1a1a2e]"
                 aria-label={social.label}
               >
                 <svg

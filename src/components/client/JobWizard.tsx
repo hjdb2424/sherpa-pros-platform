@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import { LockClosedIcon } from '@heroicons/react/24/outline';
 import { CategoryGrid } from './CategoryGrid';
 import { BudgetSlider } from './BudgetSlider';
 import { PhotoUploader } from './PhotoUploader';
@@ -574,6 +575,16 @@ function StepReview({ data, update, onEdit }: StepReviewProps) {
               All Pros are background checked. Payments are held in escrow until you approve the work.
             </p>
           </div>
+        </div>
+      </div>
+
+      <div className="flex items-start gap-3 rounded-xl border border-emerald-200 bg-emerald-50 p-4">
+        <LockClosedIcon className="mt-0.5 h-5 w-5 shrink-0 text-emerald-600" aria-hidden="true" />
+        <div>
+          <p className="text-sm font-medium text-emerald-900">Payment Protected</p>
+          <p className="mt-0.5 text-xs leading-relaxed text-emerald-700">
+            Your payment is held in secure escrow and only released when you approve the completed work. Full refund if the pro doesn&apos;t deliver.
+          </p>
         </div>
       </div>
 

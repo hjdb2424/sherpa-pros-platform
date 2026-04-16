@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import StatsCard from '@/components/pro/StatsCard';
 import EarningsChart from '@/components/pro/EarningsChart';
+import EmptyState from '@/components/EmptyState';
+import { CurrencyDollarIcon } from '@heroicons/react/24/outline';
 import {
   mockEarningsSummary,
   mockMonthlyEarnings,
@@ -30,6 +32,17 @@ export default function EarningsPageClient() {
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">Earnings</h1>
+
+      {/* TODO: Replace mock check with real data */}
+      {mockTransactions.length === 0 && (
+        <EmptyState
+          icon={<CurrencyDollarIcon className="h-8 w-8" />}
+          title="No earnings yet"
+          description="Complete your first job to start tracking earnings, trends, and payouts here."
+          ctaLabel="Find Jobs"
+          ctaHref="/pro/jobs"
+        />
+      )}
 
       {/* Summary cards */}
       <div className="grid gap-4 grid-cols-2 lg:grid-cols-4">

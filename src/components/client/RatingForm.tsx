@@ -47,7 +47,7 @@ function StarSelector({
             onClick={() => onChange(star)}
             onMouseEnter={() => setHover(star)}
             onMouseLeave={() => setHover(0)}
-            className="p-0.5 transition-transform hover:scale-110"
+            className="min-h-[44px] min-w-[44px] p-0.5 transition-transform hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 rounded"
             role="radio"
             aria-checked={star === value}
             aria-label={`${star} star${star > 1 ? 's' : ''}`}
@@ -133,14 +133,14 @@ export function RatingForm({ proName, jobTitle, onSubmit }: RatingFormProps) {
           value={ratings.review}
           onChange={(e) => setRatings((prev) => ({ ...prev, review: e.target.value }))}
           placeholder="Tell other homeowners about your experience..."
-          className="mt-2 w-full rounded-lg border border-zinc-200 px-4 py-3 text-sm text-zinc-900 placeholder:text-zinc-400 focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-100"
+          className="mt-2 w-full rounded-lg border border-zinc-200 px-4 py-3 text-sm text-zinc-900 placeholder:text-zinc-400 focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-100 focus-visible:ring-amber-500"
         />
       </div>
 
       <button
         onClick={handleSubmit}
         disabled={ratings.overall === 0}
-        className="mt-4 w-full rounded-lg bg-amber-500 px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-amber-600 disabled:cursor-not-allowed disabled:opacity-50"
+        className="mt-4 w-full rounded-lg bg-amber-500 px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-amber-600 disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2"
       >
         Submit Review
       </button>

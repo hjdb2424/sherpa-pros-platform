@@ -57,7 +57,7 @@ export const EMERGENCY_CATEGORIES: CategoryInfo[] = [
   {
     id: 'water_damage',
     label: 'Water Damage',
-    icon: '\u{1F30A}',
+    icon: 'water_damage',
     color: 'text-blue-400',
     bgColor: 'bg-blue-950',
     borderColor: 'border-blue-700',
@@ -66,7 +66,7 @@ export const EMERGENCY_CATEGORIES: CategoryInfo[] = [
   {
     id: 'fire_smoke',
     label: 'Fire / Smoke',
-    icon: '\u{1F525}',
+    icon: 'fire_smoke',
     color: 'text-red-400',
     bgColor: 'bg-red-950',
     borderColor: 'border-red-700',
@@ -75,7 +75,7 @@ export const EMERGENCY_CATEGORIES: CategoryInfo[] = [
   {
     id: 'storm_damage',
     label: 'Storm Damage',
-    icon: '\u26C8\uFE0F',
+    icon: 'storm_damage',
     color: 'text-purple-400',
     bgColor: 'bg-purple-950',
     borderColor: 'border-purple-700',
@@ -84,7 +84,7 @@ export const EMERGENCY_CATEGORIES: CategoryInfo[] = [
   {
     id: 'hvac_emergency',
     label: 'HVAC Emergency',
-    icon: '\u2744\uFE0F',
+    icon: 'hvac_emergency',
     color: 'text-cyan-400',
     bgColor: 'bg-cyan-950',
     borderColor: 'border-cyan-700',
@@ -93,7 +93,7 @@ export const EMERGENCY_CATEGORIES: CategoryInfo[] = [
   {
     id: 'electrical',
     label: 'Electrical',
-    icon: '\u26A1',
+    icon: 'electrical',
     color: 'text-yellow-400',
     bgColor: 'bg-yellow-950',
     borderColor: 'border-yellow-700',
@@ -102,7 +102,7 @@ export const EMERGENCY_CATEGORIES: CategoryInfo[] = [
   {
     id: 'gas_leak',
     label: 'Gas Leak',
-    icon: '\u{1F4A8}',
+    icon: 'gas_leak',
     color: 'text-orange-400',
     bgColor: 'bg-orange-950',
     borderColor: 'border-orange-700',
@@ -112,7 +112,7 @@ export const EMERGENCY_CATEGORIES: CategoryInfo[] = [
   {
     id: 'structural',
     label: 'Structural',
-    icon: '\u{1F3D7}\uFE0F',
+    icon: 'structural',
     color: 'text-zinc-400',
     bgColor: 'bg-zinc-800',
     borderColor: 'border-zinc-600',

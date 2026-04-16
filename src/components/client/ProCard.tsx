@@ -1,4 +1,5 @@
 import type { Pro } from '@/lib/mock-data/client-data';
+import { ShieldCheckIcon } from '@heroicons/react/24/solid';
 
 const BADGE_CONFIG: Record<Pro['badge'], { label: string; color: string; icon: string }> = {
   gold: { label: 'Gold Pro', color: 'text-amber-600 bg-amber-50 border-amber-200', icon: '★' },
@@ -26,6 +27,12 @@ export function ProCard({ pro, compact = false, onViewProfile, onRequestQuote }:
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">
             <span className="truncate text-sm font-semibold text-zinc-900">{pro.name}</span>
+            {pro.backgroundChecked && (
+              <span className="ml-1.5 inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-xs font-medium text-emerald-700">
+                <ShieldCheckIcon className="h-3.5 w-3.5 text-emerald-500" aria-hidden="true" />
+                Verified
+              </span>
+            )}
             <span className={`inline-flex items-center gap-0.5 rounded-full border px-1.5 py-0.5 text-[10px] font-medium ${badge.color}`}>
               {badge.icon} {badge.label}
             </span>
@@ -34,9 +41,6 @@ export function ProCard({ pro, compact = false, onViewProfile, onRequestQuote }:
             <span className="text-amber-500">{'★'.repeat(Math.floor(pro.rating))}</span>
             <span>{pro.rating}</span>
             <span>({pro.reviewCount})</span>
-            {pro.backgroundChecked && (
-              <span className="text-emerald-600">Verified</span>
-            )}
           </div>
         </div>
       </div>
@@ -52,6 +56,12 @@ export function ProCard({ pro, compact = false, onViewProfile, onRequestQuote }:
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">
             <h3 className="truncate text-base font-semibold text-zinc-900">{pro.name}</h3>
+            {pro.backgroundChecked && (
+              <span className="ml-1.5 inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-xs font-medium text-emerald-700">
+                <ShieldCheckIcon className="h-3.5 w-3.5 text-emerald-500" aria-hidden="true" />
+                Verified
+              </span>
+            )}
             {pro.available && (
               <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-medium text-emerald-700">
                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" /> Available
@@ -84,12 +94,10 @@ export function ProCard({ pro, compact = false, onViewProfile, onRequestQuote }:
           </div>
 
           {pro.backgroundChecked && (
-            <div className="mt-2 flex items-center gap-1 text-xs font-medium text-emerald-600">
-              <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
-              </svg>
-              Background Checked
-            </div>
+            <p className="mt-1 flex items-center gap-1.5 text-xs text-zinc-500">
+              <ShieldCheckIcon className="h-3.5 w-3.5 text-emerald-500" aria-hidden="true" />
+              Licensed & Insured
+            </p>
           )}
         </div>
       </div>

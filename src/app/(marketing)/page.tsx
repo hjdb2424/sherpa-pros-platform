@@ -10,6 +10,8 @@ import {
   BoltIcon,
   PhoneArrowUpRightIcon,
   MapPinIcon,
+  BellAlertIcon,
+  BanknotesIcon,
 } from '@heroicons/react/24/outline';
 
 export const metadata: Metadata = {
@@ -254,36 +256,33 @@ export default function LandingPage() {
           </div>
 
           <div className="mx-auto mt-16 grid max-w-4xl gap-6 sm:grid-cols-3">
-            {[
-              {
-                title: '24/7 Dispatch',
-                description: 'Emergency pros dispatched within minutes, any time of day or night.',
-                icon: '🚨',
-              },
-              {
-                title: 'IICRC Certified',
-                description: 'Water, fire, and mold restoration by certified professionals.',
-                icon: '🛡️',
-              },
-              {
-                title: 'Insurance Network',
-                description: 'Direct billing to insurance carriers. Guaranteed payment for pros.',
-                icon: '💰',
-              },
-            ].map((card) => (
-              <div
-                key={card.title}
-                className="rounded-2xl border border-zinc-800 bg-zinc-900/50 p-6 backdrop-blur-sm transition-colors hover:border-zinc-700"
-              >
-                <div className="text-3xl" aria-hidden="true">{card.icon}</div>
-                <h3 className="mt-4 text-lg font-semibold text-white">
-                  {card.title}
-                </h3>
-                <p className="mt-2 text-sm leading-relaxed text-zinc-400">
-                  {card.description}
-                </p>
-              </div>
-            ))}
+            <div className="rounded-2xl border border-zinc-800 bg-zinc-900/50 p-6 backdrop-blur-sm transition-colors hover:border-zinc-700">
+              <BellAlertIcon className="h-8 w-8 text-red-400" aria-hidden="true" />
+              <h3 className="mt-4 text-lg font-semibold text-white">
+                24/7 Dispatch
+              </h3>
+              <p className="mt-2 text-sm leading-relaxed text-zinc-400">
+                Emergency pros dispatched within minutes, any time of day or night.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-zinc-800 bg-zinc-900/50 p-6 backdrop-blur-sm transition-colors hover:border-zinc-700">
+              <ShieldCheckIcon className="h-8 w-8 text-emerald-400" aria-hidden="true" />
+              <h3 className="mt-4 text-lg font-semibold text-white">
+                IICRC Certified
+              </h3>
+              <p className="mt-2 text-sm leading-relaxed text-zinc-400">
+                Water, fire, and mold restoration by certified professionals.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-zinc-800 bg-zinc-900/50 p-6 backdrop-blur-sm transition-colors hover:border-zinc-700">
+              <BanknotesIcon className="h-8 w-8 text-amber-400" aria-hidden="true" />
+              <h3 className="mt-4 text-lg font-semibold text-white">
+                Insurance Network
+              </h3>
+              <p className="mt-2 text-sm leading-relaxed text-zinc-400">
+                Direct billing to insurance carriers. Guaranteed payment for pros.
+              </p>
+            </div>
           </div>
         </div>
       </section>

@@ -82,7 +82,7 @@ export default function StatsCounter() {
   return (
     <div
       ref={ref}
-      className="grid grid-cols-3 gap-4 sm:gap-8"
+      className="animate-fade-slide-up stagger-4 grid grid-cols-3 gap-4 sm:gap-8"
       role="list"
       aria-label="Platform statistics"
     >

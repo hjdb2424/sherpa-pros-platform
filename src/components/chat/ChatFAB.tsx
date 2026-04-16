@@ -47,7 +47,7 @@ export function ChatFAB({
       {/* FAB button */}
       <button
         onClick={() => setOpen((prev) => !prev)}
-        className="fixed bottom-6 right-6 z-50 w-14 h-14 flex items-center justify-center rounded-full bg-[#1a1a2e] text-white shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all"
+        className="fixed bottom-6 right-6 z-50 w-14 h-14 flex items-center justify-center rounded-full bg-amber-500 text-[#1a1a2e] shadow-lg shadow-amber-500/25 hover:shadow-xl hover:scale-105 active:scale-95 transition-all"
         aria-label={open ? 'Close chat' : 'Open chat'}
       >
         {open ? (
@@ -80,11 +80,14 @@ export function ChatFAB({
           </svg>
         )}
 
-        {/* Unread badge */}
+        {/* Unread badge + pulse ring */}
         {!open && unreadCount > 0 && (
-          <span className="absolute -top-1 -right-1 min-w-[20px] h-5 flex items-center justify-center rounded-full bg-red-500 text-white text-[11px] font-bold px-1.5 animate-[bounceIn_0.3s_ease-out]">
-            {unreadCount > 99 ? '99+' : unreadCount}
-          </span>
+          <>
+            <span className="absolute -top-1 -right-1 h-3 w-3 rounded-full bg-red-500 animate-subtle-pulse" />
+            <span className="absolute -top-1 -right-1 min-w-[20px] h-5 flex items-center justify-center rounded-full bg-red-500 text-white text-[11px] font-bold px-1.5 animate-[bounceIn_0.3s_ease-out]">
+              {unreadCount > 99 ? '99+' : unreadCount}
+            </span>
+          </>
         )}
       </button>
     </>

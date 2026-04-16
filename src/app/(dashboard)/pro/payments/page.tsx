@@ -4,6 +4,8 @@ import CommissionExplainer from '@/components/payments/CommissionExplainer';
 import StripeConnectButton from '@/components/payments/StripeConnectButton';
 import PayoutHistory from '@/components/payments/PayoutHistory';
 import type { Payout } from '@/components/payments/PayoutHistory';
+import EmptyState from '@/components/EmptyState';
+import { BanknotesIcon } from '@heroicons/react/24/outline';
 
 export const metadata: Metadata = {
   title: 'Payments',
@@ -203,10 +205,20 @@ export default async function ProPaymentsPage() {
       {/* Payout history and commission explainer */}
       <div className="mt-8 grid gap-6 lg:grid-cols-3">
         <div className="lg:col-span-2">
-          <PayoutHistory
-            initialPayouts={data.payouts}
-            totalCount={data.totalPayoutCount}
-          />
+          {data.payouts.length === 0 && data.totalPayoutCount === 0 ? (
+            <EmptyState
+              icon={<BanknotesIcon className="h-8 w-8" />}
+              title="No payment history"
+              description="Payments appear here after completed jobs. Connect Stripe to enable payouts."
+              ctaLabel="Connect Stripe"
+              ctaHref="/pro/payments"
+            />
+          ) : (
+            <PayoutHistory
+              initialPayouts={data.payouts}
+              totalCount={data.totalPayoutCount}
+            />
+          )}
         </div>
         <div>
           <CommissionExplainer />

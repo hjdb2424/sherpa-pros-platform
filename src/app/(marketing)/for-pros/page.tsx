@@ -107,26 +107,26 @@ export default function ForProsPage() {
           <div className="absolute right-0 top-0 h-[500px] w-[500px] -translate-y-1/4 translate-x-1/4 rounded-full bg-amber-500/10 blur-3xl" />
         </div>
         <div className="relative mx-auto max-w-3xl text-center">
-          <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-1.5">
+          <div className="animate-fade-slide-up inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-1.5">
             <span className="h-2 w-2 rounded-full bg-emerald-500" aria-hidden="true" />
             <span className="text-xs font-medium text-emerald-400 sm:text-sm">
               Now accepting applications
             </span>
           </div>
-          <h1 className="mt-8 text-4xl font-bold text-white sm:text-5xl lg:text-6xl">
+          <h1 className="animate-fade-slide-up stagger-1 mt-8 text-4xl font-bold text-white sm:text-5xl lg:text-6xl">
             Stop Paying for Leads.{' '}
             <span className="bg-gradient-to-r from-amber-400 to-amber-500 bg-clip-text text-transparent">
               Start Earning.
             </span>
           </h1>
-          <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-zinc-400 sm:text-xl">
+          <p className="animate-fade-slide-up stagger-2 mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-zinc-400 sm:text-xl">
             No subscription fees. No lead fees. No bidding wars. Get matched
             with pre-qualified jobs in your area and only pay when you win work.
           </p>
           <div className="mt-10">
             <Link
               href="/sign-up"
-              className="inline-flex items-center rounded-full bg-amber-500 px-8 py-4 text-lg font-semibold text-[#1a1a2e] shadow-lg shadow-amber-500/25 transition-all hover:bg-amber-400 hover:shadow-xl hover:shadow-amber-500/30"
+              className="inline-flex items-center rounded-full bg-amber-500 px-8 py-4 text-lg font-semibold text-[#1a1a2e] shadow-lg shadow-amber-500/25 transition-all hover:bg-amber-400 hover:shadow-xl hover:shadow-amber-500/30 active:scale-[0.98]"
             >
               Apply in 5 Minutes
               <svg
@@ -179,7 +179,7 @@ export default function ForProsPage() {
                 {comparisonRows.map((row, i) => (
                   <tr
                     key={row.feature}
-                    className={i < comparisonRows.length - 1 ? 'border-b border-zinc-100' : ''}
+                    className={`transition-colors hover:bg-zinc-50 ${i < comparisonRows.length - 1 ? 'border-b border-zinc-100' : ''}`}
                   >
                     <td className="px-6 py-4 text-sm font-medium text-zinc-900">
                       {row.feature}
@@ -243,10 +243,10 @@ export default function ForProsPage() {
             Everything you need to grow your business, in one platform.
           </p>
           <div className="mx-auto mt-16 grid max-w-5xl gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {benefits.map((benefit) => (
+            {benefits.map((benefit, i) => (
               <div
                 key={benefit.title}
-                className="group rounded-2xl border border-zinc-200 bg-white p-8 shadow-sm transition-all hover:border-amber-200 hover:shadow-md"
+                className={`group animate-fade-slide-up rounded-2xl border border-zinc-200 bg-white p-8 shadow-sm transition-all hover:-translate-y-0.5 hover:border-amber-200 hover:shadow-md stagger-${i + 1}`}
               >
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-amber-50 text-amber-600 transition-colors group-hover:bg-amber-100">
                   <benefit.icon className="h-6 w-6" aria-hidden="true" />
@@ -317,7 +317,7 @@ export default function ForProsPage() {
           <div className="mt-10">
             <Link
               href="/sign-up"
-              className="inline-flex items-center rounded-full bg-amber-500 px-8 py-4 text-lg font-semibold text-[#1a1a2e] shadow-lg shadow-amber-500/25 transition-all hover:bg-amber-400 hover:shadow-xl"
+              className="inline-flex items-center rounded-full bg-amber-500 px-8 py-4 text-lg font-semibold text-[#1a1a2e] shadow-lg shadow-amber-500/25 transition-all hover:bg-amber-400 hover:shadow-xl active:scale-[0.98]"
             >
               Apply Now — It&apos;s Free
               <svg

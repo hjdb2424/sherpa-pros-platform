@@ -8,6 +8,8 @@ interface FAQItem {
   answer: string;
 }
 
+let accordionIdCounter = 0;
+
 function AccordionItem({
   item,
   isOpen,
@@ -17,13 +19,20 @@ function AccordionItem({
   isOpen: boolean;
   onToggle: () => void;
 }) {
+  const [ids] = useState(() => {
+    const id = ++accordionIdCounter;
+    return { triggerId: `faq-trigger-${id}`, panelId: `faq-panel-${id}` };
+  });
+
   return (
     <div className="border-b border-zinc-200 last:border-0">
       <button
         type="button"
-        className="flex w-full items-center justify-between gap-4 px-1 py-5 text-left transition-colors hover:text-amber-600"
+        id={ids.triggerId}
+        className="flex w-full items-center justify-between gap-4 rounded-lg px-1 py-5 text-left transition-colors hover:text-amber-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2"
         onClick={onToggle}
         aria-expanded={isOpen}
+        aria-controls={ids.panelId}
       >
         <span className="text-base font-medium text-zinc-900 sm:text-lg">
           {item.question}
@@ -34,6 +43,9 @@ function AccordionItem({
         />
       </button>
       <div
+        id={ids.panelId}
+        role="region"
+        aria-labelledby={ids.triggerId}
         className={`grid transition-all duration-200 ${isOpen ? 'grid-rows-[1fr] pb-5' : 'grid-rows-[0fr]'}`}
       >
         <div className="overflow-hidden">

@@ -4,6 +4,7 @@
  */
 
 import { COMMISSION_TIERS } from '@/lib/payments';
+import { ShieldCheckIcon } from '@heroicons/react/24/solid';
 
 /** Widths for the visual bars — maps to the relative "weight" of each tier */
 const TIER_WIDTHS = ['w-1/4', 'w-2/5', 'w-3/5', 'w-full'] as const;
@@ -30,6 +31,10 @@ function formatTierRange(minCents: number, maxCents: number): string {
 export default function CommissionExplainer() {
   return (
     <div className="rounded-xl border border-zinc-200 bg-white p-5 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
+      <div className="mb-6 flex items-center gap-2 text-sm text-zinc-600 dark:text-zinc-400">
+        <ShieldCheckIcon className="h-5 w-5 text-emerald-500" aria-hidden="true" />
+        <span>All transactions are encrypted and PCI-compliant</span>
+      </div>
       <h3 className="text-base font-semibold text-zinc-900 dark:text-zinc-50">
         Commission Structure
       </h3>

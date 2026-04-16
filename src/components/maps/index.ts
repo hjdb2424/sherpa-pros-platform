@@ -6,3 +6,4 @@ export { default as MapView } from './MapView';
 export { default as BottomSheet } from './BottomSheet';
 export { default as ProMarker } from './ProMarker';
 export { default as JobMarker } from './JobMarker';
+export { default as DispatchTracker } from './DispatchTracker';

@@ -12,6 +12,8 @@ import {
   mockActiveJobs,
   mockCompletedJobs,
 } from '@/lib/mock-data/pro-data';
+import { GoogleMapProvider, MapView, BottomSheet, JobMarker } from '@/components/maps';
+import { MOCK_JOBS, DEFAULT_CENTER } from '@/lib/mock-data/map-data';
 
 const tabs = [
   { id: 'available', label: 'Available', count: mockAvailableJobs.length },
@@ -42,6 +44,9 @@ export default function JobsPageClient() {
   const [activeTab, setActiveTab] = useState<TabId>('available');
   const [categoryFilter, setCategoryFilter] = useState('all');
   const [urgencyFilter, setUrgencyFilter] = useState('all');
+  const [viewMode, setViewMode] = useState<'map' | 'list'>('map');
+  const [currentZoom, setCurrentZoom] = useState(12);
+  const [selectedJobId, setSelectedJobId] = useState<string | null>(null);
 
   const categories = ['all', ...new Set(mockAvailableJobs.map((j) => j.category))];
   const urgencies = ['all', 'low', 'medium', 'high', 'emergency'];
@@ -52,9 +57,48 @@ export default function JobsPageClient() {
     return true;
   });
 
+  // Map view rendering
+  if (viewMode === 'map' && activeTab === 'available') {
+    return (
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">Jobs</h1>
+          <div className="flex items-center rounded-lg border border-zinc-200 p-0.5">
+            <button onClick={() => setViewMode('map')} className="rounded-md px-3 py-1.5 text-xs font-semibold transition-all bg-[#00a9e0] text-white">Map</button>
+            <button onClick={() => setViewMode('list')} className="rounded-md px-3 py-1.5 text-xs font-semibold transition-all text-zinc-500 hover:text-zinc-700">List</button>
+          </div>
+        </div>
+        <GoogleMapProvider>
+          <div className="relative h-[calc(100dvh-56px)] lg:flex">
+            <BottomSheet peekContent={<p className="text-sm font-semibold text-zinc-900">{MOCK_JOBS.length} Jobs Available</p>}>
+              <div className="p-4 space-y-3">
+                {filteredAvailable.map((job) => <JobCard key={job.id} job={job} />)}
+              </div>
+            </BottomSheet>
+            <div className="h-full w-full lg:ml-[400px]">
+              <MapView center={DEFAULT_CENTER} className="h-full w-full" onZoomChanged={(z: number) => setCurrentZoom(z)} onListView={() => setViewMode('list')}>
+                {MOCK_JOBS.map((job) => (
+                  <JobMarker key={job.id} job={job} zoom={currentZoom} selected={selectedJobId === job.id} onClick={() => setSelectedJobId(job.id)} />
+                ))}
+              </MapView>
+            </div>
+          </div>
+        </GoogleMapProvider>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-4">
-      <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">Jobs</h1>
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">Jobs</h1>
+        {activeTab === 'available' && (
+          <div className="flex items-center rounded-lg border border-zinc-200 p-0.5">
+            <button onClick={() => setViewMode('map')} className={`rounded-md px-3 py-1.5 text-xs font-semibold transition-all ${viewMode === 'map' ? 'bg-[#00a9e0] text-white' : 'text-zinc-500 hover:text-zinc-700'}`}>Map</button>
+            <button onClick={() => setViewMode('list')} className={`rounded-md px-3 py-1.5 text-xs font-semibold transition-all ${viewMode === 'list' ? 'bg-[#00a9e0] text-white' : 'text-zinc-500 hover:text-zinc-700'}`}>List</button>
+          </div>
+        )}
+      </div>
 
       {/* Tabs */}
       <div className="flex gap-1 overflow-x-auto rounded-lg bg-zinc-100 p-1 dark:bg-zinc-800" role="tablist" aria-label="Job tabs">

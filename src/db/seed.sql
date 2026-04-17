@@ -301,7 +301,7 @@ INSERT INTO job_milestones (id, job_id, title, amount_cents, sort_order, status)
 
 INSERT INTO bids (id, job_id, pro_id, amount_cents, message, estimated_duration_days, wiseman_deviation_pct, status) VALUES
 (
-    'g1000000-0000-0000-0000-000000000001',
+    'e1000000-0000-0000-0000-000000000001',
     'e1000000-0000-0000-0000-000000000001',
     'd1000000-0000-0000-0000-000000000001',
     35000,
@@ -311,7 +311,7 @@ INSERT INTO bids (id, job_id, pro_id, amount_cents, message, estimated_duration_
     'pending'
 ),
 (
-    'g1000000-0000-0000-0000-000000000002',
+    'e1000000-0000-0000-0000-000000000002',
     'e1000000-0000-0000-0000-000000000002',
     'd1000000-0000-0000-0000-000000000002',
     45000,
@@ -321,7 +321,7 @@ INSERT INTO bids (id, job_id, pro_id, amount_cents, message, estimated_duration_
     'accepted'
 ),
 (
-    'g1000000-0000-0000-0000-000000000003',
+    'e1000000-0000-0000-0000-000000000003',
     'e1000000-0000-0000-0000-000000000003',
     'd1000000-0000-0000-0000-000000000004',
     180000,
@@ -331,7 +331,7 @@ INSERT INTO bids (id, job_id, pro_id, amount_cents, message, estimated_duration_
     'accepted'
 ),
 (
-    'g1000000-0000-0000-0000-000000000004',
+    'e1000000-0000-0000-0000-000000000004',
     'e1000000-0000-0000-0000-000000000004',
     'd1000000-0000-0000-0000-000000000001',
     85000,
@@ -347,7 +347,7 @@ INSERT INTO bids (id, job_id, pro_id, amount_cents, message, estimated_duration_
 
 INSERT INTO ratings (id, job_id, from_user_id, to_user_id, overall_score, quality, communication, timeliness, value, review_text) VALUES
 (
-    'h1000000-0000-0000-0000-000000000001',
+    'f1000000-0000-0000-0000-000000000001',
     'e1000000-0000-0000-0000-000000000004',
     'c1000000-0000-0000-0000-000000000003',
     'b1000000-0000-0000-0000-000000000001',
@@ -355,7 +355,7 @@ INSERT INTO ratings (id, job_id, from_user_id, to_user_id, overall_score, qualit
     'Mike arrived within 45 minutes of the emergency dispatch. Fixed the burst pipe quickly and cleaned up everything. Highly recommend.'
 ),
 (
-    'h1000000-0000-0000-0000-000000000002',
+    'f1000000-0000-0000-0000-000000000002',
     'e1000000-0000-0000-0000-000000000004',
     'b1000000-0000-0000-0000-000000000001',
     'c1000000-0000-0000-0000-000000000003',
@@ -369,7 +369,7 @@ INSERT INTO ratings (id, job_id, from_user_id, to_user_id, overall_score, qualit
 
 INSERT INTO rating_responses (rating_id, responder_id, body) VALUES
 (
-    'h1000000-0000-0000-0000-000000000001',
+    'f1000000-0000-0000-0000-000000000001',
     'b1000000-0000-0000-0000-000000000001',
     'Thank you Rachel! Glad I could get there quickly. Those old copper joints can go at the worst times.'
 );
@@ -380,7 +380,7 @@ INSERT INTO rating_responses (rating_id, responder_id, body) VALUES
 
 INSERT INTO payments (id, job_id, milestone_id, payer_user_id, payee_user_id, amount_cents, commission_cents, service_fee_cents, stripe_payment_intent_id, status, held_at, released_at) VALUES
 (
-    'i1000000-0000-0000-0000-000000000001',
+    'f2000000-0000-0000-0000-000000000001',
     'e1000000-0000-0000-0000-000000000004',
     'f1000000-0000-0000-0000-000000000004',
     'c1000000-0000-0000-0000-000000000003',
@@ -400,7 +400,7 @@ INSERT INTO payments (id, job_id, milestone_id, payer_user_id, payee_user_id, am
 
 INSERT INTO conversations (id, job_id, pro_user_id, client_user_id, twilio_conversation_sid, status) VALUES
 (
-    'j1000000-0000-0000-0000-000000000001',
+    'f3000000-0000-0000-0000-000000000001',
     'e1000000-0000-0000-0000-000000000001',
     'b1000000-0000-0000-0000-000000000001',
     'c1000000-0000-0000-0000-000000000001',
@@ -408,7 +408,7 @@ INSERT INTO conversations (id, job_id, pro_user_id, client_user_id, twilio_conve
     'active'
 ),
 (
-    'j1000000-0000-0000-0000-000000000002',
+    'f3000000-0000-0000-0000-000000000002',
     'e1000000-0000-0000-0000-000000000003',
     'b1000000-0000-0000-0000-000000000004',
     'c1000000-0000-0000-0000-000000000002',
@@ -421,11 +421,11 @@ INSERT INTO conversations (id, job_id, pro_user_id, client_user_id, twilio_conve
 -- =============================================================================
 
 INSERT INTO messages (conversation_id, sender_user_id, body) VALUES
-('j1000000-0000-0000-0000-000000000001', 'c1000000-0000-0000-0000-000000000001', 'Hi Mike, the faucet is a Moen Align single-handle. Disposal is a Badger 5. Let me know if you need any other details.'),
-('j1000000-0000-0000-0000-000000000001', 'b1000000-0000-0000-0000-000000000001', 'Thanks Tom. I have Moen parts on the truck. For the disposal, does your sink have a switch already or do we need to add one?'),
-('j1000000-0000-0000-0000-000000000001', 'c1000000-0000-0000-0000-000000000001', 'There is an existing switch on the wall next to the sink.'),
-('j1000000-0000-0000-0000-000000000002', 'b1000000-0000-0000-0000-000000000004', 'Hi Lisa, I stopped by to look at the walls. The patch area on the east wall is about 2 sq ft. Should be a clean fix.'),
-('j1000000-0000-0000-0000-000000000002', 'c1000000-0000-0000-0000-000000000002', 'Great, thanks Diana. The color we picked is Benjamin Moore Simply White OC-117 for walls.');
+('f3000000-0000-0000-0000-000000000001', 'c1000000-0000-0000-0000-000000000001', 'Hi Mike, the faucet is a Moen Align single-handle. Disposal is a Badger 5. Let me know if you need any other details.'),
+('f3000000-0000-0000-0000-000000000001', 'b1000000-0000-0000-0000-000000000001', 'Thanks Tom. I have Moen parts on the truck. For the disposal, does your sink have a switch already or do we need to add one?'),
+('f3000000-0000-0000-0000-000000000001', 'c1000000-0000-0000-0000-000000000001', 'There is an existing switch on the wall next to the sink.'),
+('f3000000-0000-0000-0000-000000000002', 'b1000000-0000-0000-0000-000000000004', 'Hi Lisa, I stopped by to look at the walls. The patch area on the east wall is about 2 sq ft. Should be a clean fix.'),
+('f3000000-0000-0000-0000-000000000002', 'c1000000-0000-0000-0000-000000000002', 'Great, thanks Diana. The color we picked is Benjamin Moore Simply White OC-117 for walls.');
 
 -- =============================================================================
 -- JOB CHECKLISTS

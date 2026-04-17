@@ -8,7 +8,8 @@ export interface FeeBreakdown {
   materialsTotalCents: number;
   serviceFeePct: number;
   serviceFeeCents: number;
-  deliveryProtectionCents: number;
+  /** Internal only — folded into service fee, NOT shown to client */
+  deliveryProtectionReserveCents: number;
   grandTotalCents: number;
 }
 
@@ -34,8 +35,10 @@ export function calculateFeeBreakdown(
     materialsTotalCents,
     serviceFeePct: pct,
     serviceFeeCents,
-    deliveryProtectionCents: DELIVERY_PROTECTION_CENTS,
-    grandTotalCents: materialsTotalCents + serviceFeeCents + DELIVERY_PROTECTION_CENTS,
+    // Delivery protection reserve is tracked internally for accounting
+    // but NOT added to client-facing grand total (bundled into service fee)
+    deliveryProtectionReserveCents: DELIVERY_PROTECTION_CENTS,
+    grandTotalCents: materialsTotalCents + serviceFeeCents,
   };
 }
 

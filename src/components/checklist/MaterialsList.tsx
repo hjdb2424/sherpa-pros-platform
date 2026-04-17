@@ -67,7 +67,7 @@ function ReviewBadge({
           wisemanNotes ? 'cursor-pointer hover:opacity-80' : 'cursor-default'
         }`}
         aria-expanded={wisemanNotes ? expanded : undefined}
-        aria-haspopup="true"
+        aria-haspopup={wisemanNotes ? "true" : undefined}
       >
         {style.label}
         {wisemanNotes && (

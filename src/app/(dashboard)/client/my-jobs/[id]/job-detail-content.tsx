@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useMemo, useCallback } from 'react';
 import Link from 'next/link';
 import {
   getJobById,
@@ -7,10 +8,12 @@ import {
   formatBudget,
   formatDate,
 } from '@/lib/mock-data/client-data';
+import { getChecklistForJob } from '@/lib/mock-data/checklist-data';
 import { JobStatusBadge } from '@/components/client/JobStatusBadge';
 import { BidCard } from '@/components/client/BidCard';
 import { ProCard } from '@/components/client/ProCard';
 import { RatingForm } from '@/components/client/RatingForm';
+import { MaterialsList, MaterialsApproval } from '@/components/checklist';
 
 interface JobDetailContentProps {
   jobId: string;
@@ -19,6 +22,13 @@ interface JobDetailContentProps {
 export function JobDetailContent({ jobId }: JobDetailContentProps) {
   const job = getJobById(jobId);
   const bids = getBidsForJob(jobId);
+  const checklist = useMemo(() => getChecklistForJob(jobId), [jobId]);
+
+  const [approved, setApproved] = useState(false);
+
+  const handleApprove = useCallback(() => {
+    setApproved(true);
+  }, []);
 
   if (!job) {
     return (
@@ -225,6 +235,41 @@ export function JobDetailContent({ jobId }: JobDetailContentProps) {
               </p>
             </div>
           </div>
+
+          {/* Materials & Approval Section */}
+          {checklist && (
+            <div>
+              <h2 className="mb-3 text-lg font-bold text-zinc-900">Materials &amp; Approval</h2>
+
+              {/* Success banner */}
+              {approved && (
+                <div className="mb-4 rounded-xl border border-emerald-200 bg-emerald-50 p-4 dark:border-emerald-800 dark:bg-emerald-900/20">
+                  <div className="flex items-center gap-2">
+                    <svg className="h-5 w-5 text-emerald-600" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <p className="text-sm font-medium text-emerald-800 dark:text-emerald-300">
+                      Materials approved! Your Pro will be notified.
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {/* Read-only materials list */}
+              <MaterialsList materials={checklist.materials} editable={false} />
+
+              {/* Approval widget */}
+              {!approved && (
+                <div className="mt-4">
+                  <MaterialsApproval
+                    materials={checklist.materials}
+                    clientTier="one_time"
+                    onApprove={handleApprove}
+                  />
+                </div>
+              )}
+            </div>
+          )}
         </div>
       )}
 
@@ -266,6 +311,14 @@ export function JobDetailContent({ jobId }: JobDetailContentProps) {
                   </span>
                 </div>
               </div>
+            </div>
+          )}
+
+          {/* Materials summary for completed jobs */}
+          {checklist && (
+            <div>
+              <h2 className="mb-3 text-lg font-bold text-zinc-900">Materials Used</h2>
+              <MaterialsList materials={checklist.materials} editable={false} />
             </div>
           )}
 

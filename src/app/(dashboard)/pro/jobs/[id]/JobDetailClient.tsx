@@ -1,9 +1,20 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useCallback } from 'react';
 import Link from 'next/link';
 import BidForm from '@/components/pro/BidForm';
 import MilestoneTracker from '@/components/pro/MilestoneTracker';
+import {
+  ScopeDocument,
+  WorkProcess,
+  ChecklistProgress,
+  MaterialsList,
+} from '@/components/checklist';
+import {
+  getChecklistForJob,
+  type ChecklistItem as WisemanChecklistItem,
+  type MaterialItem,
+} from '@/lib/mock-data/checklist-data';
 import {
   mockAvailableJobs,
   mockActiveJobs,
@@ -23,7 +34,17 @@ const urgencyConfig = {
   emergency: { label: 'Emergency', classes: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' },
 };
 
-function Checklist({ title, items }: { title: string; items: ChecklistItem[] }) {
+type TabKey = 'overview' | 'scope' | 'process' | 'checklist' | 'materials';
+
+const TABS: { key: TabKey; label: string }[] = [
+  { key: 'overview', label: 'Overview' },
+  { key: 'scope', label: 'Scope' },
+  { key: 'process', label: 'Process' },
+  { key: 'checklist', label: 'Checklist' },
+  { key: 'materials', label: 'Materials' },
+];
+
+function LegacyChecklist({ title, items }: { title: string; items: ChecklistItem[] }) {
   if (items.length === 0) return null;
   return (
     <div>
@@ -51,7 +72,67 @@ function Checklist({ title, items }: { title: string; items: ChecklistItem[] }) 
 export default function JobDetailClient({ jobId }: JobDetailClientProps) {
   const allJobs = [...mockAvailableJobs, ...mockActiveJobs, ...mockCompletedJobs];
   const job = useMemo(() => allJobs.find((j) => j.id === jobId), [jobId]);
+
+  const jobChecklist = useMemo(() => getChecklistForJob(jobId), [jobId]);
+
+  const [activeTab, setActiveTab] = useState<TabKey>('overview');
   const [showPhotoUpload, setShowPhotoUpload] = useState(false);
+
+  // Wiseman checklist items with local toggle state
+  const [checklistItems, setChecklistItems] = useState<WisemanChecklistItem[]>(
+    () => jobChecklist?.checklist ?? []
+  );
+
+  // Materials with local add/remove/adjust state
+  const [materials, setMaterials] = useState<MaterialItem[]>(
+    () => jobChecklist?.materials ?? []
+  );
+
+  const handleToggle = useCallback((id: string) => {
+    setChecklistItems((prev) =>
+      prev.map((item) =>
+        item.id === id ? { ...item, completed: !item.completed } : item
+      )
+    );
+  }, []);
+
+  const handlePhotoUpload = useCallback((id: string) => {
+    // In production, this would open a file picker and upload to storage.
+    // For now, mark it as having a photo with a placeholder URL.
+    setChecklistItems((prev) =>
+      prev.map((item) =>
+        item.id === id ? { ...item, photoUrl: '/placeholder-photo.jpg' } : item
+      )
+    );
+  }, []);
+
+  const handleAddMaterial = useCallback((item: Partial<MaterialItem>) => {
+    const newItem: MaterialItem = {
+      id: `m-new-${Date.now()}`,
+      name: item.name ?? 'New Material',
+      quantity: item.quantity ?? 1,
+      unit: item.unit ?? 'ea',
+      spec: item.spec ?? '',
+      category: item.category ?? 'general',
+      phase: item.phase ?? 'rough_in',
+      priceCents: item.priceCents ?? 0,
+      addedBy: 'pro',
+      wisemanReview: 'warning',
+      wisemanNotes: 'Pending review',
+      ...item,
+    };
+    setMaterials((prev) => [...prev, newItem]);
+  }, []);
+
+  const handleRemoveMaterial = useCallback((id: string, notes: string) => {
+    setMaterials((prev) => prev.filter((m) => m.id !== id));
+  }, []);
+
+  const handleAdjustMaterial = useCallback((id: string, qty: number, notes: string) => {
+    setMaterials((prev) =>
+      prev.map((m) => (m.id === id ? { ...m, quantity: qty, proNotes: notes } : m))
+    );
+  }, []);
 
   if (!job) {
     return (
@@ -69,6 +150,7 @@ export default function JobDetailClient({ jobId }: JobDetailClientProps) {
   const isAvailable = job.status === 'available';
   const isActive = job.status === 'active';
   const isCompleted = job.status === 'completed';
+  const hasChecklist = jobChecklist !== null;
 
   return (
     <div className="space-y-6">
@@ -140,168 +222,259 @@ export default function JobDetailClient({ jobId }: JobDetailClientProps) {
         </div>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-3">
-        {/* Left column: description + details */}
-        <div className="space-y-6 lg:col-span-2">
-          {/* Scope */}
-          <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm sm:p-6 dark:border-zinc-800 dark:bg-zinc-900">
-            <h2 className="text-base font-bold text-zinc-900 dark:text-zinc-50">Scope of Work</h2>
-            <p className="mt-2 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">{job.scope}</p>
+      {/* Tab Bar */}
+      <div className="overflow-x-auto border-b border-zinc-200 dark:border-zinc-700">
+        <nav className="flex min-w-max" aria-label="Job detail tabs" role="tablist">
+          {TABS.map((tab) => {
+            const isActive = activeTab === tab.key;
+            return (
+              <button
+                key={tab.key}
+                role="tab"
+                aria-selected={isActive}
+                onClick={() => setActiveTab(tab.key)}
+                className={`whitespace-nowrap px-4 py-3 text-sm font-medium transition-colors ${
+                  isActive
+                    ? 'border-b-2 border-[#00a9e0] text-[#00a9e0]'
+                    : 'text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200'
+                }`}
+              >
+                {tab.label}
+              </button>
+            );
+          })}
+        </nav>
+      </div>
 
-            {job.description && job.description !== job.scope && (
-              <>
-                <h3 className="mt-4 text-sm font-bold text-zinc-700 dark:text-zinc-300">Additional Details</h3>
-                <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">{job.description}</p>
-              </>
-            )}
-          </div>
+      {/* Tab Content */}
+      {activeTab === 'overview' && (
+        <div className="grid gap-6 lg:grid-cols-3">
+          {/* Left column: description + details */}
+          <div className="space-y-6 lg:col-span-2">
+            {/* Scope */}
+            <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm sm:p-6 dark:border-zinc-800 dark:bg-zinc-900">
+              <h2 className="text-base font-bold text-zinc-900 dark:text-zinc-50">Scope of Work</h2>
+              <p className="mt-2 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">{job.scope}</p>
 
-          {/* Photos placeholder */}
-          <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm sm:p-6 dark:border-zinc-800 dark:bg-zinc-900">
-            <div className="flex items-center justify-between">
-              <h2 className="text-base font-bold text-zinc-900 dark:text-zinc-50">Photos</h2>
-              {isActive && (
-                <button
-                  type="button"
-                  onClick={() => setShowPhotoUpload(!showPhotoUpload)}
-                  className="rounded-lg bg-amber-500 px-3 py-1.5 text-xs font-bold text-white transition-colors hover:bg-amber-600"
-                >
-                  Upload Photo
-                </button>
+              {job.description && job.description !== job.scope && (
+                <>
+                  <h3 className="mt-4 text-sm font-bold text-zinc-700 dark:text-zinc-300">Additional Details</h3>
+                  <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">{job.description}</p>
+                </>
               )}
             </div>
-            {showPhotoUpload && (
-              <div className="mt-3 rounded-lg border-2 border-dashed border-zinc-300 p-6 text-center dark:border-zinc-600">
-                <svg className="mx-auto h-10 w-10 text-zinc-400" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0 0 22.5 18.75V5.25A2.25 2.25 0 0 0 20.25 3H3.75A2.25 2.25 0 0 0 1.5 5.25v13.5A2.25 2.25 0 0 0 3.75 21Z" />
-                </svg>
-                <p className="mt-2 text-sm text-zinc-500">Tap to upload milestone photos</p>
-                <p className="mt-0.5 text-xs text-zinc-400">JPG, PNG up to 10MB</p>
-              </div>
-            )}
-            {!showPhotoUpload && job.photos.length === 0 && (
-              <p className="mt-2 text-sm text-zinc-500">No photos uploaded yet.</p>
-            )}
-          </div>
 
-          {/* Milestones (active/completed jobs) */}
-          {(isActive || isCompleted) && job.milestones.length > 0 && (
+            {/* Photos placeholder */}
             <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm sm:p-6 dark:border-zinc-800 dark:bg-zinc-900">
-              <h2 className="mb-4 text-base font-bold text-zinc-900 dark:text-zinc-50">Milestones</h2>
-              <MilestoneTracker milestones={job.milestones} />
-            </div>
-          )}
-
-          {/* Checklists */}
-          {isActive && (job.onboardingChecklist.length > 0 || job.offboardingChecklist.length > 0) && (
-            <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm sm:p-6 dark:border-zinc-800 dark:bg-zinc-900">
-              <h2 className="mb-4 text-base font-bold text-zinc-900 dark:text-zinc-50">Checklists</h2>
-              <div className="space-y-6">
-                <Checklist title="Onboarding" items={job.onboardingChecklist} />
-                <Checklist title="Offboarding" items={job.offboardingChecklist} />
-              </div>
-            </div>
-          )}
-
-          {/* Completed review */}
-          {isCompleted && job.reviewText && (
-            <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm sm:p-6 dark:border-zinc-800 dark:bg-zinc-900">
-              <h2 className="text-base font-bold text-zinc-900 dark:text-zinc-50">Client Review</h2>
-              <div className="mt-2 flex items-center gap-1">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <svg
-                    key={i}
-                    className={`h-5 w-5 ${i < (job.ratingReceived ?? 0) ? 'text-amber-500' : 'text-zinc-300 dark:text-zinc-600'}`}
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    aria-hidden="true"
+              <div className="flex items-center justify-between">
+                <h2 className="text-base font-bold text-zinc-900 dark:text-zinc-50">Photos</h2>
+                {isActive && (
+                  <button
+                    type="button"
+                    onClick={() => setShowPhotoUpload(!showPhotoUpload)}
+                    className="rounded-lg bg-amber-500 px-3 py-1.5 text-xs font-bold text-white transition-colors hover:bg-amber-600"
                   >
-                    <path fillRule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z" clipRule="evenodd" />
+                    Upload Photo
+                  </button>
+                )}
+              </div>
+              {showPhotoUpload && (
+                <div className="mt-3 rounded-lg border-2 border-dashed border-zinc-300 p-6 text-center dark:border-zinc-600">
+                  <svg className="mx-auto h-10 w-10 text-zinc-400" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0 0 22.5 18.75V5.25A2.25 2.25 0 0 0 20.25 3H3.75A2.25 2.25 0 0 0 1.5 5.25v13.5A2.25 2.25 0 0 0 3.75 21Z" />
                   </svg>
-                ))}
-              </div>
-              <p className="mt-2 text-sm italic text-zinc-600 dark:text-zinc-400">&ldquo;{job.reviewText}&rdquo;</p>
-              <p className="mt-1 text-xs text-zinc-400">-- {job.clientName}</p>
-            </div>
-          )}
-        </div>
-
-        {/* Right column: actions */}
-        <div className="space-y-4">
-          {/* Bid form for available bid jobs */}
-          {isAvailable && job.type === 'bid' && (
-            <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
-              <BidForm jobId={job.id} budgetMin={job.budgetMin} budgetMax={job.budgetMax} />
-            </div>
-          )}
-
-          {/* Accept/Decline for auto-dispatch */}
-          {isAvailable && job.type === 'auto-dispatch' && (
-            <div className="rounded-xl border-2 border-amber-300 bg-amber-50 p-4 shadow-sm dark:border-amber-700 dark:bg-amber-950/20">
-              <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-50">Auto-Dispatch Job</h3>
-              <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
-                You have been selected for this job based on your profile match and availability.
-              </p>
-              <div className="mt-4 space-y-2">
-                <button
-                  type="button"
-                  className="w-full rounded-lg bg-emerald-500 py-3 text-sm font-bold text-white shadow-sm transition-colors hover:bg-emerald-600 active:bg-emerald-700"
-                >
-                  Accept Job
-                </button>
-                <button
-                  type="button"
-                  className="w-full rounded-lg border border-zinc-300 py-3 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-50 dark:border-zinc-600 dark:text-zinc-300 dark:hover:bg-zinc-800"
-                >
-                  Decline
-                </button>
-              </div>
-            </div>
-          )}
-
-          {/* Chat button */}
-          {(isActive || isAvailable) && (
-            <button
-              type="button"
-              className="flex w-full items-center justify-center gap-2 rounded-xl border border-zinc-200 bg-white py-3 text-sm font-semibold text-zinc-700 shadow-sm transition-colors hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
-            >
-              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.41 20.97a5.969 5.969 0 0 1-.474-.065 4.48 4.48 0 0 0 .978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25Z" />
-              </svg>
-              Message Client
-            </button>
-          )}
-
-          {/* Job summary card */}
-          <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
-            <h3 className="text-sm font-bold text-zinc-700 dark:text-zinc-300">Job Summary</h3>
-            <dl className="mt-3 space-y-2 text-sm">
-              <div className="flex justify-between">
-                <dt className="text-zinc-500">Category</dt>
-                <dd className="font-medium text-zinc-900 dark:text-zinc-100">{job.category}</dd>
-              </div>
-              <div className="flex justify-between">
-                <dt className="text-zinc-500">Budget</dt>
-                <dd className="font-medium text-zinc-900 dark:text-zinc-100">${job.budgetMin.toLocaleString()} - ${job.budgetMax.toLocaleString()}</dd>
-              </div>
-              <div className="flex justify-between">
-                <dt className="text-zinc-500">Distance</dt>
-                <dd className="font-medium text-zinc-900 dark:text-zinc-100">{job.distanceMiles} mi</dd>
-              </div>
-              <div className="flex justify-between">
-                <dt className="text-zinc-500">Type</dt>
-                <dd className="font-medium text-zinc-900 dark:text-zinc-100">{job.type === 'auto-dispatch' ? 'Auto-Dispatch' : 'Bid'}</dd>
-              </div>
-              {job.dispatchScore && (
-                <div className="flex justify-between">
-                  <dt className="text-zinc-500">Match Score</dt>
-                  <dd className="font-semibold text-emerald-600 dark:text-emerald-400">{job.dispatchScore}%</dd>
+                  <p className="mt-2 text-sm text-zinc-500">Tap to upload milestone photos</p>
+                  <p className="mt-0.5 text-xs text-zinc-400">JPG, PNG up to 10MB</p>
                 </div>
               )}
-            </dl>
+              {!showPhotoUpload && job.photos.length === 0 && (
+                <p className="mt-2 text-sm text-zinc-500">No photos uploaded yet.</p>
+              )}
+            </div>
+
+            {/* Milestones (active/completed jobs) */}
+            {(isActive || isCompleted) && job.milestones.length > 0 && (
+              <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm sm:p-6 dark:border-zinc-800 dark:bg-zinc-900">
+                <h2 className="mb-4 text-base font-bold text-zinc-900 dark:text-zinc-50">Milestones</h2>
+                <MilestoneTracker milestones={job.milestones} />
+              </div>
+            )}
+
+            {/* Legacy checklists */}
+            {isActive && (job.onboardingChecklist.length > 0 || job.offboardingChecklist.length > 0) && (
+              <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm sm:p-6 dark:border-zinc-800 dark:bg-zinc-900">
+                <h2 className="mb-4 text-base font-bold text-zinc-900 dark:text-zinc-50">Checklists</h2>
+                <div className="space-y-6">
+                  <LegacyChecklist title="Onboarding" items={job.onboardingChecklist} />
+                  <LegacyChecklist title="Offboarding" items={job.offboardingChecklist} />
+                </div>
+              </div>
+            )}
+
+            {/* Completed review */}
+            {isCompleted && job.reviewText && (
+              <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm sm:p-6 dark:border-zinc-800 dark:bg-zinc-900">
+                <h2 className="text-base font-bold text-zinc-900 dark:text-zinc-50">Client Review</h2>
+                <div className="mt-2 flex items-center gap-1">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <svg
+                      key={i}
+                      className={`h-5 w-5 ${i < (job.ratingReceived ?? 0) ? 'text-amber-500' : 'text-zinc-300 dark:text-zinc-600'}`}
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                      aria-hidden="true"
+                    >
+                      <path fillRule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z" clipRule="evenodd" />
+                    </svg>
+                  ))}
+                </div>
+                <p className="mt-2 text-sm italic text-zinc-600 dark:text-zinc-400">&ldquo;{job.reviewText}&rdquo;</p>
+                <p className="mt-1 text-xs text-zinc-400">-- {job.clientName}</p>
+              </div>
+            )}
+          </div>
+
+          {/* Right column: actions */}
+          <div className="space-y-4">
+            {/* Bid form for available bid jobs */}
+            {isAvailable && job.type === 'bid' && (
+              <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
+                <BidForm jobId={job.id} budgetMin={job.budgetMin} budgetMax={job.budgetMax} />
+              </div>
+            )}
+
+            {/* Accept/Decline for auto-dispatch */}
+            {isAvailable && job.type === 'auto-dispatch' && (
+              <div className="rounded-xl border-2 border-amber-300 bg-amber-50 p-4 shadow-sm dark:border-amber-700 dark:bg-amber-950/20">
+                <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-50">Auto-Dispatch Job</h3>
+                <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
+                  You have been selected for this job based on your profile match and availability.
+                </p>
+                <div className="mt-4 space-y-2">
+                  <button
+                    type="button"
+                    className="w-full rounded-lg bg-emerald-500 py-3 text-sm font-bold text-white shadow-sm transition-colors hover:bg-emerald-600 active:bg-emerald-700"
+                  >
+                    Accept Job
+                  </button>
+                  <button
+                    type="button"
+                    className="w-full rounded-lg border border-zinc-300 py-3 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-50 dark:border-zinc-600 dark:text-zinc-300 dark:hover:bg-zinc-800"
+                  >
+                    Decline
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Chat button */}
+            {(isActive || isAvailable) && (
+              <button
+                type="button"
+                className="flex w-full items-center justify-center gap-2 rounded-xl border border-zinc-200 bg-white py-3 text-sm font-semibold text-zinc-700 shadow-sm transition-colors hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
+              >
+                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.41 20.97a5.969 5.969 0 0 1-.474-.065 4.48 4.48 0 0 0 .978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25Z" />
+                </svg>
+                Message Client
+              </button>
+            )}
+
+            {/* Job summary card */}
+            <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
+              <h3 className="text-sm font-bold text-zinc-700 dark:text-zinc-300">Job Summary</h3>
+              <dl className="mt-3 space-y-2 text-sm">
+                <div className="flex justify-between">
+                  <dt className="text-zinc-500">Category</dt>
+                  <dd className="font-medium text-zinc-900 dark:text-zinc-100">{job.category}</dd>
+                </div>
+                <div className="flex justify-between">
+                  <dt className="text-zinc-500">Budget</dt>
+                  <dd className="font-medium text-zinc-900 dark:text-zinc-100">${job.budgetMin.toLocaleString()} - ${job.budgetMax.toLocaleString()}</dd>
+                </div>
+                <div className="flex justify-between">
+                  <dt className="text-zinc-500">Distance</dt>
+                  <dd className="font-medium text-zinc-900 dark:text-zinc-100">{job.distanceMiles} mi</dd>
+                </div>
+                <div className="flex justify-between">
+                  <dt className="text-zinc-500">Type</dt>
+                  <dd className="font-medium text-zinc-900 dark:text-zinc-100">{job.type === 'auto-dispatch' ? 'Auto-Dispatch' : 'Bid'}</dd>
+                </div>
+                {job.dispatchScore && (
+                  <div className="flex justify-between">
+                    <dt className="text-zinc-500">Match Score</dt>
+                    <dd className="font-semibold text-emerald-600 dark:text-emerald-400">{job.dispatchScore}%</dd>
+                  </div>
+                )}
+              </dl>
+            </div>
           </div>
         </div>
+      )}
+
+      {/* Scope Tab */}
+      {activeTab === 'scope' && (
+        hasChecklist ? (
+          <ScopeDocument scope={jobChecklist.scope} />
+        ) : (
+          <NoChecklistMessage />
+        )
+      )}
+
+      {/* Process Tab */}
+      {activeTab === 'process' && (
+        hasChecklist ? (
+          <WorkProcess steps={jobChecklist.process} />
+        ) : (
+          <NoChecklistMessage />
+        )
+      )}
+
+      {/* Checklist Tab */}
+      {activeTab === 'checklist' && (
+        hasChecklist ? (
+          <ChecklistProgress
+            items={checklistItems}
+            onToggle={handleToggle}
+            onPhotoUpload={handlePhotoUpload}
+          />
+        ) : (
+          <NoChecklistMessage />
+        )
+      )}
+
+      {/* Materials Tab */}
+      {activeTab === 'materials' && (
+        hasChecklist ? (
+          <MaterialsList
+            materials={materials}
+            editable={true}
+            onAdd={handleAddMaterial}
+            onRemove={handleRemoveMaterial}
+            onAdjust={handleAdjustMaterial}
+          />
+        ) : (
+          <NoChecklistMessage />
+        )
+      )}
+    </div>
+  );
+}
+
+function NoChecklistMessage() {
+  return (
+    <div className="rounded-xl border border-zinc-200 bg-white p-8 text-center dark:border-zinc-800 dark:bg-zinc-900">
+      <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-zinc-100 dark:bg-zinc-800">
+        <svg className="h-6 w-6 text-zinc-400" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden="true">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25Z" />
+        </svg>
       </div>
+      <p className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
+        Checklist will be generated when a bid is accepted.
+      </p>
+      <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
+        Scope, process, checklist, and materials are auto-generated for every active job.
+      </p>
     </div>
   );
 }

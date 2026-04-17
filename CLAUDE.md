@@ -13,7 +13,7 @@ Construction marketplace (Uber for contractors) connecting clients with verified
 - **Auth:** Clerk (Pro/Client role selection)
 - **Payments:** Stripe Connect (marketplace splits, escrow)
 - **Database:** Neon PostgreSQL + PostGIS (Drizzle ORM)
-- **Maps:** Mapbox GL JS + react-map-gl + Google Places Autocomplete
+- **Maps:** Google Maps JavaScript API (@vis.gl/react-google-maps) — Uber-like map interface
 - **Communication:** Twilio masked messaging (mock mode for dev)
 - **Deployment:** Vercel (PWA, mobile-first)
 - **Linting:** ESLint + Prettier
@@ -54,7 +54,7 @@ src/
     client/              Client components (JobWizard, BidCard, RatingForm, etc.)
     payments/            Stripe Connect UI components
     chat/                Chat window, FAB, conversation list
-    maps/                Mapbox maps, address autocomplete, hub visualization
+    maps/                Google Maps (MapView, BottomSheet, ProMarker, JobMarker, DispatchTracker)
   lib/
     auth/                Clerk helpers (roles, get-user, require-role)
     dispatch-wiseman/    7-factor matching algorithm (scoring, dispatcher, anti-gaming)

@@ -4,6 +4,7 @@ import StatsCard from '@/components/pro/StatsCard';
 import BadgeTier from '@/components/pro/BadgeTier';
 import DispatchAlert from '@/components/pro/DispatchAlert';
 import MilestoneTracker from '@/components/pro/MilestoneTracker';
+import NearbyJobsMap from '@/components/pro/NearbyJobsMap';
 import EmptyState from '@/components/EmptyState';
 import { UserCircleIcon } from '@heroicons/react/24/outline';
 import {
@@ -118,6 +119,9 @@ export default function ProDashboardPage() {
           }
         />
       </div>
+
+      {/* Nearby jobs map */}
+      <NearbyJobsMap />
 
       {/* Active jobs */}
       <section>

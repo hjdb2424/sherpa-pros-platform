@@ -10,6 +10,7 @@ import {
 } from '@/lib/mock-data/client-data';
 import { JobStatusBadge } from '@/components/client/JobStatusBadge';
 import EmptyState from '@/components/EmptyState';
+import NearbyProsMap from '@/components/client/NearbyProsMap';
 import { ClipboardDocumentListIcon } from '@heroicons/react/24/outline';
 
 const ACTIVITY_ICONS: Record<string, { icon: string; bg: string }> = {
@@ -142,6 +143,9 @@ export function ClientDashboardContent() {
 
         {/* Right column */}
         <div className="lg:col-span-2 space-y-8">
+          {/* Nearby pros map */}
+          <NearbyProsMap />
+
           {/* Quick actions */}
           <div>
             <h2 className="mb-4 text-lg font-bold text-zinc-900">Quick Actions</h2>

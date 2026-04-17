@@ -12,6 +12,7 @@ import { JobStatusBadge } from '@/components/client/JobStatusBadge';
 import EmptyState from '@/components/EmptyState';
 import NearbyProsMap from '@/components/client/NearbyProsMap';
 import { ClipboardDocumentListIcon } from '@heroicons/react/24/outline';
+import { SCPBanner } from '@/components/ai';
 
 const ACTIVITY_ICONS: Record<string, { icon: string; bg: string }> = {
   bid_received: { icon: '📩', bg: 'bg-blue-100' },
@@ -76,8 +77,13 @@ export function ClientDashboardContent() {
       </div>
 
       <div className="grid gap-8 lg:grid-cols-5">
-        {/* Active Jobs */}
-        <div className="lg:col-span-3">
+        {/* Left column */}
+        <div className="lg:col-span-3 space-y-6">
+          {/* Sherpa Client Pro banner */}
+          <SCPBanner clientName="Phyrom" isSubscribed={false} />
+
+          {/* Active Jobs */}
+          <div>
           <div className="mb-4 flex items-center justify-between">
             <h2 className="text-lg font-bold text-zinc-900">Active Jobs</h2>
             <Link href="/client/my-jobs" className="text-sm font-medium text-[#00a9e0] hover:text-[#0ea5e9]">
@@ -138,6 +144,7 @@ export function ClientDashboardContent() {
                 </Link>
               ))
             )}
+          </div>
           </div>
         </div>
 

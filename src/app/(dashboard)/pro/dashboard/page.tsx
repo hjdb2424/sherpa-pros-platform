@@ -6,6 +6,7 @@ import DispatchAlert from '@/components/pro/DispatchAlert';
 import MilestoneTracker from '@/components/pro/MilestoneTracker';
 import NearbyJobsMap from '@/components/pro/NearbyJobsMap';
 import EmptyState from '@/components/EmptyState';
+import { SSPBanner } from '@/components/ai';
 import { UserCircleIcon } from '@heroicons/react/24/outline';
 import {
   mockProProfile,
@@ -73,6 +74,9 @@ export default function ProDashboardPage() {
 
       {/* Incoming dispatch alert */}
       <DispatchAlert dispatch={mockDispatch} />
+
+      {/* Sherpa Success Pro banner */}
+      <SSPBanner proName={pro.name.split(' ')[0]} />
 
       {/* Stats row */}
       <div className="grid gap-4 grid-cols-2 lg:grid-cols-4">

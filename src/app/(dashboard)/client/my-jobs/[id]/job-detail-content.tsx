@@ -9,11 +9,112 @@ import {
   formatDate,
 } from '@/lib/mock-data/client-data';
 import { getChecklistForJob } from '@/lib/mock-data/checklist-data';
+import { calculateFeeBreakdown, formatCents } from '@/lib/pricing/fee-calculator';
+import type { ClientTier } from '@/lib/pricing/fee-calculator';
+import type { DeliveryTier } from '@/lib/services/zinc';
 import { JobStatusBadge } from '@/components/client/JobStatusBadge';
 import { BidCard } from '@/components/client/BidCard';
 import { ProCard } from '@/components/client/ProCard';
 import { RatingForm } from '@/components/client/RatingForm';
-import { MaterialsList, MaterialsApproval } from '@/components/checklist';
+import {
+  MaterialsList,
+  MaterialsApproval,
+  PaymentSelector,
+  DeliverySelector,
+  DeliveryTracker,
+} from '@/components/checklist';
+
+// ---------------------------------------------------------------------------
+// Materials Flow State Machine
+// ---------------------------------------------------------------------------
+
+type MaterialsStep = 'review' | 'payment' | 'delivery' | 'ordered' | 'tracking' | 'complete';
+
+const STEPS_CONFIG: { key: MaterialsStep; label: string }[] = [
+  { key: 'review', label: 'Review' },
+  { key: 'payment', label: 'Payment' },
+  { key: 'delivery', label: 'Delivery' },
+  { key: 'ordered', label: 'Order' },
+  { key: 'tracking', label: 'Track' },
+  { key: 'complete', label: 'Complete' },
+];
+
+function getStepIndex(step: MaterialsStep): number {
+  return STEPS_CONFIG.findIndex((s) => s.key === step);
+}
+
+// ---------------------------------------------------------------------------
+// Progress Indicator
+// ---------------------------------------------------------------------------
+
+function StepProgressBar({ current }: { current: MaterialsStep }) {
+  const currentIdx = getStepIndex(current);
+
+  return (
+    <nav className="mb-6" aria-label="Materials flow progress">
+      <ol className="flex items-center gap-0">
+        {STEPS_CONFIG.map((step, idx) => {
+          const isDone = idx < currentIdx;
+          const isCurrent = idx === currentIdx;
+          const isLast = idx === STEPS_CONFIG.length - 1;
+
+          return (
+            <li key={step.key} className="flex items-center">
+              {/* Step circle + label */}
+              <div className="flex flex-col items-center gap-1">
+                <div
+                  className={`
+                    flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold transition-all duration-300
+                    ${
+                      isDone
+                        ? 'bg-emerald-500 text-white'
+                        : isCurrent
+                          ? 'bg-[#00a9e0] text-white shadow-[0_0_0_3px_rgba(0,169,224,0.25)] animate-pulse'
+                          : 'bg-zinc-200 text-zinc-400 dark:bg-zinc-700 dark:text-zinc-500'
+                    }
+                  `}
+                  aria-current={isCurrent ? 'step' : undefined}
+                >
+                  {isDone ? (
+                    <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                    </svg>
+                  ) : (
+                    idx + 1
+                  )}
+                </div>
+                <span
+                  className={`text-[10px] font-medium leading-none whitespace-nowrap ${
+                    isDone
+                      ? 'text-emerald-600 dark:text-emerald-400'
+                      : isCurrent
+                        ? 'text-[#00a9e0] font-semibold'
+                        : 'text-zinc-400 dark:text-zinc-500'
+                  }`}
+                >
+                  {step.label}
+                </span>
+              </div>
+
+              {/* Connector line */}
+              {!isLast && (
+                <div
+                  className={`mx-1 h-0.5 w-6 flex-shrink-0 sm:w-10 transition-colors duration-300 ${
+                    idx < currentIdx ? 'bg-emerald-500' : 'bg-zinc-200 dark:bg-zinc-700'
+                  }`}
+                />
+              )}
+            </li>
+          );
+        })}
+      </ol>
+    </nav>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Main Component
+// ---------------------------------------------------------------------------
 
 interface JobDetailContentProps {
   jobId: string;
@@ -24,11 +125,76 @@ export function JobDetailContent({ jobId }: JobDetailContentProps) {
   const bids = getBidsForJob(jobId);
   const checklist = useMemo(() => getChecklistForJob(jobId), [jobId]);
 
-  const [approved, setApproved] = useState(false);
+  // Materials flow state machine
+  const [materialsStep, setMaterialsStep] = useState<MaterialsStep>('review');
+  const [paymentResult, setPaymentResult] = useState<{ method: string; id: string } | null>(null);
+  const [deliveryTier, setDeliveryTier] = useState<DeliveryTier | null>(null);
+  const [deliveryId, setDeliveryId] = useState<string | null>(null);
+  const [orderConfirming, setOrderConfirming] = useState(false);
+
+  // Compute fee breakdown from checklist materials
+  const feeBreakdown = useMemo(() => {
+    if (!checklist) return null;
+    const totalCents = checklist.materials.reduce(
+      (sum, m) => sum + m.priceCents * m.quantity,
+      0,
+    );
+    return calculateFeeBreakdown(totalCents, 'one_time' as ClientTier);
+  }, [checklist]);
+
+  // --- Callbacks ---
 
   const handleApprove = useCallback(() => {
-    setApproved(true);
+    setMaterialsStep('payment');
   }, []);
+
+  const handlePaymentComplete = useCallback(
+    (result: { method: string; id: string }) => {
+      setPaymentResult(result);
+      setMaterialsStep('delivery');
+    },
+    [],
+  );
+
+  const handleDeliverySelect = useCallback((tier: DeliveryTier) => {
+    setDeliveryTier(tier);
+  }, []);
+
+  const handleConfirmOrder = useCallback(async () => {
+    if (!deliveryTier) return;
+    setOrderConfirming(true);
+    try {
+      const res = await fetch('/api/materials/order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          deliveryTier,
+          paymentId: paymentResult?.id,
+          paymentMethod: paymentResult?.method,
+        }),
+      });
+      const data = await res.json();
+      if (data.deliveryId) {
+        setDeliveryId(data.deliveryId);
+      }
+      setMaterialsStep('ordered');
+
+      // Auto-advance to tracking for gig deliveries
+      if (deliveryTier === 'gig' && data.deliveryId) {
+        setTimeout(() => setMaterialsStep('tracking'), 2000);
+      }
+    } catch {
+      // Stay on delivery step if order fails — user can retry
+    } finally {
+      setOrderConfirming(false);
+    }
+  }, [deliveryTier, paymentResult]);
+
+  const handleDelivered = useCallback(() => {
+    setMaterialsStep('complete');
+  }, []);
+
+  // --- Guard: not found ---
 
   if (!job) {
     return (
@@ -48,6 +214,22 @@ export function JobDetailContent({ jobId }: JobDetailContentProps) {
   const isBidding = ['open', 'bidding'].includes(job.status);
   const isActive = ['assigned', 'in_progress'].includes(job.status);
   const isCompleted = job.status === 'completed';
+
+  // --- Delivery label helpers ---
+
+  const deliveryLabel: Record<string, string> = {
+    bopis: 'Store Pickup (BOPIS)',
+    hd_delivery: 'Home Depot Delivery',
+    gig: 'Gig Delivery (Uber Connect)',
+    pro_choice: 'Pro Pickup',
+  };
+
+  const deliveryEta: Record<string, string> = {
+    bopis: 'Ready in 2 hours',
+    hd_delivery: '2-5 business days',
+    gig: '60-90 minutes',
+    pro_choice: 'Pro will pick up',
+  };
 
   return (
     <div className="px-4 py-6 lg:px-8">
@@ -236,38 +418,188 @@ export function JobDetailContent({ jobId }: JobDetailContentProps) {
             </div>
           </div>
 
-          {/* Materials & Approval Section */}
-          {checklist ? (
+          {/* ================================================================ */}
+          {/* Materials & Approval — Full Flow                                 */}
+          {/* ================================================================ */}
+          {checklist && feeBreakdown ? (
             <div>
               <h2 className="mb-3 text-lg font-bold text-zinc-900 dark:text-zinc-50">Materials &amp; Approval</h2>
 
-              {/* Success banner */}
-              {approved && (
-                <div className="mb-4 rounded-xl border border-emerald-200 bg-emerald-50 p-4 dark:border-emerald-800 dark:bg-emerald-900/20">
-                  <div className="flex items-center gap-2">
-                    <svg className="h-5 w-5 text-emerald-600" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <p className="text-sm font-medium text-emerald-800 dark:text-emerald-300">
-                      Materials approved! Your Pro will be notified.
-                    </p>
+              {/* Progress bar */}
+              <StepProgressBar current={materialsStep} />
+
+              {/* ----- Step: review ----- */}
+              {materialsStep === 'review' && (
+                <div>
+                  <MaterialsList materials={checklist.materials} editable={false} />
+                  <div className="mt-4">
+                    <MaterialsApproval
+                      materials={checklist.materials}
+                      clientTier="one_time"
+                      onApprove={handleApprove}
+                    />
                   </div>
                 </div>
               )}
 
-              {/* Read-only materials list */}
-              <MaterialsList materials={checklist.materials} editable={false} />
-
-              {/* Approval widget */}
-              {!approved && (
-                <div className="mt-4">
-                  <MaterialsApproval
-                    materials={checklist.materials}
+              {/* ----- Step: payment ----- */}
+              {materialsStep === 'payment' && (
+                <div>
+                  <div className="mb-4 rounded-xl border border-emerald-200 bg-emerald-50 p-4 dark:border-emerald-800 dark:bg-emerald-900/20">
+                    <div className="flex items-center gap-2">
+                      <svg className="h-5 w-5 text-emerald-600" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      <p className="text-sm font-medium text-emerald-800 dark:text-emerald-300">
+                        Materials approved! Choose how you would like to pay.
+                      </p>
+                    </div>
+                  </div>
+                  <PaymentSelector
+                    amountCents={feeBreakdown.grandTotalCents}
                     clientTier="one_time"
-                    onApprove={handleApprove}
+                    onPaymentComplete={handlePaymentComplete}
                   />
                 </div>
               )}
+
+              {/* ----- Step: delivery ----- */}
+              {materialsStep === 'delivery' && (
+                <div>
+                  <div className="mb-4 rounded-xl border border-emerald-200 bg-emerald-50 p-4 dark:border-emerald-800 dark:bg-emerald-900/20">
+                    <div className="flex items-center gap-2">
+                      <svg className="h-5 w-5 text-emerald-600" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      <p className="text-sm font-medium text-emerald-800 dark:text-emerald-300">
+                        Payment {paymentResult?.method === 'card_hold' ? 'authorized' : 'approved'}! Now choose delivery.
+                      </p>
+                    </div>
+                  </div>
+
+                  <DeliverySelector
+                    materials={checklist.materials}
+                    onSelect={handleDeliverySelect}
+                    selectedTier={deliveryTier ?? undefined}
+                  />
+
+                  {/* Confirm Order button */}
+                  <button
+                    onClick={handleConfirmOrder}
+                    disabled={!deliveryTier || orderConfirming}
+                    className="mt-5 w-full rounded-full bg-[#00a9e0] px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-[#00a9e0]/25 transition-all hover:bg-[#0090c0] active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00a9e0] focus-visible:ring-offset-2 dark:focus-visible:ring-offset-zinc-900"
+                  >
+                    {orderConfirming ? (
+                      <span className="inline-flex items-center gap-2">
+                        <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                        </svg>
+                        Placing Order...
+                      </span>
+                    ) : (
+                      'Confirm Order'
+                    )}
+                  </button>
+                </div>
+              )}
+
+              {/* ----- Step: ordered ----- */}
+              {materialsStep === 'ordered' && (
+                <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-6 dark:border-emerald-800 dark:bg-emerald-900/20">
+                  <div className="flex flex-col items-center text-center">
+                    <div className="flex h-14 w-14 items-center justify-center rounded-full bg-emerald-100 dark:bg-emerald-900/40">
+                      <svg className="h-7 w-7 text-emerald-600 dark:text-emerald-400" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </div>
+                    <h3 className="mt-3 text-lg font-bold text-emerald-800 dark:text-emerald-200">
+                      Materials Ordered!
+                    </h3>
+                    <div className="mt-3 space-y-1 text-sm text-emerald-700 dark:text-emerald-300">
+                      <p>{checklist.materials.length} items ordered</p>
+                      <p>{deliveryTier ? deliveryLabel[deliveryTier] : 'Delivery'}</p>
+                      <p className="text-xs text-emerald-600 dark:text-emerald-400">
+                        {deliveryTier ? deliveryEta[deliveryTier] : ''}
+                      </p>
+                    </div>
+
+                    {/* For non-gig tiers, show status info */}
+                    {deliveryTier && deliveryTier !== 'gig' && (
+                      <div className="mt-4 w-full rounded-lg bg-white/60 p-4 dark:bg-zinc-800/40">
+                        <p className="text-xs font-medium text-zinc-600 dark:text-zinc-300">
+                          {deliveryTier === 'bopis'
+                            ? 'You will be notified when your materials are ready for pickup at the store.'
+                            : deliveryTier === 'hd_delivery'
+                              ? 'Home Depot will deliver to the job site. You will receive tracking information via email.'
+                              : 'Your Pro will pick up the materials at their convenience.'}
+                        </p>
+                      </div>
+                    )}
+
+                    {/* For gig tier, show auto-advancing message */}
+                    {deliveryTier === 'gig' && (
+                      <p className="mt-3 text-xs text-emerald-600 dark:text-emerald-400 animate-pulse">
+                        Setting up live tracking...
+                      </p>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* ----- Step: tracking ----- */}
+              {materialsStep === 'tracking' && deliveryId && (
+                <DeliveryTracker
+                  deliveryId={deliveryId}
+                  provider="uber"
+                  onDelivered={handleDelivered}
+                />
+              )}
+
+              {/* ----- Step: complete ----- */}
+              {materialsStep === 'complete' && (
+                <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-6 dark:border-emerald-800 dark:bg-emerald-900/20">
+                  <div className="flex flex-col items-center text-center">
+                    <div className="flex h-14 w-14 items-center justify-center rounded-full bg-emerald-100 dark:bg-emerald-900/40">
+                      <svg className="h-7 w-7 text-emerald-600 dark:text-emerald-400" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                      </svg>
+                    </div>
+                    <h3 className="mt-3 text-lg font-bold text-emerald-800 dark:text-emerald-200">
+                      Materials Delivered!
+                    </h3>
+                    <p className="mt-1 text-sm text-emerald-700 dark:text-emerald-300">
+                      Your Pro can now begin work.
+                    </p>
+                    <div className="mt-4 w-full space-y-2 rounded-lg bg-white/60 p-4 text-left dark:bg-zinc-800/40">
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-zinc-500 dark:text-zinc-400">Items</span>
+                        <span className="font-medium text-zinc-800 dark:text-zinc-200">
+                          {checklist.materials.length} materials
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-zinc-500 dark:text-zinc-400">Payment</span>
+                        <span className="font-medium text-zinc-800 dark:text-zinc-200">
+                          {paymentResult?.method === 'card_hold' ? 'Card' : 'Financed'} - {formatCents(feeBreakdown.grandTotalCents)}
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-zinc-500 dark:text-zinc-400">Delivery</span>
+                        <span className="font-medium text-zinc-800 dark:text-zinc-200">
+                          {deliveryTier ? deliveryLabel[deliveryTier] : 'N/A'}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          ) : checklist ? (
+            /* Checklist exists but no fee breakdown (shouldn't happen, but safe fallback) */
+            <div>
+              <h2 className="mb-3 text-lg font-bold text-zinc-900 dark:text-zinc-50">Materials &amp; Approval</h2>
+              <MaterialsList materials={checklist.materials} editable={false} />
             </div>
           ) : (
             <div>

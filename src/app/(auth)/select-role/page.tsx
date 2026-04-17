@@ -13,31 +13,34 @@ export default function SelectRolePage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#1a1a2e] flex items-center justify-center px-4">
+    <div className="flex min-h-screen items-center justify-center bg-white px-4 dark:bg-zinc-950">
       <div className="w-full max-w-2xl">
-        <div className="text-center mb-10">
-          <h1 className="text-3xl sm:text-4xl font-bold text-white tracking-tight">
-            Welcome to Sherpa Pros
+        <div className="mb-10 text-center">
+          <h1 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-white sm:text-4xl">
+            Welcome to{" "}
+            <span className="text-zinc-900 dark:text-white">Sherpa</span>
+            <span className="text-[#ff4500]">Pros</span>
           </h1>
-          <p className="mt-3 text-gray-400 text-base sm:text-lg">
+          <p className="mt-3 text-base text-zinc-500 dark:text-zinc-400 sm:text-lg">
             How will you be using the platform?
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           {/* Pro Card */}
           <button
             type="button"
             onClick={() => handleSelect("pro")}
             disabled={isPending}
-            className="group relative rounded-2xl border border-white/10 bg-white/5 p-8 text-left
-                       transition-all duration-200
-                       hover:border-amber-500/50 hover:bg-amber-500/5 hover:shadow-lg hover:shadow-amber-500/10
-                       focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 focus-visible:ring-offset-[#1a1a2e]
-                       disabled:opacity-50 disabled:cursor-not-allowed"
+            className="group relative rounded-2xl border border-zinc-200 bg-white p-8 text-left
+                       shadow-sm transition-all duration-200
+                       hover:border-[#00a9e0]/50 hover:bg-[#00a9e0]/5 hover:shadow-lg hover:shadow-[#00a9e0]/10
+                       focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00a9e0] focus-visible:ring-offset-2
+                       disabled:cursor-not-allowed disabled:opacity-50
+                       dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-[#0ea5e9]/50 dark:hover:bg-[#0ea5e9]/5"
           >
-            <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-xl bg-amber-500/10 text-amber-500
-                            group-hover:bg-amber-500/20 transition-colors">
+            <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-xl bg-[#00a9e0]/10 text-[#00a9e0]
+                            transition-colors group-hover:bg-[#00a9e0]/20">
               <svg
                 className="h-7 w-7"
                 fill="none"
@@ -53,14 +56,14 @@ export default function SelectRolePage() {
                 />
               </svg>
             </div>
-            <h2 className="text-xl font-semibold text-white mb-2">
+            <h2 className="mb-2 text-xl font-semibold text-zinc-900 dark:text-white">
               I&apos;m a Pro
             </h2>
-            <p className="text-sm text-gray-400 leading-relaxed">
+            <p className="text-sm leading-relaxed text-zinc-500 dark:text-zinc-400">
               I&apos;m a contractor or handyman looking for work. Find jobs,
               manage clients, and grow my business.
             </p>
-            <div className="mt-6 flex items-center text-amber-500 text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+            <div className="mt-6 flex items-center text-sm font-medium text-[#00a9e0] opacity-0 transition-opacity group-hover:opacity-100">
               Get started
               <svg className="ml-1.5 h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
@@ -73,14 +76,15 @@ export default function SelectRolePage() {
             type="button"
             onClick={() => handleSelect("client")}
             disabled={isPending}
-            className="group relative rounded-2xl border border-white/10 bg-white/5 p-8 text-left
-                       transition-all duration-200
-                       hover:border-amber-500/50 hover:bg-amber-500/5 hover:shadow-lg hover:shadow-amber-500/10
-                       focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 focus-visible:ring-offset-[#1a1a2e]
-                       disabled:opacity-50 disabled:cursor-not-allowed"
+            className="group relative rounded-2xl border border-zinc-200 bg-white p-8 text-left
+                       shadow-sm transition-all duration-200
+                       hover:border-[#00a9e0]/50 hover:bg-[#00a9e0]/5 hover:shadow-lg hover:shadow-[#00a9e0]/10
+                       focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00a9e0] focus-visible:ring-offset-2
+                       disabled:cursor-not-allowed disabled:opacity-50
+                       dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-[#0ea5e9]/50 dark:hover:bg-[#0ea5e9]/5"
           >
-            <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-xl bg-amber-500/10 text-amber-500
-                            group-hover:bg-amber-500/20 transition-colors">
+            <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-xl bg-[#00a9e0]/10 text-[#00a9e0]
+                            transition-colors group-hover:bg-[#00a9e0]/20">
               <svg
                 className="h-7 w-7"
                 fill="none"
@@ -96,14 +100,14 @@ export default function SelectRolePage() {
                 />
               </svg>
             </div>
-            <h2 className="text-xl font-semibold text-white mb-2">
+            <h2 className="mb-2 text-xl font-semibold text-zinc-900 dark:text-white">
               I need a Pro
             </h2>
-            <p className="text-sm text-gray-400 leading-relaxed">
+            <p className="text-sm leading-relaxed text-zinc-500 dark:text-zinc-400">
               I need a Pro for my project. Post jobs, find trusted contractors,
               and manage my home projects.
             </p>
-            <div className="mt-6 flex items-center text-amber-500 text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+            <div className="mt-6 flex items-center text-sm font-medium text-[#00a9e0] opacity-0 transition-opacity group-hover:opacity-100">
               Get started
               <svg className="ml-1.5 h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
@@ -114,8 +118,8 @@ export default function SelectRolePage() {
 
         {isPending && (
           <div className="mt-8 flex justify-center">
-            <div className="flex items-center gap-3 text-gray-400 text-sm">
-              <svg className="h-5 w-5 animate-spin" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <div className="flex items-center gap-3 text-sm text-zinc-500 dark:text-zinc-400">
+              <svg className="h-5 w-5 animate-spin text-[#00a9e0]" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
               </svg>

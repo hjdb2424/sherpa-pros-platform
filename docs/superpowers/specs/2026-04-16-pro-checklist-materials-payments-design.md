@@ -128,32 +128,50 @@ Client receives a materials cost summary and chooses how to fund:
 
 ## Fee Structure
 
-### Materials Handling Fee — 10%
-- Charged on ALL materials orders (card hold and financed)
-- Covers: SerpApi pricing lookup, Zinc order placement, delivery coordination, Wiseman materials validation, SSP oversight
-- Applied to: materials subtotal (before tax)
+### Sherpa Service Fee — Single All-In Fee (Revised per CxO/Marketing/Support Review)
 
-### Financing Convenience Fee — 8%
-- Charged ONLY when client uses Wisetack financing
-- Covers: financing integration, additional risk management, SCP support
-- Applied to: materials subtotal (before tax)
-- This is on TOP of the materials handling fee
+One bundled fee covers everything: materials sourcing, pricing lookup, order placement, delivery coordination, Wiseman validation, SSP/SCP support, and financing integration. No separate line items — clients see ONE fee.
 
-### Gig Delivery Markup — 20%
-- Charged ONLY when gig delivery (Uber Connect / DoorDash Drive) is used
-- Applied to: the delivery service cost (pass-through + 20%)
-- Standard HD delivery and pro pickup have no delivery fee
+| Client Tier | Service Fee | Gig Delivery | Notes |
+|-------------|-------------|-------------|-------|
+| **Subscribed Member** | **12%** | **Included** | Loyalty perk — gig delivery at no extra charge |
+| **One-Time Client** | **18%** | **Pass-through + 15%** | Standard marketplace rate |
+| **Emergency** | **25%** | **Included** | Capped — no stacking beyond 25% total |
+
+Plus: ~2% Wisetack referral kickback on all financed orders (revenue to Sherpa Pros, not charged to client).
+
+Plus: $2.99 Delivery Protection fee on all gig deliveries — funds damage reserve for lost/broken items.
 
 ### Revenue Summary (per $2,000 materials order)
 
 | Scenario | Client Pays | Sherpa Earns |
 |----------|-------------|-------------|
-| Card hold + pro pickup | $2,200 | $200 (handling) |
-| Card hold + gig delivery ($15 base) | $2,218 | $200 + $3 (delivery markup) |
-| Wisetack + pro pickup | $2,360 | $200 + $160 + ~$40 (referral) = $400 |
-| Wisetack + gig delivery | $2,378 | $400 + $3 = $403 |
+| Subscribed, card hold | $2,240 | $240 + job commission |
+| Subscribed, financed | $2,240 | $240 + ~$40 (Wisetack referral) + commission |
+| One-time, card hold | $2,360 | $360 + commission |
+| One-time, financed | $2,360 | $360 + ~$40 (Wisetack referral) + commission |
+| Emergency, any funding | $2,500 | $500 + referral + commission |
 
 These fees are IN ADDITION TO the job commission (sliding 8-15% on labor).
+
+### Pricing Principles (from CxO/Marketing/Support review)
+- **One line item** — never show separate handling/financing/delivery charges. Internally tracked, externally bundled as "Sherpa Service Fee."
+- **Emergency capped at 25%** — no stacking beyond this. Protects brand from price gouging perception and NH/MA regulatory risk.
+- **Frame against hidden markups** — approval screen shows: "Typical contractor markup: 15-30% (hidden). Sherpa: X% (transparent, guaranteed correct parts)."
+- **Delivery damage under $500** — Sherpa eats it, no questions asked. Funded by delivery protection fee.
+- **24-hour refund window** — full fee refund if client cancels before materials ship.
+- **Post-emergency receipt** — auto-send timeline showing exactly what happened and when, justifying the surcharge.
+- **First job free** — new subscribers get first job with no service fee (conversion trigger).
+- **Legal review required** — NH/MA price gouging statutes must be reviewed before emergency tier launches.
+
+### SLAs by Delivery Tier
+
+| Tier | SLA | Miss = |
+|------|-----|--------|
+| Pro Pickup (BOPIS) | Ready in 30 min | Fee waived |
+| HD Delivery | 3-5 business days | Fee waived |
+| Gig Delivery | 2 hours | Fee waived |
+| Emergency Dispatch | 90 minutes (Pro on-site) | Fee waived |
 
 ## Phase 5: Order Placement + Delivery (Zinc API)
 
@@ -278,7 +296,7 @@ When a Pro needs materials not on the original list:
 - Stripe card hold (capture_method: 'manual') for materials funding
 - Wisetack embedded widget for client financing
 - Stripe Capital for Pro cash flow (Stripe manages, we surface the offer)
-- Fee calculation engine (10% handling + 8% financing + 20% gig delivery)
+- Fee calculation engine (12%/18%/25% tiered Sherpa Service Fee)
 - Client approval flow with cost breakdown
 
 ### Phase 4: Gig Delivery + Change Orders
@@ -305,7 +323,7 @@ When a Pro needs materials not on the original list:
 
 ### `materials_list` table
 - `id`, `job_id`, `status` (draft/pro_reviewed/priced/approved/ordered/delivered)
-- `total_cents`, `handling_fee_cents`, `financing_fee_cents`
+- `total_cents`, `service_fee_cents`, `service_fee_pct` (12/18/25), `client_tier` (subscribed/one_time/emergency)
 
 ### `materials_items` table
 - `id`, `materials_list_id`, `name`, `quantity`, `unit`, `spec`, `category`
@@ -320,7 +338,7 @@ When a Pro needs materials not on the original list:
 ### `materials_funding` table
 - `id`, `materials_list_id`, `method` (card_hold/wisetack)
 - `stripe_payment_intent_id`, `wisetack_loan_id`
-- `amount_cents`, `handling_fee_cents`, `financing_fee_cents`
+- `amount_cents`, `service_fee_cents`, `delivery_protection_cents`
 - `status` (pending/authorized/captured/funded/refunded)
 
 ### `change_orders` table

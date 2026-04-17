@@ -69,13 +69,13 @@ export default function JobsPageClient() {
           </div>
         </div>
         <GoogleMapProvider>
-          <div className="relative h-[calc(100dvh-56px)] lg:flex">
+          <div className="fixed inset-0 top-14 z-20 lg:flex lg:left-64">
             <BottomSheet peekContent={<p className="text-sm font-semibold text-zinc-900">{MOCK_JOBS.length} Jobs Available</p>}>
               <div className="p-4 space-y-3">
                 {filteredAvailable.map((job) => <JobCard key={job.id} job={job} />)}
               </div>
             </BottomSheet>
-            <div className="h-full w-full lg:ml-[400px]">
+            <div className="h-full flex-1">
               <MapView center={DEFAULT_CENTER} className="h-full w-full" onZoomChanged={(z: number) => setCurrentZoom(z)} onListView={() => setViewMode('list')}>
                 {MOCK_JOBS.map((job) => (
                   <JobMarker key={job.id} job={job} zoom={currentZoom} selected={selectedJobId === job.id} onClick={() => setSelectedJobId(job.id)} />

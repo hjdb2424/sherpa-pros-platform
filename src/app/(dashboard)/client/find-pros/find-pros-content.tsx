@@ -185,7 +185,7 @@ export function FindProsContent() {
 
       {view === 'map' ? (
         <GoogleMapProvider>
-          <div className="relative h-[calc(100dvh-56px)] lg:flex -mx-4 lg:-mx-8 -mb-6">
+          <div className="fixed inset-0 top-16 z-20 lg:flex lg:left-64">
             <BottomSheet
               peekContent={
                 <p className="text-sm font-semibold text-zinc-900">
@@ -214,7 +214,7 @@ export function FindProsContent() {
                 )}
               </div>
             </BottomSheet>
-            <div className="h-full w-full lg:ml-[400px]">
+            <div className="h-full flex-1">
               <MapView
                 center={DEFAULT_CENTER}
                 className="h-full w-full"

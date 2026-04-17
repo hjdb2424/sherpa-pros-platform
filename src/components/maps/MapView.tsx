@@ -59,7 +59,7 @@ export default function MapView({
   const styles = !mapId && isDark ? DARK_STYLES : undefined;
 
   return (
-    <div className={className}>
+    <div className={`${className}`} style={{ width: '100%', height: '100%' }}>
       <Map
         defaultCenter={center}
         defaultZoom={zoom}
@@ -69,6 +69,7 @@ export default function MapView({
         zoomControl
         styles={styles}
         colorScheme={isDark ? 'DARK' : undefined}
+        style={{ width: '100%', height: '100%' }}
         onBoundsChanged={
           onBoundsChanged
             ? (ev) => {

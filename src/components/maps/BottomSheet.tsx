@@ -62,11 +62,11 @@ export default function BottomSheet({
     [snap],
   );
 
-  // Desktop: fixed left panel
+  // Desktop: side panel within the map layout (not fixed — parent handles positioning)
   if (isDesktop) {
     return (
       <div
-        className={`fixed inset-y-0 left-0 z-30 w-[400px] overflow-y-auto border-r border-zinc-100 bg-white dark:border-zinc-800 dark:bg-zinc-900 ${className}`}
+        className={`w-[400px] shrink-0 overflow-y-auto border-r border-zinc-100 bg-white dark:border-zinc-800 dark:bg-zinc-900 ${className}`}
       >
         {children}
       </div>

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import StatsCard from '@/components/pro/StatsCard';
 import EarningsChart from '@/components/pro/EarningsChart';
 import EmptyState from '@/components/EmptyState';
+import { StripeCapitalOffer } from '@/components/checklist';
 import { CurrencyDollarIcon } from '@heroicons/react/24/outline';
 import {
   mockEarningsSummary,
@@ -90,6 +91,11 @@ export default function EarningsPageClient() {
 
       {/* Chart */}
       <EarningsChart data={mockMonthlyEarnings} />
+
+      {/* Stripe Capital offer */}
+      <div className="mt-2">
+        <StripeCapitalOffer proName="Pro" />
+      </div>
 
       {/* Commission tier */}
       <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm sm:p-6 dark:border-zinc-800 dark:bg-zinc-900">

@@ -9,7 +9,11 @@ import {
   WorkProcess,
   ChecklistProgress,
   MaterialsList,
+  HDPriceTag,
+  DeliverySelector,
 } from '@/components/checklist';
+import type { HDProduct } from '@/lib/services/serpapi';
+import type { DeliveryTier } from '@/lib/services/zinc';
 import {
   getChecklistForJob,
   type ChecklistItem as WisemanChecklistItem,
@@ -133,6 +137,44 @@ export default function JobDetailClient({ jobId }: JobDetailClientProps) {
       prev.map((m) => (m.id === id ? { ...m, quantity: qty, proNotes: notes } : m))
     );
   }, []);
+
+  // HD pricing state
+  const [pricingLoading, setPricingLoading] = useState(false);
+  const [hdPrices, setHdPrices] = useState<Record<string, HDProduct> | null>(null);
+  const [selectedDeliveryTier, setSelectedDeliveryTier] = useState<DeliveryTier | undefined>();
+  const [clientSent, setClientSent] = useState(false);
+
+  async function handleGetPricing() {
+    setPricingLoading(true);
+    try {
+      const res = await fetch('/api/materials/price', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          materials: materials.map((m) => ({ name: m.name, spec: m.spec })),
+          zipCode: '03801',
+        }),
+      });
+      const data = await res.json();
+      setHdPrices(data.products);
+    } catch {
+      // silently fail -- mock pricing stays
+    } finally {
+      setPricingLoading(false);
+    }
+  }
+
+  // Compute HD total when prices available
+  const hdTotal = useMemo(() => {
+    if (!hdPrices) return 0;
+    return Object.values(hdPrices).reduce((sum, p) => sum + p.priceCents, 0);
+  }, [hdPrices]);
+
+  const hdStoreName = useMemo(() => {
+    if (!hdPrices) return '';
+    const first = Object.values(hdPrices)[0];
+    return first?.storeName ?? 'Home Depot';
+  }, [hdPrices]);
 
   if (!job) {
     return (
@@ -455,13 +497,94 @@ export default function JobDetailClient({ jobId }: JobDetailClientProps) {
       {activeTab === 'materials' && (
         <div role="tabpanel" id={`panel-${activeTab}`} aria-labelledby={`tab-${activeTab}`}>
           {hasChecklist ? (
-            <MaterialsList
-              materials={materials}
-              editable={true}
-              onAdd={handleAddMaterial}
-              onRemove={handleRemoveMaterial}
-              onAdjust={handleAdjustMaterial}
-            />
+            <div className="space-y-6">
+              <MaterialsList
+                materials={materials}
+                editable={true}
+                onAdd={handleAddMaterial}
+                onRemove={handleRemoveMaterial}
+                onAdjust={handleAdjustMaterial}
+              />
+
+              {/* HD Price Tags — shown per material when prices loaded */}
+              {hdPrices && (
+                <div className="space-y-2">
+                  <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">
+                    Home Depot Pricing
+                  </h3>
+                  {materials.map((m) => (
+                    <HDPriceTag
+                      key={m.id}
+                      product={hdPrices[m.name]}
+                      isLoading={false}
+                      isMock={!hdPrices[m.name]}
+                    />
+                  ))}
+
+                  {/* Summary */}
+                  <div className="flex items-center justify-between rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 dark:border-emerald-800 dark:bg-emerald-950/30">
+                    <span className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
+                      Home Depot total at {hdStoreName}
+                    </span>
+                    <span className="text-base font-bold text-emerald-700 dark:text-emerald-400">
+                      ${(hdTotal / 100).toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                    </span>
+                  </div>
+                </div>
+              )}
+
+              {/* Loading shimmer when fetching */}
+              {pricingLoading && (
+                <div className="space-y-2">
+                  {materials.slice(0, 3).map((m) => (
+                    <HDPriceTag key={m.id} isLoading />
+                  ))}
+                </div>
+              )}
+
+              {/* Get HD Pricing button */}
+              <button
+                type="button"
+                onClick={handleGetPricing}
+                disabled={pricingLoading}
+                className="w-full rounded-full bg-[#00a9e0] px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-[#00a9e0]/25 transition-all hover:bg-[#0ea5e9] active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed"
+              >
+                {pricingLoading ? 'Checking Home Depot...' : hdPrices ? 'Refresh Home Depot Pricing' : 'Get Home Depot Pricing'}
+              </button>
+
+              {/* Delivery selection — shown after pricing */}
+              {hdPrices && (
+                <div>
+                  <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-50 mb-3">
+                    Recommended Delivery
+                  </h3>
+                  <DeliverySelector
+                    materials={materials}
+                    onSelect={(tier) => setSelectedDeliveryTier(tier)}
+                    selectedTier={selectedDeliveryTier}
+                  />
+                </div>
+              )}
+
+              {/* Send to client — shown after delivery selected */}
+              {hdPrices && selectedDeliveryTier && (
+                <>
+                  {clientSent && (
+                    <div className="rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700 dark:border-emerald-800 dark:bg-emerald-950/30 dark:text-emerald-400">
+                      Materials list sent to client! They&apos;ll be notified to review and approve.
+                    </div>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => setClientSent(true)}
+                    disabled={clientSent}
+                    className="w-full rounded-full bg-[#00a9e0] px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-[#00a9e0]/25 transition-all hover:bg-[#0ea5e9] active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed"
+                  >
+                    {clientSent ? 'Sent to Client' : 'Send to Client for Approval'}
+                  </button>
+                </>
+              )}
+            </div>
           ) : (
             <NoChecklistMessage />
           )}

@@ -15,8 +15,6 @@ interface MaterialsApprovalProps {
   onApprove: () => void;
 }
 
-const DELIVERY_PROTECTION_CENTS = 299;
-
 export default function MaterialsApproval({
   materials,
   clientTier,
@@ -35,9 +33,6 @@ export default function MaterialsApproval({
     () => calculateFeeBreakdown(materialsSubtotal, clientTier),
     [materialsSubtotal, clientTier]
   );
-
-  const grandTotal =
-    materialsSubtotal + feeBreakdown.serviceFeeCents + DELIVERY_PROTECTION_CENTS;
 
   const feePercentage = feeBreakdown.serviceFeePct;
 
@@ -78,16 +73,6 @@ export default function MaterialsApproval({
           </span>
         </div>
 
-        {/* Delivery Protection */}
-        <div className="flex items-center justify-between text-sm">
-          <span className="text-zinc-600 dark:text-zinc-400">
-            Delivery Protection
-          </span>
-          <span className="font-medium text-zinc-800 dark:text-zinc-200">
-            {formatCents(DELIVERY_PROTECTION_CENTS)}
-          </span>
-        </div>
-
         {/* Divider */}
         <div className="border-t border-zinc-100 dark:border-zinc-800" />
 
@@ -97,7 +82,7 @@ export default function MaterialsApproval({
             Grand Total
           </span>
           <span className="text-lg font-bold text-zinc-900 dark:text-zinc-50">
-            {formatCents(grandTotal)}
+            {formatCents(feeBreakdown.grandTotalCents)}
           </span>
         </div>
       </div>

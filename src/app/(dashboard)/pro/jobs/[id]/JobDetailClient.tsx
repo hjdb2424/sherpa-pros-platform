@@ -70,8 +70,8 @@ function LegacyChecklist({ title, items }: { title: string; items: ChecklistItem
 }
 
 export default function JobDetailClient({ jobId }: JobDetailClientProps) {
-  const allJobs = [...mockAvailableJobs, ...mockActiveJobs, ...mockCompletedJobs];
-  const job = useMemo(() => allJobs.find((j) => j.id === jobId), [jobId]);
+  const allJobs = useMemo(() => [...mockAvailableJobs, ...mockActiveJobs, ...mockCompletedJobs], []);
+  const job = useMemo(() => allJobs.find((j) => j.id === jobId), [allJobs, jobId]);
 
   const jobChecklist = useMemo(() => getChecklistForJob(jobId), [jobId]);
 
@@ -139,7 +139,7 @@ export default function JobDetailClient({ jobId }: JobDetailClientProps) {
       <div className="flex flex-col items-center justify-center py-20">
         <h1 className="text-xl font-bold text-zinc-900 dark:text-zinc-50">Job Not Found</h1>
         <p className="mt-2 text-zinc-500">This job may have been removed or is no longer available.</p>
-        <Link href="/pro/jobs" className="mt-4 rounded-lg bg-amber-500 px-4 py-2 text-sm font-bold text-white">
+        <Link href="/pro/jobs" className="mt-4 rounded-full bg-[#00a9e0] px-4 py-2 text-sm font-bold text-white shadow-lg shadow-[#00a9e0]/25 hover:bg-[#0090c0]">
           Back to Jobs
         </Link>
       </div>
@@ -224,17 +224,19 @@ export default function JobDetailClient({ jobId }: JobDetailClientProps) {
 
       {/* Tab Bar */}
       <div className="overflow-x-auto border-b border-zinc-200 dark:border-zinc-700">
-        <nav className="flex min-w-max" aria-label="Job detail tabs" role="tablist">
+        <div className="flex min-w-max" aria-label="Job detail tabs" role="tablist">
           {TABS.map((tab) => {
-            const isActive = activeTab === tab.key;
+            const isCurrent = activeTab === tab.key;
             return (
               <button
                 key={tab.key}
+                id={`tab-${tab.key}`}
                 role="tab"
-                aria-selected={isActive}
+                aria-selected={isCurrent}
+                aria-controls={`panel-${tab.key}`}
                 onClick={() => setActiveTab(tab.key)}
                 className={`whitespace-nowrap px-4 py-3 text-sm font-medium transition-colors ${
-                  isActive
+                  isCurrent
                     ? 'border-b-2 border-[#00a9e0] text-[#00a9e0]'
                     : 'text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200'
                 }`}
@@ -243,12 +245,12 @@ export default function JobDetailClient({ jobId }: JobDetailClientProps) {
               </button>
             );
           })}
-        </nav>
+        </div>
       </div>
 
       {/* Tab Content */}
       {activeTab === 'overview' && (
-        <div className="grid gap-6 lg:grid-cols-3">
+        <div role="tabpanel" id={`panel-${activeTab}`} aria-labelledby={`tab-${activeTab}`} className="grid gap-6 lg:grid-cols-3">
           {/* Left column: description + details */}
           <div className="space-y-6 lg:col-span-2">
             {/* Scope */}
@@ -272,7 +274,7 @@ export default function JobDetailClient({ jobId }: JobDetailClientProps) {
                   <button
                     type="button"
                     onClick={() => setShowPhotoUpload(!showPhotoUpload)}
-                    className="rounded-lg bg-amber-500 px-3 py-1.5 text-xs font-bold text-white transition-colors hover:bg-amber-600"
+                    className="rounded-full bg-[#00a9e0] px-3 py-1.5 text-xs font-bold text-white shadow-lg shadow-[#00a9e0]/25 transition-colors hover:bg-[#0090c0]"
                   >
                     Upload Photo
                   </button>
@@ -414,48 +416,56 @@ export default function JobDetailClient({ jobId }: JobDetailClientProps) {
 
       {/* Scope Tab */}
       {activeTab === 'scope' && (
-        hasChecklist ? (
-          <ScopeDocument scope={jobChecklist.scope} />
-        ) : (
-          <NoChecklistMessage />
-        )
+        <div role="tabpanel" id={`panel-${activeTab}`} aria-labelledby={`tab-${activeTab}`}>
+          {hasChecklist ? (
+            <ScopeDocument scope={jobChecklist.scope} />
+          ) : (
+            <NoChecklistMessage />
+          )}
+        </div>
       )}
 
       {/* Process Tab */}
       {activeTab === 'process' && (
-        hasChecklist ? (
-          <WorkProcess steps={jobChecklist.process} />
-        ) : (
-          <NoChecklistMessage />
-        )
+        <div role="tabpanel" id={`panel-${activeTab}`} aria-labelledby={`tab-${activeTab}`}>
+          {hasChecklist ? (
+            <WorkProcess steps={jobChecklist.process} />
+          ) : (
+            <NoChecklistMessage />
+          )}
+        </div>
       )}
 
       {/* Checklist Tab */}
       {activeTab === 'checklist' && (
-        hasChecklist ? (
-          <ChecklistProgress
-            items={checklistItems}
-            onToggle={handleToggle}
-            onPhotoUpload={handlePhotoUpload}
-          />
-        ) : (
-          <NoChecklistMessage />
-        )
+        <div role="tabpanel" id={`panel-${activeTab}`} aria-labelledby={`tab-${activeTab}`}>
+          {hasChecklist ? (
+            <ChecklistProgress
+              items={checklistItems}
+              onToggle={handleToggle}
+              onPhotoUpload={handlePhotoUpload}
+            />
+          ) : (
+            <NoChecklistMessage />
+          )}
+        </div>
       )}
 
       {/* Materials Tab */}
       {activeTab === 'materials' && (
-        hasChecklist ? (
-          <MaterialsList
-            materials={materials}
-            editable={true}
-            onAdd={handleAddMaterial}
-            onRemove={handleRemoveMaterial}
-            onAdjust={handleAdjustMaterial}
-          />
-        ) : (
-          <NoChecklistMessage />
-        )
+        <div role="tabpanel" id={`panel-${activeTab}`} aria-labelledby={`tab-${activeTab}`}>
+          {hasChecklist ? (
+            <MaterialsList
+              materials={materials}
+              editable={true}
+              onAdd={handleAddMaterial}
+              onRemove={handleRemoveMaterial}
+              onAdjust={handleAdjustMaterial}
+            />
+          ) : (
+            <NoChecklistMessage />
+          )}
+        </div>
       )}
     </div>
   );

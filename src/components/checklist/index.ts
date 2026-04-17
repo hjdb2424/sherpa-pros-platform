@@ -4,6 +4,7 @@ export { default as ChecklistProgress } from './ChecklistProgress';
 export { default as MaterialsList } from './MaterialsList';
 export { default as MaterialsApproval } from './MaterialsApproval';
 export { default as DeliverySelector } from './DeliverySelector';
+export { default as DeliveryTracker } from './DeliveryTracker';
 export { default as HDPriceTag } from './HDPriceTag';
 export { default as PaymentSelector } from './PaymentSelector';
 export { default as StripeCapitalOffer } from './StripeCapitalOffer';

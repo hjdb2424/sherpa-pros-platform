@@ -7,6 +7,7 @@ function TabIcon({ name, focused }: { name: string; focused: boolean }) {
     Map: '\u{1F5FA}\uFE0F',
     Jobs: '\u{1F527}',
     Earnings: '\u{1F4B0}',
+    Messages: '\u{1F4AC}',
     Profile: '\u{1F464}',
   };
   return (
@@ -37,6 +38,10 @@ export default function ProLayout() {
       <Tabs.Screen
         name="earnings"
         options={{ title: 'Earnings', tabBarIcon: ({ focused }) => <TabIcon name="Earnings" focused={focused} /> }}
+      />
+      <Tabs.Screen
+        name="messages"
+        options={{ title: 'Messages', tabBarIcon: ({ focused }) => <TabIcon name="Messages" focused={focused} /> }}
       />
       <Tabs.Screen
         name="profile"

@@ -42,6 +42,13 @@ export default function ClientLayout() {
         name="profile"
         options={{ title: 'Profile', tabBarIcon: ({ focused }) => <TabIcon name="Profile" focused={focused} /> }}
       />
+      <Tabs.Screen
+        name="post-job/index"
+        options={{
+          href: null,
+          tabBarStyle: { display: 'none' },
+        }}
+      />
     </Tabs>
   );
 }

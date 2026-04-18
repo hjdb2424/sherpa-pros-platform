@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as Haptics from 'expo-haptics';
-import { colors, spacing, borderRadius, typography } from '@/lib/theme';
+import { colors, spacing, typography } from '@/lib/theme';
 import Avatar from '@/components/common/Avatar';
 
 interface Conversation {
@@ -25,43 +25,34 @@ interface Conversation {
 const CONVERSATIONS: Conversation[] = [
   {
     id: '1',
-    name: 'Mike Thompson',
-    initials: 'MT',
-    lastMessage: 'I\'ll be there tomorrow at 9am to start the faucet repair. Please make sure the water main...',
-    timestamp: '2m ago',
-    unreadCount: 2,
-    avatarColor: colors.primary,
+    name: 'John Davidson',
+    initials: 'JD',
+    lastMessage: 'Great, the bathroom remodel timeline works. Can you send the material list?',
+    timestamp: '5m ago',
+    unreadCount: 1,
+    avatarColor: '#6366f1',
   },
   {
     id: '2',
-    name: 'Sarah Chen',
-    initials: 'SC',
-    lastMessage: 'The deck staining is complete! Here are some photos of the finished work.',
-    timestamp: '1h ago',
+    name: 'Maria Santos',
+    initials: 'MS',
+    lastMessage: 'The fence looks amazing! Thank you so much for the great work.',
+    timestamp: '2h ago',
     unreadCount: 0,
     avatarColor: colors.success,
   },
   {
     id: '3',
-    name: 'Carlos Rodriguez',
-    initials: 'CR',
-    lastMessage: 'Thanks for accepting my bid. I can start the electrical work on Monday.',
-    timestamp: '3h ago',
-    unreadCount: 1,
+    name: 'Robert Kim',
+    initials: 'RK',
+    lastMessage: 'When can you start on the kitchen cabinets?',
+    timestamp: '5h ago',
+    unreadCount: 3,
     avatarColor: colors.warning,
-  },
-  {
-    id: '4',
-    name: 'James Wilson',
-    initials: 'JW',
-    lastMessage: 'Sure, I can provide a detailed breakdown of the HVAC maintenance costs.',
-    timestamp: 'Yesterday',
-    unreadCount: 0,
-    avatarColor: colors.accent,
   },
 ];
 
-export default function ClientMessagesScreen() {
+export default function ProMessagesScreen() {
   const insets = useSafeAreaInsets();
 
   const handleConversationPress = useCallback((conversation: Conversation) => {
@@ -102,7 +93,7 @@ export default function ClientMessagesScreen() {
       <Text style={styles.emptyIcon}>{'\u{1F4AC}'}</Text>
       <Text style={styles.emptyTitle}>No messages yet</Text>
       <Text style={styles.emptyDescription}>
-        When you connect with a pro, your conversations will appear here.
+        When a client accepts your bid, you can chat with them here.
       </Text>
     </View>
   );

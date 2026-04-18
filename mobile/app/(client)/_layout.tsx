@@ -12,7 +12,7 @@ function TabIcon({ name, focused }: { name: string; focused: boolean }) {
   return (
     <View style={styles.tabIcon}>
       <Text style={{ fontSize: 20 }}>{icons[name] ?? '\u2022'}</Text>
-      <Text style={[styles.tabLabel, focused && styles.tabLabelActive]}>{name}</Text>
+      <Text numberOfLines={1} style={[styles.tabLabel, focused && styles.tabLabelActive]}>{name}</Text>
     </View>
   );
 }
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
     paddingTop: 8,
   },
-  tabIcon: { alignItems: 'center', gap: 2 },
-  tabLabel: { fontSize: 10, fontWeight: '500', color: colors.textMuted },
+  tabIcon: { alignItems: 'center', gap: 2, width: 60 },
+  tabLabel: { fontSize: 9, fontWeight: '500', color: colors.textMuted, textAlign: 'center' },
   tabLabelActive: { color: colors.primary, fontWeight: '600' },
 });

@@ -4,10 +4,10 @@ import {
   Text,
   FlatList,
   Pressable,
-  Alert,
   StyleSheet,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useRouter } from 'expo-router';
 import * as Haptics from 'expo-haptics';
 import { colors, spacing, typography } from '@/lib/theme';
 import Avatar from '@/components/common/Avatar';
@@ -54,11 +54,19 @@ const CONVERSATIONS: Conversation[] = [
 
 export default function ProMessagesScreen() {
   const insets = useSafeAreaInsets();
+  const router = useRouter();
 
   const handleConversationPress = useCallback((conversation: Conversation) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    Alert.alert('Chat coming soon', `Chat with ${conversation.name} is coming in the next update.`);
-  }, []);
+    router.push({
+      pathname: '/(pro)/chat',
+      params: {
+        conversationId: conversation.id,
+        name: conversation.name,
+        initials: conversation.initials,
+      },
+    });
+  }, [router]);
 
   const renderConversation = useCallback(
     ({ item }: { item: Conversation }) => (

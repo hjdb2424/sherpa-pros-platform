@@ -13,6 +13,14 @@ export default function RootLayout() {
           <Stack.Screen name="(auth)" />
           <Stack.Screen name="(client)" />
           <Stack.Screen name="(pro)" />
+          <Stack.Screen
+            name="(emergency)"
+            options={{ animation: 'slide_from_bottom' }}
+          />
+          <Stack.Screen
+            name="notifications"
+            options={{ animation: 'slide_from_right' }}
+          />
         </Stack>
       </AuthProvider>
     </GestureHandlerRootView>

@@ -1,11 +1,68 @@
-import { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { useState, useEffect } from 'react';
+import { View, Text, Pressable, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useRouter } from 'expo-router';
+import * as Haptics from 'expo-haptics';
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withRepeat,
+  withTiming,
+  Easing,
+} from 'react-native-reanimated';
 import MapScreen from '@/components/maps/MapScreen';
 import JobMarker from '@/components/maps/JobMarker';
 import JobSheet from '@/components/sheets/JobSheet';
 import { MOCK_JOBS } from '@/lib/types';
-import { colors } from '@/lib/theme';
+import { colors, shadows } from '@/lib/theme';
+
+function DispatchFAB() {
+  const router = useRouter();
+  const pulse = useSharedValue(1);
+
+  useEffect(() => {
+    pulse.value = withRepeat(
+      withTiming(1.15, { duration: 800, easing: Easing.inOut(Easing.ease) }),
+      -1,
+      true,
+    );
+  }, [pulse]);
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: pulse.value }],
+  }));
+
+  return (
+    <Animated.View style={[styles.fabWrapper, animatedStyle]}>
+      <Pressable
+        style={styles.dispatchFab}
+        onPress={() => {
+          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+          router.push('/(emergency)');
+        }}
+      >
+        <Text style={styles.dispatchFabIcon}>{'\u26A1'}</Text>
+        <Text style={styles.dispatchFabLabel}>Dispatch</Text>
+      </Pressable>
+    </Animated.View>
+  );
+}
+
+function NotificationBell() {
+  const router = useRouter();
+  return (
+    <Pressable
+      style={styles.bellButton}
+      onPress={() => {
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+        router.push('/notifications');
+      }}
+    >
+      <Text style={styles.bellIcon}>{'\u{1F514}'}</Text>
+      <View style={styles.bellDot} />
+    </Pressable>
+  );
+}
 
 export default function ProMapScreen() {
   const insets = useSafeAreaInsets();
@@ -22,6 +79,15 @@ export default function ProMapScreen() {
           />
         ))}
       </MapScreen>
+
+      {/* Notification bell */}
+      <View style={[styles.bellWrapper, { top: insets.top + 12 }]}>
+        <NotificationBell />
+      </View>
+
+      {/* Dispatch FAB */}
+      <DispatchFAB />
+
       <JobSheet
         jobs={MOCK_JOBS}
         selectedId={selectedJobId}
@@ -33,4 +99,60 @@ export default function ProMapScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.background },
+
+  // Bell
+  bellWrapper: {
+    position: 'absolute',
+    right: 16,
+    zIndex: 10,
+  },
+  bellButton: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: '#ffffff',
+    alignItems: 'center',
+    justifyContent: 'center',
+    ...shadows.md,
+  },
+  bellIcon: {
+    fontSize: 20,
+  },
+  bellDot: {
+    position: 'absolute',
+    top: 8,
+    right: 10,
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: colors.danger,
+    borderWidth: 1.5,
+    borderColor: '#ffffff',
+  },
+
+  // Dispatch FAB
+  fabWrapper: {
+    position: 'absolute',
+    bottom: 160,
+    right: 16,
+    zIndex: 10,
+  },
+  dispatchFab: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    backgroundColor: colors.danger,
+    borderRadius: 28,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    ...shadows.lg,
+  },
+  dispatchFabIcon: {
+    fontSize: 20,
+  },
+  dispatchFabLabel: {
+    color: '#ffffff',
+    fontSize: 13,
+    fontWeight: '700',
+  },
 });

@@ -56,27 +56,44 @@ interface CompletedJob {
 }
 
 const AVAILABLE_JOBS: AvailableJob[] = [
-  { id: 'a1', title: 'Fix leaking kitchen faucet', category: 'Plumbing', budgetMin: 200, budgetMax: 500, urgency: 'emergency', distance: '2.3 mi' },
-  { id: 'a2', title: 'Install recessed lighting', category: 'Electrical', budgetMin: 800, budgetMax: 1500, urgency: 'standard', distance: '5.1 mi' },
-  { id: 'a3', title: 'Deck staining and sealing', category: 'Painting', budgetMin: 400, budgetMax: 800, urgency: 'flexible', distance: '8.7 mi' },
-  { id: 'a4', title: 'Replace bathroom vanity', category: 'General', budgetMin: 600, budgetMax: 1200, urgency: 'standard', distance: '3.4 mi' },
+  { id: 'a1', title: 'Emergency: Burst pipe in basement', category: 'Plumbing', budgetMin: 500, budgetMax: 1500, urgency: 'emergency', distance: '0.8 mi' },
+  { id: 'a2', title: 'Fix leaking kitchen faucet', category: 'Plumbing', budgetMin: 200, budgetMax: 500, urgency: 'standard', distance: '2.3 mi' },
+  { id: 'a3', title: 'Install recessed lighting (6 cans)', category: 'Electrical', budgetMin: 800, budgetMax: 1500, urgency: 'standard', distance: '5.1 mi' },
+  { id: 'a4', title: 'Deck staining and sealing - 400 sqft', category: 'Painting', budgetMin: 400, budgetMax: 800, urgency: 'flexible', distance: '8.7 mi' },
+  { id: 'a5', title: 'Replace bathroom vanity + faucet', category: 'General', budgetMin: 600, budgetMax: 1200, urgency: 'standard', distance: '3.4 mi' },
+  { id: 'a6', title: 'Furnace not heating - no heat emergency', category: 'HVAC', budgetMin: 300, budgetMax: 800, urgency: 'emergency', distance: '1.2 mi' },
+  { id: 'a7', title: 'Install EV charger in garage (240V)', category: 'Electrical', budgetMin: 1200, budgetMax: 2500, urgency: 'flexible', distance: '6.5 mi' },
+  { id: 'a8', title: 'Roof leak repair after storm', category: 'Roofing', budgetMin: 500, budgetMax: 2000, urgency: 'emergency', distance: '4.1 mi' },
+  { id: 'a9', title: 'Interior painting - 3 bedrooms', category: 'Painting', budgetMin: 1500, budgetMax: 3000, urgency: 'flexible', distance: '7.3 mi' },
+  { id: 'a10', title: 'Replace front door and frame', category: 'Carpentry', budgetMin: 800, budgetMax: 2000, urgency: 'standard', distance: '3.9 mi' },
 ];
 
 const BID_JOBS: BidJob[] = [
   { id: 'b1', title: 'Kitchen sink installation', bidAmount: 450, status: 'pending' },
   { id: 'b2', title: 'Ceiling fan wiring', bidAmount: 280, status: 'accepted' },
   { id: 'b3', title: 'Drywall patch and paint', bidAmount: 350, status: 'rejected' },
+  { id: 'b4', title: 'Toilet replacement (2 units)', bidAmount: 650, status: 'pending' },
+  { id: 'b5', title: 'Outlet and switch replacement', bidAmount: 420, status: 'pending' },
+  { id: 'b6', title: 'Basement waterproofing consult', bidAmount: 1800, status: 'accepted' },
 ];
 
 const ACTIVE_JOBS: ActiveJob[] = [
-  { id: 'c1', title: 'Bathroom remodel - Phase 1', clientName: 'John D.', milestoneProgress: 3, totalMilestones: 5 },
-  { id: 'c2', title: 'Fence repair', clientName: 'Maria S.', milestoneProgress: 1, totalMilestones: 3 },
+  { id: 'c1', title: 'Bathroom remodel - Phase 1 demo', clientName: 'John D.', milestoneProgress: 3, totalMilestones: 5 },
+  { id: 'c2', title: 'Fence repair - 40ft section', clientName: 'Maria S.', milestoneProgress: 1, totalMilestones: 3 },
+  { id: 'c3', title: 'Panel upgrade 100A to 200A', clientName: 'Tom A.', milestoneProgress: 2, totalMilestones: 4 },
+  { id: 'c4', title: 'Kitchen faucet + garbage disposal', clientName: 'Rachel K.', milestoneProgress: 1, totalMilestones: 2 },
+  { id: 'c5', title: 'Water heater replacement (50 gal)', clientName: 'Lisa M.', milestoneProgress: 0, totalMilestones: 3 },
 ];
 
 const COMPLETED_JOBS: CompletedJob[] = [
   { id: 'd1', title: 'Water heater replacement', finalAmount: 1200, rating: 5 },
   { id: 'd2', title: 'Garbage disposal install', finalAmount: 350, rating: 4 },
-  { id: 'd3', title: 'Outdoor lighting setup', finalAmount: 950, rating: 5 },
+  { id: 'd3', title: 'Outdoor lighting setup (8 fixtures)', finalAmount: 950, rating: 5 },
+  { id: 'd4', title: 'Sump pump installation', finalAmount: 1800, rating: 5 },
+  { id: 'd5', title: 'Bathroom exhaust fan replacement', finalAmount: 275, rating: 4 },
+  { id: 'd6', title: 'Whole house surge protector', finalAmount: 450, rating: 5 },
+  { id: 'd7', title: 'Deck board replacement (12 boards)', finalAmount: 680, rating: 4 },
+  { id: 'd8', title: 'Toilet repair - running toilet', finalAmount: 180, rating: 5 },
 ];
 
 const URGENCY_BADGE: Record<string, { label: string; variant: 'danger' | 'warning' | 'success' }> = {

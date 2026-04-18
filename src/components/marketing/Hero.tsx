@@ -69,6 +69,17 @@ export default function Hero() {
               Join as a Pro
             </Link>
           </div>
+
+          {/* Login link */}
+          <p className="animate-fade-slide-up stagger-4 mt-6 text-center text-sm text-zinc-500">
+            Already have an account?{' '}
+            <Link
+              href="/sign-in"
+              className="font-semibold text-[#00a9e0] transition-colors hover:text-[#0ea5e9]"
+            >
+              Sign in
+            </Link>
+          </p>
         </div>
 
         {/* Stats */}

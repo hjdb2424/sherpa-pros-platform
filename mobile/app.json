@@ -1,0 +1,54 @@
+{
+  "expo": {
+    "name": "Sherpa Pros",
+    "slug": "sherpa-pros",
+    "scheme": "sherpapros",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "bundleIdentifier": "com.sherpapros.app",
+      "supportsTablet": true,
+      "config": {
+        "googleMapsApiKey": "AIzaSyA8xY_ho-7i8UjyhcAfaP7wBbh-9Nd2kWU"
+      },
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "Sherpa Pros needs your location to find nearby pros and jobs."
+      }
+    },
+    "android": {
+      "package": "com.sherpapros.app",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyA8xY_ho-7i8UjyhcAfaP7wBbh-9Nd2kWU"
+        }
+      },
+      "permissions": ["ACCESS_FINE_LOCATION"]
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      [
+        "expo-font",
+        {
+          "fonts": []
+        }
+      ]
+    ]
+  }
+}

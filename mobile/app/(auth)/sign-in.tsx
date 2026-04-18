@@ -1,83 +1,317 @@
-import { View, Text, ScrollView, Pressable, StyleSheet } from 'react-native';
+import { useState, useRef, useEffect } from 'react';
+import {
+  View,
+  Text,
+  Pressable,
+  StyleSheet,
+  ScrollView,
+  Animated,
+  Easing,
+} from 'react-native';
 import { useRouter } from 'expo-router';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as Haptics from 'expo-haptics';
 import { useAuth } from '@/lib/auth';
-import Button from '@/components/common/Button';
-import Card from '@/components/common/Card';
-import Avatar from '@/components/common/Avatar';
-import Badge from '@/components/common/Badge';
-import { colors, spacing, typography } from '@/lib/theme';
+import { colors, shadows, spacing, borderRadius } from '@/lib/theme';
 
-const TEST_USERS = [
-  { name: 'John Smith', email: 'testclient@test.com', role: 'client' as const, badge: 'Standard User', initials: 'JS', color: colors.primary },
-  { name: 'Sarah Johnson', email: 'promanager@test.com', role: 'pro' as const, badge: 'Pro Manager', initials: 'SJ', color: colors.success },
-  { name: 'Mike Rodriguez', email: 'contractor@test.com', role: 'pro' as const, badge: 'Service Provider', initials: 'MR', color: colors.warning },
+interface TestUser {
+  name: string;
+  email: string;
+  role: 'pro' | 'client';
+  badge: string;
+  badgeColor: string;
+  description: string;
+}
+
+const TEST_USERS: TestUser[] = [
+  {
+    name: 'Sarah Chen',
+    email: 'sarah@test.com',
+    role: 'client',
+    badge: 'Client',
+    badgeColor: colors.primary,
+    description: 'Homeowner in Nashua, NH',
+  },
+  {
+    name: 'Mike Rodriguez',
+    email: 'mike@test.com',
+    role: 'pro',
+    badge: 'Pro',
+    badgeColor: colors.accent,
+    description: 'Licensed Plumber - 4.9 stars',
+  },
+  {
+    name: 'Emily Watson',
+    email: 'emily@test.com',
+    role: 'client',
+    badge: 'Client',
+    badgeColor: colors.primary,
+    description: 'Property manager, 3 buildings',
+  },
+  {
+    name: 'James Park',
+    email: 'james@test.com',
+    role: 'pro',
+    badge: 'Pro',
+    badgeColor: colors.accent,
+    description: 'Master Electrician - 4.8 stars',
+  },
 ];
 
 export default function SignInScreen() {
-  const { signIn } = useAuth();
   const router = useRouter();
+  const insets = useSafeAreaInsets();
+  const { signIn } = useAuth();
+  const [signingIn, setSigningIn] = useState<string | null>(null);
 
-  async function handleTestUser(user: typeof TEST_USERS[0]) {
-    await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-    await signIn(user.role, user.name, user.email);
-    router.replace(user.role === 'client' ? '/(client)' : '/(pro)');
-  }
+  // Fade-in animation
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const slideAnim = useRef(new Animated.Value(30)).current;
+
+  useEffect(() => {
+    Animated.parallel([
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 600,
+        useNativeDriver: true,
+      }),
+      Animated.timing(slideAnim, {
+        toValue: 0,
+        duration: 600,
+        easing: Easing.out(Easing.ease),
+        useNativeDriver: true,
+      }),
+    ]).start();
+  }, [fadeAnim, slideAnim]);
+
+  const handleSignIn = async (user: TestUser) => {
+    setSigningIn(user.email);
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    try {
+      await signIn(user.role, user.name, user.email);
+      if (user.role === 'pro') {
+        router.replace('/(pro)');
+      } else {
+        router.replace('/(client)');
+      }
+    } catch {
+      setSigningIn(null);
+    }
+  };
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <View style={styles.header}>
-        <Text style={styles.logo}>
-          <Text style={{ color: colors.text }}>SHERPA </Text>
-          <Text style={{ color: colors.accent }}>PROS</Text>
-        </Text>
-        <Text style={styles.title}>Testing Environment</Text>
-        <Text style={styles.subtitle}>Development & Field Testing Portal</Text>
-        <View style={styles.badges}>
-          <Badge label="Beta Testing" variant="primary" />
-          <Badge label="Secure" variant="neutral" />
+    <ScrollView
+      style={styles.scroll}
+      contentContainerStyle={[styles.container, { paddingTop: insets.top + 60, paddingBottom: insets.bottom + 40 }]}
+    >
+      <Animated.View style={{ opacity: fadeAnim, transform: [{ translateY: slideAnim }] }}>
+        {/* Logo */}
+        <View style={styles.logoSection}>
+          <Text style={styles.logo}>
+            <Text style={{ color: '#18181b' }}>SHERPA </Text>
+            <Text style={{ color: colors.accent }}>PROS</Text>
+          </Text>
+          <Text style={styles.tagline}>On-demand trade services</Text>
         </View>
-      </View>
 
-      <Text style={styles.sectionTitle}>Available Test Users</Text>
-      {TEST_USERS.map((user) => (
-        <Pressable key={user.email} onPress={() => handleTestUser(user)}>
-          <Card style={styles.userCard} variant="outlined">
-            <View style={styles.userRow}>
-              <Avatar initials={user.initials} color={user.color} />
-              <View style={styles.userInfo}>
-                <View style={styles.nameRow}>
-                  <Text style={styles.userName}>{user.name}</Text>
-                  <Badge label={user.badge} />
-                </View>
-                <Text style={styles.userEmail}>{user.email}</Text>
-              </View>
-            </View>
-          </Card>
-        </Pressable>
-      ))}
+        {/* Divider */}
+        <View style={styles.divider}>
+          <View style={styles.dividerLine} />
+          <Text style={styles.dividerText}>Test Accounts</Text>
+          <View style={styles.dividerLine} />
+        </View>
 
-      <Text style={styles.disclaimer}>
-        This is a testing environment. No real accounts are used.
-      </Text>
+        {/* Test user cards */}
+        <View style={styles.userList}>
+          {TEST_USERS.map((user, index) => {
+            const isLoading = signingIn === user.email;
+            return (
+              <UserCard
+                key={user.email}
+                user={user}
+                index={index}
+                isLoading={isLoading}
+                onPress={() => handleSignIn(user)}
+              />
+            );
+          })}
+        </View>
+
+        {/* Footer */}
+        <Text style={styles.footer}>
+          Tap any account to sign in and explore
+        </Text>
+      </Animated.View>
     </ScrollView>
   );
 }
 
+function UserCard({ user, index, isLoading, onPress }: { user: TestUser; index: number; isLoading: boolean; onPress: () => void }) {
+  const scale = useRef(new Animated.Value(1)).current;
+  const cardFade = useRef(new Animated.Value(0)).current;
+  const cardSlide = useRef(new Animated.Value(20)).current;
+
+  useEffect(() => {
+    Animated.parallel([
+      Animated.timing(cardFade, { toValue: 1, duration: 400, delay: 200 + index * 80, useNativeDriver: true }),
+      Animated.timing(cardSlide, { toValue: 0, duration: 400, delay: 200 + index * 80, useNativeDriver: true }),
+    ]).start();
+  }, [cardFade, cardSlide, index]);
+
+  const handlePressIn = () => {
+    Animated.spring(scale, { toValue: 0.97, useNativeDriver: true }).start();
+  };
+  const handlePressOut = () => {
+    Animated.spring(scale, { toValue: 1, useNativeDriver: true }).start();
+  };
+
+  return (
+    <Animated.View style={{ opacity: cardFade, transform: [{ translateY: cardSlide }, { scale }] }}>
+      <Pressable
+        style={[styles.userCard, isLoading && styles.userCardLoading]}
+        onPress={onPress}
+        onPressIn={handlePressIn}
+        onPressOut={handlePressOut}
+        disabled={isLoading}
+      >
+        <View style={styles.userCardContent}>
+          <View style={styles.userAvatar}>
+            <Text style={styles.userAvatarText}>
+              {user.name.split(' ').map((n) => n[0]).join('')}
+            </Text>
+          </View>
+          <View style={styles.userInfo}>
+            <View style={styles.userNameRow}>
+              <Text style={styles.userName}>{user.name}</Text>
+              <View style={[styles.roleBadge, { backgroundColor: user.badgeColor }]}>
+                <Text style={styles.roleBadgeText}>{user.badge}</Text>
+              </View>
+            </View>
+            <Text style={styles.userDescription}>{user.description}</Text>
+          </View>
+          <Text style={styles.arrow}>{isLoading ? '...' : '\u203A'}</Text>
+        </View>
+      </Pressable>
+    </Animated.View>
+  );
+}
+
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.surfaceSecondary },
-  content: { padding: spacing.xl, paddingTop: 80 },
-  header: { alignItems: 'center', marginBottom: spacing.xxl },
-  logo: { fontSize: 36, fontWeight: '800', letterSpacing: 1 },
-  title: { fontSize: 20, fontWeight: '600', color: colors.text, marginTop: spacing.md },
-  subtitle: { fontSize: 14, color: colors.textMuted, marginTop: spacing.xs },
-  badges: { flexDirection: 'row', gap: spacing.sm, marginTop: spacing.lg },
-  sectionTitle: { fontSize: 12, fontWeight: '600', color: colors.textMuted, textTransform: 'uppercase', letterSpacing: 1, marginBottom: spacing.md },
-  userCard: { marginBottom: spacing.md },
-  userRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.md },
-  userInfo: { flex: 1 },
-  nameRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm, flexWrap: 'wrap' },
-  userName: { fontSize: 15, fontWeight: '600', color: colors.text },
-  userEmail: { fontSize: 12, color: colors.textMuted, marginTop: 2 },
-  disclaimer: { fontSize: 12, color: colors.textMuted, textAlign: 'center', marginTop: spacing.xl },
+  scroll: {
+    flex: 1,
+    backgroundColor: '#ffffff',
+  },
+  container: {
+    paddingHorizontal: 24,
+  },
+
+  // Logo
+  logoSection: {
+    alignItems: 'center',
+    marginBottom: 48,
+  },
+  logo: {
+    fontSize: 36,
+    fontWeight: '800',
+    letterSpacing: -0.5,
+  },
+  tagline: {
+    fontSize: 16,
+    color: colors.textMuted,
+    marginTop: 8,
+  },
+
+  // Divider
+  divider: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 24,
+    gap: 12,
+  },
+  dividerLine: {
+    flex: 1,
+    height: 1,
+    backgroundColor: colors.borderLight,
+  },
+  dividerText: {
+    fontSize: 13,
+    color: colors.textMuted,
+    fontWeight: '500',
+  },
+
+  // User cards
+  userList: {
+    gap: 12,
+  },
+  userCard: {
+    backgroundColor: colors.surface,
+    borderRadius: borderRadius.lg,
+    padding: spacing.lg,
+    borderWidth: 1,
+    borderColor: colors.borderLight,
+    ...shadows.sm,
+  },
+  userCardLoading: {
+    opacity: 0.6,
+  },
+  userCardContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.md,
+  },
+  userAvatar: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    backgroundColor: colors.primaryLight,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  userAvatarText: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: colors.primary,
+  },
+  userInfo: {
+    flex: 1,
+  },
+  userNameRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  userName: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: colors.text,
+  },
+  roleBadge: {
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: borderRadius.full,
+  },
+  roleBadgeText: {
+    fontSize: 11,
+    fontWeight: '700',
+    color: '#ffffff',
+    textTransform: 'uppercase',
+  },
+  userDescription: {
+    fontSize: 13,
+    color: colors.textMuted,
+    marginTop: 2,
+  },
+  arrow: {
+    fontSize: 24,
+    color: colors.textMuted,
+    fontWeight: '300',
+  },
+
+  // Footer
+  footer: {
+    textAlign: 'center',
+    fontSize: 13,
+    color: colors.textMuted,
+    marginTop: 32,
+  },
 });

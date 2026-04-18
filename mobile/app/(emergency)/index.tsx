@@ -1,26 +1,16 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import {
   View,
   Text,
   Pressable,
   StyleSheet,
   Dimensions,
+  Animated,
+  Easing,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as Haptics from 'expo-haptics';
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withRepeat,
-  withTiming,
-  withDelay,
-  withSequence,
-  Easing,
-  FadeIn,
-  FadeInDown,
-  FadeOut,
-} from 'react-native-reanimated';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import { DEFAULT_CENTER } from '@/lib/types';
 
@@ -62,32 +52,44 @@ const SEVERITIES: SeverityLevel[] = [
 
 // ----- Pulsing ring component for step 3 -----
 function PulsingRing({ delay, size }: { delay: number; size: number }) {
-  const scale = useSharedValue(0.3);
-  const opacity = useSharedValue(0.6);
+  const scale = useRef(new Animated.Value(0.3)).current;
+  const opacity = useRef(new Animated.Value(0.6)).current;
 
   useEffect(() => {
-    scale.value = withDelay(
-      delay,
-      withRepeat(
-        withTiming(1, { duration: 2000, easing: Easing.out(Easing.ease) }),
-        -1,
-        false,
-      ),
-    );
-    opacity.value = withDelay(
-      delay,
-      withRepeat(
-        withTiming(0, { duration: 2000, easing: Easing.out(Easing.ease) }),
-        -1,
-        false,
-      ),
-    );
+    const timeout = setTimeout(() => {
+      Animated.loop(
+        Animated.sequence([
+          Animated.parallel([
+            Animated.timing(scale, {
+              toValue: 1,
+              duration: 2000,
+              easing: Easing.out(Easing.ease),
+              useNativeDriver: true,
+            }),
+            Animated.timing(opacity, {
+              toValue: 0,
+              duration: 2000,
+              easing: Easing.out(Easing.ease),
+              useNativeDriver: true,
+            }),
+          ]),
+          Animated.parallel([
+            Animated.timing(scale, {
+              toValue: 0.3,
+              duration: 0,
+              useNativeDriver: true,
+            }),
+            Animated.timing(opacity, {
+              toValue: 0.6,
+              duration: 0,
+              useNativeDriver: true,
+            }),
+          ]),
+        ])
+      ).start();
+    }, delay);
+    return () => clearTimeout(timeout);
   }, [delay, scale, opacity]);
-
-  const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: scale.value }],
-    opacity: opacity.value,
-  }));
 
   return (
     <Animated.View
@@ -99,10 +101,30 @@ function PulsingRing({ delay, size }: { delay: number; size: number }) {
           borderRadius: size / 2,
           borderWidth: 2,
           borderColor: '#f97316',
+          transform: [{ scale }],
+          opacity,
         },
-        animatedStyle,
       ]}
     />
+  );
+}
+
+// ----- Fade-in wrapper for step transitions -----
+function FadeInView({ children, delay = 0, style }: { children: React.ReactNode; delay?: number; style?: object }) {
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const translateY = useRef(new Animated.Value(20)).current;
+
+  useEffect(() => {
+    Animated.parallel([
+      Animated.timing(fadeAnim, { toValue: 1, duration: 400, delay, useNativeDriver: true }),
+      Animated.timing(translateY, { toValue: 0, duration: 400, delay, useNativeDriver: true }),
+    ]).start();
+  }, [fadeAnim, translateY, delay]);
+
+  return (
+    <Animated.View style={[style, { opacity: fadeAnim, transform: [{ translateY }] }]}>
+      {children}
+    </Animated.View>
   );
 }
 
@@ -152,18 +174,14 @@ export default function EmergencyScreen() {
   if (step === 1) {
     return (
       <View style={[styles.container, { paddingTop: insets.top + 24 }]}>
-        <Animated.View entering={FadeInDown.duration(400)}>
+        <FadeInView>
           <Text style={styles.title}>Emergency</Text>
           <Text style={styles.subtitle}>What type of emergency?</Text>
-        </Animated.View>
+        </FadeInView>
 
         <View style={styles.grid}>
           {CATEGORIES.map((cat, i) => (
-            <Animated.View
-              key={cat.id}
-              entering={FadeInDown.delay(i * 60).duration(300)}
-              style={styles.gridItem}
-            >
+            <FadeInView key={cat.id} delay={i * 60} style={styles.gridItem}>
               <Pressable
                 style={({ pressed }) => [
                   styles.categoryCard,
@@ -174,7 +192,7 @@ export default function EmergencyScreen() {
                 <Text style={styles.categoryIcon}>{cat.icon}</Text>
                 <Text style={styles.categoryTitle}>{cat.title}</Text>
               </Pressable>
-            </Animated.View>
+            </FadeInView>
           ))}
         </View>
 
@@ -189,10 +207,10 @@ export default function EmergencyScreen() {
   if (step === 2) {
     return (
       <View style={[styles.container, { paddingTop: insets.top + 24 }]}>
-        <Animated.View entering={FadeInDown.duration(400)}>
+        <FadeInView>
           <Text style={styles.title}>Severity</Text>
           <Text style={styles.subtitle}>How urgent is this?</Text>
-        </Animated.View>
+        </FadeInView>
 
         <View style={styles.severityRow}>
           {SEVERITIES.map((sev) => {
@@ -231,7 +249,7 @@ export default function EmergencyScreen() {
         </View>
 
         {selectedSeverity !== null && (
-          <Animated.View entering={FadeIn.duration(300)} style={styles.nextWrapper}>
+          <FadeInView style={styles.nextWrapper}>
             <Pressable
               style={({ pressed }) => [
                 styles.nextButton,
@@ -241,7 +259,7 @@ export default function EmergencyScreen() {
             >
               <Text style={styles.nextButtonText}>Next</Text>
             </Pressable>
-          </Animated.View>
+          </FadeInView>
         )}
 
         <Pressable style={styles.cancelButton} onPress={handleCancel}>
@@ -283,12 +301,11 @@ export default function EmergencyScreen() {
 
       {/* Status text */}
       <View style={[styles.searchTextWrapper, { top: insets.top + 80 }]}>
-        <Animated.Text
-          entering={FadeIn.duration(500)}
-          style={styles.searchText}
-        >
-          {searchComplete ? 'Found!' : 'Finding nearby pros...'}
-        </Animated.Text>
+        <FadeInView>
+          <Text style={styles.searchText}>
+            {searchComplete ? 'Found!' : 'Finding nearby pros...'}
+          </Text>
+        </FadeInView>
       </View>
     </View>
   );

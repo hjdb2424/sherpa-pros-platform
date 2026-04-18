@@ -1,15 +1,8 @@
-import { useState, useEffect } from 'react';
-import { View, Text, Pressable, StyleSheet } from 'react-native';
+import { useState, useEffect, useRef } from 'react';
+import { View, Text, Pressable, StyleSheet, Animated, Easing } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import * as Haptics from 'expo-haptics';
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withRepeat,
-  withTiming,
-  Easing,
-} from 'react-native-reanimated';
 import MapScreen from '@/components/maps/MapScreen';
 import ProMarker from '@/components/maps/ProMarker';
 import ProSheet from '@/components/sheets/ProSheet';
@@ -18,22 +11,29 @@ import { colors, shadows } from '@/lib/theme';
 
 function EmergencyFAB() {
   const router = useRouter();
-  const pulse = useSharedValue(1);
+  const pulse = useRef(new Animated.Value(1)).current;
 
   useEffect(() => {
-    pulse.value = withRepeat(
-      withTiming(1.15, { duration: 800, easing: Easing.inOut(Easing.ease) }),
-      -1,
-      true,
-    );
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(pulse, {
+          toValue: 1.15,
+          duration: 800,
+          easing: Easing.inOut(Easing.ease),
+          useNativeDriver: true,
+        }),
+        Animated.timing(pulse, {
+          toValue: 1,
+          duration: 800,
+          easing: Easing.inOut(Easing.ease),
+          useNativeDriver: true,
+        }),
+      ])
+    ).start();
   }, [pulse]);
 
-  const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: pulse.value }],
-  }));
-
   return (
-    <Animated.View style={[styles.fabWrapper, animatedStyle]}>
+    <Animated.View style={[styles.fabWrapper, { transform: [{ scale: pulse }] }]}>
       <Pressable
         style={styles.emergencyFab}
         onPress={() => {

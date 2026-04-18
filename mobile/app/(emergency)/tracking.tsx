@@ -6,18 +6,12 @@ import {
   StyleSheet,
   Dimensions,
   Alert,
+  Animated,
+  Easing,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as Haptics from 'expo-haptics';
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withRepeat,
-  withTiming,
-  Easing,
-  FadeInUp,
-} from 'react-native-reanimated';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import { MOCK_DISPATCH_ROUTE } from '@/lib/types';
 import { colors, shadows, spacing, borderRadius, typography } from '@/lib/theme';
@@ -27,30 +21,47 @@ const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const BOTTOM_PANEL_HEIGHT = 280;
 
 function PulsingAvatar() {
-  const pulseScale = useSharedValue(1);
-  const pulseOpacity = useSharedValue(0.4);
+  const pulseScale = useRef(new Animated.Value(1)).current;
+  const pulseOpacity = useRef(new Animated.Value(0.4)).current;
 
   useEffect(() => {
-    pulseScale.value = withRepeat(
-      withTiming(1.8, { duration: 1500, easing: Easing.out(Easing.ease) }),
-      -1,
-      true,
-    );
-    pulseOpacity.value = withRepeat(
-      withTiming(0, { duration: 1500, easing: Easing.out(Easing.ease) }),
-      -1,
-      true,
-    );
+    Animated.loop(
+      Animated.sequence([
+        Animated.parallel([
+          Animated.timing(pulseScale, {
+            toValue: 1.8,
+            duration: 1500,
+            easing: Easing.out(Easing.ease),
+            useNativeDriver: true,
+          }),
+          Animated.timing(pulseOpacity, {
+            toValue: 0,
+            duration: 1500,
+            easing: Easing.out(Easing.ease),
+            useNativeDriver: true,
+          }),
+        ]),
+        Animated.parallel([
+          Animated.timing(pulseScale, {
+            toValue: 1,
+            duration: 1500,
+            easing: Easing.out(Easing.ease),
+            useNativeDriver: true,
+          }),
+          Animated.timing(pulseOpacity, {
+            toValue: 0.4,
+            duration: 1500,
+            easing: Easing.out(Easing.ease),
+            useNativeDriver: true,
+          }),
+        ]),
+      ])
+    ).start();
   }, [pulseScale, pulseOpacity]);
-
-  const ringStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: pulseScale.value }],
-    opacity: pulseOpacity.value,
-  }));
 
   return (
     <View style={markerStyles.wrapper}>
-      <Animated.View style={[markerStyles.ring, ringStyle]} />
+      <Animated.View style={[markerStyles.ring, { transform: [{ scale: pulseScale }], opacity: pulseOpacity }]} />
       <View style={markerStyles.avatarOuter}>
         <Avatar initials="MR" size={36} color={colors.primary} />
       </View>
@@ -77,23 +88,30 @@ const markerStyles = StyleSheet.create({
 });
 
 function ClientDot() {
-  const pulseScale = useSharedValue(1);
+  const pulseScale = useRef(new Animated.Value(1)).current;
 
   useEffect(() => {
-    pulseScale.value = withRepeat(
-      withTiming(1.4, { duration: 1000, easing: Easing.inOut(Easing.ease) }),
-      -1,
-      true,
-    );
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(pulseScale, {
+          toValue: 1.4,
+          duration: 1000,
+          easing: Easing.inOut(Easing.ease),
+          useNativeDriver: true,
+        }),
+        Animated.timing(pulseScale, {
+          toValue: 1,
+          duration: 1000,
+          easing: Easing.inOut(Easing.ease),
+          useNativeDriver: true,
+        }),
+      ])
+    ).start();
   }, [pulseScale]);
-
-  const style = useAnimatedStyle(() => ({
-    transform: [{ scale: pulseScale.value }],
-  }));
 
   return (
     <View style={dotStyles.wrapper}>
-      <Animated.View style={[dotStyles.ring, style]} />
+      <Animated.View style={[dotStyles.ring, { transform: [{ scale: pulseScale }] }]} />
       <View style={dotStyles.dot} />
     </View>
   );
@@ -130,6 +148,29 @@ export default function TrackingScreen() {
   const [arrived, setArrived] = useState(false);
 
   const progress = Math.max(0, Math.min(1, 1 - eta / etaMinutes));
+
+  // Fade-in animations for ETA pill and arrived banner
+  const etaPillOpacity = useRef(new Animated.Value(0)).current;
+  const etaPillTranslateY = useRef(new Animated.Value(-20)).current;
+  const arrivedOpacity = useRef(new Animated.Value(0)).current;
+  const arrivedTranslateY = useRef(new Animated.Value(-20)).current;
+
+  useEffect(() => {
+    // Fade in the ETA pill on mount
+    Animated.parallel([
+      Animated.timing(etaPillOpacity, { toValue: 1, duration: 400, delay: 300, useNativeDriver: true }),
+      Animated.timing(etaPillTranslateY, { toValue: 0, duration: 400, delay: 300, useNativeDriver: true }),
+    ]).start();
+  }, [etaPillOpacity, etaPillTranslateY]);
+
+  useEffect(() => {
+    if (arrived) {
+      Animated.parallel([
+        Animated.timing(arrivedOpacity, { toValue: 1, duration: 400, useNativeDriver: true }),
+        Animated.timing(arrivedTranslateY, { toValue: 0, duration: 400, useNativeDriver: true }),
+      ]).start();
+    }
+  }, [arrived, arrivedOpacity, arrivedTranslateY]);
 
   // Simulated movement
   useEffect(() => {
@@ -201,8 +242,7 @@ export default function TrackingScreen() {
 
       {/* Floating ETA pill */}
       <Animated.View
-        entering={FadeInUp.delay(300).duration(400)}
-        style={[styles.etaPill, { top: insets.top + 16 }]}
+        style={[styles.etaPill, { top: insets.top + 16, opacity: etaPillOpacity, transform: [{ translateY: etaPillTranslateY }] }]}
       >
         <Text style={styles.etaNumber}>{Math.ceil(eta)}</Text>
         <Text style={styles.etaLabel}>MIN AWAY</Text>
@@ -211,8 +251,7 @@ export default function TrackingScreen() {
       {/* Arrived banner */}
       {arrived && (
         <Animated.View
-          entering={FadeInUp.duration(400)}
-          style={[styles.arrivedBanner, { top: insets.top + 80 }]}
+          style={[styles.arrivedBanner, { top: insets.top + 80, opacity: arrivedOpacity, transform: [{ translateY: arrivedTranslateY }] }]}
         >
           <Text style={styles.arrivedText}>Pro has arrived!</Text>
         </Animated.View>

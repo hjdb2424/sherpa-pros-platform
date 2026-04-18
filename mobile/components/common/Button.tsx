@@ -1,9 +1,7 @@
-import { Pressable, Text, StyleSheet, ViewStyle, TextStyle } from 'react-native';
+import { useRef } from 'react';
+import { Pressable, Text, StyleSheet, ViewStyle, TextStyle, Animated } from 'react-native';
 import * as Haptics from 'expo-haptics';
-import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import { colors, borderRadius, shadows, spacing } from '@/lib/theme';
-
-const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 interface ButtonProps {
   title: string;
@@ -22,18 +20,14 @@ export default function Button({
   disabled = false,
   fullWidth = false,
 }: ButtonProps) {
-  const scale = useSharedValue(1);
-
-  const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: scale.value }],
-  }));
+  const scale = useRef(new Animated.Value(1)).current;
 
   const handlePressIn = () => {
-    scale.value = withSpring(0.97, { damping: 15, stiffness: 400 });
+    Animated.spring(scale, { toValue: 0.97, useNativeDriver: true }).start();
   };
 
   const handlePressOut = () => {
-    scale.value = withSpring(1, { damping: 15, stiffness: 400 });
+    Animated.spring(scale, { toValue: 1, useNativeDriver: true }).start();
   };
 
   const handlePress = () => {
@@ -70,22 +64,23 @@ export default function Button({
   const s = sizeStyles[size];
 
   return (
-    <AnimatedPressable
-      onPress={handlePress}
-      onPressIn={handlePressIn}
-      onPressOut={handlePressOut}
-      disabled={disabled}
-      style={[
-        styles.base,
-        v.container,
-        s.container,
-        fullWidth && styles.fullWidth,
-        disabled && styles.disabled,
-        animatedStyle,
-      ]}
-    >
-      <Text style={[styles.text, v.text, s.text, { fontWeight: '600' }]}>{title}</Text>
-    </AnimatedPressable>
+    <Animated.View style={{ transform: [{ scale }] }}>
+      <Pressable
+        onPress={handlePress}
+        onPressIn={handlePressIn}
+        onPressOut={handlePressOut}
+        disabled={disabled}
+        style={[
+          styles.base,
+          v.container,
+          s.container,
+          fullWidth && styles.fullWidth,
+          disabled && styles.disabled,
+        ]}
+      >
+        <Text style={[styles.text, v.text, s.text, { fontWeight: '600' }]}>{title}</Text>
+      </Pressable>
+    </Animated.View>
   );
 }
 

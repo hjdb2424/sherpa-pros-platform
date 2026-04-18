@@ -1,6 +1,6 @@
 import { View, Text, FlatList, Pressable, StyleSheet } from 'react-native';
-import BottomSheet from '@gorhom/bottom-sheet';
-import { useMemo, useCallback, useRef } from 'react';
+import { useCallback } from 'react';
+import SimpleBottomSheet from '@/components/sheets/SimpleBottomSheet';
 import Avatar from '@/components/common/Avatar';
 import Badge from '@/components/common/Badge';
 import { colors, spacing, borderRadius, shadows } from '@/lib/theme';
@@ -13,9 +13,6 @@ interface ProSheetProps {
 }
 
 export default function ProSheet({ pros, onProSelect, selectedId }: ProSheetProps) {
-  const bottomSheetRef = useRef<BottomSheet>(null);
-  const snapPoints = useMemo(() => [80, '50%', '90%'], []);
-
   const renderProCard = useCallback(({ item }: { item: MockProLocation }) => (
     <Pressable onPress={() => onProSelect?.(item)} style={({ pressed }) => [pressed && { opacity: 0.9 }]}>
       <View style={[styles.card, selectedId === item.id && styles.cardSelected]}>
@@ -38,10 +35,7 @@ export default function ProSheet({ pros, onProSelect, selectedId }: ProSheetProp
   ), [onProSelect, selectedId]);
 
   return (
-    <BottomSheet
-      ref={bottomSheetRef}
-      index={0}
-      snapPoints={snapPoints}
+    <SimpleBottomSheet
       backgroundStyle={styles.sheetBg}
       handleIndicatorStyle={styles.handle}
     >
@@ -55,7 +49,7 @@ export default function ProSheet({ pros, onProSelect, selectedId }: ProSheetProp
         contentContainerStyle={styles.list}
         showsVerticalScrollIndicator={false}
       />
-    </BottomSheet>
+    </SimpleBottomSheet>
   );
 }
 

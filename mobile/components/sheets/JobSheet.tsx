@@ -1,6 +1,6 @@
 import { View, Text, FlatList, Pressable, StyleSheet } from 'react-native';
-import BottomSheet from '@gorhom/bottom-sheet';
-import { useMemo, useCallback, useRef } from 'react';
+import { useCallback } from 'react';
+import SimpleBottomSheet from '@/components/sheets/SimpleBottomSheet';
 import Badge from '@/components/common/Badge';
 import { colors, spacing, borderRadius, shadows } from '@/lib/theme';
 import type { MockJobLocation } from '@/lib/types';
@@ -18,9 +18,6 @@ interface JobSheetProps {
 }
 
 export default function JobSheet({ jobs, onJobSelect, selectedId }: JobSheetProps) {
-  const bottomSheetRef = useRef<BottomSheet>(null);
-  const snapPoints = useMemo(() => [80, '50%', '90%'], []);
-
   const renderJobCard = useCallback(({ item }: { item: MockJobLocation }) => (
     <Pressable onPress={() => onJobSelect?.(item)} style={({ pressed }) => [pressed && { opacity: 0.9 }]}>
       <View style={[styles.card, selectedId === item.id && styles.cardSelected]}>
@@ -40,10 +37,7 @@ export default function JobSheet({ jobs, onJobSelect, selectedId }: JobSheetProp
   ), [onJobSelect, selectedId]);
 
   return (
-    <BottomSheet
-      ref={bottomSheetRef}
-      index={0}
-      snapPoints={snapPoints}
+    <SimpleBottomSheet
       backgroundStyle={styles.sheetBg}
       handleIndicatorStyle={styles.handle}
     >
@@ -57,7 +51,7 @@ export default function JobSheet({ jobs, onJobSelect, selectedId }: JobSheetProp
         contentContainerStyle={styles.list}
         showsVerticalScrollIndicator={false}
       />
-    </BottomSheet>
+    </SimpleBottomSheet>
   );
 }
 

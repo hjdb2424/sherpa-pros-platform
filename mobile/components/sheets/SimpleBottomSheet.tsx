@@ -2,9 +2,15 @@ import { useRef, useImperativeHandle, forwardRef, useCallback } from 'react';
 import { View, Animated, PanResponder, Pressable, Dimensions, StyleSheet } from 'react-native';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
-const SNAP_POINTS = { peek: SCREEN_HEIGHT - 120, half: SCREEN_HEIGHT * 0.5, full: 80 };
+
+// Snap points as distance from TOP of screen
+const SNAP_POINTS = {
+  peek: SCREEN_HEIGHT - 120,    // only 120px visible at bottom
+  half: SCREEN_HEIGHT * 0.5,    // half screen
+  full: 80,                      // nearly full screen
+};
+
 type SnapPoint = 'peek' | 'half' | 'full';
-const SNAP_ORDER: SnapPoint[] = ['full', 'half', 'peek'];
 
 export interface SimpleBottomSheetRef {
   snapTo: (point: SnapPoint) => void;
@@ -18,47 +24,57 @@ interface SimpleBottomSheetProps {
 
 const SimpleBottomSheet = forwardRef<SimpleBottomSheetRef, SimpleBottomSheetProps>(
   ({ children, backgroundStyle, handleIndicatorStyle }, ref) => {
-    const translateY = useRef(new Animated.Value(SNAP_POINTS.peek)).current;
-    const lastY = useRef(SNAP_POINTS.peek);
+    // Height of visible sheet (animated)
+    const sheetHeight = useRef(new Animated.Value(120)).current;
     const currentSnap = useRef<SnapPoint>('peek');
 
+    const getHeightForSnap = (snap: SnapPoint) => {
+      return SCREEN_HEIGHT - SNAP_POINTS[snap];
+    };
+
     const animateTo = useCallback((point: SnapPoint) => {
-      const target = SNAP_POINTS[point];
-      lastY.current = target;
       currentSnap.current = point;
-      Animated.spring(translateY, {
-        toValue: target,
-        useNativeDriver: true,
+      Animated.spring(sheetHeight, {
+        toValue: getHeightForSnap(point),
+        useNativeDriver: false, // height animation can't use native driver
         damping: 20,
         stiffness: 200,
       }).start();
-    }, [translateY]);
+    }, [sheetHeight]);
 
     useImperativeHandle(ref, () => ({
       snapTo: animateTo,
     }));
 
     const handleTapToggle = useCallback(() => {
-      // Cycle: peek → half → full → peek
-      const idx = SNAP_ORDER.indexOf(currentSnap.current);
-      const nextIdx = (idx + 1) % SNAP_ORDER.length;
-      animateTo(SNAP_ORDER[nextIdx]);
+      const order: SnapPoint[] = ['peek', 'half', 'full'];
+      const idx = order.indexOf(currentSnap.current);
+      const next = order[(idx + 1) % order.length];
+      animateTo(next);
     }, [animateTo]);
+
+    const dragStartHeight = useRef(120);
 
     const panResponder = useRef(
       PanResponder.create({
         onMoveShouldSetPanResponder: (_, gesture) => Math.abs(gesture.dy) > 10,
+        onPanResponderGrant: () => {
+          dragStartHeight.current = getHeightForSnap(currentSnap.current);
+        },
         onPanResponderMove: (_, gesture) => {
-          const newY = lastY.current + gesture.dy;
-          const clamped = Math.max(SNAP_POINTS.full, Math.min(SNAP_POINTS.peek, newY));
-          translateY.setValue(clamped);
+          // Dragging up = negative dy = increase height
+          const newHeight = dragStartHeight.current - gesture.dy;
+          const clamped = Math.max(120, Math.min(SCREEN_HEIGHT - 80, newHeight));
+          sheetHeight.setValue(clamped);
         },
         onPanResponderRelease: (_, gesture) => {
-          const currentY = lastY.current + gesture.dy;
+          const finalHeight = dragStartHeight.current - gesture.dy;
+          // Find nearest snap
           let closest: SnapPoint = 'peek';
           let minDist = Infinity;
-          for (const [key, val] of Object.entries(SNAP_POINTS)) {
-            const dist = Math.abs(currentY - val);
+          for (const [key, topY] of Object.entries(SNAP_POINTS)) {
+            const h = SCREEN_HEIGHT - topY;
+            const dist = Math.abs(finalHeight - h);
             if (dist < minDist) {
               minDist = dist;
               closest = key as SnapPoint;
@@ -71,7 +87,11 @@ const SimpleBottomSheet = forwardRef<SimpleBottomSheetRef, SimpleBottomSheetProp
 
     return (
       <Animated.View
-        style={[styles.sheet, backgroundStyle, { transform: [{ translateY }] }]}
+        style={[
+          styles.sheet,
+          backgroundStyle,
+          { height: sheetHeight },
+        ]}
         {...panResponder.panHandlers}
       >
         <Pressable onPress={handleTapToggle} style={styles.handle}>
@@ -91,7 +111,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 0,
     right: 0,
-    height: SCREEN_HEIGHT,
+    bottom: 0,
     backgroundColor: '#ffffff',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
@@ -100,6 +120,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 12,
     elevation: 10,
+    overflow: 'hidden',
   },
   handle: { alignItems: 'center', paddingVertical: 14 },
   handleBar: { width: 40, height: 4, borderRadius: 2, backgroundColor: '#d4d4d8' },

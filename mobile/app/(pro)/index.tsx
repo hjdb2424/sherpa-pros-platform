@@ -125,7 +125,7 @@ export default function ProMapScreen() {
         ref={sheetRef}
         jobs={MOCK_JOBS}
         selectedId={selectedJobId}
-        onJobSelect={(job) => setSelectedJobId(job.id)}
+        onJobSelect={(job) => { setSelectedJobId(job.id); sheetRef.current?.snapTo('half'); }}
       />
     </View>
   );

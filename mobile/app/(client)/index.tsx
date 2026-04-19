@@ -124,7 +124,7 @@ export default function ClientMapScreen() {
         ref={sheetRef}
         pros={MOCK_PROS}
         selectedId={selectedProId}
-        onProSelect={(pro) => setSelectedProId(pro.id)}
+        onProSelect={(pro) => { setSelectedProId(pro.id); sheetRef.current?.snapTo('half'); }}
       />
     </View>
   );

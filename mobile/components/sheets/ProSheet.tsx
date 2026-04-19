@@ -1,5 +1,8 @@
 import { View, Text, FlatList, Pressable, StyleSheet } from 'react-native';
 import { useCallback, forwardRef } from 'react';
+import { useRouter } from 'expo-router';
+import * as Haptics from 'expo-haptics';
+import { Ionicons } from '@expo/vector-icons';
 import SimpleBottomSheet, { type SimpleBottomSheetRef } from '@/components/sheets/SimpleBottomSheet';
 import Avatar from '@/components/common/Avatar';
 import Badge from '@/components/common/Badge';
@@ -13,6 +16,13 @@ interface ProSheetProps {
 }
 
 const ProSheet = forwardRef<SimpleBottomSheetRef, ProSheetProps>(({ pros, onProSelect, selectedId }, ref) => {
+  const router = useRouter();
+
+  const handleEmergencyPress = useCallback(() => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    router.push('/(emergency)');
+  }, [router]);
+
   const renderProCard = useCallback(({ item }: { item: MockProLocation }) => (
     <Pressable onPress={() => onProSelect?.(item)} style={({ pressed }) => [pressed && { opacity: 0.9 }]}>
       <View style={[styles.card, selectedId === item.id && styles.cardSelected]}>
@@ -43,6 +53,14 @@ const ProSheet = forwardRef<SimpleBottomSheetRef, ProSheetProps>(({ pros, onProS
       <View style={styles.peekContent}>
         <Text style={styles.peekText}>{pros.length} Pros Nearby</Text>
       </View>
+      <Pressable onPress={handleEmergencyPress} style={styles.emergencyCard}>
+        <Ionicons name="alert-circle" size={24} color={colors.danger} />
+        <View style={styles.emergencyCardText}>
+          <Text style={styles.emergencyTitle}>Need Emergency Help?</Text>
+          <Text style={styles.emergencySubtitle}>24/7 dispatch for urgent issues</Text>
+        </View>
+        <Ionicons name="chevron-forward" size={20} color={colors.textMuted} />
+      </Pressable>
       <FlatList
         data={pros}
         renderItem={renderProCard}
@@ -80,4 +98,31 @@ const styles = StyleSheet.create({
   star: { fontSize: 13, color: colors.accent, fontWeight: '600' },
   meta: { fontSize: 13, color: colors.textMuted },
   response: { fontSize: 12, color: colors.textMuted, marginTop: 2 },
+
+  // Emergency card
+  emergencyCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    backgroundColor: '#fef2f2',
+    borderWidth: 1,
+    borderColor: '#fecaca',
+    borderRadius: borderRadius.xl,
+    padding: spacing.lg,
+    marginHorizontal: spacing.lg,
+    marginBottom: spacing.md,
+  },
+  emergencyCardText: {
+    flex: 1,
+  },
+  emergencyTitle: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: colors.danger,
+  },
+  emergencySubtitle: {
+    fontSize: 12,
+    color: colors.textMuted,
+    marginTop: 2,
+  },
 });

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { View, Text, Pressable, StyleSheet, Animated, Easing } from 'react-native';
+import { View, Text, Pressable, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import * as Haptics from 'expo-haptics';
@@ -11,45 +11,7 @@ import type { SimpleBottomSheetRef } from '@/components/sheets/SimpleBottomSheet
 import { MOCK_JOBS } from '@/lib/types';
 import { getCurrentLocation } from '@/lib/location';
 import { colors, spacing, borderRadius, shadows, typography } from '@/lib/theme';
-
-function DispatchFAB() {
-  const router = useRouter();
-  const pulse = useRef(new Animated.Value(1)).current;
-
-  useEffect(() => {
-    Animated.loop(
-      Animated.sequence([
-        Animated.timing(pulse, {
-          toValue: 1.15,
-          duration: 800,
-          easing: Easing.inOut(Easing.ease),
-          useNativeDriver: true,
-        }),
-        Animated.timing(pulse, {
-          toValue: 1,
-          duration: 800,
-          easing: Easing.inOut(Easing.ease),
-          useNativeDriver: true,
-        }),
-      ])
-    ).start();
-  }, [pulse]);
-
-  return (
-    <Animated.View style={[styles.fabWrapper, { transform: [{ scale: pulse }] }]}>
-      <Pressable
-        style={styles.dispatchFab}
-        onPress={() => {
-          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
-          router.push('/(emergency)');
-        }}
-      >
-        <Ionicons name="flash" size={20} color="#ffffff" />
-        <Text style={styles.dispatchFabLabel}>Dispatch</Text>
-      </Pressable>
-    </Animated.View>
-  );
-}
+import DispatchModal from '@/components/pro/DispatchModal';
 
 function NotificationBell() {
   const router = useRouter();
@@ -70,6 +32,7 @@ function NotificationBell() {
 export default function ProMapScreen() {
   const insets = useSafeAreaInsets();
   const [selectedJobId, setSelectedJobId] = useState<string | null>(null);
+  const [showDispatch, setShowDispatch] = useState(false);
   const sheetRef = useRef<SimpleBottomSheetRef>(null);
   const [userRegion, setUserRegion] = useState<{
     latitude: number;
@@ -92,6 +55,11 @@ export default function ProMapScreen() {
         setLocationDenied(true);
       }
     });
+  }, []);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setShowDispatch(true), 5000);
+    return () => clearTimeout(timer);
   }, []);
 
   return (
@@ -118,8 +86,19 @@ export default function ProMapScreen() {
         <NotificationBell />
       </View>
 
-      {/* Dispatch FAB */}
-      <DispatchFAB />
+      <DispatchModal
+        visible={showDispatch}
+        category="Plumbing"
+        severity="High"
+        distance="2.4 mi"
+        estimatedPayout="$350"
+        onAccept={() => {
+          setShowDispatch(false);
+        }}
+        onDecline={() => {
+          setShowDispatch(false);
+        }}
+      />
 
       <JobSheet
         ref={sheetRef}
@@ -162,32 +141,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.danger,
     borderWidth: 1.5,
     borderColor: '#ffffff',
-  },
-
-  // Dispatch FAB
-  fabWrapper: {
-    position: 'absolute',
-    bottom: 160,
-    right: 16,
-    zIndex: 10,
-  },
-  dispatchFab: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-    backgroundColor: colors.danger,
-    borderRadius: 28,
-    paddingHorizontal: 16,
-    paddingVertical: 14,
-    ...shadows.lg,
-  },
-  dispatchFabIcon: {
-    fontSize: 20,
-  },
-  dispatchFabLabel: {
-    color: '#ffffff',
-    fontSize: 13,
-    fontWeight: '700',
   },
 
   // Location banner

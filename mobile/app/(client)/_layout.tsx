@@ -5,17 +5,23 @@ import { Ionicons } from '@expo/vector-icons';
 import { colors } from '@/lib/theme';
 
 function TabIcon({ name, focused }: { name: string; focused: boolean }) {
-  const icons: Record<string, keyof typeof Ionicons.glyphMap> = {
-    Map: 'map-outline',
-    Jobs: 'briefcase-outline',
-    Messages: 'chatbubbles-outline',
-    Profile: 'person-outline',
+  const icons: Record<string, { outline: keyof typeof Ionicons.glyphMap; filled: keyof typeof Ionicons.glyphMap }> = {
+    Map: { outline: 'map-outline', filled: 'map' },
+    Jobs: { outline: 'briefcase-outline', filled: 'briefcase' },
+    Messages: { outline: 'chatbubbles-outline', filled: 'chatbubbles' },
+    Profile: { outline: 'person-outline', filled: 'person' },
+    Emergency: { outline: 'alert-circle-outline', filled: 'alert-circle' },
   };
-  const iconName = icons[name] ?? 'ellipse-outline';
+  const entry = icons[name] ?? { outline: 'ellipse-outline', filled: 'ellipse' };
+  const iconName = focused ? entry.filled : entry.outline;
+  const isEmergency = name === 'Emergency';
+  const iconColor = focused
+    ? isEmergency ? colors.danger : colors.primary
+    : colors.textMuted;
   return (
     <View style={styles.tabIcon}>
-      <Ionicons name={iconName} size={22} color={focused ? colors.primary : colors.textMuted} />
-      <Text numberOfLines={1} style={[styles.tabLabel, focused && styles.tabLabelActive]}>{name}</Text>
+      <Ionicons name={iconName} size={22} color={iconColor} />
+      <Text numberOfLines={1} style={[styles.tabLabel, focused && (isEmergency ? styles.tabLabelEmergency : styles.tabLabelActive)]}>{name}</Text>
     </View>
   );
 }
@@ -58,6 +64,10 @@ export default function ClientLayout() {
         options={{ title: 'Profile', tabBarIcon: ({ focused }) => <TabIcon name="Profile" focused={focused} /> }}
       />
       <Tabs.Screen
+        name="emergency"
+        options={{ title: 'Emergency', tabBarIcon: ({ focused }) => <TabIcon name="Emergency" focused={focused} /> }}
+      />
+      <Tabs.Screen
         name="post-job/index"
         options={{
           href: null,
@@ -87,4 +97,5 @@ const styles = StyleSheet.create({
   tabIcon: { alignItems: 'center', gap: 2, width: 60 },
   tabLabel: { fontSize: 9, fontWeight: '500', color: colors.textMuted, textAlign: 'center' },
   tabLabelActive: { color: colors.primary, fontWeight: '600' },
+  tabLabelEmergency: { color: colors.danger, fontWeight: '600' },
 });

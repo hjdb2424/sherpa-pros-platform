@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { View, Text, Pressable, StyleSheet, Animated, Easing } from 'react-native';
+import { View, Text, Pressable, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import * as Haptics from 'expo-haptics';
@@ -11,44 +11,6 @@ import type { SimpleBottomSheetRef } from '@/components/sheets/SimpleBottomSheet
 import { MOCK_PROS } from '@/lib/types';
 import { getCurrentLocation } from '@/lib/location';
 import { colors, spacing, borderRadius, shadows, typography } from '@/lib/theme';
-
-function EmergencyFAB() {
-  const router = useRouter();
-  const pulse = useRef(new Animated.Value(1)).current;
-
-  useEffect(() => {
-    Animated.loop(
-      Animated.sequence([
-        Animated.timing(pulse, {
-          toValue: 1.15,
-          duration: 800,
-          easing: Easing.inOut(Easing.ease),
-          useNativeDriver: true,
-        }),
-        Animated.timing(pulse, {
-          toValue: 1,
-          duration: 800,
-          easing: Easing.inOut(Easing.ease),
-          useNativeDriver: true,
-        }),
-      ])
-    ).start();
-  }, [pulse]);
-
-  return (
-    <Animated.View style={[styles.fabWrapper, { transform: [{ scale: pulse }] }]}>
-      <Pressable
-        style={styles.emergencyFab}
-        onPress={() => {
-          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
-          router.push('/(emergency)');
-        }}
-      >
-        <Ionicons name="flash" size={24} color="#ffffff" />
-      </Pressable>
-    </Animated.View>
-  );
-}
 
 function NotificationBell() {
   const router = useRouter();
@@ -117,9 +79,6 @@ export default function ClientMapScreen() {
         <NotificationBell />
       </View>
 
-      {/* Emergency FAB */}
-      <EmergencyFAB />
-
       <ProSheet
         ref={sheetRef}
         pros={MOCK_PROS}
@@ -161,26 +120,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.danger,
     borderWidth: 1.5,
     borderColor: '#ffffff',
-  },
-
-  // Emergency FAB
-  fabWrapper: {
-    position: 'absolute',
-    bottom: 160,
-    right: 16,
-    zIndex: 10,
-  },
-  emergencyFab: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    backgroundColor: colors.danger,
-    alignItems: 'center',
-    justifyContent: 'center',
-    ...shadows.lg,
-  },
-  emergencyFabIcon: {
-    fontSize: 24,
   },
 
   // Location banner

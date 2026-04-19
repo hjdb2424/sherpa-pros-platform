@@ -269,28 +269,40 @@ export default function ProJobDetailScreen() {
     </ScrollView>
   );
 
+  const handleMaterialTap = useCallback((item: MaterialItem) => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    const badge = REVIEW_BADGE[item.review];
+    Alert.alert(
+      item.name,
+      `Quantity: ${item.quantity} ${item.unit}\nSpec: Standard\nPrice: $${item.price}\n\nReview: ${badge.label}${item.reviewNote ? '\nNote: ' + item.reviewNote : ''}`,
+      [{ text: 'Close' }],
+    );
+  }, []);
+
   const renderMaterials = () => (
     <ScrollView style={styles.scrollContent} showsVerticalScrollIndicator={false}>
       {job.materials.map((mat) => {
         const badge = REVIEW_BADGE[mat.review];
         return (
-          <Card key={mat.id} style={styles.materialCard} variant="elevated">
-            <View style={styles.materialRow}>
-              <View style={styles.materialInfo}>
-                <Text style={styles.materialName}>{mat.name}</Text>
-                <Text style={styles.materialSpec}>
-                  {mat.quantity} {mat.unit}
-                </Text>
-                {mat.reviewNote && (
-                  <Text style={styles.materialNote}>{mat.reviewNote}</Text>
-                )}
+          <Pressable key={mat.id} onPress={() => handleMaterialTap(mat)}>
+            <Card style={styles.materialCard} variant="elevated">
+              <View style={styles.materialRow}>
+                <View style={styles.materialInfo}>
+                  <Text style={styles.materialName}>{mat.name}</Text>
+                  <Text style={styles.materialSpec}>
+                    {mat.quantity} {mat.unit}
+                  </Text>
+                  {mat.reviewNote && (
+                    <Text style={styles.materialNote}>{mat.reviewNote}</Text>
+                  )}
+                </View>
+                <View style={styles.materialRight}>
+                  <Badge label={badge.label} variant={badge.variant} />
+                  <Text style={styles.materialPrice}>${mat.price}</Text>
+                </View>
               </View>
-              <View style={styles.materialRight}>
-                <Badge label={badge.label} variant={badge.variant} />
-                <Text style={styles.materialPrice}>${mat.price}</Text>
-              </View>
-            </View>
-          </Card>
+            </Card>
+          </Pressable>
         );
       })}
 

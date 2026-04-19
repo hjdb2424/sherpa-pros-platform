@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -10,6 +10,7 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import * as Haptics from 'expo-haptics';
+import * as SecureStore from 'expo-secure-store';
 import { Ionicons } from '@expo/vector-icons';
 import { colors, spacing, borderRadius, shadows, typography } from '@/lib/theme';
 import { useAuth } from '@/lib/auth';
@@ -27,6 +28,13 @@ export default function ProProfileScreen() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const { userName, email, signOut, switchRole } = useAuth();
+  const [onboardingComplete, setOnboardingComplete] = useState(true);
+
+  useEffect(() => {
+    SecureStore.getItemAsync('sherpa_onboarding_complete').then((val) => {
+      setOnboardingComplete(val === 'true');
+    });
+  }, []);
 
   const initials = (userName ?? 'U')
     .split(' ')
@@ -68,6 +76,22 @@ export default function ProProfileScreen() {
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Profile</Text>
       </View>
+
+      {!onboardingComplete && (
+        <Pressable
+          style={styles.onboardingBanner}
+          onPress={() => {
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+            router.push('/pro-onboarding');
+          }}
+        >
+          <Ionicons name="alert-circle" size={20} color={colors.primary} />
+          <Text style={styles.onboardingBannerText}>
+            Complete your profile to start receiving jobs
+          </Text>
+          <Ionicons name="chevron-forward" size={16} color={colors.primary} />
+        </Pressable>
+      )}
 
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -151,6 +175,25 @@ const styles = StyleSheet.create({
   headerTitle: {
     ...typography.heading,
     color: colors.text,
+  },
+  onboardingBanner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+    marginHorizontal: spacing.lg,
+    marginTop: spacing.md,
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.md,
+    backgroundColor: colors.primaryLight,
+    borderRadius: borderRadius.md,
+    borderWidth: 1,
+    borderColor: colors.primary,
+  },
+  onboardingBannerText: {
+    ...typography.bodySmall,
+    color: colors.primary,
+    fontWeight: '600',
+    flex: 1,
   },
   scrollContent: {
     paddingHorizontal: spacing.lg,

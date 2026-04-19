@@ -3,6 +3,7 @@ import { View, Text, Pressable, StyleSheet, Alert } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import * as Haptics from 'expo-haptics';
+import * as SecureStore from 'expo-secure-store';
 import { Ionicons } from '@expo/vector-icons';
 import MapScreen from '@/components/maps/MapScreen';
 import JobMarker from '@/components/maps/JobMarker';
@@ -32,6 +33,7 @@ function NotificationBell() {
 
 export default function ProMapScreen() {
   const insets = useSafeAreaInsets();
+  const router = useRouter();
   const [selectedJobId, setSelectedJobId] = useState<string | null>(null);
   const [showDispatch, setShowDispatch] = useState(false);
   const sheetRef = useRef<SimpleBottomSheetRef>(null);
@@ -42,6 +44,13 @@ export default function ProMapScreen() {
     longitudeDelta: number;
   } | undefined>(undefined);
   const [locationDenied, setLocationDenied] = useState(false);
+  const [onboardingComplete, setOnboardingComplete] = useState(true);
+
+  useEffect(() => {
+    SecureStore.getItemAsync('sherpa_onboarding_complete').then((val) => {
+      setOnboardingComplete(val === 'true');
+    });
+  }, []);
 
   useEffect(() => {
     getCurrentLocation().then((loc) => {
@@ -83,6 +92,21 @@ export default function ProMapScreen() {
             Enable location for better results
           </Text>
         </View>
+      )}
+      {!onboardingComplete && (
+        <Pressable
+          style={[styles.onboardingBanner, { top: insets.top + 66 }]}
+          onPress={() => {
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+            router.push('/pro-onboarding');
+          }}
+        >
+          <Ionicons name="alert-circle" size={18} color={colors.primary} />
+          <Text style={styles.onboardingBannerText}>
+            Complete your profile to start receiving jobs
+          </Text>
+          <Ionicons name="chevron-forward" size={14} color={colors.primary} />
+        </Pressable>
       )}
       <MapScreen initialRegion={userRegion}>
         {MOCK_JOBS.map((job) => (
@@ -202,5 +226,29 @@ const styles = StyleSheet.create({
     ...typography.caption,
     color: colors.warning,
     fontWeight: '600',
+  },
+
+  // Onboarding banner
+  onboardingBanner: {
+    position: 'absolute',
+    left: 16,
+    right: 16,
+    zIndex: 15,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    backgroundColor: colors.primaryLight,
+    borderRadius: borderRadius.md,
+    borderWidth: 1,
+    borderColor: colors.primary,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+    ...shadows.md,
+  },
+  onboardingBannerText: {
+    ...typography.caption,
+    color: colors.primary,
+    fontWeight: '600',
+    flex: 1,
   },
 });

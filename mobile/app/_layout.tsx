@@ -48,6 +48,14 @@ export default function RootLayout() {
           <Stack.Screen name="(pro)" />
           <Stack.Screen name="(emergency)" />
           <Stack.Screen name="notifications" />
+          <Stack.Screen
+            name="pro-onboarding"
+            options={{
+              presentation: 'fullScreenModal',
+              animation: 'slide_from_right',
+              gestureEnabled: false,
+            }}
+          />
         </Stack>
       </AuthProvider>
     </GestureHandlerRootView>

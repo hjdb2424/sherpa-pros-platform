@@ -23,6 +23,9 @@ import {
 } from '@/lib/mock-data/subscription-data';
 import SubscriptionCard from '@/components/pro/SubscriptionCard';
 import SLADashboard from '@/components/pro/SLADashboard';
+import PricingTable from '@/components/pricing/PricingTable';
+import SubscriptionBadge from '@/components/pricing/SubscriptionBadge';
+import Link from 'next/link';
 
 const plans = getAllPlans();
 const featureMatrix = comparePlans();
@@ -54,13 +57,16 @@ export default function SubscriptionPageClient() {
   return (
     <div className="space-y-8">
       {/* Page Header */}
-      <div>
-        <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">
-          Subscription
-        </h1>
-        <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
-          Manage your Pro tier, billing, and SLA compliance.
-        </p>
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">
+            Subscription
+          </h1>
+          <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+            Manage your Pro tier, billing, and SLA compliance.
+          </p>
+        </div>
+        <SubscriptionBadge tier={currentTier} />
       </div>
 
       {/* Current Tier Badge + Billing Info */}
@@ -248,6 +254,14 @@ export default function SubscriptionPageClient() {
         </div>
       </section>
 
+      {/* Quick Plan Overview */}
+      <section>
+        <h2 className="mb-6 text-center text-lg font-semibold text-zinc-900 dark:text-zinc-100">
+          Plan Overview
+        </h2>
+        <PricingTable userType="pro" />
+      </section>
+
       {/* Requirements Checklist */}
       <section>
         <h2 className="mb-4 text-lg font-semibold text-zinc-900 dark:text-zinc-100">
@@ -307,6 +321,21 @@ export default function SubscriptionPageClient() {
           </ul>
         </div>
       </section>
+      {/* Need help choosing? */}
+      <div className="rounded-xl border border-zinc-200 bg-white p-6 text-center shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
+        <h3 className="text-base font-semibold text-zinc-900 dark:text-zinc-100">
+          Need help choosing?
+        </h3>
+        <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+          Our team can walk you through the requirements and help you find the right tier.
+        </p>
+        <Link
+          href="/pro/messages"
+          className="mt-4 inline-flex items-center rounded-full bg-[#00a9e0] px-6 py-2.5 text-sm font-semibold text-white transition-all hover:bg-[#0ea5e9] hover:shadow-md"
+        >
+          Contact Support
+        </Link>
+      </div>
     </div>
   );
 }

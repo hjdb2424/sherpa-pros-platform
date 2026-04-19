@@ -377,6 +377,72 @@ export default function LandingPage() {
       {/* App Download */}
       <AppDownload />
 
+      {/* Pricing Preview */}
+      <ScrollReveal>
+        <section className="bg-white dark:bg-zinc-950 px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
+          <div className="mx-auto max-w-4xl text-center">
+            <div className="inline-flex items-center gap-2 rounded-full border border-sky-200 dark:border-sky-800 bg-sky-50 dark:bg-sky-950 px-4 py-1.5">
+              <BanknotesIcon className="h-4 w-4 text-[#00a9e0]" aria-hidden="true" />
+              <span className="text-xs font-medium text-[#00a9e0] sm:text-sm">
+                Simple Pricing
+              </span>
+            </div>
+            <h2 className="mt-6 text-3xl font-bold text-zinc-900 dark:text-zinc-50 sm:text-4xl">
+              Transparent Plans for Everyone
+            </h2>
+            <p className="mt-4 text-lg text-zinc-600 dark:text-zinc-400">
+              No hidden fees. No lead charges. Start free and upgrade when you are ready.
+            </p>
+
+            <div className="mx-auto mt-12 grid max-w-3xl gap-6 sm:grid-cols-2">
+              {/* Client pricing card */}
+              <div className="rounded-2xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 p-6 shadow-sm text-left">
+                <p className="text-xs font-semibold uppercase tracking-wider text-[#00a9e0]">
+                  For Clients
+                </p>
+                <p className="mt-3 text-2xl font-bold text-zinc-900 dark:text-zinc-50">
+                  From $0<span className="text-base font-normal text-zinc-500 dark:text-zinc-400">/mo</span>
+                </p>
+                <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+                  Post jobs and find verified pros for free. Upgrade to the Sherpa Plan for $29/mo for a dedicated human concierge and lower fees.
+                </p>
+                <Link
+                  href="/client/subscription"
+                  className="mt-5 inline-flex items-center text-sm font-semibold text-[#00a9e0] transition-colors hover:text-[#0ea5e9]"
+                >
+                  View Client Plans
+                  <svg className="ml-1 h-4 w-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fillRule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clipRule="evenodd" />
+                  </svg>
+                </Link>
+              </div>
+
+              {/* Pro pricing card */}
+              <div className="rounded-2xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 p-6 shadow-sm text-left">
+                <p className="text-xs font-semibold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
+                  For Pros
+                </p>
+                <p className="mt-3 text-2xl font-bold text-zinc-900 dark:text-zinc-50">
+                  From $0<span className="text-base font-normal text-zinc-500 dark:text-zinc-400">/mo</span>
+                </p>
+                <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+                  List for free with 15% commission. Emergency Ready ($299/mo) and Restoration Certified ($799/mo) tiers unlock lower rates and priority dispatch.
+                </p>
+                <Link
+                  href="/pro/subscription"
+                  className="mt-5 inline-flex items-center text-sm font-semibold text-emerald-600 dark:text-emerald-400 transition-colors hover:text-emerald-500"
+                >
+                  View Pro Plans
+                  <svg className="ml-1 h-4 w-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fillRule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clipRule="evenodd" />
+                  </svg>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+      </ScrollReveal>
+
       {/* Testimonials */}
       <ScrollReveal>
         <section className="bg-slate-50 dark:bg-zinc-900 px-4 py-20 sm:px-6 sm:py-28 lg:px-8">

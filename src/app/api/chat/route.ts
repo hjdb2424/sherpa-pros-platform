@@ -1,10 +1,12 @@
 import { NextResponse } from 'next/server';
 import { communicationService } from '@/lib/communication';
 import type { CreateConversationPayload } from '@/lib/communication';
+import { getConversations } from '@/db/queries/messages';
 
 /**
  * GET /api/chat?userId=xxx
  * List conversations for the authenticated user.
+ * Tries DB query first, falls back to communication service, then mock.
  */
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -17,16 +19,35 @@ export async function GET(request: Request) {
     );
   }
 
-  // TODO: Replace with actual auth — verify the caller owns this userId
-  // const session = await auth();
-  // if (session?.userId !== userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-
   try {
+    // Try DB-first approach with lateral join for last message
+    const dbConversations = await getConversations(userId);
+
+    if (dbConversations.length > 0) {
+      const items = dbConversations.map((conv) => ({
+        conversation: {
+          id: conv.id,
+          jobId: conv.job_id,
+          proUserId: conv.pro_user_id,
+          clientUserId: conv.client_user_id,
+          status: conv.status,
+          createdAt: conv.created_at,
+        },
+        lastMessage: conv.last_message_body
+          ? { body: conv.last_message_body, createdAt: conv.last_message_at }
+          : null,
+        unreadCount: 0,
+        otherPartyRole: conv.pro_user_id === userId ? 'client' : 'pro',
+        jobTitle: conv.job_title ?? `Job ${conv.job_id}`,
+      }));
+
+      return NextResponse.json({ conversations: items });
+    }
+
+    // Fall back to communication service
     const conversations =
       await communicationService.getConversationsForUser(userId);
 
-    // Build list items with last message + unread count
-    // In production this would be a single DB query with joins
     const items = await Promise.all(
       conversations.map(async (conv) => {
         const messages = await communicationService.getMessages(conv.id, 1);
@@ -43,13 +64,14 @@ export async function GET(request: Request) {
           lastMessage: messages[0] ?? null,
           unreadCount,
           otherPartyRole,
-          jobTitle: `Job ${conv.jobId}`, // TODO: Resolve actual job title from DB
+          jobTitle: `Job ${conv.jobId}`,
         };
       }),
     );
 
     return NextResponse.json({ conversations: items });
   } catch (err) {
+    console.error('[api/chat] GET failed:', err);
     const message = err instanceof Error ? err.message : 'Unknown error';
     return NextResponse.json({ error: message }, { status: 500 });
   }

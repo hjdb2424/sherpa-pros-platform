@@ -5,6 +5,7 @@ import {
   FlatList,
   Pressable,
   Alert,
+  RefreshControl,
   StyleSheet,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -111,6 +112,12 @@ const BID_BADGE: Record<string, { label: string; variant: 'warning' | 'success' 
 export default function ProJobsScreen() {
   const insets = useSafeAreaInsets();
   const [activeTab, setActiveTab] = useState<TabKey>('available');
+  const [refreshing, setRefreshing] = useState(false);
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    setTimeout(() => setRefreshing(false), 1000);
+  }, []);
 
   const handleCardPress = useCallback(() => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -223,6 +230,9 @@ export default function ProJobsScreen() {
             contentContainerStyle={styles.listContent}
             showsVerticalScrollIndicator={false}
             ListEmptyComponent={() => renderEmptyTab('No available jobs in your area right now.')}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.primary} />
+            }
           />
         );
       case 'bids':
@@ -234,6 +244,9 @@ export default function ProJobsScreen() {
             contentContainerStyle={styles.listContent}
             showsVerticalScrollIndicator={false}
             ListEmptyComponent={() => renderEmptyTab('You haven\'t placed any bids yet.')}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.primary} />
+            }
           />
         );
       case 'active':
@@ -245,6 +258,9 @@ export default function ProJobsScreen() {
             contentContainerStyle={styles.listContent}
             showsVerticalScrollIndicator={false}
             ListEmptyComponent={() => renderEmptyTab('No active jobs. Bid on available jobs to get started.')}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.primary} />
+            }
           />
         );
       case 'completed':
@@ -256,6 +272,9 @@ export default function ProJobsScreen() {
             contentContainerStyle={styles.listContent}
             showsVerticalScrollIndicator={false}
             ListEmptyComponent={() => renderEmptyTab('Completed jobs will appear here.')}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.primary} />
+            }
           />
         );
     }

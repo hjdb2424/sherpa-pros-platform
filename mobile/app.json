@@ -48,6 +48,19 @@
         {
           "fonts": []
         }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Sherpa Pros needs access to your photos for checklist documentation.",
+          "cameraPermission": "Sherpa Pros needs camera access to take checklist photos."
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Sherpa Pros needs your location to find nearby pros and jobs."
+        }
       ]
     ]
   }

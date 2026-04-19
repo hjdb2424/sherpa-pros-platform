@@ -7,7 +7,8 @@ import MapScreen from '@/components/maps/MapScreen';
 import JobMarker from '@/components/maps/JobMarker';
 import JobSheet from '@/components/sheets/JobSheet';
 import { MOCK_JOBS } from '@/lib/types';
-import { colors, shadows } from '@/lib/theme';
+import { getCurrentLocation } from '@/lib/location';
+import { colors, spacing, borderRadius, shadows, typography } from '@/lib/theme';
 
 function DispatchFAB() {
   const router = useRouter();
@@ -67,10 +68,39 @@ function NotificationBell() {
 export default function ProMapScreen() {
   const insets = useSafeAreaInsets();
   const [selectedJobId, setSelectedJobId] = useState<string | null>(null);
+  const [userRegion, setUserRegion] = useState<{
+    latitude: number;
+    longitude: number;
+    latitudeDelta: number;
+    longitudeDelta: number;
+  } | undefined>(undefined);
+  const [locationDenied, setLocationDenied] = useState(false);
+
+  useEffect(() => {
+    getCurrentLocation().then((loc) => {
+      if (loc) {
+        setUserRegion({
+          latitude: loc.lat,
+          longitude: loc.lng,
+          latitudeDelta: 0.08,
+          longitudeDelta: 0.08,
+        });
+      } else {
+        setLocationDenied(true);
+      }
+    });
+  }, []);
 
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
-      <MapScreen>
+      {locationDenied && (
+        <View style={styles.locationBanner}>
+          <Text style={styles.locationBannerText}>
+            Enable location for better results
+          </Text>
+        </View>
+      )}
+      <MapScreen initialRegion={userRegion}>
         {MOCK_JOBS.map((job) => (
           <JobMarker
             key={job.id}
@@ -154,5 +184,23 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     fontSize: 13,
     fontWeight: '700',
+  },
+
+  // Location banner
+  locationBanner: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 20,
+    backgroundColor: colors.warningLight,
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.lg,
+    alignItems: 'center',
+  },
+  locationBannerText: {
+    ...typography.caption,
+    color: colors.warning,
+    fontWeight: '600',
   },
 });

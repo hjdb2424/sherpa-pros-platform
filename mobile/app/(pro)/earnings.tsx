@@ -4,6 +4,7 @@ import {
   Text,
   ScrollView,
   Pressable,
+  RefreshControl,
   StyleSheet,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -49,6 +50,13 @@ export default function EarningsScreen() {
   const insets = useSafeAreaInsets();
   const [selectedBar, setSelectedBar] = useState<number | null>(null);
 
+  const [refreshing, setRefreshing] = useState(false);
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    setTimeout(() => setRefreshing(false), 1000);
+  }, []);
+
   const handleBarPress = useCallback((index: number) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setSelectedBar(selectedBar === index ? null : index);
@@ -63,6 +71,13 @@ export default function EarningsScreen() {
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollContent}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor={colors.primary}
+          />
+        }
       >
         {/* Stats Row */}
         <ScrollView

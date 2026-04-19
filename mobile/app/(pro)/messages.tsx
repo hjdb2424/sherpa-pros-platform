@@ -1,9 +1,10 @@
-import { useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import {
   View,
   Text,
   FlatList,
   Pressable,
+  RefreshControl,
   StyleSheet,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -55,6 +56,12 @@ const CONVERSATIONS: Conversation[] = [
 export default function ProMessagesScreen() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
+  const [refreshing, setRefreshing] = useState(false);
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    setTimeout(() => setRefreshing(false), 1000);
+  }, []);
 
   const handleConversationPress = useCallback((conversation: Conversation) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -123,6 +130,13 @@ export default function ProMessagesScreen() {
         showsVerticalScrollIndicator={false}
         ItemSeparatorComponent={() => <View style={styles.separator} />}
         ListEmptyComponent={renderEmpty}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor={colors.primary}
+          />
+        }
       />
     </View>
   );

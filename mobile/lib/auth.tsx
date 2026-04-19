@@ -51,6 +51,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setEmail(storedEmail);
         setIsAuthenticated(true);
       }
+    } catch (e) {
+      console.warn('Auth load failed:', e);
     } finally {
       setIsLoading(false);
     }

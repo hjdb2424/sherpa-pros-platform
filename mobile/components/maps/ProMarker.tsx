@@ -1,16 +1,36 @@
-import { View, Text, StyleSheet, Pressable } from 'react-native';
+import { View, Text, StyleSheet, Alert } from 'react-native';
 import { Marker, Callout } from 'react-native-maps';
+import * as Haptics from 'expo-haptics';
 import { colors, borderRadius, shadows, spacing } from '@/lib/theme';
 import Avatar from '@/components/common/Avatar';
-import Badge from '@/components/common/Badge';
 import type { MockProLocation } from '@/lib/types';
 
 interface ProMarkerProps {
   pro: MockProLocation;
   onPress?: () => void;
+  onRequest?: (pro: MockProLocation) => void;
 }
 
-export default function ProMarker({ pro, onPress }: ProMarkerProps) {
+export default function ProMarker({ pro, onPress, onRequest }: ProMarkerProps) {
+  const handleCalloutPress = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    if (onRequest) {
+      onRequest(pro);
+    } else {
+      Alert.alert(
+        'Request Pro',
+        `Send a request to ${pro.name} (${pro.trade})?\n\nRating: ${pro.rating} · ${pro.distance} away`,
+        [
+          { text: 'Cancel', style: 'cancel' },
+          { text: 'Request', onPress: () => {
+            Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+            Alert.alert('Request Sent!', `${pro.name} will be notified. You'll hear back within ${pro.responseTime}.`);
+          }},
+        ]
+      );
+    }
+  };
+
   return (
     <Marker
       coordinate={{ latitude: pro.lat, longitude: pro.lng }}
@@ -20,7 +40,7 @@ export default function ProMarker({ pro, onPress }: ProMarkerProps) {
       <View style={styles.pin}>
         <Avatar initials={pro.initials} size={36} />
       </View>
-      <Callout tooltip>
+      <Callout tooltip onPress={handleCalloutPress}>
         <View style={styles.callout}>
           <View style={styles.calloutRow}>
             <Avatar initials={pro.initials} size={32} />
@@ -35,7 +55,7 @@ export default function ProMarker({ pro, onPress }: ProMarkerProps) {
           <View style={styles.calloutFooter}>
             <Text style={styles.distance}>{pro.distance}</Text>
             <View style={styles.requestBtn}>
-              <Text style={styles.requestText}>Request</Text>
+              <Text style={styles.requestText}>Request →</Text>
             </View>
           </View>
         </View>

@@ -11,6 +11,7 @@ import type { SimpleBottomSheetRef } from '@/components/sheets/SimpleBottomSheet
 import { MOCK_PROS } from '@/lib/types';
 import { getCurrentLocation } from '@/lib/location';
 import { colors, spacing, borderRadius, shadows, typography } from '@/lib/theme';
+import Logo from '@/components/brand/Logo';
 import { scheduleLocalNotification } from '@/lib/notifications';
 
 function NotificationBell() {
@@ -87,14 +88,19 @@ export default function ClientMapScreen() {
         ))}
       </MapScreen>
 
-      {/* Search bar */}
-      <Pressable
-        style={[styles.searchBar, { top: insets.top + 12 }]}
-        onPress={() => Alert.alert('Search coming soon')}
-      >
-        <Ionicons name="search-outline" size={18} color={colors.textMuted} />
-        <Text style={styles.searchPlaceholder}>Search for a pro or service...</Text>
-      </Pressable>
+      {/* Logo + Search bar */}
+      <View style={[styles.topBar, { top: insets.top + 8 }]}>
+        <View style={styles.logoContainer}>
+          <Logo size="sm" />
+        </View>
+        <Pressable
+          style={styles.searchBar}
+          onPress={() => Alert.alert('Search coming soon')}
+        >
+          <Ionicons name="search-outline" size={18} color={colors.textMuted} />
+          <Text style={styles.searchPlaceholder}>Search for a pro or service...</Text>
+        </Pressable>
+      </View>
 
       {/* Notification bell */}
       <View style={[styles.bellWrapper, { top: insets.top + 12 }]}>
@@ -114,12 +120,18 @@ export default function ClientMapScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.background },
 
-  // Search bar
-  searchBar: {
+  // Top bar with logo + search
+  topBar: {
     position: 'absolute',
     left: 16,
     right: 72,
     zIndex: 10,
+    gap: 8,
+  },
+  logoContainer: {
+    marginBottom: 4,
+  },
+  searchBar: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 10,

@@ -5,17 +5,24 @@ import {
   ScrollView,
   Pressable,
   Alert,
+  Image,
+  Modal,
+  TextInput,
+  Dimensions,
   StyleSheet,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import * as Haptics from 'expo-haptics';
+import * as ImagePicker from 'expo-image-picker';
 import { Ionicons } from '@expo/vector-icons';
 import { colors, spacing, borderRadius, shadows, typography } from '@/lib/theme';
 import Card from '@/components/common/Card';
 import Badge from '@/components/common/Badge';
 import Button from '@/components/common/Button';
 import FinancingOptions from '@/components/pro/FinancingOptions';
+
+const SCREEN_WIDTH = Dimensions.get('window').width;
 
 // ---------------------------------------------------------------------------
 // Mock data (inline)
@@ -71,6 +78,51 @@ const MOCK_JOB = {
   ] as MaterialItem[],
 };
 
+// ---------------------------------------------------------------------------
+// Photos & Notes mock data
+// ---------------------------------------------------------------------------
+
+interface JobPhoto {
+  id: string;
+  title: string;
+  uri: string;
+  phase: string;
+  date: string;
+}
+
+const JOB_PHOTOS: JobPhoto[] = [
+  { id: 'p1', title: 'Before - existing fixtures', uri: 'https://picsum.photos/400/300?random=1', phase: 'Demo', date: 'Apr 10' },
+  { id: 'p2', title: 'Demo complete', uri: 'https://picsum.photos/400/300?random=2', phase: 'Demo', date: 'Apr 11' },
+  { id: 'p3', title: 'Rough plumbing', uri: 'https://picsum.photos/400/300?random=3', phase: 'Rough-in', date: 'Apr 13' },
+  { id: 'p4', title: 'Cement board installed', uri: 'https://picsum.photos/400/300?random=4', phase: 'Rough-in', date: 'Apr 14' },
+  { id: 'p5', title: 'Tile in progress', uri: 'https://picsum.photos/400/300?random=5', phase: 'Finish', date: 'Apr 16' },
+  { id: 'p6', title: 'Waterproof membrane', uri: 'https://picsum.photos/400/300?random=6', phase: 'Rough-in', date: 'Apr 13' },
+];
+
+interface JobNote {
+  id: string;
+  text: string;
+  date: string;
+  author: string;
+}
+
+const INITIAL_NOTES: JobNote[] = [
+  { id: 'n1', text: 'Client wants matte black fixtures throughout. Confirmed Moen Align series.', date: 'Apr 10', author: 'You' },
+  { id: 'n2', text: 'Discovered rot behind shower wall. Need additional cement board. Updated materials list.', date: 'Apr 13', author: 'You' },
+  { id: 'n3', text: 'Client approved additional $320 for extra materials. Change order #1.', date: 'Apr 14', author: 'Sherpa Platform' },
+];
+
+const PHOTO_PHASES = ['All', 'Demo', 'Rough-in', 'Finish'];
+
+// HD Pricing mock data for enhanced materials
+const HD_PRICES: Record<string, number> = {
+  m1: 12.98,
+  m2: 89.0,
+  m3: 3.99,
+  m4: 23.97,
+  m5: 189.0,
+};
+
 const CATEGORY_ICONS: Record<string, keyof typeof Ionicons.glyphMap> = {
   Plumbing: 'water-outline',
   Electrical: 'flash-outline',
@@ -87,7 +139,7 @@ const REVIEW_BADGE: Record<string, { label: string; variant: 'success' | 'warnin
   flagged: { label: 'Flagged', variant: 'danger' },
 };
 
-type TabKey = 'overview' | 'checklist' | 'materials';
+type TabKey = 'overview' | 'checklist' | 'materials' | 'photos';
 
 // ---------------------------------------------------------------------------
 // Component
@@ -101,6 +153,12 @@ export default function ProJobDetailScreen() {
   const [checklistState, setChecklistState] = useState(
     MOCK_JOB.checklist.map((item) => ({ ...item })),
   );
+  const [photos, setPhotos] = useState<JobPhoto[]>(JOB_PHOTOS);
+  const [photoFilter, setPhotoFilter] = useState('All');
+  const [selectedPhoto, setSelectedPhoto] = useState<JobPhoto | null>(null);
+  const [notes, setNotes] = useState<JobNote[]>(INITIAL_NOTES);
+  const [showNoteInput, setShowNoteInput] = useState(false);
+  const [newNoteText, setNewNoteText] = useState('');
 
   const job = MOCK_JOB; // In production, fetch by `id`
 
@@ -173,6 +231,7 @@ export default function ProJobDetailScreen() {
     { key: 'overview', label: 'Overview' },
     { key: 'checklist', label: 'Checklist' },
     { key: 'materials', label: 'Materials' },
+    { key: 'photos', label: 'Photos' },
   ];
 
   // ======= RENDER SECTIONS =======
@@ -226,6 +285,35 @@ export default function ProJobDetailScreen() {
         <Text style={styles.progressLabel}>
           {job.milestoneProgress} of {job.totalMilestones} milestones complete
         </Text>
+      </Card>
+
+      {/* Job Notes */}
+      <Card style={styles.section} variant="elevated">
+        <View style={styles.notesSectionHeader}>
+          <Text style={styles.sectionTitle}>Job Notes</Text>
+          <Pressable
+            onPress={() => {
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+              setShowNoteInput(true);
+            }}
+            style={styles.addNoteBtn}
+          >
+            <Ionicons name="add-circle-outline" size={20} color={colors.primary} />
+            <Text style={styles.addNoteBtnText}>Add Note</Text>
+          </Pressable>
+        </View>
+        {notes.map((note) => (
+          <View key={note.id} style={styles.noteItem}>
+            <View style={styles.noteHeader}>
+              <Badge
+                label={note.author}
+                variant={note.author === 'You' ? 'primary' : 'neutral'}
+              />
+              <Text style={styles.noteDate}>{note.date}</Text>
+            </View>
+            <Text style={styles.noteText}>{note.text}</Text>
+          </View>
+        ))}
       </Card>
 
       {/* Action Buttons */}
@@ -291,45 +379,68 @@ export default function ProJobDetailScreen() {
   const handleMaterialTap = useCallback((item: MaterialItem) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     const badge = REVIEW_BADGE[item.review];
+    const hdPrice = HD_PRICES[item.id] ?? 0;
+    const total = hdPrice * item.quantity;
     Alert.alert(
       item.name,
-      `Quantity: ${item.quantity} ${item.unit}\nSpec: Standard\nPrice: $${item.price}\n\nReview: ${badge.label}${item.reviewNote ? '\nNote: ' + item.reviewNote : ''}`,
+      `Quantity: ${item.quantity} ${item.unit}\nSpec: Standard\nPrice: $${item.price}\nHD Unit Price: $${hdPrice.toFixed(2)}\nHD Total: $${total.toFixed(2)}\n\nReview: ${badge.label}${item.reviewNote ? '\nNote: ' + item.reviewNote : ''}\n\nView on homedepot.com`,
       [{ text: 'Close' }],
     );
   }, []);
 
+  const sherpaFee = Math.round(materialsTotal * 0.08);
+  const grandTotal = materialsTotal + sherpaFee;
+
   const renderMaterials = () => (
     <ScrollView style={styles.scrollContent} showsVerticalScrollIndicator={false}>
+      {/* Column headers */}
+      <View style={styles.matHeaderRow}>
+        <Text style={[styles.matHeaderText, { flex: 1 }]}>Item</Text>
+        <Text style={[styles.matHeaderText, { width: 60, textAlign: 'right' }]}>HD Price</Text>
+        <Text style={[styles.matHeaderText, { width: 60, textAlign: 'right' }]}>Total</Text>
+      </View>
+
       {job.materials.map((mat) => {
         const badge = REVIEW_BADGE[mat.review];
+        const hdPrice = HD_PRICES[mat.id] ?? 0;
+        const lineTotal = hdPrice * mat.quantity;
         return (
           <Pressable key={mat.id} onPress={() => handleMaterialTap(mat)}>
             <Card style={styles.materialCard} variant="elevated">
               <View style={styles.materialRow}>
                 <View style={styles.materialInfo}>
                   <Text style={styles.materialName}>{mat.name}</Text>
-                  <Text style={styles.materialSpec}>
-                    {mat.quantity} {mat.unit}
-                  </Text>
+                  <View style={styles.materialMetaRow}>
+                    <Text style={styles.materialSpec}>
+                      {mat.quantity} {mat.unit}
+                    </Text>
+                    <Badge label={badge.label} variant={badge.variant} />
+                  </View>
                   {mat.reviewNote && (
                     <Text style={styles.materialNote}>{mat.reviewNote}</Text>
                   )}
                 </View>
-                <View style={styles.materialRight}>
-                  <Badge label={badge.label} variant={badge.variant} />
-                  <Text style={styles.materialPrice}>${mat.price}</Text>
-                </View>
+                <Text style={styles.materialHdPrice}>${hdPrice.toFixed(2)}</Text>
+                <Text style={styles.materialLineTotal}>${lineTotal.toFixed(0)}</Text>
               </View>
             </Card>
           </Pressable>
         );
       })}
 
-      {/* Total */}
+      {/* Subtotal + Sherpa Fee + Grand Total */}
       <Card style={styles.totalCard} variant="elevated">
-        <View style={styles.totalRow}>
-          <Text style={styles.totalLabel}>Materials Total</Text>
-          <Text style={styles.totalValue}>${materialsTotal.toLocaleString()}</Text>
+        <View style={styles.subtotalRow}>
+          <Text style={styles.subtotalLabel}>Subtotal</Text>
+          <Text style={styles.subtotalValue}>${materialsTotal.toLocaleString()}</Text>
+        </View>
+        <View style={styles.subtotalRow}>
+          <Text style={styles.subtotalLabel}>Sherpa Platform Fee (8%)</Text>
+          <Text style={styles.subtotalValue}>${sherpaFee.toLocaleString()}</Text>
+        </View>
+        <View style={[styles.totalRow, { borderTopWidth: 2, borderTopColor: colors.borderMedium, paddingTop: spacing.md, marginTop: spacing.sm }]}>
+          <Text style={styles.totalLabel}>Grand Total</Text>
+          <Text style={styles.totalValue}>${grandTotal.toLocaleString()}</Text>
         </View>
       </Card>
 
@@ -347,6 +458,99 @@ export default function ProJobDetailScreen() {
     </ScrollView>
   );
 
+  // --- Photo picker ---
+  const handleAddPhoto = useCallback(async () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      quality: 0.8,
+    });
+    if (!result.canceled && result.assets.length > 0) {
+      const asset = result.assets[0];
+      const newPhoto: JobPhoto = {
+        id: `p-${Date.now()}`,
+        title: 'New photo',
+        uri: asset.uri,
+        phase: 'Finish',
+        date: 'Apr 15',
+      };
+      setPhotos((prev) => [newPhoto, ...prev]);
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    }
+  }, []);
+
+  // --- Add note handler ---
+  const handleAddNote = useCallback(() => {
+    if (!newNoteText.trim()) return;
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    const note: JobNote = {
+      id: `n-${Date.now()}`,
+      text: newNoteText.trim(),
+      date: 'Apr 15',
+      author: 'You',
+    };
+    setNotes((prev) => [note, ...prev]);
+    setNewNoteText('');
+    setShowNoteInput(false);
+  }, [newNoteText]);
+
+  // --- Filtered photos ---
+  const filteredPhotos = photoFilter === 'All' ? photos : photos.filter((p) => p.phase === photoFilter);
+
+  const renderPhotos = () => (
+    <ScrollView style={styles.scrollContent} showsVerticalScrollIndicator={false}>
+      {/* Phase filter */}
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.photoFilterRow}
+      >
+        {PHOTO_PHASES.map((phase) => {
+          const active = photoFilter === phase;
+          return (
+            <Pressable
+              key={phase}
+              style={[styles.photoFilterChip, active && styles.photoFilterChipActive]}
+              onPress={() => {
+                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                setPhotoFilter(phase);
+              }}
+            >
+              <Text style={[styles.photoFilterText, active && styles.photoFilterTextActive]}>
+                {phase}
+              </Text>
+            </Pressable>
+          );
+        })}
+      </ScrollView>
+
+      {/* Photo grid */}
+      <View style={styles.photoGrid}>
+        {filteredPhotos.map((photo) => (
+          <Pressable
+            key={photo.id}
+            style={styles.photoThumb}
+            onPress={() => {
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+              setSelectedPhoto(photo);
+            }}
+          >
+            <Image source={{ uri: photo.uri }} style={styles.photoImage} />
+            <Text style={styles.photoLabel} numberOfLines={1}>{photo.title}</Text>
+            <Text style={styles.photoDate}>{photo.date}</Text>
+          </Pressable>
+        ))}
+      </View>
+
+      {/* Add Photo button */}
+      <View style={styles.actionButtons}>
+        <Button title="Add Photo" onPress={handleAddPhoto} variant="primary" fullWidth />
+      </View>
+
+      <View style={{ height: spacing.xxxl }} />
+    </ScrollView>
+  );
+
   const renderTabContent = () => {
     switch (activeTab) {
       case 'overview':
@@ -355,6 +559,8 @@ export default function ProJobDetailScreen() {
         return renderChecklist();
       case 'materials':
         return renderMaterials();
+      case 'photos':
+        return renderPhotos();
     }
   };
 
@@ -396,6 +602,64 @@ export default function ProJobDetailScreen() {
 
       {/* Content */}
       {renderTabContent()}
+
+      {/* Photo Full-Screen Viewer */}
+      <Modal visible={!!selectedPhoto} animationType="fade" transparent>
+        <View style={styles.photoModal}>
+          <Pressable
+            style={styles.photoModalClose}
+            onPress={() => {
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+              setSelectedPhoto(null);
+            }}
+          >
+            <Ionicons name="close-circle" size={32} color={colors.textInverse} />
+          </Pressable>
+          {selectedPhoto && (
+            <>
+              <Image
+                source={{ uri: selectedPhoto.uri }}
+                style={styles.photoModalImage}
+                resizeMode="contain"
+              />
+              <View style={styles.photoModalInfo}>
+                <Text style={styles.photoModalTitle}>{selectedPhoto.title}</Text>
+                <Text style={styles.photoModalDate}>{selectedPhoto.phase} - {selectedPhoto.date}</Text>
+              </View>
+            </>
+          )}
+        </View>
+      </Modal>
+
+      {/* Add Note Modal */}
+      <Modal visible={showNoteInput} animationType="slide" transparent>
+        <View style={styles.noteModal}>
+          <View style={[styles.noteModalContent, { paddingBottom: insets.bottom + spacing.lg }]}>
+            <View style={styles.noteModalHeader}>
+              <Text style={styles.noteModalTitle}>Add Note</Text>
+              <Pressable onPress={() => setShowNoteInput(false)}>
+                <Ionicons name="close" size={24} color={colors.text} />
+              </Pressable>
+            </View>
+            <TextInput
+              style={styles.noteInput}
+              placeholder="Type your note..."
+              placeholderTextColor={colors.textMuted}
+              value={newNoteText}
+              onChangeText={setNewNoteText}
+              multiline
+              autoFocus
+              textAlignVertical="top"
+            />
+            <Button
+              title="Save Note"
+              onPress={handleAddNote}
+              variant="primary"
+              fullWidth
+            />
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -585,6 +849,16 @@ const styles = StyleSheet.create({
   },
 
   // Materials
+  matHeaderRow: {
+    flexDirection: 'row',
+    paddingHorizontal: spacing.sm,
+    marginBottom: spacing.sm,
+  },
+  matHeaderText: {
+    ...typography.caption,
+    color: colors.textMuted,
+    textTransform: 'uppercase',
+  },
   materialCard: {
     marginBottom: spacing.md,
   },
@@ -596,6 +870,12 @@ const styles = StyleSheet.create({
     flex: 1,
     marginRight: spacing.md,
   },
+  materialMetaRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+    marginTop: 2,
+  },
   materialName: {
     ...typography.bodySmall,
     fontWeight: '600',
@@ -604,7 +884,6 @@ const styles = StyleSheet.create({
   materialSpec: {
     ...typography.caption,
     color: colors.textMuted,
-    marginTop: 2,
   },
   materialNote: {
     ...typography.caption,
@@ -621,11 +900,39 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: colors.text,
   },
+  materialHdPrice: {
+    ...typography.caption,
+    color: colors.textSecondary,
+    width: 60,
+    textAlign: 'right',
+  },
+  materialLineTotal: {
+    ...typography.bodySmall,
+    fontWeight: '600',
+    color: colors.text,
+    width: 60,
+    textAlign: 'right',
+  },
 
   // Total
   totalCard: {
     marginBottom: spacing.md,
     backgroundColor: colors.primaryLight,
+  },
+  subtotalRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: spacing.xs,
+  },
+  subtotalLabel: {
+    ...typography.bodySmall,
+    color: colors.textSecondary,
+  },
+  subtotalValue: {
+    ...typography.bodySmall,
+    fontWeight: '600',
+    color: colors.text,
   },
   totalRow: {
     flexDirection: 'row',
@@ -639,5 +946,157 @@ const styles = StyleSheet.create({
   totalValue: {
     ...typography.heading,
     color: colors.primary,
+  },
+
+  // Notes
+  notesSectionHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: spacing.md,
+  },
+  addNoteBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
+  addNoteBtnText: {
+    ...typography.caption,
+    color: colors.primary,
+    fontWeight: '600',
+  },
+  noteItem: {
+    paddingVertical: spacing.md,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.borderLight,
+  },
+  noteHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+    marginBottom: spacing.xs,
+  },
+  noteDate: {
+    ...typography.caption,
+    color: colors.textMuted,
+  },
+  noteText: {
+    ...typography.bodySmall,
+    color: colors.textSecondary,
+    lineHeight: 20,
+  },
+
+  // Photos
+  photoFilterRow: {
+    gap: spacing.sm,
+    marginBottom: spacing.lg,
+  },
+  photoFilterChip: {
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+    borderRadius: borderRadius.full,
+    backgroundColor: colors.borderLight,
+  },
+  photoFilterChipActive: {
+    backgroundColor: colors.primary,
+  },
+  photoFilterText: {
+    ...typography.caption,
+    color: colors.textMuted,
+  },
+  photoFilterTextActive: {
+    color: colors.textInverse,
+    fontWeight: '700',
+  },
+  photoGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: spacing.sm,
+  },
+  photoThumb: {
+    width: (SCREEN_WIDTH - spacing.lg * 2 - spacing.sm * 2) / 3,
+    marginBottom: spacing.sm,
+  },
+  photoImage: {
+    width: '100%',
+    aspectRatio: 4 / 3,
+    borderRadius: borderRadius.md,
+    backgroundColor: colors.borderLight,
+  },
+  photoLabel: {
+    ...typography.caption,
+    color: colors.text,
+    marginTop: spacing.xs,
+    fontWeight: '600',
+  },
+  photoDate: {
+    ...typography.caption,
+    color: colors.textMuted,
+    fontSize: 10,
+  },
+
+  // Photo Modal
+  photoModal: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.95)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  photoModalClose: {
+    position: 'absolute',
+    top: 60,
+    right: 20,
+    zIndex: 10,
+  },
+  photoModalImage: {
+    width: SCREEN_WIDTH - 32,
+    height: SCREEN_WIDTH - 32,
+  },
+  photoModalInfo: {
+    marginTop: spacing.lg,
+    alignItems: 'center',
+  },
+  photoModalTitle: {
+    ...typography.subheading,
+    color: colors.textInverse,
+  },
+  photoModalDate: {
+    ...typography.caption,
+    color: colors.textMuted,
+    marginTop: spacing.xs,
+  },
+
+  // Note Modal
+  noteModal: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+  },
+  noteModalContent: {
+    backgroundColor: colors.background,
+    borderTopLeftRadius: borderRadius.xl,
+    borderTopRightRadius: borderRadius.xl,
+    padding: spacing.lg,
+  },
+  noteModalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: spacing.lg,
+  },
+  noteModalTitle: {
+    ...typography.subheading,
+    color: colors.text,
+  },
+  noteInput: {
+    ...typography.bodySmall,
+    color: colors.text,
+    backgroundColor: colors.surfaceSecondary,
+    borderRadius: borderRadius.md,
+    padding: spacing.md,
+    minHeight: 120,
+    marginBottom: spacing.lg,
+    borderWidth: 1,
+    borderColor: colors.borderMedium,
   },
 });

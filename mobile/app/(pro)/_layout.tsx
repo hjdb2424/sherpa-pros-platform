@@ -80,6 +80,13 @@ export default function ProLayout() {
         options={{ title: 'Profile', tabBarIcon: ({ focused }) => <TabIcon name="Profile" focused={focused} /> }}
       />
       <Tabs.Screen
+        name="earnings-detail"
+        options={{
+          href: null,
+          tabBarStyle: { display: 'none' },
+        }}
+      />
+      <Tabs.Screen
         name="chat"
         options={{
           href: null,

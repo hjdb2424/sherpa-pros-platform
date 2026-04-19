@@ -11,27 +11,29 @@ import {
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as Haptics from 'expo-haptics';
+import { Ionicons } from '@expo/vector-icons';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import { DEFAULT_CENTER } from '@/lib/types';
+import { colors } from '@/lib/theme';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 // ----- Step 1 categories -----
 interface EmergencyCategory {
   id: string;
-  icon: string;
+  icon: keyof typeof Ionicons.glyphMap;
   title: string;
 }
 
 const CATEGORIES: EmergencyCategory[] = [
-  { id: 'water', icon: '\u{1F4A7}', title: 'Water Damage' },
-  { id: 'fire', icon: '\u{1F525}', title: 'Fire / Smoke' },
-  { id: 'storm', icon: '\u{26C8}\uFE0F', title: 'Storm Damage' },
-  { id: 'hvac', icon: '\u{2744}\uFE0F', title: 'HVAC Emergency' },
-  { id: 'electrical', icon: '\u{26A1}', title: 'Electrical' },
-  { id: 'gas', icon: '\u{1F4A8}', title: 'Gas Leak' },
-  { id: 'structural', icon: '\u{1F3D7}\uFE0F', title: 'Structural' },
-  { id: 'other', icon: '\u{1F6A8}', title: 'Other' },
+  { id: 'water', icon: 'water-outline', title: 'Water Damage' },
+  { id: 'fire', icon: 'flame-outline', title: 'Fire / Smoke' },
+  { id: 'storm', icon: 'thunderstorm-outline', title: 'Storm Damage' },
+  { id: 'hvac', icon: 'thermometer-outline', title: 'HVAC Emergency' },
+  { id: 'electrical', icon: 'flash-outline', title: 'Electrical' },
+  { id: 'gas', icon: 'warning-outline', title: 'Gas Leak' },
+  { id: 'structural', icon: 'construct-outline', title: 'Structural' },
+  { id: 'other', icon: 'help-circle-outline', title: 'Other' },
 ];
 
 // ----- Step 2 severity levels -----
@@ -46,7 +48,7 @@ const SEVERITIES: SeverityLevel[] = [
   { level: 1, label: 'Minor', color: '#71717a', borderColor: '#71717a' },
   { level: 2, label: 'Low', color: '#a1a1aa', borderColor: '#a1a1aa' },
   { level: 3, label: 'Moderate', color: '#f59e0b', borderColor: '#f59e0b' },
-  { level: 4, label: 'High', color: '#f97316', borderColor: '#f97316' },
+  { level: 4, label: 'High', color: colors.accent, borderColor: colors.accent },
   { level: 5, label: 'Critical', color: '#dc2626', borderColor: '#dc2626' },
 ];
 
@@ -100,7 +102,7 @@ function PulsingRing({ delay, size }: { delay: number; size: number }) {
           height: size,
           borderRadius: size / 2,
           borderWidth: 2,
-          borderColor: '#f97316',
+          borderColor: colors.accent,
           transform: [{ scale }],
           opacity,
         },
@@ -189,7 +191,7 @@ export default function EmergencyScreen() {
                 ]}
                 onPress={() => handleCategorySelect(cat.id)}
               >
-                <Text style={styles.categoryIcon}>{cat.icon}</Text>
+                <Ionicons name={cat.icon} size={32} color="#ffffff" />
                 <Text style={styles.categoryTitle}>{cat.title}</Text>
               </Pressable>
             </FadeInView>
@@ -353,7 +355,7 @@ const styles = StyleSheet.create({
     borderColor: '#00a9e0',
   },
   categoryIcon: {
-    fontSize: 32,
+    marginBottom: 0,
   },
   categoryTitle: {
     fontSize: 14,
@@ -437,7 +439,7 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
     borderRadius: 10,
-    backgroundColor: '#f97316',
+    backgroundColor: colors.accent,
     borderWidth: 3,
     borderColor: '#dc2626',
   },

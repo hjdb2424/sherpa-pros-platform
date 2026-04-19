@@ -10,19 +10,13 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as Haptics from 'expo-haptics';
+import { Ionicons } from '@expo/vector-icons';
 import { colors, spacing, borderRadius, shadows, typography } from '@/lib/theme';
 import Card from '@/components/common/Card';
 import Badge from '@/components/common/Badge';
 import Button from '@/components/common/Button';
 
 type TabKey = 'available' | 'bids' | 'active' | 'completed';
-
-const TABS: { key: TabKey; label: string }[] = [
-  { key: 'available', label: 'Available' },
-  { key: 'bids', label: 'My Bids' },
-  { key: 'active', label: 'Active' },
-  { key: 'completed', label: 'Completed' },
-];
 
 interface AvailableJob {
   id: string;
@@ -97,6 +91,13 @@ const COMPLETED_JOBS: CompletedJob[] = [
   { id: 'd8', title: 'Toilet repair - running toilet', finalAmount: 180, rating: 5 },
 ];
 
+const TABS: { key: TabKey; label: string; count: number }[] = [
+  { key: 'available', label: 'Available', count: AVAILABLE_JOBS.length },
+  { key: 'bids', label: 'Bids', count: BID_JOBS.length },
+  { key: 'active', label: 'Active', count: ACTIVE_JOBS.length },
+  { key: 'completed', label: 'Done', count: COMPLETED_JOBS.length },
+];
+
 const URGENCY_BADGE: Record<string, { label: string; variant: 'danger' | 'warning' | 'success' }> = {
   emergency: { label: 'Urgent', variant: 'danger' },
   standard: { label: 'Standard', variant: 'warning' },
@@ -131,9 +132,12 @@ export default function ProJobsScreen() {
 
   const renderStars = (count: number) => {
     return Array.from({ length: 5 }, (_, i) => (
-      <Text key={i} style={i < count ? styles.starFilled : styles.starEmpty}>
-        {'\u2605'}
-      </Text>
+      <Ionicons
+        key={i}
+        name={i < count ? 'star' : 'star-outline'}
+        size={12}
+        color={i < count ? colors.accent : colors.borderMedium}
+      />
     ));
   };
 
@@ -213,7 +217,7 @@ export default function ProJobsScreen() {
 
   const renderEmptyTab = (message: string) => (
     <View style={styles.emptyState}>
-      <Text style={styles.emptyIcon}>{'\u{1F527}'}</Text>
+      <Ionicons name="construct-outline" size={48} color={colors.textMuted} style={{ marginBottom: spacing.lg }} />
       <Text style={styles.emptyTitle}>Nothing here yet</Text>
       <Text style={styles.emptyDescription}>{message}</Text>
     </View>
@@ -299,7 +303,7 @@ export default function ProJobsScreen() {
               }}
             >
               <Text style={[styles.segmentLabel, active && styles.segmentLabelActive]}>
-                {tab.label}
+                {tab.label} ({tab.count})
               </Text>
             </Pressable>
           );
@@ -356,7 +360,7 @@ const styles = StyleSheet.create({
     paddingBottom: 100,
   },
   jobCard: {
-    marginBottom: spacing.md,
+    marginBottom: spacing.lg,
   },
   cardRow: {
     flexDirection: 'row',

@@ -11,26 +11,27 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import * as Haptics from 'expo-haptics';
+import { Ionicons } from '@expo/vector-icons';
 import { colors, spacing, borderRadius, shadows, typography } from '@/lib/theme';
 import Button from '@/components/common/Button';
 
-const CATEGORIES = [
-  { id: 'plumbing', label: 'Plumbing', icon: '\u{1F6BF}' },
-  { id: 'electrical', label: 'Electrical', icon: '\u26A1' },
-  { id: 'hvac', label: 'HVAC', icon: '\u2744\uFE0F' },
-  { id: 'carpentry', label: 'Carpentry', icon: '\u{1FA93}' },
-  { id: 'painting', label: 'Painting', icon: '\u{1F3A8}' },
-  { id: 'roofing', label: 'Roofing', icon: '\u{1F3E0}' },
-  { id: 'general', label: 'General', icon: '\u{1F527}' },
-  { id: 'other', label: 'Other', icon: '\u2699\uFE0F' },
+const CATEGORIES: { id: string; label: string; icon: keyof typeof Ionicons.glyphMap }[] = [
+  { id: 'plumbing', label: 'Plumbing', icon: 'water-outline' },
+  { id: 'electrical', label: 'Electrical', icon: 'flash-outline' },
+  { id: 'hvac', label: 'HVAC', icon: 'thermometer-outline' },
+  { id: 'carpentry', label: 'Carpentry', icon: 'hammer-outline' },
+  { id: 'painting', label: 'Painting', icon: 'color-palette-outline' },
+  { id: 'roofing', label: 'Roofing', icon: 'home-outline' },
+  { id: 'general', label: 'General', icon: 'construct-outline' },
+  { id: 'other', label: 'Other', icon: 'ellipsis-horizontal-circle-outline' },
 ];
 
-const URGENCY_OPTIONS = [
+const URGENCY_OPTIONS: { id: string; label: string; description: string; icon: keyof typeof Ionicons.glyphMap; color: string; bgColor: string }[] = [
   {
     id: 'emergency',
     label: 'Emergency',
     description: 'Need help ASAP — within hours',
-    icon: '\u{1F6A8}',
+    icon: 'alert-circle-outline',
     color: colors.danger,
     bgColor: colors.dangerLight,
   },
@@ -38,7 +39,7 @@ const URGENCY_OPTIONS = [
     id: 'standard',
     label: 'Standard',
     description: 'Within the next few days',
-    icon: '\u{1F4C5}',
+    icon: 'calendar-outline',
     color: colors.warning,
     bgColor: colors.warningLight,
   },
@@ -46,13 +47,13 @@ const URGENCY_OPTIONS = [
     id: 'flexible',
     label: 'Flexible',
     description: 'No rush — schedule when convenient',
-    icon: '\u{1F552}',
+    icon: 'time-outline',
     color: colors.success,
     bgColor: colors.successLight,
   },
 ];
 
-const TOTAL_STEPS = 5;
+const TOTAL_STEPS = 6;
 
 interface FormData {
   category: string;
@@ -61,6 +62,7 @@ interface FormData {
   budgetMin: string;
   budgetMax: string;
   urgency: string;
+  address: string;
 }
 
 export default function PostJobWizard() {
@@ -74,6 +76,7 @@ export default function PostJobWizard() {
     budgetMin: '',
     budgetMax: '',
     urgency: '',
+    address: '',
   });
 
   const isStepValid = useCallback(() => {
@@ -88,6 +91,8 @@ export default function PostJobWizard() {
       case 4:
         return form.urgency !== '';
       case 5:
+        return form.address.trim().length >= 5;
+      case 6:
         return true;
       default:
         return false;
@@ -183,7 +188,7 @@ export default function PostJobWizard() {
                 setForm({ ...form, category: cat.id });
               }}
             >
-              <Text style={styles.categoryIcon}>{cat.icon}</Text>
+              <Ionicons name={cat.icon} size={32} color={selected ? colors.primary : colors.textMuted} style={{ marginBottom: spacing.sm }} />
               <Text
                 style={[
                   styles.categoryLabel,
@@ -298,7 +303,7 @@ export default function PostJobWizard() {
                   { backgroundColor: option.bgColor },
                 ]}
               >
-                <Text style={styles.urgencyIcon}>{option.icon}</Text>
+                <Ionicons name={option.icon} size={24} color={option.color} />
               </View>
               <View style={styles.urgencyTextWrap}>
                 <Text style={styles.urgencyLabel}>{option.label}</Text>
@@ -317,6 +322,28 @@ export default function PostJobWizard() {
   );
 
   const renderStep5 = () => (
+    <View style={styles.stepContent}>
+      <Text style={styles.stepTitle}>Where's the job?</Text>
+      <Text style={styles.stepSubtitle}>We'll match you with pros near this location</Text>
+      <Text style={styles.inputLabel}>Job Address</Text>
+      <TextInput
+        style={styles.textInput}
+        placeholder="Enter job address"
+        placeholderTextColor={colors.textMuted}
+        value={form.address}
+        onChangeText={(text) => setForm({ ...form, address: text })}
+        maxLength={200}
+      />
+      <View style={styles.locationHint}>
+        <Ionicons name="location-outline" size={16} color={colors.textMuted} />
+        <Text style={styles.locationHintText}>
+          We'll match you with pros near this location
+        </Text>
+      </View>
+    </View>
+  );
+
+  const renderStep6 = () => (
     <View style={styles.stepContent}>
       <Text style={styles.stepTitle}>Review your job</Text>
       <Text style={styles.stepSubtitle}>Make sure everything looks good</Text>
@@ -349,6 +376,11 @@ export default function PostJobWizard() {
           <Text style={styles.reviewLabel}>Urgency</Text>
           <Text style={styles.reviewValue}>{getUrgencyLabel()}</Text>
         </View>
+        <View style={styles.reviewDivider} />
+        <View style={styles.reviewRow}>
+          <Text style={styles.reviewLabel}>Location</Text>
+          <Text style={styles.reviewValue}>{form.address}</Text>
+        </View>
       </View>
     </View>
   );
@@ -360,6 +392,7 @@ export default function PostJobWizard() {
       case 3: return renderStep3();
       case 4: return renderStep4();
       case 5: return renderStep5();
+      case 6: return renderStep6();
       default: return null;
     }
   };
@@ -368,7 +401,7 @@ export default function PostJobWizard() {
     <View style={[styles.container, { paddingTop: insets.top }]}>
       <View style={styles.header}>
         <Pressable onPress={handleBack} style={styles.backButton}>
-          <Text style={styles.backText}>{'\u2190'}</Text>
+          <Ionicons name="arrow-back" size={24} color={colors.text} />
         </Pressable>
         <Text style={styles.headerTitle}>Post a Job</Text>
         <View style={styles.headerSpacer} />
@@ -649,6 +682,17 @@ const styles = StyleSheet.create({
     color: colors.textInverse,
     fontSize: 14,
     fontWeight: '700',
+  },
+  locationHint: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.xs,
+    marginTop: spacing.lg,
+    paddingHorizontal: spacing.sm,
+  },
+  locationHintText: {
+    ...typography.bodySmall,
+    color: colors.textMuted,
   },
   reviewCard: {
     backgroundColor: colors.surfaceSecondary,

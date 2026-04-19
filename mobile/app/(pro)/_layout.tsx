@@ -1,19 +1,21 @@
 import { Tabs } from 'expo-router';
 import { View, Text, StyleSheet } from 'react-native';
 import * as Haptics from 'expo-haptics';
+import { Ionicons } from '@expo/vector-icons';
 import { colors } from '@/lib/theme';
 
 function TabIcon({ name, focused }: { name: string; focused: boolean }) {
-  const icons: Record<string, string> = {
-    Map: '\u{1F5FA}\uFE0F',
-    Jobs: '\u{1F527}',
-    Earnings: '\u{1F4B0}',
-    Messages: '\u{1F4AC}',
-    Profile: '\u{1F464}',
+  const icons: Record<string, keyof typeof Ionicons.glyphMap> = {
+    Map: 'map-outline',
+    Jobs: 'briefcase-outline',
+    Earnings: 'wallet-outline',
+    Messages: 'chatbubbles-outline',
+    Profile: 'person-outline',
   };
+  const iconName = icons[name] ?? 'ellipse-outline';
   return (
     <View style={styles.tabIcon}>
-      <Text style={{ fontSize: 20 }}>{icons[name] ?? '\u2022'}</Text>
+      <Ionicons name={iconName} size={22} color={focused ? colors.primary : colors.textMuted} />
       <Text numberOfLines={1} style={[styles.tabLabel, focused && styles.tabLabelActive]}>{name}</Text>
     </View>
   );

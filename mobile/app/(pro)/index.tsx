@@ -3,6 +3,7 @@ import { View, Text, Pressable, StyleSheet, Animated, Easing } from 'react-nativ
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import * as Haptics from 'expo-haptics';
+import { Ionicons } from '@expo/vector-icons';
 import MapScreen from '@/components/maps/MapScreen';
 import JobMarker from '@/components/maps/JobMarker';
 import JobSheet from '@/components/sheets/JobSheet';
@@ -42,7 +43,7 @@ function DispatchFAB() {
           router.push('/(emergency)');
         }}
       >
-        <Text style={styles.dispatchFabIcon}>{'\u26A1'}</Text>
+        <Ionicons name="flash" size={20} color="#ffffff" />
         <Text style={styles.dispatchFabLabel}>Dispatch</Text>
       </Pressable>
     </Animated.View>
@@ -59,7 +60,7 @@ function NotificationBell() {
         router.push('/notifications');
       }}
     >
-      <Text style={styles.bellIcon}>{'\u{1F514}'}</Text>
+      <Ionicons name="notifications-outline" size={22} color={colors.text} />
       <View style={styles.bellDot} />
     </Pressable>
   );

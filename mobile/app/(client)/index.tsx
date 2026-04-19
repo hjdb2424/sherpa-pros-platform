@@ -3,6 +3,7 @@ import { View, Text, Pressable, StyleSheet, Animated, Easing } from 'react-nativ
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import * as Haptics from 'expo-haptics';
+import { Ionicons } from '@expo/vector-icons';
 import MapScreen from '@/components/maps/MapScreen';
 import ProMarker from '@/components/maps/ProMarker';
 import ProSheet from '@/components/sheets/ProSheet';
@@ -42,7 +43,7 @@ function EmergencyFAB() {
           router.push('/(emergency)');
         }}
       >
-        <Text style={styles.emergencyFabIcon}>{'\u26A1'}</Text>
+        <Ionicons name="flash" size={24} color="#ffffff" />
       </Pressable>
     </Animated.View>
   );
@@ -58,7 +59,7 @@ function NotificationBell() {
         router.push('/notifications');
       }}
     >
-      <Text style={styles.bellIcon}>{'\u{1F514}'}</Text>
+      <Ionicons name="notifications-outline" size={22} color={colors.text} />
       <View style={styles.bellDot} />
     </Pressable>
   );

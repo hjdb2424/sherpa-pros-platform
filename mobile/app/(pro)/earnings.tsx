@@ -214,7 +214,7 @@ const styles = StyleSheet.create({
   statsRow: {
     paddingHorizontal: spacing.lg,
     paddingVertical: spacing.lg,
-    gap: spacing.md,
+    gap: spacing.lg,
   },
   statCard: {
     width: 160,

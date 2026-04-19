@@ -11,16 +11,26 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import * as Haptics from 'expo-haptics';
+import { Ionicons } from '@expo/vector-icons';
 import { colors, spacing, borderRadius, shadows, typography } from '@/lib/theme';
 import Card from '@/components/common/Card';
 import Badge from '@/components/common/Badge';
 import Avatar from '@/components/common/Avatar';
 
+const CATEGORY_ICONS: Record<string, keyof typeof Ionicons.glyphMap> = {
+  Plumbing: 'water-outline',
+  Electrical: 'flash-outline',
+  HVAC: 'thermometer-outline',
+  Painting: 'color-palette-outline',
+  Roofing: 'home-outline',
+  General: 'construct-outline',
+  Carpentry: 'hammer-outline',
+};
+
 interface MockJob {
   id: string;
   title: string;
   category: string;
-  categoryIcon: string;
   status: 'open' | 'in_progress' | 'completed' | 'cancelled';
   budgetMin: number;
   budgetMax: number;
@@ -35,7 +45,7 @@ const MOCK_JOBS: MockJob[] = [
     id: '1',
     title: 'HVAC annual maintenance',
     category: 'HVAC',
-    categoryIcon: '\u2744\uFE0F',
+
     status: 'open',
     budgetMin: 150,
     budgetMax: 300,
@@ -47,7 +57,7 @@ const MOCK_JOBS: MockJob[] = [
     id: '2',
     title: 'Install recessed lighting in living room',
     category: 'Electrical',
-    categoryIcon: '\u26A1',
+
     status: 'open',
     budgetMin: 800,
     budgetMax: 1500,
@@ -59,7 +69,7 @@ const MOCK_JOBS: MockJob[] = [
     id: '3',
     title: 'Replace front door weatherstripping',
     category: 'General',
-    categoryIcon: '\u{1F6AA}',
+
     status: 'open',
     budgetMin: 100,
     budgetMax: 250,
@@ -72,7 +82,7 @@ const MOCK_JOBS: MockJob[] = [
     id: '4',
     title: 'Fix leaking kitchen faucet',
     category: 'Plumbing',
-    categoryIcon: '\u{1F6BF}',
+
     status: 'in_progress',
     budgetMin: 200,
     budgetMax: 500,
@@ -84,7 +94,7 @@ const MOCK_JOBS: MockJob[] = [
     id: '5',
     title: 'Bathroom remodel - tile and fixtures',
     category: 'General',
-    categoryIcon: '\u{1F6C1}',
+
     status: 'in_progress',
     budgetMin: 8000,
     budgetMax: 15000,
@@ -96,7 +106,7 @@ const MOCK_JOBS: MockJob[] = [
     id: '6',
     title: 'Panel upgrade 100A to 200A',
     category: 'Electrical',
-    categoryIcon: '\u26A1',
+
     status: 'in_progress',
     budgetMin: 2000,
     budgetMax: 3500,
@@ -108,7 +118,7 @@ const MOCK_JOBS: MockJob[] = [
     id: '7',
     title: 'Emergency water heater replacement',
     category: 'Plumbing',
-    categoryIcon: '\u{1F525}',
+
     status: 'in_progress',
     budgetMin: 1200,
     budgetMax: 2500,
@@ -121,7 +131,7 @@ const MOCK_JOBS: MockJob[] = [
     id: '8',
     title: 'Deck staining and sealing',
     category: 'Painting',
-    categoryIcon: '\u{1F3A8}',
+
     status: 'completed',
     budgetMin: 400,
     budgetMax: 800,
@@ -133,7 +143,7 @@ const MOCK_JOBS: MockJob[] = [
     id: '9',
     title: 'Furnace tune-up and filter replacement',
     category: 'HVAC',
-    categoryIcon: '\u2744\uFE0F',
+
     status: 'completed',
     budgetMin: 150,
     budgetMax: 250,
@@ -145,7 +155,7 @@ const MOCK_JOBS: MockJob[] = [
     id: '10',
     title: 'Gutter cleaning and repair',
     category: 'General',
-    categoryIcon: '\u{1F3E0}',
+
     status: 'completed',
     budgetMin: 200,
     budgetMax: 400,
@@ -157,7 +167,7 @@ const MOCK_JOBS: MockJob[] = [
     id: '11',
     title: 'Install smart thermostat',
     category: 'HVAC',
-    categoryIcon: '\u{1F321}\uFE0F',
+
     status: 'completed',
     budgetMin: 200,
     budgetMax: 400,
@@ -170,7 +180,7 @@ const MOCK_JOBS: MockJob[] = [
     id: '12',
     title: 'Roof inspection after storm',
     category: 'Roofing',
-    categoryIcon: '\u{1F3D7}\uFE0F',
+
     status: 'cancelled',
     budgetMin: 300,
     budgetMax: 600,
@@ -215,7 +225,12 @@ export default function MyJobsScreen() {
         <Pressable onPress={() => handleJobPress(item)}>
           <Card style={styles.jobCard} variant="elevated">
             <View style={styles.cardHeader}>
-              <Text style={styles.categoryIcon}>{item.categoryIcon}</Text>
+              <Ionicons
+                name={CATEGORY_ICONS[item.category] ?? 'construct-outline'}
+                size={28}
+                color={colors.primary}
+                style={styles.categoryIcon}
+              />
               <View style={styles.cardHeaderText}>
                 <Text style={styles.jobTitle} numberOfLines={1}>
                   {item.title}
@@ -257,7 +272,7 @@ export default function MyJobsScreen() {
 
   const renderEmpty = () => (
     <View style={styles.emptyState}>
-      <Text style={styles.emptyIcon}>{'\u{1F4CB}'}</Text>
+      <Ionicons name="briefcase-outline" size={64} color={colors.textMuted} style={{ marginBottom: spacing.lg }} />
       <Text style={styles.emptyTitle}>No jobs yet</Text>
       <Text style={styles.emptyDescription}>
         Post your first job and get matched with verified local pros.
@@ -338,7 +353,6 @@ const styles = StyleSheet.create({
     marginBottom: spacing.md,
   },
   categoryIcon: {
-    fontSize: 28,
     marginRight: spacing.md,
   },
   cardHeaderText: {

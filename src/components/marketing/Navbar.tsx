@@ -7,6 +7,7 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 const navLinks = [
   { href: '/how-it-works', label: 'How It Works' },
   { href: '/for-pros', label: 'For Pros' },
+  { href: '#download-app', label: 'Get the App' },
 ];
 
 export default function Navbar() {

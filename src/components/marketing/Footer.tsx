@@ -13,6 +13,11 @@ const footerLinks = {
     { label: 'Press', href: '#' },
     { label: 'Contact', href: '#' },
   ],
+  App: [
+    { label: 'iOS App', href: '#' },
+    { label: 'Android App', href: '#' },
+    { label: 'App Features', href: '#download-app' },
+  ],
   Legal: [
     { label: 'Terms of Service', href: '#' },
     { label: 'Privacy Policy', href: '#' },
@@ -25,7 +30,7 @@ export default function Footer() {
   return (
     <footer className="bg-zinc-900 text-zinc-400">
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-        <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-5">
           {/* Brand column */}
           <div className="sm:col-span-2 lg:col-span-1">
             <Link href="/" className="flex items-center gap-2 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00a9e0] focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900">

@@ -5,6 +5,7 @@ import { getDashboardStats, type DashboardStats } from '@/db/queries/dashboard';
 import ComparisonTable from '@/components/marketing/ComparisonTable';
 import TestimonialCard from '@/components/marketing/TestimonialCard';
 import ScrollReveal from '@/components/marketing/ScrollReveal';
+import AppDownload from '@/components/marketing/AppDownload';
 import {
   ClipboardDocumentListIcon,
   ShieldCheckIcon,
@@ -372,6 +373,9 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+
+      {/* App Download */}
+      <AppDownload />
 
       {/* Testimonials */}
       <ScrollReveal>

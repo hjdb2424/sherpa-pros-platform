@@ -1,9 +1,11 @@
 'use client';
 
-import { useMemo, useState, useCallback } from 'react';
+import { useMemo, useState, useCallback, useEffect } from 'react';
 import Link from 'next/link';
 import BidForm from '@/components/pro/BidForm';
 import MilestoneTracker from '@/components/pro/MilestoneTracker';
+import InvoicePreview from '@/components/invoices/InvoicePreview';
+import { generateInvoice, type Invoice } from '@/lib/services/invoices';
 import {
   ScopeDocument,
   WorkProcess,
@@ -14,6 +16,7 @@ import {
 } from '@/components/checklist';
 import type { HDProduct } from '@/lib/services/serpapi';
 import type { DeliveryTier } from '@/lib/services/zinc';
+import JobTimeline from '@/components/jobs/JobTimeline';
 import QBOSyncStatus from '@/components/integrations/QBOSyncStatus';
 import {
   getChecklistForJob,
@@ -144,6 +147,14 @@ export default function JobDetailClient({ jobId }: JobDetailClientProps) {
   const [hdPrices, setHdPrices] = useState<Record<string, HDProduct> | null>(null);
   const [selectedDeliveryTier, setSelectedDeliveryTier] = useState<DeliveryTier | undefined>();
   const [clientSent, setClientSent] = useState(false);
+  const [showInvoice, setShowInvoice] = useState(false);
+  const [invoice, setInvoice] = useState<Invoice | null>(null);
+
+  useEffect(() => {
+    if (showInvoice && !invoice) {
+      setInvoice(generateInvoice(jobId));
+    }
+  }, [showInvoice, invoice, jobId]);
 
   async function handleGetPricing() {
     setPricingLoading(true);
@@ -377,6 +388,26 @@ export default function JobDetailClient({ jobId }: JobDetailClientProps) {
                 <p className="mt-1 text-xs text-zinc-400">-- {job.clientName}</p>
               </div>
             )}
+
+            {/* Invoice for completed jobs */}
+            {isCompleted && (
+              <div>
+                {!showInvoice ? (
+                  <button
+                    type="button"
+                    onClick={() => setShowInvoice(true)}
+                    className="flex w-full items-center justify-center gap-2 rounded-full bg-[#00a9e0] px-6 py-3.5 text-sm font-semibold text-white shadow-lg shadow-[#00a9e0]/25 transition-all hover:bg-[#0090c0] hover:shadow-xl hover:shadow-[#00a9e0]/30"
+                  >
+                    <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+                    </svg>
+                    View Invoice
+                  </button>
+                ) : invoice ? (
+                  <InvoicePreview invoice={invoice} />
+                ) : null}
+              </div>
+            )}
           </div>
 
           {/* Right column: actions */}
@@ -458,6 +489,11 @@ export default function JobDetailClient({ jobId }: JobDetailClientProps) {
                 )}
               </dl>
             </div>
+
+            {/* Job Timeline */}
+            {(isActive || isCompleted) && (
+              <JobTimeline jobId={job.id} />
+            )}
           </div>
         </div>
       )}

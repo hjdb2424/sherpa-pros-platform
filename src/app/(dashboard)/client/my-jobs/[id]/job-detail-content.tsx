@@ -16,6 +16,10 @@ import { JobStatusBadge } from '@/components/client/JobStatusBadge';
 import { BidCard } from '@/components/client/BidCard';
 import { ProCard } from '@/components/client/ProCard';
 import { RatingForm } from '@/components/client/RatingForm';
+import WriteReview from '@/components/reviews/WriteReview';
+import ReviewCard from '@/components/reviews/ReviewCard';
+import InvoicePreview from '@/components/invoices/InvoicePreview';
+import { getInvoiceByJobId, type Invoice } from '@/lib/services/invoices';
 import {
   MaterialsList,
   MaterialsApproval,
@@ -131,6 +135,8 @@ export function JobDetailContent({ jobId }: JobDetailContentProps) {
   const [deliveryTier, setDeliveryTier] = useState<DeliveryTier | null>(null);
   const [deliveryId, setDeliveryId] = useState<string | null>(null);
   const [orderConfirming, setOrderConfirming] = useState(false);
+  const [showInvoice, setShowInvoice] = useState(false);
+  const clientInvoice: Invoice | undefined = useMemo(() => getInvoiceByJobId(jobId), [jobId]);
 
   // Compute fee breakdown from checklist materials
   const feeBreakdown = useMemo(() => {
@@ -672,11 +678,11 @@ export function JobDetailContent({ jobId }: JobDetailContentProps) {
           {!job.rated && job.assignedPro && (
             <div>
               <h2 className="mb-3 text-lg font-bold text-zinc-900 dark:text-zinc-50">Leave a Review</h2>
-              <RatingForm
-                proName={job.assignedPro.name}
+              <WriteReview
                 jobTitle={job.title}
+                recipientName={job.assignedPro.name}
                 onSubmit={(data) => {
-                  console.log('Rating submitted:', data);
+                  console.log('Review submitted:', data);
                 }}
               />
             </div>
@@ -687,6 +693,27 @@ export function JobDetailContent({ jobId }: JobDetailContentProps) {
               <p className="text-sm font-medium text-emerald-800 dark:text-emerald-300">
                 You already reviewed this job. Thank you!
               </p>
+            </div>
+          )}
+
+          {/* Invoice */}
+          {clientInvoice && (
+            <div>
+              <h2 className="mb-3 text-lg font-bold text-zinc-900 dark:text-zinc-50">Invoice</h2>
+              {!showInvoice ? (
+                <button
+                  type="button"
+                  onClick={() => setShowInvoice(true)}
+                  className="flex w-full items-center justify-center gap-2 rounded-full border border-[#00a9e033] bg-white px-6 py-3.5 text-sm font-semibold text-zinc-900 shadow-sm transition-all hover:border-[#00a9e0]/40 hover:shadow-md dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-100"
+                >
+                  <svg className="h-5 w-5 text-[#00a9e0]" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+                  </svg>
+                  View Invoice
+                </button>
+              ) : (
+                <InvoicePreview invoice={clientInvoice} />
+              )}
             </div>
           )}
         </div>

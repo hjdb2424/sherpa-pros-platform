@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import {
   CLIENT_STATS,
@@ -13,6 +14,7 @@ import EmptyState from '@/components/EmptyState';
 import NearbyProsMap from '@/components/client/NearbyProsMap';
 import { ClipboardDocumentListIcon } from '@heroicons/react/24/outline';
 import { SCPBanner } from '@/components/ai';
+import ClientOnboarding from '@/components/client/ClientOnboarding';
 
 const ACTIVITY_ICONS: Record<string, { icon: string; bg: string }> = {
   bid_received: { icon: '📩', bg: 'bg-blue-100' },
@@ -25,9 +27,51 @@ const ACTIVITY_ICONS: Record<string, { icon: string; bg: string }> = {
 
 export function ClientDashboardContent() {
   const activeJobs = getActiveJobs();
+  const [hasOnboarded, setHasOnboarded] = useState(false);
+  const [showOnboarding, setShowOnboarding] = useState(false);
+
+  if (showOnboarding) {
+    return <ClientOnboarding />;
+  }
 
   return (
     <div className="px-4 py-6 lg:px-8">
+      {/* Onboarding banner */}
+      {!hasOnboarded && (
+        <div className="mb-6 flex items-center justify-between gap-4 rounded-xl border-2 border-[#00a9e0]/30 bg-sky-50 p-4 dark:border-[#00a9e0]/20 dark:bg-sky-950/20">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#00a9e0]/10">
+              <svg className="h-5 w-5 text-[#00a9e0]" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+              </svg>
+            </div>
+            <div>
+              <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">Complete your profile</p>
+              <p className="text-xs text-zinc-500 dark:text-zinc-400">Set up your property and preferences to get better Pro matches.</p>
+            </div>
+          </div>
+          <div className="flex shrink-0 gap-2">
+            <button
+              type="button"
+              onClick={() => setShowOnboarding(true)}
+              className="rounded-full bg-[#00a9e0] px-5 py-2 text-sm font-semibold text-white shadow-lg shadow-[#00a9e0]/25 transition-all hover:bg-[#0090c0]"
+            >
+              Get Started
+            </button>
+            <button
+              type="button"
+              onClick={() => setHasOnboarded(true)}
+              className="rounded-full border border-zinc-200 bg-white px-3 py-2 text-sm font-medium text-zinc-500 transition-colors hover:bg-zinc-50 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-400"
+              aria-label="Dismiss onboarding banner"
+            >
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Welcome */}
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-zinc-900">Welcome back, Phyrom</h1>

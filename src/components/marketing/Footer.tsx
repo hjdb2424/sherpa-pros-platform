@@ -7,6 +7,7 @@ const footerLinks = {
     { label: 'For Pros', href: '/for-pros' },
     { label: 'Post a Job', href: '/client/post-job' },
     { label: 'Find Pros', href: '/client/find-pros' },
+    { label: 'Help Center', href: '/help' },
   ],
   Company: [
     { label: 'About', href: '#' },

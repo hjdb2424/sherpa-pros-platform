@@ -1,13 +1,38 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import BadgeTier from '@/components/pro/BadgeTier';
 import AvailabilityCalendar from '@/components/pro/AvailabilityCalendar';
 import { mockProProfile } from '@/lib/mock-data/pro-data';
+import ReviewCard from '@/components/reviews/ReviewCard';
+import Portfolio from '@/components/pro/Portfolio';
+
+interface ReviewData {
+  id: string;
+  reviewerName: string;
+  rating: number;
+  text: string;
+  date: string;
+  role: 'client' | 'pro';
+}
 
 export default function ProfilePageClient() {
   const pro = mockProProfile;
   const [radiusValue, setRadiusValue] = useState(pro.serviceArea.travelRadiusMiles);
+  const [reviews, setReviews] = useState<ReviewData[]>([]);
+
+  useEffect(() => {
+    async function fetchReviews() {
+      try {
+        const res = await fetch('/api/reviews?proId=pro-001');
+        const data = await res.json();
+        setReviews(data.reviews ?? []);
+      } catch {
+        // Empty reviews on error
+      }
+    }
+    fetchReviews();
+  }, []);
 
   return (
     <div className="space-y-6">
@@ -121,35 +146,10 @@ export default function ProfilePageClient() {
           </div>
         </div>
 
-        {/* Portfolio */}
+        {/* Portfolio — powered by Portfolio component */}
         <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm sm:p-6 dark:border-zinc-800 dark:bg-zinc-900 lg:col-span-2">
-          <h2 className="text-base font-bold text-zinc-900 dark:text-zinc-50">Portfolio</h2>
-          <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3">
-            {pro.portfolio.map((item) => (
-              <div
-                key={item.id}
-                className="group relative overflow-hidden rounded-lg bg-zinc-100 dark:bg-zinc-800"
-              >
-                <div className="flex aspect-square items-center justify-center bg-zinc-200 text-zinc-400 dark:bg-zinc-700 dark:text-zinc-500">
-                  <svg className="h-10 w-10" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" aria-hidden="true">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0 0 22.5 18.75V5.25A2.25 2.25 0 0 0 20.25 3H3.75A2.25 2.25 0 0 0 1.5 5.25v13.5A2.25 2.25 0 0 0 3.75 21Z" />
-                  </svg>
-                </div>
-                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-2">
-                  <p className="text-xs font-semibold text-white">{item.title}</p>
-                </div>
-              </div>
-            ))}
-            {/* Add button */}
-            <button
-              type="button"
-              className="flex aspect-square items-center justify-center rounded-lg border-2 border-dashed border-zinc-300 text-zinc-400 transition-colors hover:border-amber-400 hover:text-amber-500 dark:border-zinc-600"
-            >
-              <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-              </svg>
-            </button>
-          </div>
+          <h2 className="mb-3 text-base font-bold text-zinc-900 dark:text-zinc-50">My Portfolio</h2>
+          <Portfolio editable />
         </div>
 
         {/* Certifications */}
@@ -231,6 +231,29 @@ export default function ProfilePageClient() {
         {/* Availability Calendar */}
         <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm sm:p-6 dark:border-zinc-800 dark:bg-zinc-900 lg:col-span-2">
           <AvailabilityCalendar initialAvailability={pro.availability} />
+        </div>
+
+        {/* Reviews */}
+        <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm sm:p-6 dark:border-zinc-800 dark:bg-zinc-900 lg:col-span-2">
+          <h2 className="mb-4 text-base font-bold text-zinc-900 dark:text-zinc-50">
+            Reviews ({reviews.length})
+          </h2>
+          {reviews.length > 0 ? (
+            <div className="space-y-3">
+              {reviews.map((review) => (
+                <ReviewCard
+                  key={review.id}
+                  reviewerName={review.reviewerName}
+                  rating={review.rating}
+                  text={review.text}
+                  date={review.date}
+                  role={review.role}
+                />
+              ))}
+            </div>
+          ) : (
+            <p className="text-sm text-zinc-500 dark:text-zinc-400">No reviews yet.</p>
+          )}
         </div>
       </div>
     </div>

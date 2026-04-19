@@ -2,6 +2,7 @@
 
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
+import Logo from '@/components/brand/Logo';
 
 const NAV_ITEMS = [
   {
@@ -74,11 +75,8 @@ export function ClientSidebar() {
     <>
       {/* Desktop sidebar */}
       <aside className="hidden lg:flex lg:w-64 lg:flex-col lg:border-r lg:border-zinc-200 lg:bg-white">
-        <div className="flex h-16 items-center gap-2 border-b border-zinc-200 px-6">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#00a9e0]">
-            <span className="text-sm font-bold text-white">S</span>
-          </div>
-          <span className="text-lg font-bold text-zinc-900">Sherpa<span className="text-[#ff4500]">Pros</span></span>
+        <div className="flex h-16 items-center border-b border-zinc-200 px-6">
+          <Logo size="md" />
         </div>
 
         <nav className="flex-1 space-y-1 p-4" aria-label="Main navigation">

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import Logo from '@/components/brand/Logo';
 
 const navItems = [
   {
@@ -76,11 +77,8 @@ export default function ProSidebar() {
       {/* Desktop sidebar */}
       <aside className="fixed top-0 left-0 z-40 hidden h-full w-64 flex-col border-r border-zinc-100 bg-white lg:flex dark:border-zinc-800">
         {/* Logo */}
-        <div className="flex h-16 items-center gap-2 px-6">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#00a9e0] text-sm font-black text-white">
-            SP
-          </div>
-          <span className="text-lg font-bold text-zinc-900">Sherpa<span className="text-[#ff4500]">Pros</span></span>
+        <div className="flex h-16 items-center px-6">
+          <Logo size="md" />
         </div>
 
         {/* Nav */}
@@ -126,11 +124,8 @@ export default function ProSidebar() {
 
       {/* Mobile top header */}
       <header className="fixed top-0 right-0 left-0 z-40 flex h-14 items-center justify-between border-b border-zinc-100 bg-white px-4 lg:left-64 dark:border-zinc-800">
-        <div className="flex items-center gap-2 lg:hidden">
-          <div className="flex h-7 w-7 items-center justify-center rounded-md bg-[#00a9e0] text-xs font-black text-white">
-            SP
-          </div>
-          <span className="text-base font-bold text-zinc-900">Sherpa Pros</span>
+        <div className="flex items-center lg:hidden">
+          <Logo size="sm" />
         </div>
 
         <div className="hidden lg:block">

@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Logo from '@/components/brand/Logo';
 
 const footerLinks = {
   Platform: [
@@ -33,26 +34,8 @@ export default function Footer() {
         <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-5">
           {/* Brand column */}
           <div className="sm:col-span-2 lg:col-span-1">
-            <Link href="/" className="flex items-center gap-2 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00a9e0] focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900">
-              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#00a9e0]">
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  className="h-5 w-5 text-white"
-                  aria-hidden="true"
-                >
-                  <path
-                    d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </div>
-              <span className="text-lg font-bold text-white">
-                Sherpa<span className="text-[#ff4500]">Pros</span>
-              </span>
+            <Link href="/" className="rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00a9e0] focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900">
+              <Logo size="lg" />
             </Link>
             <p className="mt-4 max-w-xs text-sm leading-relaxed">
               The construction marketplace that actually understands

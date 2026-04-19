@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import StatsCounter from './StatsCounter';
+import Logo from '@/components/brand/Logo';
 
 interface HeroProps {
   /** Override stats displayed in the counter */
@@ -27,6 +28,11 @@ export default function Hero({ stats }: HeroProps = {}) {
 
       <div className="relative mx-auto max-w-7xl px-4 pb-20 pt-24 sm:px-6 sm:pb-28 sm:pt-32 lg:px-8 lg:pb-32 lg:pt-40">
         <div className="mx-auto max-w-3xl text-center">
+          {/* Logo */}
+          <div className="animate-fade-slide-up mb-6 flex justify-center">
+            <Logo size="xl" />
+          </div>
+
           {/* Badge */}
           <div className="animate-fade-slide-up mb-8 inline-flex items-center gap-2 rounded-full border border-[#00a9e0]/20 bg-[#00a9e0]/5 px-4 py-1.5">
             <span className="h-2 w-2 rounded-full bg-emerald-500" aria-hidden="true" />

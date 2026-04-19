@@ -2,6 +2,7 @@
 
 import { useTransition } from "react";
 import { setUserRole } from "./actions";
+import Logo from "@/components/brand/Logo";
 
 export default function SelectRolePage() {
   const [isPending, startTransition] = useTransition();
@@ -16,10 +17,11 @@ export default function SelectRolePage() {
     <div className="flex min-h-screen items-center justify-center bg-white px-4 dark:bg-zinc-950">
       <div className="w-full max-w-2xl">
         <div className="mb-10 text-center">
+          <div className="flex justify-center mb-4">
+            <Logo size="lg" />
+          </div>
           <h1 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-white sm:text-4xl">
-            Welcome to{" "}
-            <span className="text-zinc-900 dark:text-white">Sherpa</span>
-            <span className="text-[#ff4500]">Pros</span>
+            Welcome to Sherpa Pros
           </h1>
           <p className="mt-3 text-base text-zinc-500 dark:text-zinc-400 sm:text-lg">
             How will you be using the platform?

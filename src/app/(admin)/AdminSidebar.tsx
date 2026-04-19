@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Logo from "@/components/brand/Logo";
 import {
   HomeIcon,
   WrenchScrewdriverIcon,
@@ -67,13 +68,12 @@ export function AdminSidebar() {
 
         {/* Logo */}
         <div className="px-5 pb-6">
-          <span className="text-sm font-bold tracking-widest text-white">
-            SHERPA PROS
-          </span>
-          <br />
-          <span className="text-[10px] font-semibold tracking-[0.25em] text-zinc-500">
-            ADMIN
-          </span>
+          <Logo size="md" />
+          <div className="mt-1">
+            <span className="text-[10px] font-semibold tracking-[0.25em] text-zinc-500">
+              ADMIN
+            </span>
+          </div>
         </div>
 
         {/* Nav */}

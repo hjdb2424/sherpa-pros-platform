@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import Logo from '@/components/brand/Logo';
 
 const navLinks = [
   { href: '/how-it-works', label: 'How It Works' },
@@ -20,26 +21,8 @@ export default function Navbar() {
         aria-label="Main navigation"
       >
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00a9e0] focus-visible:ring-offset-2 focus-visible:ring-offset-white">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#00a9e0]">
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              className="h-5 w-5 text-white"
-              aria-hidden="true"
-            >
-              <path
-                d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </div>
-          <span className="text-lg font-bold text-zinc-900">
-            Sherpa<span className="text-[#ff4500]">Pros</span>
-          </span>
+        <Link href="/" className="rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00a9e0] focus-visible:ring-offset-2 focus-visible:ring-offset-white">
+          <Logo size="md" />
         </Link>
 
         {/* Desktop links */}

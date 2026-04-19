@@ -11,6 +11,7 @@ import type { SimpleBottomSheetRef } from '@/components/sheets/SimpleBottomSheet
 import { MOCK_JOBS } from '@/lib/types';
 import { getCurrentLocation } from '@/lib/location';
 import { colors, spacing, borderRadius, shadows, typography } from '@/lib/theme';
+import { scheduleLocalNotification } from '@/lib/notifications';
 import DispatchModal from '@/components/pro/DispatchModal';
 
 function NotificationBell() {
@@ -59,6 +60,18 @@ export default function ProMapScreen() {
 
   useEffect(() => {
     const timer = setTimeout(() => setShowDispatch(true), 5000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Demo notification after 10 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      scheduleLocalNotification(
+        'New Job Available!',
+        'Emergency plumbing \u2014 Burst pipe, 0.8 mi away. $500-$1,500.',
+        { type: 'new_job', jobId: 'a1' }
+      );
+    }, 10000);
     return () => clearTimeout(timer);
   }, []);
 

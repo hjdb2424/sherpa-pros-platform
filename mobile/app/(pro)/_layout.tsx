@@ -1,10 +1,12 @@
+import { useState } from 'react';
 import { Tabs } from 'expo-router';
 import { View, Text, StyleSheet } from 'react-native';
 import * as Haptics from 'expo-haptics';
 import { Ionicons } from '@expo/vector-icons';
 import { colors } from '@/lib/theme';
+import { useNotificationListener } from '@/lib/notifications';
 
-function TabIcon({ name, focused }: { name: string; focused: boolean }) {
+function TabIcon({ name, focused, badge }: { name: string; focused: boolean; badge?: number }) {
   const icons: Record<string, { outline: keyof typeof Ionicons.glyphMap; filled: keyof typeof Ionicons.glyphMap }> = {
     Map: { outline: 'map-outline', filled: 'map' },
     Jobs: { outline: 'briefcase-outline', filled: 'briefcase' },
@@ -16,13 +18,27 @@ function TabIcon({ name, focused }: { name: string; focused: boolean }) {
   const iconName = focused ? entry.filled : entry.outline;
   return (
     <View style={styles.tabIcon}>
-      <Ionicons name={iconName} size={22} color={focused ? colors.primary : colors.textMuted} />
+      <View>
+        <Ionicons name={iconName} size={22} color={focused ? colors.primary : colors.textMuted} />
+        {badge != null && badge > 0 && (
+          <View style={styles.badge}>
+            <Text style={styles.badgeText}>{badge > 9 ? '9+' : badge}</Text>
+          </View>
+        )}
+      </View>
       <Text numberOfLines={1} style={[styles.tabLabel, focused && styles.tabLabelActive]}>{name}</Text>
     </View>
   );
 }
 
 export default function ProLayout() {
+  const [notifCount, setNotifCount] = useState(0);
+
+  // Increment badge count when notifications arrive
+  useNotificationListener(() => {
+    setNotifCount((prev) => prev + 1);
+  });
+
   return (
     <Tabs
       screenOptions={{
@@ -42,7 +58,7 @@ export default function ProLayout() {
       />
       <Tabs.Screen
         name="jobs/index"
-        options={{ title: 'Jobs', tabBarIcon: ({ focused }) => <TabIcon name="Jobs" focused={focused} /> }}
+        options={{ title: 'Jobs', tabBarIcon: ({ focused }) => <TabIcon name="Jobs" focused={focused} badge={notifCount} /> }}
       />
       <Tabs.Screen
         name="jobs/[id]"
@@ -91,4 +107,21 @@ const styles = StyleSheet.create({
   tabIcon: { alignItems: 'center', gap: 2, width: 60 },
   tabLabel: { fontSize: 9, fontWeight: '500', color: colors.textMuted, textAlign: 'center' },
   tabLabelActive: { color: colors.primary, fontWeight: '600' },
+  badge: {
+    position: 'absolute',
+    top: -4,
+    right: -10,
+    minWidth: 16,
+    height: 16,
+    borderRadius: 8,
+    backgroundColor: colors.danger,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 3,
+  },
+  badgeText: {
+    fontSize: 9,
+    fontWeight: '700',
+    color: '#ffffff',
+  },
 });

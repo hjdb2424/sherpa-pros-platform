@@ -11,6 +11,7 @@ import type { SimpleBottomSheetRef } from '@/components/sheets/SimpleBottomSheet
 import { MOCK_PROS } from '@/lib/types';
 import { getCurrentLocation } from '@/lib/location';
 import { colors, spacing, borderRadius, shadows, typography } from '@/lib/theme';
+import { scheduleLocalNotification } from '@/lib/notifications';
 
 function NotificationBell() {
   const router = useRouter();
@@ -53,6 +54,18 @@ export default function ClientMapScreen() {
         setLocationDenied(true);
       }
     });
+  }, []);
+
+  // Demo notification after 15 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      scheduleLocalNotification(
+        'Bid Received!',
+        'Mike Rodriguez bid $450 on your Kitchen Faucet job.',
+        { type: 'bid_accepted', jobId: '4' }
+      );
+    }, 15000);
+    return () => clearTimeout(timer);
   }, []);
 
   return (

@@ -7,6 +7,7 @@ import MilestoneTracker from '@/components/pro/MilestoneTracker';
 import NearbyJobsMap from '@/components/pro/NearbyJobsMap';
 import EmptyState from '@/components/EmptyState';
 import { SSPBanner } from '@/components/ai';
+import QBOConnect from '@/components/integrations/QBOConnect';
 import { UserCircleIcon } from '@heroicons/react/24/outline';
 import {
   mockProProfile,
@@ -77,6 +78,9 @@ export default function ProDashboardPage() {
 
       {/* Sherpa Success Pro banner */}
       <SSPBanner proName={pro.name.split(' ')[0]} />
+
+      {/* QuickBooks Online connection */}
+      <QBOConnect />
 
       {/* Stats row */}
       <div className="grid gap-4 grid-cols-2 lg:grid-cols-4">

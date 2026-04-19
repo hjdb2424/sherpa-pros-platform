@@ -14,6 +14,7 @@ import {
 } from '@/components/checklist';
 import type { HDProduct } from '@/lib/services/serpapi';
 import type { DeliveryTier } from '@/lib/services/zinc';
+import QBOSyncStatus from '@/components/integrations/QBOSyncStatus';
 import {
   getChecklistForJob,
   type ChecklistItem as WisemanChecklistItem,
@@ -409,6 +410,11 @@ export default function JobDetailClient({ jobId }: JobDetailClientProps) {
                   </button>
                 </div>
               </div>
+            )}
+
+            {/* QuickBooks sync */}
+            {(isActive || isCompleted) && (
+              <QBOSyncStatus jobId={job.id} jobTitle={job.title} compact />
             )}
 
             {/* Chat button */}

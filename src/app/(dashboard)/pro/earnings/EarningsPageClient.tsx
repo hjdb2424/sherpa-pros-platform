@@ -5,6 +5,7 @@ import StatsCard from '@/components/pro/StatsCard';
 import EarningsChart from '@/components/pro/EarningsChart';
 import EmptyState from '@/components/EmptyState';
 import { StripeCapitalOffer } from '@/components/checklist';
+import QBOSyncStatus from '@/components/integrations/QBOSyncStatus';
 import { CurrencyDollarIcon } from '@heroicons/react/24/outline';
 import {
   mockEarningsSummary,
@@ -91,6 +92,9 @@ export default function EarningsPageClient() {
 
       {/* Chart */}
       <EarningsChart data={mockMonthlyEarnings} />
+
+      {/* QuickBooks sync overview */}
+      <QBOSyncStatus jobId="all" jobTitle="All Earnings" />
 
       {/* Stripe Capital offer */}
       <div className="mt-2">

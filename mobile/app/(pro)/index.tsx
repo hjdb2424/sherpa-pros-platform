@@ -7,6 +7,7 @@ import { Ionicons } from '@expo/vector-icons';
 import MapScreen from '@/components/maps/MapScreen';
 import JobMarker from '@/components/maps/JobMarker';
 import JobSheet from '@/components/sheets/JobSheet';
+import type { SimpleBottomSheetRef } from '@/components/sheets/SimpleBottomSheet';
 import { MOCK_JOBS } from '@/lib/types';
 import { getCurrentLocation } from '@/lib/location';
 import { colors, spacing, borderRadius, shadows, typography } from '@/lib/theme';
@@ -69,6 +70,7 @@ function NotificationBell() {
 export default function ProMapScreen() {
   const insets = useSafeAreaInsets();
   const [selectedJobId, setSelectedJobId] = useState<string | null>(null);
+  const sheetRef = useRef<SimpleBottomSheetRef>(null);
   const [userRegion, setUserRegion] = useState<{
     latitude: number;
     longitude: number;
@@ -106,7 +108,7 @@ export default function ProMapScreen() {
           <JobMarker
             key={job.id}
             job={job}
-            onPress={() => setSelectedJobId(job.id)}
+            onPress={() => { setSelectedJobId(job.id); sheetRef.current?.snapTo('half'); }}
           />
         ))}
       </MapScreen>
@@ -120,6 +122,7 @@ export default function ProMapScreen() {
       <DispatchFAB />
 
       <JobSheet
+        ref={sheetRef}
         jobs={MOCK_JOBS}
         selectedId={selectedJobId}
         onJobSelect={(job) => setSelectedJobId(job.id)}

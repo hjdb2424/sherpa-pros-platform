@@ -1,6 +1,6 @@
 import { View, Text, FlatList, Pressable, StyleSheet } from 'react-native';
-import { useCallback } from 'react';
-import SimpleBottomSheet from '@/components/sheets/SimpleBottomSheet';
+import { useCallback, forwardRef } from 'react';
+import SimpleBottomSheet, { type SimpleBottomSheetRef } from '@/components/sheets/SimpleBottomSheet';
 import Avatar from '@/components/common/Avatar';
 import Badge from '@/components/common/Badge';
 import { colors, spacing, borderRadius, shadows } from '@/lib/theme';
@@ -12,7 +12,7 @@ interface ProSheetProps {
   selectedId?: string | null;
 }
 
-export default function ProSheet({ pros, onProSelect, selectedId }: ProSheetProps) {
+const ProSheet = forwardRef<SimpleBottomSheetRef, ProSheetProps>(({ pros, onProSelect, selectedId }, ref) => {
   const renderProCard = useCallback(({ item }: { item: MockProLocation }) => (
     <Pressable onPress={() => onProSelect?.(item)} style={({ pressed }) => [pressed && { opacity: 0.9 }]}>
       <View style={[styles.card, selectedId === item.id && styles.cardSelected]}>
@@ -36,6 +36,7 @@ export default function ProSheet({ pros, onProSelect, selectedId }: ProSheetProp
 
   return (
     <SimpleBottomSheet
+      ref={ref}
       backgroundStyle={styles.sheetBg}
       handleIndicatorStyle={styles.handle}
     >
@@ -51,7 +52,10 @@ export default function ProSheet({ pros, onProSelect, selectedId }: ProSheetProp
       />
     </SimpleBottomSheet>
   );
-}
+});
+
+ProSheet.displayName = 'ProSheet';
+export default ProSheet;
 
 const styles = StyleSheet.create({
   sheetBg: { backgroundColor: colors.background },

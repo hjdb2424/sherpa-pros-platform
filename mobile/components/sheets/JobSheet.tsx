@@ -1,6 +1,6 @@
 import { View, Text, FlatList, Pressable, StyleSheet } from 'react-native';
-import { useCallback } from 'react';
-import SimpleBottomSheet from '@/components/sheets/SimpleBottomSheet';
+import { useCallback, forwardRef } from 'react';
+import SimpleBottomSheet, { type SimpleBottomSheetRef } from '@/components/sheets/SimpleBottomSheet';
 import Badge from '@/components/common/Badge';
 import { colors, spacing, borderRadius, shadows } from '@/lib/theme';
 import type { MockJobLocation } from '@/lib/types';
@@ -17,7 +17,7 @@ interface JobSheetProps {
   selectedId?: string | null;
 }
 
-export default function JobSheet({ jobs, onJobSelect, selectedId }: JobSheetProps) {
+const JobSheet = forwardRef<SimpleBottomSheetRef, JobSheetProps>(({ jobs, onJobSelect, selectedId }, ref) => {
   const renderJobCard = useCallback(({ item }: { item: MockJobLocation }) => (
     <Pressable onPress={() => onJobSelect?.(item)} style={({ pressed }) => [pressed && { opacity: 0.9 }]}>
       <View style={[styles.card, selectedId === item.id && styles.cardSelected]}>
@@ -38,6 +38,7 @@ export default function JobSheet({ jobs, onJobSelect, selectedId }: JobSheetProp
 
   return (
     <SimpleBottomSheet
+      ref={ref}
       backgroundStyle={styles.sheetBg}
       handleIndicatorStyle={styles.handle}
     >
@@ -53,7 +54,10 @@ export default function JobSheet({ jobs, onJobSelect, selectedId }: JobSheetProp
       />
     </SimpleBottomSheet>
   );
-}
+});
+
+JobSheet.displayName = 'JobSheet';
+export default JobSheet;
 
 const styles = StyleSheet.create({
   sheetBg: { backgroundColor: colors.background },

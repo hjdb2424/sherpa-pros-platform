@@ -7,6 +7,7 @@ import { Ionicons } from '@expo/vector-icons';
 import MapScreen from '@/components/maps/MapScreen';
 import ProMarker from '@/components/maps/ProMarker';
 import ProSheet from '@/components/sheets/ProSheet';
+import type { SimpleBottomSheetRef } from '@/components/sheets/SimpleBottomSheet';
 import { MOCK_PROS } from '@/lib/types';
 import { getCurrentLocation } from '@/lib/location';
 import { colors, spacing, borderRadius, shadows, typography } from '@/lib/theme';
@@ -68,6 +69,7 @@ function NotificationBell() {
 export default function ClientMapScreen() {
   const insets = useSafeAreaInsets();
   const [selectedProId, setSelectedProId] = useState<string | null>(null);
+  const sheetRef = useRef<SimpleBottomSheetRef>(null);
   const [userRegion, setUserRegion] = useState<{
     latitude: number;
     longitude: number;
@@ -105,7 +107,7 @@ export default function ClientMapScreen() {
           <ProMarker
             key={pro.id}
             pro={pro}
-            onPress={() => setSelectedProId(pro.id)}
+            onPress={() => { setSelectedProId(pro.id); sheetRef.current?.snapTo('half'); }}
           />
         ))}
       </MapScreen>
@@ -119,6 +121,7 @@ export default function ClientMapScreen() {
       <EmergencyFAB />
 
       <ProSheet
+        ref={sheetRef}
         pros={MOCK_PROS}
         selectedId={selectedProId}
         onProSelect={(pro) => setSelectedProId(pro.id)}

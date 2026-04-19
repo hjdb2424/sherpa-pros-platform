@@ -50,15 +50,63 @@ const PAYOUTS: Payout[] = [
   { id: 'p5', date: 'Mar 5, 2026', amount: 1000, jobTitle: 'Fence staining', status: 'completed' },
 ];
 
+interface DashboardStats {
+  thisMonth: string;
+  pending: string;
+  completedJobs: number;
+  changePercent: string;
+  pendingPayouts: number;
+}
+
+const DEFAULT_STATS: DashboardStats = {
+  thisMonth: '$4,850',
+  pending: '$1,200',
+  completedJobs: 12,
+  changePercent: '+12%',
+  pendingPayouts: 2,
+};
+
 export default function EarningsScreen() {
   const insets = useSafeAreaInsets();
   const [selectedBar, setSelectedBar] = useState<number | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [stats, setStats] = useState<DashboardStats>(DEFAULT_STATS);
+
+  useEffect(() => {
+    apiFetch<any>('/dashboard')
+      .then((data) => {
+        if (data) {
+          setStats({
+            thisMonth: data.thisMonth ?? DEFAULT_STATS.thisMonth,
+            pending: data.pending ?? DEFAULT_STATS.pending,
+            completedJobs: data.completedJobs ?? DEFAULT_STATS.completedJobs,
+            changePercent: data.changePercent ?? DEFAULT_STATS.changePercent,
+            pendingPayouts: data.pendingPayouts ?? DEFAULT_STATS.pendingPayouts,
+          });
+        }
+      })
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, []);
 
   const [refreshing, setRefreshing] = useState(false);
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-    setTimeout(() => setRefreshing(false), 1000);
+    apiFetch<any>('/dashboard')
+      .then((data) => {
+        if (data) {
+          setStats({
+            thisMonth: data.thisMonth ?? DEFAULT_STATS.thisMonth,
+            pending: data.pending ?? DEFAULT_STATS.pending,
+            completedJobs: data.completedJobs ?? DEFAULT_STATS.completedJobs,
+            changePercent: data.changePercent ?? DEFAULT_STATS.changePercent,
+            pendingPayouts: data.pendingPayouts ?? DEFAULT_STATS.pendingPayouts,
+          });
+        }
+      })
+      .catch(() => {})
+      .finally(() => setRefreshing(false));
   }, []);
 
   const handleBarPress = useCallback((index: number) => {
@@ -95,10 +143,10 @@ export default function EarningsScreen() {
               <Text style={styles.statLabel}>This Month</Text>
             </View>
             <View style={styles.statValueRow}>
-              <Text style={[styles.statValue, { color: colors.success }]}>$4,850</Text>
+              <Text style={[styles.statValue, { color: colors.success }]}>{stats.thisMonth}</Text>
               <Ionicons name="trending-up" size={16} color={colors.success} />
             </View>
-            <Text style={styles.statChange}>+12% vs last month</Text>
+            <Text style={styles.statChange}>{stats.changePercent} vs last month</Text>
           </Card>
 
           <Card style={styles.statCard} variant="elevated">
@@ -106,8 +154,8 @@ export default function EarningsScreen() {
               <Ionicons name="time-outline" size={18} color={colors.primary} />
               <Text style={styles.statLabel}>Pending</Text>
             </View>
-            <Text style={[styles.statValue, { color: colors.primary }]}>$1,200</Text>
-            <Text style={styles.statChange}>2 payouts processing</Text>
+            <Text style={[styles.statValue, { color: colors.primary }]}>{stats.pending}</Text>
+            <Text style={styles.statChange}>{stats.pendingPayouts} payouts processing</Text>
           </Card>
 
           <Card style={styles.statCard} variant="elevated">
@@ -116,7 +164,7 @@ export default function EarningsScreen() {
               <Text style={styles.statLabel}>Completed Jobs</Text>
             </View>
             <View style={styles.statValueRow}>
-              <Text style={[styles.statValue, { color: colors.text }]}>12</Text>
+              <Text style={[styles.statValue, { color: colors.text }]}>{stats.completedJobs}</Text>
               <Ionicons name="trending-up" size={16} color={colors.success} />
             </View>
             <Text style={styles.statChange}>This month</Text>

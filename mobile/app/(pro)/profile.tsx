@@ -121,6 +121,24 @@ export default function ProProfileScreen() {
           <Text style={styles.memberSince}>Member since April 2026</Text>
         </View>
 
+        {/* Referral Card */}
+        <Pressable
+          style={styles.referralCard}
+          onPress={() => {
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+            router.push('/(pro)/referral');
+          }}
+        >
+          <View style={styles.referralIconBox}>
+            <Ionicons name="gift-outline" size={24} color={colors.primary} />
+          </View>
+          <View style={styles.referralContent}>
+            <Text style={styles.referralTitle}>Invite & Earn</Text>
+            <Text style={styles.referralSubtitle}>Earn $50 per pro referral</Text>
+          </View>
+          <Ionicons name="chevron-forward" size={18} color={colors.textMuted} />
+        </Pressable>
+
         {/* Settings */}
         <View style={styles.settingsSection}>
           {settingsItems.map((item, index) => (
@@ -286,6 +304,37 @@ const styles = StyleSheet.create({
   settingsChevron: {
     fontSize: 24,
     color: colors.textMuted,
+  },
+  referralCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: colors.primaryLight,
+    borderRadius: borderRadius.lg,
+    padding: spacing.lg,
+    marginBottom: spacing.xl,
+    borderWidth: 1,
+    borderColor: colors.border,
+  },
+  referralIconBox: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: colors.background,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: spacing.md,
+  },
+  referralContent: {
+    flex: 1,
+  },
+  referralTitle: {
+    ...typography.subheading,
+    color: colors.primary,
+  },
+  referralSubtitle: {
+    ...typography.caption,
+    color: colors.textMuted,
+    marginTop: 2,
   },
   actionsSection: {
     gap: spacing.md,

@@ -76,10 +76,27 @@ export default function ClientMessagesScreen() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const [refreshing, setRefreshing] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [conversations, setConversations] = useState<Conversation[]>(CONVERSATIONS);
+
+  useEffect(() => {
+    apiFetch<any>('/chat')
+      .then((data) => {
+        if (data.conversations?.length > 0) setConversations(data.conversations);
+      })
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, []);
+
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-    setTimeout(() => setRefreshing(false), 1000);
+    apiFetch<any>('/chat')
+      .then((data) => {
+        if (data.conversations?.length > 0) setConversations(data.conversations);
+      })
+      .catch(() => {})
+      .finally(() => setRefreshing(false));
   }, []);
 
   const handleConversationPress = useCallback((conversation: Conversation) => {
@@ -137,25 +154,29 @@ export default function ClientMessagesScreen() {
         <Text style={styles.headerTitle}>Messages</Text>
       </View>
 
-      <FlatList
-        data={CONVERSATIONS}
-        renderItem={renderConversation}
-        keyExtractor={(item) => item.id}
-        contentContainerStyle={[
-          styles.listContent,
-          CONVERSATIONS.length === 0 && styles.listContentEmpty,
-        ]}
-        showsVerticalScrollIndicator={false}
-        ItemSeparatorComponent={() => <View style={styles.separator} />}
-        ListEmptyComponent={renderEmpty}
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={onRefresh}
-            tintColor={colors.primary}
-          />
-        }
-      />
+      {loading ? (
+        <SkeletonCard count={3} />
+      ) : (
+        <FlatList
+          data={conversations}
+          renderItem={renderConversation}
+          keyExtractor={(item) => item.id}
+          contentContainerStyle={[
+            styles.listContent,
+            conversations.length === 0 && styles.listContentEmpty,
+          ]}
+          showsVerticalScrollIndicator={false}
+          ItemSeparatorComponent={() => <View style={styles.separator} />}
+          ListEmptyComponent={renderEmpty}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+              tintColor={colors.primary}
+            />
+          }
+        />
+      )}
     </View>
   );
 }

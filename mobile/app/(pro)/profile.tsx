@@ -17,6 +17,7 @@ import { useAuth } from '@/lib/auth';
 import Avatar from '@/components/common/Avatar';
 import Badge from '@/components/common/Badge';
 import Button from '@/components/common/Button';
+import Logo from '@/components/brand/Logo';
 
 interface SettingsItem {
   label: string;
@@ -154,7 +155,10 @@ export default function ProProfileScreen() {
           </Pressable>
         </View>
 
-        <Text style={styles.versionText}>Sherpa Pros v1.0.0</Text>
+        <View style={styles.versionRow}>
+          <Logo size="sm" />
+          <Text style={styles.versionText}>v1.0.0</Text>
+        </View>
       </ScrollView>
     </View>
   );
@@ -295,11 +299,16 @@ const styles = StyleSheet.create({
     color: colors.danger,
     fontWeight: '600',
   },
-  versionText: {
-    textAlign: 'center',
-    fontSize: 11,
-    color: colors.textMuted,
+  versionRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 6,
     marginTop: spacing.xxl,
     marginBottom: spacing.lg,
+  },
+  versionText: {
+    fontSize: 11,
+    color: colors.textMuted,
   },
 });

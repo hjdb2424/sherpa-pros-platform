@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import {
   View,
   Text,
@@ -15,6 +15,8 @@ import { colors, spacing, borderRadius, shadows, typography } from '@/lib/theme'
 import Card from '@/components/common/Card';
 import Badge from '@/components/common/Badge';
 import Avatar from '@/components/common/Avatar';
+import SkeletonCard from '@/components/common/SkeletonCard';
+import { apiFetch } from '@/lib/api';
 
 const CATEGORY_ICONS: Record<string, keyof typeof Ionicons.glyphMap> = {
   Plumbing: 'water-outline',
@@ -200,11 +202,26 @@ export default function MyJobsScreen() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const [refreshing, setRefreshing] = useState(false);
-  const [jobs] = useState<MockJob[]>(MOCK_JOBS);
+  const [loading, setLoading] = useState(true);
+  const [jobs, setJobs] = useState<MockJob[]>(MOCK_JOBS);
+
+  useEffect(() => {
+    apiFetch<any>('/jobs?role=client')
+      .then((data) => {
+        if (data.jobs?.length > 0) setJobs(data.jobs);
+      })
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, []);
 
   const handleRefresh = useCallback(() => {
     setRefreshing(true);
-    setTimeout(() => setRefreshing(false), 1200);
+    apiFetch<any>('/jobs?role=client')
+      .then((data) => {
+        if (data.jobs?.length > 0) setJobs(data.jobs);
+      })
+      .catch(() => {})
+      .finally(() => setRefreshing(false));
   }, []);
 
   const handleJobPress = useCallback((job: MockJob) => {
@@ -290,25 +307,29 @@ export default function MyJobsScreen() {
         <Text style={styles.headerTitle}>My Jobs</Text>
       </View>
 
-      <FlatList
-        data={jobs}
-        renderItem={renderJobCard}
-        keyExtractor={(item) => item.id}
-        contentContainerStyle={[
-          styles.listContent,
-          jobs.length === 0 && styles.listContentEmpty,
-        ]}
-        showsVerticalScrollIndicator={false}
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={handleRefresh}
-            colors={[colors.primary]}
-            tintColor={colors.primary}
-          />
-        }
-        ListEmptyComponent={renderEmpty}
-      />
+      {loading ? (
+        <SkeletonCard count={4} />
+      ) : (
+        <FlatList
+          data={jobs}
+          renderItem={renderJobCard}
+          keyExtractor={(item) => item.id}
+          contentContainerStyle={[
+            styles.listContent,
+            jobs.length === 0 && styles.listContentEmpty,
+          ]}
+          showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={handleRefresh}
+              colors={[colors.primary]}
+              tintColor={colors.primary}
+            />
+          }
+          ListEmptyComponent={renderEmpty}
+        />
+      )}
 
       <Pressable
         style={[styles.fab, { bottom: insets.bottom + spacing.xl }]}

@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import {
   View,
   Text,
@@ -12,6 +12,8 @@ import { useRouter } from 'expo-router';
 import * as Haptics from 'expo-haptics';
 import { colors, spacing, borderRadius, typography } from '@/lib/theme';
 import Avatar from '@/components/common/Avatar';
+import SkeletonCard from '@/components/common/SkeletonCard';
+import { apiFetch } from '@/lib/api';
 
 interface Conversation {
   id: string;

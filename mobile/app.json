@@ -20,7 +20,8 @@
         "googleMapsApiKey": "AIzaSyA8xY_ho-7i8UjyhcAfaP7wBbh-9Nd2kWU"
       },
       "infoPlist": {
-        "NSLocationWhenInUseUsageDescription": "Sherpa Pros needs your location to find nearby pros and jobs."
+        "NSLocationWhenInUseUsageDescription": "Sherpa Pros needs your location to find nearby pros and jobs.",
+        "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {
@@ -34,7 +35,11 @@
           "apiKey": "AIzaSyA8xY_ho-7i8UjyhcAfaP7wBbh-9Nd2kWU"
         }
       },
-      "permissions": ["ACCESS_FINE_LOCATION"]
+      "permissions": [
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.ACCESS_COARSE_LOCATION"
+      ]
     },
     "web": {
       "bundler": "metro",
@@ -69,6 +74,13 @@
           "locationWhenInUsePermission": "Sherpa Pros needs your location to find nearby pros and jobs."
         }
       ]
-    ]
+    ],
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "aeeb92fa-2d32-4259-a800-f2e2fe2048a7"
+      }
+    },
+    "owner": "hjdb2424"
   }
 }

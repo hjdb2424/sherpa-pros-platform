@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import {
   View,
   Text,
@@ -14,6 +14,8 @@ import { colors, spacing, borderRadius, shadows, typography } from '@/lib/theme'
 import Card from '@/components/common/Card';
 import Badge from '@/components/common/Badge';
 import FinancingOptions from '@/components/pro/FinancingOptions';
+import SkeletonCard from '@/components/common/SkeletonCard';
+import { apiFetch } from '@/lib/api';
 
 interface ChartBar {
   month: string;

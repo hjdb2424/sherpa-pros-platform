@@ -4,6 +4,7 @@ import * as Haptics from 'expo-haptics';
 import { useAuth } from '@/lib/auth';
 import Card from '@/components/common/Card';
 import { colors, spacing, typography, shadows } from '@/lib/theme';
+import Logo from '@/components/brand/Logo';
 
 export default function SelectRoleScreen() {
   const { switchRole } = useAuth();
@@ -17,10 +18,9 @@ export default function SelectRoleScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>
-        <Text style={{ color: colors.text }}>Sherpa</Text>
-        <Text style={{ color: colors.accent }}>Pros</Text>
-      </Text>
+      <View style={styles.logoWrapper}>
+        <Logo size="lg" />
+      </View>
       <Text style={styles.subtitle}>How will you be using the platform?</Text>
 
       <View style={styles.cards}>
@@ -50,7 +50,7 @@ export default function SelectRoleScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.background, justifyContent: 'center', padding: spacing.xl },
-  title: { fontSize: 32, fontWeight: '800', textAlign: 'center' },
+  logoWrapper: { alignItems: 'center', marginBottom: spacing.xs },
   subtitle: { fontSize: 16, color: colors.textMuted, textAlign: 'center', marginTop: spacing.sm, marginBottom: spacing.xxl },
   cards: { gap: spacing.lg },
   cardPressable: {},

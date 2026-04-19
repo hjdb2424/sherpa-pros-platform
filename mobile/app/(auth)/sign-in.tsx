@@ -15,6 +15,7 @@ import * as Haptics from 'expo-haptics';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '@/lib/auth';
 import { colors, shadows, spacing, borderRadius } from '@/lib/theme';
+import Logo from '@/components/brand/Logo';
 
 interface TestUser {
   name: string;
@@ -109,13 +110,7 @@ export default function SignInScreen() {
       <Animated.View style={{ opacity: fadeAnim, transform: [{ translateY: slideAnim }] }}>
         {/* Logo */}
         <View style={styles.logoSection}>
-          <View style={styles.logoIcon}>
-            <Text style={styles.logoIconText}>SP</Text>
-          </View>
-          <Text style={styles.logo}>
-            <Text style={{ color: '#18181b' }}>SHERPA </Text>
-            <Text style={{ color: colors.accent }}>PROS</Text>
-          </Text>
+          <Logo size="xl" />
           <Text style={styles.tagline}>On-demand construction services</Text>
         </View>
 
@@ -238,26 +233,6 @@ const styles = StyleSheet.create({
   logoSection: {
     alignItems: 'center',
     marginBottom: 32,
-  },
-  logoIcon: {
-    width: 56,
-    height: 56,
-    borderRadius: 14,
-    backgroundColor: colors.primary,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 16,
-  },
-  logoIconText: {
-    fontSize: 22,
-    fontWeight: '800',
-    color: '#ffffff',
-    letterSpacing: 1,
-  },
-  logo: {
-    fontSize: 36,
-    fontWeight: '800',
-    letterSpacing: -0.5,
   },
   tagline: {
     fontSize: 16,

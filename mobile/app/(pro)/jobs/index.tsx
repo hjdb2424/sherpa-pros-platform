@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import {
   View,
   Text,
@@ -16,6 +16,8 @@ import { colors, spacing, borderRadius, shadows, typography } from '@/lib/theme'
 import Card from '@/components/common/Card';
 import Badge from '@/components/common/Badge';
 import Button from '@/components/common/Button';
+import SkeletonCard from '@/components/common/SkeletonCard';
+import { apiFetch } from '@/lib/api';
 
 type TabKey = 'available' | 'bids' | 'active' | 'completed';
 
@@ -92,11 +94,11 @@ const COMPLETED_JOBS: CompletedJob[] = [
   { id: 'd8', title: 'Toilet repair - running toilet', finalAmount: 180, rating: 5 },
 ];
 
-const TABS: { key: TabKey; label: string; count: number }[] = [
-  { key: 'available', label: 'Available', count: AVAILABLE_JOBS.length },
-  { key: 'bids', label: 'Bids', count: BID_JOBS.length },
-  { key: 'active', label: 'Active', count: ACTIVE_JOBS.length },
-  { key: 'completed', label: 'Done', count: COMPLETED_JOBS.length },
+const getTabCounts = (available: AvailableJob[]) => [
+  { key: 'available' as TabKey, label: 'Available', count: available.length },
+  { key: 'bids' as TabKey, label: 'Bids', count: BID_JOBS.length },
+  { key: 'active' as TabKey, label: 'Active', count: ACTIVE_JOBS.length },
+  { key: 'completed' as TabKey, label: 'Done', count: COMPLETED_JOBS.length },
 ];
 
 const URGENCY_BADGE: Record<string, { label: string; variant: 'danger' | 'warning' | 'success' }> = {
@@ -116,10 +118,27 @@ export default function ProJobsScreen() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<TabKey>('available');
   const [refreshing, setRefreshing] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [availableJobs, setAvailableJobs] = useState<AvailableJob[]>(AVAILABLE_JOBS);
+
+  useEffect(() => {
+    apiFetch<any>('/jobs?status=open')
+      .then((data) => {
+        if (data.jobs?.length > 0) setAvailableJobs(data.jobs);
+      })
+      .catch(() => {}) // silently use mock
+      .finally(() => setLoading(false));
+  }, []);
+
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-    setTimeout(() => setRefreshing(false), 1000);
+    apiFetch<any>('/jobs?status=open')
+      .then((data) => {
+        if (data.jobs?.length > 0) setAvailableJobs(data.jobs);
+      })
+      .catch(() => {})
+      .finally(() => setRefreshing(false));
   }, []);
 
   const handleCardPress = useCallback((id: string) => {
@@ -236,9 +255,10 @@ export default function ProJobsScreen() {
   const renderContent = () => {
     switch (activeTab) {
       case 'available':
+        if (loading) return <SkeletonCard count={4} />;
         return (
           <FlatList
-            data={AVAILABLE_JOBS}
+            data={availableJobs}
             renderItem={renderAvailableItem}
             keyExtractor={(item) => item.id}
             contentContainerStyle={styles.listContent}
@@ -301,7 +321,7 @@ export default function ProJobsScreen() {
       </View>
 
       <View style={styles.segmentedControl}>
-        {TABS.map((tab) => {
+        {getTabCounts(availableJobs).map((tab) => {
           const active = activeTab === tab.key;
           return (
             <Pressable

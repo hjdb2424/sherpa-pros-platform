@@ -21,6 +21,8 @@ interface Conversation {
   timestamp: string;
   unreadCount: number;
   avatarColor: string;
+  isOnline?: boolean;
+  isSentByMe?: boolean;
 }
 
 const CONVERSATIONS: Conversation[] = [
@@ -32,6 +34,7 @@ const CONVERSATIONS: Conversation[] = [
     timestamp: '2m ago',
     unreadCount: 2,
     avatarColor: colors.primary,
+    isOnline: true,
   },
   {
     id: '2',
@@ -41,6 +44,8 @@ const CONVERSATIONS: Conversation[] = [
     timestamp: '1h ago',
     unreadCount: 0,
     avatarColor: colors.success,
+    isOnline: true,
+    isSentByMe: true,
   },
   {
     id: '3',
@@ -50,6 +55,7 @@ const CONVERSATIONS: Conversation[] = [
     timestamp: '3h ago',
     unreadCount: 1,
     avatarColor: colors.warning,
+    isOnline: false,
   },
   {
     id: '4',
@@ -59,6 +65,8 @@ const CONVERSATIONS: Conversation[] = [
     timestamp: 'Yesterday',
     unreadCount: 0,
     avatarColor: colors.accent,
+    isOnline: false,
+    isSentByMe: true,
   },
 ];
 
@@ -90,21 +98,20 @@ export default function ClientMessagesScreen() {
         style={styles.conversationRow}
         onPress={() => handleConversationPress(item)}
       >
-        <Avatar initials={item.initials} size={48} color={item.avatarColor} />
+        <View style={styles.avatarContainer}>
+          <Avatar initials={item.initials} size={48} color={item.avatarColor} />
+          <View style={[styles.onlineDot, { backgroundColor: item.isOnline ? colors.success : colors.borderMedium }]} />
+        </View>
+        {item.unreadCount > 0 && <View style={styles.unreadDot} />}
         <View style={styles.conversationContent}>
           <View style={styles.conversationHeader}>
-            <Text style={styles.conversationName}>{item.name}</Text>
+            <Text style={[styles.conversationName, item.unreadCount > 0 && styles.conversationNameBold]}>{item.name}</Text>
             <Text style={styles.conversationTime}>{item.timestamp}</Text>
           </View>
           <View style={styles.conversationFooter}>
-            <Text style={styles.conversationMessage} numberOfLines={1}>
-              {item.lastMessage}
+            <Text style={[styles.conversationMessage, item.unreadCount > 0 && styles.conversationMessageUnread]} numberOfLines={1}>
+              {item.isSentByMe ? 'You: ' : ''}{item.lastMessage}
             </Text>
-            {item.unreadCount > 0 && (
-              <View style={styles.unreadBadge}>
-                <Text style={styles.unreadText}>{item.unreadCount}</Text>
-              </View>
-            )}
           </View>
         </View>
       </Pressable>
@@ -178,6 +185,26 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.lg,
     paddingVertical: spacing.md,
   },
+  avatarContainer: {
+    position: 'relative',
+  },
+  onlineDot: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+    borderWidth: 2,
+    borderColor: colors.background,
+  },
+  unreadDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: colors.primary,
+    marginLeft: 6,
+  },
   conversationContent: {
     flex: 1,
     marginLeft: spacing.md,
@@ -193,8 +220,12 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: colors.text,
   },
+  conversationNameBold: {
+    fontWeight: '700',
+  },
   conversationTime: {
-    ...typography.caption,
+    fontSize: 11,
+    fontWeight: '400',
     color: colors.textMuted,
   },
   conversationFooter: {
@@ -207,19 +238,9 @@ const styles = StyleSheet.create({
     flex: 1,
     marginRight: spacing.sm,
   },
-  unreadBadge: {
-    minWidth: 20,
-    height: 20,
-    borderRadius: 10,
-    backgroundColor: colors.primary,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: 6,
-  },
-  unreadText: {
-    color: colors.textInverse,
-    fontSize: 11,
-    fontWeight: '700',
+  conversationMessageUnread: {
+    color: colors.text,
+    fontWeight: '500',
   },
   separator: {
     height: 1,

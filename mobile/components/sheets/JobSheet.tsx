@@ -1,5 +1,5 @@
 import { View, Text, FlatList, Pressable, StyleSheet } from 'react-native';
-import { useCallback, forwardRef } from 'react';
+import { useCallback, useMemo, forwardRef } from 'react';
 import SimpleBottomSheet, { type SimpleBottomSheetRef } from '@/components/sheets/SimpleBottomSheet';
 import Badge from '@/components/common/Badge';
 import { colors, spacing, borderRadius, shadows } from '@/lib/theme';
@@ -44,6 +44,35 @@ const JobSheet = forwardRef<SimpleBottomSheetRef, JobSheetProps>(({ jobs, onJobS
     >
       <View style={styles.peekContent}>
         <Text style={styles.peekText}>{jobs.length} Jobs Available</Text>
+        <View style={styles.peekBreakdown}>
+          {(() => {
+            const urgent = jobs.filter(j => j.urgency === 'emergency').length;
+            const standard = jobs.filter(j => j.urgency === 'standard').length;
+            const flexible = jobs.filter(j => j.urgency === 'flexible').length;
+            return (
+              <>
+                {urgent > 0 && (
+                  <View style={styles.peekStat}>
+                    <View style={[styles.peekDot, { backgroundColor: colors.danger }]} />
+                    <Text style={styles.peekStatText}>{urgent} Urgent</Text>
+                  </View>
+                )}
+                {standard > 0 && (
+                  <View style={styles.peekStat}>
+                    <View style={[styles.peekDot, { backgroundColor: colors.primary }]} />
+                    <Text style={styles.peekStatText}>{standard} Standard</Text>
+                  </View>
+                )}
+                {flexible > 0 && (
+                  <View style={styles.peekStat}>
+                    <View style={[styles.peekDot, { backgroundColor: colors.textMuted }]} />
+                    <Text style={styles.peekStatText}>{flexible} Flexible</Text>
+                  </View>
+                )}
+              </>
+            );
+          })()}
+        </View>
       </View>
       <FlatList
         data={jobs}
@@ -64,6 +93,10 @@ const styles = StyleSheet.create({
   handle: { backgroundColor: colors.borderMedium, width: 40 },
   peekContent: { paddingHorizontal: spacing.lg, paddingBottom: spacing.sm },
   peekText: { fontSize: 15, fontWeight: '600', color: colors.text },
+  peekBreakdown: { flexDirection: 'row', gap: 12, marginTop: 6 },
+  peekStat: { flexDirection: 'row', alignItems: 'center', gap: 4 },
+  peekDot: { width: 8, height: 8, borderRadius: 4 },
+  peekStatText: { fontSize: 12, fontWeight: '500', color: colors.textMuted },
   list: { paddingHorizontal: spacing.lg, gap: spacing.sm, paddingBottom: 100 },
   card: {
     backgroundColor: colors.surface,

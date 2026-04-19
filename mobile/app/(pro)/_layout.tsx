@@ -5,14 +5,15 @@ import { Ionicons } from '@expo/vector-icons';
 import { colors } from '@/lib/theme';
 
 function TabIcon({ name, focused }: { name: string; focused: boolean }) {
-  const icons: Record<string, keyof typeof Ionicons.glyphMap> = {
-    Map: 'map-outline',
-    Jobs: 'briefcase-outline',
-    Earnings: 'wallet-outline',
-    Messages: 'chatbubbles-outline',
-    Profile: 'person-outline',
+  const icons: Record<string, { outline: keyof typeof Ionicons.glyphMap; filled: keyof typeof Ionicons.glyphMap }> = {
+    Map: { outline: 'map-outline', filled: 'map' },
+    Jobs: { outline: 'briefcase-outline', filled: 'briefcase' },
+    Earnings: { outline: 'wallet-outline', filled: 'wallet' },
+    Messages: { outline: 'chatbubbles-outline', filled: 'chatbubbles' },
+    Profile: { outline: 'person-outline', filled: 'person' },
   };
-  const iconName = icons[name] ?? 'ellipse-outline';
+  const entry = icons[name] ?? { outline: 'ellipse-outline', filled: 'ellipse' };
+  const iconName = focused ? entry.filled : entry.outline;
   return (
     <View style={styles.tabIcon}>
       <Ionicons name={iconName} size={22} color={focused ? colors.primary : colors.textMuted} />
@@ -76,11 +77,16 @@ export default function ProLayout() {
 const styles = StyleSheet.create({
   tabBar: {
     backgroundColor: colors.background,
-    borderTopColor: colors.borderLight,
-    borderTopWidth: 1,
+    borderTopColor: colors.borderMedium,
+    borderTopWidth: StyleSheet.hairlineWidth,
     height: 80,
     paddingBottom: 20,
     paddingTop: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: -2 },
+    shadowOpacity: 0.06,
+    shadowRadius: 4,
+    elevation: 8,
   },
   tabIcon: { alignItems: 'center', gap: 2, width: 60 },
   tabLabel: { fontSize: 9, fontWeight: '500', color: colors.textMuted, textAlign: 'center' },

@@ -145,13 +145,21 @@ export default function ProJobsScreen() {
 
   const renderAvailableItem = ({ item }: { item: AvailableJob }) => {
     const urgency = URGENCY_BADGE[item.urgency];
+    const isEmergency = item.urgency === 'emergency';
+    const isStandard = item.urgency === 'standard';
+    const borderColor = isEmergency ? colors.danger : isStandard ? colors.primary : colors.borderMedium;
+    const borderWidth = isEmergency ? 3 : isStandard ? 2 : 1;
     return (
       <Pressable onPress={() => handleCardPress(item.id)}>
-        <Card style={styles.jobCard} variant="elevated">
+        <Card style={{ ...styles.jobCard, borderLeftWidth: borderWidth, borderLeftColor: borderColor, ...(isEmergency ? styles.emergencyCardBg : {}) }} variant="elevated">
           <View style={styles.cardRow}>
             <View style={styles.cardContent}>
               <Text style={styles.jobTitle} numberOfLines={1}>{item.title}</Text>
-              <Text style={styles.jobMeta}>{item.category} - {item.distance}</Text>
+              <View style={styles.metaRow}>
+                <Text style={styles.jobMeta}>{item.category}</Text>
+                <Ionicons name="location-outline" size={12} color={colors.textMuted} />
+                <Text style={styles.jobMeta}>{item.distance}</Text>
+              </View>
             </View>
             <Badge label={urgency.label} variant={urgency.variant} />
           </View>
@@ -379,7 +387,15 @@ const styles = StyleSheet.create({
   jobMeta: {
     ...typography.caption,
     color: colors.textMuted,
+  },
+  metaRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
     marginTop: 4,
+  },
+  emergencyCardBg: {
+    backgroundColor: '#fff5f5',
   },
   cardFooter: {
     flexDirection: 'row',
@@ -391,8 +407,8 @@ const styles = StyleSheet.create({
     borderTopColor: colors.borderLight,
   },
   budgetText: {
-    ...typography.bodySmall,
-    fontWeight: '600',
+    fontSize: 20,
+    fontWeight: '700',
     color: colors.text,
   },
   bidAmount: {

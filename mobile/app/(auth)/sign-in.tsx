@@ -7,10 +7,12 @@ import {
   ScrollView,
   Animated,
   Easing,
+  Alert,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as Haptics from 'expo-haptics';
+import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '@/lib/auth';
 import { colors, shadows, spacing, borderRadius } from '@/lib/theme';
 
@@ -107,11 +109,38 @@ export default function SignInScreen() {
       <Animated.View style={{ opacity: fadeAnim, transform: [{ translateY: slideAnim }] }}>
         {/* Logo */}
         <View style={styles.logoSection}>
+          <View style={styles.logoIcon}>
+            <Text style={styles.logoIconText}>SP</Text>
+          </View>
           <Text style={styles.logo}>
             <Text style={{ color: '#18181b' }}>SHERPA </Text>
             <Text style={{ color: colors.accent }}>PROS</Text>
           </Text>
-          <Text style={styles.tagline}>On-demand trade services</Text>
+          <Text style={styles.tagline}>On-demand construction services</Text>
+        </View>
+
+        {/* Social Sign-In Buttons */}
+        <View style={styles.socialSection}>
+          <Pressable
+            style={styles.socialButton}
+            onPress={() => {
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+              Alert.alert('Coming Soon', 'Apple Sign-In will be available at launch.');
+            }}
+          >
+            <Ionicons name="logo-apple" size={20} color={colors.text} />
+            <Text style={styles.socialButtonText}>Continue with Apple</Text>
+          </Pressable>
+          <Pressable
+            style={styles.socialButton}
+            onPress={() => {
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+              Alert.alert('Coming Soon', 'Google Sign-In will be available at launch.');
+            }}
+          >
+            <Ionicons name="logo-google" size={18} color={colors.text} />
+            <Text style={styles.socialButtonText}>Continue with Google</Text>
+          </Pressable>
         </View>
 
         {/* Divider */}
@@ -208,7 +237,22 @@ const styles = StyleSheet.create({
   // Logo
   logoSection: {
     alignItems: 'center',
-    marginBottom: 48,
+    marginBottom: 32,
+  },
+  logoIcon: {
+    width: 56,
+    height: 56,
+    borderRadius: 14,
+    backgroundColor: colors.primary,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 16,
+  },
+  logoIconText: {
+    fontSize: 22,
+    fontWeight: '800',
+    color: '#ffffff',
+    letterSpacing: 1,
   },
   logo: {
     fontSize: 36,
@@ -219,6 +263,28 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: colors.textMuted,
     marginTop: 8,
+  },
+
+  // Social
+  socialSection: {
+    gap: 12,
+    marginBottom: 32,
+  },
+  socialButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 10,
+    paddingVertical: 14,
+    borderRadius: borderRadius.full,
+    borderWidth: 1.5,
+    borderColor: colors.borderMedium,
+    backgroundColor: colors.background,
+  },
+  socialButtonText: {
+    fontSize: 15,
+    fontWeight: '600',
+    color: colors.text,
   },
 
   // Divider

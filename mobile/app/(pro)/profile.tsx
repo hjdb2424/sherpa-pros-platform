@@ -10,6 +10,7 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import * as Haptics from 'expo-haptics';
+import { Ionicons } from '@expo/vector-icons';
 import { colors, spacing, borderRadius, shadows, typography } from '@/lib/theme';
 import { useAuth } from '@/lib/auth';
 import Avatar from '@/components/common/Avatar';
@@ -18,7 +19,7 @@ import Button from '@/components/common/Button';
 
 interface SettingsItem {
   label: string;
-  icon: string;
+  iconName: keyof typeof Ionicons.glyphMap;
   onPress: () => void;
 }
 
@@ -56,10 +57,10 @@ export default function ProProfileScreen() {
   }, [signOut, router]);
 
   const settingsItems: SettingsItem[] = [
-    { label: 'Notifications', icon: '\u{1F514}', onPress: () => Alert.alert('Coming soon') },
-    { label: 'Payment Methods', icon: '\u{1F4B3}', onPress: () => Alert.alert('Coming soon') },
-    { label: 'Help & Support', icon: '\u{2753}', onPress: () => Alert.alert('Coming soon') },
-    { label: 'About', icon: '\u{2139}\uFE0F', onPress: () => Alert.alert('Sherpa Pros v1.0.0') },
+    { label: 'Notifications', iconName: 'notifications-outline', onPress: () => Alert.alert('Coming soon') },
+    { label: 'Payment Methods', iconName: 'card-outline', onPress: () => Alert.alert('Coming soon') },
+    { label: 'Help & Support', iconName: 'help-circle-outline', onPress: () => Alert.alert('Coming soon') },
+    { label: 'About', iconName: 'information-circle-outline', onPress: () => Alert.alert('Sherpa Pros v1.0.0') },
   ];
 
   return (
@@ -74,10 +75,25 @@ export default function ProProfileScreen() {
       >
         {/* User Info */}
         <View style={styles.userSection}>
-          <Avatar initials={initials} size={80} color={colors.success} />
+          <View style={styles.avatarRing}>
+            <Avatar initials={initials} size={80} color={colors.primary} />
+          </View>
           <Text style={styles.userName}>{userName ?? 'User'}</Text>
           <Text style={styles.userEmail}>{email ?? ''}</Text>
-          <Badge label="Pro" variant="success" />
+          <View style={styles.ratingRow}>
+            {[1, 2, 3, 4, 5].map((s) => (
+              <Ionicons key={s} name={s <= 4 ? 'star' : 'star-half'} size={16} color={colors.accent} />
+            ))}
+            <Text style={styles.ratingText}>4.9</Text>
+          </View>
+          <View style={styles.badgeRow}>
+            <Badge label="Pro" variant="success" />
+            <View style={styles.tierBadge}>
+              <Ionicons name="shield-checkmark" size={12} color="#b8860b" />
+              <Text style={styles.tierText}>Gold Badge</Text>
+            </View>
+          </View>
+          <Text style={styles.memberSince}>Member since April 2026</Text>
         </View>
 
         {/* Settings */}
@@ -94,7 +110,7 @@ export default function ProProfileScreen() {
                 item.onPress();
               }}
             >
-              <Text style={styles.settingsIcon}>{item.icon}</Text>
+              <Ionicons name={item.iconName} size={20} color={colors.textMuted} style={styles.settingsIconView} />
               <Text style={styles.settingsLabel}>{item.label}</Text>
               <Text style={styles.settingsChevron}>{'\u203A'}</Text>
             </Pressable>
@@ -113,6 +129,8 @@ export default function ProProfileScreen() {
             <Text style={styles.signOutText}>Sign Out</Text>
           </Pressable>
         </View>
+
+        <Text style={styles.versionText}>Sherpa Pros v1.0.0</Text>
       </ScrollView>
     </View>
   );
@@ -142,6 +160,47 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.xxl,
     gap: spacing.sm,
   },
+  avatarRing: {
+    padding: 3,
+    borderRadius: 44,
+    borderWidth: 2.5,
+    borderColor: colors.primary,
+  },
+  ratingRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 2,
+  },
+  ratingText: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: colors.text,
+    marginLeft: 4,
+  },
+  badgeRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  tierBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 9999,
+    backgroundColor: '#fef3c7',
+  },
+  tierText: {
+    fontSize: 11,
+    fontWeight: '600',
+    color: '#b8860b',
+  },
+  memberSince: {
+    fontSize: 12,
+    color: colors.textMuted,
+    marginTop: 4,
+  },
   userName: {
     ...typography.heading,
     color: colors.text,
@@ -169,8 +228,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: colors.borderLight,
   },
-  settingsIcon: {
-    fontSize: 20,
+  settingsIconView: {
     marginRight: spacing.md,
   },
   settingsLabel: {
@@ -193,5 +251,12 @@ const styles = StyleSheet.create({
     ...typography.body,
     color: colors.danger,
     fontWeight: '600',
+  },
+  versionText: {
+    textAlign: 'center',
+    fontSize: 11,
+    color: colors.textMuted,
+    marginTop: spacing.xxl,
+    marginBottom: spacing.lg,
   },
 });

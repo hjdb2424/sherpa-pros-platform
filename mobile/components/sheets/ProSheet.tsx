@@ -1,4 +1,4 @@
-import { View, Text, FlatList, Pressable, StyleSheet } from 'react-native';
+import { View, Text, FlatList, Pressable, ScrollView, StyleSheet } from 'react-native';
 import { useCallback, forwardRef } from 'react';
 import { useRouter } from 'expo-router';
 import * as Haptics from 'expo-haptics';
@@ -51,7 +51,16 @@ const ProSheet = forwardRef<SimpleBottomSheetRef, ProSheetProps>(({ pros, onProS
       handleIndicatorStyle={styles.handle}
     >
       <View style={styles.peekContent}>
-        <Text style={styles.peekText}>{pros.length} Pros Nearby</Text>
+        <View style={styles.peekRow}>
+          <Text style={styles.peekText}>{pros.length} Pros Nearby</Text>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.peekAvatars}>
+            {pros.slice(0, 5).map((pro) => (
+              <View key={pro.id} style={styles.peekAvatar}>
+                <Text style={styles.peekAvatarText}>{pro.initials}</Text>
+              </View>
+            ))}
+          </ScrollView>
+        </View>
       </View>
       <Pressable onPress={handleEmergencyPress} style={styles.emergencyCard}>
         <Ionicons name="alert-circle" size={24} color={colors.danger} />
@@ -79,7 +88,20 @@ const styles = StyleSheet.create({
   sheetBg: { backgroundColor: colors.background },
   handle: { backgroundColor: colors.borderMedium, width: 40 },
   peekContent: { paddingHorizontal: spacing.lg, paddingBottom: spacing.sm },
+  peekRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   peekText: { fontSize: 15, fontWeight: '600', color: colors.text },
+  peekAvatars: { flexDirection: 'row', gap: -6, paddingLeft: spacing.md },
+  peekAvatar: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: colors.primary,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 2,
+    borderColor: colors.background,
+  },
+  peekAvatarText: { fontSize: 10, fontWeight: '700', color: '#ffffff' },
   list: { paddingHorizontal: spacing.lg, gap: spacing.sm, paddingBottom: 100 },
   card: {
     backgroundColor: colors.surface,

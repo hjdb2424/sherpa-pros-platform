@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { View, Text, Pressable, StyleSheet } from 'react-native';
+import { View, Text, Pressable, StyleSheet, Alert } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import * as Haptics from 'expo-haptics';
@@ -74,6 +74,15 @@ export default function ClientMapScreen() {
         ))}
       </MapScreen>
 
+      {/* Search bar */}
+      <Pressable
+        style={[styles.searchBar, { top: insets.top + 12 }]}
+        onPress={() => Alert.alert('Search coming soon')}
+      >
+        <Ionicons name="search-outline" size={18} color={colors.textMuted} />
+        <Text style={styles.searchPlaceholder}>Search for a pro or service...</Text>
+      </Pressable>
+
       {/* Notification bell */}
       <View style={[styles.bellWrapper, { top: insets.top + 12 }]}>
         <NotificationBell />
@@ -91,6 +100,27 @@ export default function ClientMapScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.background },
+
+  // Search bar
+  searchBar: {
+    position: 'absolute',
+    left: 16,
+    right: 72,
+    zIndex: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    backgroundColor: '#ffffff',
+    borderRadius: 9999,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    ...shadows.md,
+  },
+  searchPlaceholder: {
+    fontSize: 14,
+    color: colors.textMuted,
+    flex: 1,
+  },
 
   // Bell
   bellWrapper: {

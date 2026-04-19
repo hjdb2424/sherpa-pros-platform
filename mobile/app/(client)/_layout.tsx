@@ -20,7 +20,13 @@ function TabIcon({ name, focused }: { name: string; focused: boolean }) {
     : colors.textMuted;
   return (
     <View style={styles.tabIcon}>
-      <Ionicons name={iconName} size={22} color={iconColor} />
+      {isEmergency && focused ? (
+        <View style={styles.emergencyIconBg}>
+          <Ionicons name={iconName} size={22} color={iconColor} />
+        </View>
+      ) : (
+        <Ionicons name={iconName} size={22} color={iconColor} />
+      )}
       <Text numberOfLines={1} style={[styles.tabLabel, focused && (isEmergency ? styles.tabLabelEmergency : styles.tabLabelActive)]}>{name}</Text>
     </View>
   );
@@ -88,14 +94,27 @@ export default function ClientLayout() {
 const styles = StyleSheet.create({
   tabBar: {
     backgroundColor: colors.background,
-    borderTopColor: colors.borderLight,
-    borderTopWidth: 1,
+    borderTopColor: colors.borderMedium,
+    borderTopWidth: StyleSheet.hairlineWidth,
     height: 80,
     paddingBottom: 20,
     paddingTop: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: -2 },
+    shadowOpacity: 0.06,
+    shadowRadius: 4,
+    elevation: 8,
   },
   tabIcon: { alignItems: 'center', gap: 2, width: 60 },
   tabLabel: { fontSize: 9, fontWeight: '500', color: colors.textMuted, textAlign: 'center' },
   tabLabelActive: { color: colors.primary, fontWeight: '600' },
   tabLabelEmergency: { color: colors.danger, fontWeight: '600' },
+  emergencyIconBg: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: colors.dangerLight,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });

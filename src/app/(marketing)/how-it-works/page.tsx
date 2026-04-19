@@ -156,12 +156,12 @@ export default function HowItWorksPage() {
   return (
     <div className="flex flex-col">
       {/* Hero */}
-      <section className="bg-gradient-to-b from-white to-zinc-50 px-4 pb-16 pt-20 sm:px-6 sm:pb-20 sm:pt-28 lg:px-8">
+      <section className="bg-gradient-to-b from-white to-zinc-50 dark:from-zinc-950 dark:to-zinc-900 px-4 pb-16 pt-20 sm:px-6 sm:pb-20 sm:pt-28 lg:px-8">
         <div className="mx-auto max-w-3xl text-center">
-          <h1 className="animate-fade-slide-up text-4xl font-bold text-zinc-900 sm:text-5xl">
+          <h1 className="animate-fade-slide-up text-4xl font-bold text-zinc-900 dark:text-zinc-50 sm:text-5xl">
             How Sherpa Pros Works
           </h1>
-          <p className="animate-fade-slide-up stagger-1 mt-6 text-lg leading-relaxed text-zinc-600 sm:text-xl">
+          <p className="animate-fade-slide-up stagger-1 mt-6 text-lg leading-relaxed text-zinc-600 dark:text-zinc-400 sm:text-xl">
             Whether you need a quick repair or a full renovation, we connect you
             with the right professional — verified, insured, and ready to work.
           </p>
@@ -169,7 +169,7 @@ export default function HowItWorksPage() {
       </section>
 
       {/* Tabbed steps */}
-      <section className="bg-white px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
+      <section className="bg-white dark:bg-zinc-950 px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
         <div className="mx-auto max-w-4xl">
           <HowItWorksTabs
             clientSteps={clientSteps}
@@ -179,12 +179,12 @@ export default function HowItWorksPage() {
       </section>
 
       {/* FAQ */}
-      <section className="bg-slate-50 px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
+      <section className="bg-slate-50 dark:bg-zinc-900 px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
         <div className="mx-auto max-w-3xl">
-          <h2 className="text-center text-3xl font-bold text-zinc-900 sm:text-4xl">
+          <h2 className="text-center text-3xl font-bold text-zinc-900 dark:text-zinc-50 sm:text-4xl">
             Frequently Asked Questions
           </h2>
-          <p className="mx-auto mt-4 max-w-xl text-center text-lg text-zinc-600">
+          <p className="mx-auto mt-4 max-w-xl text-center text-lg text-zinc-600 dark:text-zinc-400">
             Everything you need to know about using Sherpa Pros.
           </p>
           <div className="mt-12">

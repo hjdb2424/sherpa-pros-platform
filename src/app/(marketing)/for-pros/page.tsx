@@ -102,24 +102,24 @@ export default function ForProsPage() {
   return (
     <div className="flex flex-col">
       {/* Hero */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-white to-zinc-50 px-4 pb-16 pt-20 sm:px-6 sm:pb-20 sm:pt-28 lg:px-8">
+      <section className="relative overflow-hidden bg-gradient-to-b from-white to-zinc-50 dark:from-zinc-950 dark:to-zinc-900 px-4 pb-16 pt-20 sm:px-6 sm:pb-20 sm:pt-28 lg:px-8">
         <div className="pointer-events-none absolute inset-0" aria-hidden="true">
           <div className="absolute right-0 top-0 h-[500px] w-[500px] -translate-y-1/4 translate-x-1/4 rounded-full bg-[#00a9e0]/5 blur-3xl" />
         </div>
         <div className="relative mx-auto max-w-3xl text-center">
           <div className="animate-fade-slide-up inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-1.5">
             <span className="h-2 w-2 rounded-full bg-emerald-500" aria-hidden="true" />
-            <span className="text-xs font-medium text-emerald-600 sm:text-sm">
+            <span className="text-xs font-medium text-emerald-600 dark:text-emerald-400 sm:text-sm">
               Now accepting applications
             </span>
           </div>
-          <h1 className="animate-fade-slide-up stagger-1 mt-8 text-4xl font-bold text-zinc-900 sm:text-5xl lg:text-6xl">
+          <h1 className="animate-fade-slide-up stagger-1 mt-8 text-4xl font-bold text-zinc-900 dark:text-zinc-50 sm:text-5xl lg:text-6xl">
             Stop Paying for Leads.{' '}
             <span className="bg-gradient-to-r from-[#00a9e0] to-[#0ea5e9] bg-clip-text text-transparent">
               Start Earning.
             </span>
           </h1>
-          <p className="animate-fade-slide-up stagger-2 mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-zinc-600 sm:text-xl">
+          <p className="animate-fade-slide-up stagger-2 mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-zinc-600 dark:text-zinc-400 sm:text-xl">
             No subscription fees. No lead fees. No bidding wars. Get matched
             with pre-qualified jobs in your area and only pay when you win work.
           </p>
@@ -147,27 +147,27 @@ export default function ForProsPage() {
       </section>
 
       {/* Why Sherpa Pros — Comparison */}
-      <section className="bg-white px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
+      <section className="bg-white dark:bg-zinc-950 px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
         <div className="mx-auto max-w-5xl">
-          <h2 className="text-center text-3xl font-bold text-zinc-900 sm:text-4xl">
+          <h2 className="text-center text-3xl font-bold text-zinc-900 dark:text-zinc-50 sm:text-4xl">
             Why Pros Choose Sherpa
           </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-center text-lg text-zinc-600">
+          <p className="mx-auto mt-4 max-w-2xl text-center text-lg text-zinc-600 dark:text-zinc-400">
             See how we stack up against platforms that profit from your frustration.
           </p>
 
           {/* Desktop table */}
-          <div className="mt-12 hidden overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm sm:block">
+          <div className="mt-12 hidden overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm sm:block">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-zinc-200 bg-zinc-50">
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-zinc-900">
+                <tr className="border-b border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800">
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-zinc-900 dark:text-zinc-50">
                     Feature
                   </th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-zinc-500">
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-zinc-500 dark:text-zinc-400">
                     Angi
                   </th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-zinc-500">
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-zinc-500 dark:text-zinc-400">
                     Thumbtack
                   </th>
                   <th className="px-6 py-4 text-left text-sm font-semibold text-[#00a9e0]">
@@ -179,24 +179,24 @@ export default function ForProsPage() {
                 {comparisonRows.map((row, i) => (
                   <tr
                     key={row.feature}
-                    className={`transition-colors hover:bg-zinc-50 ${i < comparisonRows.length - 1 ? 'border-b border-zinc-100' : ''}`}
+                    className={`transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800 ${i < comparisonRows.length - 1 ? 'border-b border-zinc-100 dark:border-zinc-800' : ''}`}
                   >
-                    <td className="px-6 py-4 text-sm font-medium text-zinc-900">
+                    <td className="px-6 py-4 text-sm font-medium text-zinc-900 dark:text-zinc-50">
                       {row.feature}
                     </td>
-                    <td className="px-6 py-4 text-sm text-zinc-500">
+                    <td className="px-6 py-4 text-sm text-zinc-500 dark:text-zinc-400">
                       <span className="flex items-center gap-2">
                         <XCircleIcon className="h-4 w-4 shrink-0 text-red-400" aria-hidden="true" />
                         {row.angi}
                       </span>
                     </td>
-                    <td className="px-6 py-4 text-sm text-zinc-500">
+                    <td className="px-6 py-4 text-sm text-zinc-500 dark:text-zinc-400">
                       <span className="flex items-center gap-2">
                         <XCircleIcon className="h-4 w-4 shrink-0 text-red-400" aria-hidden="true" />
                         {row.thumbtack}
                       </span>
                     </td>
-                    <td className="px-6 py-4 text-sm text-zinc-900">
+                    <td className="px-6 py-4 text-sm text-zinc-900 dark:text-zinc-50">
                       <span className="flex items-center gap-2">
                         <CheckCircleIcon className="h-4 w-4 shrink-0 text-emerald-500" aria-hidden="true" />
                         {row.sherpa}
@@ -211,18 +211,18 @@ export default function ForProsPage() {
           {/* Mobile cards */}
           <div className="mt-12 space-y-4 sm:hidden">
             {comparisonRows.map((row) => (
-              <div key={row.feature} className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm">
-                <div className="text-sm font-semibold text-zinc-900">{row.feature}</div>
+              <div key={row.feature} className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 shadow-sm">
+                <div className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">{row.feature}</div>
                 <div className="mt-3 space-y-2">
-                  <div className="flex items-start gap-2 text-sm text-zinc-500">
+                  <div className="flex items-start gap-2 text-sm text-zinc-500 dark:text-zinc-400">
                     <XCircleIcon className="mt-0.5 h-4 w-4 shrink-0 text-red-400" aria-hidden="true" />
                     <span><span className="font-medium text-zinc-400">Angi:</span> {row.angi}</span>
                   </div>
-                  <div className="flex items-start gap-2 text-sm text-zinc-500">
+                  <div className="flex items-start gap-2 text-sm text-zinc-500 dark:text-zinc-400">
                     <XCircleIcon className="mt-0.5 h-4 w-4 shrink-0 text-red-400" aria-hidden="true" />
                     <span><span className="font-medium text-zinc-400">Thumbtack:</span> {row.thumbtack}</span>
                   </div>
-                  <div className="flex items-start gap-2 text-sm text-zinc-900">
+                  <div className="flex items-start gap-2 text-sm text-zinc-900 dark:text-zinc-50">
                     <CheckCircleIcon className="mt-0.5 h-4 w-4 shrink-0 text-emerald-500" aria-hidden="true" />
                     <span><span className="font-medium text-[#00a9e0]">Sherpa:</span> {row.sherpa}</span>
                   </div>
@@ -234,27 +234,27 @@ export default function ForProsPage() {
       </section>
 
       {/* Benefits Grid */}
-      <section className="bg-slate-50 px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
+      <section className="bg-slate-50 dark:bg-zinc-900 px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          <h2 className="text-center text-3xl font-bold text-zinc-900 sm:text-4xl">
+          <h2 className="text-center text-3xl font-bold text-zinc-900 dark:text-zinc-50 sm:text-4xl">
             Built for Construction Professionals
           </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-center text-lg text-zinc-600">
+          <p className="mx-auto mt-4 max-w-2xl text-center text-lg text-zinc-600 dark:text-zinc-400">
             Everything you need to grow your business, in one platform.
           </p>
           <div className="mx-auto mt-16 grid max-w-5xl gap-8 sm:grid-cols-2 lg:grid-cols-3">
             {benefits.map((benefit, i) => (
               <div
                 key={benefit.title}
-                className={`group animate-fade-slide-up rounded-2xl border border-zinc-200 bg-white p-8 shadow-sm transition-all hover:-translate-y-0.5 hover:border-[#00a9e0]/20 hover:shadow-md stagger-${i + 1}`}
+                className={`group animate-fade-slide-up rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-8 shadow-sm transition-all hover:-translate-y-0.5 hover:border-[#00a9e0]/20 hover:shadow-md stagger-${i + 1}`}
               >
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-sky-50 text-[#00a9e0] transition-colors group-hover:bg-sky-100">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-sky-50 dark:bg-sky-950 text-[#00a9e0] transition-colors group-hover:bg-sky-100 dark:group-hover:bg-sky-900">
                   <benefit.icon className="h-6 w-6" aria-hidden="true" />
                 </div>
-                <h3 className="mt-4 text-lg font-semibold text-zinc-900">
+                <h3 className="mt-4 text-lg font-semibold text-zinc-900 dark:text-zinc-50">
                   {benefit.title}
                 </h3>
-                <p className="mt-2 text-sm leading-relaxed text-zinc-600">
+                <p className="mt-2 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
                   {benefit.description}
                 </p>
               </div>
@@ -264,12 +264,12 @@ export default function ForProsPage() {
       </section>
 
       {/* Commission Breakdown */}
-      <section className="bg-white px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
+      <section className="bg-white dark:bg-zinc-950 px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
         <div className="mx-auto max-w-3xl">
-          <h2 className="text-center text-3xl font-bold text-zinc-900 sm:text-4xl">
+          <h2 className="text-center text-3xl font-bold text-zinc-900 dark:text-zinc-50 sm:text-4xl">
             Transparent Commission
           </h2>
-          <p className="mx-auto mt-4 max-w-xl text-center text-lg text-zinc-600">
+          <p className="mx-auto mt-4 max-w-xl text-center text-lg text-zinc-600 dark:text-zinc-400">
             The more you work, the less you pay. Our tiered commission rewards
             your success.
           </p>
@@ -280,15 +280,15 @@ export default function ForProsPage() {
       </section>
 
       {/* Requirements */}
-      <section className="bg-slate-50 px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
+      <section className="bg-slate-50 dark:bg-zinc-900 px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
         <div className="mx-auto max-w-3xl">
-          <h2 className="text-center text-3xl font-bold text-zinc-900 sm:text-4xl">
+          <h2 className="text-center text-3xl font-bold text-zinc-900 dark:text-zinc-50 sm:text-4xl">
             What You Need to Apply
           </h2>
-          <p className="mx-auto mt-4 max-w-xl text-center text-lg text-zinc-600">
+          <p className="mx-auto mt-4 max-w-xl text-center text-lg text-zinc-600 dark:text-zinc-400">
             We keep the bar high so the work stays steady.
           </p>
-          <div className="mt-12 rounded-2xl border border-zinc-200 bg-white p-8 shadow-sm">
+          <div className="mt-12 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-8 shadow-sm">
             <ul className="space-y-4">
               {requirements.map((req) => (
                 <li key={req} className="flex items-start gap-3">
@@ -296,7 +296,7 @@ export default function ForProsPage() {
                     className="mt-0.5 h-5 w-5 shrink-0 text-emerald-500"
                     aria-hidden="true"
                   />
-                  <span className="text-base text-zinc-700">{req}</span>
+                  <span className="text-base text-zinc-700 dark:text-zinc-300">{req}</span>
                 </li>
               ))}
             </ul>

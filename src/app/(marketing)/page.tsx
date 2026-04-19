@@ -4,6 +4,7 @@ import Hero from '@/components/marketing/Hero';
 import { getDashboardStats, type DashboardStats } from '@/db/queries/dashboard';
 import ComparisonTable from '@/components/marketing/ComparisonTable';
 import TestimonialCard from '@/components/marketing/TestimonialCard';
+import ScrollReveal from '@/components/marketing/ScrollReveal';
 import {
   ClipboardDocumentListIcon,
   ShieldCheckIcon,
@@ -86,67 +87,44 @@ const testimonials = [
   },
 ];
 
-/**
- * Fetch live platform stats from the database.
- * Returns null on failure so the page renders with default values.
- */
-async function fetchStats(): Promise<DashboardStats | null> {
-  try {
-    return await getDashboardStats();
-  } catch {
-    return null;
-  }
-}
-
-function buildHeroStats(db: DashboardStats | null) {
-  if (!db) return undefined;
-  return [
-    { value: db.activePros || 500, suffix: '+', label: 'Verified Pros' },
-    { value: 98, suffix: '%', label: 'Satisfaction Rate' },
-    { value: 24, suffix: 'hr', label: 'Avg Match Time' },
-  ];
-}
-
-export default async function LandingPage() {
-  const dbStats = await fetchStats();
-  const heroStats = buildHeroStats(dbStats);
-
+export default function LandingPage() {
   return (
     <div className="flex flex-col">
       {/* Hero */}
-      <Hero stats={heroStats} />
+      <Hero />
 
       {/* How It Works */}
-      <section className="bg-white px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
+      <section className="bg-white dark:bg-zinc-950 px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="mx-auto max-w-2xl text-center">
-            <h2 className="text-3xl font-bold text-zinc-900 sm:text-4xl">
+            <h2 className="text-3xl font-bold text-zinc-900 dark:text-zinc-50 sm:text-4xl">
               How It Works
             </h2>
-            <p className="mt-4 text-lg text-zinc-600">
+            <p className="mt-4 text-lg text-zinc-600 dark:text-zinc-400">
               Three simple steps from project idea to job done.
             </p>
           </div>
 
           <div className="mx-auto mt-16 grid max-w-5xl gap-8 sm:grid-cols-3">
-            {howItWorksSteps.map((step) => (
-              <div
-                key={step.title}
-                className="group relative rounded-2xl border border-zinc-100 bg-white p-8 shadow-sm transition-all hover:border-[#00a9e0]/20 hover:shadow-md"
-              >
-                <div className="absolute -top-4 left-8 flex h-8 w-14 items-center justify-center rounded-full bg-[#00a9e0] text-xs font-bold text-white">
-                  {step.step}
+            {howItWorksSteps.map((step, i) => (
+              <ScrollReveal key={step.title} delay={i * 100}>
+                <div
+                  className="group relative rounded-2xl border border-zinc-100 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-8 shadow-sm transition-all hover:border-[#00a9e0]/20 hover:shadow-md"
+                >
+                  <div className="absolute -top-4 left-8 flex h-8 w-14 items-center justify-center rounded-full bg-[#00a9e0] text-xs font-bold text-white">
+                    {step.step}
+                  </div>
+                  <div className="mb-4 mt-2 flex h-12 w-12 items-center justify-center rounded-xl bg-sky-50 dark:bg-sky-950 text-[#00a9e0] transition-colors group-hover:bg-sky-100 dark:group-hover:bg-sky-900">
+                    <step.icon className="h-6 w-6" aria-hidden="true" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">
+                    {step.title}
+                  </h3>
+                  <p className="mt-2 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
+                    {step.description}
+                  </p>
                 </div>
-                <div className="mb-4 mt-2 flex h-12 w-12 items-center justify-center rounded-xl bg-sky-50 text-[#00a9e0] transition-colors group-hover:bg-sky-100">
-                  <step.icon className="h-6 w-6" aria-hidden="true" />
-                </div>
-                <h3 className="text-lg font-semibold text-zinc-900">
-                  {step.title}
-                </h3>
-                <p className="mt-2 text-sm leading-relaxed text-zinc-600">
-                  {step.description}
-                </p>
-              </div>
+              </ScrollReveal>
             ))}
           </div>
         </div>
@@ -156,107 +134,109 @@ export default async function LandingPage() {
       <ComparisonTable />
 
       {/* For Pros Section */}
-      <section className="bg-white px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
-        <div className="mx-auto max-w-7xl">
-          <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
-            <div>
-              <div className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-4 py-1.5">
-                <span className="text-xs font-medium text-emerald-700 sm:text-sm">
-                  For Professionals
-                </span>
-              </div>
-              <h2 className="mt-6 text-3xl font-bold text-zinc-900 sm:text-4xl">
-                Build Your Career, Not Just Your Next Lead
-              </h2>
-              <p className="mt-4 text-lg leading-relaxed text-zinc-600">
-                No subscription fees. No lead fees. You only pay a fair
-                commission when you win work and get paid.
-              </p>
-              <ul className="mt-8 space-y-4">
-                {prosBenefits.map((benefit) => (
-                  <li key={benefit} className="flex items-start gap-3">
+      <ScrollReveal>
+        <section className="bg-white dark:bg-zinc-950 px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
+          <div className="mx-auto max-w-7xl">
+            <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+              <div>
+                <div className="inline-flex items-center gap-2 rounded-full border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950 px-4 py-1.5">
+                  <span className="text-xs font-medium text-emerald-700 dark:text-emerald-400 sm:text-sm">
+                    For Professionals
+                  </span>
+                </div>
+                <h2 className="mt-6 text-3xl font-bold text-zinc-900 dark:text-zinc-50 sm:text-4xl">
+                  Build Your Career, Not Just Your Next Lead
+                </h2>
+                <p className="mt-4 text-lg leading-relaxed text-zinc-600 dark:text-zinc-400">
+                  No subscription fees. No lead fees. You only pay a fair
+                  commission when you win work and get paid.
+                </p>
+                <ul className="mt-8 space-y-4">
+                  {prosBenefits.map((benefit) => (
+                    <li key={benefit} className="flex items-start gap-3">
+                      <svg
+                        className="mt-1 h-5 w-5 shrink-0 text-emerald-500"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                        aria-hidden="true"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                      <span className="text-base text-zinc-700 dark:text-zinc-300">{benefit}</span>
+                    </li>
+                  ))}
+                </ul>
+                <div className="mt-10">
+                  <Link
+                    href="/for-pros"
+                    className="inline-flex items-center rounded-full bg-[#00a9e0] px-8 py-3.5 text-base font-semibold text-white shadow-lg transition-all hover:bg-[#0ea5e9] hover:shadow-xl"
+                  >
+                    Apply to Join
                     <svg
-                      className="mt-1 h-5 w-5 shrink-0 text-emerald-500"
+                      className="ml-2 h-4 w-4"
                       viewBox="0 0 20 20"
                       fill="currentColor"
                       aria-hidden="true"
                     >
                       <path
                         fillRule="evenodd"
-                        d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                        d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z"
                         clipRule="evenodd"
                       />
                     </svg>
-                    <span className="text-base text-zinc-700">{benefit}</span>
-                  </li>
-                ))}
-              </ul>
-              <div className="mt-10">
-                <Link
-                  href="/for-pros"
-                  className="inline-flex items-center rounded-full bg-[#00a9e0] px-8 py-3.5 text-base font-semibold text-white shadow-lg transition-all hover:bg-[#0ea5e9] hover:shadow-xl"
-                >
-                  Apply to Join
-                  <svg
-                    className="ml-2 h-4 w-4"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                    aria-hidden="true"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </Link>
-              </div>
-            </div>
-
-            {/* Visual card */}
-            <div className="relative">
-              <div className="rounded-2xl border border-zinc-200 bg-gradient-to-br from-slate-50 to-white p-8 shadow-lg sm:p-10">
-                <div className="text-center">
-                  <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-[#00a9e0]">
-                    <BoltIcon className="h-8 w-8 text-white" aria-hidden="true" />
-                  </div>
-                  <h3 className="mt-6 text-xl font-bold text-zinc-900">
-                    Your Earnings Dashboard
-                  </h3>
-                  <p className="mt-2 text-sm text-zinc-500">Preview</p>
+                  </Link>
                 </div>
-                <div className="mt-8 space-y-4">
-                  {[
-                    { label: 'Jobs Completed', value: '47', trend: '+12 this month' },
-                    { label: 'Revenue (YTD)', value: '$68,400', trend: '+23% vs last year' },
-                    { label: 'Avg Rating', value: '4.9', trend: '142 reviews' },
-                    { label: 'Repeat Clients', value: '73%', trend: 'Top 5% of Pros' },
-                  ].map((stat) => (
-                    <div
-                      key={stat.label}
-                      className="flex items-center justify-between rounded-lg bg-white px-4 py-3 shadow-sm ring-1 ring-zinc-100"
-                    >
-                      <div>
-                        <div className="text-xs text-zinc-500">{stat.label}</div>
-                        <div className="text-lg font-bold text-zinc-900">
-                          {stat.value}
+              </div>
+
+              {/* Visual card */}
+              <div className="relative">
+                <div className="rounded-2xl border border-zinc-200 dark:border-zinc-700 bg-gradient-to-br from-slate-50 to-white dark:from-zinc-900 dark:to-zinc-950 p-8 shadow-lg sm:p-10">
+                  <div className="text-center">
+                    <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-[#00a9e0]">
+                      <BoltIcon className="h-8 w-8 text-white" aria-hidden="true" />
+                    </div>
+                    <h3 className="mt-6 text-xl font-bold text-zinc-900 dark:text-zinc-50">
+                      Your Earnings Dashboard
+                    </h3>
+                    <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">Preview</p>
+                  </div>
+                  <div className="mt-8 space-y-4">
+                    {[
+                      { label: 'Jobs Completed', value: '47', trend: '+12 this month' },
+                      { label: 'Revenue (YTD)', value: '$68,400', trend: '+23% vs last year' },
+                      { label: 'Avg Rating', value: '4.9', trend: '142 reviews' },
+                      { label: 'Repeat Clients', value: '73%', trend: 'Top 5% of Pros' },
+                    ].map((stat) => (
+                      <div
+                        key={stat.label}
+                        className="flex items-center justify-between rounded-lg bg-white dark:bg-zinc-900 px-4 py-3 shadow-sm ring-1 ring-zinc-100 dark:ring-zinc-800"
+                      >
+                        <div>
+                          <div className="text-xs text-zinc-500 dark:text-zinc-400">{stat.label}</div>
+                          <div className="text-lg font-bold text-zinc-900 dark:text-zinc-50">
+                            {stat.value}
+                          </div>
+                        </div>
+                        <div className="text-xs font-medium text-emerald-600 dark:text-emerald-400">
+                          {stat.trend}
                         </div>
                       </div>
-                      <div className="text-xs font-medium text-emerald-600">
-                        {stat.trend}
-                      </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
+                {/* Decorative dot */}
+                <div className="absolute -right-4 -top-4 h-24 w-24 rounded-full bg-[#00a9e0]/10 blur-2xl" aria-hidden="true" />
               </div>
-              {/* Decorative dot */}
-              <div className="absolute -right-4 -top-4 h-24 w-24 rounded-full bg-[#00a9e0]/10 blur-2xl" aria-hidden="true" />
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </ScrollReveal>
 
-      {/* Emergency & Insurance */}
+      {/* Emergency & Insurance — already dark, keep as-is */}
       <section className="relative overflow-hidden bg-zinc-900 px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
         <div className="pointer-events-none absolute inset-0" aria-hidden="true">
           <div className="absolute left-0 top-0 h-[300px] w-[300px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-red-500/10 blur-3xl" />
@@ -313,19 +293,19 @@ export default async function LandingPage() {
       </section>
 
       {/* Hub Map Section */}
-      <section className="bg-white px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
+      <section className="bg-white dark:bg-zinc-950 px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="mx-auto max-w-2xl text-center">
-            <div className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-4 py-1.5">
-              <MapPinIcon className="h-4 w-4 text-blue-600" aria-hidden="true" />
-              <span className="text-xs font-medium text-blue-700 sm:text-sm">
+            <div className="inline-flex items-center gap-2 rounded-full border border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-950 px-4 py-1.5">
+              <MapPinIcon className="h-4 w-4 text-blue-600 dark:text-blue-400" aria-hidden="true" />
+              <span className="text-xs font-medium text-blue-700 dark:text-blue-400 sm:text-sm">
                 Service Area
               </span>
             </div>
-            <h2 className="mt-6 text-3xl font-bold text-zinc-900 sm:text-4xl">
+            <h2 className="mt-6 text-3xl font-bold text-zinc-900 dark:text-zinc-50 sm:text-4xl">
               Now Serving New England
             </h2>
-            <p className="mt-4 text-lg text-zinc-600">
+            <p className="mt-4 text-lg text-zinc-600 dark:text-zinc-400">
               Starting in New Hampshire, Maine, and Massachusetts — with more
               states coming soon.
             </p>
@@ -334,15 +314,15 @@ export default async function LandingPage() {
           {/* Map placeholder + city list */}
           <div className="mx-auto mt-16 grid max-w-5xl gap-8 lg:grid-cols-2">
             {/* Map visual */}
-            <div className="flex aspect-square items-center justify-center rounded-2xl border border-zinc-200 bg-gradient-to-br from-slate-50 via-blue-50/30 to-slate-50 shadow-sm lg:aspect-auto lg:min-h-[400px]">
+            <div className="flex aspect-square items-center justify-center rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-gradient-to-br from-slate-50 via-blue-50/30 to-slate-50 dark:from-zinc-900 dark:via-blue-950/30 dark:to-zinc-900 shadow-sm lg:aspect-auto lg:min-h-[400px]">
               <div className="text-center">
-                <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-[#00a9e0]/5">
+                <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-[#00a9e0]/5 dark:bg-[#00a9e0]/10">
                   <MapPinIcon className="h-10 w-10 text-[#00a9e0]" aria-hidden="true" />
                 </div>
-                <p className="mt-4 text-lg font-semibold text-zinc-900">
+                <p className="mt-4 text-lg font-semibold text-zinc-900 dark:text-zinc-50">
                   New England Coverage
                 </p>
-                <p className="mt-1 text-sm text-zinc-500">
+                <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
                   NH &middot; ME &middot; MA
                 </p>
                 <p className="mt-4 text-xs text-zinc-400">
@@ -355,7 +335,7 @@ export default async function LandingPage() {
             <div className="space-y-6">
               {hubCities.map((group) => (
                 <div key={group.state}>
-                  <h3 className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-zinc-500">
+                  <h3 className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
                     <span className="flex h-6 w-6 items-center justify-center rounded bg-[#00a9e0] text-[10px] font-bold text-white">
                       {group.state}
                     </span>
@@ -369,7 +349,7 @@ export default async function LandingPage() {
                     {group.cities.map((city) => (
                       <span
                         key={city}
-                        className="rounded-full border border-zinc-200 bg-zinc-50 px-4 py-1.5 text-sm font-medium text-zinc-700"
+                        className="rounded-full border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-900 px-4 py-1.5 text-sm font-medium text-zinc-700 dark:text-zinc-300"
                       >
                         {city}
                       </span>
@@ -377,8 +357,8 @@ export default async function LandingPage() {
                   </div>
                 </div>
               ))}
-              <div className="rounded-xl border border-[#00a9e0]/20 bg-sky-50 p-4">
-                <p className="text-sm font-medium text-zinc-800">
+              <div className="rounded-xl border border-[#00a9e0]/20 bg-sky-50 dark:bg-sky-950 p-4">
+                <p className="text-sm font-medium text-zinc-800 dark:text-zinc-200">
                   Expanding across New England in 2026. Want us in your area?
                 </p>
                 <Link
@@ -394,50 +374,54 @@ export default async function LandingPage() {
       </section>
 
       {/* Testimonials */}
-      <section className="bg-slate-50 px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
-        <div className="mx-auto max-w-7xl">
-          <div className="mx-auto max-w-2xl text-center">
-            <h2 className="text-3xl font-bold text-zinc-900 sm:text-4xl">
-              Trusted by Pros and Clients Alike
-            </h2>
-            <p className="mt-4 text-lg text-zinc-600">
-              Real feedback from real people building and improving their homes.
-            </p>
+      <ScrollReveal>
+        <section className="bg-slate-50 dark:bg-zinc-900 px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
+          <div className="mx-auto max-w-7xl">
+            <div className="mx-auto max-w-2xl text-center">
+              <h2 className="text-3xl font-bold text-zinc-900 dark:text-zinc-50 sm:text-4xl">
+                Trusted by Pros and Clients Alike
+              </h2>
+              <p className="mt-4 text-lg text-zinc-600 dark:text-zinc-400">
+                Real feedback from real people building and improving their homes.
+              </p>
+            </div>
+            <div className="mx-auto mt-16 grid max-w-5xl gap-8 sm:grid-cols-2 lg:grid-cols-3">
+              {testimonials.map((t) => (
+                <TestimonialCard key={t.name} {...t} />
+              ))}
+            </div>
           </div>
-          <div className="mx-auto mt-16 grid max-w-5xl gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {testimonials.map((t) => (
-              <TestimonialCard key={t.name} {...t} />
-            ))}
-          </div>
-        </div>
-      </section>
+        </section>
+      </ScrollReveal>
 
       {/* Final CTA */}
-      <section className="bg-[#00a9e0] px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
-        <div className="mx-auto max-w-3xl text-center">
-          <h2 className="text-3xl font-bold text-white sm:text-4xl">
-            Ready to Get Started?
-          </h2>
-          <p className="mt-4 text-lg text-white/80">
-            Whether you need work done or you are the one doing the work —
-            Sherpa Pros has your back.
-          </p>
-          <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-            <Link
-              href="/client/post-job"
-              className="inline-flex w-full items-center justify-center rounded-full bg-[#ff4500] px-8 py-3.5 text-base font-semibold text-white shadow-lg shadow-[#ff4500]/25 transition-all hover:bg-[#e63e00] hover:shadow-xl sm:w-auto"
-            >
-              Post a Job
-            </Link>
-            <Link
-              href="/for-pros"
-              className="inline-flex w-full items-center justify-center rounded-full border border-white/30 px-8 py-3.5 text-base font-semibold text-white transition-all hover:border-white/50 hover:bg-white/10 sm:w-auto"
-            >
-              Join as a Pro
-            </Link>
+      <ScrollReveal>
+        <section className="bg-[#00a9e0] px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
+          <div className="mx-auto max-w-3xl text-center">
+            <h2 className="text-3xl font-bold text-white sm:text-4xl">
+              Ready to Get Started?
+            </h2>
+            <p className="mt-4 text-lg text-white/80">
+              Whether you need work done or you are the one doing the work —
+              Sherpa Pros has your back.
+            </p>
+            <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+              <Link
+                href="/client/post-job"
+                className="inline-flex w-full items-center justify-center rounded-full bg-[#ff4500] px-8 py-3.5 text-base font-semibold text-white shadow-lg shadow-[#ff4500]/25 transition-all hover:bg-[#e63e00] hover:shadow-xl sm:w-auto"
+              >
+                Post a Job
+              </Link>
+              <Link
+                href="/for-pros"
+                className="inline-flex w-full items-center justify-center rounded-full border border-white/30 px-8 py-3.5 text-base font-semibold text-white transition-all hover:border-white/50 hover:bg-white/10 sm:w-auto"
+              >
+                Join as a Pro
+              </Link>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </ScrollReveal>
     </div>
   );
 }

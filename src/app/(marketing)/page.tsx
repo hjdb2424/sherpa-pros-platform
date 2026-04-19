@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import Hero from '@/components/marketing/Hero';
+import { getDashboardStats, type DashboardStats } from '@/db/queries/dashboard';
 import ComparisonTable from '@/components/marketing/ComparisonTable';
 import TestimonialCard from '@/components/marketing/TestimonialCard';
 import {
@@ -85,11 +86,35 @@ const testimonials = [
   },
 ];
 
-export default function LandingPage() {
+/**
+ * Fetch live platform stats from the database.
+ * Returns null on failure so the page renders with default values.
+ */
+async function fetchStats(): Promise<DashboardStats | null> {
+  try {
+    return await getDashboardStats();
+  } catch {
+    return null;
+  }
+}
+
+function buildHeroStats(db: DashboardStats | null) {
+  if (!db) return undefined;
+  return [
+    { value: db.activePros || 500, suffix: '+', label: 'Verified Pros' },
+    { value: 98, suffix: '%', label: 'Satisfaction Rate' },
+    { value: 24, suffix: 'hr', label: 'Avg Match Time' },
+  ];
+}
+
+export default async function LandingPage() {
+  const dbStats = await fetchStats();
+  const heroStats = buildHeroStats(dbStats);
+
   return (
     <div className="flex flex-col">
       {/* Hero */}
-      <Hero />
+      <Hero stats={heroStats} />
 
       {/* How It Works */}
       <section className="bg-white px-4 py-20 sm:px-6 sm:py-28 lg:px-8">

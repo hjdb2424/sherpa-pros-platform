@@ -8,7 +8,12 @@ interface Stat {
   label: string;
 }
 
-const stats: Stat[] = [
+interface StatsCounterProps {
+  /** Override the default stats with real data from the server */
+  stats?: Stat[];
+}
+
+const defaultStats: Stat[] = [
   { value: 500, suffix: '+', label: 'Verified Pros' },
   { value: 98, suffix: '%', label: 'Satisfaction Rate' },
   { value: 24, suffix: 'hr', label: 'Avg Match Time' },
@@ -57,7 +62,8 @@ function StatItem({ stat, animate }: { stat: Stat; animate: boolean }) {
   );
 }
 
-export default function StatsCounter() {
+export default function StatsCounter({ stats: statsProp }: StatsCounterProps = {}) {
+  const stats = statsProp ?? defaultStats;
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
 

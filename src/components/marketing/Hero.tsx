@@ -1,7 +1,12 @@
 import Link from 'next/link';
 import StatsCounter from './StatsCounter';
 
-export default function Hero() {
+interface HeroProps {
+  /** Override stats displayed in the counter */
+  stats?: { value: number; suffix: string; label: string }[];
+}
+
+export default function Hero({ stats }: HeroProps = {}) {
   return (
     <section className="relative overflow-hidden bg-gradient-to-b from-white to-zinc-50">
       {/* Background pattern */}
@@ -84,7 +89,7 @@ export default function Hero() {
 
         {/* Stats */}
         <div className="mx-auto mt-20 max-w-xl">
-          <StatsCounter />
+          <StatsCounter stats={stats} />
         </div>
       </div>
     </section>

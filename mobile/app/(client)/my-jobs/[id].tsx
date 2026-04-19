@@ -16,6 +16,8 @@ import Card from '@/components/common/Card';
 import Badge from '@/components/common/Badge';
 import Button from '@/components/common/Button';
 import Avatar from '@/components/common/Avatar';
+import MaterialsFlow from '@/components/checklist/MaterialsFlow';
+import type { Material } from '@/components/checklist/MaterialsFlow';
 
 // ---------------------------------------------------------------------------
 // Mock data (inline)
@@ -56,7 +58,7 @@ const MOCK_JOB = {
   ] as MaterialItem[],
 };
 
-const SERVICE_FEE_PERCENT = 0.085; // 8.5%
+// Service fee is now handled inside MaterialsFlow
 
 const CATEGORY_ICONS: Record<string, keyof typeof Ionicons.glyphMap> = {
   Plumbing: 'water-outline',
@@ -82,13 +84,17 @@ export default function ClientJobDetailScreen() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const { id } = useLocalSearchParams<{ id: string }>();
-  const [selectedPayment, setSelectedPayment] = useState<'card' | 'finance'>('card');
+  const [showMaterialsFlow, setShowMaterialsFlow] = useState(false);
 
   const job = MOCK_JOB; // In production, fetch by `id`
 
-  const materialsSubtotal = job.materials.reduce((sum, m) => sum + m.price, 0);
-  const serviceFee = Math.round(materialsSubtotal * SERVICE_FEE_PERCENT);
-  const grandTotal = materialsSubtotal + serviceFee;
+  const flowMaterials: Material[] = job.materials.map((m) => ({
+    id: m.id,
+    name: m.name,
+    qty: m.quantity,
+    unit: m.unit,
+    price: m.price,
+  }));
 
   const handleBack = useCallback(() => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -100,14 +106,14 @@ export default function ClientJobDetailScreen() {
     Alert.alert('Message', 'Messaging pro coming soon');
   }, []);
 
-  const handleApproveMaterials = useCallback(() => {
+  const handleStartMaterialsFlow = useCallback(() => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-    Alert.alert('Approve Materials', 'Material approval flow coming soon');
+    setShowMaterialsFlow(true);
   }, []);
 
-  const handleSelectPayment = useCallback((method: 'card' | 'finance') => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    setSelectedPayment(method);
+  const handleMaterialsFlowComplete = useCallback(() => {
+    setShowMaterialsFlow(false);
+    Alert.alert('Success', 'Materials order placed successfully!');
   }, []);
 
   return (
@@ -188,8 +194,8 @@ export default function ClientJobDetailScreen() {
           </Card>
         )}
 
-        {/* Materials Section */}
-        {job.materials.length > 0 && (
+        {/* Materials Flow */}
+        {job.materials.length > 0 && !showMaterialsFlow && (
           <>
             <Text style={styles.materialsSectionTitle}>Materials</Text>
             {job.materials.map((mat) => {
@@ -212,93 +218,23 @@ export default function ClientJobDetailScreen() {
               );
             })}
 
-            {/* Materials Approval Card */}
-            <Card style={styles.approvalCard} variant="elevated">
-              <Text style={styles.sectionTitle}>Materials Approval</Text>
-
-              <View style={styles.costRow}>
-                <Text style={styles.costLabel}>Subtotal</Text>
-                <Text style={styles.costValue}>${materialsSubtotal.toLocaleString()}</Text>
-              </View>
-              <View style={styles.costRow}>
-                <Text style={styles.costLabel}>
-                  Sherpa Service Fee ({(SERVICE_FEE_PERCENT * 100).toFixed(1)}%)
-                </Text>
-                <Text style={styles.costValue}>${serviceFee.toLocaleString()}</Text>
-              </View>
-              <View style={[styles.costRow, styles.totalRow]}>
-                <Text style={styles.totalLabel}>Grand Total</Text>
-                <Text style={styles.totalValue}>${grandTotal.toLocaleString()}</Text>
-              </View>
-
-              <View style={{ marginTop: spacing.lg }}>
-                <Button
-                  title="Approve Materials"
-                  onPress={handleApproveMaterials}
-                  variant="primary"
-                  fullWidth
-                />
-              </View>
-            </Card>
+            <View style={{ marginTop: spacing.md }}>
+              <Button
+                title="Start Materials Order"
+                onPress={handleStartMaterialsFlow}
+                variant="primary"
+                fullWidth
+              />
+            </View>
           </>
         )}
 
-        {/* Payment Method Selector */}
-        <Text style={styles.materialsSectionTitle}>Payment Method</Text>
-
-        <Pressable onPress={() => handleSelectPayment('card')}>
-          <Card
-            style={{
-              ...styles.paymentCard,
-              ...(selectedPayment === 'card' ? styles.paymentCardSelected : {}),
-            }}
-            variant="outlined"
-          >
-            <View style={styles.paymentRow}>
-              <View style={styles.paymentIcon}>
-                <Ionicons name="card-outline" size={24} color={colors.primary} />
-              </View>
-              <View style={styles.paymentInfo}>
-                <Text style={styles.paymentTitle}>Pay with Card</Text>
-                <Text style={styles.paymentDescription}>
-                  Credit or debit card via Stripe
-                </Text>
-              </View>
-              <Ionicons
-                name={selectedPayment === 'card' ? 'radio-button-on' : 'radio-button-off'}
-                size={22}
-                color={selectedPayment === 'card' ? colors.primary : colors.textMuted}
-              />
-            </View>
-          </Card>
-        </Pressable>
-
-        <Pressable onPress={() => handleSelectPayment('finance')}>
-          <Card
-            style={{
-              ...styles.paymentCard,
-              ...(selectedPayment === 'finance' ? styles.paymentCardSelected : {}),
-            }}
-            variant="outlined"
-          >
-            <View style={styles.paymentRow}>
-              <View style={styles.paymentIcon}>
-                <Ionicons name="wallet-outline" size={24} color={colors.success} />
-              </View>
-              <View style={styles.paymentInfo}>
-                <Text style={styles.paymentTitle}>Finance with Wisetack</Text>
-                <Text style={styles.paymentDescription}>
-                  0% APR financing available. Pay over time.
-                </Text>
-              </View>
-              <Ionicons
-                name={selectedPayment === 'finance' ? 'radio-button-on' : 'radio-button-off'}
-                size={22}
-                color={selectedPayment === 'finance' ? colors.primary : colors.textMuted}
-              />
-            </View>
-          </Card>
-        </Pressable>
+        {showMaterialsFlow && (
+          <MaterialsFlow
+            materials={flowMaterials}
+            onComplete={handleMaterialsFlowComplete}
+          />
+        )}
       </ScrollView>
     </View>
   );
@@ -469,73 +405,4 @@ const styles = StyleSheet.create({
     color: colors.text,
   },
 
-  // Approval card
-  approvalCard: {
-    marginBottom: spacing.lg,
-  },
-  costRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: spacing.xs,
-  },
-  costLabel: {
-    ...typography.bodySmall,
-    color: colors.textSecondary,
-  },
-  costValue: {
-    ...typography.bodySmall,
-    fontWeight: '600',
-    color: colors.text,
-  },
-  totalRow: {
-    marginTop: spacing.sm,
-    paddingTop: spacing.md,
-    borderTopWidth: 1,
-    borderTopColor: colors.borderLight,
-  },
-  totalLabel: {
-    ...typography.subheading,
-    color: colors.text,
-  },
-  totalValue: {
-    ...typography.heading,
-    color: colors.primary,
-  },
-
-  // Payment
-  paymentCard: {
-    marginBottom: spacing.md,
-  },
-  paymentCardSelected: {
-    borderColor: colors.primary,
-    borderWidth: 2,
-  },
-  paymentRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  paymentIcon: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    backgroundColor: colors.primaryLight,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: spacing.md,
-  },
-  paymentInfo: {
-    flex: 1,
-    marginRight: spacing.sm,
-  },
-  paymentTitle: {
-    ...typography.bodySmall,
-    fontWeight: '600',
-    color: colors.text,
-  },
-  paymentDescription: {
-    ...typography.caption,
-    color: colors.textMuted,
-    marginTop: 2,
-  },
 });

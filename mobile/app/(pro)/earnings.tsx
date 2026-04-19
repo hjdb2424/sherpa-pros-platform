@@ -9,9 +9,11 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as Haptics from 'expo-haptics';
+import { Ionicons } from '@expo/vector-icons';
 import { colors, spacing, borderRadius, shadows, typography } from '@/lib/theme';
 import Card from '@/components/common/Card';
 import Badge from '@/components/common/Badge';
+import FinancingOptions from '@/components/pro/FinancingOptions';
 
 interface ChartBar {
   month: string;
@@ -86,23 +88,35 @@ export default function EarningsScreen() {
           contentContainerStyle={styles.statsRow}
         >
           <Card style={styles.statCard} variant="elevated">
-            <Text style={styles.statLabel}>This Month</Text>
+            <View style={styles.statIconRow}>
+              <Ionicons name="wallet-outline" size={18} color={colors.success} />
+              <Text style={styles.statLabel}>This Month</Text>
+            </View>
             <View style={styles.statValueRow}>
               <Text style={[styles.statValue, { color: colors.success }]}>$4,850</Text>
-              <Text style={styles.statArrow}>{'\u2191'}</Text>
+              <Ionicons name="trending-up" size={16} color={colors.success} />
             </View>
             <Text style={styles.statChange}>+12% vs last month</Text>
           </Card>
 
           <Card style={styles.statCard} variant="elevated">
-            <Text style={styles.statLabel}>Pending</Text>
+            <View style={styles.statIconRow}>
+              <Ionicons name="time-outline" size={18} color={colors.primary} />
+              <Text style={styles.statLabel}>Pending</Text>
+            </View>
             <Text style={[styles.statValue, { color: colors.primary }]}>$1,200</Text>
             <Text style={styles.statChange}>2 payouts processing</Text>
           </Card>
 
           <Card style={styles.statCard} variant="elevated">
-            <Text style={styles.statLabel}>Completed Jobs</Text>
-            <Text style={[styles.statValue, { color: colors.text }]}>12</Text>
+            <View style={styles.statIconRow}>
+              <Ionicons name="checkmark-circle-outline" size={18} color={colors.text} />
+              <Text style={styles.statLabel}>Completed Jobs</Text>
+            </View>
+            <View style={styles.statValueRow}>
+              <Text style={[styles.statValue, { color: colors.text }]}>12</Text>
+              <Ionicons name="trending-up" size={16} color={colors.success} />
+            </View>
             <Text style={styles.statChange}>This month</Text>
           </Card>
         </ScrollView>
@@ -111,6 +125,18 @@ export default function EarningsScreen() {
         <Card style={styles.chartCard} variant="elevated">
           <Text style={styles.sectionTitle}>Earnings Trend</Text>
           <View style={styles.chartContainer}>
+            {/* Gridlines */}
+            <View style={styles.gridLines}>
+              {[0.25, 0.5, 0.75].map((pct) => (
+                <View
+                  key={pct}
+                  style={[
+                    styles.gridLine,
+                    { bottom: pct * CHART_HEIGHT },
+                  ]}
+                />
+              ))}
+            </View>
             {CHART_DATA.map((bar, index) => {
               const barHeight = (bar.value / MAX_CHART_VALUE) * CHART_HEIGHT;
               const isSelected = selectedBar === index;
@@ -172,20 +198,9 @@ export default function EarningsScreen() {
           </Card>
         ))}
 
-        {/* Stripe Capital Card */}
-        <View style={styles.capitalCard}>
-          <Text style={styles.capitalTitle}>Need cash flow?</Text>
-          <Text style={styles.capitalDescription}>
-            Stripe Capital can advance funds based on your earnings history. Get access to working capital when you need it.
-          </Text>
-          <Pressable
-            style={styles.capitalButton}
-            onPress={() => {
-              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-            }}
-          >
-            <Text style={styles.capitalButtonText}>Learn More</Text>
-          </Pressable>
+        {/* Stripe Capital / Financing Options */}
+        <View style={{ marginHorizontal: spacing.lg, marginTop: spacing.lg }}>
+          <FinancingOptions />
         </View>
       </ScrollView>
     </View>
@@ -220,10 +235,15 @@ const styles = StyleSheet.create({
     width: 160,
     minHeight: 100,
   },
+  statIconRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    marginBottom: spacing.xs,
+  },
   statLabel: {
     ...typography.caption,
     color: colors.textMuted,
-    marginBottom: spacing.xs,
   },
   statValueRow: {
     flexDirection: 'row',
@@ -255,6 +275,23 @@ const styles = StyleSheet.create({
     height: CHART_HEIGHT + 40,
     marginTop: spacing.lg,
     paddingTop: 24,
+    position: 'relative',
+  },
+  gridLines: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 24,
+    height: CHART_HEIGHT,
+  },
+  gridLine: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    height: 1,
+    borderTopWidth: 1,
+    borderTopColor: colors.borderLight,
+    borderStyle: 'dashed',
   },
   barWrapper: {
     flex: 1,
@@ -271,7 +308,10 @@ const styles = StyleSheet.create({
   barFill: {
     width: '100%',
     backgroundColor: colors.primary,
-    borderRadius: borderRadius.sm,
+    borderTopLeftRadius: 6,
+    borderTopRightRadius: 6,
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0,
   },
   barFillSelected: {
     backgroundColor: colors.primaryDark,
@@ -336,37 +376,5 @@ const styles = StyleSheet.create({
   payoutAmount: {
     ...typography.subheading,
     color: colors.text,
-  },
-  capitalCard: {
-    marginHorizontal: spacing.lg,
-    marginTop: spacing.lg,
-    padding: spacing.xl,
-    borderRadius: borderRadius.lg,
-    backgroundColor: colors.primary,
-    ...shadows.primaryGlow,
-  },
-  capitalTitle: {
-    ...typography.heading,
-    color: colors.textInverse,
-    marginBottom: spacing.sm,
-  },
-  capitalDescription: {
-    ...typography.body,
-    color: 'rgba(255,255,255,0.85)',
-    marginBottom: spacing.lg,
-  },
-  capitalButton: {
-    backgroundColor: 'rgba(255,255,255,0.2)',
-    paddingVertical: spacing.md,
-    paddingHorizontal: spacing.xl,
-    borderRadius: borderRadius.full,
-    alignSelf: 'flex-start',
-    borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.3)',
-  },
-  capitalButtonText: {
-    color: colors.textInverse,
-    fontWeight: '600',
-    fontSize: 15,
   },
 });

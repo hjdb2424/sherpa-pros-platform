@@ -15,6 +15,7 @@ import { colors, spacing, borderRadius, shadows, typography } from '@/lib/theme'
 import Card from '@/components/common/Card';
 import Badge from '@/components/common/Badge';
 import Button from '@/components/common/Button';
+import FinancingOptions from '@/components/pro/FinancingOptions';
 
 // ---------------------------------------------------------------------------
 // Mock data (inline)
@@ -133,6 +134,24 @@ export default function ProJobDetailScreen() {
   const handleGetPricing = useCallback(() => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     Alert.alert('HD Pricing', 'Pricing integration coming soon');
+  }, []);
+
+  const handleSendToClient = useCallback(() => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    Alert.alert(
+      'Send Materials',
+      'Send this materials list to the client for approval?',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Send',
+          onPress: () => {
+            Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+            Alert.alert('Sent', 'Materials sent to client for approval!');
+          },
+        },
+      ],
+    );
   }, []);
 
   // --- Group checklist by phase ---
@@ -316,7 +335,13 @@ export default function ProJobDetailScreen() {
 
       <View style={styles.actionButtons}>
         <Button title="Get HD Pricing" onPress={handleGetPricing} variant="accent" fullWidth />
+        <View style={{ height: spacing.md }} />
+        <Button title="Send to Client" onPress={handleSendToClient} variant="primary" fullWidth />
       </View>
+
+      <View style={{ height: spacing.xl }} />
+
+      <FinancingOptions />
 
       <View style={{ height: spacing.xxxl }} />
     </ScrollView>

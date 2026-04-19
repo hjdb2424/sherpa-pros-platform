@@ -9,6 +9,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useRouter } from 'expo-router';
 import * as Haptics from 'expo-haptics';
 import { Ionicons } from '@expo/vector-icons';
 import { colors, spacing, borderRadius, shadows, typography } from '@/lib/theme';
@@ -112,6 +113,7 @@ const BID_BADGE: Record<string, { label: string; variant: 'warning' | 'success' 
 
 export default function ProJobsScreen() {
   const insets = useSafeAreaInsets();
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState<TabKey>('available');
   const [refreshing, setRefreshing] = useState(false);
   const onRefresh = useCallback(() => {
@@ -120,10 +122,10 @@ export default function ProJobsScreen() {
     setTimeout(() => setRefreshing(false), 1000);
   }, []);
 
-  const handleCardPress = useCallback(() => {
+  const handleCardPress = useCallback((id: string) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    Alert.alert('Job Detail', 'Coming in next update');
-  }, []);
+    router.push(`/(pro)/jobs/${id}`);
+  }, [router]);
 
   const handleQuickBid = useCallback(() => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
@@ -144,7 +146,7 @@ export default function ProJobsScreen() {
   const renderAvailableItem = ({ item }: { item: AvailableJob }) => {
     const urgency = URGENCY_BADGE[item.urgency];
     return (
-      <Pressable onPress={handleCardPress}>
+      <Pressable onPress={() => handleCardPress(item.id)}>
         <Card style={styles.jobCard} variant="elevated">
           <View style={styles.cardRow}>
             <View style={styles.cardContent}>
@@ -167,7 +169,7 @@ export default function ProJobsScreen() {
   const renderBidItem = ({ item }: { item: BidJob }) => {
     const badge = BID_BADGE[item.status];
     return (
-      <Pressable onPress={handleCardPress}>
+      <Pressable onPress={() => handleCardPress(item.id)}>
         <Card style={styles.jobCard} variant="elevated">
           <View style={styles.cardRow}>
             <View style={styles.cardContent}>
@@ -184,7 +186,7 @@ export default function ProJobsScreen() {
   const renderActiveItem = ({ item }: { item: ActiveJob }) => {
     const progress = item.milestoneProgress / item.totalMilestones;
     return (
-      <Pressable onPress={handleCardPress}>
+      <Pressable onPress={() => handleCardPress(item.id)}>
         <Card style={styles.jobCard} variant="elevated">
           <Text style={styles.jobTitle} numberOfLines={1}>{item.title}</Text>
           <Text style={styles.jobMeta}>Client: {item.clientName}</Text>
@@ -202,7 +204,7 @@ export default function ProJobsScreen() {
   };
 
   const renderCompletedItem = ({ item }: { item: CompletedJob }) => (
-    <Pressable onPress={handleCardPress}>
+    <Pressable onPress={() => handleCardPress(item.id)}>
       <Card style={styles.jobCard} variant="elevated">
         <View style={styles.cardRow}>
           <View style={styles.cardContent}>

@@ -5,7 +5,6 @@ import {
   FlatList,
   Pressable,
   RefreshControl,
-  Alert,
   StyleSheet,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -210,8 +209,8 @@ export default function MyJobsScreen() {
 
   const handleJobPress = useCallback((job: MockJob) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    Alert.alert('Coming soon', `Job detail for "${job.title}" is coming in the next update.`);
-  }, []);
+    router.push(`/(client)/my-jobs/${job.id}`);
+  }, [router]);
 
   const handlePostJob = useCallback(() => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);

@@ -39,8 +39,15 @@ export default function ClientLayout() {
         options={{ title: 'Map', tabBarIcon: ({ focused }) => <TabIcon name="Map" focused={focused} /> }}
       />
       <Tabs.Screen
-        name="my-jobs"
+        name="my-jobs/index"
         options={{ title: 'Jobs', tabBarIcon: ({ focused }) => <TabIcon name="Jobs" focused={focused} /> }}
+      />
+      <Tabs.Screen
+        name="my-jobs/[id]"
+        options={{
+          href: null,
+          tabBarStyle: { display: 'none' },
+        }}
       />
       <Tabs.Screen
         name="messages"

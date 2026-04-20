@@ -6,17 +6,19 @@ import {
   Pressable,
   Alert,
   StyleSheet,
+  Image,
+  Dimensions,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import * as Haptics from 'expo-haptics';
 import * as SecureStore from 'expo-secure-store';
 import * as ImagePicker from 'expo-image-picker';
+import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { colors, spacing, borderRadius, shadows, typography } from '@/lib/theme';
 import { useAuth } from '@/lib/auth';
 import Avatar from '@/components/common/Avatar';
-import Badge from '@/components/common/Badge';
 import Button from '@/components/common/Button';
 import Logo from '@/components/brand/Logo';
 import {
@@ -27,11 +29,205 @@ import {
 } from '@/components/portfolio';
 import type { PortfolioItem } from '@/components/portfolio';
 
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
+
+// ---------------------------------------------------------------------------
+// Mock Data
+// ---------------------------------------------------------------------------
+
+const PRO_PROFILE = {
+  name: 'Mike Rodriguez',
+  initials: 'MR',
+  headline: 'Licensed Master Plumber \u00b7 15 years',
+  location: 'Portsmouth, NH',
+  serviceRadius: '35 mi',
+  rating: 4.9,
+  reviewCount: 142,
+  badgeTier: 'gold' as const,
+  bio: 'Licensed master plumber with 15 years experience specializing in residential and light commercial plumbing throughout the Seacoast area. Emergency services available 24/7. I treat every home like my own.',
+  specialties: [
+    'Residential Plumbing',
+    'Water Heater Install',
+    'Emergency Repairs',
+    'Fixture Replacement',
+    'Drain Cleaning',
+  ],
+  stats: {
+    jobsCompleted: 47,
+    repeatClients: 73,
+    responseTime: '<1 hr',
+    yearsActive: 15,
+  },
+  certs: [
+    { name: 'Master Plumber License', issuer: 'NH Board of Plumbers', number: 'PL-2024-4821', status: 'active' as const },
+    { name: 'IICRC Water Restoration', issuer: 'IICRC', number: 'WRT-2025-887', status: 'active' as const },
+    { name: 'OSHA 30-Hour Construction', issuer: 'OSHA', number: 'OSHA-30-2024', status: 'active' as const },
+  ],
+  availability: { status: 'available' as const, hours: 'Mon-Sat, 7am-6pm', emergency: true },
+  coverPhoto: 'https://picsum.photos/800/300?random=50',
+};
+
+const MOCK_REVIEWS = [
+  {
+    id: 'r1',
+    stars: 5,
+    reviewer: 'Tom A.',
+    date: 'Apr 15',
+    text: 'Mike was incredible. Fixed our burst pipe at 2am and cleaned up everything.',
+    role: 'Homeowner',
+  },
+  {
+    id: 'r2',
+    stars: 5,
+    reviewer: 'Lisa M.',
+    date: 'Apr 8',
+    text: 'Professional, on time, and fair pricing. Will definitely use again.',
+    role: 'Homeowner',
+  },
+  {
+    id: 'r3',
+    stars: 5,
+    reviewer: 'Rachel K.',
+    date: 'Mar 25',
+    text: 'Best plumber we\'ve ever hired. He explained everything clearly.',
+    role: 'Homeowner',
+  },
+];
+
+// ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
+
 interface SettingsItem {
   label: string;
   iconName: keyof typeof Ionicons.glyphMap;
   onPress: () => void;
 }
+
+// ---------------------------------------------------------------------------
+// Sub-components
+// ---------------------------------------------------------------------------
+
+function SectionHeader({
+  title,
+  rightLabel,
+  rightOnPress,
+}: {
+  title: string;
+  rightLabel?: string;
+  rightOnPress?: () => void;
+}) {
+  return (
+    <View style={s.sectionHeader}>
+      <Text style={s.sectionTitle}>{title}</Text>
+      {rightLabel && (
+        <Pressable
+          onPress={() => {
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+            rightOnPress?.();
+          }}
+        >
+          <Text style={s.sectionAction}>{rightLabel}</Text>
+        </Pressable>
+      )}
+    </View>
+  );
+}
+
+function VerifiedPill({ label }: { label: string }) {
+  return (
+    <View style={s.verifiedPill}>
+      <Ionicons name="checkmark-circle" size={12} color={colors.success} />
+      <Text style={s.verifiedPillText}>{label}</Text>
+    </View>
+  );
+}
+
+function StatItem({
+  value,
+  label,
+  onPress,
+}: {
+  value: string | number;
+  label: string;
+  onPress: () => void;
+}) {
+  return (
+    <Pressable
+      style={s.statItem}
+      onPress={() => {
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+        onPress();
+      }}
+    >
+      <Text style={s.statValue}>{value}</Text>
+      <Text style={s.statLabel}>{label}</Text>
+    </Pressable>
+  );
+}
+
+function CertRow({
+  cert,
+}: {
+  cert: { name: string; issuer: string; number: string; status: string };
+}) {
+  const isActive = cert.status === 'active';
+  return (
+    <View style={s.certRow}>
+      <View style={s.certIconBox}>
+        <Ionicons name="shield-checkmark" size={20} color={colors.primary} />
+      </View>
+      <View style={s.certInfo}>
+        <Text style={s.certName}>{cert.name}</Text>
+        <Text style={s.certIssuer}>
+          {cert.issuer} \u00b7 {cert.number}
+        </Text>
+      </View>
+      <View style={[s.certStatusBadge, { backgroundColor: isActive ? colors.successLight : colors.dangerLight }]}>
+        <Text style={[s.certStatusText, { color: isActive ? colors.success : colors.danger }]}>
+          {isActive ? 'Active' : 'Expired'}
+        </Text>
+      </View>
+    </View>
+  );
+}
+
+function ReviewCard({
+  review,
+}: {
+  review: { id: string; stars: number; reviewer: string; date: string; text: string; role: string };
+}) {
+  return (
+    <View style={s.reviewCard}>
+      <View style={s.reviewHeader}>
+        <View style={s.reviewStars}>
+          {Array.from({ length: 5 }).map((_, i) => (
+            <Ionicons
+              key={i}
+              name={i < review.stars ? 'star' : 'star-outline'}
+              size={14}
+              color={colors.accent}
+            />
+          ))}
+        </View>
+        <Text style={s.reviewDate}>{review.date}</Text>
+      </View>
+      <Text style={s.reviewText} numberOfLines={3}>
+        {review.text}
+      </Text>
+      <View style={s.reviewFooter}>
+        <Text style={s.reviewerName}>{review.reviewer}</Text>
+        <View style={s.reviewRoleBadge}>
+          <Text style={s.reviewRoleText}>{review.role}</Text>
+        </View>
+      </View>
+    </View>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Main Screen
+// ---------------------------------------------------------------------------
 
 export default function ProProfileScreen() {
   const insets = useSafeAreaInsets();
@@ -41,19 +237,14 @@ export default function ProProfileScreen() {
   const [portfolio, setPortfolio] = useState<PortfolioItem[]>(MOCK_PORTFOLIO);
   const [filterVisible, setFilterVisible] = useState(false);
   const [pendingImageUri, setPendingImageUri] = useState<string | null>(null);
+  const [bioExpanded, setBioExpanded] = useState(false);
+  const isOwnProfile = true; // viewing own profile
 
   useEffect(() => {
     SecureStore.getItemAsync('sherpa_onboarding_complete').then((val) => {
       setOnboardingComplete(val === 'true');
     });
   }, []);
-
-  const initials = (userName ?? 'U')
-    .split(' ')
-    .map((n) => n[0])
-    .join('')
-    .toUpperCase()
-    .slice(0, 2);
 
   const handleAddToPortfolio = useCallback(async () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
@@ -89,7 +280,7 @@ export default function ProProfileScreen() {
       setPendingImageUri(null);
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     },
-    []
+    [],
   );
 
   const handleSwitchRole = useCallback(async () => {
@@ -120,69 +311,183 @@ export default function ProProfileScreen() {
     { label: 'About', iconName: 'information-circle-outline', onPress: () => Alert.alert('Sherpa Pros v1.0.0') },
   ];
 
+  const profile = PRO_PROFILE;
+
   return (
-    <View style={[styles.container, { paddingTop: insets.top }]}>
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>Profile</Text>
-      </View>
-
-      {!onboardingComplete && (
-        <Pressable
-          style={styles.onboardingBanner}
-          onPress={() => {
-            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-            router.push('/pro-onboarding');
-          }}
-        >
-          <Ionicons name="alert-circle" size={20} color={colors.primary} />
-          <Text style={styles.onboardingBannerText}>
-            Complete your profile to start receiving jobs
-          </Text>
-          <Ionicons name="chevron-forward" size={16} color={colors.primary} />
-        </Pressable>
-      )}
-
+    <View style={[s.container, { paddingTop: insets.top }]}>
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={[styles.scrollContent, { paddingBottom: insets.bottom + spacing.xxl }]}
+        contentContainerStyle={{ paddingBottom: insets.bottom + (isOwnProfile ? spacing.xxl : 80) }}
       >
-        {/* User Info */}
-        <View style={styles.userSection}>
-          <View style={styles.avatarRing}>
-            <Avatar initials={initials} size={80} color={colors.primary} />
-          </View>
-          <Text style={styles.userName}>{userName ?? 'User'}</Text>
-          <Text style={styles.userEmail}>{email ?? ''}</Text>
-          <View style={styles.ratingRow}>
-            {[1, 2, 3, 4, 5].map((s) => (
-              <Ionicons key={s} name={s <= 4 ? 'star' : 'star-half'} size={16} color={colors.accent} />
-            ))}
-            <Text style={styles.ratingText}>4.9</Text>
-          </View>
-          <View style={styles.badgeRow}>
-            <Badge label="Pro" variant="success" />
-            <View style={styles.tierBadge}>
-              <Ionicons name="shield-checkmark" size={12} color="#b8860b" />
-              <Text style={styles.tierText}>Gold Badge</Text>
+        {/* ---------------------------------------------------------------- */}
+        {/* 1. Cover Photo + Avatar                                          */}
+        {/* ---------------------------------------------------------------- */}
+        <View style={s.coverContainer}>
+          <Image
+            source={{ uri: profile.coverPhoto }}
+            style={s.coverImage}
+            resizeMode="cover"
+          />
+          <LinearGradient
+            colors={['transparent', 'rgba(0,0,0,0.55)']}
+            style={s.coverGradient}
+          />
+          {/* Edit Profile pill (own profile) */}
+          {isOwnProfile && (
+            <Pressable
+              style={[s.editProfilePill, { top: insets.top + spacing.sm }]}
+              onPress={() => {
+                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+                Alert.alert('Edit Profile', 'Profile editor coming soon.');
+              }}
+            >
+              <Ionicons name="create-outline" size={14} color={colors.text} />
+              <Text style={s.editProfileText}>Edit Profile</Text>
+            </Pressable>
+          )}
+          {/* Avatar overlapping cover bottom */}
+          <View style={s.avatarOverlapContainer}>
+            <View style={s.avatarRing}>
+              <Avatar initials={profile.initials} size={90} color={colors.primary} />
             </View>
           </View>
-          <Text style={styles.memberSince}>Member since April 2026</Text>
         </View>
 
-        {/* Project Highlights */}
+        {/* ---------------------------------------------------------------- */}
+        {/* 2. Identity Section                                              */}
+        {/* ---------------------------------------------------------------- */}
+        <View style={s.identitySection}>
+          <Text style={s.displayName}>{profile.name}</Text>
+          <Text style={s.headline}>{profile.headline}</Text>
+          <View style={s.locationRow}>
+            <Ionicons name="location-sharp" size={14} color={colors.textMuted} />
+            <Text style={s.locationText}>
+              {profile.location} \u00b7 Serves {profile.serviceRadius} radius
+            </Text>
+          </View>
+          <Pressable
+            style={s.ratingRow}
+            onPress={() => {
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+              Alert.alert('Reviews', `${profile.reviewCount} reviews with ${profile.rating} average`);
+            }}
+          >
+            {Array.from({ length: 5 }).map((_, i) => (
+              <Ionicons
+                key={i}
+                name={i < Math.floor(profile.rating) ? 'star' : (i < profile.rating ? 'star-half' : 'star-outline')}
+                size={16}
+                color={colors.accent}
+              />
+            ))}
+            <Text style={s.ratingText}>
+              {profile.rating} ({profile.reviewCount} reviews)
+            </Text>
+          </Pressable>
+          {/* Badge tier */}
+          <View style={s.tierRow}>
+            <View style={s.tierBadge}>
+              <Ionicons name="shield-checkmark" size={14} color="#b8860b" />
+              <Text style={s.tierText}>Gold Pro</Text>
+            </View>
+          </View>
+          {/* Verified badges */}
+          <View style={s.verifiedRow}>
+            <VerifiedPill label="Licensed" />
+            <VerifiedPill label="Insured" />
+            <VerifiedPill label="Background Checked" />
+          </View>
+        </View>
+
+        {/* Onboarding banner */}
+        {!onboardingComplete && (
+          <Pressable
+            style={s.onboardingBanner}
+            onPress={() => {
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+              router.push('/pro-onboarding');
+            }}
+          >
+            <Ionicons name="alert-circle" size={20} color={colors.primary} />
+            <Text style={s.onboardingBannerText}>
+              Complete your profile to start receiving jobs
+            </Text>
+            <Ionicons name="chevron-forward" size={16} color={colors.primary} />
+          </Pressable>
+        )}
+
+        {/* ---------------------------------------------------------------- */}
+        {/* 3. Stats Row                                                     */}
+        {/* ---------------------------------------------------------------- */}
+        <View style={s.statsCard}>
+          <StatItem
+            value={profile.stats.jobsCompleted}
+            label="Jobs Done"
+            onPress={() => Alert.alert('Jobs Completed', `${profile.stats.jobsCompleted} jobs completed on Sherpa Pros.`)}
+          />
+          <View style={s.statDivider} />
+          <StatItem
+            value={`${profile.stats.repeatClients}%`}
+            label="Repeat"
+            onPress={() => Alert.alert('Repeat Clients', `${profile.stats.repeatClients}% of clients hire Mike again.`)}
+          />
+          <View style={s.statDivider} />
+          <StatItem
+            value={profile.stats.responseTime}
+            label="Response"
+            onPress={() => Alert.alert('Response Time', `Average response time: ${profile.stats.responseTime}`)}
+          />
+          <View style={s.statDivider} />
+          <StatItem
+            value={profile.stats.yearsActive}
+            label="Years"
+            onPress={() => Alert.alert('Experience', `${profile.stats.yearsActive} years in the trade.`)}
+          />
+        </View>
+
+        {/* ---------------------------------------------------------------- */}
+        {/* 4. About Section                                                 */}
+        {/* ---------------------------------------------------------------- */}
+        <View style={s.sectionCard}>
+          <SectionHeader title="About" />
+          <Text
+            style={s.bioText}
+            numberOfLines={bioExpanded ? undefined : 3}
+          >
+            {profile.bio}
+          </Text>
+          {!bioExpanded && profile.bio.length > 120 && (
+            <Pressable onPress={() => setBioExpanded(true)}>
+              <Text style={s.readMore}>Read more</Text>
+            </Pressable>
+          )}
+          <View style={s.specialtiesRow}>
+            {profile.specialties.map((sp) => (
+              <View key={sp} style={s.specialtyChip}>
+                <Text style={s.specialtyChipText}>{sp}</Text>
+              </View>
+            ))}
+          </View>
+        </View>
+
+        {/* ---------------------------------------------------------------- */}
+        {/* 5. Project Highlights (Instagram stories)                        */}
+        {/* ---------------------------------------------------------------- */}
         <ProjectHighlights items={portfolio} onAddPress={handleAddToPortfolio} />
 
-        {/* Portfolio Grid */}
-        <View style={styles.portfolioSection}>
-          <View style={styles.portfolioHeader}>
-            <Text style={styles.portfolioTitle}>Portfolio</Text>
-            <Pressable
-              style={styles.addPhotoButton}
-              onPress={handleAddToPortfolio}
-            >
-              <Ionicons name="camera-outline" size={18} color={colors.primary} />
-              <Text style={styles.addPhotoText}>Add</Text>
-            </Pressable>
+        {/* ---------------------------------------------------------------- */}
+        {/* 6. Portfolio Grid (Instagram-style)                              */}
+        {/* ---------------------------------------------------------------- */}
+        <View style={s.sectionCard}>
+          <View style={s.portfolioHeader}>
+            <Text style={s.sectionTitle}>Portfolio</Text>
+            <View style={s.portfolioHeaderRight}>
+              <Text style={s.portfolioCount}>{portfolio.length} photos</Text>
+              <Pressable style={s.addPhotoButton} onPress={handleAddToPortfolio}>
+                <Ionicons name="add" size={16} color={colors.primary} />
+                <Text style={s.addPhotoText}>Add</Text>
+              </Pressable>
+            </View>
           </View>
           <PortfolioGrid items={portfolio} />
         </View>
@@ -200,83 +505,295 @@ export default function ProProfileScreen() {
           />
         )}
 
-        {/* Referral Card */}
+        {/* ---------------------------------------------------------------- */}
+        {/* 7. Certifications & Licenses                                     */}
+        {/* ---------------------------------------------------------------- */}
+        <View style={s.sectionCard}>
+          <SectionHeader title="Certifications & Licenses" />
+          {profile.certs.map((cert, idx) => (
+            <View key={cert.number}>
+              <CertRow cert={cert} />
+              {idx < profile.certs.length - 1 && <View style={s.certDivider} />}
+            </View>
+          ))}
+        </View>
+
+        {/* ---------------------------------------------------------------- */}
+        {/* 8. Reviews                                                       */}
+        {/* ---------------------------------------------------------------- */}
+        <View style={s.sectionCard}>
+          <SectionHeader
+            title={`Reviews (${profile.reviewCount})`}
+            rightLabel="See All"
+            rightOnPress={() => Alert.alert('Reviews', 'Full review list coming soon.')}
+          />
+          {MOCK_REVIEWS.map((review) => (
+            <ReviewCard key={review.id} review={review} />
+          ))}
+        </View>
+
+        {/* ---------------------------------------------------------------- */}
+        {/* Referral Card                                                    */}
+        {/* ---------------------------------------------------------------- */}
         <Pressable
-          style={styles.referralCard}
+          style={s.referralCard}
           onPress={() => {
             Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
             router.push('/(pro)/referral');
           }}
         >
-          <View style={styles.referralIconBox}>
+          <View style={s.referralIconBox}>
             <Ionicons name="gift-outline" size={24} color={colors.primary} />
           </View>
-          <View style={styles.referralContent}>
-            <Text style={styles.referralTitle}>Invite & Earn</Text>
-            <Text style={styles.referralSubtitle}>Earn $50 per pro referral</Text>
+          <View style={s.referralContent}>
+            <Text style={s.referralTitle}>Invite & Earn</Text>
+            <Text style={s.referralSubtitle}>Earn $50 per pro referral</Text>
           </View>
           <Ionicons name="chevron-forward" size={18} color={colors.textMuted} />
         </Pressable>
 
-        {/* Settings */}
-        <View style={styles.settingsSection}>
+        {/* ---------------------------------------------------------------- */}
+        {/* 9. Availability                                                  */}
+        {/* ---------------------------------------------------------------- */}
+        <View style={s.sectionCard}>
+          <View style={s.availRow}>
+            <View style={s.availDot} />
+            <Text style={s.availText}>Available for work</Text>
+          </View>
+          <View style={s.availHoursRow}>
+            <Ionicons name="time-outline" size={16} color={colors.textMuted} />
+            <Text style={s.availHoursText}>
+              {profile.availability.hours}
+              {profile.availability.emergency ? ' \u00b7 Emergency 24/7' : ''}
+            </Text>
+          </View>
+          <Pressable
+            style={s.contactButton}
+            onPress={() => {
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+              Alert.alert('Contact', 'Messaging coming soon.');
+            }}
+          >
+            <Text style={s.contactButtonText}>Contact</Text>
+          </Pressable>
+          <Pressable
+            style={s.shareButton}
+            onPress={() => {
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+              Alert.alert('Share Profile', 'Sharing coming soon.');
+            }}
+          >
+            <Text style={s.shareButtonText}>Share Profile</Text>
+          </Pressable>
+        </View>
+
+        {/* ---------------------------------------------------------------- */}
+        {/* Settings                                                         */}
+        {/* ---------------------------------------------------------------- */}
+        <View style={s.settingsSection}>
           {settingsItems.map((item, index) => (
             <Pressable
               key={item.label}
               style={[
-                styles.settingsRow,
-                index < settingsItems.length - 1 && styles.settingsRowBorder,
+                s.settingsRow,
+                index < settingsItems.length - 1 && s.settingsRowBorder,
               ]}
               onPress={() => {
                 Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
                 item.onPress();
               }}
             >
-              <Ionicons name={item.iconName} size={20} color={colors.textMuted} style={styles.settingsIconView} />
-              <Text style={styles.settingsLabel}>{item.label}</Text>
-              <Text style={styles.settingsChevron}>{'\u203A'}</Text>
+              <Ionicons name={item.iconName} size={20} color={colors.textMuted} style={{ marginRight: spacing.md }} />
+              <Text style={s.settingsLabel}>{item.label}</Text>
+              <Ionicons name="chevron-forward" size={16} color={colors.textMuted} />
             </Pressable>
           ))}
         </View>
 
         {/* Actions */}
-        <View style={styles.actionsSection}>
-          <Button
-            title="Switch to Client"
-            onPress={handleSwitchRole}
-            variant="ghost"
-            fullWidth
-          />
-          <Pressable style={styles.signOutButton} onPress={handleSignOut}>
-            <Text style={styles.signOutText}>Sign Out</Text>
+        <View style={s.actionsSection}>
+          <Button title="Switch to Client" onPress={handleSwitchRole} variant="ghost" fullWidth />
+          <Pressable style={s.signOutButton} onPress={handleSignOut}>
+            <Text style={s.signOutText}>Sign Out</Text>
           </Pressable>
         </View>
 
-        <View style={styles.versionRow}>
+        <View style={s.versionRow}>
           <Logo size="sm" />
-          <Text style={styles.versionText}>v1.0.0</Text>
+          <Text style={s.versionText}>v1.0.0</Text>
         </View>
       </ScrollView>
+
+      {/* ------------------------------------------------------------------ */}
+      {/* 10. Sticky Bottom Actions (other's profile only)                    */}
+      {/* ------------------------------------------------------------------ */}
+      {!isOwnProfile && (
+        <View style={[s.stickyBottom, { paddingBottom: insets.bottom + spacing.sm }]}>
+          <Pressable
+            style={s.stickyButtonPrimary}
+            onPress={() => {
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+              Alert.alert('Message', 'Messaging coming soon.');
+            }}
+          >
+            <Ionicons name="chatbubble-outline" size={18} color={colors.textInverse} />
+            <Text style={s.stickyButtonPrimaryText}>Message</Text>
+          </Pressable>
+          <Pressable
+            style={s.stickyButtonOutline}
+            onPress={() => {
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+              Alert.alert('Request Quote', 'Quote request coming soon.');
+            }}
+          >
+            <Ionicons name="document-text-outline" size={18} color={colors.primary} />
+            <Text style={s.stickyButtonOutlineText}>Request Quote</Text>
+          </Pressable>
+        </View>
+      )}
     </View>
   );
 }
 
-const styles = StyleSheet.create({
+// ---------------------------------------------------------------------------
+// Styles
+// ---------------------------------------------------------------------------
+
+const COVER_HEIGHT = 180;
+const AVATAR_SIZE = 90;
+const AVATAR_OVERLAP = AVATAR_SIZE / 2;
+
+const s = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.surfaceSecondary,
   },
-  header: {
-    paddingHorizontal: spacing.lg,
-    paddingVertical: spacing.lg,
-    backgroundColor: colors.background,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.borderLight,
+
+  // Cover + Avatar --------------------------------------------------------
+  coverContainer: {
+    height: COVER_HEIGHT + AVATAR_OVERLAP,
+    position: 'relative',
   },
-  headerTitle: {
-    ...typography.heading,
+  coverImage: {
+    width: '100%',
+    height: COVER_HEIGHT,
+  },
+  coverGradient: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: AVATAR_OVERLAP,
+    height: COVER_HEIGHT / 2,
+  },
+  editProfilePill: {
+    position: 'absolute',
+    right: spacing.lg,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    backgroundColor: 'rgba(255,255,255,0.92)',
+    paddingHorizontal: spacing.md,
+    paddingVertical: 6,
+    borderRadius: borderRadius.full,
+  },
+  editProfileText: {
+    fontSize: 12,
+    fontWeight: '600',
     color: colors.text,
   },
+  avatarOverlapContainer: {
+    position: 'absolute',
+    bottom: 0,
+    left: spacing.lg,
+  },
+  avatarRing: {
+    padding: 3,
+    borderRadius: (AVATAR_SIZE + 6) / 2,
+    borderWidth: 3,
+    borderColor: colors.primary,
+    backgroundColor: colors.background,
+  },
+
+  // Identity --------------------------------------------------------------
+  identitySection: {
+    paddingHorizontal: spacing.lg,
+    paddingTop: spacing.md,
+    paddingBottom: spacing.lg,
+    backgroundColor: colors.background,
+    gap: 4,
+  },
+  displayName: {
+    fontSize: 24,
+    fontWeight: '700',
+    color: colors.text,
+  },
+  headline: {
+    fontSize: 15,
+    fontWeight: '500',
+    color: colors.textSecondary,
+  },
+  locationRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    marginTop: 2,
+  },
+  locationText: {
+    fontSize: 13,
+    color: colors.textMuted,
+  },
+  ratingRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 2,
+    marginTop: 4,
+  },
+  ratingText: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: colors.text,
+    marginLeft: 4,
+  },
+  tierRow: {
+    flexDirection: 'row',
+    marginTop: 6,
+  },
+  tierBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: borderRadius.full,
+    backgroundColor: '#fef3c7',
+  },
+  tierText: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: '#b8860b',
+  },
+  verifiedRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: spacing.sm,
+    marginTop: 8,
+  },
+  verifiedPill: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: borderRadius.full,
+    backgroundColor: colors.successLight,
+  },
+  verifiedPillText: {
+    fontSize: 11,
+    fontWeight: '600',
+    color: colors.success,
+  },
+
+  // Onboarding banner -----------------------------------------------------
   onboardingBanner: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -296,82 +813,119 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     flex: 1,
   },
-  scrollContent: {
-    paddingHorizontal: spacing.lg,
-  },
-  userSection: {
-    alignItems: 'center',
-    paddingVertical: spacing.xxl,
-    gap: spacing.sm,
-  },
-  avatarRing: {
-    padding: 3,
-    borderRadius: 44,
-    borderWidth: 2.5,
-    borderColor: colors.primary,
-  },
-  ratingRow: {
+
+  // Stats -----------------------------------------------------------------
+  statsCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 2,
+    backgroundColor: colors.background,
+    marginHorizontal: spacing.lg,
+    marginTop: spacing.lg,
+    borderRadius: borderRadius.lg,
+    paddingVertical: spacing.lg,
+    paddingHorizontal: spacing.md,
+    ...shadows.sm,
+    borderWidth: 1,
+    borderColor: colors.borderLight,
   },
-  ratingText: {
-    fontSize: 14,
+  statItem: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  statValue: {
+    fontSize: 20,
     fontWeight: '700',
     color: colors.text,
-    marginLeft: 4,
   },
-  badgeRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  tierBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-    paddingHorizontal: 8,
-    paddingVertical: 3,
-    borderRadius: 9999,
-    backgroundColor: '#fef3c7',
-  },
-  tierText: {
+  statLabel: {
     fontSize: 11,
-    fontWeight: '600',
-    color: '#b8860b',
-  },
-  memberSince: {
-    fontSize: 12,
+    fontWeight: '500',
     color: colors.textMuted,
+    marginTop: 2,
+  },
+  statDivider: {
+    width: 1,
+    height: 28,
+    backgroundColor: colors.borderLight,
+  },
+
+  // Section card ----------------------------------------------------------
+  sectionCard: {
+    backgroundColor: colors.background,
+    marginHorizontal: spacing.lg,
+    marginTop: spacing.lg,
+    borderRadius: borderRadius.lg,
+    padding: spacing.lg,
+    ...shadows.sm,
+    borderWidth: 1,
+    borderColor: colors.borderLight,
+  },
+  sectionHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: spacing.md,
+  },
+  sectionTitle: {
+    ...typography.subheading,
+    color: colors.text,
+  },
+  sectionAction: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: colors.primary,
+  },
+
+  // About -----------------------------------------------------------------
+  bioText: {
+    ...typography.bodySmall,
+    color: colors.textSecondary,
+    lineHeight: 22,
+  },
+  readMore: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: colors.primary,
     marginTop: 4,
   },
-  userName: {
-    ...typography.heading,
-    color: colors.text,
+  specialtiesRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: spacing.sm,
     marginTop: spacing.md,
   },
-  userEmail: {
-    ...typography.bodySmall,
-    color: colors.textMuted,
+  specialtyChip: {
+    paddingHorizontal: spacing.md,
+    paddingVertical: 6,
+    borderRadius: borderRadius.full,
+    backgroundColor: colors.primaryLight,
   },
-  portfolioSection: {
-    marginBottom: spacing.xl,
+  specialtyChipText: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: colors.primary,
   },
+
+  // Portfolio header ------------------------------------------------------
   portfolioHeader: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: spacing.lg,
     marginBottom: spacing.md,
   },
-  portfolioTitle: {
-    ...typography.subheading,
-    color: colors.text,
+  portfolioHeaderRight: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.md,
+  },
+  portfolioCount: {
+    fontSize: 13,
+    color: colors.textMuted,
   },
   addPhotoButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4,
+    gap: 2,
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.xs,
     borderRadius: borderRadius.full,
@@ -383,43 +937,106 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: colors.primary,
   },
-  settingsSection: {
-    backgroundColor: colors.surface,
-    borderRadius: borderRadius.lg,
-    ...shadows.sm,
-    borderWidth: 1,
-    borderColor: colors.border,
-    marginBottom: spacing.xl,
-  },
-  settingsRow: {
+
+  // Certs -----------------------------------------------------------------
+  certRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: spacing.lg,
-    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.md,
   },
-  settingsRowBorder: {
+  certIconBox: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: colors.primaryLight,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: spacing.md,
+  },
+  certInfo: {
+    flex: 1,
+  },
+  certName: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: colors.text,
+  },
+  certIssuer: {
+    fontSize: 12,
+    color: colors.textMuted,
+    marginTop: 2,
+  },
+  certStatusBadge: {
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: borderRadius.full,
+  },
+  certStatusText: {
+    fontSize: 11,
+    fontWeight: '600',
+  },
+  certDivider: {
+    height: 1,
+    backgroundColor: colors.borderLight,
+  },
+
+  // Reviews ---------------------------------------------------------------
+  reviewCard: {
+    paddingVertical: spacing.md,
     borderBottomWidth: 1,
     borderBottomColor: colors.borderLight,
   },
-  settingsIconView: {
-    marginRight: spacing.md,
+  reviewHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 6,
   },
-  settingsLabel: {
-    ...typography.body,
-    color: colors.text,
-    flex: 1,
+  reviewStars: {
+    flexDirection: 'row',
+    gap: 1,
   },
-  settingsChevron: {
-    fontSize: 24,
+  reviewDate: {
+    fontSize: 12,
     color: colors.textMuted,
   },
+  reviewText: {
+    ...typography.bodySmall,
+    color: colors.textSecondary,
+    lineHeight: 20,
+  },
+  reviewFooter: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+    marginTop: 8,
+  },
+  reviewerName: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: colors.text,
+  },
+  reviewRoleBadge: {
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: borderRadius.full,
+    backgroundColor: colors.borderLight,
+  },
+  reviewRoleText: {
+    fontSize: 10,
+    fontWeight: '600',
+    color: colors.textMuted,
+  },
+
+  // Referral card ---------------------------------------------------------
   referralCard: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: colors.primaryLight,
     borderRadius: borderRadius.lg,
     padding: spacing.lg,
-    marginBottom: spacing.xl,
+    marginHorizontal: spacing.lg,
+    marginTop: spacing.lg,
     borderWidth: 1,
     borderColor: colors.border,
   },
@@ -444,8 +1061,91 @@ const styles = StyleSheet.create({
     color: colors.textMuted,
     marginTop: 2,
   },
+
+  // Availability ----------------------------------------------------------
+  availRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+    marginBottom: spacing.sm,
+  },
+  availDot: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    backgroundColor: colors.success,
+  },
+  availText: {
+    fontSize: 15,
+    fontWeight: '600',
+    color: colors.success,
+  },
+  availHoursRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    marginBottom: spacing.lg,
+  },
+  availHoursText: {
+    fontSize: 13,
+    color: colors.textMuted,
+  },
+  contactButton: {
+    backgroundColor: colors.primary,
+    borderRadius: borderRadius.full,
+    paddingVertical: spacing.md,
+    alignItems: 'center',
+    marginBottom: spacing.sm,
+  },
+  contactButtonText: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: colors.textInverse,
+  },
+  shareButton: {
+    borderWidth: 1.5,
+    borderColor: colors.primary,
+    borderRadius: borderRadius.full,
+    paddingVertical: spacing.md,
+    alignItems: 'center',
+  },
+  shareButtonText: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: colors.primary,
+  },
+
+  // Settings --------------------------------------------------------------
+  settingsSection: {
+    backgroundColor: colors.surface,
+    borderRadius: borderRadius.lg,
+    marginHorizontal: spacing.lg,
+    marginTop: spacing.lg,
+    ...shadows.sm,
+    borderWidth: 1,
+    borderColor: colors.border,
+  },
+  settingsRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: spacing.lg,
+    paddingHorizontal: spacing.lg,
+  },
+  settingsRowBorder: {
+    borderBottomWidth: 1,
+    borderBottomColor: colors.borderLight,
+  },
+  settingsLabel: {
+    ...typography.body,
+    color: colors.text,
+    flex: 1,
+  },
+
+  // Actions ---------------------------------------------------------------
   actionsSection: {
     gap: spacing.md,
+    marginHorizontal: spacing.lg,
+    marginTop: spacing.lg,
   },
   signOutButton: {
     paddingVertical: spacing.md,
@@ -456,6 +1156,8 @@ const styles = StyleSheet.create({
     color: colors.danger,
     fontWeight: '600',
   },
+
+  // Version ---------------------------------------------------------------
   versionRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -467,5 +1169,51 @@ const styles = StyleSheet.create({
   versionText: {
     fontSize: 11,
     color: colors.textMuted,
+  },
+
+  // Sticky bottom ---------------------------------------------------------
+  stickyBottom: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    flexDirection: 'row',
+    gap: spacing.md,
+    paddingHorizontal: spacing.lg,
+    paddingTop: spacing.md,
+    backgroundColor: colors.background,
+    borderTopWidth: 1,
+    borderTopColor: colors.borderLight,
+  },
+  stickyButtonPrimary: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 6,
+    backgroundColor: colors.primary,
+    borderRadius: borderRadius.full,
+    paddingVertical: spacing.md,
+  },
+  stickyButtonPrimaryText: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: colors.textInverse,
+  },
+  stickyButtonOutline: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 6,
+    borderWidth: 1.5,
+    borderColor: colors.primary,
+    borderRadius: borderRadius.full,
+    paddingVertical: spacing.md,
+  },
+  stickyButtonOutlineText: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: colors.primary,
   },
 });

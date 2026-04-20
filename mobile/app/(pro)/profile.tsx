@@ -11,6 +11,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import * as Haptics from 'expo-haptics';
 import * as SecureStore from 'expo-secure-store';
+import * as ImagePicker from 'expo-image-picker';
 import { Ionicons } from '@expo/vector-icons';
 import { colors, spacing, borderRadius, shadows, typography } from '@/lib/theme';
 import { useAuth } from '@/lib/auth';
@@ -18,6 +19,13 @@ import Avatar from '@/components/common/Avatar';
 import Badge from '@/components/common/Badge';
 import Button from '@/components/common/Button';
 import Logo from '@/components/brand/Logo';
+import {
+  PortfolioGrid,
+  ProjectHighlights,
+  PhotoFilter,
+  MOCK_PORTFOLIO,
+} from '@/components/portfolio';
+import type { PortfolioItem } from '@/components/portfolio';
 
 interface SettingsItem {
   label: string;
@@ -30,6 +38,9 @@ export default function ProProfileScreen() {
   const router = useRouter();
   const { userName, email, signOut, switchRole } = useAuth();
   const [onboardingComplete, setOnboardingComplete] = useState(true);
+  const [portfolio, setPortfolio] = useState<PortfolioItem[]>(MOCK_PORTFOLIO);
+  const [filterVisible, setFilterVisible] = useState(false);
+  const [pendingImageUri, setPendingImageUri] = useState<string | null>(null);
 
   useEffect(() => {
     SecureStore.getItemAsync('sherpa_onboarding_complete').then((val) => {
@@ -43,6 +54,43 @@ export default function ProProfileScreen() {
     .join('')
     .toUpperCase()
     .slice(0, 2);
+
+  const handleAddToPortfolio = useCallback(async () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    const permResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (!permResult.granted) {
+      Alert.alert('Permission needed', 'Allow photo access to add portfolio images.');
+      return;
+    }
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ['images'],
+      quality: 0.9,
+      allowsEditing: true,
+      aspect: [1, 1],
+    });
+    if (!result.canceled && result.assets[0]) {
+      setPendingImageUri(result.assets[0].uri);
+      setFilterVisible(true);
+    }
+  }, []);
+
+  const handleFilterApply = useCallback(
+    (filteredUri: string, filterName: string) => {
+      setFilterVisible(false);
+      const newItem: PortfolioItem = {
+        id: `p${Date.now()}`,
+        imageUri: filteredUri,
+        title: `New Project (${filterName})`,
+        category: 'kitchen',
+        likes: 0,
+        date: 'Just now',
+      };
+      setPortfolio((prev) => [newItem, ...prev]);
+      setPendingImageUri(null);
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    },
+    []
+  );
 
   const handleSwitchRole = useCallback(async () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
@@ -120,6 +168,37 @@ export default function ProProfileScreen() {
           </View>
           <Text style={styles.memberSince}>Member since April 2026</Text>
         </View>
+
+        {/* Project Highlights */}
+        <ProjectHighlights items={portfolio} onAddPress={handleAddToPortfolio} />
+
+        {/* Portfolio Grid */}
+        <View style={styles.portfolioSection}>
+          <View style={styles.portfolioHeader}>
+            <Text style={styles.portfolioTitle}>Portfolio</Text>
+            <Pressable
+              style={styles.addPhotoButton}
+              onPress={handleAddToPortfolio}
+            >
+              <Ionicons name="camera-outline" size={18} color={colors.primary} />
+              <Text style={styles.addPhotoText}>Add</Text>
+            </Pressable>
+          </View>
+          <PortfolioGrid items={portfolio} />
+        </View>
+
+        {/* Photo Filter Modal */}
+        {pendingImageUri && (
+          <PhotoFilter
+            imageUri={pendingImageUri}
+            visible={filterVisible}
+            onClose={() => {
+              setFilterVisible(false);
+              setPendingImageUri(null);
+            }}
+            onApply={handleFilterApply}
+          />
+        )}
 
         {/* Referral Card */}
         <Pressable
@@ -274,6 +353,35 @@ const styles = StyleSheet.create({
   userEmail: {
     ...typography.bodySmall,
     color: colors.textMuted,
+  },
+  portfolioSection: {
+    marginBottom: spacing.xl,
+  },
+  portfolioHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: spacing.lg,
+    marginBottom: spacing.md,
+  },
+  portfolioTitle: {
+    ...typography.subheading,
+    color: colors.text,
+  },
+  addPhotoButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.xs,
+    borderRadius: borderRadius.full,
+    borderWidth: 1,
+    borderColor: colors.primary,
+  },
+  addPhotoText: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: colors.primary,
   },
   settingsSection: {
     backgroundColor: colors.surface,

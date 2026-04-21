@@ -69,7 +69,7 @@ function StarRow({ rating }: { rating: number }) {
 export default function ClientProfileScreen() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
-  const { userName, signOut } = useAuth();
+  const { userName, signOut, switchRole } = useAuth();
   const [galleryModal, setGalleryModal] = useState<string | null>(null);
 
   const initials = (userName ?? 'U')
@@ -305,6 +305,19 @@ export default function ClientProfileScreen() {
               <Text style={styles.referralSubtitle}>Earn $25 credit per referral</Text>
             </View>
             <Ionicons name="chevron-forward" size={18} color={colors.textMuted} />
+          </Pressable>
+
+          {/* Switch Role */}
+          <Pressable
+            style={styles.switchRoleButton}
+            onPress={async () => {
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+              await switchRole('pro');
+              router.replace('/(pro)');
+            }}
+          >
+            <Ionicons name="swap-horizontal-outline" size={20} color={colors.primary} />
+            <Text style={styles.switchRoleText}>Switch to Pro</Text>
           </Pressable>
 
           {/* Sign Out */}
@@ -736,6 +749,25 @@ const styles = StyleSheet.create({
     ...typography.caption,
     color: colors.textMuted,
     marginTop: 2,
+  },
+
+  // Switch Role
+  switchRoleButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: spacing.sm,
+    paddingVertical: spacing.lg,
+    marginHorizontal: spacing.lg,
+    marginBottom: spacing.sm,
+    borderRadius: borderRadius.md,
+    borderWidth: 1,
+    borderColor: colors.primary,
+  },
+  switchRoleText: {
+    fontSize: 15,
+    fontWeight: '600',
+    color: colors.primary,
   },
 
   // Sign Out

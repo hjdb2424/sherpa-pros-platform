@@ -169,7 +169,11 @@ export default function EmergencyScreen() {
   }, []);
 
   const handleCancel = useCallback(() => {
-    router.back();
+    if (router.canGoBack()) {
+      router.back();
+    } else {
+      router.replace('/(client)');
+    }
   }, [router]);
 
   // ---------- STEP 1: Category selection ----------

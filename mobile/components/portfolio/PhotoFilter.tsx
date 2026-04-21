@@ -3,294 +3,190 @@ import {
   View,
   Text,
   Image,
-  FlatList,
+  ScrollView,
   Pressable,
   Modal,
   StyleSheet,
   Dimensions,
-  ActivityIndicator,
 } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import * as Haptics from 'expo-haptics';
 import { Ionicons } from '@expo/vector-icons';
-import {
-  ColorMatrix,
-  concatColorMatrices,
-  brightness,
-  contrast,
-  saturate,
-  hueRotate,
-  sepia,
-  grayscale,
-  temperature,
-  cool,
-  warm,
-  type Matrix,
-} from 'react-native-color-matrix-image-filters';
-import { manipulateAsync, SaveFormat } from 'expo-image-manipulator';
-import { colors, spacing, borderRadius, typography } from '@/lib/theme';
+import * as Haptics from 'expo-haptics';
+import { colors, spacing, borderRadius, shadows } from '@/lib/theme';
+
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
+const PREVIEW_SIZE = 70;
 
 interface PhotoFilterProps {
   imageUri: string;
   visible: boolean;
   onClose: () => void;
-  onApply: (filteredUri: string, filterName: string) => void;
+  onApply: (uri: string, filterName: string) => void;
 }
 
-interface FilterDef {
-  key: string;
-  label: string;
-  matrix: Matrix | null;
-}
-
-const FILTERS: FilterDef[] = [
-  { key: 'original', label: 'Original', matrix: null },
-  { key: 'cleanBuild', label: 'Clean Build', matrix: concatColorMatrices(brightness(1.1), contrast(1.15)) },
-  { key: 'warmWood', label: 'Warm Wood', matrix: concatColorMatrices(temperature(0.1), saturate(1.2)) },
-  { key: 'proShot', label: 'Pro Shot', matrix: concatColorMatrices(contrast(1.3), saturate(0.9)) },
-  { key: 'blueprint', label: 'Blueprint', matrix: concatColorMatrices(cool(), saturate(0.85)) },
-  { key: 'goldenHour', label: 'Golden Hour', matrix: concatColorMatrices(warm(), saturate(1.1), brightness(1.05)) },
-  { key: 'crisp', label: 'Crisp', matrix: concatColorMatrices(contrast(1.25), brightness(1.08)) },
-  { key: 'vintage', label: 'Vintage', matrix: concatColorMatrices(sepia(0.6), contrast(1.1)) },
-  { key: 'bw', label: 'B&W', matrix: grayscale(1) },
-  { key: 'moody', label: 'Moody', matrix: concatColorMatrices(brightness(0.85), contrast(1.35), saturate(0.8)) },
-  { key: 'fresh', label: 'Fresh', matrix: concatColorMatrices(brightness(1.12), hueRotate(15), saturate(1.1)) },
-  { key: 'sunset', label: 'Sunset', matrix: concatColorMatrices(temperature(0.2), saturate(1.15), brightness(1.05)) },
+// Simple filter definitions (visual-only, applied as tint overlays)
+const FILTERS = [
+  { id: 'original', name: 'Original', tint: null },
+  { id: 'clean', name: 'Clean Build', tint: 'rgba(0, 169, 224, 0.08)' },
+  { id: 'warm', name: 'Warm Wood', tint: 'rgba(255, 165, 0, 0.12)' },
+  { id: 'pro', name: 'Pro Shot', tint: 'rgba(0, 0, 0, 0.1)' },
+  { id: 'blueprint', name: 'Blueprint', tint: 'rgba(0, 100, 200, 0.15)' },
+  { id: 'golden', name: 'Golden Hour', tint: 'rgba(255, 200, 50, 0.15)' },
+  { id: 'crisp', name: 'Crisp', tint: 'rgba(255, 255, 255, 0.1)' },
+  { id: 'vintage', name: 'Vintage', tint: 'rgba(180, 140, 80, 0.2)' },
+  { id: 'bw', name: 'B&W', tint: 'rgba(128, 128, 128, 0.5)' },
+  { id: 'moody', name: 'Moody', tint: 'rgba(30, 30, 50, 0.2)' },
+  { id: 'fresh', name: 'Fresh', tint: 'rgba(100, 200, 100, 0.1)' },
+  { id: 'sunset', name: 'Sunset', tint: 'rgba(255, 100, 50, 0.15)' },
 ];
 
-const { width: SCREEN_WIDTH } = Dimensions.get('window');
-const PREVIEW_SIZE = SCREEN_WIDTH - spacing.lg * 2;
-const THUMB_SIZE = 72;
+export default function PhotoFilter({ imageUri, visible, onClose, onApply }: PhotoFilterProps) {
+  const [selectedFilter, setSelectedFilter] = useState('original');
 
-export default function PhotoFilter({
-  imageUri,
-  visible,
-  onClose,
-  onApply,
-}: PhotoFilterProps) {
-  const insets = useSafeAreaInsets();
-  const [selectedFilter, setSelectedFilter] = useState<string>('original');
-  const [saving, setSaving] = useState(false);
-
-  const handleSelectFilter = useCallback((key: string) => {
-    Haptics.selectionAsync();
-    setSelectedFilter(key);
+  const handleSelect = useCallback((filterId: string) => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    setSelectedFilter(filterId);
   }, []);
 
-  const handleApply = useCallback(async () => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-    setSaving(true);
-    try {
-      // For now, save the original image since color matrix filters are visual-only
-      // In production, you would capture the filtered view as a screenshot
-      const result = await manipulateAsync(
-        imageUri,
-        [],
-        { compress: 0.9, format: SaveFormat.JPEG }
-      );
-      const filter = FILTERS.find((f) => f.key === selectedFilter);
-      onApply(result.uri, filter?.label ?? 'Original');
-    } catch {
-      // Fallback: return original
-      onApply(imageUri, 'Original');
-    } finally {
-      setSaving(false);
-    }
+  const handleApply = useCallback(() => {
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    const filter = FILTERS.find(f => f.id === selectedFilter);
+    onApply(imageUri, filter?.name ?? 'Original');
   }, [imageUri, selectedFilter, onApply]);
 
-  const handleClose = useCallback(() => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    setSelectedFilter('original');
-    onClose();
-  }, [onClose]);
-
-  const activeFilter = FILTERS.find((f) => f.key === selectedFilter);
-
-  const renderFilterThumb = useCallback(
-    ({ item }: { item: FilterDef }) => {
-      const isSelected = item.key === selectedFilter;
-      const thumb = (
-        <Image source={{ uri: imageUri }} style={styles.thumbImage} />
-      );
-
-      return (
-        <Pressable
-          style={[styles.thumbItem, isSelected && styles.thumbItemSelected]}
-          onPress={() => handleSelectFilter(item.key)}
-        >
-          <View style={[styles.thumbWrapper, isSelected && styles.thumbWrapperSelected]}>
-            {item.matrix ? (
-              <ColorMatrix matrix={item.matrix} style={styles.thumbFilter}>
-                {thumb}
-              </ColorMatrix>
-            ) : (
-              thumb
-            )}
-          </View>
-          <Text
-            style={[styles.thumbLabel, isSelected && styles.thumbLabelSelected]}
-            numberOfLines={1}
-          >
-            {item.label}
-          </Text>
-        </Pressable>
-      );
-    },
-    [selectedFilter, imageUri, handleSelectFilter]
-  );
+  const currentFilter = FILTERS.find(f => f.id === selectedFilter);
 
   return (
-    <Modal
-      visible={visible}
-      animationType="slide"
-      transparent={false}
-      statusBarTranslucent
-      onRequestClose={handleClose}
-    >
-      <View style={[styles.container, { paddingTop: insets.top }]}>
+    <Modal visible={visible} animationType="slide" presentationStyle="fullScreen">
+      <View style={styles.container}>
         {/* Header */}
         <View style={styles.header}>
-          <Pressable onPress={handleClose} hitSlop={12}>
-            <Ionicons name="close" size={28} color={colors.text} />
+          <Pressable onPress={onClose} style={styles.closeBtn}>
+            <Ionicons name="close" size={24} color={colors.text} />
           </Pressable>
-          <Text style={styles.headerTitle}>Apply Filter</Text>
-          <Pressable
-            onPress={handleApply}
-            disabled={saving}
-            style={[styles.applyButton, saving && styles.applyButtonDisabled]}
-          >
-            {saving ? (
-              <ActivityIndicator size="small" color="#ffffff" />
-            ) : (
-              <Text style={styles.applyButtonText}>Apply</Text>
-            )}
+          <Text style={styles.headerTitle}>Edit Photo</Text>
+          <Pressable onPress={handleApply} style={styles.applyBtn}>
+            <Text style={styles.applyText}>Apply</Text>
           </Pressable>
         </View>
 
         {/* Preview */}
         <View style={styles.previewContainer}>
-          {activeFilter?.matrix ? (
-            <ColorMatrix matrix={activeFilter.matrix}>
-              <Image
-                source={{ uri: imageUri }}
-                style={styles.previewImage}
-                resizeMode="cover"
-              />
-            </ColorMatrix>
-          ) : (
-            <Image
-              source={{ uri: imageUri }}
-              style={styles.previewImage}
-              resizeMode="cover"
-            />
+          <Image source={{ uri: imageUri }} style={styles.preview} resizeMode="contain" />
+          {currentFilter?.tint && (
+            <View style={[styles.filterOverlay, { backgroundColor: currentFilter.tint }]} />
           )}
         </View>
 
         {/* Filter thumbnails */}
-        <View style={[styles.filterBar, { paddingBottom: insets.bottom + spacing.md }]}>
-          <FlatList
-            horizontal
-            data={FILTERS}
-            keyExtractor={(item) => item.key}
-            renderItem={renderFilterThumb}
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.filterList}
-          />
-        </View>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.filterList}
+        >
+          {FILTERS.map((filter) => (
+            <Pressable
+              key={filter.id}
+              onPress={() => handleSelect(filter.id)}
+              style={[
+                styles.filterThumb,
+                selectedFilter === filter.id && styles.filterThumbSelected,
+              ]}
+            >
+              <View style={styles.filterPreview}>
+                <Image source={{ uri: imageUri }} style={styles.filterImage} />
+                {filter.tint && (
+                  <View style={[styles.filterPreviewOverlay, { backgroundColor: filter.tint }]} />
+                )}
+              </View>
+              <Text
+                style={[
+                  styles.filterName,
+                  selectedFilter === filter.id && styles.filterNameSelected,
+                ]}
+                numberOfLines={1}
+              >
+                {filter.name}
+              </Text>
+            </Pressable>
+          ))}
+        </ScrollView>
       </View>
     </Modal>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.background,
-  },
+  container: { flex: 1, backgroundColor: '#000' },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: spacing.lg,
-    paddingVertical: spacing.md,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.borderLight,
+    paddingTop: 60,
+    paddingBottom: spacing.md,
   },
-  headerTitle: {
-    ...typography.subheading,
-    color: colors.text,
-  },
-  applyButton: {
+  closeBtn: { width: 44, height: 44, alignItems: 'center', justifyContent: 'center' },
+  headerTitle: { fontSize: 17, fontWeight: '600', color: '#fff' },
+  applyBtn: {
     backgroundColor: colors.primary,
     paddingHorizontal: spacing.lg,
     paddingVertical: spacing.sm,
-    borderRadius: borderRadius.sm,
-    minWidth: 72,
-    alignItems: 'center',
+    borderRadius: borderRadius.full,
   },
-  applyButtonDisabled: {
-    opacity: 0.6,
-  },
-  applyButtonText: {
-    ...typography.caption,
-    color: '#ffffff',
-    fontWeight: '700',
-    textTransform: 'uppercase',
-  },
+  applyText: { fontSize: 14, fontWeight: '600', color: '#fff' },
   previewContainer: {
     flex: 1,
-    alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: spacing.lg,
+    alignItems: 'center',
   },
-  previewImage: {
-    width: PREVIEW_SIZE,
-    height: PREVIEW_SIZE,
+  preview: {
+    width: SCREEN_WIDTH - 32,
+    height: SCREEN_WIDTH - 32,
     borderRadius: borderRadius.md,
   },
-  filterBar: {
-    backgroundColor: colors.surface,
-    borderTopWidth: 1,
-    borderTopColor: colors.borderLight,
-    paddingTop: spacing.md,
+  filterOverlay: {
+    position: 'absolute',
+    width: SCREEN_WIDTH - 32,
+    height: SCREEN_WIDTH - 32,
+    borderRadius: borderRadius.md,
   },
   filterList: {
     paddingHorizontal: spacing.lg,
+    paddingBottom: 40,
     gap: spacing.md,
   },
-  thumbItem: {
+  filterThumb: {
     alignItems: 'center',
-    width: THUMB_SIZE + 8,
-    gap: 4,
+    width: PREVIEW_SIZE,
   },
-  thumbItemSelected: {},
-  thumbWrapper: {
-    width: THUMB_SIZE,
-    height: THUMB_SIZE,
+  filterThumbSelected: {},
+  filterPreview: {
+    width: PREVIEW_SIZE,
+    height: PREVIEW_SIZE,
     borderRadius: borderRadius.sm,
     overflow: 'hidden',
     borderWidth: 2,
     borderColor: 'transparent',
   },
-  thumbWrapperSelected: {
-    borderColor: colors.primary,
+  filterImage: {
+    width: '100%',
+    height: '100%',
   },
-  thumbFilter: {
-    width: THUMB_SIZE,
-    height: THUMB_SIZE,
+  filterPreviewOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
   },
-  thumbImage: {
-    width: THUMB_SIZE - 4,
-    height: THUMB_SIZE - 4,
-  },
-  thumbLabel: {
-    fontSize: 9,
-    fontWeight: '500',
-    color: colors.textMuted,
+  filterName: {
+    fontSize: 10,
+    color: '#999',
+    marginTop: 4,
     textAlign: 'center',
   },
-  thumbLabelSelected: {
+  filterNameSelected: {
     color: colors.primary,
-    fontWeight: '700',
+    fontWeight: '600',
   },
 });

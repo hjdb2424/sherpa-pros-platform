@@ -6,6 +6,8 @@ import AvailabilityCalendar from '@/components/pro/AvailabilityCalendar';
 import { mockProProfile } from '@/lib/mock-data/pro-data';
 import ReviewCard from '@/components/reviews/ReviewCard';
 import Portfolio from '@/components/pro/Portfolio';
+import ReviewAggregator from '@/components/social/ReviewAggregator';
+import Link from 'next/link';
 
 interface ReviewData {
   id: string;
@@ -148,7 +150,15 @@ export default function ProfilePageClient() {
 
         {/* Portfolio — powered by Portfolio component */}
         <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm sm:p-6 dark:border-zinc-800 dark:bg-zinc-900 lg:col-span-2">
-          <h2 className="mb-3 text-base font-bold text-zinc-900 dark:text-zinc-50">My Portfolio</h2>
+          <div className="mb-3 flex items-center justify-between">
+            <h2 className="text-base font-bold text-zinc-900 dark:text-zinc-50">My Portfolio</h2>
+            <Link
+              href="/pro/social"
+              className="text-xs font-medium text-[#00a9e0] transition-colors hover:text-[#0098ca]"
+            >
+              Import from Social...
+            </Link>
+          </div>
           <Portfolio editable />
         </div>
 
@@ -233,10 +243,18 @@ export default function ProfilePageClient() {
           <AvailabilityCalendar initialAvailability={pro.availability} />
         </div>
 
+        {/* Aggregate Reviews from Social Platforms */}
+        <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm sm:p-6 dark:border-zinc-800 dark:bg-zinc-900 lg:col-span-2">
+          <h2 className="mb-4 text-base font-bold text-zinc-900 dark:text-zinc-50">
+            Social Reviews
+          </h2>
+          <ReviewAggregator />
+        </div>
+
         {/* Reviews */}
         <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm sm:p-6 dark:border-zinc-800 dark:bg-zinc-900 lg:col-span-2">
           <h2 className="mb-4 text-base font-bold text-zinc-900 dark:text-zinc-50">
-            Reviews ({reviews.length})
+            Platform Reviews ({reviews.length})
           </h2>
           {reviews.length > 0 ? (
             <div className="space-y-3">

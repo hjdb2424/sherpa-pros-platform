@@ -174,6 +174,31 @@ export default function ProDashboardPage() {
         </div>
       </section>
 
+      {/* Social Connections summary */}
+      <section>
+        <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-purple-100 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400">
+                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z" />
+                </svg>
+              </span>
+              <div>
+                <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">Social Connections</p>
+                <p className="text-xs text-zinc-500 dark:text-zinc-400">3 of 5 platforms connected</p>
+              </div>
+            </div>
+            <Link
+              href="/pro/social"
+              className="text-sm font-medium text-[#00a9e0] hover:text-[#0ea5e9] dark:text-sky-400"
+            >
+              Manage
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* Two-column: Activity + Quick Actions */}
       <div className="grid gap-6 lg:grid-cols-3">
         {/* Recent activity */}

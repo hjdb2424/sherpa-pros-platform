@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback, useEffect } from 'react';
 import Link from 'next/link';
 import {
   getJobById,
@@ -27,6 +27,8 @@ import {
   DeliverySelector,
   DeliveryTracker,
 } from '@/components/checklist';
+import QuotePreview from '@/components/quotes/QuotePreview';
+import type { Quote } from '@/lib/services/quote-builder';
 
 // ---------------------------------------------------------------------------
 // Materials Flow State Machine
@@ -137,6 +139,33 @@ export function JobDetailContent({ jobId }: JobDetailContentProps) {
   const [orderConfirming, setOrderConfirming] = useState(false);
   const [showInvoice, setShowInvoice] = useState(false);
   const clientInvoice: Invoice | undefined = useMemo(() => getInvoiceByJobId(jobId), [jobId]);
+
+  // Quote state
+  const [jobQuote, setJobQuote] = useState<Quote | null>(null);
+  const [quoteLoading, setQuoteLoading] = useState(false);
+  const [showFullQuote, setShowFullQuote] = useState(false);
+  const [quoteAccepted, setQuoteAccepted] = useState(false);
+
+  // Fetch quote for this job
+  useEffect(() => {
+    let cancelled = false;
+    async function fetchQuote() {
+      setQuoteLoading(true);
+      try {
+        const res = await fetch(`/api/quotes?jobId=${jobId}`);
+        const data = await res.json();
+        if (!cancelled && data.quotes?.length > 0) {
+          setJobQuote(data.quotes[0]);
+        }
+      } catch {
+        // silent
+      } finally {
+        if (!cancelled) setQuoteLoading(false);
+      }
+    }
+    fetchQuote();
+    return () => { cancelled = true; };
+  }, [jobId]);
 
   // Compute fee breakdown from checklist materials
   const feeBreakdown = useMemo(() => {
@@ -408,6 +437,137 @@ export function JobDetailContent({ jobId }: JobDetailContentProps) {
                 </svg>
                 Escrow protected -- funds released only when you approve
               </div>
+            </div>
+          )}
+
+          {/* Quote Received */}
+          {quoteLoading && (
+            <div className="h-24 animate-pulse rounded-xl bg-zinc-100 dark:bg-zinc-800" />
+          )}
+          {jobQuote && !showFullQuote && (
+            <div>
+              <h2 className="mb-3 text-lg font-bold text-zinc-900 dark:text-zinc-50">Quote Received</h2>
+              <div className="rounded-xl border border-[#00a9e0]/20 bg-white p-4 shadow-sm dark:border-sky-800 dark:bg-zinc-900">
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+                      {jobQuote.jobTitle}
+                    </p>
+                    <p className="mt-0.5 text-xs text-zinc-500 dark:text-zinc-400">
+                      From: Pro &middot; Valid until{' '}
+                      {new Date(jobQuote.validUntil).toLocaleDateString('en-US', {
+                        month: 'short',
+                        day: 'numeric',
+                        year: 'numeric',
+                      })}
+                    </p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-lg font-extrabold text-zinc-900 dark:text-zinc-50">
+                      {formatCents(jobQuote.totalCents)}
+                    </p>
+                    <span
+                      className={`inline-block rounded-full px-2 py-0.5 text-[10px] font-semibold ${
+                        jobQuote.status === 'accepted'
+                          ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400'
+                          : jobQuote.status === 'declined'
+                            ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
+                            : 'bg-sky-100 text-sky-700 dark:bg-sky-900/30 dark:text-sky-400'
+                      }`}
+                    >
+                      {jobQuote.status.charAt(0).toUpperCase() + jobQuote.status.slice(1)}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="mt-4 flex flex-wrap items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setShowFullQuote(true)}
+                    className="rounded-full border border-[#00a9e0]/30 px-4 py-2 text-xs font-semibold text-[#00a9e0] transition-colors hover:bg-sky-50 dark:hover:bg-sky-900/20"
+                  >
+                    View Full Quote
+                  </button>
+                  {jobQuote.status === 'sent' && (
+                    <>
+                      <button
+                        type="button"
+                        onClick={async () => {
+                          await fetch(`/api/quotes/${jobQuote.id}`, {
+                            method: 'PATCH',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ status: 'accepted' }),
+                          });
+                          setJobQuote({ ...jobQuote, status: 'accepted' });
+                          setQuoteAccepted(true);
+                        }}
+                        className="rounded-full bg-[#00a9e0] px-4 py-2 text-xs font-bold text-white shadow-lg shadow-[#00a9e0]/25 transition-all hover:bg-[#0090c0] active:scale-[0.98]"
+                      >
+                        Accept
+                      </button>
+                      <button
+                        type="button"
+                        onClick={async () => {
+                          await fetch(`/api/quotes/${jobQuote.id}`, {
+                            method: 'PATCH',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ status: 'declined' }),
+                          });
+                          setJobQuote({ ...jobQuote, status: 'declined' });
+                        }}
+                        className="rounded-full border border-zinc-200 px-4 py-2 text-xs font-semibold text-zinc-600 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-400"
+                      >
+                        Decline
+                      </button>
+                      <button
+                        type="button"
+                        className="text-xs font-medium text-[#00a9e0] hover:text-[#0090c0]"
+                      >
+                        Request Changes
+                      </button>
+                    </>
+                  )}
+                </div>
+
+                {quoteAccepted && (
+                  <div className="mt-3 flex items-center gap-2 rounded-lg bg-emerald-50 px-3 py-2 dark:bg-emerald-900/20">
+                    <svg className="h-4 w-4 text-emerald-600 dark:text-emerald-400" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <p className="text-xs font-medium text-emerald-700 dark:text-emerald-300">
+                      Quote accepted! Your Pro will begin work soon.
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {jobQuote && showFullQuote && (
+            <div>
+              <button
+                type="button"
+                onClick={() => setShowFullQuote(false)}
+                className="mb-3 inline-flex items-center gap-1 text-sm font-medium text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
+              >
+                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+                </svg>
+                Back to Job
+              </button>
+              <QuotePreview
+                quote={jobQuote}
+                mode="client"
+                onAccept={() => {
+                  setJobQuote({ ...jobQuote, status: 'accepted' });
+                  setQuoteAccepted(true);
+                  setShowFullQuote(false);
+                }}
+                onDecline={() => {
+                  setJobQuote({ ...jobQuote, status: 'declined' });
+                  setShowFullQuote(false);
+                }}
+              />
             </div>
           )}
 

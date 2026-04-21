@@ -18,6 +18,7 @@ import type { HDProduct } from '@/lib/services/serpapi';
 import type { DeliveryTier } from '@/lib/services/zinc';
 import JobTimeline from '@/components/jobs/JobTimeline';
 import QBOSyncStatus from '@/components/integrations/QBOSyncStatus';
+import QuoteBuilder from '@/components/quotes/QuoteBuilder';
 import {
   getChecklistForJob,
   type ChecklistItem as WisemanChecklistItem,
@@ -42,7 +43,7 @@ const urgencyConfig = {
   emergency: { label: 'Emergency', classes: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' },
 };
 
-type TabKey = 'overview' | 'scope' | 'process' | 'checklist' | 'materials';
+type TabKey = 'overview' | 'scope' | 'process' | 'checklist' | 'materials' | 'quote';
 
 const TABS: { key: TabKey; label: string }[] = [
   { key: 'overview', label: 'Overview' },
@@ -50,6 +51,7 @@ const TABS: { key: TabKey; label: string }[] = [
   { key: 'process', label: 'Process' },
   { key: 'checklist', label: 'Checklist' },
   { key: 'materials', label: 'Materials' },
+  { key: 'quote', label: 'Quote' },
 ];
 
 function LegacyChecklist({ title, items }: { title: string; items: ChecklistItem[] }) {
@@ -532,6 +534,13 @@ export default function JobDetailClient({ jobId }: JobDetailClientProps) {
           ) : (
             <NoChecklistMessage />
           )}
+        </div>
+      )}
+
+      {/* Quote Tab */}
+      {activeTab === 'quote' && (
+        <div role="tabpanel" id="panel-quote" aria-labelledby="tab-quote">
+          <QuoteBuilder jobId={job.id} jobTitle={job.title} />
         </div>
       )}
 

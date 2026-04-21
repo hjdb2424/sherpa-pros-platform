@@ -24,27 +24,31 @@ const GALLERY_ITEM_SIZE = (SCREEN_WIDTH - spacing.lg * 2 - spacing.xs * 2) / 3;
 
 // ── Mock Data ──────────────────────────────────────────────────────
 const PROPERTIES = [
-  { id: '1', address: '42 Maple St', type: 'Single Family', photo: 'https://picsum.photos/200/160?random=10' },
-  { id: '2', address: '8 Harbor View', type: 'Condo', photo: 'https://picsum.photos/200/160?random=11' },
-  { id: '3', address: '115 Elm Ave', type: 'Multi-Family', photo: 'https://picsum.photos/200/160?random=12' },
+  { id: '1', address: '42 Maple St', fullAddress: '42 Maple St, Portsmouth, NH 03801', type: 'Single Family', beds: 3, baths: 2, photo: 'https://picsum.photos/200/160?random=10' },
+  { id: '2', address: '8 Harbor View', fullAddress: '8 Harbor View Dr, Rye, NH 03870', type: 'Condo', beds: 2, baths: 1, photo: 'https://picsum.photos/200/160?random=11' },
+  { id: '3', address: '115 Elm Ave', fullAddress: '115 Elm Ave, Dover, NH 03820', type: 'Multi-Family', beds: 6, baths: 3, photo: 'https://picsum.photos/200/160?random=12' },
 ];
 
 const GALLERY_PHOTOS = Array.from({ length: 9 }, (_, i) => ({
   id: String(i),
   uri: `https://picsum.photos/400/400?random=${20 + i}`,
+  projectName: ['Bathroom Remodel', 'Kitchen Upgrade', 'Deck Build', 'Basement Finish', 'Roof Repair', 'Electrical Update', 'Painting', 'HVAC Install', 'Fence Build'][i],
+  proName: ['Carlos Rivera', 'Mike Torres', 'Sarah Kim', 'Jake Duval', 'Lisa Chen', 'Mike Torres', 'Jake Duval', 'Lisa Chen', 'Carlos Rivera'][i],
+  description: ['Modern farmhouse style bathroom', 'Quartz countertops and new cabinets', 'Composite deck with railing', 'Full basement finishing', 'Asphalt shingle replacement', 'Panel upgrade to 200A', 'Exterior paint - 3 coats', 'Central AC installation', 'Cedar privacy fence'][i],
+  date: ['Mar 2026', 'Feb 2026', 'Jan 2026', 'Dec 2025', 'Nov 2025', 'Oct 2025', 'Sep 2025', 'Aug 2025', 'Jul 2025'][i],
 }));
 
 const FAVORITE_PROS = [
-  { id: '1', name: 'Mike Torres', trade: 'Electrician', avatar: 'https://picsum.photos/80/80?random=30', hiredCount: 5 },
-  { id: '2', name: 'Sarah Kim', trade: 'Plumber', avatar: 'https://picsum.photos/80/80?random=31', hiredCount: 3 },
-  { id: '3', name: 'Jake Duval', trade: 'Painter', avatar: 'https://picsum.photos/80/80?random=32', hiredCount: 2 },
-  { id: '4', name: 'Lisa Chen', trade: 'HVAC Tech', avatar: 'https://picsum.photos/80/80?random=33', hiredCount: 4 },
+  { id: '1', name: 'Mike Torres', trade: 'Electrician', avatar: 'https://picsum.photos/80/80?random=30', hiredCount: 5, rating: 4.9, lastHired: 'Mar 15, 2026', licensed: true, insured: true },
+  { id: '2', name: 'Sarah Kim', trade: 'Plumber', avatar: 'https://picsum.photos/80/80?random=31', hiredCount: 3, rating: 4.7, lastHired: 'Feb 28, 2026', licensed: true, insured: true },
+  { id: '3', name: 'Jake Duval', trade: 'Painter', avatar: 'https://picsum.photos/80/80?random=32', hiredCount: 2, rating: 4.8, lastHired: 'Jan 20, 2026', licensed: false, insured: true },
+  { id: '4', name: 'Lisa Chen', trade: 'HVAC Tech', avatar: 'https://picsum.photos/80/80?random=33', hiredCount: 4, rating: 4.6, lastHired: 'Apr 2, 2026', licensed: true, insured: true },
 ];
 
 const REVIEWS_GIVEN = [
-  { id: '1', proName: 'Mike Torres', rating: 5, text: 'Rewired the entire first floor in two days. Meticulous work, zero issues on inspection.' },
-  { id: '2', proName: 'Sarah Kim', rating: 4, text: 'Fixed the slab leak fast. Would hire again for any plumbing work.' },
-  { id: '3', proName: 'Jake Duval', rating: 5, text: 'Beautiful finish on the exterior. Neighbors keep asking who did it.' },
+  { id: '1', proName: 'Mike Torres', rating: 5, text: 'Rewired the entire first floor in two days. Meticulous work, zero issues on inspection.', proResponse: 'Thank you for the kind words! Great working with you.', jobTitle: 'Electrical Panel Upgrade', date: 'Mar 15, 2026', amount: '$3,200' },
+  { id: '2', proName: 'Sarah Kim', rating: 4, text: 'Fixed the slab leak fast. Would hire again for any plumbing work.', proResponse: null, jobTitle: 'Slab Leak Repair', date: 'Feb 28, 2026', amount: '$1,800' },
+  { id: '3', proName: 'Jake Duval', rating: 5, text: 'Beautiful finish on the exterior. Neighbors keep asking who did it.', proResponse: 'Appreciate the review! The color choice was perfect.', jobTitle: 'Exterior Painting', date: 'Jan 20, 2026', amount: '$4,500' },
 ];
 
 const PREF_TRADES = ['Electrical', 'Plumbing', 'Painting', 'HVAC', 'Roofing'];
@@ -71,6 +75,9 @@ export default function ClientProfileScreen() {
   const router = useRouter();
   const { userName, signOut, switchRole } = useAuth();
   const [galleryModal, setGalleryModal] = useState<string | null>(null);
+  const [selectedGalleryPhoto, setSelectedGalleryPhoto] = useState<typeof GALLERY_PHOTOS[0] | null>(null);
+  const [selectedPro, setSelectedPro] = useState<typeof FAVORITE_PROS[0] | null>(null);
+  const [expandedReview, setExpandedReview] = useState<string | null>(null);
 
   const initials = (userName ?? 'U')
     .split(' ')
@@ -148,16 +155,23 @@ export default function ClientProfileScreen() {
         {/* ─── 3. Stats Row ──────────────────────────────────── */}
         <View style={styles.statsRow}>
           {([
-            { label: 'Projects\nPosted', value: '4', icon: 'document-text-outline' as const },
-            { label: 'Completed', value: '11', icon: 'checkmark-circle-outline' as const },
-            { label: 'Spent', value: '$24.5K', icon: 'cash-outline' as const },
-            { label: 'Avg Rating', value: '4.8', icon: 'star-outline' as const },
+            { label: 'Projects\nPosted', value: '4', icon: 'document-text-outline' as const, detail: "You've posted 4 projects on Sherpa Pros" },
+            { label: 'Completed', value: '11', icon: 'checkmark-circle-outline' as const, detail: '11 projects completed successfully' },
+            { label: 'Spent', value: '$24.5K', icon: 'cash-outline' as const, detail: 'Total spent across all projects: $24,500' },
+            { label: 'Avg Rating', value: '4.8', icon: 'star-outline' as const, detail: 'Your average rating given to pros: 4.8/5.0' },
           ]).map((stat) => (
-            <View key={stat.label} style={styles.statCard}>
+            <Pressable
+              key={stat.label}
+              style={styles.statCard}
+              onPress={() => {
+                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                Alert.alert(stat.label.replace('\n', ' '), stat.detail);
+              }}
+            >
               <Ionicons name={stat.icon} size={18} color={colors.primary} />
               <Text style={styles.statValue}>{stat.value}</Text>
               <Text style={styles.statLabel}>{stat.label}</Text>
-            </View>
+            </Pressable>
           ))}
         </View>
 
@@ -166,7 +180,30 @@ export default function ClientProfileScreen() {
           {renderSectionHeader('My Properties', 'home-outline')}
           <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.horizontalScroll}>
             {PROPERTIES.map((p) => (
-              <View key={p.id} style={styles.propertyCard}>
+              <Pressable
+                key={p.id}
+                style={styles.propertyCard}
+                onPress={() => {
+                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                  Alert.alert(
+                    p.address,
+                    `${p.fullAddress}\n\n${p.type} \u2022 ${p.beds} bed / ${p.baths} bath`,
+                    [
+                      { text: 'View Projects', onPress: () => Alert.alert('Projects', `Viewing projects at ${p.address}`) },
+                      { text: 'Edit Property', onPress: () => Alert.alert('Edit', `Editing ${p.address}`) },
+                      {
+                        text: 'Remove Property',
+                        style: 'destructive',
+                        onPress: () => Alert.alert('Confirm', `Remove ${p.address}?`, [
+                          { text: 'Cancel', style: 'cancel' },
+                          { text: 'Remove', style: 'destructive', onPress: () => Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning) },
+                        ]),
+                      },
+                      { text: 'Close', style: 'cancel' },
+                    ],
+                  );
+                }}
+              >
                 <Image source={{ uri: p.photo }} style={styles.propertyImage} />
                 <View style={styles.propertyInfo}>
                   <Text style={styles.propertyAddress} numberOfLines={1}>{p.address}</Text>
@@ -174,7 +211,7 @@ export default function ClientProfileScreen() {
                     <Text style={styles.propertyTypeText}>{p.type}</Text>
                   </View>
                 </View>
-              </View>
+              </Pressable>
             ))}
             <Pressable
               style={styles.addPropertyCard}
@@ -198,6 +235,7 @@ export default function ClientProfileScreen() {
                 key={photo.id}
                 onPress={() => {
                   Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                  setSelectedGalleryPhoto(photo);
                   setGalleryModal(photo.uri);
                 }}
               >
@@ -212,12 +250,19 @@ export default function ClientProfileScreen() {
           {renderSectionHeader('Favorite Pros', 'heart-outline')}
           <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.horizontalScroll}>
             {FAVORITE_PROS.map((pro) => (
-              <View key={pro.id} style={styles.proCard}>
+              <Pressable
+                key={pro.id}
+                style={styles.proCard}
+                onPress={() => {
+                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                  setSelectedPro(pro);
+                }}
+              >
                 <Image source={{ uri: pro.avatar }} style={styles.proAvatar} />
                 <Text style={styles.proName} numberOfLines={1}>{pro.name}</Text>
                 <Text style={styles.proTrade}>{pro.trade}</Text>
                 <Text style={styles.proHired}>Hired {pro.hiredCount} times</Text>
-              </View>
+              </Pressable>
             ))}
           </ScrollView>
         </View>
@@ -225,15 +270,52 @@ export default function ClientProfileScreen() {
         {/* ─── 7. Reviews Given ──────────────────────────────── */}
         <View style={styles.section}>
           {renderSectionHeader('Reviews Given', 'chatbubble-ellipses-outline')}
-          {REVIEWS_GIVEN.map((review) => (
-            <View key={review.id} style={styles.reviewCard}>
-              <View style={styles.reviewHeader}>
-                <Text style={styles.reviewProName}>{review.proName}</Text>
-                <StarRow rating={review.rating} />
-              </View>
-              <Text style={styles.reviewText}>{review.text}</Text>
-            </View>
-          ))}
+          {REVIEWS_GIVEN.map((review) => {
+            const isExpanded = expandedReview === review.id;
+            return (
+              <Pressable
+                key={review.id}
+                style={styles.reviewCard}
+                onPress={() => {
+                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                  setExpandedReview(isExpanded ? null : review.id);
+                }}
+              >
+                <View style={styles.reviewHeader}>
+                  <Text style={styles.reviewProName}>{review.proName}</Text>
+                  <StarRow rating={review.rating} />
+                </View>
+                <Text style={styles.reviewText} numberOfLines={isExpanded ? undefined : 2}>{review.text}</Text>
+                {isExpanded && (
+                  <View style={styles.reviewExpanded}>
+                    {review.proResponse && (
+                      <View style={styles.reviewResponseBox}>
+                        <Ionicons name="chatbubble-outline" size={14} color={colors.primary} />
+                        <Text style={styles.reviewResponseText}>Pro Response: {review.proResponse}</Text>
+                      </View>
+                    )}
+                    <View style={styles.reviewMetaRow}>
+                      <Text style={styles.reviewMetaText}>{review.jobTitle}</Text>
+                      <Text style={styles.reviewMetaDot}>{'\u2022'}</Text>
+                      <Text style={styles.reviewMetaText}>{review.date}</Text>
+                      <Text style={styles.reviewMetaDot}>{'\u2022'}</Text>
+                      <Text style={styles.reviewMetaText}>{review.amount}</Text>
+                    </View>
+                    <Pressable
+                      style={styles.reviewEditBtn}
+                      onPress={() => {
+                        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                        Alert.alert('Edit Review', `Edit your review for ${review.proName}`);
+                      }}
+                    >
+                      <Ionicons name="create-outline" size={14} color={colors.primary} />
+                      <Text style={styles.reviewEditText}>Edit Review</Text>
+                    </Pressable>
+                  </View>
+                )}
+              </Pressable>
+            );
+          })}
         </View>
 
         {/* ─── 8. Preferences ────────────────────────────────── */}
@@ -269,17 +351,17 @@ export default function ClientProfileScreen() {
           {renderSectionHeader('Settings', 'settings-outline')}
           <View style={styles.settingsCard}>
             {([
-              { label: 'Notifications', icon: 'notifications-outline' as const },
-              { label: 'Payment Methods', icon: 'card-outline' as const },
-              { label: 'Subscription', icon: 'ribbon-outline' as const },
-              { label: 'Help & Support', icon: 'help-circle-outline' as const },
+              { label: 'Notifications', icon: 'notifications-outline' as const, action: () => Alert.alert('Notifications', 'Notification settings coming soon') },
+              { label: 'Payment Methods', icon: 'card-outline' as const, action: () => Alert.alert('Payment Methods', 'Payment management coming soon') },
+              { label: 'Subscription', icon: 'ribbon-outline' as const, action: () => Alert.alert('Subscription', 'Subscription management coming soon') },
+              { label: 'Help & Support', icon: 'help-circle-outline' as const, action: () => Alert.alert('Help & Support', 'Help center coming soon') },
             ]).map((item, idx, arr) => (
               <Pressable
                 key={item.label}
                 style={[styles.settingsRow, idx < arr.length - 1 && styles.settingsRowBorder]}
                 onPress={() => {
                   Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                  Alert.alert('Coming soon');
+                  item.action();
                 }}
               >
                 <Ionicons name={item.icon} size={20} color={colors.textMuted} style={{ marginRight: spacing.md }} />
@@ -336,17 +418,119 @@ export default function ClientProfileScreen() {
 
       {/* ─── Gallery Full-Screen Modal ──────────────────────── */}
       <Modal visible={galleryModal !== null} transparent animationType="fade">
-        <Pressable
-          style={styles.modalBackdrop}
-          onPress={() => setGalleryModal(null)}
-        >
+        <View style={styles.modalBackdrop}>
           {galleryModal && (
             <Image source={{ uri: galleryModal }} style={styles.modalImage} resizeMode="contain" />
           )}
-          <Pressable style={styles.modalClose} onPress={() => setGalleryModal(null)}>
+          {selectedGalleryPhoto && (
+            <View style={styles.galleryInfoOverlay}>
+              <Text style={styles.galleryInfoTitle}>{selectedGalleryPhoto.projectName}</Text>
+              <Text style={styles.galleryInfoDesc}>{selectedGalleryPhoto.description}</Text>
+              <Text style={styles.galleryInfoMeta}>
+                By {selectedGalleryPhoto.proName}  {'\u2022'}  {selectedGalleryPhoto.date}
+              </Text>
+            </View>
+          )}
+          <Pressable
+            style={styles.modalClose}
+            onPress={() => {
+              setGalleryModal(null);
+              setSelectedGalleryPhoto(null);
+            }}
+          >
             <Ionicons name="close-circle" size={36} color="#fff" />
           </Pressable>
-        </Pressable>
+        </View>
+      </Modal>
+
+      {/* ─── Favorite Pro Detail Modal ──────────────────────── */}
+      <Modal visible={selectedPro !== null} transparent animationType="slide">
+        <View style={styles.proModalBackdrop}>
+          <Pressable style={styles.proModalDismiss} onPress={() => setSelectedPro(null)} />
+          <View style={[styles.proModalSheet, { paddingBottom: insets.bottom + spacing.lg }]}>
+            {selectedPro && (
+              <>
+                <View style={styles.proModalHandle} />
+                <View style={styles.proModalHeader}>
+                  <Image source={{ uri: selectedPro.avatar }} style={styles.proModalAvatar} />
+                  <Text style={styles.proModalName}>{selectedPro.name}</Text>
+                  <Text style={styles.proModalTrade}>{selectedPro.trade}</Text>
+                  <View style={styles.proModalRatingRow}>
+                    {[1, 2, 3, 4, 5].map((s) => (
+                      <Ionicons
+                        key={s}
+                        name={s <= Math.round(selectedPro.rating) ? 'star' : 'star-outline'}
+                        size={18}
+                        color={s <= Math.round(selectedPro.rating) ? '#f59e0b' : colors.borderMedium}
+                      />
+                    ))}
+                    <Text style={styles.proModalRatingText}>{selectedPro.rating}</Text>
+                  </View>
+                </View>
+
+                <View style={styles.proModalInfoRow}>
+                  <View style={styles.proModalInfoItem}>
+                    <Ionicons name="briefcase-outline" size={16} color={colors.textMuted} />
+                    <Text style={styles.proModalInfoText}>Hired {selectedPro.hiredCount} times</Text>
+                  </View>
+                  <View style={styles.proModalInfoItem}>
+                    <Ionicons name="calendar-outline" size={16} color={colors.textMuted} />
+                    <Text style={styles.proModalInfoText}>Last hired: {selectedPro.lastHired}</Text>
+                  </View>
+                </View>
+
+                <View style={styles.proModalBadges}>
+                  {selectedPro.licensed && (
+                    <View style={styles.proModalBadge}>
+                      <Ionicons name="shield-checkmark" size={14} color={colors.success} />
+                      <Text style={styles.proModalBadgeText}>Licensed</Text>
+                    </View>
+                  )}
+                  {selectedPro.insured && (
+                    <View style={styles.proModalBadge}>
+                      <Ionicons name="shield-checkmark" size={14} color={colors.primary} />
+                      <Text style={styles.proModalBadgeText}>Insured</Text>
+                    </View>
+                  )}
+                </View>
+
+                <View style={styles.proModalActions}>
+                  <Pressable
+                    style={styles.proModalActionBtn}
+                    onPress={() => {
+                      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                      Alert.alert('Message', `Opening chat with ${selectedPro.name}`);
+                    }}
+                  >
+                    <Ionicons name="chatbubble-outline" size={18} color={colors.primary} />
+                    <Text style={styles.proModalActionText}>Message</Text>
+                  </Pressable>
+                  <Pressable
+                    style={[styles.proModalActionBtn, styles.proModalActionBtnPrimary]}
+                    onPress={() => {
+                      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+                      Alert.alert('Request Quote', `Requesting quote from ${selectedPro.name}`);
+                    }}
+                  >
+                    <Ionicons name="document-text-outline" size={18} color="#fff" />
+                    <Text style={styles.proModalActionTextPrimary}>Request Quote</Text>
+                  </Pressable>
+                </View>
+                <Pressable
+                  style={styles.proModalViewProfile}
+                  onPress={() => {
+                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                    setSelectedPro(null);
+                    Alert.alert('View Profile', `Viewing full profile for ${selectedPro.name}`);
+                  }}
+                >
+                  <Text style={styles.proModalViewProfileText}>View Full Profile</Text>
+                  <Ionicons name="chevron-forward" size={16} color={colors.primary} />
+                </Pressable>
+              </>
+            )}
+          </View>
+        </View>
       </Modal>
     </View>
   );
@@ -803,6 +987,53 @@ const styles = StyleSheet.create({
     color: colors.textMuted,
   },
 
+  // Review expanded
+  reviewExpanded: {
+    marginTop: spacing.md,
+    paddingTop: spacing.md,
+    borderTopWidth: 1,
+    borderTopColor: colors.borderLight,
+  },
+  reviewResponseBox: {
+    flexDirection: 'row',
+    gap: spacing.sm,
+    backgroundColor: colors.primaryLight,
+    borderRadius: borderRadius.sm,
+    padding: spacing.md,
+    marginBottom: spacing.md,
+  },
+  reviewResponseText: {
+    flex: 1,
+    ...typography.caption,
+    color: colors.textSecondary,
+    fontStyle: 'italic',
+    lineHeight: 18,
+  },
+  reviewMetaRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.xs,
+    marginBottom: spacing.md,
+  },
+  reviewMetaText: {
+    ...typography.caption,
+    color: colors.textMuted,
+  },
+  reviewMetaDot: {
+    ...typography.caption,
+    color: colors.textMuted,
+  },
+  reviewEditBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.xs,
+  },
+  reviewEditText: {
+    ...typography.caption,
+    color: colors.primary,
+    fontWeight: '600',
+  },
+
   // Gallery Modal
   modalBackdrop: {
     flex: 1,
@@ -819,5 +1050,161 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 60,
     right: 20,
+  },
+  galleryInfoOverlay: {
+    position: 'absolute',
+    bottom: 100,
+    left: spacing.lg,
+    right: spacing.lg,
+    backgroundColor: 'rgba(0,0,0,0.7)',
+    borderRadius: borderRadius.md,
+    padding: spacing.lg,
+  },
+  galleryInfoTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#fff',
+    marginBottom: 4,
+  },
+  galleryInfoDesc: {
+    ...typography.bodySmall,
+    color: 'rgba(255,255,255,0.8)',
+    marginBottom: spacing.xs,
+  },
+  galleryInfoMeta: {
+    ...typography.caption,
+    color: 'rgba(255,255,255,0.6)',
+  },
+
+  // Pro Detail Modal
+  proModalBackdrop: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'flex-end',
+  },
+  proModalDismiss: {
+    flex: 1,
+  },
+  proModalSheet: {
+    backgroundColor: colors.background,
+    borderTopLeftRadius: borderRadius.xl,
+    borderTopRightRadius: borderRadius.xl,
+    paddingHorizontal: spacing.xl,
+    paddingTop: spacing.md,
+  },
+  proModalHandle: {
+    width: 40,
+    height: 4,
+    borderRadius: 2,
+    backgroundColor: colors.borderMedium,
+    alignSelf: 'center',
+    marginBottom: spacing.xl,
+  },
+  proModalHeader: {
+    alignItems: 'center',
+    marginBottom: spacing.xl,
+  },
+  proModalAvatar: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    backgroundColor: colors.primaryLight,
+    marginBottom: spacing.md,
+  },
+  proModalName: {
+    ...typography.subheading,
+    color: colors.text,
+    fontSize: 20,
+  },
+  proModalTrade: {
+    ...typography.bodySmall,
+    color: colors.textMuted,
+    marginTop: 2,
+  },
+  proModalRatingRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 2,
+    marginTop: spacing.sm,
+  },
+  proModalRatingText: {
+    ...typography.bodySmall,
+    fontWeight: '700',
+    color: colors.text,
+    marginLeft: spacing.xs,
+  },
+  proModalInfoRow: {
+    gap: spacing.sm,
+    marginBottom: spacing.lg,
+  },
+  proModalInfoItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+  },
+  proModalInfoText: {
+    ...typography.bodySmall,
+    color: colors.textSecondary,
+  },
+  proModalBadges: {
+    flexDirection: 'row',
+    gap: spacing.md,
+    marginBottom: spacing.xl,
+  },
+  proModalBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.xs,
+    backgroundColor: colors.surfaceSecondary,
+    borderRadius: borderRadius.full,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+  },
+  proModalBadgeText: {
+    ...typography.caption,
+    fontWeight: '600',
+    color: colors.text,
+  },
+  proModalActions: {
+    flexDirection: 'row',
+    gap: spacing.md,
+    marginBottom: spacing.lg,
+  },
+  proModalActionBtn: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: spacing.sm,
+    paddingVertical: spacing.md,
+    borderRadius: borderRadius.full,
+    borderWidth: 1,
+    borderColor: colors.primary,
+  },
+  proModalActionBtnPrimary: {
+    backgroundColor: colors.primary,
+    borderColor: colors.primary,
+  },
+  proModalActionText: {
+    ...typography.bodySmall,
+    fontWeight: '600',
+    color: colors.primary,
+  },
+  proModalActionTextPrimary: {
+    ...typography.bodySmall,
+    fontWeight: '600',
+    color: '#fff',
+  },
+  proModalViewProfile: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: spacing.xs,
+    paddingVertical: spacing.md,
+  },
+  proModalViewProfileText: {
+    ...typography.bodySmall,
+    color: colors.primary,
+    fontWeight: '600',
   },
 });

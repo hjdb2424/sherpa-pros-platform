@@ -5,6 +5,7 @@ import {
   ScrollView,
   Pressable,
   Alert,
+  Modal,
   StyleSheet,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -18,6 +19,8 @@ import Button from '@/components/common/Button';
 import Avatar from '@/components/common/Avatar';
 import MaterialsFlow from '@/components/checklist/MaterialsFlow';
 import type { Material } from '@/components/checklist/MaterialsFlow';
+import EstimateDocument from '@/components/quotes/EstimateDocument';
+import type { QuoteData } from '@/components/quotes/EstimateDocument';
 
 // ---------------------------------------------------------------------------
 // Mock data (inline)
@@ -114,6 +117,46 @@ function formatQuoteCents(cents: number): string {
   return (cents / 100).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
 }
 
+const ESTIMATE_DOC_DATA: QuoteData = {
+  quoteNumber: '#QT-2026-001',
+  date: 'April 21, 2026',
+  validUntil: 'May 21, 2026',
+  proName: 'Carlos Rivera',
+  proTrade: 'General Contractor',
+  proPhone: '(603) 555-0142',
+  proEmail: 'carlos@riverabuilds.com',
+  proLicense: 'NH-GC-2024-1847',
+  clientName: 'John Davidson',
+  clientAddress: '42 Maple St, Portsmouth, NH 03801',
+  jobTitle: 'Bathroom Remodel \u2014 Phase 1',
+  lineItems: [
+    { category: 'Labor', description: 'Demolition & removal', qty: 8, unit: 'hrs', unitPrice: 9750, total: 78000 },
+    { category: 'Labor', description: 'Rough plumbing', qty: 12, unit: 'hrs', unitPrice: 9750, total: 117000 },
+    { category: 'Labor', description: 'Tile installation', qty: 16, unit: 'hrs', unitPrice: 9750, total: 156000 },
+    { category: 'Labor', description: 'Fixture install & finish', qty: 6, unit: 'hrs', unitPrice: 9750, total: 58500 },
+    { category: 'Materials', description: 'Cement board (3x5)', qty: 4, unit: 'sheets', unitPrice: 6240, total: 24960 },
+    { category: 'Materials', description: 'Waterproof membrane', qty: 1, unit: 'roll', unitPrice: 10680, total: 10680 },
+    { category: 'Materials', description: 'Subway tile (white 3x6)', qty: 80, unit: 'sqft', unitPrice: 480, total: 38400 },
+    { category: 'Materials', description: 'Matte black shower valve', qty: 1, unit: 'each', unitPrice: 22680, total: 22680 },
+    { category: 'Equipment', description: 'Dumpster rental (demo debris)', qty: 1, unit: 'each', unitPrice: 38500, total: 38500 },
+    { category: 'Permits', description: 'Plumbing permit', qty: 1, unit: 'each', unitPrice: 15000, total: 15000 },
+  ],
+  laborSubtotal: 409500,
+  materialsSubtotal: 96720,
+  otherSubtotal: 53500,
+  subtotal: 559720,
+  taxPct: 0,
+  taxAmount: 0,
+  discountPct: 0,
+  discountAmount: 0,
+  grandTotal: 559720,
+  scopeOfWork:
+    'Full bathroom remodel including demolition of existing tile and fixtures, rough plumbing updates, cement board installation, waterproof membrane application, subway tile installation on walls and floor, matte black fixture installation, and final cleanup.',
+  timeline: '5-7 business days',
+  paymentTerms: '50% deposit upon acceptance, 50% upon completion',
+  notes: 'Price includes all labor, materials, and debris removal. Client to select grout color before start date.',
+};
+
 export default function ClientJobDetailScreen() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
@@ -121,6 +164,7 @@ export default function ClientJobDetailScreen() {
   const [showMaterialsFlow, setShowMaterialsFlow] = useState(false);
   const [quoteAccepted, setQuoteAccepted] = useState(false);
   const [showQuoteDetails, setShowQuoteDetails] = useState(false);
+  const [showEstimateDoc, setShowEstimateDoc] = useState(false);
   const hasQuote = true; // Mock: always show for demo
 
   const job = MOCK_JOB; // In production, fetch by `id`
@@ -281,6 +325,17 @@ export default function ClientJobDetailScreen() {
               />
             </Pressable>
 
+            <Pressable
+              style={styles.quoteFullDocBtn}
+              onPress={() => {
+                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+                setShowEstimateDoc(true);
+              }}
+            >
+              <Ionicons name="document-text-outline" size={16} color={colors.primary} />
+              <Text style={styles.quoteFullDocText}>View Full Estimate</Text>
+            </Pressable>
+
             <View style={styles.quoteActions}>
               <Pressable
                 style={styles.quoteAcceptBtn}
@@ -392,6 +447,25 @@ export default function ClientJobDetailScreen() {
           />
         )}
       </ScrollView>
+
+      {/* Full Estimate Document Modal */}
+      <Modal visible={showEstimateDoc} animationType="slide" presentationStyle="fullScreen">
+        <EstimateDocument
+          quote={ESTIMATE_DOC_DATA}
+          onClose={() => setShowEstimateDoc(false)}
+          onAccept={() => {
+            setShowEstimateDoc(false);
+            setQuoteAccepted(true);
+            Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+            Alert.alert('Quote Accepted', 'Quote accepted! Pro will be notified.');
+          }}
+          onDecline={() => {
+            setShowEstimateDoc(false);
+            Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
+            Alert.alert('Quote Declined', 'The pro has been notified.');
+          }}
+        />
+      </Modal>
     </View>
   );
 }
@@ -677,6 +751,22 @@ const styles = StyleSheet.create({
     ...typography.bodySmall,
     fontWeight: '600',
     color: colors.textSecondary,
+  },
+  quoteFullDocBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: spacing.sm,
+    paddingVertical: spacing.md,
+    backgroundColor: colors.primaryLight,
+    borderRadius: borderRadius.md,
+    borderWidth: 1,
+    borderColor: colors.border,
+  },
+  quoteFullDocText: {
+    ...typography.bodySmall,
+    color: colors.primary,
+    fontWeight: '700',
   },
   quoteChangesLink: {
     alignItems: 'center',

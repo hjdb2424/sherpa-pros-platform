@@ -639,6 +639,19 @@ export default function QuoteBuilder({ jobId }: QuoteBuilderProps) {
         </View>
       </Card>
 
+      {/* View full estimate document */}
+      <Pressable
+        onPress={() => {
+          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+          router.push('/(pro)/estimate-preview');
+        }}
+        style={styles.viewEstimateLink}
+      >
+        <Ionicons name="document-text-outline" size={18} color={colors.primary} />
+        <Text style={styles.viewEstimateLinkText}>View Full Estimate Document</Text>
+        <Ionicons name="chevron-forward" size={16} color={colors.primary} />
+      </Pressable>
+
       {/* Edit button */}
       <Pressable onPress={() => handleGoToStep(0)} style={styles.editLink}>
         <Ionicons name="create-outline" size={16} color={colors.primary} />
@@ -1260,6 +1273,24 @@ const styles = StyleSheet.create({
     ...typography.bodySmall,
     color: colors.text,
     lineHeight: 20,
+  },
+  viewEstimateLink: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: spacing.sm,
+    paddingVertical: spacing.lg,
+    marginTop: spacing.md,
+    backgroundColor: colors.primaryLight,
+    borderRadius: borderRadius.md,
+    borderWidth: 1,
+    borderColor: colors.border,
+  },
+  viewEstimateLinkText: {
+    ...typography.bodySmall,
+    color: colors.primary,
+    fontWeight: '700',
+    flex: 1,
   },
   editLink: {
     flexDirection: 'row',

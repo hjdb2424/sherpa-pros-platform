@@ -80,11 +80,48 @@ const REVIEW_BADGE: Record<string, { label: string; variant: 'success' | 'warnin
 // Component
 // ---------------------------------------------------------------------------
 
+// ---------------------------------------------------------------------------
+// Mock quote data (shown for job 'c1' or default)
+// ---------------------------------------------------------------------------
+const MOCK_QUOTE = {
+  proName: 'Carlos Rivera',
+  amount: 1088000, // cents = $10,880.00
+  validUntil: 'May 15, 2026',
+  lineItems: [
+    { category: 'Labor', items: [
+      { desc: 'Demolition & removal', total: 78000 },
+      { desc: 'Rough plumbing', total: 117000 },
+      { desc: 'Tile installation', total: 156000 },
+      { desc: 'Fixture install & finish', total: 58500 },
+    ]},
+    { category: 'Materials', items: [
+      { desc: 'Cement board (3x5)', total: 24960 },
+      { desc: 'Waterproof membrane', total: 10680 },
+      { desc: 'Subway tile (white 3x6)', total: 38400 },
+      { desc: 'Matte black shower valve', total: 22680 },
+    ]},
+    { category: 'Equipment', items: [
+      { desc: 'Dumpster rental (demo debris)', total: 38500 },
+    ]},
+    { category: 'Permits', items: [
+      { desc: 'Plumbing permit', total: 15000 },
+    ]},
+  ],
+  grandTotal: 1088000,
+};
+
+function formatQuoteCents(cents: number): string {
+  return (cents / 100).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+}
+
 export default function ClientJobDetailScreen() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const { id } = useLocalSearchParams<{ id: string }>();
   const [showMaterialsFlow, setShowMaterialsFlow] = useState(false);
+  const [quoteAccepted, setQuoteAccepted] = useState(false);
+  const [showQuoteDetails, setShowQuoteDetails] = useState(false);
+  const hasQuote = true; // Mock: always show for demo
 
   const job = MOCK_JOB; // In production, fetch by `id`
 
@@ -190,6 +227,125 @@ export default function ClientJobDetailScreen() {
                 </View>
               </View>
               <Button title="Message" onPress={handleMessage} variant="secondary" size="sm" />
+            </View>
+          </Card>
+        )}
+
+        {/* Quote Received Card */}
+        {hasQuote && !quoteAccepted && (
+          <Card style={styles.section} variant="elevated">
+            <View style={styles.quoteHeader}>
+              <Ionicons name="document-text" size={24} color={colors.primary} />
+              <View style={{ flex: 1, marginLeft: spacing.md }}>
+                <Text style={styles.quoteTitle}>Quote Received</Text>
+                <Text style={styles.quotePro}>From {MOCK_QUOTE.proName}</Text>
+              </View>
+              <Text style={styles.quoteAmount}>{formatQuoteCents(MOCK_QUOTE.amount)}</Text>
+            </View>
+            <Text style={styles.quoteValid}>Valid until {MOCK_QUOTE.validUntil}</Text>
+
+            {showQuoteDetails && (
+              <View style={styles.quoteDetails}>
+                {MOCK_QUOTE.lineItems.map((group) => (
+                  <View key={group.category} style={styles.quoteGroup}>
+                    <Text style={styles.quoteGroupLabel}>{group.category}</Text>
+                    {group.items.map((li) => (
+                      <View key={li.desc} style={styles.quoteLineItem}>
+                        <Text style={styles.quoteLineDesc}>{li.desc}</Text>
+                        <Text style={styles.quoteLineTotal}>{formatQuoteCents(li.total)}</Text>
+                      </View>
+                    ))}
+                  </View>
+                ))}
+                <View style={styles.quoteGrandRow}>
+                  <Text style={styles.quoteGrandLabel}>Grand Total</Text>
+                  <Text style={styles.quoteGrandValue}>{formatQuoteCents(MOCK_QUOTE.grandTotal)}</Text>
+                </View>
+              </View>
+            )}
+
+            <Pressable
+              style={styles.quoteViewToggle}
+              onPress={() => {
+                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                setShowQuoteDetails((v) => !v);
+              }}
+            >
+              <Text style={styles.quoteViewToggleText}>
+                {showQuoteDetails ? 'Hide Details' : 'View Details'}
+              </Text>
+              <Ionicons
+                name={showQuoteDetails ? 'chevron-up' : 'chevron-down'}
+                size={16}
+                color={colors.primary}
+              />
+            </Pressable>
+
+            <View style={styles.quoteActions}>
+              <Pressable
+                style={styles.quoteAcceptBtn}
+                onPress={() => {
+                  Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+                  Alert.alert('Quote Accepted', 'Quote accepted! Pro will be notified.');
+                  setQuoteAccepted(true);
+                }}
+              >
+                <Text style={styles.quoteAcceptText}>Accept</Text>
+              </Pressable>
+              <Pressable
+                style={styles.quoteDeclineBtn}
+                onPress={() => {
+                  Alert.prompt
+                    ? Alert.prompt('Decline Quote', 'Reason for declining (optional):', (reason) => {
+                        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
+                        Alert.alert('Quote Declined', 'The pro has been notified.');
+                      })
+                    : Alert.alert('Decline Quote', 'Are you sure you want to decline?', [
+                        { text: 'Cancel', style: 'cancel' },
+                        {
+                          text: 'Decline',
+                          style: 'destructive',
+                          onPress: () => {
+                            Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
+                            Alert.alert('Quote Declined', 'The pro has been notified.');
+                          },
+                        },
+                      ]);
+                }}
+              >
+                <Text style={styles.quoteDeclineText}>Decline</Text>
+              </Pressable>
+            </View>
+
+            <Pressable
+              style={styles.quoteChangesLink}
+              onPress={() => {
+                Alert.alert('Request Changes', 'This will notify the pro to revise the quote.', [
+                  { text: 'Cancel', style: 'cancel' },
+                  {
+                    text: 'Request',
+                    onPress: () => {
+                      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                      Alert.alert('Sent', 'Change request sent to the pro.');
+                    },
+                  },
+                ]);
+              }}
+            >
+              <Text style={styles.quoteChangesText}>Request Changes</Text>
+            </Pressable>
+          </Card>
+        )}
+
+        {hasQuote && quoteAccepted && (
+          <Card style={{...styles.section, backgroundColor: colors.successLight}} variant="elevated">
+            <View style={styles.quoteHeader}>
+              <Ionicons name="checkmark-circle" size={24} color={colors.success} />
+              <View style={{ flex: 1, marginLeft: spacing.md }}>
+                <Text style={styles.quoteTitle}>Quote Accepted</Text>
+                <Text style={styles.quotePro}>{formatQuoteCents(MOCK_QUOTE.amount)}</Text>
+              </View>
+              <Badge label="Accepted" variant="success" />
             </View>
           </Card>
         )}
@@ -405,4 +561,130 @@ const styles = StyleSheet.create({
     color: colors.text,
   },
 
+  // Quote received
+  quoteHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  quoteTitle: {
+    ...typography.bodySmall,
+    fontWeight: '600',
+    color: colors.text,
+  },
+  quotePro: {
+    ...typography.caption,
+    color: colors.textMuted,
+    marginTop: 2,
+  },
+  quoteAmount: {
+    ...typography.subheading,
+    color: colors.primary,
+    fontWeight: '700',
+  },
+  quoteValid: {
+    ...typography.caption,
+    color: colors.textMuted,
+    marginTop: spacing.sm,
+  },
+  quoteDetails: {
+    marginTop: spacing.md,
+    paddingTop: spacing.md,
+    borderTopWidth: 1,
+    borderTopColor: colors.borderLight,
+  },
+  quoteGroup: {
+    marginBottom: spacing.md,
+  },
+  quoteGroupLabel: {
+    ...typography.caption,
+    color: colors.primary,
+    fontWeight: '700',
+    textTransform: 'uppercase',
+    marginBottom: spacing.xs,
+    letterSpacing: 1,
+  },
+  quoteLineItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: spacing.xs,
+  },
+  quoteLineDesc: {
+    ...typography.caption,
+    color: colors.textSecondary,
+    flex: 1,
+  },
+  quoteLineTotal: {
+    ...typography.caption,
+    fontWeight: '600',
+    color: colors.text,
+  },
+  quoteGrandRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingTop: spacing.md,
+    marginTop: spacing.sm,
+    borderTopWidth: 2,
+    borderTopColor: colors.borderMedium,
+  },
+  quoteGrandLabel: {
+    ...typography.subheading,
+    color: colors.text,
+    fontSize: 16,
+  },
+  quoteGrandValue: {
+    ...typography.subheading,
+    color: colors.primary,
+    fontSize: 16,
+  },
+  quoteViewToggle: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: spacing.xs,
+    paddingVertical: spacing.md,
+  },
+  quoteViewToggleText: {
+    ...typography.bodySmall,
+    color: colors.primary,
+    fontWeight: '600',
+  },
+  quoteActions: {
+    flexDirection: 'row',
+    gap: spacing.md,
+    marginTop: spacing.sm,
+  },
+  quoteAcceptBtn: {
+    flex: 1,
+    alignItems: 'center',
+    paddingVertical: spacing.md,
+    backgroundColor: colors.primary,
+    borderRadius: borderRadius.full,
+  },
+  quoteAcceptText: {
+    ...typography.bodySmall,
+    fontWeight: '600',
+    color: colors.textInverse,
+  },
+  quoteDeclineBtn: {
+    flex: 1,
+    alignItems: 'center',
+    paddingVertical: spacing.md,
+    borderRadius: borderRadius.full,
+    borderWidth: 1,
+    borderColor: colors.borderMedium,
+  },
+  quoteDeclineText: {
+    ...typography.bodySmall,
+    fontWeight: '600',
+    color: colors.textSecondary,
+  },
+  quoteChangesLink: {
+    alignItems: 'center',
+    paddingTop: spacing.md,
+  },
+  quoteChangesText: {
+    ...typography.caption,
+    color: colors.primary,
+    fontWeight: '600',
+  },
 });

@@ -159,6 +159,7 @@ export default function ProJobDetailScreen() {
   const [notes, setNotes] = useState<JobNote[]>(INITIAL_NOTES);
   const [showNoteInput, setShowNoteInput] = useState(false);
   const [newNoteText, setNewNoteText] = useState('');
+  const [quoteSent, setQuoteSent] = useState(false);
 
   const job = MOCK_JOB; // In production, fetch by `id`
 
@@ -275,6 +276,36 @@ export default function ProJobDetailScreen() {
 
         <Text style={styles.descriptionText}>{job.description}</Text>
       </Card>
+
+      {/* Quote Action */}
+      {quoteSent ? (
+        <Card style={styles.section} variant="elevated">
+          <View style={styles.quoteSentRow}>
+            <Badge label="Quote Sent" variant="success" />
+            <Pressable
+              style={styles.viewQuoteBtn}
+              onPress={() => {
+                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                router.push({ pathname: '/(pro)/quote', params: { jobId: id } });
+              }}
+            >
+              <Ionicons name="document-text-outline" size={16} color={colors.primary} />
+              <Text style={styles.viewQuoteBtnText}>View Quote</Text>
+            </Pressable>
+          </View>
+        </Card>
+      ) : (
+        <Pressable
+          style={styles.sendQuoteBtn}
+          onPress={() => {
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+            router.push({ pathname: '/(pro)/quote', params: { jobId: id } });
+          }}
+        >
+          <Ionicons name="document-text-outline" size={18} color={colors.textInverse} />
+          <Text style={styles.sendQuoteBtnText}>Send Quote</Text>
+        </Pressable>
+      )}
 
       {/* Milestone Progress */}
       <Card style={styles.section} variant="elevated">
@@ -1098,5 +1129,38 @@ const styles = StyleSheet.create({
     marginBottom: spacing.lg,
     borderWidth: 1,
     borderColor: colors.borderMedium,
+  },
+
+  // Quote
+  sendQuoteBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: spacing.sm,
+    backgroundColor: colors.primary,
+    paddingVertical: spacing.md,
+    borderRadius: borderRadius.full,
+    marginBottom: spacing.lg,
+    ...shadows.primaryGlow,
+  },
+  sendQuoteBtnText: {
+    ...typography.bodySmall,
+    fontWeight: '600',
+    color: colors.textInverse,
+  },
+  quoteSentRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  viewQuoteBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.xs,
+  },
+  viewQuoteBtnText: {
+    ...typography.bodySmall,
+    color: colors.primary,
+    fontWeight: '600',
   },
 });

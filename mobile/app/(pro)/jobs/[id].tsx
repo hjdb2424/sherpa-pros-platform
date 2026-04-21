@@ -21,6 +21,8 @@ import Card from '@/components/common/Card';
 import Badge from '@/components/common/Badge';
 import Button from '@/components/common/Button';
 import FinancingOptions from '@/components/pro/FinancingOptions';
+import TaggingSystem from '@/components/social/TaggingSystem';
+import type { Tag } from '@/components/social/TaggingSystem';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -573,9 +575,19 @@ export default function ProJobDetailScreen() {
         ))}
       </View>
 
-      {/* Add Photo button */}
+      {/* Add Photo + Tag a Pro buttons */}
       <View style={styles.actionButtons}>
-        <Button title="Add Photo" onPress={handleAddPhoto} variant="primary" fullWidth />
+        <View style={styles.photoActionsRow}>
+          <View style={{ flex: 1 }}>
+            <Button title="Add Photo" onPress={handleAddPhoto} variant="primary" fullWidth />
+          </View>
+          <TaggingSystem
+            photoId={`job-${id}-photos`}
+            onTagAdded={(tag: Tag) => {
+              // In production, persist the tag
+            }}
+          />
+        </View>
       </View>
 
       <View style={{ height: spacing.xxxl }} />
@@ -1015,6 +1027,13 @@ const styles = StyleSheet.create({
     ...typography.bodySmall,
     color: colors.textSecondary,
     lineHeight: 20,
+  },
+
+  // Photo actions row
+  photoActionsRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.md,
   },
 
   // Photos

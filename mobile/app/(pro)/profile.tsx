@@ -28,6 +28,7 @@ import {
   MOCK_PORTFOLIO,
 } from '@/components/portfolio';
 import type { PortfolioItem } from '@/components/portfolio';
+import { TagApprovalList, PENDING_TAGS, ProEndorsements } from '@/components/social';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -417,6 +418,11 @@ export default function ProProfileScreen() {
         )}
 
         {/* ---------------------------------------------------------------- */}
+        {/* 2b. Tag Approval Requests                                        */}
+        {/* ---------------------------------------------------------------- */}
+        <TagApprovalList tags={PENDING_TAGS} />
+
+        {/* ---------------------------------------------------------------- */}
         {/* 3. Stats Row                                                     */}
         {/* ---------------------------------------------------------------- */}
         <View style={s.statsCard}>
@@ -537,6 +543,13 @@ export default function ProProfileScreen() {
           {MOCK_REVIEWS.map((review) => (
             <ReviewCard key={review.id} review={review} />
           ))}
+        </View>
+
+        {/* ---------------------------------------------------------------- */}
+        {/* 8b. Pro Endorsements                                             */}
+        {/* ---------------------------------------------------------------- */}
+        <View style={s.sectionCard}>
+          <ProEndorsements proName={profile.name} />
         </View>
 
         {/* ---------------------------------------------------------------- */}

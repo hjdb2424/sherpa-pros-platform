@@ -12,7 +12,15 @@ import * as Haptics from 'expo-haptics';
 import { Ionicons } from '@expo/vector-icons';
 import { colors, spacing, borderRadius } from '@/lib/theme';
 import PhotoViewer from './PhotoViewer';
+import TaggedWorkBadge from '@/components/social/TaggedWorkBadge';
 import type { PortfolioItem } from './types';
+
+// Mock tag data for portfolio items
+const PORTFOLIO_TAGS: Record<string, { taggedBy: string; role: 'client' | 'pro'; description: string }> = {
+  p2: { taggedBy: 'Sarah Chen', role: 'pro', description: 'Collaborated on bathroom tile — plumbing rough-in' },
+  p5: { taggedBy: 'Tom Anderson', role: 'client', description: 'Water heater install and old unit removal' },
+  p7: { taggedBy: 'Lisa Martinez', role: 'client', description: 'Custom vanity plumbing connections' },
+};
 
 interface PortfolioGridProps {
   items: PortfolioItem[];
@@ -79,6 +87,15 @@ export default function PortfolioGrid({ items }: PortfolioGridProps) {
             <View style={styles.baBadge}>
               <Text style={styles.baBadgeText}>B/A</Text>
             </View>
+          )}
+
+          {/* Tagged work badge */}
+          {PORTFOLIO_TAGS[item.id] && (
+            <TaggedWorkBadge
+              taggedBy={PORTFOLIO_TAGS[item.id].taggedBy}
+              role={PORTFOLIO_TAGS[item.id].role}
+              description={PORTFOLIO_TAGS[item.id].description}
+            />
           )}
         </Pressable>
       );

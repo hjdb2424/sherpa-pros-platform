@@ -445,6 +445,13 @@ export default function ProProfileScreen() {
           />
         </View>
 
+        {/* Aggregate social rating */}
+        <View style={s.socialRatingRow}>
+          <Ionicons name="star" size={14} color={colors.accent} />
+          <Text style={s.socialRatingText}>4.8</Text>
+          <Text style={s.socialRatingMuted}> across 30 reviews</Text>
+        </View>
+
         {/* ---------------------------------------------------------------- */}
         {/* 4. About Section                                                 */}
         {/* ---------------------------------------------------------------- */}
@@ -548,6 +555,26 @@ export default function ProProfileScreen() {
           <View style={s.referralContent}>
             <Text style={s.referralTitle}>Invite & Earn</Text>
             <Text style={s.referralSubtitle}>Earn $50 per pro referral</Text>
+          </View>
+          <Ionicons name="chevron-forward" size={18} color={colors.textMuted} />
+        </Pressable>
+
+        {/* ---------------------------------------------------------------- */}
+        {/* Social Sync Card                                                 */}
+        {/* ---------------------------------------------------------------- */}
+        <Pressable
+          style={s.referralCard}
+          onPress={() => {
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+            router.push('/(pro)/social');
+          }}
+        >
+          <View style={s.referralIconBox}>
+            <Ionicons name="share-social-outline" size={24} color={colors.primary} />
+          </View>
+          <View style={s.referralContent}>
+            <Text style={s.referralTitle}>Social Sync</Text>
+            <Text style={s.referralSubtitle}>3 connected</Text>
           </View>
           <Ionicons name="chevron-forward" size={18} color={colors.textMuted} />
         </Pressable>
@@ -847,6 +874,25 @@ const s = StyleSheet.create({
     width: 1,
     height: 28,
     backgroundColor: colors.borderLight,
+  },
+
+  // Social aggregate rating ------------------------------------------------
+  socialRatingRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 4,
+    marginHorizontal: spacing.lg,
+    marginTop: spacing.sm,
+  },
+  socialRatingText: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: colors.text,
+  },
+  socialRatingMuted: {
+    fontSize: 13,
+    color: colors.textMuted,
   },
 
   // Section card ----------------------------------------------------------

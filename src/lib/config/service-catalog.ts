@@ -13,13 +13,31 @@ export interface SubService {
   budgetRange: { min: number; max: number }; // in dollars (display), stored as cents in DB
   typicalDuration: string;
   urgency: UrgencyLevel;
+  wisemanConfidence: number; // 0-100, target 95%+
+  wisemanSource: string; // which Wiseman(s) validated this
+  wisemanNotes: string; // validation details
+  codeReferences?: string[]; // applicable building codes
+  safetyRequirements?: string[]; // OSHA/safety notes
+  permitRequired?: boolean;
+  inspectionRequired?: boolean;
+  licensedTradeRequired?: boolean;
 }
+
+export type RegionalTag =
+  | 'national'
+  | 'southwest'
+  | 'southeast'
+  | 'midwest'
+  | 'west-coast'
+  | 'mountain'
+  | 'northeast';
 
 export interface ServiceCategory {
   id: string;
   name: string;
   icon: string; // Ionicons name
   description: string;
+  regional?: RegionalTag[];
   subServices: SubService[];
 }
 
@@ -32,6 +50,7 @@ export const SERVICE_CATALOG: ServiceCategory[] = [
     name: 'Plumbing',
     icon: 'water-outline',
     description: 'Pipes, fixtures, water heaters, drains',
+    regional: ['national'],
     subServices: [
       {
         id: 'faucet-replacement',
@@ -124,6 +143,7 @@ export const SERVICE_CATALOG: ServiceCategory[] = [
     name: 'Electrical',
     icon: 'flash-outline',
     description: 'Wiring, panels, outlets, lighting, EV chargers',
+    regional: ['national'],
     subServices: [
       {
         id: 'outlet-replacement',
@@ -208,6 +228,7 @@ export const SERVICE_CATALOG: ServiceCategory[] = [
     name: 'HVAC',
     icon: 'thermometer-outline',
     description: 'Heating, cooling, ventilation, air quality',
+    regional: ['national'],
     subServices: [
       {
         id: 'furnace-repair',
@@ -292,6 +313,7 @@ export const SERVICE_CATALOG: ServiceCategory[] = [
     name: 'Painting',
     icon: 'color-palette-outline',
     description: 'Interior, exterior, prep, stain, specialty finishes',
+    regional: ['national'],
     subServices: [
       {
         id: 'interior-room-paint',
@@ -376,6 +398,7 @@ export const SERVICE_CATALOG: ServiceCategory[] = [
     name: 'Carpentry',
     icon: 'hammer-outline',
     description: 'Windows, doors, trim, framing, custom work',
+    regional: ['national'],
     subServices: [
       {
         id: 'window-replacement',
@@ -460,6 +483,7 @@ export const SERVICE_CATALOG: ServiceCategory[] = [
     name: 'Landscaping',
     icon: 'leaf-outline',
     description: 'Lawn, hardscape, fencing, seasonal maintenance',
+    regional: ['national'],
     subServices: [
       {
         id: 'last-min-mowing',
@@ -552,6 +576,7 @@ export const SERVICE_CATALOG: ServiceCategory[] = [
     name: 'Roofing',
     icon: 'home-outline',
     description: 'Roof repair, replacement, gutters, ice dams',
+    regional: ['national'],
     subServices: [
       {
         id: 'roof-repair',
@@ -628,6 +653,7 @@ export const SERVICE_CATALOG: ServiceCategory[] = [
     name: 'General Handyman',
     icon: 'construct-outline',
     description: 'Small repairs, assembly, mounting, odd jobs',
+    regional: ['national'],
     subServices: [
       {
         id: 'furniture-assembly',
@@ -712,6 +738,7 @@ export const SERVICE_CATALOG: ServiceCategory[] = [
     name: 'Flooring',
     icon: 'grid-outline',
     description: 'Hardwood, tile, LVP, carpet, refinishing',
+    regional: ['national'],
     subServices: [
       {
         id: 'hardwood-install',
@@ -788,6 +815,7 @@ export const SERVICE_CATALOG: ServiceCategory[] = [
     name: 'Emergency Services',
     icon: 'alert-circle-outline',
     description: '24/7 urgent repairs — burst pipes, no heat, storm damage',
+    regional: ['national'],
     subServices: [
       {
         id: 'burst-pipe',
@@ -855,6 +883,1657 @@ export const SERVICE_CATALOG: ServiceCategory[] = [
       },
     ],
   },
+
+  // ═══════════════════════════════════════════════════════════════════════
+  // NATIONAL EXPANSION — Regional + National Categories (11-28)
+  // ═══════════════════════════════════════════════════════════════════════
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // 11. STUCCO & EXTERIOR MASONRY (Southwest)
+  // ─────────────────────────────────────────────────────────────────────────
+  {
+    id: 'stucco-exterior',
+    name: 'Stucco & Exterior Masonry',
+    icon: 'layers-outline',
+    description: 'Stucco, adobe, EIFS, crack repair, color coat, waterproofing',
+    regional: ['southwest'],
+    subServices: [
+      {
+        id: 'stucco-crack-repair',
+        name: 'Stucco Crack Repair',
+        scope: 'Inspect cracks and identify cause (settling, moisture, impact), V-groove cracks with grinder, clean debris, apply bonding agent, fill with fiber-reinforced stucco patch, feather edges, apply elastomeric color coat to match existing, cleanup',
+        budgetRange: { min: 200, max: 1200 },
+        typicalDuration: '2-6 hours',
+        urgency: 'standard',
+      },
+      {
+        id: 'full-re-stucco',
+        name: 'Full Re-Stucco',
+        scope: 'Pressure wash and remove loose stucco, repair lath and waterproof membrane, apply scratch coat and score, apply brown coat and float level, apply finish coat (smooth, skip-trowel, or dash texture), color match or apply elastomeric paint, seal around all penetrations',
+        budgetRange: { min: 6000, max: 18000 },
+        typicalDuration: '5-10 days',
+        urgency: 'flexible',
+      },
+      {
+        id: 'adobe-repair',
+        name: 'Adobe Wall Repair',
+        scope: 'Assess structural integrity, remove deteriorated adobe bricks, source matching adobe blocks, re-lay with mud mortar, re-plaster with traditional lime/mud mix or synthetic stucco, seal and waterproof',
+        budgetRange: { min: 500, max: 4000 },
+        typicalDuration: '1-4 days',
+        urgency: 'standard',
+      },
+      {
+        id: 'stucco-color-coat',
+        name: 'Stucco Color Coat / Elastomeric',
+        scope: 'Pressure wash entire exterior, patch hairline cracks, prime with masonry primer, apply 2 coats elastomeric paint rated for desert UV and thermal expansion, cut in around windows/doors, cleanup',
+        budgetRange: { min: 2000, max: 8000 },
+        typicalDuration: '2-5 days',
+        urgency: 'flexible',
+      },
+      {
+        id: 'stucco-waterproofing',
+        name: 'Stucco Waterproofing',
+        scope: 'Inspect for moisture intrusion points, repair any delamination, seal all window/door perimeters with backer rod and elastomeric caulk, apply penetrating silane/siloxane sealer to all stucco surfaces, verify flashing integrity',
+        budgetRange: { min: 1000, max: 5000 },
+        typicalDuration: '1-3 days',
+        urgency: 'standard',
+      },
+      {
+        id: 'eifs-repair',
+        name: 'EIFS (Synthetic Stucco) Repair',
+        scope: 'Probe for moisture damage behind EIFS, cut out damaged sections, replace EPS foam board and mesh, apply base coat with fiberglass mesh, texture match finish coat, seal all joints and penetrations',
+        budgetRange: { min: 500, max: 3000 },
+        typicalDuration: '1-3 days',
+        urgency: 'standard',
+      },
+    ],
+  },
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // 12. POOL SERVICES (Southwest / Southeast)
+  // ─────────────────────────────────────────────────────────────────────────
+  {
+    id: 'pool-services',
+    name: 'Pool Services',
+    icon: 'water-outline',
+    description: 'Pool resurface, pump repair, tile, heating, leak detection',
+    regional: ['southwest', 'southeast'],
+    subServices: [
+      {
+        id: 'pool-resurface',
+        name: 'Pool Resurfacing',
+        scope: 'Drain pool, acid wash shell, chip out delaminated plaster, apply bond coat, apply new plaster/pebble/quartz finish, fill pool over 24-48 hrs, balance chemicals, brush surface daily for 2 weeks startup',
+        budgetRange: { min: 5000, max: 15000 },
+        typicalDuration: '5-10 days',
+        urgency: 'flexible',
+      },
+      {
+        id: 'pool-pump-repair',
+        name: 'Pool Pump / Motor Repair',
+        scope: 'Diagnose pump issue (motor, impeller, seal, capacitor), shut off power at breaker, disassemble pump housing, replace failed components, reassemble, prime pump, verify flow rate and pressure, check for leaks',
+        budgetRange: { min: 200, max: 1200 },
+        typicalDuration: '1-4 hours',
+        urgency: 'standard',
+      },
+      {
+        id: 'pool-tile-repair',
+        name: 'Pool Tile Repair / Replacement',
+        scope: 'Lower water level below tile line, remove damaged or loose tiles, prep substrate, apply waterproof thinset, set new tiles matching existing pattern, grout with epoxy grout, allow cure before refilling, balance chemicals',
+        budgetRange: { min: 500, max: 3000 },
+        typicalDuration: '1-3 days',
+        urgency: 'standard',
+      },
+      {
+        id: 'pool-leak-detection',
+        name: 'Pool Leak Detection',
+        scope: 'Perform bucket test to confirm leak, pressure test plumbing lines, inject dye at suspected leak points, use electronic listening equipment on underground pipes, pinpoint leak location, provide repair estimate',
+        budgetRange: { min: 200, max: 800 },
+        typicalDuration: '2-4 hours',
+        urgency: 'standard',
+      },
+      {
+        id: 'pool-solar-heating',
+        name: 'Pool Solar Heating Install',
+        scope: 'Assess roof orientation and structural capacity, mount solar panel racks on roof, install solar collector panels, plumb supply and return lines to pool equipment, install diverter valve and controller, test flow and temperature gain',
+        budgetRange: { min: 3000, max: 8000 },
+        typicalDuration: '1-3 days',
+        urgency: 'flexible',
+      },
+      {
+        id: 'pool-equipment-upgrade',
+        name: 'Pool Equipment Upgrade',
+        scope: 'Replace old single-speed pump with variable-speed, install new salt chlorine generator or chlorinator, upgrade filter (DE/cartridge/sand), install automation controller, re-plumb equipment pad, program schedules, verify operation',
+        budgetRange: { min: 2000, max: 8000 },
+        typicalDuration: '1-2 days',
+        urgency: 'flexible',
+      },
+    ],
+  },
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // 13. EVAPORATIVE COOLING (Southwest)
+  // ─────────────────────────────────────────────────────────────────────────
+  {
+    id: 'evaporative-cooling',
+    name: 'Evaporative Cooling',
+    icon: 'snow-outline',
+    description: 'Swamp cooler install, pad replacement, winterization',
+    regional: ['southwest'],
+    subServices: [
+      {
+        id: 'swamp-cooler-install',
+        name: 'Swamp Cooler Installation',
+        scope: 'Set roof-mount or window-mount unit on stand, connect water supply line with float valve, run ductwork to interior, wire to dedicated circuit with thermostat, install cooler pads, fill reservoir and test, adjust dampers',
+        budgetRange: { min: 1500, max: 4000 },
+        typicalDuration: '4-8 hours',
+        urgency: 'standard',
+      },
+      {
+        id: 'cooler-pad-replacement',
+        name: 'Cooler Pad Replacement',
+        scope: 'Shut off water and power, remove side panels, remove old pads, clean mineral scale from frame and water distribution, install new cellulose or aspen pads, reassemble, fill and test water distribution, adjust float valve',
+        budgetRange: { min: 100, max: 350 },
+        typicalDuration: '1-2 hours',
+        urgency: 'standard',
+      },
+      {
+        id: 'cooler-winterization',
+        name: 'Swamp Cooler Winterization',
+        scope: 'Shut off water supply, drain reservoir and water line, disconnect and blow out water line, remove pads, clean interior, oil motor and bearings, install winter cover, close interior damper, open furnace damper',
+        budgetRange: { min: 100, max: 300 },
+        typicalDuration: '1-2 hours',
+        urgency: 'standard',
+      },
+      {
+        id: 'cooler-startup',
+        name: 'Spring Cooler Startup',
+        scope: 'Remove winter cover, inspect motor and belt, replace pads, reconnect water supply, fill reservoir, test float valve and pump, oil motor bearings, check belt tension, open cooler damper, close furnace damper, test operation',
+        budgetRange: { min: 100, max: 300 },
+        typicalDuration: '1-2 hours',
+        urgency: 'standard',
+      },
+      {
+        id: 'cooler-motor-replace',
+        name: 'Cooler Motor / Belt Replacement',
+        scope: 'Shut off power, remove motor cover, disconnect wiring, remove old motor and belt, install new motor on mount, install new belt and adjust tension, reconnect wiring, test operation at all speeds',
+        budgetRange: { min: 150, max: 500 },
+        typicalDuration: '1-3 hours',
+        urgency: 'standard',
+      },
+      {
+        id: 'cooler-to-ac-conversion',
+        name: 'Swamp-to-AC Conversion',
+        scope: 'Remove swamp cooler unit and roof stand, patch and seal roof penetration, install refrigerated AC condenser on pad, run refrigerant lines, install evaporator coil in existing ductwork, connect thermostat, charge system, pull permit',
+        budgetRange: { min: 5000, max: 12000 },
+        typicalDuration: '2-4 days',
+        urgency: 'flexible',
+      },
+    ],
+  },
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // 14. DESERT LANDSCAPING / XERISCAPING (Southwest)
+  // ─────────────────────────────────────────────────────────────────────────
+  {
+    id: 'xeriscaping',
+    name: 'Desert Landscaping',
+    icon: 'sunny-outline',
+    description: 'Xeriscaping, rock install, drip irrigation, desert-native planting',
+    regional: ['southwest'],
+    subServices: [
+      {
+        id: 'xeriscape-design-install',
+        name: 'Xeriscape Design & Install',
+        scope: 'Survey property and sun exposure, design water-efficient landscape plan, remove existing turf, grade and compact soil, install weed barrier fabric, lay drip irrigation zones, plant native/drought-tolerant species, spread decorative rock or gravel, install border edging',
+        budgetRange: { min: 3000, max: 15000 },
+        typicalDuration: '3-7 days',
+        urgency: 'flexible',
+      },
+      {
+        id: 'drip-irrigation-install',
+        name: 'Drip Irrigation System',
+        scope: 'Design zone layout based on plant water needs, tap into main water supply, install backflow preventer, run main supply lines, install drip emitters at each plant, set up timer/controller with seasonal programming, test all zones, adjust flow rates',
+        budgetRange: { min: 800, max: 4000 },
+        typicalDuration: '1-3 days',
+        urgency: 'flexible',
+      },
+      {
+        id: 'rock-gravel-install',
+        name: 'Decorative Rock / Gravel Install',
+        scope: 'Remove existing ground cover or turf, grade and compact surface, install heavy-duty weed barrier, edge borders with steel/stone/concrete edging, deliver and spread decorative rock (river rock, decomposed granite, flagstone), compact and level',
+        budgetRange: { min: 1000, max: 6000 },
+        typicalDuration: '1-4 days',
+        urgency: 'flexible',
+      },
+      {
+        id: 'desert-native-planting',
+        name: 'Desert Native Planting',
+        scope: 'Source native species (palo verde, mesquite, agave, ocotillo, prickly pear, desert willow), dig appropriately sized holes, amend soil if needed, plant at proper depth, mulch with rock, set up drip emitters, provide care instructions',
+        budgetRange: { min: 500, max: 4000 },
+        typicalDuration: '1-3 days',
+        urgency: 'flexible',
+      },
+      {
+        id: 'turf-removal',
+        name: 'Turf Removal (Water Conservation)',
+        scope: 'Cut and strip existing turf using sod cutter, remove roots and debris, grade surface, install weed barrier, prepare for xeriscape or hardscape conversion, haul away green waste, coordinate with water utility rebate program if available',
+        budgetRange: { min: 500, max: 3000 },
+        typicalDuration: '1-3 days',
+        urgency: 'flexible',
+      },
+      {
+        id: 'artificial-turf-install',
+        name: 'Artificial Turf Installation',
+        scope: 'Remove existing surface, excavate to depth, install crushed aggregate base and compact, lay weed barrier, roll out synthetic turf, seam sections, secure perimeter with landscape spikes, spread infill sand, brush fibers upright',
+        budgetRange: { min: 2000, max: 10000 },
+        typicalDuration: '2-5 days',
+        urgency: 'flexible',
+      },
+    ],
+  },
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // 15. HURRICANE PREP / STORM HARDENING (Southeast)
+  // ─────────────────────────────────────────────────────────────────────────
+  {
+    id: 'hurricane-storm-hardening',
+    name: 'Hurricane Prep & Storm Hardening',
+    icon: 'thunderstorm-outline',
+    description: 'Impact windows, storm shutters, roof tie-downs, generator install',
+    regional: ['southeast'],
+    subServices: [
+      {
+        id: 'impact-window-install',
+        name: 'Impact Window Installation',
+        scope: 'Remove existing windows, inspect and reinforce rough openings, install Miami-Dade approved impact-rated windows with proper flashing and waterproofing, foam and seal, apply silicone exterior sealant, provide NOA documentation for insurance credit',
+        budgetRange: { min: 5000, max: 25000 },
+        typicalDuration: '2-5 days',
+        urgency: 'standard',
+      },
+      {
+        id: 'storm-shutter-install',
+        name: 'Storm Shutter Installation',
+        scope: 'Measure all window and door openings, install mounting tracks/brackets with Tapcon anchors into concrete block or wood frame, fit accordion/roll-down/panel shutters, test operation, label panels for quick deployment, provide hurricane prep checklist',
+        budgetRange: { min: 2000, max: 12000 },
+        typicalDuration: '1-3 days',
+        urgency: 'standard',
+      },
+      {
+        id: 'roof-tie-down',
+        name: 'Roof-to-Wall Tie-Down (FBC Retrofit)',
+        scope: 'Access attic, install Simpson hurricane straps or clips at every rafter-to-wall connection, secure ridge beam connections, reinforce gable end bracing, seal all penetrations, document with photos for insurance wind mitigation credit',
+        budgetRange: { min: 1500, max: 5000 },
+        typicalDuration: '1-2 days',
+        urgency: 'standard',
+      },
+      {
+        id: 'whole-house-generator',
+        name: 'Whole-House Generator Install',
+        scope: 'Size generator per home load requirements, pour concrete pad, set generator unit, install automatic transfer switch at main panel, run gas line from meter to generator, connect battery and controls, program exercise schedule, pull permit and inspect',
+        budgetRange: { min: 8000, max: 20000 },
+        typicalDuration: '2-4 days',
+        urgency: 'standard',
+      },
+      {
+        id: 'garage-door-bracing',
+        name: 'Garage Door Wind Bracing',
+        scope: 'Install horizontal and vertical bracing kit on existing garage door, reinforce tracks and hinges, install wind-rated bottom seal, test manual and automatic operation, certify for wind mitigation inspection',
+        budgetRange: { min: 500, max: 2000 },
+        typicalDuration: '2-4 hours',
+        urgency: 'standard',
+      },
+      {
+        id: 'wind-mitigation-inspection',
+        name: 'Wind Mitigation Inspection',
+        scope: 'Inspect roof covering, roof deck attachment, roof-to-wall connections, roof geometry, opening protection (windows/doors/garage), secondary water resistance, document all findings with photos, complete OIR-B1-1802 form for insurance discount',
+        budgetRange: { min: 100, max: 300 },
+        typicalDuration: '1-2 hours',
+        urgency: 'standard',
+      },
+    ],
+  },
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // 16. MOLD REMEDIATION (Southeast / National)
+  // ─────────────────────────────────────────────────────────────────────────
+  {
+    id: 'mold-remediation',
+    name: 'Mold Remediation',
+    icon: 'bug-outline',
+    description: 'Mold testing, removal, containment, prevention',
+    regional: ['southeast', 'national'],
+    subServices: [
+      {
+        id: 'mold-testing',
+        name: 'Mold Testing & Assessment',
+        scope: 'Visual inspection of all rooms, attic, crawlspace, behind accessible walls, collect air samples and surface swabs, send to accredited lab, provide written report with species identification, moisture mapping with pin/pinless meters, remediation protocol if positive',
+        budgetRange: { min: 300, max: 800 },
+        typicalDuration: '1-3 hours',
+        urgency: 'standard',
+      },
+      {
+        id: 'mold-removal',
+        name: 'Mold Removal (Under 100 sqft)',
+        scope: 'Set up containment with poly sheeting and negative air machine with HEPA filter, remove affected drywall/insulation, HEPA vacuum all surfaces, treat framing with antimicrobial solution, apply mold-resistant encapsulant, replace insulation and drywall, post-remediation clearance test',
+        budgetRange: { min: 1500, max: 5000 },
+        typicalDuration: '1-3 days',
+        urgency: 'standard',
+      },
+      {
+        id: 'mold-removal-large',
+        name: 'Large-Scale Mold Remediation',
+        scope: 'Full containment protocol with decontamination chamber, negative air pressure throughout work area, remove all affected materials (drywall, insulation, carpet, cabinetry), HEPA vacuum structure, treat with biocide, dry structure to target moisture levels, rebuild, independent clearance testing',
+        budgetRange: { min: 5000, max: 25000 },
+        typicalDuration: '5-14 days',
+        urgency: 'standard',
+      },
+      {
+        id: 'crawlspace-encapsulation',
+        name: 'Crawlspace Encapsulation',
+        scope: 'Remove debris and standing water, grade soil, install sump pump if needed, lay 20-mil vapor barrier on floor and walls sealed at all seams, insulate walls with rigid foam, install dehumidifier with drain, seal vents, install access door, set humidity target 50-55%',
+        budgetRange: { min: 5000, max: 15000 },
+        typicalDuration: '2-5 days',
+        urgency: 'flexible',
+      },
+      {
+        id: 'dehumidifier-install',
+        name: 'Whole-House Dehumidifier',
+        scope: 'Size unit per square footage and humidity load, mount dehumidifier in HVAC system or standalone, run condensate drain to exterior or sump, wire to dedicated circuit, set target humidity, connect to smart controller if requested',
+        budgetRange: { min: 1500, max: 4000 },
+        typicalDuration: '4-8 hours',
+        urgency: 'standard',
+      },
+      {
+        id: 'attic-mold-treatment',
+        name: 'Attic Mold Treatment',
+        scope: 'Set up containment at attic access, HEPA vacuum all sheathing and framing, treat with antimicrobial solution, sand or media-blast heavy growth areas, apply mold-resistant encapsulant, improve ventilation (add ridge/soffit vents), seal air leaks from living space, clearance test',
+        budgetRange: { min: 2000, max: 8000 },
+        typicalDuration: '1-4 days',
+        urgency: 'standard',
+      },
+    ],
+  },
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // 17. PEST CONTROL (National with regional specialties)
+  // ─────────────────────────────────────────────────────────────────────────
+  {
+    id: 'pest-control',
+    name: 'Pest Control',
+    icon: 'bug-outline',
+    description: 'Termites, scorpions, rodents, general pest treatment',
+    regional: ['national'],
+    subServices: [
+      {
+        id: 'termite-treatment',
+        name: 'Termite Treatment',
+        scope: 'Inspect entire structure for termite activity and damage, identify species (subterranean/drywood/Formosan), apply liquid barrier treatment around perimeter, install bait monitoring stations, treat active galleries with foam/dust, provide wood-destroying organism report, schedule follow-up monitoring',
+        budgetRange: { min: 800, max: 4000 },
+        typicalDuration: '4-8 hours',
+        urgency: 'standard',
+      },
+      {
+        id: 'termite-tenting',
+        name: 'Termite Tenting / Fumigation',
+        scope: 'Pre-inspect and prepare home (seal food, remove plants/pets), tent entire structure with tarps, introduce fumigant gas, maintain concentration for 24-48 hours, aerate and test air quality, remove tent, clear for re-entry, provide certification',
+        budgetRange: { min: 2000, max: 8000 },
+        typicalDuration: '3-5 days',
+        urgency: 'standard',
+      },
+      {
+        id: 'scorpion-pest-desert',
+        name: 'Desert Pest Control (Scorpion/Snake)',
+        scope: 'Inspect property perimeter, foundation, and entry points, apply residual insecticide barrier around foundation, dust wall voids and weep holes, seal gaps at doors/windows/pipes with exclusion materials, set glue traps at entry points, apply granular treatment in yard, schedule quarterly re-treatment',
+        budgetRange: { min: 150, max: 500 },
+        typicalDuration: '1-2 hours',
+        urgency: 'standard',
+      },
+      {
+        id: 'rodent-exclusion',
+        name: 'Rodent Exclusion & Removal',
+        scope: 'Inspect attic, crawlspace, and exterior for entry points, seal all gaps over 1/4 inch with steel wool and caulk, install door sweeps, set snap traps and monitoring stations, remove nesting materials, sanitize contaminated insulation, follow up in 2 weeks',
+        budgetRange: { min: 300, max: 1500 },
+        typicalDuration: '2-4 hours (+ follow-up)',
+        urgency: 'standard',
+      },
+      {
+        id: 'general-pest-treatment',
+        name: 'General Pest Treatment (Quarterly)',
+        scope: 'Interior and exterior inspection, apply residual spray along baseboards and entry points, treat exterior perimeter and eaves, address specific issues (ants, roaches, spiders, wasps), remove accessible webs and nests, apply granular yard treatment, document findings',
+        budgetRange: { min: 100, max: 350 },
+        typicalDuration: '30 min - 1 hour',
+        urgency: 'standard',
+      },
+      {
+        id: 'bed-bug-treatment',
+        name: 'Bed Bug Treatment',
+        scope: 'Thorough inspection of bedrooms and furniture, apply heat treatment (140F+) to affected rooms or targeted chemical treatment, treat cracks/crevices/mattress seams, install mattress encasements, apply residual dust in wall voids, follow up at 2 and 4 weeks, provide preparation checklist',
+        budgetRange: { min: 500, max: 3000 },
+        typicalDuration: '4-8 hours',
+        urgency: 'standard',
+      },
+    ],
+  },
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // 18. SCREEN ENCLOSURE / LANAI (Southeast)
+  // ─────────────────────────────────────────────────────────────────────────
+  {
+    id: 'screen-enclosure',
+    name: 'Screen Enclosure & Lanai',
+    icon: 'albums-outline',
+    description: 'Screen rooms, lanai, patio enclosures, screen repair',
+    regional: ['southeast'],
+    subServices: [
+      {
+        id: 'screen-enclosure-new',
+        name: 'New Screen Enclosure',
+        scope: 'Pull permit, pour concrete footers, erect aluminum frame structure, install screen panels (fiberglass or super screen), install screen door with closer, install roof panels (screen, solid, or insulated), connect to existing roof line, final inspection',
+        budgetRange: { min: 5000, max: 20000 },
+        typicalDuration: '3-7 days',
+        urgency: 'flexible',
+      },
+      {
+        id: 'screen-re-screen',
+        name: 'Screen Re-Screen (Full Enclosure)',
+        scope: 'Remove all existing screen panels, inspect frame for damage and corrosion, straighten or replace damaged frame sections, install new spline and screen material in all panels, replace screen door hardware, test all doors and latches',
+        budgetRange: { min: 1000, max: 5000 },
+        typicalDuration: '1-3 days',
+        urgency: 'standard',
+      },
+      {
+        id: 'screen-patch-repair',
+        name: 'Screen Patch / Panel Repair',
+        scope: 'Identify damaged panels, remove old spline and screen from affected panels, install new screen material and spline, trim excess, repair any minor frame damage, test door operation',
+        budgetRange: { min: 100, max: 500 },
+        typicalDuration: '1-3 hours',
+        urgency: 'standard',
+      },
+      {
+        id: 'lanai-conversion',
+        name: 'Lanai-to-Sunroom Conversion',
+        scope: 'Pull permit, install impact-rated or tempered glass windows in existing screen openings, add insulation to knee walls, install mini-split AC, run electrical for outlets and lighting, install flooring (tile or LVP), drywall and paint interior, final inspection',
+        budgetRange: { min: 15000, max: 40000 },
+        typicalDuration: '2-4 weeks',
+        urgency: 'flexible',
+      },
+      {
+        id: 'pool-cage-repair',
+        name: 'Pool Cage Repair',
+        scope: 'Inspect cage structure for corrosion, rust, and storm damage, replace corroded bolts and screws with stainless steel, repair or replace damaged aluminum beams, re-screen torn panels, reinforce connection points to deck and fascia',
+        budgetRange: { min: 500, max: 5000 },
+        typicalDuration: '1-3 days',
+        urgency: 'standard',
+      },
+      {
+        id: 'screen-enclosure-paint',
+        name: 'Screen Enclosure Painting',
+        scope: 'Pressure wash all aluminum frame members, mask screen panels and hardware, apply bonding primer to aluminum, spray 2 coats exterior acrylic paint, remove masking, touch up, cleanup',
+        budgetRange: { min: 800, max: 3000 },
+        typicalDuration: '1-2 days',
+        urgency: 'flexible',
+      },
+    ],
+  },
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // 19. IRRIGATION / SPRINKLER (Southeast / National)
+  // ─────────────────────────────────────────────────────────────────────────
+  {
+    id: 'irrigation',
+    name: 'Irrigation & Sprinkler',
+    icon: 'rainy-outline',
+    description: 'Sprinkler install, repair, winterization, smart controllers',
+    regional: ['southeast', 'national'],
+    subServices: [
+      {
+        id: 'sprinkler-install',
+        name: 'Sprinkler System Installation',
+        scope: 'Design zone layout per property and plant types, tap into main water supply, install backflow preventer, trench and lay PVC mainline and laterals, install spray/rotor heads per zone, wire and program controller, adjust heads for coverage, sod over trenches',
+        budgetRange: { min: 3000, max: 10000 },
+        typicalDuration: '2-5 days',
+        urgency: 'flexible',
+      },
+      {
+        id: 'sprinkler-repair',
+        name: 'Sprinkler Head / Line Repair',
+        scope: 'Locate and diagnose broken head or line, excavate around damaged area, replace broken head/riser/fitting/pipe section, flush line to clear debris, test zone for coverage and leaks, backfill and restore turf',
+        budgetRange: { min: 100, max: 500 },
+        typicalDuration: '1-3 hours',
+        urgency: 'standard',
+      },
+      {
+        id: 'sprinkler-winterization',
+        name: 'Sprinkler Winterization (Blowout)',
+        scope: 'Shut off water supply to system, connect air compressor to mainline, blow out each zone at proper PSI (50-80), verify all water expelled from lines and heads, shut off controller, insulate backflow preventer and above-ground components',
+        budgetRange: { min: 75, max: 250 },
+        typicalDuration: '30 min - 1 hour',
+        urgency: 'standard',
+      },
+      {
+        id: 'sprinkler-spring-startup',
+        name: 'Sprinkler Spring Startup',
+        scope: 'Slowly open water supply to pressurize system, walk each zone checking for broken heads and leaks, adjust head positions and spray patterns, replace broken heads, reprogram controller with seasonal schedule, test rain sensor',
+        budgetRange: { min: 75, max: 250 },
+        typicalDuration: '30 min - 1 hour',
+        urgency: 'standard',
+      },
+      {
+        id: 'smart-controller-install',
+        name: 'Smart Irrigation Controller',
+        scope: 'Remove old controller, install WiFi-enabled smart controller (Rachio, Hunter, Rain Bird), connect zone wiring, pair with app, configure zones with plant types and soil conditions, set up weather-based scheduling, install rain/freeze sensor if not present',
+        budgetRange: { min: 200, max: 600 },
+        typicalDuration: '1-2 hours',
+        urgency: 'flexible',
+      },
+      {
+        id: 'backflow-preventer',
+        name: 'Backflow Preventer Install / Test',
+        scope: 'Install or replace RPZ or PVB backflow preventer per local code, test with certified gauge kit, provide annual test report for municipality, repair or replace if failed, insulate for freeze protection',
+        budgetRange: { min: 150, max: 600 },
+        typicalDuration: '1-2 hours',
+        urgency: 'standard',
+      },
+    ],
+  },
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // 20. BASEMENT WATERPROOFING / RADON (Midwest / Northeast)
+  // ─────────────────────────────────────────────────────────────────────────
+  {
+    id: 'basement-waterproofing',
+    name: 'Basement Waterproofing & Radon',
+    icon: 'shield-checkmark-outline',
+    description: 'French drain, sump pump, foundation coating, radon mitigation',
+    regional: ['midwest', 'northeast'],
+    subServices: [
+      {
+        id: 'interior-french-drain',
+        name: 'Interior French Drain System',
+        scope: 'Jack-hammer perimeter trench along foundation walls, excavate to footing, lay perforated drain pipe in gravel bed, connect to sump basin, backfill with crushed stone, pour new concrete cap over trench, install vapor barrier on walls if requested',
+        budgetRange: { min: 4000, max: 15000 },
+        typicalDuration: '3-7 days',
+        urgency: 'standard',
+      },
+      {
+        id: 'exterior-waterproofing',
+        name: 'Exterior Foundation Waterproofing',
+        scope: 'Excavate around foundation to footing, clean and repair foundation wall cracks, apply liquid rubber or bituminous membrane waterproofing, install dimple board drainage mat, lay perforated drain tile at footing connected to daylight or sump, backfill with gravel and soil, regrade for positive drainage',
+        budgetRange: { min: 8000, max: 25000 },
+        typicalDuration: '5-10 days',
+        urgency: 'flexible',
+      },
+      {
+        id: 'foundation-crack-repair',
+        name: 'Foundation Crack Injection',
+        scope: 'Clean crack with wire brush and compressed air, install injection ports at intervals along crack, seal surface with epoxy paste, inject polyurethane or epoxy resin through ports from bottom up until crack is filled, remove ports and patch, monitor for re-cracking',
+        budgetRange: { min: 300, max: 1000 },
+        typicalDuration: '2-4 hours',
+        urgency: 'standard',
+      },
+      {
+        id: 'radon-mitigation',
+        name: 'Radon Mitigation System',
+        scope: 'Core hole through basement slab, excavate suction pit beneath slab, install PVC riser pipe through interior or exterior to above roofline, install in-line radon fan, seal all slab cracks and penetrations, install manometer gauge, post-mitigation radon test to verify below 4.0 pCi/L',
+        budgetRange: { min: 800, max: 2500 },
+        typicalDuration: '4-8 hours',
+        urgency: 'standard',
+      },
+      {
+        id: 'radon-testing',
+        name: 'Radon Testing',
+        scope: 'Place continuous radon monitor (CRM) in lowest livable level, closed-house conditions for 48+ hours, retrieve and analyze results, provide certified report with EPA action level comparison, recommend mitigation if above 4.0 pCi/L',
+        budgetRange: { min: 100, max: 300 },
+        typicalDuration: '48-hour test period',
+        urgency: 'standard',
+      },
+      {
+        id: 'sump-pump-battery-backup',
+        name: 'Sump Pump Battery Backup',
+        scope: 'Install battery backup pump in existing sump basin alongside primary pump, mount battery and charger on wall, connect to AC power, test primary pump failure scenario, verify battery runtime, install high-water alarm',
+        budgetRange: { min: 500, max: 1500 },
+        typicalDuration: '2-4 hours',
+        urgency: 'standard',
+      },
+    ],
+  },
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // 21. SIDING (Midwest / National)
+  // ─────────────────────────────────────────────────────────────────────────
+  {
+    id: 'siding',
+    name: 'Siding',
+    icon: 'business-outline',
+    description: 'Vinyl, fiber cement, wood siding install, repair, replacement',
+    regional: ['midwest', 'national'],
+    subServices: [
+      {
+        id: 'vinyl-siding-install',
+        name: 'Vinyl Siding Installation',
+        scope: 'Remove existing siding, inspect and repair sheathing, install house wrap moisture barrier, install foam board insulation if specified, install starter strip and J-channel, hang siding panels with proper overlap and nailing, install corner posts and trim, flash around windows and doors, install soffit and fascia',
+        budgetRange: { min: 6000, max: 18000 },
+        typicalDuration: '5-10 days',
+        urgency: 'flexible',
+      },
+      {
+        id: 'fiber-cement-install',
+        name: 'Fiber Cement Siding (HardiePlank)',
+        scope: 'Remove existing siding, install house wrap, install foam board if specified, snap chalk lines for courses, cut fiber cement boards with shear or saw (dust mitigation), nail per manufacturer spec, flash all penetrations, prime and paint cut edges, caulk joints, prime and paint 2 coats',
+        budgetRange: { min: 10000, max: 30000 },
+        typicalDuration: '7-14 days',
+        urgency: 'flexible',
+      },
+      {
+        id: 'siding-repair',
+        name: 'Siding Repair / Patch',
+        scope: 'Identify damaged sections, unlock and remove damaged panels or boards, inspect underlying sheathing for moisture damage, replace house wrap if compromised, install matching siding material, re-caulk around penetrations, paint to match if needed',
+        budgetRange: { min: 200, max: 1500 },
+        typicalDuration: '2-6 hours',
+        urgency: 'standard',
+      },
+      {
+        id: 'siding-wash',
+        name: 'Siding Washing / Soft Wash',
+        scope: 'Mix biodegradable cleaning solution, apply with low-pressure soft wash system (no high-pressure damage), treat mold/mildew/algae stains, rinse from top down, clean all siding surfaces, rinse landscaping',
+        budgetRange: { min: 200, max: 600 },
+        typicalDuration: '2-4 hours',
+        urgency: 'flexible',
+      },
+      {
+        id: 'soffit-fascia-replace',
+        name: 'Soffit & Fascia Replacement',
+        scope: 'Remove damaged soffit panels and fascia boards, inspect rafter tails for rot and repair, install new fascia boards (wood, aluminum, or PVC), install vented soffit panels, caulk and seal joints, prime and paint if wood',
+        budgetRange: { min: 1000, max: 5000 },
+        typicalDuration: '1-3 days',
+        urgency: 'standard',
+      },
+      {
+        id: 'insulated-siding',
+        name: 'Insulated Siding Upgrade',
+        scope: 'Remove existing siding, add continuous rigid foam insulation (R-5 to R-6.5), tape seams, install new insulated vinyl or fiber cement siding system, flash all openings, install trim and accessories, energy audit verification',
+        budgetRange: { min: 10000, max: 25000 },
+        typicalDuration: '5-10 days',
+        urgency: 'flexible',
+      },
+    ],
+  },
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // 22. STORM SHELTER / SAFE ROOM (Midwest)
+  // ─────────────────────────────────────────────────────────────────────────
+  {
+    id: 'storm-shelter',
+    name: 'Storm Shelter & Safe Room',
+    icon: 'shield-outline',
+    description: 'Tornado shelters, safe rooms, FEMA-rated protection',
+    regional: ['midwest', 'southeast'],
+    subServices: [
+      {
+        id: 'underground-shelter-install',
+        name: 'Underground Storm Shelter',
+        scope: 'Excavate pit in garage or yard, set pre-cast concrete or fiberglass shelter with crane, install anchor bolts, backfill and compact around shelter, install FEMA-rated door and latch, install ventilation, add emergency supplies shelf, wire emergency lighting, pour concrete pad around entrance, pull permit',
+        budgetRange: { min: 3000, max: 10000 },
+        typicalDuration: '2-4 days',
+        urgency: 'flexible',
+      },
+      {
+        id: 'above-ground-safe-room',
+        name: 'Above-Ground Safe Room',
+        scope: 'Pour reinforced concrete slab or bolt to existing slab, erect FEMA P-361 rated steel or concrete walls, install rated door with multi-point locking, anchor to foundation with through-bolts, install ventilation and emergency lighting, provide FEMA documentation for rebate',
+        budgetRange: { min: 5000, max: 15000 },
+        typicalDuration: '2-5 days',
+        urgency: 'flexible',
+      },
+      {
+        id: 'interior-safe-room',
+        name: 'Interior Safe Room Retrofit',
+        scope: 'Select interior room (closet, bathroom), reinforce walls with steel plate or Kevlar panels, reinforce ceiling with steel plate bolted to roof structure, install FEMA-rated steel door and frame, anchor walls to foundation, add emergency supplies and communication',
+        budgetRange: { min: 4000, max: 12000 },
+        typicalDuration: '3-5 days',
+        urgency: 'flexible',
+      },
+      {
+        id: 'shelter-door-replacement',
+        name: 'Shelter Door Replacement',
+        scope: 'Remove existing shelter door, inspect frame for damage, install new FEMA-rated steel door with gaskets, test multi-point locking mechanism, verify watertight seal, lubricate hinges and latches',
+        budgetRange: { min: 500, max: 2000 },
+        typicalDuration: '2-4 hours',
+        urgency: 'standard',
+      },
+      {
+        id: 'shelter-maintenance',
+        name: 'Shelter Maintenance & Inspection',
+        scope: 'Inspect door operation and seals, check anchor bolts for corrosion, test ventilation, verify sump pump operation (underground), check for water intrusion, replace emergency supplies (batteries, water, first aid), clean interior, oil hinges and latches',
+        budgetRange: { min: 100, max: 300 },
+        typicalDuration: '1-2 hours',
+        urgency: 'standard',
+      },
+      {
+        id: 'community-shelter',
+        name: 'Community Shelter Install',
+        scope: 'Engineer shelter per FEMA P-361 for occupant count, excavate and pour reinforced foundation, erect pre-engineered shelter structure, install rated doors and ventilation, connect emergency power, install ADA-compliant access, FEMA inspection and certification',
+        budgetRange: { min: 30000, max: 100000 },
+        typicalDuration: '2-6 weeks',
+        urgency: 'flexible',
+      },
+    ],
+  },
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // 23. EARTHQUAKE RETROFIT (West Coast)
+  // ─────────────────────────────────────────────────────────────────────────
+  {
+    id: 'earthquake-retrofit',
+    name: 'Earthquake Retrofit',
+    icon: 'pulse-outline',
+    description: 'Foundation bolting, cripple wall bracing, soft-story retrofit',
+    regional: ['west-coast'],
+    subServices: [
+      {
+        id: 'foundation-bolting',
+        name: 'Foundation Bolting',
+        scope: 'Access crawlspace, drill into existing concrete foundation, install expansion bolts or epoxy-set anchor bolts connecting mudsill to foundation at code-required spacing, install plate washers, torque to spec, provide engineering letter',
+        budgetRange: { min: 2000, max: 6000 },
+        typicalDuration: '1-2 days',
+        urgency: 'flexible',
+      },
+      {
+        id: 'cripple-wall-bracing',
+        name: 'Cripple Wall Bracing',
+        scope: 'Access crawlspace, install structural plywood sheathing on interior side of cripple walls, nail per engineering schedule, install blocking between joists, add hold-down hardware at corners, bolt mudsill to foundation, provide engineering certification',
+        budgetRange: { min: 3000, max: 8000 },
+        typicalDuration: '2-4 days',
+        urgency: 'flexible',
+      },
+      {
+        id: 'soft-story-retrofit',
+        name: 'Soft-Story Retrofit (Multi-Unit)',
+        scope: 'Engineer steel moment frame design per ASCE 7, install steel columns and beams at ground-floor openings (tuck-under parking), pour new footings for steel columns, bolt connections, install anchor bolts, fire-protect steel, patch finishes, city inspection and certification',
+        budgetRange: { min: 30000, max: 150000 },
+        typicalDuration: '4-8 weeks',
+        urgency: 'flexible',
+      },
+      {
+        id: 'chimney-brace',
+        name: 'Chimney Bracing / Rebuild',
+        scope: 'Install steel chimney straps securing chimney to roof framing, anchor to structure at ceiling and roof lines, repair cracked mortar joints, install flexible gas connector if gas appliance, or remove unreinforced masonry chimney above roofline and cap with lightweight vent',
+        budgetRange: { min: 1000, max: 5000 },
+        typicalDuration: '1-3 days',
+        urgency: 'standard',
+      },
+      {
+        id: 'water-heater-strap',
+        name: 'Water Heater Earthquake Strap',
+        scope: 'Install 2 heavy-gauge steel straps around water heater secured to wall studs with lag bolts, install flexible gas connector and flexible water lines, verify gas shut-off valve is accessible, install drip pan if on elevated floor',
+        budgetRange: { min: 75, max: 250 },
+        typicalDuration: '30 min - 1 hour',
+        urgency: 'standard',
+      },
+      {
+        id: 'seismic-gas-shutoff',
+        name: 'Seismic Gas Shut-Off Valve',
+        scope: 'Install earthquake-activated gas shut-off valve at meter, connect with proper fittings, test trip mechanism, install protective guard, label for fire department, provide reset instructions',
+        budgetRange: { min: 200, max: 500 },
+        typicalDuration: '1-2 hours',
+        urgency: 'standard',
+      },
+    ],
+  },
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // 24. FIRE HARDENING / WILDFIRE (West Coast / Mountain)
+  // ─────────────────────────────────────────────────────────────────────────
+  {
+    id: 'fire-hardening',
+    name: 'Fire Hardening & Wildfire Prep',
+    icon: 'flame-outline',
+    description: 'Ember-resistant vents, fire-resistant materials, defensible space',
+    regional: ['west-coast', 'mountain'],
+    subServices: [
+      {
+        id: 'ember-resistant-vents',
+        name: 'Ember-Resistant Vent Install',
+        scope: 'Remove existing attic, soffit, and foundation vents, install 1/8" mesh ember-resistant vents (Brandguard or Vulcan), seal around vent perimeter with fire-rated caulk, verify attic ventilation meets code, inspect and seal all other penetrations',
+        budgetRange: { min: 500, max: 3000 },
+        typicalDuration: '4-8 hours',
+        urgency: 'standard',
+      },
+      {
+        id: 'fire-resistant-roofing',
+        name: 'Fire-Resistant Roofing Upgrade',
+        scope: 'Remove combustible roofing material, inspect and replace damaged sheathing, install fire-resistant underlayment, install Class A fire-rated roofing (metal, tile, or composite), install ember-resistant ridge and hip caps, seal all penetrations',
+        budgetRange: { min: 10000, max: 30000 },
+        typicalDuration: '3-7 days',
+        urgency: 'flexible',
+      },
+      {
+        id: 'defensible-space-clearing',
+        name: 'Defensible Space Clearing (Zone 0-2)',
+        scope: 'Zone 0 (0-5ft): remove all combustible materials from structure, clear gutters, remove debris under decks. Zone 1 (5-30ft): trim trees 10ft from chimney, remove ladder fuels, space shrubs. Zone 2 (30-100ft): thin trees to 10ft spacing, remove dead vegetation, mow grass to 4 inches, create fuel breaks',
+        budgetRange: { min: 1000, max: 5000 },
+        typicalDuration: '1-4 days',
+        urgency: 'standard',
+      },
+      {
+        id: 'fire-resistant-siding',
+        name: 'Fire-Resistant Siding Upgrade',
+        scope: 'Remove combustible siding (wood/vinyl), install fire-resistant sheathing, install fiber cement, stucco, or metal siding rated for WUI (wildland-urban interface), flash all openings, caulk joints with fire-rated sealant',
+        budgetRange: { min: 8000, max: 25000 },
+        typicalDuration: '5-10 days',
+        urgency: 'flexible',
+      },
+      {
+        id: 'deck-fire-hardening',
+        name: 'Deck Fire Hardening',
+        scope: 'Assess deck material combustibility, replace wood decking with composite or metal, install non-combustible skirting, clear all storage and vegetation from under deck, install metal flashing where deck meets structure, screen under-deck openings with 1/8" metal mesh',
+        budgetRange: { min: 3000, max: 15000 },
+        typicalDuration: '2-5 days',
+        urgency: 'flexible',
+      },
+      {
+        id: 'fire-sprinkler-exterior',
+        name: 'Exterior Fire Sprinkler System',
+        scope: 'Design roof-mounted sprinkler system, install standpipe and sprinkler heads along roofline and eaves, connect to dedicated water supply or pool pump, install manual or automatic activation, test coverage pattern, winterize lines if needed',
+        budgetRange: { min: 2000, max: 8000 },
+        typicalDuration: '1-3 days',
+        urgency: 'flexible',
+      },
+    ],
+  },
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // 25. ADU / GRANNY FLAT (West Coast / National)
+  // ─────────────────────────────────────────────────────────────────────────
+  {
+    id: 'adu-construction',
+    name: 'ADU & Accessory Dwelling',
+    icon: 'home-outline',
+    description: 'Granny flats, garage conversions, backyard ADUs, JADU',
+    regional: ['west-coast', 'national'],
+    subServices: [
+      {
+        id: 'detached-adu-build',
+        name: 'Detached ADU New Build',
+        scope: 'Architectural design and permit submittal, site prep and foundation pour, frame walls/roof, install rough plumbing/electrical/HVAC, insulate and drywall, install kitchen and bath, flooring and paint, connect to utilities (sewer, water, electric), landscaping, final inspection and certificate of occupancy',
+        budgetRange: { min: 100000, max: 300000 },
+        typicalDuration: '4-8 months',
+        urgency: 'flexible',
+      },
+      {
+        id: 'garage-conversion-adu',
+        name: 'Garage-to-ADU Conversion',
+        scope: 'Design and permit, demolish garage door opening and frame new wall, install windows and entry door, run plumbing for kitchen and bathroom, install electrical panel and circuits, insulate walls and ceiling, install HVAC, drywall/paint, flooring, kitchen cabinets and appliances, final inspection',
+        budgetRange: { min: 60000, max: 150000 },
+        typicalDuration: '3-5 months',
+        urgency: 'flexible',
+      },
+      {
+        id: 'jadu-conversion',
+        name: 'Junior ADU (JADU) Conversion',
+        scope: 'Convert existing bedroom/space within home to JADU (under 500sqft), add efficiency kitchen (sink, counter, cooking appliance), add or upgrade bathroom if needed, install separate entrance, add fire separation wall, install smoke/CO detectors, permit and inspect',
+        budgetRange: { min: 25000, max: 75000 },
+        typicalDuration: '1-3 months',
+        urgency: 'flexible',
+      },
+      {
+        id: 'prefab-adu-install',
+        name: 'Prefab ADU Installation',
+        scope: 'Site prep and foundation pour, coordinate crane delivery of prefab unit, set unit on foundation, connect plumbing to main sewer/septic, connect electrical to utility or sub-panel, connect water supply, final utility hookups, landscaping and site restoration, inspection',
+        budgetRange: { min: 80000, max: 200000 },
+        typicalDuration: '2-4 months (+ factory lead time)',
+        urgency: 'flexible',
+      },
+      {
+        id: 'adu-permit-design',
+        name: 'ADU Design & Permitting',
+        scope: 'Site survey and zoning analysis, architectural design (floor plan, elevations, sections), structural engineering, Title 24 energy calculations, submit to building department, respond to plan check comments, obtain building permit',
+        budgetRange: { min: 5000, max: 20000 },
+        typicalDuration: '2-4 months',
+        urgency: 'flexible',
+      },
+      {
+        id: 'adu-utility-connection',
+        name: 'ADU Utility Connection',
+        scope: 'Trench from main house to ADU site, install water supply line, install sewer lateral connection, install electrical conduit and pull wire, install sub-panel at ADU, coordinate utility meter installation if separate, backfill and restore site',
+        budgetRange: { min: 5000, max: 20000 },
+        typicalDuration: '3-7 days',
+        urgency: 'flexible',
+      },
+    ],
+  },
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // 26. SOLAR & BATTERY (West Coast / National)
+  // ─────────────────────────────────────────────────────────────────────────
+  {
+    id: 'solar-energy',
+    name: 'Solar & Battery Storage',
+    icon: 'sunny-outline',
+    description: 'Solar panel install, battery storage, maintenance, EV integration',
+    regional: ['west-coast', 'national'],
+    subServices: [
+      {
+        id: 'solar-panel-install',
+        name: 'Solar Panel Installation',
+        scope: 'Site assessment and shade analysis, system design per energy usage, pull permit, install roof mounting rails and flashing, mount solar panels, run conduit and wiring to inverter location, install string or micro-inverters, connect to electrical panel, install monitoring system, utility interconnection application, final inspection',
+        budgetRange: { min: 12000, max: 35000 },
+        typicalDuration: '2-4 days (install) + 2-6 weeks (permit/utility)',
+        urgency: 'flexible',
+      },
+      {
+        id: 'battery-storage-install',
+        name: 'Battery Storage Install',
+        scope: 'Assess electrical panel capacity, mount battery unit (Tesla Powerwall, Enphase, etc.) on wall or floor, install critical loads sub-panel, wire battery to main panel and solar inverter, configure backup circuits, program charge/discharge schedule, test grid-down operation, activate monitoring',
+        budgetRange: { min: 10000, max: 25000 },
+        typicalDuration: '1-2 days',
+        urgency: 'flexible',
+      },
+      {
+        id: 'solar-maintenance',
+        name: 'Solar Panel Maintenance',
+        scope: 'Inspect all panels for damage, soiling, and hot spots, clean panels with deionized water and soft brush, inspect all wiring connections and conduit, check inverter operation and error codes, verify production against expected output, clean gutters around array, provide performance report',
+        budgetRange: { min: 200, max: 600 },
+        typicalDuration: '2-4 hours',
+        urgency: 'flexible',
+      },
+      {
+        id: 'solar-panel-removal',
+        name: 'Solar Panel Removal (for Reroofing)',
+        scope: 'Disconnect system from grid and inverter, remove panels and stack safely, remove mounting rails and flashing, cap roof penetrations temporarily, reinstall after reroofing: remount rails, flash penetrations, remount panels, reconnect wiring, test system',
+        budgetRange: { min: 2000, max: 5000 },
+        typicalDuration: '1-2 days (remove) + 1-2 days (reinstall)',
+        urgency: 'standard',
+      },
+      {
+        id: 'ev-solar-integration',
+        name: 'EV + Solar Integration',
+        scope: 'Install Level 2 EVSE on dedicated circuit, integrate with solar inverter for solar-priority charging, program charging schedule around solar production peak, install load management if panel is near capacity, connect to monitoring app showing solar vs grid charging',
+        budgetRange: { min: 2000, max: 5000 },
+        typicalDuration: '4-8 hours',
+        urgency: 'flexible',
+      },
+      {
+        id: 'solar-critter-guard',
+        name: 'Solar Panel Critter Guard',
+        scope: 'Install galvanized mesh screening around entire perimeter of solar array, attach with clips to panel frames (no roof penetration), seal any existing nesting materials removed, trim tree branches away from array edge',
+        budgetRange: { min: 500, max: 2000 },
+        typicalDuration: '2-4 hours',
+        urgency: 'flexible',
+      },
+    ],
+  },
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // 27. WOOD STOVE & LOG HOME (Mountain)
+  // ─────────────────────────────────────────────────────────────────────────
+  {
+    id: 'wood-stove-log-home',
+    name: 'Wood Stove & Log Home',
+    icon: 'bonfire-outline',
+    description: 'Wood/pellet stove install, chimney liners, log home maintenance',
+    regional: ['mountain', 'northeast'],
+    subServices: [
+      {
+        id: 'wood-stove-install',
+        name: 'Wood Stove Installation',
+        scope: 'Verify clearances to combustibles per NFPA 211, install hearth pad (R-value rated), set stove in position, install double-wall stove pipe to ceiling, install ceiling support box, run insulated chimney through attic and roof, install storm collar and cap, seal penetrations, test draft, pull permit',
+        budgetRange: { min: 2000, max: 6000 },
+        typicalDuration: '1-2 days',
+        urgency: 'standard',
+      },
+      {
+        id: 'pellet-stove-install',
+        name: 'Pellet Stove Installation',
+        scope: 'Position stove with proper clearances, install hearth pad, run direct-vent pipe through wall or vertical through roof, seal wall penetration with thimble, connect to dedicated electrical circuit, fill hopper and test ignition sequence, program thermostat, clean combustion pot',
+        budgetRange: { min: 2000, max: 5000 },
+        typicalDuration: '4-8 hours',
+        urgency: 'standard',
+      },
+      {
+        id: 'chimney-liner-install',
+        name: 'Chimney Liner Installation',
+        scope: 'Inspect existing chimney condition with camera, size liner per appliance BTU output, lower flexible stainless steel liner from top, connect to stove pipe adapter at bottom, insulate liner with vermiculite or wrap, install top plate and rain cap, seal all connections, pull permit',
+        budgetRange: { min: 1500, max: 4000 },
+        typicalDuration: '4-8 hours',
+        urgency: 'standard',
+      },
+      {
+        id: 'log-home-chinking',
+        name: 'Log Home Chinking & Sealing',
+        scope: 'Inspect all log joints and chinking for gaps, cracks, and deterioration, remove failed chinking, install backer rod in gaps, apply elastomeric chinking compound with tooling for smooth finish, seal log checks and end grains, stain over chinking to match',
+        budgetRange: { min: 2000, max: 10000 },
+        typicalDuration: '3-7 days',
+        urgency: 'standard',
+      },
+      {
+        id: 'log-home-staining',
+        name: 'Log Home Staining',
+        scope: 'Pressure wash or media blast to remove old finish, let dry 48+ hours, apply borate treatment for pest prevention, apply 2 coats exterior log-specific stain (Sikkens, Perma-Chink, TWP), back-brush all surfaces, stain trim and window frames, apply clear topcoat if specified',
+        budgetRange: { min: 5000, max: 20000 },
+        typicalDuration: '5-10 days',
+        urgency: 'flexible',
+      },
+      {
+        id: 'chimney-sweep',
+        name: 'Chimney Sweep & Inspection',
+        scope: 'Level 1 or 2 inspection with camera, brush flue from top down, remove creosote buildup, inspect damper operation, check cap and screen condition, inspect flashing, clean firebox and ash dump, provide CSIA inspection report',
+        budgetRange: { min: 150, max: 400 },
+        typicalDuration: '1-2 hours',
+        urgency: 'standard',
+      },
+    ],
+  },
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // 28. SMART HOME / AUTOMATION (National)
+  // ─────────────────────────────────────────────────────────────────────────
+  {
+    id: 'smart-home',
+    name: 'Smart Home & Automation',
+    icon: 'wifi-outline',
+    description: 'Smart locks, cameras, thermostats, network wiring, whole-house',
+    regional: ['national'],
+    subServices: [
+      {
+        id: 'smart-lock-install',
+        name: 'Smart Lock Installation',
+        scope: 'Remove existing deadbolt, check door prep and bore dimensions, install smart lock hardware, connect to WiFi/Bluetooth/Z-Wave hub, pair with app, program access codes, set up auto-lock and notifications, test remote operation, provide spare key backup',
+        budgetRange: { min: 150, max: 500 },
+        typicalDuration: '30 min - 1 hour',
+        urgency: 'standard',
+      },
+      {
+        id: 'security-camera-install',
+        name: 'Security Camera System',
+        scope: 'Plan camera locations for optimal coverage, mount cameras (indoor/outdoor), run ethernet (PoE) or configure WiFi, install NVR/DVR base station, connect to network, configure recording schedules and motion zones, set up mobile app alerts, install signage',
+        budgetRange: { min: 500, max: 3000 },
+        typicalDuration: '4-8 hours',
+        urgency: 'standard',
+      },
+      {
+        id: 'whole-house-audio',
+        name: 'Whole-House Audio System',
+        scope: 'Plan zone layout per rooms, run speaker wire through walls/ceiling, install in-wall/in-ceiling speakers, mount amplifier and source components, install volume controls or keypads, configure multi-room streaming (Sonos/HTD/Russound), test balance and EQ per room',
+        budgetRange: { min: 2000, max: 10000 },
+        typicalDuration: '1-3 days',
+        urgency: 'flexible',
+      },
+      {
+        id: 'network-wiring',
+        name: 'Structured Network Wiring',
+        scope: 'Install structured media panel, run Cat6/Cat6a ethernet to each room, terminate with keystone jacks and patch panel, install WiFi access points for whole-house coverage, configure router and managed switch, test all drops with cable tester, label all connections',
+        budgetRange: { min: 1000, max: 5000 },
+        typicalDuration: '1-2 days',
+        urgency: 'flexible',
+      },
+      {
+        id: 'home-theater-setup',
+        name: 'Home Theater Setup',
+        scope: 'Design speaker layout per room dimensions (5.1/7.1/Atmos), mount projector or TV, install in-wall/in-ceiling speakers, run speaker wire and HDMI, install AV receiver, calibrate audio levels, configure streaming apps, program universal remote or control system',
+        budgetRange: { min: 1500, max: 8000 },
+        typicalDuration: '4-8 hours',
+        urgency: 'flexible',
+      },
+      {
+        id: 'smart-home-hub',
+        name: 'Whole-House Smart Home Setup',
+        scope: 'Install smart hub (HomeKit/SmartThings/Hubitat), replace switches with smart switches/dimmers, install smart thermostat, install smart locks, configure automations and scenes (morning, away, night), set up voice control (Alexa/Google), train homeowner on app and voice commands',
+        budgetRange: { min: 500, max: 3000 },
+        typicalDuration: '4-8 hours',
+        urgency: 'flexible',
+      },
+    ],
+  },
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // 29. FENCING (National)
+  // ─────────────────────────────────────────────────────────────────────────
+  {
+    id: 'fencing',
+    name: 'Fencing',
+    icon: 'git-commit-outline',
+    description: 'Wood privacy, chain link, vinyl, ornamental iron, gates',
+    regional: ['national'],
+    subServices: [
+      {
+        id: 'wood-privacy-fence',
+        name: 'Wood Privacy Fence',
+        scope: 'Survey property lines, call 811 for utility locate, dig post holes below frost line, set 4x4 posts in concrete, install 2x4 rails, attach fence boards (dog-ear, board-on-board, or shadowbox), install post caps, build and hang gate with hardware and latch, stain if requested',
+        budgetRange: { min: 2000, max: 10000 },
+        typicalDuration: '2-5 days',
+        urgency: 'standard',
+      },
+      {
+        id: 'chain-link-fence',
+        name: 'Chain Link Fence',
+        scope: 'Survey and mark fence line, dig post holes, set terminal and line posts in concrete, install top rail, stretch and tie chain link fabric, install tension bars and bands, install walk gate and/or drive gate with latches, install post caps',
+        budgetRange: { min: 1500, max: 6000 },
+        typicalDuration: '2-4 days',
+        urgency: 'standard',
+      },
+      {
+        id: 'vinyl-fence-install',
+        name: 'Vinyl / PVC Fence',
+        scope: 'Survey and mark line, dig post holes, set vinyl posts with metal inserts in concrete, install rails and picket/panel sections, install post caps, build and hang vinyl gate, verify all sections are level and aligned',
+        budgetRange: { min: 3000, max: 12000 },
+        typicalDuration: '2-5 days',
+        urgency: 'standard',
+      },
+      {
+        id: 'ornamental-iron-fence',
+        name: 'Ornamental Iron / Aluminum Fence',
+        scope: 'Survey property, set posts in concrete at panel intervals, mount pre-fabricated ornamental panels to posts with brackets, install self-closing gate with hinges and latch, adjust for level, touch up any scratches with matching paint',
+        budgetRange: { min: 3000, max: 15000 },
+        typicalDuration: '2-5 days',
+        urgency: 'standard',
+      },
+      {
+        id: 'gate-opener-install',
+        name: 'Automatic Gate Opener',
+        scope: 'Reinforce gate and posts for motor weight, install swing or slide gate operator, run electrical from panel or solar power, install safety sensors and auto-reverse, program remote controls and keypads, connect to smart home if requested, test operation',
+        budgetRange: { min: 1000, max: 4000 },
+        typicalDuration: '4-8 hours',
+        urgency: 'standard',
+      },
+      {
+        id: 'fence-repair',
+        name: 'Fence Repair / Reset',
+        scope: 'Assess damage (leaning posts, broken boards, loose rails, rot), pull and reset leaning posts in new concrete, replace broken or rotted boards and rails, re-secure loose sections, replace hardware, stain repaired sections to match',
+        budgetRange: { min: 200, max: 1500 },
+        typicalDuration: '2-6 hours',
+        urgency: 'standard',
+      },
+    ],
+  },
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // 30. DOORS & WINDOWS (National)
+  // ─────────────────────────────────────────────────────────────────────────
+  {
+    id: 'doors-windows',
+    name: 'Doors & Windows',
+    icon: 'browsers-outline',
+    description: 'Entry, sliding, storm, screen doors, window tinting, smart locks',
+    regional: ['national'],
+    subServices: [
+      {
+        id: 'sliding-door-install',
+        name: 'Sliding Glass Door Install',
+        scope: 'Remove existing door assembly, inspect and repair rough opening, flash and waterproof opening, install new sliding door frame and track, set glass panels, adjust rollers for smooth operation, install hardware (lock, handle), caulk interior and exterior, install trim',
+        budgetRange: { min: 1500, max: 5000 },
+        typicalDuration: '4-8 hours',
+        urgency: 'standard',
+      },
+      {
+        id: 'storm-door-install',
+        name: 'Storm Door Installation',
+        scope: 'Measure opening and verify fit, install Z-bar frame with screws, mount storm door on hinges, adjust closer and chain, install handle and lock hardware, install rain cap, adjust sweep at bottom for seal, test screen and glass panel swap',
+        budgetRange: { min: 200, max: 600 },
+        typicalDuration: '1-2 hours',
+        urgency: 'standard',
+      },
+      {
+        id: 'screen-door-repair',
+        name: 'Screen Door / Window Screen Repair',
+        scope: 'Remove damaged screen, measure frame, cut new screen material to size, install screen with spline roller, trim excess, reinstall screen in frame, adjust tension springs or rollers, verify smooth operation',
+        budgetRange: { min: 50, max: 200 },
+        typicalDuration: '30 min - 1 hour per screen',
+        urgency: 'standard',
+      },
+      {
+        id: 'window-tinting',
+        name: 'Window Tinting / Film',
+        scope: 'Clean window surfaces thoroughly, measure and cut film to size, apply mounting solution, install film with squeegee removing air bubbles, trim edges precisely, apply to all specified windows, verify UV/heat rejection rating, provide warranty documentation',
+        budgetRange: { min: 200, max: 1500 },
+        typicalDuration: '2-6 hours',
+        urgency: 'flexible',
+      },
+      {
+        id: 'french-door-install',
+        name: 'French Door Installation',
+        scope: 'Remove existing door or frame opening, enlarge rough opening if needed (header reinforcement), install new prehung French door unit, shim plumb and level, insulate gaps, install astragal, adjust both doors for proper meet, install hardware and multi-point lock, flash and seal exterior, install trim both sides',
+        budgetRange: { min: 2000, max: 6000 },
+        typicalDuration: '4-8 hours',
+        urgency: 'standard',
+      },
+      {
+        id: 'window-glass-replacement',
+        name: 'Window Glass / IGU Replacement',
+        scope: 'Remove window sash, extract failed insulated glass unit, measure and order replacement IGU, install new sealed unit with glazing tape and points, reinstall sash, verify proper seal and operation, clean',
+        budgetRange: { min: 200, max: 800 },
+        typicalDuration: '1-2 hours per window',
+        urgency: 'standard',
+      },
+    ],
+  },
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // 31. HOME INSPECTION (National)
+  // ─────────────────────────────────────────────────────────────────────────
+  {
+    id: 'home-inspection',
+    name: 'Home Inspection',
+    icon: 'search-outline',
+    description: 'Pre-purchase, pre-listing, 4-point, wind mitigation, specialty',
+    regional: ['national'],
+    subServices: [
+      {
+        id: 'pre-purchase-inspection',
+        name: 'Pre-Purchase Home Inspection',
+        scope: 'Full ASHI/InterNACHI standard inspection: roof, exterior, foundation, structure, plumbing, electrical, HVAC, insulation, interior, appliances, fireplace. Operate all accessible systems, document with photos, provide written report within 24 hours with repair priorities',
+        budgetRange: { min: 300, max: 600 },
+        typicalDuration: '2-4 hours',
+        urgency: 'standard',
+      },
+      {
+        id: 'pre-listing-inspection',
+        name: 'Pre-Listing Inspection',
+        scope: 'Same scope as pre-purchase inspection, focused on identifying issues before listing, provide seller-friendly report with repair recommendations and cost estimates, flag items likely to appear on buyer inspection',
+        budgetRange: { min: 300, max: 600 },
+        typicalDuration: '2-4 hours',
+        urgency: 'standard',
+      },
+      {
+        id: '4-point-inspection',
+        name: '4-Point Inspection (FL/SE)',
+        scope: 'Inspect and document: (1) Roof — age, material, condition, (2) Electrical — panel type, wiring, capacity, (3) Plumbing — pipe material, water heater age, (4) HVAC — age, condition, operation. Complete insurance form with photos, provide to insurance carrier',
+        budgetRange: { min: 100, max: 250 },
+        typicalDuration: '30 min - 1 hour',
+        urgency: 'standard',
+      },
+      {
+        id: 'new-construction-inspection',
+        name: 'New Construction Phase Inspection',
+        scope: 'Inspect at key milestones: pre-pour foundation, pre-drywall framing/MEP, final walkthrough. Verify work per approved plans, check code compliance, document deficiencies with photos, provide punch list report',
+        budgetRange: { min: 200, max: 500 },
+        typicalDuration: '1-3 hours per phase',
+        urgency: 'standard',
+      },
+      {
+        id: 'sewer-scope-inspection',
+        name: 'Sewer Scope Inspection',
+        scope: 'Insert camera into main sewer cleanout, video-inspect entire sewer line to city connection, identify root intrusion, cracks, bellies, offsets, blockages, provide video recording and written report with pipe material and condition assessment',
+        budgetRange: { min: 150, max: 400 },
+        typicalDuration: '30 min - 1 hour',
+        urgency: 'standard',
+      },
+      {
+        id: 'thermal-imaging-inspection',
+        name: 'Thermal Imaging / Energy Audit',
+        scope: 'Scan entire building envelope with infrared camera, identify insulation gaps, air leaks, moisture intrusion, electrical hot spots, radiant heat loss, door blower test if requested, provide thermal images and written report with improvement recommendations and ROI estimates',
+        budgetRange: { min: 200, max: 600 },
+        typicalDuration: '1-3 hours',
+        urgency: 'flexible',
+      },
+    ],
+  },
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // 32. DEMOLITION (National)
+  // ─────────────────────────────────────────────────────────────────────────
+  {
+    id: 'demolition',
+    name: 'Demolition',
+    icon: 'trash-outline',
+    description: 'Interior demo, structural demo, hazmat abatement, cleanout',
+    regional: ['national'],
+    subServices: [
+      {
+        id: 'interior-demo',
+        name: 'Interior Demolition',
+        scope: 'Set up dust containment with poly and negative air, disconnect and cap utilities in demo area, remove drywall/plaster, flooring, cabinets, and fixtures, leave framing intact, haul all debris to dumpster, sweep and vacuum, leave space broom-clean for rebuild',
+        budgetRange: { min: 1000, max: 5000 },
+        typicalDuration: '1-3 days',
+        urgency: 'standard',
+      },
+      {
+        id: 'kitchen-demo',
+        name: 'Kitchen Demolition',
+        scope: 'Disconnect and cap plumbing (water, gas, drain), disconnect electrical at breaker, remove appliances, remove countertops and cabinets, remove backsplash tile, remove flooring to subfloor, patch cap all utility stubs, haul debris, broom-clean',
+        budgetRange: { min: 1500, max: 4000 },
+        typicalDuration: '1-2 days',
+        urgency: 'standard',
+      },
+      {
+        id: 'bathroom-demo',
+        name: 'Bathroom Demolition',
+        scope: 'Shut off water supply, disconnect and remove fixtures (toilet, vanity, tub/shower), remove tile from walls and floor, remove cement board/drywall to studs, inspect framing for rot, cap plumbing and electrical, haul debris, broom-clean',
+        budgetRange: { min: 800, max: 2500 },
+        typicalDuration: '1-2 days',
+        urgency: 'standard',
+      },
+      {
+        id: 'asbestos-abatement',
+        name: 'Asbestos Abatement',
+        scope: 'Licensed assessment and air monitoring, set up full containment with negative air pressure, workers in PPE with respirators, wet-remove asbestos-containing materials (tile, insulation, siding, popcorn ceiling), double-bag waste in labeled containers, final air clearance testing, disposal at licensed facility, provide clearance certificate',
+        budgetRange: { min: 2000, max: 15000 },
+        typicalDuration: '2-7 days',
+        urgency: 'standard',
+      },
+      {
+        id: 'structure-demo',
+        name: 'Structure Demolition',
+        scope: 'Pull demolition permit, disconnect all utilities (gas, electric, water, sewer), remove hazmat materials first (asbestos, lead), demolish structure with excavator, separate recyclable materials, load and haul debris, fill foundation and grade site, seed or stabilize soil, final site inspection',
+        budgetRange: { min: 5000, max: 30000 },
+        typicalDuration: '2-7 days',
+        urgency: 'flexible',
+      },
+      {
+        id: 'junk-removal',
+        name: 'Junk Removal / Property Cleanout',
+        scope: 'Assess volume and contents, provide upfront price, sort for donation/recycle/disposal, load all items onto truck, sweep and clean emptied areas, dispose at appropriate facilities, provide donation receipts if applicable',
+        budgetRange: { min: 200, max: 1500 },
+        typicalDuration: '2-6 hours',
+        urgency: 'standard',
+      },
+    ],
+  },
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // 33. CONCRETE & MASONRY (National)
+  // ─────────────────────────────────────────────────────────────────────────
+  {
+    id: 'concrete-masonry',
+    name: 'Concrete & Masonry',
+    icon: 'cube-outline',
+    description: 'Driveways, patios, foundation repair, brick, stone',
+    regional: ['national'],
+    subServices: [
+      {
+        id: 'concrete-driveway',
+        name: 'Concrete Driveway Pour',
+        scope: 'Excavate to subgrade, compact base, install gravel sub-base, set forms with proper grade and drainage slope, install rebar or wire mesh, pour concrete (4000 PSI), screed and bull-float, broom finish, cut control joints, apply cure-and-seal compound, strip forms after cure',
+        budgetRange: { min: 4000, max: 15000 },
+        typicalDuration: '2-4 days',
+        urgency: 'flexible',
+      },
+      {
+        id: 'concrete-patio',
+        name: 'Concrete Patio / Slab',
+        scope: 'Layout and excavate area, install compacted gravel base, set perimeter forms with slight drainage slope, install wire mesh, pour and finish concrete (broom, stamped, or exposed aggregate), cut control joints, cure and seal, strip forms, backfill edges',
+        budgetRange: { min: 2000, max: 8000 },
+        typicalDuration: '1-3 days',
+        urgency: 'flexible',
+      },
+      {
+        id: 'concrete-repair',
+        name: 'Concrete Repair / Mudjacking',
+        scope: 'Assess settlement and cracking, drill injection holes in sunken slabs, pump polyurethane foam or mud slurry to raise slab to level, patch injection holes, seal cracks with flexible sealant, grind trip hazards smooth',
+        budgetRange: { min: 500, max: 3000 },
+        typicalDuration: '2-6 hours',
+        urgency: 'standard',
+      },
+      {
+        id: 'brick-repointing',
+        name: 'Brick Repointing / Tuck-Pointing',
+        scope: 'Grind out deteriorated mortar joints to 3/4 inch depth, clean joints with compressed air, mix matching mortar color and type, pack new mortar into joints with pointing trowel, tool joints to match original profile, clean brick faces of mortar smear, apply sealer if requested',
+        budgetRange: { min: 500, max: 5000 },
+        typicalDuration: '1-5 days',
+        urgency: 'standard',
+      },
+      {
+        id: 'stone-veneer-install',
+        name: 'Stone Veneer Installation',
+        scope: 'Prep wall with moisture barrier and metal lath, apply scratch coat, dry-lay stone pattern for best appearance, apply mortar bed and set stones, grout or dry-stack joints per style, seal with stone sealer, cleanup',
+        budgetRange: { min: 2000, max: 10000 },
+        typicalDuration: '2-5 days',
+        urgency: 'flexible',
+      },
+      {
+        id: 'foundation-repair',
+        name: 'Foundation Repair (Piers/Underpinning)',
+        scope: 'Engineer assessment of settlement, excavate at pier locations, install steel push piers or helical piers to bedrock/load-bearing stratum, hydraulically lift structure to maximum practical recovery, lock brackets, patch foundation wall cracks, backfill, provide transferable warranty',
+        budgetRange: { min: 5000, max: 30000 },
+        typicalDuration: '3-7 days',
+        urgency: 'standard',
+      },
+    ],
+  },
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // 34. INSULATION (National)
+  // ─────────────────────────────────────────────────────────────────────────
+  {
+    id: 'insulation',
+    name: 'Insulation',
+    icon: 'layers-outline',
+    description: 'Attic, wall, spray foam, blown-in, crawlspace',
+    regional: ['national'],
+    subServices: [
+      {
+        id: 'attic-insulation',
+        name: 'Attic Insulation (Blown-In)',
+        scope: 'Inspect existing insulation depth and condition, seal air leaks at top plates, wiring, and plumbing penetrations with foam and caulk, install baffles at soffit vents, blow in cellulose or fiberglass to target R-value (R-49 to R-60), install depth markers, avoid covering recessed lights unless IC-rated',
+        budgetRange: { min: 1000, max: 4000 },
+        typicalDuration: '3-6 hours',
+        urgency: 'flexible',
+      },
+      {
+        id: 'spray-foam-insulation',
+        name: 'Spray Foam Insulation',
+        scope: 'Mask all surfaces not receiving foam, apply closed-cell or open-cell spray foam to rim joists, walls, or roof deck per specification, trim excess foam flush with framing, verify thickness meets target R-value, install thermal barrier (drywall) over foam if required by code',
+        budgetRange: { min: 3000, max: 12000 },
+        typicalDuration: '1-3 days',
+        urgency: 'flexible',
+      },
+      {
+        id: 'wall-insulation-retrofit',
+        name: 'Wall Insulation Retrofit',
+        scope: 'Drill injection holes in exterior siding or interior plaster between each stud bay, inject dense-pack cellulose or foam, plug and patch holes, verify density with infrared camera, repair siding or plaster to match',
+        budgetRange: { min: 2000, max: 6000 },
+        typicalDuration: '1-2 days',
+        urgency: 'flexible',
+      },
+      {
+        id: 'crawlspace-insulation',
+        name: 'Crawlspace Insulation',
+        scope: 'Clean crawlspace of debris, install vapor barrier on ground, insulate rim joists with spray foam or rigid board, insulate floor joists with faced fiberglass batts or rigid foam (if vented) or insulate walls with rigid foam (if encapsulated), seal all penetrations, verify no compressed or fallen batts',
+        budgetRange: { min: 1500, max: 5000 },
+        typicalDuration: '1-2 days',
+        urgency: 'flexible',
+      },
+      {
+        id: 'pipe-insulation',
+        name: 'Pipe & Duct Insulation',
+        scope: 'Install foam pipe insulation on all exposed hot and cold water pipes, wrap HVAC ductwork in insulated jacket, seal all duct joints with mastic, insulate hot water heater tank (if not pre-insulated), insulate any pipes in unheated areas to prevent freezing',
+        budgetRange: { min: 200, max: 1000 },
+        typicalDuration: '2-4 hours',
+        urgency: 'standard',
+      },
+      {
+        id: 'insulation-removal',
+        name: 'Old Insulation Removal',
+        scope: 'Set up containment and HEPA vacuum system, remove old fiberglass/cellulose/vermiculite insulation from attic, bag and haul for disposal, inspect for pest damage and mold, clean and prep space for new insulation, test vermiculite for asbestos if present',
+        budgetRange: { min: 1000, max: 4000 },
+        typicalDuration: '4-8 hours',
+        urgency: 'flexible',
+      },
+    ],
+  },
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // 35. TILE ROOF (Southwest / Southeast)
+  // ─────────────────────────────────────────────────────────────────────────
+  {
+    id: 'tile-roof',
+    name: 'Tile Roofing',
+    icon: 'layers-outline',
+    description: 'Concrete/clay tile repair, replacement, underlayment',
+    regional: ['southwest', 'southeast'],
+    subServices: [
+      {
+        id: 'tile-roof-repair',
+        name: 'Tile Roof Repair',
+        scope: 'Access roof safely, identify broken or displaced tiles, remove surrounding tiles to access damaged area, inspect underlayment, replace damaged underlayment if needed, install matching replacement tiles with proper overlap, reset surrounding tiles, test for water-tightness',
+        budgetRange: { min: 300, max: 1500 },
+        typicalDuration: '2-4 hours',
+        urgency: 'standard',
+      },
+      {
+        id: 'tile-roof-replacement',
+        name: 'Tile Roof Full Replacement',
+        scope: 'Strip all existing tiles (save reusable if specified), remove old underlayment, inspect and replace damaged sheathing, install high-temp self-adhering underlayment, install new battens, lay concrete or clay tiles with stainless fasteners, install hip and ridge tiles with mortar or dry-ridge system, flash all penetrations, cleanup and haul debris',
+        budgetRange: { min: 15000, max: 50000 },
+        typicalDuration: '5-10 days',
+        urgency: 'flexible',
+      },
+      {
+        id: 'tile-roof-underlayment',
+        name: 'Tile Roof Underlayment Replacement',
+        scope: 'Remove all tiles systematically and stack for reuse, strip old underlayment, inspect sheathing, install new high-temp synthetic or modified bitumen underlayment, reinstall tiles in original pattern, replace broken tiles found during process, re-mortar hips and ridges',
+        budgetRange: { min: 8000, max: 25000 },
+        typicalDuration: '3-7 days',
+        urgency: 'standard',
+      },
+      {
+        id: 'tile-roof-cleaning',
+        name: 'Tile Roof Cleaning',
+        scope: 'Inspect roof condition and walkability, apply biodegradable cleaning solution, low-pressure wash tiles (under 1200 PSI to prevent damage), treat algae/mold/lichen with preventive solution, clear debris from valleys and gutters, inspect for cracked tiles during process',
+        budgetRange: { min: 500, max: 2000 },
+        typicalDuration: '3-6 hours',
+        urgency: 'flexible',
+      },
+      {
+        id: 'tile-roof-seal',
+        name: 'Tile Roof Sealing / Coating',
+        scope: 'Clean entire roof surface, repair any cracked tiles, apply penetrating sealer or reflective coating to all tiles, seal mortar at hips and ridges, verify flashing condition, document completed work with photos',
+        budgetRange: { min: 1500, max: 5000 },
+        typicalDuration: '1-2 days',
+        urgency: 'flexible',
+      },
+      {
+        id: 'tile-reroof-to-shingle',
+        name: 'Tile-to-Shingle Conversion',
+        scope: 'Remove all tile and underlayment, remove battens, inspect and repair sheathing, install ice and water shield at eaves, lay synthetic underlayment, install drip edge, nail architectural shingles, install ridge vent and cap, flash penetrations, structural evaluation for reduced load if needed',
+        budgetRange: { min: 10000, max: 25000 },
+        typicalDuration: '3-5 days',
+        urgency: 'flexible',
+      },
+    ],
+  },
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // 36. PIER / STILT FOUNDATION (Southeast)
+  // ─────────────────────────────────────────────────────────────────────────
+  {
+    id: 'pier-foundation',
+    name: 'Pier & Stilt Foundation',
+    icon: 'git-branch-outline',
+    description: 'Coastal pier repair, stilt homes, foundation elevation',
+    regional: ['southeast'],
+    subServices: [
+      {
+        id: 'pier-repair',
+        name: 'Foundation Pier Repair',
+        scope: 'Inspect pier condition above and below grade, shore structure temporarily, remove deteriorated pier, pour new reinforced concrete pier or install helical pier, install new pier cap and shims, lower structure onto new pier, verify level, remove shoring',
+        budgetRange: { min: 500, max: 3000 },
+        typicalDuration: '1-3 days per pier',
+        urgency: 'standard',
+      },
+      {
+        id: 'stilt-home-repair',
+        name: 'Stilt Home Structural Repair',
+        scope: 'Engineer assessment of stilt/pile condition, install temporary shoring, sister or replace damaged pilings, reinforce cross-bracing, install hurricane tie-downs, inspect and repair floor system, apply protective coating to exposed wood, verify structural integrity',
+        budgetRange: { min: 5000, max: 30000 },
+        typicalDuration: '3-10 days',
+        urgency: 'standard',
+      },
+      {
+        id: 'home-elevation',
+        name: 'Home Elevation (Flood Zone)',
+        scope: 'Engineer elevation plan, pull permits, disconnect all utilities, hydraulically lift entire structure, install new elevated foundation (piers, pilings, or stem walls) to meet FEMA BFE + freeboard, lower structure onto new foundation, reconnect utilities, build new stairs and entry, obtain elevation certificate',
+        budgetRange: { min: 30000, max: 150000 },
+        typicalDuration: '4-12 weeks',
+        urgency: 'flexible',
+      },
+      {
+        id: 'under-house-enclosure',
+        name: 'Under-House Enclosure (Breakaway Walls)',
+        scope: 'Design flood-compliant breakaway walls under elevated home, frame non-structural walls with flood vents, install siding and trim, install utility access doors, install flood vents per FEMA requirements (1 sqin per 1 sqft), verify walls break away at design pressure without damaging structure',
+        budgetRange: { min: 3000, max: 12000 },
+        typicalDuration: '3-7 days',
+        urgency: 'flexible',
+      },
+      {
+        id: 'pile-wrap-protection',
+        name: 'Pile Wrap / Protection',
+        scope: 'Clean pile surface, apply marine-grade protective wrap (PVC or fiberglass) from mudline to above splash zone, seal top and bottom with stainless bands, fill void with marine epoxy if deterioration is present, inspect all piles and tag completed ones',
+        budgetRange: { min: 200, max: 800 },
+        typicalDuration: '1-2 hours per pile',
+        urgency: 'standard',
+      },
+      {
+        id: 'pier-beam-foundation',
+        name: 'Pier & Beam Leveling',
+        scope: 'Access crawlspace, identify high and low points with laser level, install screw jacks or concrete shims at low piers, gradually raise structure to level (1/4 inch per day max), replace rotted beams or joists, install moisture barrier, re-check level, secure all shims permanently',
+        budgetRange: { min: 1000, max: 5000 },
+        typicalDuration: '1-3 days',
+        urgency: 'standard',
+      },
+    ],
+  },
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // 37. DECK WATERPROOFING (West Coast / National)
+  // ─────────────────────────────────────────────────────────────────────────
+  {
+    id: 'deck-waterproofing',
+    name: 'Deck Waterproofing',
+    icon: 'umbrella-outline',
+    description: 'Under-deck drainage, membrane systems, coating, railing seal',
+    regional: ['west-coast', 'national'],
+    subServices: [
+      {
+        id: 'deck-membrane-install',
+        name: 'Waterproof Deck Membrane',
+        scope: 'Prep deck surface (sand, clean, prime), apply liquid waterproof membrane (Duradek, Dec-Tec, or similar) in multiple coats with reinforcing mesh, flash at walls and posts, install drip edge, cure per manufacturer spec, provide warranty documentation',
+        budgetRange: { min: 2000, max: 8000 },
+        typicalDuration: '2-4 days',
+        urgency: 'flexible',
+      },
+      {
+        id: 'under-deck-drainage',
+        name: 'Under-Deck Drainage System',
+        scope: 'Install ceiling panel system under second-story deck (DrySpace, Trex RainEscape, or similar), pitch panels toward gutter, install gutter and downspout, create dry usable space below deck, seal all connections, test with water',
+        budgetRange: { min: 1500, max: 5000 },
+        typicalDuration: '1-3 days',
+        urgency: 'flexible',
+      },
+      {
+        id: 'deck-coating',
+        name: 'Deck Coating / Elastomeric',
+        scope: 'Pressure wash deck surface, repair cracks and spalls, apply primer, roll on elastomeric waterproof coating (2-3 coats), apply anti-slip aggregate to final coat, coat stairs and landing, allow cure time per manufacturer',
+        budgetRange: { min: 500, max: 3000 },
+        typicalDuration: '1-2 days',
+        urgency: 'flexible',
+      },
+      {
+        id: 'flashing-repair-deck',
+        name: 'Deck Ledger Flashing Repair',
+        scope: 'Remove siding above ledger board, inspect ledger bolts and wood condition, install self-adhering flashing membrane over ledger and behind siding, install metal z-flashing over membrane top edge, reinstall siding, caulk all joints, verify water path away from structure',
+        budgetRange: { min: 500, max: 2000 },
+        typicalDuration: '4-8 hours',
+        urgency: 'standard',
+      },
+      {
+        id: 'deck-railing-seal',
+        name: 'Deck Post & Railing Sealing',
+        scope: 'Inspect post bases for rot, apply post base flashing or replace mounting hardware, seal around all post-to-deck connections with flexible sealant, apply waterproof stain or paint to all railing components, seal end grain of all cut lumber',
+        budgetRange: { min: 300, max: 1500 },
+        typicalDuration: '3-6 hours',
+        urgency: 'flexible',
+      },
+      {
+        id: 'flat-roof-deck',
+        name: 'Rooftop Deck Waterproofing',
+        scope: 'Inspect existing roofing membrane, install new TPO/EPDM/hot-mop waterproofing if needed, install protection mat, lay adjustable pedestals, install deck tiles or pavers on pedestals (no penetration), flash at parapet walls, install railing per code, verify drainage path clear',
+        budgetRange: { min: 5000, max: 20000 },
+        typicalDuration: '3-7 days',
+        urgency: 'flexible',
+      },
+    ],
+  },
 ];
 
 // ─────────────────────────────────────────────────────────────────────────
@@ -896,3 +2575,27 @@ export function getCategoryOptions() {
     icon: c.icon,
   }));
 }
+
+/** Get categories by regional tag */
+export function getCategoriesByRegion(region: RegionalTag) {
+  return SERVICE_CATALOG.filter(
+    (c) => c.regional?.includes(region) || c.regional?.includes('national'),
+  );
+}
+
+/** Get all regional tags in use */
+export function getAvailableRegions(): RegionalTag[] {
+  const regions = new Set<RegionalTag>();
+  SERVICE_CATALOG.forEach((c) => c.regional?.forEach((r) => regions.add(r)));
+  return Array.from(regions);
+}
+
+/** Total counts for catalog stats */
+export const CATALOG_STATS = {
+  totalCategories: SERVICE_CATALOG.length,
+  totalSubServices: ALL_SUB_SERVICES.length,
+  emergencyServices: ALL_SUB_SERVICES.filter((s) => s.urgency === 'emergency').length,
+  regionalCategories: SERVICE_CATALOG.filter(
+    (c) => c.regional && !c.regional.includes('national'),
+  ).length,
+} as const;

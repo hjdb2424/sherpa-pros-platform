@@ -6,10 +6,11 @@ import * as Haptics from 'expo-haptics';
 import * as SecureStore from 'expo-secure-store';
 import { Ionicons } from '@expo/vector-icons';
 import MapScreen from '@/components/maps/MapScreen';
+import { Circle } from 'react-native-maps';
 import JobMarker from '@/components/maps/JobMarker';
 import JobSheet from '@/components/sheets/JobSheet';
 import type { SimpleBottomSheetRef } from '@/components/sheets/SimpleBottomSheet';
-import { MOCK_JOBS } from '@/lib/types';
+import { MOCK_JOBS, SERVICE_AREA } from '@/lib/types';
 import { getCurrentLocation } from '@/lib/location';
 import { colors, spacing, borderRadius, shadows, typography } from '@/lib/theme';
 import Logo from '@/components/brand/Logo';
@@ -59,8 +60,8 @@ export default function ProMapScreen() {
         setUserRegion({
           latitude: loc.lat,
           longitude: loc.lng,
-          latitudeDelta: 0.08,
-          longitudeDelta: 0.08,
+          latitudeDelta: 0.15,
+          longitudeDelta: 0.15,
         });
       } else {
         setLocationDenied(true);
@@ -110,6 +111,13 @@ export default function ProMapScreen() {
         </Pressable>
       )}
       <MapScreen initialRegion={userRegion}>
+        <Circle
+          center={{ latitude: SERVICE_AREA.center.lat, longitude: SERVICE_AREA.center.lng }}
+          radius={72400}
+          fillColor="rgba(0, 169, 224, 0.05)"
+          strokeColor="rgba(0, 169, 224, 0.2)"
+          strokeWidth={1}
+        />
         {MOCK_JOBS.map((job) => (
           <JobMarker
             key={job.id}

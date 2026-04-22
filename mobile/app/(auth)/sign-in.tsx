@@ -112,6 +112,7 @@ export default function SignInScreen() {
         <View style={styles.logoSection}>
           <Logo size="xl" />
           <Text style={styles.tagline}>On-demand construction services</Text>
+          <Text style={styles.serviceArea}>Serving NH {'\u00B7'} ME {'\u00B7'} MA</Text>
         </View>
 
         {/* Social Sign-In Buttons */}
@@ -238,6 +239,13 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: colors.textMuted,
     marginTop: 8,
+  },
+  serviceArea: {
+    fontSize: 13,
+    color: colors.textMuted,
+    marginTop: 4,
+    fontWeight: '500',
+    letterSpacing: 0.5,
   },
 
   // Social

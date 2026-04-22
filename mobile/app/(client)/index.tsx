@@ -5,10 +5,11 @@ import { useRouter } from 'expo-router';
 import * as Haptics from 'expo-haptics';
 import { Ionicons } from '@expo/vector-icons';
 import MapScreen from '@/components/maps/MapScreen';
+import { Circle } from 'react-native-maps';
 import ProMarker from '@/components/maps/ProMarker';
 import ProSheet from '@/components/sheets/ProSheet';
 import type { SimpleBottomSheetRef } from '@/components/sheets/SimpleBottomSheet';
-import { MOCK_PROS } from '@/lib/types';
+import { MOCK_PROS, SERVICE_AREA } from '@/lib/types';
 import { getCurrentLocation } from '@/lib/location';
 import { colors, spacing, borderRadius, shadows, typography } from '@/lib/theme';
 import Logo from '@/components/brand/Logo';
@@ -48,8 +49,8 @@ export default function ClientMapScreen() {
         setUserRegion({
           latitude: loc.lat,
           longitude: loc.lng,
-          latitudeDelta: 0.08,
-          longitudeDelta: 0.08,
+          latitudeDelta: 0.15,
+          longitudeDelta: 0.15,
         });
       } else {
         setLocationDenied(true);
@@ -79,6 +80,13 @@ export default function ClientMapScreen() {
         </View>
       )}
       <MapScreen initialRegion={userRegion}>
+        <Circle
+          center={{ latitude: SERVICE_AREA.center.lat, longitude: SERVICE_AREA.center.lng }}
+          radius={72400}
+          fillColor="rgba(0, 169, 224, 0.05)"
+          strokeColor="rgba(0, 169, 224, 0.2)"
+          strokeWidth={1}
+        />
         {MOCK_PROS.map((pro) => (
           <ProMarker
             key={pro.id}

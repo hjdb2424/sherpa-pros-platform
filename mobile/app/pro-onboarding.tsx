@@ -705,18 +705,18 @@ function StepServiceArea({
         <Slider
           value={serviceRadius}
           minimumValue={10}
-          maximumValue={50}
+          maximumValue={45}
           step={5}
           onValueChange={setServiceRadius}
         />
         <View style={styles.sliderRange}>
           <Text style={styles.sliderRangeText}>10 mi</Text>
-          <Text style={styles.sliderRangeText}>50 mi</Text>
+          <Text style={styles.sliderRangeText}>45 mi</Text>
         </View>
       </View>
 
       <Text style={styles.serviceAreaHint}>
-        You'll receive jobs within this radius of your location
+        You'll receive jobs within this radius. Service area max: 45 miles from Portsmouth, NH.
       </Text>
     </View>
   );

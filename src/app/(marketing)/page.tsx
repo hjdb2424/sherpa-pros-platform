@@ -56,9 +56,9 @@ const prosBenefits = [
 ];
 
 const hubCities = [
-  { state: 'NH', cities: ['Portsmouth', 'Manchester', 'Concord'] },
-  { state: 'ME', cities: ['Portland', 'Lewiston', 'Bangor'] },
-  { state: 'MA', cities: ['Boston', 'Worcester', 'Lowell', 'Springfield'] },
+  { state: 'NH', cities: ['Portsmouth', 'Dover', 'Rochester', 'Exeter', 'Hampton', 'Manchester', 'Nashua', 'Concord', 'Derry', 'Salem'] },
+  { state: 'ME', cities: ['Kittery', 'York', 'Kennebunk', 'Biddeford', 'Portland', 'Sanford'] },
+  { state: 'MA', cities: ['Newburyport', 'Amesbury', 'Haverhill', 'Lawrence', 'Lowell'] },
 ];
 
 const testimonials = [
@@ -304,11 +304,10 @@ export default function LandingPage() {
               </span>
             </div>
             <h2 className="mt-6 text-3xl font-bold text-zinc-900 dark:text-zinc-50 sm:text-4xl">
-              Now Serving New England
+              Serving the Greater Portsmouth Area
             </h2>
             <p className="mt-4 text-lg text-zinc-600 dark:text-zinc-400">
-              Starting in New Hampshire, Maine, and Massachusetts — with more
-              states coming soon.
+              New Hampshire, Maine, and Massachusetts — within a 1-hour drive of Portsmouth, NH.
             </p>
           </div>
 
@@ -321,7 +320,7 @@ export default function LandingPage() {
                   <MapPinIcon className="h-10 w-10 text-[#00a9e0]" aria-hidden="true" />
                 </div>
                 <p className="mt-4 text-lg font-semibold text-zinc-900 dark:text-zinc-50">
-                  New England Coverage
+                  Greater Portsmouth — 45 mi Radius
                 </p>
                 <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
                   NH &middot; ME &middot; MA
@@ -360,7 +359,7 @@ export default function LandingPage() {
               ))}
               <div className="rounded-xl border border-[#00a9e0]/20 bg-sky-50 dark:bg-sky-950 p-4">
                 <p className="text-sm font-medium text-zinc-800 dark:text-zinc-200">
-                  Expanding across New England in 2026. Want us in your area?
+                  Expanding beyond the Seacoast in 2026. Want us in your area?
                 </p>
                 <Link
                   href="#"

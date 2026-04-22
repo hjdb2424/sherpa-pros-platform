@@ -17,8 +17,8 @@ interface MapScreenProps {
 const DEFAULT_REGION: Region = {
   latitude: 43.0718,
   longitude: -70.7626,
-  latitudeDelta: 0.08,
-  longitudeDelta: 0.08,
+  latitudeDelta: 1.3,
+  longitudeDelta: 1.3,
 };
 
 const MapScreenComponent = forwardRef<MapView, MapScreenProps>(

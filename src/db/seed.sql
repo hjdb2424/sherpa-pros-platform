@@ -10,13 +10,13 @@
 INSERT INTO hubs (id, name, region, center, radius_km, dispatch_threshold_cents, is_active, config) VALUES
 (
     'a1000000-0000-0000-0000-000000000001',
-    'Portsmouth Hub',
+    'Seacoast Hub',
     'NH',
     ST_SetSRID(ST_MakePoint(-70.7626, 43.0718), 4326)::geography,
-    40.00,
+    72.40,
     5000,
     true,
-    '{"timezone": "America/New_York", "emergency_dispatch": true}'
+    '{"timezone": "America/New_York", "emergency_dispatch": true, "service_area": "Greater Portsmouth — 45mi radius, NH/ME/MA"}'
 ),
 (
     'a1000000-0000-0000-0000-000000000002',

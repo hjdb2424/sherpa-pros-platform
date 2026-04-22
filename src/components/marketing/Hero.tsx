@@ -37,7 +37,7 @@ export default function Hero({ stats }: HeroProps = {}) {
           <div className="animate-fade-slide-up mb-8 inline-flex items-center gap-2 rounded-full border border-[#00a9e0]/20 bg-[#00a9e0]/5 px-4 py-1.5">
             <span className="h-2 w-2 rounded-full bg-emerald-500" aria-hidden="true" />
             <span className="text-xs font-medium text-[#00a9e0] sm:text-sm">
-              Now serving New England
+              Serving Greater Portsmouth — NH &middot; ME &middot; MA
             </span>
           </div>
 

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useCallback } from 'react';
+import { generate1099PDF } from '@/lib/services/tax-1099-generator';
 import type { Form1099NEC } from '@/lib/services/tax-1099-generator';
 
 /* ------------------------------------------------------------------ */
@@ -45,7 +46,6 @@ export default function Form1099Preview({
   const handleDownloadPDF = useCallback(() => {
     // In production: call a server action that returns a real PDF.
     // For now: open a new window with print-ready HTML.
-    const { generate1099PDF } = require('@/lib/services/tax-1099-generator');
     const html = generate1099PDF(form);
     const win = window.open('', '_blank');
     if (win) {

@@ -215,6 +215,41 @@ export default function PMDashboardPage() {
       </div>
 
       {/* ---------------------------------------------------------------- */}
+      {/* Financial Overview (compact summary)                               */}
+      {/* ---------------------------------------------------------------- */}
+      <section>
+        <div className="rounded-xl border border-emerald-200 bg-gradient-to-r from-emerald-50 to-white p-5 shadow-sm dark:border-emerald-500/20 dark:from-emerald-500/5 dark:to-zinc-900">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-6">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">Net Cash Flow</p>
+                <p className="mt-1 text-2xl font-bold text-emerald-600 dark:text-emerald-400">$45,625<span className="text-sm font-normal text-zinc-400">/mo</span></p>
+              </div>
+              <div className="h-10 w-px bg-zinc-200 dark:bg-zinc-700" />
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">NOI Margin</p>
+                <p className="mt-1 text-2xl font-bold text-zinc-900 dark:text-white">61.0<span className="text-sm font-normal text-zinc-400">%</span></p>
+              </div>
+              <div className="h-10 w-px bg-zinc-200 dark:bg-zinc-700" />
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">Budget Status</p>
+                <p className="mt-1 text-2xl font-bold text-amber-600 dark:text-amber-400">+8%<span className="text-sm font-normal text-zinc-400"> over</span></p>
+              </div>
+            </div>
+            <Link
+              href="/pm/finance"
+              className="flex items-center gap-2 rounded-lg bg-[#00a9e0] px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-[#0090c0] hover:shadow-md"
+            >
+              View Full Finance Report
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+              </svg>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ---------------------------------------------------------------- */}
       {/* Top Stats Row                                                     */}
       {/* ---------------------------------------------------------------- */}
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">

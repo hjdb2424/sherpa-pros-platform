@@ -7,7 +7,7 @@ import Logo from "@/components/brand/Logo";
 export default function SelectRolePage() {
   const [isPending, startTransition] = useTransition();
 
-  function handleSelect(role: "pro" | "client" | "pm") {
+  function handleSelect(role: "pro" | "client" | "pm" | "tenant") {
     startTransition(() => {
       setUserRole(role);
     });
@@ -28,7 +28,7 @@ export default function SelectRolePage() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {/* Pro Card */}
           <button
             type="button"
@@ -152,6 +152,50 @@ export default function SelectRolePage() {
             <p className="text-sm leading-relaxed text-zinc-500 dark:text-zinc-400">
               I manage commercial or residential properties. Track work orders,
               vendors, compliance, and portfolio analytics.
+            </p>
+            <div className="mt-6 flex items-center text-sm font-medium text-[#00a9e0] opacity-0 transition-opacity group-hover:opacity-100">
+              Get started
+              <svg className="ml-1.5 h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+              </svg>
+            </div>
+          </button>
+
+          {/* Tenant Card */}
+          <button
+            type="button"
+            onClick={() => handleSelect("tenant")}
+            disabled={isPending}
+            className="group relative rounded-2xl border border-zinc-200 bg-white p-8 text-left
+                       shadow-sm transition-all duration-200
+                       hover:border-[#00a9e0]/50 hover:bg-[#00a9e0]/5 hover:shadow-lg hover:shadow-[#00a9e0]/10
+                       focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00a9e0] focus-visible:ring-offset-2
+                       disabled:cursor-not-allowed disabled:opacity-50
+                       dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-[#0ea5e9]/50 dark:hover:bg-[#0ea5e9]/5"
+          >
+            <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-xl bg-[#00a9e0]/10 text-[#00a9e0]
+                            transition-colors group-hover:bg-[#00a9e0]/20">
+              <svg
+                className="h-7 w-7"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M15.75 5.25a3 3 0 0 1 3 3m3 0a6 6 0 0 1-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1 1 21.75 8.25Z"
+                />
+              </svg>
+            </div>
+            <h2 className="mb-2 text-xl font-semibold text-zinc-900 dark:text-white">
+              I&apos;m a Tenant
+            </h2>
+            <p className="text-sm leading-relaxed text-zinc-500 dark:text-zinc-400">
+              I rent a unit and need to submit maintenance requests and track
+              their status.
             </p>
             <div className="mt-6 flex items-center text-sm font-medium text-[#00a9e0] opacity-0 transition-opacity group-hover:opacity-100">
               Get started

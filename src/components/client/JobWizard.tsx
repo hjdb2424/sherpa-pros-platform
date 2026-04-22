@@ -1,20 +1,72 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { LockClosedIcon } from '@heroicons/react/24/outline';
-import { CategoryGrid } from './CategoryGrid';
 import { BudgetSlider } from './BudgetSlider';
 import { PhotoUploader } from './PhotoUploader';
 import {
-  JOB_CATEGORIES,
-  type JobCategory,
-  formatBudget,
-} from '@/lib/mock-data/client-data';
+  SERVICE_CATALOG,
+  ALL_SUB_SERVICES,
+  getCategory,
+  getSubService,
+  getCategoryConfidence,
+  getCategoryWisemanSource,
+  type ServiceCategory,
+  type SubService,
+} from '@/lib/config/service-catalog';
+import { formatBudget } from '@/lib/mock-data/client-data';
+
+// ─── Emoji lookup ────────────────────────────────────────────────
+const CATEGORY_EMOJI: Record<string, string> = {
+  'water-outline': '\uD83D\uDD27',
+  'flash-outline': '\u26A1',
+  'hammer-outline': '\uD83E\uDE9A',
+  'color-palette-outline': '\uD83C\uDFA8',
+  'thermometer-outline': '\u2744\uFE0F',
+  'home-outline': '\uD83C\uDFE0',
+  'leaf-outline': '\uD83C\uDF3F',
+  'layers-outline': '\uD83E\uDEB5',
+  'cube-outline': '\uD83E\uDDF1',
+  'construct-outline': '\uD83D\uDD28',
+  'grid-outline': '\uD83D\uDD32',
+  'business-outline': '\uD83C\uDFD7\uFE0F',
+  'albums-outline': '\uD83E\uDE9F',
+  'shirt-outline': '\uD83E\uDDE4',
+  'trash-outline': '\uD83D\uDCA5',
+  'sparkles-outline': '\uD83E\uDDF9',
+  'car-outline': '\uD83D\uDCE6',
+  'hardware-chip-outline': '\uD83D\uDD0C',
+  'build-outline': '\uD83D\uDEE0\uFE0F',
+  'warning-outline': '\u26A0\uFE0F',
+  'shield-checkmark-outline': '\uD83D\uDEE1\uFE0F',
+  'flame-outline': '\uD83D\uDD25',
+  'rainy-outline': '\uD83D\uDCA7',
+  'bug-outline': '\uD83D\uDC1E',
+  'lock-closed-outline': '\uD83D\uDD12',
+  'camera-outline': '\uD83D\uDCF7',
+  'sunny-outline': '\u2600\uFE0F',
+  'snow-outline': '\u2744\uFE0F',
+  'fitness-outline': '\uD83C\uDFCB\uFE0F',
+  'medical-outline': '\uD83C\uDFE5',
+  'cafe-outline': '\u2615',
+  'boat-outline': '\u26F5',
+  'trail-sign-outline': '\uD83E\uDEA7',
+  'earth-outline': '\uD83C\uDF0D',
+  'telescope-outline': '\uD83D\uDD2D',
+  'briefcase-outline': '\uD83D\uDCBC',
+  'receipt-outline': '\uD83E\uDDFE',
+};
+
+function getEmoji(icon: string): string {
+  return CATEGORY_EMOJI[icon] ?? '\uD83D\uDD27';
+}
 
 // ─── Types ────────────────────────────────────────────────────────
 
 interface WizardData {
-  category: JobCategory | null;
+  categoryId: string | null;
+  subServiceId: string | null;
   title: string;
   description: string;
   urgency: 'emergency' | 'standard' | 'flexible';
@@ -28,7 +80,8 @@ interface WizardData {
 }
 
 const INITIAL_DATA: WizardData = {
-  category: null,
+  categoryId: null,
+  subServiceId: null,
   title: '',
   description: '',
   urgency: 'standard',
@@ -52,30 +105,54 @@ const STEPS = [
 
 const STORAGE_KEY = 'sherpa-job-draft';
 
+const POPULAR_CATEGORY_IDS = ['plumbing', 'electrical', 'emergency-services', 'landscaping'];
+
 // ─── Component ────────────────────────────────────────────────────
 
 export function JobWizard() {
+  const searchParams = useSearchParams();
   const [step, setStep] = useState(1);
   const [data, setData] = useState<WizardData>(INITIAL_DATA);
   const [posted, setPosted] = useState(false);
 
+  // Pre-fill from URL param ?service=<subServiceId>
+  useEffect(() => {
+    const serviceId = searchParams.get('service');
+    if (serviceId) {
+      const sub = getSubService(serviceId);
+      if (sub) {
+        const cat = SERVICE_CATALOG.find((c) => c.subServices.some((s) => s.id === serviceId));
+        if (cat) {
+          setData((prev) => ({
+            ...prev,
+            categoryId: cat.id,
+            subServiceId: sub.id,
+            title: sub.name,
+            description: sub.scope,
+            urgency: sub.urgency,
+            budgetMin: sub.budgetRange.min,
+            budgetMax: sub.budgetRange.max,
+          }));
+          setStep(2); // Skip to details since category is pre-filled
+        }
+      }
+    }
+  }, [searchParams]);
+
   // Restore draft from localStorage
   useEffect(() => {
+    // Don't restore if we just pre-filled from URL
+    if (searchParams.get('service')) return;
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
         const parsed = JSON.parse(saved) as Partial<WizardData>;
-        // Restore category object from id
-        if (parsed.category) {
-          const found = JOB_CATEGORIES.find((c) => c.id === (parsed.category as unknown as { id: string })?.id);
-          if (found) parsed.category = found;
-        }
-        setData((prev) => ({ ...prev, ...parsed, photos: [] })); // Don't restore blob URLs
+        setData((prev) => ({ ...prev, ...parsed, photos: [] }));
       }
     } catch {
       // Ignore parse errors
     }
-  }, []);
+  }, [searchParams]);
 
   // Save draft to localStorage
   useEffect(() => {
@@ -91,10 +168,15 @@ export function JobWizard() {
     setData((prev) => ({ ...prev, [key]: value }));
   }, []);
 
+  const selectedCategory = useMemo(
+    () => (data.categoryId ? getCategory(data.categoryId) : undefined),
+    [data.categoryId],
+  );
+
   const canProceed = (): boolean => {
     switch (step) {
       case 1:
-        return data.category !== null;
+        return data.categoryId !== null;
       case 2:
         return data.title.trim().length > 5 && data.description.trim().length > 10;
       case 3:
@@ -208,12 +290,20 @@ export function JobWizard() {
 
       {/* Step content */}
       <div className="min-h-[400px]">
-        {step === 1 && <StepCategory data={data} update={update} />}
+        {step === 1 && <StepCategory data={data} update={update} onSubServiceSelect={(sub) => {
+          update('categoryId', sub.categoryId);
+          update('subServiceId', sub.id);
+          update('title', sub.name);
+          update('description', sub.scope);
+          update('urgency', sub.urgency);
+          update('budgetMin', sub.budgetRange.min);
+          update('budgetMax', sub.budgetRange.max);
+        }} />}
         {step === 2 && <StepDetails data={data} update={update} />}
         {step === 3 && <StepLocation data={data} update={update} />}
-        {step === 4 && <StepBudget data={data} update={update} />}
+        {step === 4 && <StepBudget data={data} update={update} category={selectedCategory} />}
         {step === 5 && <StepPhotos data={data} update={update} />}
-        {step === 6 && <StepReview data={data} update={update} onEdit={goToStep} />}
+        {step === 6 && <StepReview data={data} update={update} onEdit={goToStep} category={selectedCategory} />}
       </div>
 
       {/* Navigation */}
@@ -267,20 +357,221 @@ interface StepProps {
   update: <K extends keyof WizardData>(key: K, value: WizardData[K]) => void;
 }
 
-function StepCategory({ data, update }: StepProps) {
+type FlatSubService = SubService & { categoryId: string; categoryName: string };
+
+interface StepCategoryProps extends StepProps {
+  onSubServiceSelect: (sub: FlatSubService) => void;
+}
+
+function StepCategory({ data, update, onSubServiceSelect }: StepCategoryProps) {
+  const [search, setSearch] = useState('');
+  const [expandedCategoryId, setExpandedCategoryId] = useState<string | null>(null);
+
+  // Filter categories + sub-services by search
+  const filtered = useMemo(() => {
+    if (!search.trim()) return SERVICE_CATALOG;
+    const q = search.toLowerCase();
+    return SERVICE_CATALOG.filter(
+      (cat) =>
+        cat.name.toLowerCase().includes(q) ||
+        cat.description.toLowerCase().includes(q) ||
+        cat.subServices.some(
+          (s) => s.name.toLowerCase().includes(q) || s.scope.toLowerCase().includes(q),
+        ),
+    );
+  }, [search]);
+
+  // Popular categories at top
+  const popular = useMemo(
+    () => SERVICE_CATALOG.filter((c) => POPULAR_CATEGORY_IDS.includes(c.id)),
+    [],
+  );
+
+  const handleCategoryClick = (catId: string) => {
+    if (expandedCategoryId === catId) {
+      setExpandedCategoryId(null);
+    } else {
+      setExpandedCategoryId(catId);
+      update('categoryId', catId);
+    }
+  };
+
+  const handleSubServiceClick = (cat: ServiceCategory, sub: SubService) => {
+    const flat: FlatSubService = { ...sub, categoryId: cat.id, categoryName: cat.name };
+    onSubServiceSelect(flat);
+  };
+
   return (
     <div>
       <h2 className="text-xl font-bold text-zinc-900">What kind of work do you need?</h2>
-      <p className="mt-1 text-sm text-zinc-500">Pick a category that best fits your project.</p>
-      <div className="mt-5">
-        <CategoryGrid
-          selected={data.category?.id ?? null}
-          onSelect={(cat) => {
-            update('category', cat);
-            update('budgetMin', cat.avgBudget.min);
-            update('budgetMax', cat.avgBudget.max);
-          }}
+      <p className="mt-1 text-sm text-zinc-500">
+        Pick a category, then select a specific service for an accurate bid.
+      </p>
+
+      {/* Search input */}
+      <div className="relative mt-5">
+        <svg
+          className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-zinc-400"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+          />
+        </svg>
+        <input
+          type="text"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Search for a service... (e.g. faucet, deck, furnace)"
+          className="w-full rounded-xl border border-zinc-200 bg-white py-3 pl-10 pr-4 text-sm text-zinc-900 placeholder:text-zinc-400 focus:border-[#00a9e0] focus:outline-none focus:ring-2 focus:ring-[#00a9e0]/10"
+          aria-label="Search services"
         />
+      </div>
+
+      {/* Popular categories (when not searching) */}
+      {!search.trim() && (
+        <div className="mt-4">
+          <p className="mb-2 text-xs font-medium uppercase tracking-wider text-zinc-400">
+            Popular
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {popular.map((cat) => (
+              <button
+                key={cat.id}
+                type="button"
+                onClick={() => handleCategoryClick(cat.id)}
+                className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ${
+                  data.categoryId === cat.id
+                    ? 'border-[#00a9e0]/30 bg-sky-50 text-[#00a9e0]'
+                    : 'border-zinc-200 bg-white text-zinc-700 hover:border-[#00a9e0]/20 hover:bg-sky-50/30'
+                }`}
+              >
+                <span role="img" aria-hidden="true">{getEmoji(cat.icon)}</span>
+                {cat.name}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* No results */}
+      {filtered.length === 0 && (
+        <div className="mt-6 rounded-xl border border-zinc-200 bg-zinc-50 p-8 text-center">
+          <p className="text-sm text-zinc-500">
+            No services match &ldquo;{search}&rdquo;. Try a different search term.
+          </p>
+        </div>
+      )}
+
+      {/* Category grid */}
+      <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+        {filtered.map((cat) => {
+          const isSelected = data.categoryId === cat.id;
+          const isExpanded = expandedCategoryId === cat.id;
+          const confidence = getCategoryConfidence(cat.id);
+
+          return (
+            <div key={cat.id} className={`${isExpanded ? 'col-span-2 sm:col-span-3 lg:col-span-4' : ''}`}>
+              <button
+                type="button"
+                onClick={() => handleCategoryClick(cat.id)}
+                className={`flex w-full min-h-[44px] flex-col items-center gap-2 rounded-xl border-2 p-4 text-center transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00a9e0] focus-visible:ring-offset-2 ${
+                  isSelected
+                    ? 'border-[#00a9e0] bg-sky-50 shadow-sm'
+                    : 'border-zinc-200 bg-white hover:border-[#00a9e0]/30 hover:bg-sky-50/30'
+                }`}
+                aria-pressed={isSelected}
+                aria-expanded={isExpanded}
+              >
+                <span className="text-3xl" role="img" aria-hidden="true">
+                  {getEmoji(cat.icon)}
+                </span>
+                <span
+                  className={`text-sm font-semibold ${
+                    isSelected ? 'text-[#00a9e0]' : 'text-zinc-800'
+                  }`}
+                >
+                  {cat.name}
+                </span>
+                <span className="text-[11px] leading-tight text-zinc-400">
+                  {cat.description}
+                </span>
+                {confidence > 0 && (
+                  <span className="mt-1 inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-semibold text-emerald-700">
+                    <svg className="h-2.5 w-2.5" fill="currentColor" viewBox="0 0 20 20">
+                      <path
+                        fillRule="evenodd"
+                        d="M16.403 12.652a3 3 0 010-5.304 3 3 0 00-1.257-1.257 3 3 0 01-5.304 0 3 3 0 00-1.257 1.257 3 3 0 010 5.304 3 3 0 001.257 1.257 3 3 0 015.304 0 3 3 0 001.257-1.257zM12.002 14a2 2 0 100-4 2 2 0 000 4z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                    {confidence}% Verified
+                  </span>
+                )}
+              </button>
+
+              {/* Expanded sub-services */}
+              {isExpanded && (
+                <div className="mt-2 rounded-xl border border-[#00a9e0]/20 bg-sky-50/50 p-4">
+                  <p className="mb-3 text-xs font-medium uppercase tracking-wider text-zinc-500">
+                    Select a service
+                  </p>
+                  <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+                    {cat.subServices.map((sub) => {
+                      const isSubSelected = data.subServiceId === sub.id;
+                      return (
+                        <button
+                          key={sub.id}
+                          type="button"
+                          onClick={() => handleSubServiceClick(cat, sub)}
+                          className={`flex flex-col rounded-lg border p-3 text-left transition-all ${
+                            isSubSelected
+                              ? 'border-[#00a9e0] bg-white shadow-sm ring-1 ring-[#00a9e0]/20'
+                              : 'border-zinc-200 bg-white hover:border-[#00a9e0]/30 hover:shadow-sm'
+                          }`}
+                          aria-pressed={isSubSelected}
+                        >
+                          <span className="text-sm font-medium text-zinc-900">{sub.name}</span>
+                          <span className="mt-1 text-[11px] leading-relaxed text-zinc-500 line-clamp-2">
+                            {sub.scope}
+                          </span>
+                          <div className="mt-2 flex items-center gap-2">
+                            <span className="text-[11px] font-medium text-zinc-700">
+                              ${sub.budgetRange.min.toLocaleString()}-${sub.budgetRange.max.toLocaleString()}
+                            </span>
+                            <span className="h-2.5 w-px bg-zinc-200" />
+                            <span className="text-[11px] text-zinc-400">{sub.typicalDuration}</span>
+                            {sub.urgency === 'emergency' && (
+                              <>
+                                <span className="h-2.5 w-px bg-zinc-200" />
+                                <span className="text-[10px] font-medium text-red-600">Emergency</span>
+                              </>
+                            )}
+                          </div>
+                          <span className="mt-1.5 inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-600">
+                            <svg className="h-2.5 w-2.5" fill="currentColor" viewBox="0 0 20 20">
+                              <path
+                                fillRule="evenodd"
+                                d="M16.403 12.652a3 3 0 010-5.304 3 3 0 00-1.257-1.257 3 3 0 01-5.304 0 3 3 0 00-1.257 1.257 3 3 0 010 5.304 3 3 0 001.257 1.257 3 3 0 015.304 0 3 3 0 001.257-1.257zM12.002 14a2 2 0 100-4 2 2 0 000 4z"
+                                clipRule="evenodd"
+                              />
+                            </svg>
+                            {sub.wisemanConfidence}% confidence
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
+          );
+        })}
       </div>
     </div>
   );
@@ -293,6 +584,9 @@ function StepDetails({ data, update }: StepProps) {
         <h2 className="text-xl font-bold text-zinc-900">Tell us about your project</h2>
         <p className="mt-1 text-sm text-zinc-500">
           The more detail you provide, the better bids you will get.
+          {data.subServiceId && (
+            <span className="ml-1 text-[#00a9e0]">Pre-filled from your selected service -- feel free to edit.</span>
+          )}
         </p>
       </div>
 
@@ -331,9 +625,9 @@ function StepDetails({ data, update }: StepProps) {
         <label className="block text-sm font-medium text-zinc-700">How urgent is this?</label>
         <div className="mt-2 grid grid-cols-3 gap-3">
           {([
-            { value: 'emergency' as const, label: 'Emergency', icon: '⚡', color: 'border-red-300 bg-red-50 text-red-700', activeColor: 'border-red-400 ring-red-200 bg-red-50' },
-            { value: 'standard' as const, label: 'Standard', icon: '📋', color: 'border-[#00a9e0]/30 bg-sky-50 text-[#00a9e0]', activeColor: 'border-[#00a9e0] ring-[#00a9e0]/20 bg-sky-50' },
-            { value: 'flexible' as const, label: 'Flexible', icon: '🕐', color: 'border-emerald-300 bg-emerald-50 text-emerald-700', activeColor: 'border-emerald-400 ring-emerald-200 bg-emerald-50' },
+            { value: 'emergency' as const, label: 'Emergency', icon: '\u26A1', color: 'border-red-300 bg-red-50 text-red-700', activeColor: 'border-red-400 ring-red-200 bg-red-50' },
+            { value: 'standard' as const, label: 'Standard', icon: '\uD83D\uDCCB', color: 'border-[#00a9e0]/30 bg-sky-50 text-[#00a9e0]', activeColor: 'border-[#00a9e0] ring-[#00a9e0]/20 bg-sky-50' },
+            { value: 'flexible' as const, label: 'Flexible', icon: '\uD83D\uDD50', color: 'border-emerald-300 bg-emerald-50 text-emerald-700', activeColor: 'border-emerald-400 ring-emerald-200 bg-emerald-50' },
           ]).map((opt) => (
             <button
               key={opt.value}
@@ -415,7 +709,6 @@ function StepLocation({ data, update }: StepProps) {
       <button
         type="button"
         onClick={() => {
-          // Placeholder for geolocation
           update('address', '45 Maple St, Concord, NH 03301');
         }}
         className="flex items-center gap-2 rounded-lg border border-zinc-200 px-4 py-2.5 text-sm font-medium text-zinc-600 transition-colors hover:bg-zinc-50"
@@ -453,10 +746,10 @@ function StepLocation({ data, update }: StepProps) {
   );
 }
 
-function StepBudget({ data, update }: StepProps) {
-  const category = data.category;
-  const sugMin = category?.avgBudget.min ?? 200;
-  const sugMax = category?.avgBudget.max ?? 2000;
+function StepBudget({ data, update, category }: StepProps & { category?: ServiceCategory }) {
+  const sub = data.subServiceId ? getSubService(data.subServiceId) : undefined;
+  const sugMin = sub?.budgetRange.min ?? category?.subServices[0]?.budgetRange.min ?? 200;
+  const sugMax = sub?.budgetRange.max ?? category?.subServices[0]?.budgetRange.max ?? 2000;
 
   return (
     <div className="space-y-6">
@@ -516,14 +809,19 @@ function StepPhotos({ data, update }: StepProps) {
 
 interface StepReviewProps extends StepProps {
   onEdit: (step: number) => void;
+  category?: ServiceCategory;
 }
 
-function StepReview({ data, update, onEdit }: StepReviewProps) {
+function StepReview({ data, update, onEdit, category }: StepReviewProps) {
+  const sub = data.subServiceId ? getSubService(data.subServiceId) : undefined;
+  const catName = category ? `${getEmoji(category.icon)} ${category.name}` : '--';
+  const subName = sub ? sub.name : '';
+
   const sections = [
-    { step: 1, label: 'Category', value: data.category ? `${data.category.icon} ${data.category.name}` : '--' },
+    { step: 1, label: 'Category', value: catName + (subName ? ` > ${subName}` : '') },
     { step: 2, label: 'Project', value: data.title || '--' },
     { step: 2, label: 'Description', value: data.description || '--' },
-    { step: 2, label: 'Urgency', value: data.urgency === 'emergency' ? '⚡ Emergency' : data.urgency === 'standard' ? '📋 Standard' : '🕐 Flexible' },
+    { step: 2, label: 'Urgency', value: data.urgency === 'emergency' ? '\u26A1 Emergency' : data.urgency === 'standard' ? '\uD83D\uDCCB Standard' : '\uD83D\uDD50 Flexible' },
     { step: 3, label: 'Location', value: data.address || '--' },
     { step: 4, label: 'Budget', value: data.letProsSuggest ? 'Let Pros suggest' : formatBudget({ min: data.budgetMin, max: data.budgetMax }) },
     { step: 5, label: 'Photos', value: `${data.photos.length} photo${data.photos.length !== 1 ? 's' : ''} attached` },

@@ -1,10 +1,12 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import { MOCK_PROS, JOB_CATEGORIES, type Pro } from '@/lib/mock-data/client-data';
 import { ProCard } from '@/components/client/ProCard';
 import EmptyState from '@/components/EmptyState';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
+import GlobalSearch from '@/components/search/GlobalSearch';
+import { ALL_SUB_SERVICES } from '@/lib/config/service-catalog';
 import GoogleMapProvider from '@/components/maps/GoogleMapProvider';
 import MapView from '@/components/maps/MapView';
 import BottomSheet from '@/components/maps/BottomSheet';
@@ -70,29 +72,14 @@ export function FindProsContent() {
 
       {/* Search and filters */}
       <div className="mb-6 space-y-4">
-        <div className="relative">
-          <svg
-            className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-zinc-400"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
-            />
-          </svg>
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search by name or trade (e.g. plumbing, electrical)..."
-            className="w-full rounded-xl border border-zinc-200 bg-white py-3 pl-10 pr-4 text-sm text-zinc-900 placeholder:text-zinc-400 focus:border-[#00a9e0] focus:outline-none focus:ring-2 focus:ring-[#00a9e0]/10"
-            aria-label="Search Pros"
-          />
-        </div>
+        <GlobalSearch
+          placeholder="Search by service, trade, or pro name..."
+          onSearchChange={(q) => setSearch(q)}
+          onSelect={(sub) => {
+            // Filter pros by the selected sub-service's category name
+            setSearch(sub.categoryName);
+          }}
+        />
 
         <div className="flex flex-wrap items-center gap-3">
           {/* Badge filter */}

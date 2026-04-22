@@ -97,6 +97,15 @@ const TEST_USERS = [
     icon: BuildingOfficeIcon,
     color: "bg-sky-50 text-[#00a9e0]",
   },
+  {
+    name: "Alex Rivera",
+    label: "Tenant",
+    email: "tenant@test.com",
+    description: "Resident submitting maintenance requests",
+    role: "tenant" as const,
+    icon: UserIcon,
+    color: "bg-emerald-50 text-emerald-600",
+  },
 ];
 
 // ---------------------------------------------------------------------------
@@ -110,6 +119,7 @@ function TestPortal() {
   function getDestination(role: string) {
     if (role === "client") return "/client/dashboard";
     if (role === "pm") return "/pm/dashboard";
+    if (role === "tenant") return "/tenant/dashboard";
     return "/pro/dashboard";
   }
 
@@ -124,7 +134,7 @@ function TestPortal() {
     router.push(getDestination(userType));
   }
 
-  function handleTestUser(role: "pro" | "client" | "pm", email: string) {
+  function handleTestUser(role: "pro" | "client" | "pm" | "tenant", email: string) {
     setLoading(true);
     localStorage.setItem("sherpa-test-role", role);
     localStorage.setItem("sherpa-test-auth", "true");
@@ -218,6 +228,7 @@ function TestPortal() {
             <option value="client">Property Owner</option>
             <option value="pro">Pro / Service Provider</option>
             <option value="pm">Property Manager</option>
+            <option value="tenant">Tenant</option>
           </select>
 
           {/* CTA Button */}

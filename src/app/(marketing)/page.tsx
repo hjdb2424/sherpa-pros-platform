@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import Hero from '@/components/marketing/Hero';
+import HeroSearch from '@/components/marketing/HeroSearch';
 import { getDashboardStats, type DashboardStats } from '@/db/queries/dashboard';
 import ComparisonTable from '@/components/marketing/ComparisonTable';
 import TestimonialCard from '@/components/marketing/TestimonialCard';
@@ -93,6 +94,9 @@ export default function LandingPage() {
     <div className="flex flex-col">
       {/* Hero */}
       <Hero />
+
+      {/* Hero Search — main entry point for clients */}
+      <HeroSearch />
 
       {/* How It Works */}
       <section className="bg-white dark:bg-zinc-950 px-4 py-20 sm:px-6 sm:py-28 lg:px-8">

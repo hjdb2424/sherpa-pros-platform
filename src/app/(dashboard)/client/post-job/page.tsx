@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { Suspense } from 'react';
 import { JobWizard } from '@/components/client/JobWizard';
 
 export const metadata: Metadata = {
@@ -14,7 +15,9 @@ export default function PostJobPage() {
           Describe what you need done and get bids from verified Pros nearby.
         </p>
       </div>
-      <JobWizard />
+      <Suspense fallback={<div className="mx-auto max-w-2xl animate-pulse space-y-4"><div className="h-8 rounded bg-zinc-200" /><div className="h-64 rounded bg-zinc-100" /></div>}>
+        <JobWizard />
+      </Suspense>
     </div>
   );
 }

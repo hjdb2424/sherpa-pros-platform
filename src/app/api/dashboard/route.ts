@@ -45,7 +45,7 @@ export async function GET(request: Request) {
     };
 
     return NextResponse.json({
-      stats: fallbackStats[session.role] ?? fallbackStats.pm,
+      stats: fallbackStats[session.role as keyof typeof fallbackStats] ?? fallbackStats.pm,
       jobs: [],
       pros: [],
       session: { userId: session.userId, role: session.role, name: session.name },

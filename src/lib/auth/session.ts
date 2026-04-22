@@ -41,6 +41,12 @@ const MOCK_USERS: Record<UserRole, UserSession> = {
     email: 'dana.pm@example.com',
     name: 'Dana Kim',
   },
+  tenant: {
+    userId: 't1000000-0000-0000-0000-000000000001',
+    role: 'tenant',
+    email: 'tenant@example.com',
+    name: 'Tenant User',
+  },
 };
 
 // ---------------------------------------------------------------------------
@@ -69,13 +75,13 @@ export function getCurrentSession(roleOverride?: UserRole): UserSession {
 export function getRoleFromRequest(request: Request): UserRole | undefined {
   // Header check
   const headerRole = request.headers.get('x-sherpa-test-role');
-  if (headerRole === 'pro' || headerRole === 'client' || headerRole === 'pm') {
+  if (headerRole === 'pro' || headerRole === 'client' || headerRole === 'pm' || headerRole === 'tenant') {
     return headerRole;
   }
 
   // Cookie check
   const cookieHeader = request.headers.get('cookie') ?? '';
-  const match = cookieHeader.match(/sherpa-test-role=(pro|client|pm)/);
+  const match = cookieHeader.match(/sherpa-test-role=(pro|client|pm|tenant)/);
   if (match) {
     return match[1] as UserRole;
   }

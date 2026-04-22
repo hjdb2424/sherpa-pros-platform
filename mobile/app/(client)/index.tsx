@@ -17,25 +17,27 @@ import { scheduleLocalNotification } from '@/lib/notifications';
 
 // Generate pros near a given location by offsetting from that center
 function generateNearbyPros(centerLat: number, centerLng: number): MockProLocation[] {
-  const offsets = [
-    { dLat: 0.005, dLng: -0.003 }, // 0.3 mi
-    { dLat: -0.008, dLng: 0.006 },  // 0.8 mi
-    { dLat: 0.012, dLng: 0.010 },   // 1.2 mi
-    { dLat: -0.015, dLng: -0.012 }, // 1.5 mi
-    { dLat: 0.020, dLng: 0.018 },   // 2.1 mi
-    { dLat: -0.025, dLng: -0.020 }, // 2.8 mi
-    { dLat: 0.030, dLng: -0.025 },  // 3.4 mi
-    { dLat: -0.035, dLng: 0.030 },  // 3.9 mi
-    { dLat: 0.045, dLng: 0.040 },   // 5.2 mi
-    { dLat: -0.060, dLng: -0.050 }, // 7.1 mi
-    { dLat: 0.080, dLng: 0.060 },   // 9.0 mi
-    { dLat: -0.100, dLng: -0.080 }, // 12.5 mi
+  // Spread across full 45-mile radius covering NH, ME, MA
+  // Each offset roughly corresponds to a real town direction from center
+  const placements = [
+    { dLat: 0.003, dLng: -0.002, dist: '0.3 mi' },     // Very close
+    { dLat: -0.012, dLng: 0.008, dist: '1.2 mi' },      // Nearby
+    { dLat: 0.025, dLng: -0.020, dist: '2.8 mi' },      // Close
+    { dLat: 0.120, dLng: -0.100, dist: '9.2 mi' },      // Dover direction (N)
+    { dLat: 0.015, dLng: 0.030, dist: '2.5 mi' },       // Kittery direction (E)
+    { dLat: -0.260, dLng: -0.110, dist: '18.4 mi' },    // Newburyport direction (S)
+    { dLat: -0.080, dLng: -0.690, dist: '38.1 mi' },    // Manchester direction (W)
+    { dLat: -0.180, dLng: -0.400, dist: '25.3 mi' },    // Derry direction (SW)
+    { dLat: 0.230, dLng: -0.050, dist: '16.1 mi' },     // Rochester direction (N)
+    { dLat: 0.310, dLng: 0.120, dist: '22.4 mi' },      // Kennebunk direction (NE)
+    { dLat: -0.140, dLng: -0.170, dist: '14.7 mi' },    // Exeter direction (S)
+    { dLat: 0.580, dLng: 0.500, dist: '42.8 mi' },      // Portland direction (NE far)
   ];
   return MOCK_PROS.map((pro, i) => ({
     ...pro,
-    lat: centerLat + (offsets[i]?.dLat ?? 0),
-    lng: centerLng + (offsets[i]?.dLng ?? 0),
-    distance: ['0.3 mi', '0.8 mi', '1.2 mi', '1.5 mi', '2.1 mi', '2.8 mi', '3.4 mi', '3.9 mi', '5.2 mi', '7.1 mi', '9.0 mi', '12.5 mi'][i] ?? pro.distance,
+    lat: centerLat + (placements[i]?.dLat ?? 0),
+    lng: centerLng + (placements[i]?.dLng ?? 0),
+    distance: placements[i]?.dist ?? pro.distance,
   }));
 }
 

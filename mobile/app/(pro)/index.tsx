@@ -14,23 +14,24 @@ import { MOCK_JOBS, SERVICE_AREA, type MockJobLocation } from '@/lib/types';
 import { getCurrentLocation } from '@/lib/location';
 
 function generateNearbyJobs(centerLat: number, centerLng: number): MockJobLocation[] {
-  const offsets = [
-    { dLat: 0.004, dLng: -0.002 },
-    { dLat: -0.006, dLng: 0.005 },
-    { dLat: 0.010, dLng: 0.008 },
-    { dLat: -0.013, dLng: -0.010 },
-    { dLat: 0.018, dLng: 0.015 },
-    { dLat: -0.022, dLng: -0.018 },
-    { dLat: 0.035, dLng: 0.025 },
-    { dLat: -0.045, dLng: -0.035 },
-    { dLat: 0.060, dLng: 0.050 },
-    { dLat: -0.080, dLng: -0.060 },
+  // Spread across full 45-mile radius covering NH, ME, MA
+  const placements = [
+    { dLat: 0.005, dLng: -0.003, dist: '0.4 mi' },     // Very close
+    { dLat: -0.008, dLng: 0.006, dist: '0.6 mi' },      // Nearby
+    { dLat: 0.015, dLng: 0.012, dist: '1.1 mi' },       // Close
+    { dLat: -0.020, dLng: -0.015, dist: '1.7 mi' },     // Close
+    { dLat: 0.010, dLng: 0.008, dist: '0.9 mi' },       // Nearby
+    { dLat: -0.030, dLng: -0.025, dist: '3.2 mi' },     // Moderate
+    { dLat: 0.120, dLng: -0.095, dist: '9.0 mi' },      // Dover area
+    { dLat: 0.018, dLng: 0.025, dist: '1.8 mi' },       // Kittery area
+    { dLat: -0.260, dLng: -0.105, dist: '18.6 mi' },    // Newburyport area
+    { dLat: -0.082, dLng: -0.695, dist: '38.3 mi' },    // Manchester area
   ];
   return MOCK_JOBS.map((job, i) => ({
     ...job,
-    lat: centerLat + (offsets[i]?.dLat ?? 0),
-    lng: centerLng + (offsets[i]?.dLng ?? 0),
-    distance: ['0.3 mi', '0.5 mi', '0.9 mi', '1.4 mi', '1.8 mi', '2.5 mi', '3.8 mi', '5.1 mi', '7.2 mi', '9.8 mi'][i] ?? job.distance,
+    lat: centerLat + (placements[i]?.dLat ?? 0),
+    lng: centerLng + (placements[i]?.dLng ?? 0),
+    distance: placements[i]?.dist ?? job.distance,
   }));
 }
 import { colors, spacing, borderRadius, shadows, typography } from '@/lib/theme';

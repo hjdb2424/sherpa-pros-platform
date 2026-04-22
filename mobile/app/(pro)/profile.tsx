@@ -29,6 +29,14 @@ import {
 } from '@/components/portfolio';
 import type { PortfolioItem } from '@/components/portfolio';
 import { TagApprovalList, PENDING_TAGS, ProEndorsements } from '@/components/social';
+import {
+  ReviewStats,
+  ReviewList,
+  ProResponseForm,
+  MOCK_REVIEWS as REVIEWS_DATA,
+  MOCK_STATS,
+} from '@/components/reviews';
+import type { Review } from '@/components/reviews';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -68,32 +76,6 @@ const PRO_PROFILE = {
   coverPhoto: 'https://picsum.photos/800/300?random=50',
 };
 
-const MOCK_REVIEWS = [
-  {
-    id: 'r1',
-    stars: 5,
-    reviewer: 'Tom A.',
-    date: 'Apr 15',
-    text: 'Mike was incredible. Fixed our burst pipe at 2am and cleaned up everything.',
-    role: 'Homeowner',
-  },
-  {
-    id: 'r2',
-    stars: 5,
-    reviewer: 'Lisa M.',
-    date: 'Apr 8',
-    text: 'Professional, on time, and fair pricing. Will definitely use again.',
-    role: 'Homeowner',
-  },
-  {
-    id: 'r3',
-    stars: 5,
-    reviewer: 'Rachel K.',
-    date: 'Mar 25',
-    text: 'Best plumber we\'ve ever hired. He explained everything clearly.',
-    role: 'Homeowner',
-  },
-];
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -193,38 +175,6 @@ function CertRow({
   );
 }
 
-function ReviewCard({
-  review,
-}: {
-  review: { id: string; stars: number; reviewer: string; date: string; text: string; role: string };
-}) {
-  return (
-    <View style={s.reviewCard}>
-      <View style={s.reviewHeader}>
-        <View style={s.reviewStars}>
-          {Array.from({ length: 5 }).map((_, i) => (
-            <Ionicons
-              key={i}
-              name={i < review.stars ? 'star' : 'star-outline'}
-              size={14}
-              color={colors.accent}
-            />
-          ))}
-        </View>
-        <Text style={s.reviewDate}>{review.date}</Text>
-      </View>
-      <Text style={s.reviewText} numberOfLines={3}>
-        {review.text}
-      </Text>
-      <View style={s.reviewFooter}>
-        <Text style={s.reviewerName}>{review.reviewer}</Text>
-        <View style={s.reviewRoleBadge}>
-          <Text style={s.reviewRoleText}>{review.role}</Text>
-        </View>
-      </View>
-    </View>
-  );
-}
 
 // ---------------------------------------------------------------------------
 // Main Screen
@@ -535,13 +485,25 @@ export default function ProProfileScreen() {
         {/* 8. Reviews                                                       */}
         {/* ---------------------------------------------------------------- */}
         <View style={s.sectionCard}>
-          <SectionHeader
-            title={`Reviews (${profile.reviewCount})`}
-            rightLabel="See All"
-            rightOnPress={() => Alert.alert('Reviews', 'Full review list coming soon.')}
+          <SectionHeader title={`Reviews (${profile.reviewCount})`} />
+          <ReviewStats
+            averageRating={MOCK_STATS.averageRating}
+            totalReviews={MOCK_STATS.totalReviews}
+            distribution={MOCK_STATS.distribution}
+            responseRate={MOCK_STATS.responseRate}
+            wouldHireAgainPct={MOCK_STATS.wouldHireAgainPct}
           />
-          {MOCK_REVIEWS.map((review) => (
-            <ReviewCard key={review.id} review={review} />
+        </View>
+
+        <View style={s.sectionCard}>
+          <ReviewList reviews={REVIEWS_DATA} showFilters />
+          {/* Pro response forms for reviews without responses */}
+          {REVIEWS_DATA.filter((r: Review) => !r.proResponse).slice(0, 2).map((r: Review) => (
+            <ProResponseForm
+              key={`resp-${r.id}`}
+              review={r}
+              onSubmit={(text: string) => Alert.alert('Response Posted', `Your response to ${r.reviewerName} has been posted.`)}
+            />
           ))}
         </View>
 

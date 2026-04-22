@@ -7,7 +7,6 @@ import {
   Alert,
   StyleSheet,
   Image,
-  FlatList,
   Modal,
   Dimensions,
 } from 'react-native';
@@ -18,6 +17,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { colors, spacing, borderRadius, shadows, typography } from '@/lib/theme';
 import { useAuth } from '@/lib/auth';
 import Logo from '@/components/brand/Logo';
+import { ReviewCard as ReviewCardComponent } from '@/components/reviews';
+import type { Review } from '@/components/reviews';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const GALLERY_ITEM_SIZE = (SCREEN_WIDTH - spacing.lg * 2 - spacing.xs * 2) / 3;
@@ -45,29 +46,13 @@ const FAVORITE_PROS = [
   { id: '4', name: 'Lisa Chen', trade: 'HVAC Tech', avatar: 'https://picsum.photos/80/80?random=33', hiredCount: 4, rating: 4.6, lastHired: 'Apr 2, 2026', licensed: true, insured: true },
 ];
 
-const REVIEWS_GIVEN = [
-  { id: '1', proName: 'Mike Torres', rating: 5, text: 'Rewired the entire first floor in two days. Meticulous work, zero issues on inspection.', proResponse: 'Thank you for the kind words! Great working with you.', jobTitle: 'Electrical Panel Upgrade', date: 'Mar 15, 2026', amount: '$3,200' },
-  { id: '2', proName: 'Sarah Kim', rating: 4, text: 'Fixed the slab leak fast. Would hire again for any plumbing work.', proResponse: null, jobTitle: 'Slab Leak Repair', date: 'Feb 28, 2026', amount: '$1,800' },
-  { id: '3', proName: 'Jake Duval', rating: 5, text: 'Beautiful finish on the exterior. Neighbors keep asking who did it.', proResponse: 'Appreciate the review! The color choice was perfect.', jobTitle: 'Exterior Painting', date: 'Jan 20, 2026', amount: '$4,500' },
+const REVIEWS_GIVEN: Review[] = [
+  { id: 'rg1', reviewerName: 'You', reviewerInitials: 'YO', rating: 5, text: 'Rewired the entire first floor in two days. Meticulous work, zero issues on inspection.', date: 'Mar 15, 2026', projectType: 'Electrical Panel Upgrade', verified: true, helpfulCount: 4, wouldHireAgain: true, proResponse: { text: 'Thank you for the kind words! Great working with you.', date: 'Mar 16, 2026' } },
+  { id: 'rg2', reviewerName: 'You', reviewerInitials: 'YO', rating: 4, text: 'Fixed the slab leak fast. Would hire again for any plumbing work.', date: 'Feb 28, 2026', projectType: 'Slab Leak Repair', verified: true, helpfulCount: 2, wouldHireAgain: true },
+  { id: 'rg3', reviewerName: 'You', reviewerInitials: 'YO', rating: 5, text: 'Beautiful finish on the exterior. Neighbors keep asking who did it.', date: 'Jan 20, 2026', projectType: 'Exterior Painting', verified: true, helpfulCount: 7, wouldHireAgain: true, proResponse: { text: 'Appreciate the review! The color choice was perfect.', date: 'Jan 21, 2026' } },
 ];
 
 const PREF_TRADES = ['Electrical', 'Plumbing', 'Painting', 'HVAC', 'Roofing'];
-
-// ── Helpers ────────────────────────────────────────────────────────
-function StarRow({ rating }: { rating: number }) {
-  return (
-    <View style={{ flexDirection: 'row', gap: 2 }}>
-      {[1, 2, 3, 4, 5].map((s) => (
-        <Ionicons
-          key={s}
-          name={s <= rating ? 'star' : 'star-outline'}
-          size={14}
-          color={s <= rating ? '#f59e0b' : colors.borderMedium}
-        />
-      ))}
-    </View>
-  );
-}
 
 // ── Main Screen ────────────────────────────────────────────────────
 export default function ClientProfileScreen() {
@@ -77,7 +62,6 @@ export default function ClientProfileScreen() {
   const [galleryModal, setGalleryModal] = useState<string | null>(null);
   const [selectedGalleryPhoto, setSelectedGalleryPhoto] = useState<typeof GALLERY_PHOTOS[0] | null>(null);
   const [selectedPro, setSelectedPro] = useState<typeof FAVORITE_PROS[0] | null>(null);
-  const [expandedReview, setExpandedReview] = useState<string | null>(null);
 
   const initials = (userName ?? 'U')
     .split(' ')
@@ -270,52 +254,11 @@ export default function ClientProfileScreen() {
         {/* ─── 7. Reviews Given ──────────────────────────────── */}
         <View style={styles.section}>
           {renderSectionHeader('Reviews Given', 'chatbubble-ellipses-outline')}
-          {REVIEWS_GIVEN.map((review) => {
-            const isExpanded = expandedReview === review.id;
-            return (
-              <Pressable
-                key={review.id}
-                style={styles.reviewCard}
-                onPress={() => {
-                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                  setExpandedReview(isExpanded ? null : review.id);
-                }}
-              >
-                <View style={styles.reviewHeader}>
-                  <Text style={styles.reviewProName}>{review.proName}</Text>
-                  <StarRow rating={review.rating} />
-                </View>
-                <Text style={styles.reviewText} numberOfLines={isExpanded ? undefined : 2}>{review.text}</Text>
-                {isExpanded && (
-                  <View style={styles.reviewExpanded}>
-                    {review.proResponse && (
-                      <View style={styles.reviewResponseBox}>
-                        <Ionicons name="chatbubble-outline" size={14} color={colors.primary} />
-                        <Text style={styles.reviewResponseText}>Pro Response: {review.proResponse}</Text>
-                      </View>
-                    )}
-                    <View style={styles.reviewMetaRow}>
-                      <Text style={styles.reviewMetaText}>{review.jobTitle}</Text>
-                      <Text style={styles.reviewMetaDot}>{'\u2022'}</Text>
-                      <Text style={styles.reviewMetaText}>{review.date}</Text>
-                      <Text style={styles.reviewMetaDot}>{'\u2022'}</Text>
-                      <Text style={styles.reviewMetaText}>{review.amount}</Text>
-                    </View>
-                    <Pressable
-                      style={styles.reviewEditBtn}
-                      onPress={() => {
-                        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                        Alert.alert('Edit Review', `Edit your review for ${review.proName}`);
-                      }}
-                    >
-                      <Ionicons name="create-outline" size={14} color={colors.primary} />
-                      <Text style={styles.reviewEditText}>Edit Review</Text>
-                    </Pressable>
-                  </View>
-                )}
-              </Pressable>
-            );
-          })}
+          <View style={{ paddingHorizontal: spacing.lg }}>
+            {REVIEWS_GIVEN.map((review) => (
+              <ReviewCardComponent key={review.id} review={review} showResponse />
+            ))}
+          </View>
         </View>
 
         {/* ─── 8. Preferences ────────────────────────────────── */}

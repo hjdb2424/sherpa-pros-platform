@@ -23,6 +23,8 @@ import Button from '@/components/common/Button';
 import FinancingOptions from '@/components/pro/FinancingOptions';
 import TaggingSystem from '@/components/social/TaggingSystem';
 import type { Tag } from '@/components/social/TaggingSystem';
+import { ReviewCard as ReviewCardComponent, ProResponseForm } from '@/components/reviews';
+import type { Review } from '@/components/reviews';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -141,6 +143,21 @@ const REVIEW_BADGE: Record<string, { label: string; variant: 'success' | 'warnin
   flagged: { label: 'Flagged', variant: 'danger' },
 };
 
+// Mock client review for this job
+const CLIENT_REVIEW: Review = {
+  id: 'cr1',
+  reviewerName: 'John Davidson',
+  reviewerInitials: 'JD',
+  rating: 5,
+  text: 'Carlos did an amazing job on the bathroom remodel. The subway tile work is flawless and the matte black fixtures look incredible. He communicated well throughout the project and cleaned up every day.',
+  date: '1 week ago',
+  projectType: 'General',
+  verified: true,
+  photos: ['https://picsum.photos/200/200?random=90'],
+  helpfulCount: 3,
+  wouldHireAgain: true,
+};
+
 type TabKey = 'overview' | 'checklist' | 'materials' | 'photos';
 
 // ---------------------------------------------------------------------------
@@ -162,6 +179,7 @@ export default function ProJobDetailScreen() {
   const [showNoteInput, setShowNoteInput] = useState(false);
   const [newNoteText, setNewNoteText] = useState('');
   const [quoteSent, setQuoteSent] = useState(false);
+  const [clientReview, setClientReview] = useState<Review>(CLIENT_REVIEW);
 
   const job = MOCK_JOB; // In production, fetch by `id`
 
@@ -347,6 +365,24 @@ export default function ProJobDetailScreen() {
             <Text style={styles.noteText}>{note.text}</Text>
           </View>
         ))}
+      </Card>
+
+      {/* Client Review */}
+      <Card style={styles.section} variant="elevated">
+        <Text style={styles.sectionTitle}>Client Review</Text>
+        <ReviewCardComponent review={clientReview} showResponse={!!clientReview.proResponse} />
+        {!clientReview.proResponse && (
+          <ProResponseForm
+            review={clientReview}
+            onSubmit={(text: string) => {
+              setClientReview({
+                ...clientReview,
+                proResponse: { text, date: 'Just now' },
+              });
+              Alert.alert('Response Posted', 'Your response has been posted and is visible to everyone.');
+            }}
+          />
+        )}
       </Card>
 
       {/* Action Buttons */}

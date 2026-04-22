@@ -7,6 +7,7 @@ import {
   Alert,
   Modal,
   StyleSheet,
+  SafeAreaView,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useLocalSearchParams, useRouter } from 'expo-router';
@@ -21,6 +22,8 @@ import MaterialsFlow from '@/components/checklist/MaterialsFlow';
 import type { Material } from '@/components/checklist/MaterialsFlow';
 import EstimateDocument from '@/components/quotes/EstimateDocument';
 import type { QuoteData } from '@/components/quotes/EstimateDocument';
+import { ReviewPrompt, WriteReviewScreen } from '@/components/reviews';
+import type { Review } from '@/components/reviews';
 
 // ---------------------------------------------------------------------------
 // Mock data (inline)
@@ -165,7 +168,11 @@ export default function ClientJobDetailScreen() {
   const [quoteAccepted, setQuoteAccepted] = useState(false);
   const [showQuoteDetails, setShowQuoteDetails] = useState(false);
   const [showEstimateDoc, setShowEstimateDoc] = useState(false);
+  const [showWriteReview, setShowWriteReview] = useState(false);
+  const [reviewDismissed, setReviewDismissed] = useState(false);
+  const [reviewSubmitted, setReviewSubmitted] = useState(false);
   const hasQuote = true; // Mock: always show for demo
+  const isCompleted = true; // Mock: show review prompt for demo
 
   const job = MOCK_JOB; // In production, fetch by `id`
 
@@ -217,6 +224,19 @@ export default function ClientJobDetailScreen() {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: insets.bottom + spacing.xxxl }}
       >
+        {/* Review Prompt for completed jobs */}
+        {isCompleted && !reviewDismissed && !reviewSubmitted && job.assignedPro && (
+          <View style={{ marginBottom: spacing.lg }}>
+            <ReviewPrompt
+              proName={job.assignedPro.name}
+              proInitials={job.assignedPro.initials}
+              jobTitle={job.title}
+              onReview={() => setShowWriteReview(true)}
+              onDismiss={() => setReviewDismissed(true)}
+            />
+          </View>
+        )}
+
         {/* Job Info Card */}
         <Card style={styles.section} variant="elevated">
           <View style={styles.infoRow}>
@@ -464,6 +484,21 @@ export default function ClientJobDetailScreen() {
             Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
             Alert.alert('Quote Declined', 'The pro has been notified.');
           }}
+        />
+      </Modal>
+
+      {/* Write Review Modal */}
+      <Modal visible={showWriteReview} animationType="slide" presentationStyle="fullScreen">
+        <WriteReviewScreen
+          proName={job.assignedPro?.name ?? 'Pro'}
+          proInitials={job.assignedPro?.initials ?? 'P'}
+          jobTitle={job.title}
+          onSubmit={(review: Partial<Review>) => {
+            setShowWriteReview(false);
+            setReviewSubmitted(true);
+            Alert.alert('Review Submitted', 'Thank you for your review!');
+          }}
+          onClose={() => setShowWriteReview(false)}
         />
       </Modal>
     </View>

@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { getSessionFromRequest } from '@/lib/auth/session';
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -37,7 +38,7 @@ export interface ReviewRecord {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Mock data — 15 diverse reviews                                     */
+/*  Mock data -- 15 diverse reviews                                    */
 /* ------------------------------------------------------------------ */
 
 export const MOCK_REVIEWS: ReviewRecord[] = [
@@ -81,7 +82,7 @@ export const MOCK_REVIEWS: ReviewRecord[] = [
     verified: true,
     photos: [],
     response: {
-      text: 'Thanks Frank. The extra day was due to unexpected moisture behind the east wall — wanted to make sure we addressed it properly rather than cut corners.',
+      text: 'Thanks Frank. The extra day was due to unexpected moisture behind the east wall -- wanted to make sure we addressed it properly rather than cut corners.',
       date: '2026-02-27T10:30:00Z',
       proName: 'Marcus Rivera',
     },
@@ -171,7 +172,7 @@ export const MOCK_REVIEWS: ReviewRecord[] = [
       { id: 'ph-006', url: '/mock/review-crown-3.jpg', alt: 'Before and after comparison' },
     ],
     response: {
-      text: 'Sarah, thank you for the kind words! Crown molding is one of my favorite projects — the transformation is always dramatic.',
+      text: 'Sarah, thank you for the kind words! Crown molding is one of my favorite projects -- the transformation is always dramatic.',
       date: '2026-03-21T11:00:00Z',
       proName: 'Marcus Rivera',
     },
@@ -240,7 +241,7 @@ export const MOCK_REVIEWS: ReviewRecord[] = [
     response: null,
     helpfulCount: 6,
     wouldHireAgain: true,
-    tipsForOthers: 'Ask about tankless options — they cost more upfront but save a lot on energy.',
+    tipsForOthers: 'Ask about tankless options -- they cost more upfront but save a lot on energy.',
     status: 'published',
   },
   {
@@ -283,7 +284,7 @@ export const MOCK_REVIEWS: ReviewRecord[] = [
       { id: 'ph-009', url: '/mock/review-paint-2.jpg', alt: 'Detail of paint edge' },
     ],
     response: {
-      text: 'Amanda, we really appreciate the review! Color consultation is something we love doing — it makes such a big difference in the final result.',
+      text: 'Amanda, we really appreciate the review! Color consultation is something we love doing -- it makes such a big difference in the final result.',
       date: '2026-04-09T10:00:00Z',
       proName: 'Steve Park',
     },
@@ -355,7 +356,7 @@ export const MOCK_REVIEWS: ReviewRecord[] = [
     response: null,
     helpfulCount: 20,
     wouldHireAgain: true,
-    tipsForOthers: 'Schedule exterior painting for spring or early fall — the paint adheres best in mild weather.',
+    tipsForOthers: 'Schedule exterior painting for spring or early fall -- the paint adheres best in mild weather.',
     status: 'published',
   },
   {
@@ -387,7 +388,7 @@ export const MOCK_REVIEWS: ReviewRecord[] = [
 ];
 
 /* ------------------------------------------------------------------ */
-/*  GET — filtered, sorted reviews                                     */
+/*  GET -- filtered, sorted reviews with session scoping               */
 /* ------------------------------------------------------------------ */
 
 export async function GET(request: Request) {
@@ -401,8 +402,33 @@ export async function GET(request: Request) {
   const withResponse = searchParams.get('withResponse');
   const status = searchParams.get('status');
 
+  const session = getSessionFromRequest(request);
+
   let filtered = MOCK_REVIEWS.filter((r) => r.status !== 'removed');
 
+  // Role-based scoping when no explicit filters provided
+  // If proId/clientId/jobId are specified, those take precedence
+  if (!proId && !clientId && !jobId) {
+    switch (session.role) {
+      case 'pro':
+        // Pro sees reviews about them (as reviewee) or by them (as reviewer)
+        filtered = filtered.filter(
+          (r) => r.proId === 'pro-001' || (r.role === 'pro' && r.reviewerName.includes('Marcus')),
+        );
+        break;
+      case 'client':
+        // Client sees reviews they wrote or reviews about pros on their jobs
+        filtered = filtered.filter(
+          (r) => r.clientId === 'client-001' || r.reviewerName === 'Phyrom',
+        );
+        break;
+      case 'pm':
+        // PM sees all reviews (oversight role)
+        break;
+    }
+  }
+
+  // Apply explicit filters
   if (jobId) filtered = filtered.filter((r) => r.jobId === jobId);
   if (proId) filtered = filtered.filter((r) => r.proId === proId);
   if (clientId) filtered = filtered.filter((r) => r.clientId === clientId);
@@ -428,15 +454,20 @@ export async function GET(request: Request) {
       break;
   }
 
-  return NextResponse.json({ reviews: filtered, total: filtered.length });
+  return NextResponse.json({
+    reviews: filtered,
+    total: filtered.length,
+    session: { userId: session.userId, role: session.role },
+  });
 }
 
 /* ------------------------------------------------------------------ */
-/*  POST — create review with validation                               */
+/*  POST -- create review with validation + session                    */
 /* ------------------------------------------------------------------ */
 
 export async function POST(request: Request) {
   const body = await request.json();
+  const session = getSessionFromRequest(request);
 
   // Validation
   if (!body.rating || body.rating < 1 || body.rating > 5) {
@@ -464,12 +495,12 @@ export async function POST(request: Request) {
     id: `rev-${Date.now()}`,
     jobId: body.jobId ?? '',
     proId: body.proId ?? '',
-    clientId: body.clientId ?? '',
-    reviewerName: body.reviewerName ?? 'Anonymous',
+    clientId: body.clientId || session.userId,
+    reviewerName: body.reviewerName || session.name,
     rating: body.rating,
     text: body.text.trim(),
     date: new Date().toISOString(),
-    role: body.role ?? 'client',
+    role: body.role || session.role === 'pro' ? 'pro' : 'client',
     projectType: body.projectType ?? 'General',
     verified: body.verified ?? false,
     photos: body.photos ?? [],

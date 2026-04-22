@@ -16,6 +16,7 @@ import {
   mockActiveJobs,
   mockActivity,
 } from '@/lib/mock-data/pro-data';
+import { getCurrentSession } from '@/lib/auth/session';
 
 export const metadata: Metadata = {
   title: 'Dashboard',
@@ -41,6 +42,7 @@ const activityIcons: Record<string, { bg: string; icon: string }> = {
 };
 
 export default function ProDashboardPage() {
+  const session = getCurrentSession('pro');
   const pro = mockProProfile;
   const stats = mockDashboardStats;
 
@@ -50,10 +52,10 @@ export default function ProDashboardPage() {
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">
-            Welcome back, {pro.name.split(' ')[0]}
+            Welcome back, {session.name.split(' ')[0]}
           </h1>
           <p className="mt-0.5 text-sm text-zinc-500 dark:text-zinc-400">
-            Here is what is happening today.
+            Here is what is happening with your jobs today.
           </p>
         </div>
         <BadgeTier tier={pro.badgeTier} size="lg" />
@@ -85,7 +87,7 @@ export default function ProDashboardPage() {
       {/* Stats row */}
       <div className="grid gap-4 grid-cols-2 lg:grid-cols-4">
         <StatsCard
-          label="Active Jobs"
+          label="Your Active Jobs"
           value={String(stats.activeJobs)}
           trend={{ direction: 'up', label: '+1 this week' }}
           icon={
@@ -95,7 +97,7 @@ export default function ProDashboardPage() {
           }
         />
         <StatsCard
-          label="Pending Bids"
+          label="Your Pending Bids"
           value={String(stats.pendingBids)}
           icon={
             <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden="true">

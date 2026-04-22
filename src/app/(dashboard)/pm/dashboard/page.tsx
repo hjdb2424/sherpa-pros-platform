@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { getCurrentSession } from '@/lib/auth/session';
 
 /* ------------------------------------------------------------------ */
 /* Mock Data                                                           */
@@ -202,15 +203,17 @@ function PriorityBadge({ priority }: { priority: string }) {
 /* ------------------------------------------------------------------ */
 
 export default function PMDashboardPage() {
+  const session = getCurrentSession('pm');
+
   return (
     <div className="space-y-8">
       {/* Page header */}
       <div>
         <h1 className="text-2xl font-bold text-zinc-900 sm:text-3xl dark:text-white">
-          Portfolio Overview
+          Welcome back, {session.name.split(' ')[0]}
         </h1>
         <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
-          Manage your properties, work orders, and vendor performance.
+          Your portfolio overview -- properties, work orders, and vendor performance.
         </p>
       </div>
 

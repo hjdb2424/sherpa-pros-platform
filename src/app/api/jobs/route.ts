@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { getJobs, createJobPosting } from "@/db/queries/jobs";
+import { getJobs, getClientJobs, createJobPosting } from "@/db/queries/jobs";
+import { getSessionFromRequest } from "@/lib/auth/session";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -14,9 +15,37 @@ export async function GET(request: Request) {
     ? parseInt(searchParams.get("offset")!, 10)
     : undefined;
 
+  const session = getSessionFromRequest(request);
+
   try {
-    const jobs = await getJobs({ status, category, hubId, urgency, limit, offset });
-    return NextResponse.json({ jobs });
+    let jobs;
+
+    switch (session.role) {
+      case "client":
+        // Client sees only their posted jobs
+        jobs = await getClientJobs(session.userId);
+        // Apply additional filters on the client's jobs
+        if (status) jobs = jobs.filter((j) => j.status === status);
+        if (category) jobs = jobs.filter((j) => j.category === category);
+        break;
+
+      case "pro":
+        // Pro sees all available jobs (marketplace) + their assigned jobs
+        // For MVP: show all with filters — real impl will add bid/assignment check
+        jobs = await getJobs({ status, category, hubId, urgency, limit, offset });
+        break;
+
+      case "pm":
+        // PM sees jobs on their managed properties
+        // For MVP: show all with filters — real impl will join on property ownership
+        jobs = await getJobs({ status, category, hubId, urgency, limit, offset });
+        break;
+
+      default:
+        jobs = await getJobs({ status, category, hubId, urgency, limit, offset });
+    }
+
+    return NextResponse.json({ jobs, session: { userId: session.userId, role: session.role } });
   } catch (error) {
     console.error("[api/jobs] GET failed:", error);
     return NextResponse.json({ jobs: [], error: "Failed to fetch jobs" });
@@ -26,8 +55,12 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
+    const session = getSessionFromRequest(request);
 
-    if (!body.clientUserId || !body.title) {
+    // Use session userId if clientUserId not explicitly provided
+    const clientUserId = body.clientUserId || session.userId;
+
+    if (!clientUserId || !body.title) {
       return NextResponse.json(
         { error: "Missing required fields: clientUserId, title" },
         { status: 400 },
@@ -35,7 +68,7 @@ export async function POST(request: Request) {
     }
 
     const job = await createJobPosting({
-      clientUserId: body.clientUserId,
+      clientUserId,
       title: body.title,
       description: body.description,
       category: body.category,

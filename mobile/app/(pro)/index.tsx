@@ -10,8 +10,29 @@ import { Circle } from 'react-native-maps';
 import JobMarker from '@/components/maps/JobMarker';
 import JobSheet from '@/components/sheets/JobSheet';
 import type { SimpleBottomSheetRef } from '@/components/sheets/SimpleBottomSheet';
-import { MOCK_JOBS, SERVICE_AREA } from '@/lib/types';
+import { MOCK_JOBS, SERVICE_AREA, type MockJobLocation } from '@/lib/types';
 import { getCurrentLocation } from '@/lib/location';
+
+function generateNearbyJobs(centerLat: number, centerLng: number): MockJobLocation[] {
+  const offsets = [
+    { dLat: 0.004, dLng: -0.002 },
+    { dLat: -0.006, dLng: 0.005 },
+    { dLat: 0.010, dLng: 0.008 },
+    { dLat: -0.013, dLng: -0.010 },
+    { dLat: 0.018, dLng: 0.015 },
+    { dLat: -0.022, dLng: -0.018 },
+    { dLat: 0.035, dLng: 0.025 },
+    { dLat: -0.045, dLng: -0.035 },
+    { dLat: 0.060, dLng: 0.050 },
+    { dLat: -0.080, dLng: -0.060 },
+  ];
+  return MOCK_JOBS.map((job, i) => ({
+    ...job,
+    lat: centerLat + (offsets[i]?.dLat ?? 0),
+    lng: centerLng + (offsets[i]?.dLng ?? 0),
+    distance: ['0.3 mi', '0.5 mi', '0.9 mi', '1.4 mi', '1.8 mi', '2.5 mi', '3.8 mi', '5.1 mi', '7.2 mi', '9.8 mi'][i] ?? job.distance,
+  }));
+}
 import { colors, spacing, borderRadius, shadows, typography } from '@/lib/theme';
 import Logo from '@/components/brand/Logo';
 import { scheduleLocalNotification } from '@/lib/notifications';
@@ -47,6 +68,7 @@ export default function ProMapScreen() {
   } | undefined>(undefined);
   const [locationDenied, setLocationDenied] = useState(false);
   const [onboardingComplete, setOnboardingComplete] = useState(true);
+  const [nearbyJobs, setNearbyJobs] = useState(MOCK_JOBS);
 
   useEffect(() => {
     SecureStore.getItemAsync('sherpa_onboarding_complete').then((val) => {
@@ -63,6 +85,7 @@ export default function ProMapScreen() {
           latitudeDelta: 0.15,
           longitudeDelta: 0.15,
         });
+        setNearbyJobs(generateNearbyJobs(loc.lat, loc.lng));
       } else {
         setLocationDenied(true);
       }
@@ -118,7 +141,7 @@ export default function ProMapScreen() {
           strokeColor="rgba(0, 169, 224, 0.2)"
           strokeWidth={1}
         />
-        {MOCK_JOBS.map((job) => (
+        {nearbyJobs.map((job) => (
           <JobMarker
             key={job.id}
             job={job}
@@ -162,7 +185,7 @@ export default function ProMapScreen() {
 
       <JobSheet
         ref={sheetRef}
-        jobs={MOCK_JOBS}
+        jobs={nearbyJobs}
         selectedId={selectedJobId}
         onJobSelect={(job) => { setSelectedJobId(job.id); sheetRef.current?.snapTo('half'); }}
       />

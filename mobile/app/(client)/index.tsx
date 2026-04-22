@@ -9,11 +9,35 @@ import { Circle } from 'react-native-maps';
 import ProMarker from '@/components/maps/ProMarker';
 import ProSheet from '@/components/sheets/ProSheet';
 import type { SimpleBottomSheetRef } from '@/components/sheets/SimpleBottomSheet';
-import { MOCK_PROS, SERVICE_AREA } from '@/lib/types';
+import { MOCK_PROS, SERVICE_AREA, type MockProLocation } from '@/lib/types';
 import { getCurrentLocation } from '@/lib/location';
 import { colors, spacing, borderRadius, shadows, typography } from '@/lib/theme';
 import Logo from '@/components/brand/Logo';
 import { scheduleLocalNotification } from '@/lib/notifications';
+
+// Generate pros near a given location by offsetting from that center
+function generateNearbyPros(centerLat: number, centerLng: number): MockProLocation[] {
+  const offsets = [
+    { dLat: 0.005, dLng: -0.003 }, // 0.3 mi
+    { dLat: -0.008, dLng: 0.006 },  // 0.8 mi
+    { dLat: 0.012, dLng: 0.010 },   // 1.2 mi
+    { dLat: -0.015, dLng: -0.012 }, // 1.5 mi
+    { dLat: 0.020, dLng: 0.018 },   // 2.1 mi
+    { dLat: -0.025, dLng: -0.020 }, // 2.8 mi
+    { dLat: 0.030, dLng: -0.025 },  // 3.4 mi
+    { dLat: -0.035, dLng: 0.030 },  // 3.9 mi
+    { dLat: 0.045, dLng: 0.040 },   // 5.2 mi
+    { dLat: -0.060, dLng: -0.050 }, // 7.1 mi
+    { dLat: 0.080, dLng: 0.060 },   // 9.0 mi
+    { dLat: -0.100, dLng: -0.080 }, // 12.5 mi
+  ];
+  return MOCK_PROS.map((pro, i) => ({
+    ...pro,
+    lat: centerLat + (offsets[i]?.dLat ?? 0),
+    lng: centerLng + (offsets[i]?.dLng ?? 0),
+    distance: ['0.3 mi', '0.8 mi', '1.2 mi', '1.5 mi', '2.1 mi', '2.8 mi', '3.4 mi', '3.9 mi', '5.2 mi', '7.1 mi', '9.0 mi', '12.5 mi'][i] ?? pro.distance,
+  }));
+}
 
 function NotificationBell() {
   const router = useRouter();
@@ -42,6 +66,7 @@ export default function ClientMapScreen() {
     longitudeDelta: number;
   } | undefined>(undefined);
   const [locationDenied, setLocationDenied] = useState(false);
+  const [nearbyPros, setNearbyPros] = useState(MOCK_PROS);
 
   useEffect(() => {
     getCurrentLocation().then((loc) => {
@@ -52,6 +77,7 @@ export default function ClientMapScreen() {
           latitudeDelta: 0.15,
           longitudeDelta: 0.15,
         });
+        setNearbyPros(generateNearbyPros(loc.lat, loc.lng));
       } else {
         setLocationDenied(true);
       }
@@ -87,7 +113,7 @@ export default function ClientMapScreen() {
           strokeColor="rgba(0, 169, 224, 0.2)"
           strokeWidth={1}
         />
-        {MOCK_PROS.map((pro) => (
+        {nearbyPros.map((pro) => (
           <ProMarker
             key={pro.id}
             pro={pro}
@@ -117,7 +143,7 @@ export default function ClientMapScreen() {
 
       <ProSheet
         ref={sheetRef}
-        pros={MOCK_PROS}
+        pros={nearbyPros}
         selectedId={selectedProId}
         onProSelect={(pro) => { setSelectedProId(pro.id); sheetRef.current?.snapTo('half'); }}
       />

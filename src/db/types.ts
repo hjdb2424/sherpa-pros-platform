@@ -7,7 +7,7 @@
 // Enums
 // ---------------------------------------------------------------------------
 
-export type UserRole = "pro" | "client";
+export type UserRole = "pro" | "client" | "pm" | "tenant";
 
 export type OnboardingStatus =
   | "draft"
@@ -67,6 +67,55 @@ export type ConversationStatus = "active" | "closed";
 export type StrikeSeverity = "warning" | "minor" | "major" | "critical";
 
 export type ChecklistType = "onboarding" | "offboarding";
+
+// ---------------------------------------------------------------------------
+// PM (Property Management) Enums
+// ---------------------------------------------------------------------------
+
+export type PropertyType =
+  | "multi_family"
+  | "commercial"
+  | "mixed_use"
+  | "hoa"
+  | "vacation_rental"
+  | "senior_living";
+
+export type UnitStatus = "occupied" | "vacant" | "make_ready" | "offline";
+
+export type WorkOrderPriority = "routine" | "urgent" | "emergency";
+
+export type WorkOrderStatus =
+  | "new"
+  | "approved"
+  | "dispatched"
+  | "in_progress"
+  | "completed"
+  | "invoiced"
+  | "closed";
+
+export type ExpenseType = "opex" | "capex";
+
+export type WorkOrderSubmitter = "tenant" | "pm" | "auto";
+
+export type MaintenanceFrequency = "monthly" | "quarterly" | "semi_annual" | "annual";
+
+export type MakeReadyStatus =
+  | "pending"
+  | "in_progress"
+  | "punch_list"
+  | "final_inspection"
+  | "ready"
+  | "listed";
+
+export type ComplianceItemType =
+  | "fire_extinguisher"
+  | "boiler_inspection"
+  | "lead_paint"
+  | "elevator"
+  | "backflow"
+  | "fire_alarm";
+
+export type ComplianceStatus = "current" | "due_soon" | "overdue" | "completed";
 
 // ---------------------------------------------------------------------------
 // Row types — what you get back from SELECT *
@@ -399,5 +448,159 @@ export type MessageInsert = Omit<Message, "id" | "created_at">;
 
 export type JobChecklistInsert = Omit<
   JobChecklist,
+  "id" | "created_at" | "updated_at"
+>;
+
+// ---------------------------------------------------------------------------
+// PM Row Types
+// ---------------------------------------------------------------------------
+
+export interface Property {
+  id: string;
+  pm_user_id: string;
+  name: string;
+  address: string | null;
+  city: string | null;
+  state: string | null;
+  zip: string | null;
+  property_type: PropertyType;
+  unit_count: number;
+  total_sqft: number | null;
+  year_built: number | null;
+  monthly_budget_cents: number | null;
+  reserve_fund_cents: number | null;
+  location: unknown;
+  created_at: Date;
+  updated_at: Date;
+}
+
+export interface Unit {
+  id: string;
+  property_id: string;
+  unit_number: string;
+  sqft: number | null;
+  bedrooms: number | null;
+  bathrooms: number | null;
+  status: UnitStatus;
+  tenant_user_id: string | null;
+  monthly_rent_cents: number | null;
+  lease_start: Date | null;
+  lease_end: Date | null;
+  created_at: Date;
+  updated_at: Date;
+}
+
+export interface WorkOrder {
+  id: string;
+  property_id: string;
+  unit_id: string | null;
+  pm_user_id: string;
+  tenant_user_id: string | null;
+  assigned_pro_id: string | null;
+  title: string;
+  description: string | null;
+  category: string | null;
+  priority: WorkOrderPriority;
+  status: WorkOrderStatus;
+  sla_hours: number | null;
+  budget_cents: number | null;
+  actual_cost_cents: number | null;
+  expense_type: ExpenseType | null;
+  po_number: string | null;
+  submitted_by: WorkOrderSubmitter;
+  photos: unknown[];
+  created_at: Date;
+  dispatched_at: Date | null;
+  completed_at: Date | null;
+  updated_at: Date;
+}
+
+export interface PreferredVendor {
+  id: string;
+  pm_user_id: string;
+  pro_id: string;
+  trade_category: string;
+  negotiated_rate_cents: number | null;
+  priority_rank: number;
+  insurance_verified: boolean;
+  insurance_expiry: Date | null;
+  notes: string | null;
+  created_at: Date;
+  updated_at: Date;
+}
+
+export interface MaintenanceSchedule {
+  id: string;
+  property_id: string;
+  unit_id: string | null;
+  title: string;
+  description: string | null;
+  category: string | null;
+  frequency: MaintenanceFrequency;
+  next_due: Date;
+  last_completed: Date | null;
+  estimated_cost_cents: number | null;
+  preferred_vendor_id: string | null;
+  auto_dispatch: boolean;
+  created_at: Date;
+  updated_at: Date;
+}
+
+export interface MakeReady {
+  id: string;
+  unit_id: string;
+  property_id: string;
+  vacate_date: Date;
+  target_ready_date: Date;
+  actual_ready_date: Date | null;
+  status: MakeReadyStatus;
+  punch_list: Array<{ item: string; status: string }>;
+  total_cost_cents: number | null;
+  work_order_ids: string[];
+  created_at: Date;
+  updated_at: Date;
+}
+
+export interface ComplianceItem {
+  id: string;
+  property_id: string;
+  item_type: ComplianceItemType;
+  description: string | null;
+  due_date: Date;
+  completed_date: Date | null;
+  status: ComplianceStatus;
+  certificate_url: string | null;
+  notes: string | null;
+  created_at: Date;
+  updated_at: Date;
+}
+
+// ---------------------------------------------------------------------------
+// PM Insert Types
+// ---------------------------------------------------------------------------
+
+export type PropertyInsert = Omit<Property, "id" | "created_at" | "updated_at">;
+
+export type UnitInsert = Omit<Unit, "id" | "created_at" | "updated_at">;
+
+export type WorkOrderInsert = Omit<
+  WorkOrder,
+  "id" | "created_at" | "updated_at" | "dispatched_at" | "completed_at"
+>;
+
+export type PreferredVendorInsert = Omit<
+  PreferredVendor,
+  "id" | "created_at" | "updated_at"
+>;
+
+export type MaintenanceScheduleInsert = Omit<
+  MaintenanceSchedule,
+  "id" | "created_at" | "updated_at"
+>;
+
+export type MakeReadyInsert = Omit<MakeReady, "id" | "created_at" | "updated_at">;
+
+export type ComplianceItemInsert = Omit<
+  ComplianceItem,
   "id" | "created_at" | "updated_at"
 >;

@@ -8,6 +8,7 @@ import {
   calculateQuoteTotals,
   recalcLineItem,
 } from '@/lib/services/quote-builder';
+import { validateQuote, getConfidenceLevel } from '@/lib/services/wiseman-validator';
 import QuotePreview from './QuotePreview';
 
 // ---------------------------------------------------------------------------
@@ -264,6 +265,17 @@ export default function QuoteBuilder({ jobId, jobTitle, onSend }: QuoteBuilderPr
     return { marginCents, marginPct };
   }, [quote]);
 
+  // Wiseman confidence validation
+  const quoteValidation = useMemo(() => {
+    if (!quote) return null;
+    return validateQuote(
+      quote.lineItems.map((item) => ({
+        description: item.description,
+        category: item.category,
+      })),
+    );
+  }, [quote]);
+
   // Group line items by category
   const groupedItems = useMemo(() => {
     if (!quote) return {};
@@ -346,6 +358,47 @@ export default function QuoteBuilder({ jobId, jobTitle, onSend }: QuoteBuilderPr
           </button>
         </div>
       </div>
+
+      {/* Wiseman Confidence Banner */}
+      {quoteValidation && (
+        <div
+          className={`flex items-center gap-3 rounded-xl border px-4 py-3 ${
+            quoteValidation.overallConfidence >= 95
+              ? 'border-emerald-200 bg-emerald-50 dark:border-emerald-800 dark:bg-emerald-900/20'
+              : quoteValidation.overallConfidence >= 90
+                ? 'border-amber-200 bg-amber-50 dark:border-amber-800 dark:bg-amber-900/20'
+                : 'border-red-200 bg-red-50 dark:border-red-800 dark:bg-red-900/20'
+          }`}
+        >
+          <span
+            className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white ${
+              quoteValidation.overallConfidence >= 95
+                ? 'bg-emerald-500'
+                : quoteValidation.overallConfidence >= 90
+                  ? 'bg-amber-500'
+                  : 'bg-red-500'
+            }`}
+          >
+            {quoteValidation.overallConfidence}%
+          </span>
+          <div className="min-w-0 flex-1">
+            <p
+              className={`text-sm font-semibold ${
+                quoteValidation.overallConfidence >= 95
+                  ? 'text-emerald-800 dark:text-emerald-300'
+                  : quoteValidation.overallConfidence >= 90
+                    ? 'text-amber-800 dark:text-amber-300'
+                    : 'text-red-800 dark:text-red-300'
+              }`}
+            >
+              Quote Confidence: {quoteValidation.overallConfidence}%
+            </p>
+            <p className="text-xs text-zinc-500 dark:text-zinc-400">
+              {quoteValidation.summary}
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* Margin Controls */}
       <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
@@ -448,14 +501,23 @@ export default function QuoteBuilder({ jobId, jobTitle, onSend }: QuoteBuilderPr
 
             {/* Line Items */}
             <div className="divide-y divide-zinc-50 dark:divide-zinc-800">
-              {items.map((item) => (
-                <LineItemRow
-                  key={item.id}
-                  item={item}
-                  onUpdate={updateLineItem}
-                  onRemove={removeLineItem}
-                />
-              ))}
+              {items.map((item, idx) => {
+                const validation = quoteValidation?.itemValidations[
+                  quote.lineItems.indexOf(item)
+                ];
+                const conf = validation
+                  ? getConfidenceLevel(validation.confidence)
+                  : undefined;
+                return (
+                  <LineItemRow
+                    key={item.id}
+                    item={item}
+                    onUpdate={updateLineItem}
+                    onRemove={removeLineItem}
+                    confidenceLevel={conf}
+                  />
+                );
+              })}
             </div>
           </div>
         );
@@ -675,12 +737,13 @@ function LineItemRow({
   item,
   onUpdate,
   onRemove,
+  confidenceLevel,
 }: {
   item: QuoteLineItem;
   onUpdate: (id: string, changes: Partial<QuoteLineItem>) => void;
   onRemove: (id: string) => void;
+  confidenceLevel?: { label: string; colorClass: string; bgClass: string };
 }) {
-  const costDiff = item.wisemanSuggested && item.proAdjusted;
   // We don't have original cost stored, so approximate market rate warning:
   // If markup > 50%, warn
   const highMarkup = item.markupPct > 50;
@@ -764,6 +827,11 @@ function LineItemRow({
             Markup significantly above typical range
           </p>
         )}
+        {confidenceLevel && (
+          <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-semibold ${confidenceLevel.bgClass} ${confidenceLevel.colorClass}`}>
+            {confidenceLevel.label}
+          </span>
+        )}
       </div>
 
       {/* Desktop layout */}
@@ -787,6 +855,11 @@ function LineItemRow({
             placeholder="Item description"
             aria-label="Line item description"
           />
+          {confidenceLevel && (
+            <span className={`ml-1 inline-flex shrink-0 items-center rounded-full px-1.5 py-0.5 text-[9px] font-semibold ${confidenceLevel.bgClass} ${confidenceLevel.colorClass}`}>
+              {confidenceLevel.label}
+            </span>
+          )}
         </div>
         <div className="col-span-1">
           <input

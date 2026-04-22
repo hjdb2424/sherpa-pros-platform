@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import { JOB_CATEGORIES, type JobCategory } from '@/lib/mock-data/client-data';
+import { getCategoryConfidence, getCategoryWisemanSource } from '@/lib/config/service-catalog';
 
 interface CategoryGridProps {
   selected: string | null;
@@ -83,10 +84,34 @@ export function CategoryGrid({ selected, onSelect }: CategoryGridProps) {
               <span className="text-[11px] leading-tight text-zinc-400">
                 {category.description}
               </span>
+              <WisemanBadge categoryId={category.id} />
             </button>
           );
         })}
       </div>
     </div>
+  );
+}
+
+function WisemanBadge({ categoryId }: { categoryId: string }) {
+  const confidence = getCategoryConfidence(categoryId);
+  const source = getCategoryWisemanSource(categoryId);
+
+  if (confidence === 0) return null;
+
+  return (
+    <span
+      className="mt-1 inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-semibold text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400"
+      title={`Validated by ${source} with ${confidence}% confidence`}
+    >
+      <svg className="h-2.5 w-2.5" fill="currentColor" viewBox="0 0 20 20">
+        <path
+          fillRule="evenodd"
+          d="M16.403 12.652a3 3 0 010-5.304 3 3 0 00-1.257-1.257 3 3 0 01-5.304 0 3 3 0 00-1.257 1.257 3 3 0 010 5.304 3 3 0 001.257 1.257 3 3 0 015.304 0 3 3 0 001.257-1.257zM12.002 14a2 2 0 100-4 2 2 0 000 4z"
+          clipRule="evenodd"
+        />
+      </svg>
+      {confidence}% Verified
+    </span>
   );
 }

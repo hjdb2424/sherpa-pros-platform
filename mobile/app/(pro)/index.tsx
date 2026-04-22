@@ -38,6 +38,7 @@ import { colors, spacing, borderRadius, shadows, typography } from '@/lib/theme'
 import Logo from '@/components/brand/Logo';
 import { scheduleLocalNotification } from '@/lib/notifications';
 import DispatchModal from '@/components/pro/DispatchModal';
+import { AddPhotoSheet } from '@/components/portfolio';
 
 function NotificationBell() {
   const router = useRouter();
@@ -70,6 +71,7 @@ export default function ProMapScreen() {
   const [locationDenied, setLocationDenied] = useState(false);
   const [onboardingComplete, setOnboardingComplete] = useState(true);
   const [nearbyJobs, setNearbyJobs] = useState(MOCK_JOBS);
+  const [photoSheetVisible, setPhotoSheetVisible] = useState(false);
 
   useEffect(() => {
     SecureStore.getItemAsync('sherpa_onboarding_complete').then((val) => {
@@ -184,6 +186,30 @@ export default function ProMapScreen() {
         }}
       />
 
+      {/* Camera FAB for quick photo capture */}
+      <Pressable
+        style={styles.cameraFab}
+        onPress={() => {
+          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+          setPhotoSheetVisible(true);
+        }}
+      >
+        <Ionicons name="camera" size={22} color={colors.primary} />
+      </Pressable>
+
+      <AddPhotoSheet
+        visible={photoSheetVisible}
+        onClose={() => setPhotoSheetVisible(false)}
+        onPhotosSelected={(uris) => {
+          // On the map screen, photos go to portfolio silently
+          Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+          Alert.alert(
+            'Added to Portfolio',
+            `${uris.length} photo${uris.length !== 1 ? 's' : ''} added to your portfolio.`,
+          );
+        }}
+      />
+
       <JobSheet
         ref={sheetRef}
         jobs={nearbyJobs}
@@ -270,6 +296,21 @@ const styles = StyleSheet.create({
     ...typography.caption,
     color: colors.warning,
     fontWeight: '600',
+  },
+
+  // Camera FAB
+  cameraFab: {
+    position: 'absolute',
+    left: 16,
+    bottom: 180,
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    backgroundColor: '#ffffff',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 10,
+    ...shadows.md,
   },
 
   // Onboarding banner

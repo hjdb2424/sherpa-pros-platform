@@ -20,6 +20,7 @@ import { colors, spacing, borderRadius, shadows, typography } from '@/lib/theme'
 import Card from '@/components/common/Card';
 import Badge from '@/components/common/Badge';
 import Button from '@/components/common/Button';
+import { AddPhotoSheet } from '@/components/portfolio';
 import FinancingOptions from '@/components/pro/FinancingOptions';
 import TaggingSystem from '@/components/social/TaggingSystem';
 import type { Tag } from '@/components/social/TaggingSystem';
@@ -180,6 +181,7 @@ export default function ProJobDetailScreen() {
   const [newNoteText, setNewNoteText] = useState('');
   const [quoteSent, setQuoteSent] = useState(false);
   const [clientReview, setClientReview] = useState<Review>(CLIENT_REVIEW);
+  const [jobPhotoSheetVisible, setJobPhotoSheetVisible] = useState(false);
 
   const job = MOCK_JOB; // In production, fetch by `id`
 
@@ -527,25 +529,39 @@ export default function ProJobDetailScreen() {
     </ScrollView>
   );
 
-  // --- Photo picker ---
-  const handleAddPhoto = useCallback(async () => {
+  // --- Photo picker (opens AddPhotoSheet) ---
+  const handleAddPhoto = useCallback(() => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      quality: 0.8,
-    });
-    if (!result.canceled && result.assets.length > 0) {
-      const asset = result.assets[0];
-      const newPhoto: JobPhoto = {
-        id: `p-${Date.now()}`,
-        title: 'New photo',
-        uri: asset.uri,
-        phase: 'Finish',
-        date: 'Apr 15',
-      };
-      setPhotos((prev) => [newPhoto, ...prev]);
-      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-    }
+    setJobPhotoSheetVisible(true);
+  }, []);
+
+  const handleJobPhotosSelected = useCallback((uris: string[]) => {
+    // Add photos to the job
+    const newPhotos: JobPhoto[] = uris.map((uri, i) => ({
+      id: `p-${Date.now()}-${i}`,
+      title: 'New photo',
+      uri,
+      phase: 'Finish',
+      date: 'Apr 15',
+    }));
+    setPhotos((prev) => [...newPhotos, ...prev]);
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+
+    // Ask if they want to add to portfolio too
+    Alert.alert(
+      'Add to Portfolio?',
+      'Would you like to showcase these photos in your portfolio too?',
+      [
+        { text: 'Just Job', style: 'cancel' },
+        {
+          text: 'Add to Portfolio',
+          onPress: () => {
+            Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+            Alert.alert('Added', `${uris.length} photo${uris.length !== 1 ? 's' : ''} added to your portfolio.`);
+          },
+        },
+      ],
+    );
   }, []);
 
   // --- Add note handler ---
@@ -709,6 +725,13 @@ export default function ProJobDetailScreen() {
           )}
         </View>
       </Modal>
+
+      {/* Add Photo Sheet */}
+      <AddPhotoSheet
+        visible={jobPhotoSheetVisible}
+        onClose={() => setJobPhotoSheetVisible(false)}
+        onPhotosSelected={handleJobPhotosSelected}
+      />
 
       {/* Add Note Modal */}
       <Modal visible={showNoteInput} animationType="slide" transparent>

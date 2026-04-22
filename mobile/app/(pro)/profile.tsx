@@ -25,6 +25,8 @@ import {
   PortfolioGrid,
   ProjectHighlights,
   PhotoFilter,
+  AddPhotoSheet,
+  BatchPhotoPreview,
   MOCK_PORTFOLIO,
 } from '@/components/portfolio';
 import type { PortfolioItem } from '@/components/portfolio';
@@ -189,6 +191,10 @@ export default function ProProfileScreen() {
   const [filterVisible, setFilterVisible] = useState(false);
   const [pendingImageUri, setPendingImageUri] = useState<string | null>(null);
   const [bioExpanded, setBioExpanded] = useState(false);
+  const [photoSheetVisible, setPhotoSheetVisible] = useState(false);
+  const [batchUris, setBatchUris] = useState<string[]>([]);
+  const [batchVisible, setBatchVisible] = useState(false);
+  const [newItemIds, setNewItemIds] = useState<Set<string>>(new Set());
   const isOwnProfile = true; // viewing own profile
 
   useEffect(() => {
@@ -197,30 +203,55 @@ export default function ProProfileScreen() {
     });
   }, []);
 
-  const handleAddToPortfolio = useCallback(async () => {
+  const handleAddToPortfolio = useCallback(() => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-    const permResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (!permResult.granted) {
-      Alert.alert('Permission needed', 'Allow photo access to add portfolio images.');
-      return;
-    }
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ['images'],
-      quality: 0.9,
-      allowsEditing: true,
-      aspect: [1, 1],
-    });
-    if (!result.canceled && result.assets[0]) {
-      setPendingImageUri(result.assets[0].uri);
+    setPhotoSheetVisible(true);
+  }, []);
+
+  const handlePhotosSelected = useCallback((uris: string[]) => {
+    if (uris.length === 1) {
+      // Single photo -> go straight to filter
+      setPendingImageUri(uris[0]);
       setFilterVisible(true);
+    } else if (uris.length > 1) {
+      // Multiple photos -> batch preview
+      setBatchUris(uris);
+      setBatchVisible(true);
     }
+  }, []);
+
+  const handleBatchApplyFilter = useCallback((uri: string) => {
+    setBatchVisible(false);
+    setPendingImageUri(uri);
+    setFilterVisible(true);
+  }, []);
+
+  const handleBatchUpload = useCallback((uris: string[]) => {
+    setBatchVisible(false);
+    const newIds = new Set<string>();
+    const newItems: PortfolioItem[] = uris.map((uri, i) => {
+      const id = `p${Date.now()}-${i}`;
+      newIds.add(id);
+      return {
+        id,
+        imageUri: uri,
+        title: `New Photo ${i + 1}`,
+        category: 'kitchen' as const,
+        likes: 0,
+        date: 'Just now',
+      };
+    });
+    setPortfolio((prev) => [...newItems, ...prev]);
+    setNewItemIds((prev) => new Set([...prev, ...newIds]));
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
   }, []);
 
   const handleFilterApply = useCallback(
     (filteredUri: string, filterName: string) => {
       setFilterVisible(false);
+      const id = `p${Date.now()}`;
       const newItem: PortfolioItem = {
-        id: `p${Date.now()}`,
+        id,
         imageUri: filteredUri,
         title: `New Project (${filterName})`,
         category: 'kitchen',
@@ -228,10 +259,33 @@ export default function ProProfileScreen() {
         date: 'Just now',
       };
       setPortfolio((prev) => [newItem, ...prev]);
+      setNewItemIds((prev) => new Set([...prev, id]));
       setPendingImageUri(null);
+
+      // If there are remaining batch URIs, apply same filter to all
+      if (batchUris.length > 1) {
+        const remaining = batchUris.slice(1);
+        const newIds = new Set<string>();
+        const batchItems: PortfolioItem[] = remaining.map((uri, i) => {
+          const batchId = `p${Date.now()}-b${i}`;
+          newIds.add(batchId);
+          return {
+            id: batchId,
+            imageUri: uri,
+            title: `New Project (${filterName})`,
+            category: 'kitchen' as const,
+            likes: 0,
+            date: 'Just now',
+          };
+        });
+        setPortfolio((prev) => [...batchItems, ...prev]);
+        setNewItemIds((prev) => new Set([...prev, ...newIds]));
+        setBatchUris([]);
+      }
+
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     },
-    [],
+    [batchUris],
   );
 
   const handleSwitchRole = useCallback(async () => {
@@ -452,8 +506,31 @@ export default function ProProfileScreen() {
               </Pressable>
             </View>
           </View>
-          <PortfolioGrid items={portfolio} />
+
+          {/* Prominent Add Photos CTA */}
+          <Pressable style={s.addPhotosCta} onPress={handleAddToPortfolio}>
+            <Ionicons name="camera-outline" size={20} color={colors.primary} />
+            <Text style={s.addPhotosCtaText}>Add Photos or Videos</Text>
+          </Pressable>
+
+          <PortfolioGrid items={portfolio} newItemIds={newItemIds} />
         </View>
+
+        {/* Photo Sheet (action sheet with camera/gallery/etc) */}
+        <AddPhotoSheet
+          visible={photoSheetVisible}
+          onClose={() => setPhotoSheetVisible(false)}
+          onPhotosSelected={handlePhotosSelected}
+        />
+
+        {/* Batch Photo Preview */}
+        <BatchPhotoPreview
+          visible={batchVisible}
+          uris={batchUris}
+          onClose={() => setBatchVisible(false)}
+          onApplyFilter={handleBatchApplyFilter}
+          onUpload={handleBatchUpload}
+        />
 
         {/* Photo Filter Modal */}
         {pendingImageUri && (
@@ -463,6 +540,7 @@ export default function ProProfileScreen() {
             onClose={() => {
               setFilterVisible(false);
               setPendingImageUri(null);
+              setBatchUris([]);
             }}
             onApply={handleFilterApply}
           />
@@ -955,6 +1033,24 @@ const s = StyleSheet.create({
   },
   addPhotoText: {
     fontSize: 13,
+    fontWeight: '600',
+    color: colors.primary,
+  },
+  addPhotosCta: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: spacing.sm,
+    paddingVertical: spacing.md,
+    borderRadius: borderRadius.full,
+    borderWidth: 1.5,
+    borderColor: colors.primary,
+    borderStyle: 'dashed',
+    marginBottom: spacing.lg,
+    backgroundColor: colors.primaryLight,
+  },
+  addPhotosCtaText: {
+    fontSize: 15,
     fontWeight: '600',
     color: colors.primary,
   },

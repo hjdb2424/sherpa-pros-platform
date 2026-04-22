@@ -24,6 +24,7 @@ const PORTFOLIO_TAGS: Record<string, { taggedBy: string; role: 'client' | 'pro';
 
 interface PortfolioGridProps {
   items: PortfolioItem[];
+  newItemIds?: Set<string>;
 }
 
 const GAP = 2;
@@ -31,7 +32,7 @@ const NUM_COLUMNS = 3;
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const CELL_SIZE = (SCREEN_WIDTH - spacing.lg * 2 - GAP * (NUM_COLUMNS - 1)) / NUM_COLUMNS;
 
-export default function PortfolioGrid({ items }: PortfolioGridProps) {
+export default function PortfolioGrid({ items, newItemIds }: PortfolioGridProps) {
   const [selectedItem, setSelectedItem] = useState<PortfolioItem | null>(null);
   const [viewerVisible, setViewerVisible] = useState(false);
   const [likedIds, setLikedIds] = useState<Set<string>>(new Set());
@@ -97,10 +98,17 @@ export default function PortfolioGrid({ items }: PortfolioGridProps) {
               description={PORTFOLIO_TAGS[item.id].description}
             />
           )}
+
+          {/* NEW badge for recently added photos */}
+          {newItemIds?.has(item.id) && (
+            <View style={styles.newBadge}>
+              <Text style={styles.newBadgeText}>NEW</Text>
+            </View>
+          )}
         </Pressable>
       );
     },
-    [handlePress]
+    [handlePress, newItemIds]
   );
 
   const keyExtractor = useCallback((item: PortfolioItem) => item.id, []);
@@ -175,6 +183,21 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary,
   },
   baBadgeText: {
+    fontSize: 8,
+    fontWeight: '800',
+    color: '#ffffff',
+    letterSpacing: 0.5,
+  },
+  newBadge: {
+    position: 'absolute',
+    top: 4,
+    right: 4,
+    paddingHorizontal: 5,
+    paddingVertical: 2,
+    borderRadius: 4,
+    backgroundColor: colors.success,
+  },
+  newBadgeText: {
     fontSize: 8,
     fontWeight: '800',
     color: '#ffffff',

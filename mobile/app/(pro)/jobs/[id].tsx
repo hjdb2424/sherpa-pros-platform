@@ -197,24 +197,26 @@ export default function ProJobDetailScreen() {
     );
   }, []);
 
+  const [hdPricingVisible, setHdPricingVisible] = useState(false);
+
   const handleCamera = useCallback(() => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    Alert.alert('Camera', 'Photo capture coming soon');
+    setJobPhotoSheetVisible(true);
   }, []);
 
   const handleMessage = useCallback(() => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    Alert.alert('Message', 'Messaging client coming soon');
-  }, []);
+    router.push('/(pro)/chat');
+  }, [router]);
 
   const handleUploadPhoto = useCallback(() => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    Alert.alert('Upload', 'Photo upload coming soon');
+    setJobPhotoSheetVisible(true);
   }, []);
 
   const handleGetPricing = useCallback(() => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-    Alert.alert('HD Pricing', 'Pricing integration coming soon');
+    setHdPricingVisible(true);
   }, []);
 
   const handleSendToClient = useCallback(() => {
@@ -732,6 +734,44 @@ export default function ProJobDetailScreen() {
         onClose={() => setJobPhotoSheetVisible(false)}
         onPhotosSelected={handleJobPhotosSelected}
       />
+
+      {/* HD Pricing Modal */}
+      <Modal visible={hdPricingVisible} animationType="slide" transparent>
+        <View style={styles.noteModal}>
+          <View style={[styles.noteModalContent, { paddingBottom: insets.bottom + spacing.lg }]}>
+            <View style={styles.noteModalHeader}>
+              <Text style={styles.noteModalTitle}>HD Pricing</Text>
+              <Pressable onPress={() => setHdPricingVisible(false)}>
+                <Ionicons name="close" size={24} color={colors.text} />
+              </Pressable>
+            </View>
+            <View style={styles.matHeaderRow}>
+              <Text style={[styles.matHeaderText, { flex: 1 }]}>Material</Text>
+              <Text style={[styles.matHeaderText, { width: 50, textAlign: 'right' }]}>Qty</Text>
+              <Text style={[styles.matHeaderText, { width: 60, textAlign: 'right' }]}>Unit</Text>
+              <Text style={[styles.matHeaderText, { width: 60, textAlign: 'right' }]}>Total</Text>
+            </View>
+            {job.materials.map((mat) => {
+              const hdUnit = HD_PRICES[mat.id] ?? 0;
+              const total = hdUnit * mat.quantity;
+              return (
+                <View key={mat.id} style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: spacing.sm, borderBottomWidth: 1, borderBottomColor: colors.borderLight }}>
+                  <Text style={{ ...typography.bodySmall, color: colors.text, flex: 1 }} numberOfLines={1}>{mat.name}</Text>
+                  <Text style={{ ...typography.caption, color: colors.textMuted, width: 50, textAlign: 'right' }}>{mat.quantity}</Text>
+                  <Text style={{ ...typography.caption, color: colors.textSecondary, width: 60, textAlign: 'right' }}>${hdUnit.toFixed(2)}</Text>
+                  <Text style={{ ...typography.bodySmall, fontWeight: '600', color: colors.text, width: 60, textAlign: 'right' }}>${total.toFixed(0)}</Text>
+                </View>
+              );
+            })}
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: spacing.lg, paddingTop: spacing.md, borderTopWidth: 2, borderTopColor: colors.borderMedium }}>
+              <Text style={{ ...typography.subheading, color: colors.text }}>HD Total</Text>
+              <Text style={{ ...typography.subheading, color: colors.primary }}>
+                ${job.materials.reduce((sum, m) => sum + (HD_PRICES[m.id] ?? 0) * m.quantity, 0).toFixed(0)}
+              </Text>
+            </View>
+          </View>
+        </View>
+      </Modal>
 
       {/* Add Note Modal */}
       <Modal visible={showNoteInput} animationType="slide" transparent>

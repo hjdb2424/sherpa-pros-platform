@@ -191,8 +191,8 @@ export default function ClientJobDetailScreen() {
 
   const handleMessage = useCallback(() => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    Alert.alert('Message', 'Messaging pro coming soon');
-  }, []);
+    router.push('/(client)/chat');
+  }, [router]);
 
   const handleStartMaterialsFlow = useCallback(() => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);

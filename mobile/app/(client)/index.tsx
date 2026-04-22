@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { View, Text, Pressable, StyleSheet, Alert } from 'react-native';
+import { View, Text, Pressable, StyleSheet, Alert, Modal, TextInput, FlatList } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import * as Haptics from 'expo-haptics';
@@ -60,6 +60,8 @@ function NotificationBell() {
 export default function ClientMapScreen() {
   const insets = useSafeAreaInsets();
   const [selectedProId, setSelectedProId] = useState<string | null>(null);
+  const [searchVisible, setSearchVisible] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const sheetRef = useRef<SimpleBottomSheetRef>(null);
   const [userRegion, setUserRegion] = useState<{
     latitude: number;
@@ -131,7 +133,7 @@ export default function ClientMapScreen() {
         </View>
         <Pressable
           style={styles.searchBar}
-          onPress={() => Alert.alert('Search coming soon')}
+          onPress={() => { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); setSearchVisible(true); setSearchQuery(''); }}
         >
           <Ionicons name="search-outline" size={18} color={colors.textMuted} />
           <Text style={styles.searchPlaceholder}>Search for a pro or service...</Text>
@@ -149,6 +151,70 @@ export default function ClientMapScreen() {
         selectedId={selectedProId}
         onProSelect={(pro) => { setSelectedProId(pro.id); sheetRef.current?.snapTo('half'); }}
       />
+
+      {/* Search Modal */}
+      <Modal visible={searchVisible} animationType="slide" presentationStyle="fullScreen">
+        <View style={[styles.searchModal, { paddingTop: insets.top }]}>
+          <View style={styles.searchModalHeader}>
+            <View style={styles.searchModalInputRow}>
+              <Ionicons name="search-outline" size={18} color={colors.textMuted} />
+              <TextInput
+                style={styles.searchModalInput}
+                placeholder="Search pros or services..."
+                placeholderTextColor={colors.textMuted}
+                value={searchQuery}
+                onChangeText={setSearchQuery}
+                autoFocus
+                returnKeyType="search"
+              />
+            </View>
+            <Pressable
+              onPress={() => { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); setSearchVisible(false); }}
+              hitSlop={12}
+            >
+              <Text style={styles.searchCancelText}>Cancel</Text>
+            </Pressable>
+          </View>
+          <FlatList
+            data={nearbyPros.filter((p) => {
+              if (!searchQuery.trim()) return true;
+              const q = searchQuery.toLowerCase();
+              return p.name.toLowerCase().includes(q) || p.trade.toLowerCase().includes(q);
+            })}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+              <Pressable
+                style={styles.searchResultCard}
+                onPress={() => {
+                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+                  setSearchVisible(false);
+                  setSelectedProId(item.id);
+                  sheetRef.current?.snapTo('half');
+                }}
+              >
+                <View style={styles.searchResultAvatar}>
+                  <Text style={styles.searchResultInitials}>{item.initials}</Text>
+                </View>
+                <View style={{ flex: 1 }}>
+                  <Text style={styles.searchResultName}>{item.name}</Text>
+                  <Text style={styles.searchResultTrade}>{item.trade} {'\u00B7'} {item.distance}</Text>
+                </View>
+                <View style={styles.searchResultRating}>
+                  <Ionicons name="star" size={12} color={colors.accent} />
+                  <Text style={styles.searchResultRatingText}>{item.rating}</Text>
+                </View>
+              </Pressable>
+            )}
+            contentContainerStyle={{ paddingHorizontal: spacing.lg, paddingTop: spacing.md }}
+            ListEmptyComponent={
+              <View style={{ alignItems: 'center', paddingTop: 60 }}>
+                <Ionicons name="search-outline" size={48} color={colors.borderMedium} />
+                <Text style={{ ...typography.bodySmall, color: colors.textMuted, marginTop: spacing.md }}>No pros found</Text>
+              </View>
+            }
+          />
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -229,5 +295,81 @@ const styles = StyleSheet.create({
     ...typography.caption,
     color: colors.warning,
     fontWeight: '600',
+  },
+
+  // Search Modal
+  searchModal: {
+    flex: 1,
+    backgroundColor: colors.background,
+  },
+  searchModalHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.md,
+    gap: spacing.md,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.borderLight,
+  },
+  searchModalInputRow: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+    backgroundColor: colors.surfaceSecondary,
+    borderRadius: borderRadius.full,
+    paddingHorizontal: spacing.md,
+    paddingVertical: 10,
+  },
+  searchModalInput: {
+    flex: 1,
+    fontSize: 15,
+    color: colors.text,
+  },
+  searchCancelText: {
+    fontSize: 15,
+    fontWeight: '600',
+    color: colors.primary,
+  },
+  searchResultCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: spacing.md,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.borderLight,
+    gap: spacing.md,
+  },
+  searchResultAvatar: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: colors.primaryLight,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  searchResultInitials: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: colors.primary,
+  },
+  searchResultName: {
+    fontSize: 15,
+    fontWeight: '600',
+    color: colors.text,
+  },
+  searchResultTrade: {
+    fontSize: 13,
+    color: colors.textMuted,
+    marginTop: 2,
+  },
+  searchResultRating: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 2,
+  },
+  searchResultRatingText: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: colors.text,
   },
 });

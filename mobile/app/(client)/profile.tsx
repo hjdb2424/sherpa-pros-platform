@@ -9,6 +9,9 @@ import {
   Image,
   Modal,
   Dimensions,
+  TextInput,
+  Switch,
+  Linking,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
@@ -58,10 +61,42 @@ const PREF_TRADES = ['Electrical', 'Plumbing', 'Painting', 'HVAC', 'Roofing'];
 export default function ClientProfileScreen() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
-  const { userName, signOut, switchRole } = useAuth();
+  const { userName, email, signOut, switchRole } = useAuth();
   const [galleryModal, setGalleryModal] = useState<string | null>(null);
   const [selectedGalleryPhoto, setSelectedGalleryPhoto] = useState<typeof GALLERY_PHOTOS[0] | null>(null);
   const [selectedPro, setSelectedPro] = useState<typeof FAVORITE_PROS[0] | null>(null);
+
+  // Edit Profile state
+  const [editProfileVisible, setEditProfileVisible] = useState(false);
+  const [editName, setEditName] = useState(userName ?? 'User');
+  const [editPhone, setEditPhone] = useState('(603) 555-0100');
+  const [editEmail, setEditEmail] = useState(email ?? 'user@example.com');
+
+  // Add Property state
+  const [addPropertyVisible, setAddPropertyVisible] = useState(false);
+  const [newPropAddress, setNewPropAddress] = useState('');
+  const [newPropCity, setNewPropCity] = useState('');
+  const [newPropState, setNewPropState] = useState('NH');
+  const [newPropZip, setNewPropZip] = useState('');
+  const [newPropType, setNewPropType] = useState('Single Family');
+  const [localProperties, setLocalProperties] = useState(PROPERTIES);
+
+  // Settings expand states
+  const [expandedSetting, setExpandedSetting] = useState<string | null>(null);
+  const [pushNotif, setPushNotif] = useState(true);
+  const [emailNotif, setEmailNotif] = useState(true);
+  const [smsNotif, setSmsNotif] = useState(false);
+  const [emergencyNotif, setEmergencyNotif] = useState(true);
+
+  // FAQ expand
+  const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
+
+  // Edit Review state
+  const [editReviewVisible, setEditReviewVisible] = useState(false);
+  const [editReviewId, setEditReviewId] = useState<string | null>(null);
+  const [editReviewText, setEditReviewText] = useState('');
+  const [editReviewRating, setEditReviewRating] = useState(5);
+  const [localReviews, setLocalReviews] = useState(REVIEWS_GIVEN);
 
   const initials = (userName ?? 'U')
     .split(' ')
@@ -113,7 +148,9 @@ export default function ClientProfileScreen() {
             style={styles.editProfileBtn}
             onPress={() => {
               Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-              Alert.alert('Coming soon');
+              setEditName(userName ?? 'User');
+              setEditEmail(email ?? 'user@example.com');
+              setEditProfileVisible(true);
             }}
           >
             <Ionicons name="pencil-outline" size={14} color={colors.primary} />
@@ -163,7 +200,7 @@ export default function ClientProfileScreen() {
         <View style={styles.section}>
           {renderSectionHeader('My Properties', 'home-outline')}
           <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.horizontalScroll}>
-            {PROPERTIES.map((p) => (
+            {localProperties.map((p) => (
               <Pressable
                 key={p.id}
                 style={styles.propertyCard}
@@ -201,7 +238,12 @@ export default function ClientProfileScreen() {
               style={styles.addPropertyCard}
               onPress={() => {
                 Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                Alert.alert('Coming soon');
+                setNewPropAddress('');
+                setNewPropCity('');
+                setNewPropState('NH');
+                setNewPropZip('');
+                setNewPropType('Single Family');
+                setAddPropertyVisible(true);
               }}
             >
               <Ionicons name="add-circle-outline" size={32} color={colors.primary} />
@@ -255,8 +297,19 @@ export default function ClientProfileScreen() {
         <View style={styles.section}>
           {renderSectionHeader('Reviews Given', 'chatbubble-ellipses-outline')}
           <View style={{ paddingHorizontal: spacing.lg }}>
-            {REVIEWS_GIVEN.map((review) => (
-              <ReviewCardComponent key={review.id} review={review} showResponse />
+            {localReviews.map((review) => (
+              <Pressable
+                key={review.id}
+                onLongPress={() => {
+                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+                  setEditReviewId(review.id);
+                  setEditReviewText(review.text);
+                  setEditReviewRating(review.rating);
+                  setEditReviewVisible(true);
+                }}
+              >
+                <ReviewCardComponent review={review} showResponse />
+              </Pressable>
             ))}
           </View>
         </View>
@@ -293,25 +346,135 @@ export default function ClientProfileScreen() {
         <View style={styles.section}>
           {renderSectionHeader('Settings', 'settings-outline')}
           <View style={styles.settingsCard}>
-            {([
-              { label: 'Notifications', icon: 'notifications-outline' as const, action: () => Alert.alert('Notifications', 'Notification settings coming soon') },
-              { label: 'Payment Methods', icon: 'card-outline' as const, action: () => Alert.alert('Payment Methods', 'Payment management coming soon') },
-              { label: 'Subscription', icon: 'ribbon-outline' as const, action: () => Alert.alert('Subscription', 'Subscription management coming soon') },
-              { label: 'Help & Support', icon: 'help-circle-outline' as const, action: () => Alert.alert('Help & Support', 'Help center coming soon') },
-            ]).map((item, idx, arr) => (
-              <Pressable
-                key={item.label}
-                style={[styles.settingsRow, idx < arr.length - 1 && styles.settingsRowBorder]}
-                onPress={() => {
-                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                  item.action();
-                }}
-              >
-                <Ionicons name={item.icon} size={20} color={colors.textMuted} style={{ marginRight: spacing.md }} />
-                <Text style={styles.settingsLabel}>{item.label}</Text>
-                <Ionicons name="chevron-forward" size={16} color={colors.textMuted} />
-              </Pressable>
-            ))}
+            {/* Notifications */}
+            <Pressable
+              style={[styles.settingsRow, styles.settingsRowBorder]}
+              onPress={() => {
+                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                setExpandedSetting(expandedSetting === 'notifications' ? null : 'notifications');
+              }}
+            >
+              <Ionicons name="notifications-outline" size={20} color={colors.textMuted} style={{ marginRight: spacing.md }} />
+              <Text style={styles.settingsLabel}>Notifications</Text>
+              <Ionicons name={expandedSetting === 'notifications' ? 'chevron-down' : 'chevron-forward'} size={16} color={colors.textMuted} />
+            </Pressable>
+            {expandedSetting === 'notifications' && (
+              <View style={styles.settingsExpanded}>
+                {[
+                  { label: 'Push Notifications', value: pushNotif, setter: setPushNotif },
+                  { label: 'Email Notifications', value: emailNotif, setter: setEmailNotif },
+                  { label: 'SMS Notifications', value: smsNotif, setter: setSmsNotif },
+                  { label: 'Emergency Alerts', value: emergencyNotif, setter: setEmergencyNotif },
+                ].map((item) => (
+                  <View key={item.label} style={styles.settingsToggleRow}>
+                    <Text style={styles.settingsToggleLabel}>{item.label}</Text>
+                    <Switch
+                      value={item.value}
+                      onValueChange={(v) => { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); item.setter(v); }}
+                      trackColor={{ false: colors.borderMedium, true: colors.primary }}
+                    />
+                  </View>
+                ))}
+              </View>
+            )}
+
+            {/* Payment Methods */}
+            <Pressable
+              style={[styles.settingsRow, styles.settingsRowBorder]}
+              onPress={() => {
+                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                setExpandedSetting(expandedSetting === 'payment' ? null : 'payment');
+              }}
+            >
+              <Ionicons name="card-outline" size={20} color={colors.textMuted} style={{ marginRight: spacing.md }} />
+              <Text style={styles.settingsLabel}>Payment Methods</Text>
+              <Ionicons name={expandedSetting === 'payment' ? 'chevron-down' : 'chevron-forward'} size={16} color={colors.textMuted} />
+            </Pressable>
+            {expandedSetting === 'payment' && (
+              <View style={styles.settingsExpanded}>
+                <View style={{ alignItems: 'center', paddingVertical: spacing.xl }}>
+                  <Ionicons name="card-outline" size={40} color={colors.borderMedium} />
+                  <Text style={{ ...typography.bodySmall, color: colors.textMuted, marginTop: spacing.md }}>No payment methods added</Text>
+                  <Pressable
+                    style={styles.settingsAddBtn}
+                    onPress={() => { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); Alert.alert('Add Card', 'Card entry will be available at launch.'); }}
+                  >
+                    <Ionicons name="add-circle-outline" size={16} color={colors.primary} />
+                    <Text style={styles.settingsAddBtnText}>Add Card</Text>
+                  </Pressable>
+                </View>
+              </View>
+            )}
+
+            {/* Subscription */}
+            <Pressable
+              style={[styles.settingsRow, styles.settingsRowBorder]}
+              onPress={() => {
+                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                setExpandedSetting(expandedSetting === 'subscription' ? null : 'subscription');
+              }}
+            >
+              <Ionicons name="ribbon-outline" size={20} color={colors.textMuted} style={{ marginRight: spacing.md }} />
+              <Text style={styles.settingsLabel}>Subscription</Text>
+              <Ionicons name={expandedSetting === 'subscription' ? 'chevron-down' : 'chevron-forward'} size={16} color={colors.textMuted} />
+            </Pressable>
+            {expandedSetting === 'subscription' && (
+              <View style={styles.settingsExpanded}>
+                <View style={styles.settingsSubPlan}>
+                  <View style={styles.settingsSubBadge}><Text style={styles.settingsSubBadgeText}>FREE</Text></View>
+                  <Text style={{ ...typography.bodySmall, color: colors.textSecondary, marginTop: spacing.sm }}>Basic marketplace access</Text>
+                </View>
+                <Pressable
+                  style={styles.settingsAddBtn}
+                  onPress={() => { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium); Alert.alert('Plans', 'Pro Plan - $19/mo\nPremium Plan - $49/mo\n\nSubscriptions available at launch.'); }}
+                >
+                  <Text style={styles.settingsAddBtnText}>View Plans</Text>
+                </Pressable>
+              </View>
+            )}
+
+            {/* Help & Support */}
+            <Pressable
+              style={styles.settingsRow}
+              onPress={() => {
+                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                setExpandedSetting(expandedSetting === 'help' ? null : 'help');
+              }}
+            >
+              <Ionicons name="help-circle-outline" size={20} color={colors.textMuted} style={{ marginRight: spacing.md }} />
+              <Text style={styles.settingsLabel}>Help & Support</Text>
+              <Ionicons name={expandedSetting === 'help' ? 'chevron-down' : 'chevron-forward'} size={16} color={colors.textMuted} />
+            </Pressable>
+            {expandedSetting === 'help' && (
+              <View style={styles.settingsExpanded}>
+                {[
+                  { q: 'How do I post a job?', a: 'Tap the + button on the Jobs tab to create a new job posting. Fill in the details and pros in your area will be notified.' },
+                  { q: 'How are pros verified?', a: 'All pros undergo license verification, insurance checks, and background screening before being approved on the platform.' },
+                  { q: 'What if I need emergency service?', a: 'Mark your job as "Emergency" when posting. Nearby available pros will receive priority notifications.' },
+                  { q: 'How do payments work?', a: 'Payments are held in escrow until the job is complete and you approve the work. We support credit cards and bank transfers.' },
+                  { q: 'Can I cancel a job?', a: 'Yes, you can cancel before a pro accepts. After acceptance, cancellation fees may apply per the pro\'s terms.' },
+                ].map((faq, i) => (
+                  <Pressable
+                    key={i}
+                    style={styles.faqItem}
+                    onPress={() => { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); setExpandedFaq(expandedFaq === i ? null : i); }}
+                  >
+                    <View style={styles.faqHeader}>
+                      <Text style={styles.faqQuestion}>{faq.q}</Text>
+                      <Ionicons name={expandedFaq === i ? 'chevron-up' : 'chevron-down'} size={14} color={colors.textMuted} />
+                    </View>
+                    {expandedFaq === i && <Text style={styles.faqAnswer}>{faq.a}</Text>}
+                  </Pressable>
+                ))}
+                <Pressable
+                  style={[styles.settingsAddBtn, { marginTop: spacing.md }]}
+                  onPress={() => { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); Linking.openURL('mailto:support@thesherpapros.com'); }}
+                >
+                  <Ionicons name="mail-outline" size={16} color={colors.primary} />
+                  <Text style={styles.settingsAddBtnText}>Contact Support</Text>
+                </Pressable>
+              </View>
+            )}
           </View>
 
           {/* Referral Card */}
@@ -319,7 +482,7 @@ export default function ClientProfileScreen() {
             style={styles.referralCard}
             onPress={() => {
               Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-              Alert.alert('Coming soon');
+              Alert.alert('Invite & Earn', 'Share your referral link to earn $25 credit per new user who signs up!');
             }}
           >
             <View style={styles.referralIconBox}>
@@ -383,6 +546,141 @@ export default function ClientProfileScreen() {
           >
             <Ionicons name="close-circle" size={36} color="#fff" />
           </Pressable>
+        </View>
+      </Modal>
+
+      {/* ─── Edit Profile Modal ────────────────────────────── */}
+      <Modal visible={editProfileVisible} animationType="slide" transparent>
+        <View style={styles.editModalBackdrop}>
+          <View style={[styles.editModalSheet, { paddingBottom: insets.bottom + spacing.lg }]}>
+            <View style={styles.editModalHandle} />
+            <Text style={styles.editModalTitle}>Edit Profile</Text>
+            <Text style={styles.editModalLabel}>Name</Text>
+            <TextInput style={styles.editModalInput} value={editName} onChangeText={setEditName} placeholder="Full name" placeholderTextColor={colors.textMuted} />
+            <Text style={styles.editModalLabel}>Phone</Text>
+            <TextInput style={styles.editModalInput} value={editPhone} onChangeText={setEditPhone} placeholder="Phone" placeholderTextColor={colors.textMuted} keyboardType="phone-pad" />
+            <Text style={styles.editModalLabel}>Email</Text>
+            <TextInput style={styles.editModalInput} value={editEmail} onChangeText={setEditEmail} placeholder="Email" placeholderTextColor={colors.textMuted} keyboardType="email-address" autoCapitalize="none" />
+            <View style={styles.editModalActions}>
+              <Pressable style={styles.editModalCancelBtn} onPress={() => setEditProfileVisible(false)}>
+                <Text style={styles.editModalCancelText}>Cancel</Text>
+              </Pressable>
+              <Pressable
+                style={styles.editModalSaveBtn}
+                onPress={() => {
+                  Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+                  setEditProfileVisible(false);
+                }}
+              >
+                <Text style={styles.editModalSaveText}>Save</Text>
+              </Pressable>
+            </View>
+          </View>
+        </View>
+      </Modal>
+
+      {/* ─── Add Property Modal ──────────────────────────── */}
+      <Modal visible={addPropertyVisible} animationType="slide" transparent>
+        <View style={styles.editModalBackdrop}>
+          <View style={[styles.editModalSheet, { paddingBottom: insets.bottom + spacing.lg }]}>
+            <View style={styles.editModalHandle} />
+            <Text style={styles.editModalTitle}>Add Property</Text>
+            <Text style={styles.editModalLabel}>Address</Text>
+            <TextInput style={styles.editModalInput} value={newPropAddress} onChangeText={setNewPropAddress} placeholder="123 Main St" placeholderTextColor={colors.textMuted} />
+            <View style={{ flexDirection: 'row', gap: spacing.sm }}>
+              <View style={{ flex: 2 }}>
+                <Text style={styles.editModalLabel}>City</Text>
+                <TextInput style={styles.editModalInput} value={newPropCity} onChangeText={setNewPropCity} placeholder="City" placeholderTextColor={colors.textMuted} />
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.editModalLabel}>State</Text>
+                <TextInput style={styles.editModalInput} value={newPropState} onChangeText={setNewPropState} placeholder="NH" placeholderTextColor={colors.textMuted} maxLength={2} autoCapitalize="characters" />
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.editModalLabel}>Zip</Text>
+                <TextInput style={styles.editModalInput} value={newPropZip} onChangeText={setNewPropZip} placeholder="03801" placeholderTextColor={colors.textMuted} keyboardType="number-pad" maxLength={5} />
+              </View>
+            </View>
+            <Text style={styles.editModalLabel}>Property Type</Text>
+            <View style={{ flexDirection: 'row', gap: spacing.sm, flexWrap: 'wrap', marginBottom: spacing.md }}>
+              {['Single Family', 'Condo', 'Multi-Family', 'Townhouse'].map((t) => (
+                <Pressable
+                  key={t}
+                  style={[styles.propTypeChip, newPropType === t && styles.propTypeChipActive]}
+                  onPress={() => { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); setNewPropType(t); }}
+                >
+                  <Text style={[styles.propTypeChipText, newPropType === t && styles.propTypeChipTextActive]}>{t}</Text>
+                </Pressable>
+              ))}
+            </View>
+            <View style={styles.editModalActions}>
+              <Pressable style={styles.editModalCancelBtn} onPress={() => setAddPropertyVisible(false)}>
+                <Text style={styles.editModalCancelText}>Cancel</Text>
+              </Pressable>
+              <Pressable
+                style={styles.editModalSaveBtn}
+                onPress={() => {
+                  if (!newPropAddress.trim()) { Alert.alert('Required', 'Please enter an address.'); return; }
+                  Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+                  const newProp = {
+                    id: String(Date.now()),
+                    address: newPropAddress,
+                    fullAddress: `${newPropAddress}, ${newPropCity}, ${newPropState} ${newPropZip}`,
+                    type: newPropType,
+                    beds: 3,
+                    baths: 2,
+                    photo: `https://picsum.photos/200/160?random=${Date.now()}`,
+                  };
+                  setLocalProperties((prev) => [...prev, newProp]);
+                  setAddPropertyVisible(false);
+                }}
+              >
+                <Text style={styles.editModalSaveText}>Add</Text>
+              </Pressable>
+            </View>
+          </View>
+        </View>
+      </Modal>
+
+      {/* ─── Edit Review Modal ───────────────────────────── */}
+      <Modal visible={editReviewVisible} animationType="slide" transparent>
+        <View style={styles.editModalBackdrop}>
+          <View style={[styles.editModalSheet, { paddingBottom: insets.bottom + spacing.lg }]}>
+            <View style={styles.editModalHandle} />
+            <Text style={styles.editModalTitle}>Edit Review</Text>
+            <View style={{ flexDirection: 'row', justifyContent: 'center', gap: spacing.xs, marginBottom: spacing.lg }}>
+              {[1, 2, 3, 4, 5].map((s) => (
+                <Pressable key={s} onPress={() => { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); setEditReviewRating(s); }}>
+                  <Ionicons name={s <= editReviewRating ? 'star' : 'star-outline'} size={28} color={s <= editReviewRating ? '#f59e0b' : colors.borderMedium} />
+                </Pressable>
+              ))}
+            </View>
+            <TextInput
+              style={[styles.editModalInput, { minHeight: 100, textAlignVertical: 'top' }]}
+              value={editReviewText}
+              onChangeText={setEditReviewText}
+              placeholder="Your review..."
+              placeholderTextColor={colors.textMuted}
+              multiline
+            />
+            <View style={styles.editModalActions}>
+              <Pressable style={styles.editModalCancelBtn} onPress={() => setEditReviewVisible(false)}>
+                <Text style={styles.editModalCancelText}>Cancel</Text>
+              </Pressable>
+              <Pressable
+                style={styles.editModalSaveBtn}
+                onPress={() => {
+                  Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+                  setLocalReviews((prev) =>
+                    prev.map((r) => r.id === editReviewId ? { ...r, text: editReviewText, rating: editReviewRating } : r)
+                  );
+                  setEditReviewVisible(false);
+                }}
+              >
+                <Text style={styles.editModalSaveText}>Update</Text>
+              </Pressable>
+            </View>
+          </View>
         </View>
       </Modal>
 
@@ -1017,6 +1315,179 @@ const styles = StyleSheet.create({
   galleryInfoMeta: {
     ...typography.caption,
     color: 'rgba(255,255,255,0.6)',
+  },
+
+  // Edit/Add Modals
+  editModalBackdrop: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'flex-end',
+  },
+  editModalSheet: {
+    backgroundColor: colors.background,
+    borderTopLeftRadius: borderRadius.xl,
+    borderTopRightRadius: borderRadius.xl,
+    paddingHorizontal: spacing.xl,
+    paddingTop: spacing.md,
+  },
+  editModalHandle: {
+    width: 40,
+    height: 4,
+    borderRadius: 2,
+    backgroundColor: colors.borderMedium,
+    alignSelf: 'center',
+    marginBottom: spacing.lg,
+  },
+  editModalTitle: {
+    ...typography.subheading,
+    color: colors.text,
+    fontSize: 18,
+    marginBottom: spacing.lg,
+  },
+  editModalLabel: {
+    ...typography.caption,
+    color: colors.textMuted,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+    marginBottom: spacing.xs,
+    marginTop: spacing.sm,
+  },
+  editModalInput: {
+    backgroundColor: colors.surfaceSecondary,
+    borderRadius: borderRadius.md,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.md,
+    fontSize: 15,
+    color: colors.text,
+    borderWidth: 1,
+    borderColor: colors.borderLight,
+    marginBottom: spacing.sm,
+  },
+  editModalActions: {
+    flexDirection: 'row',
+    gap: spacing.md,
+    marginTop: spacing.lg,
+  },
+  editModalCancelBtn: {
+    flex: 1,
+    alignItems: 'center',
+    paddingVertical: spacing.md,
+    borderRadius: borderRadius.full,
+    borderWidth: 1,
+    borderColor: colors.borderMedium,
+  },
+  editModalCancelText: {
+    ...typography.bodySmall,
+    fontWeight: '600',
+    color: colors.textSecondary,
+  },
+  editModalSaveBtn: {
+    flex: 1,
+    alignItems: 'center',
+    paddingVertical: spacing.md,
+    borderRadius: borderRadius.full,
+    backgroundColor: colors.primary,
+  },
+  editModalSaveText: {
+    ...typography.bodySmall,
+    fontWeight: '600',
+    color: colors.textInverse,
+  },
+
+  // Property type chips
+  propTypeChip: {
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+    borderRadius: borderRadius.full,
+    borderWidth: 1,
+    borderColor: colors.borderMedium,
+  },
+  propTypeChipActive: {
+    backgroundColor: colors.primary,
+    borderColor: colors.primary,
+  },
+  propTypeChipText: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: colors.textSecondary,
+  },
+  propTypeChipTextActive: {
+    color: colors.textInverse,
+  },
+
+  // Settings expanded
+  settingsExpanded: {
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.md,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.borderLight,
+  },
+  settingsToggleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: spacing.sm,
+  },
+  settingsToggleLabel: {
+    ...typography.bodySmall,
+    color: colors.text,
+  },
+  settingsAddBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: spacing.xs,
+    paddingVertical: spacing.md,
+    borderRadius: borderRadius.full,
+    borderWidth: 1,
+    borderColor: colors.primary,
+    marginTop: spacing.sm,
+  },
+  settingsAddBtnText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: colors.primary,
+  },
+  settingsSubPlan: {
+    alignItems: 'center',
+    paddingVertical: spacing.md,
+  },
+  settingsSubBadge: {
+    backgroundColor: colors.primaryLight,
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.sm,
+    borderRadius: borderRadius.full,
+  },
+  settingsSubBadgeText: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: colors.primary,
+    letterSpacing: 1,
+  },
+
+  // FAQ
+  faqItem: {
+    paddingVertical: spacing.md,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.borderLight,
+  },
+  faqHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  faqQuestion: {
+    ...typography.bodySmall,
+    fontWeight: '600',
+    color: colors.text,
+    flex: 1,
+    marginRight: spacing.sm,
+  },
+  faqAnswer: {
+    ...typography.bodySmall,
+    color: colors.textSecondary,
+    lineHeight: 20,
+    marginTop: spacing.sm,
   },
 
   // Pro Detail Modal

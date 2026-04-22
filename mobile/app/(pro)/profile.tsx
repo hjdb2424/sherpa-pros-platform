@@ -8,6 +8,10 @@ import {
   StyleSheet,
   Image,
   Dimensions,
+  TextInput,
+  Modal,
+  Share,
+  Linking,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
@@ -197,6 +201,13 @@ export default function ProProfileScreen() {
   const [newItemIds, setNewItemIds] = useState<Set<string>>(new Set());
   const isOwnProfile = true; // viewing own profile
 
+  // Edit Profile state
+  const [editProfileVisible, setEditProfileVisible] = useState(false);
+  const [editProName, setEditProName] = useState(PRO_PROFILE.name);
+  const [editProTrade, setEditProTrade] = useState('Master Plumber');
+  const [editProBio, setEditProBio] = useState(PRO_PROFILE.bio);
+  const [editProPhone, setEditProPhone] = useState('(603) 555-0142');
+
   useEffect(() => {
     SecureStore.getItemAsync('sherpa_onboarding_complete').then((val) => {
       setOnboardingComplete(val === 'true');
@@ -310,10 +321,10 @@ export default function ProProfileScreen() {
   }, [signOut, router]);
 
   const settingsItems: SettingsItem[] = [
-    { label: 'Notifications', iconName: 'notifications-outline', onPress: () => Alert.alert('Coming soon') },
-    { label: 'Payment Methods', iconName: 'card-outline', onPress: () => Alert.alert('Coming soon') },
-    { label: 'Help & Support', iconName: 'help-circle-outline', onPress: () => Alert.alert('Coming soon') },
-    { label: 'About', iconName: 'information-circle-outline', onPress: () => Alert.alert('Sherpa Pros v1.0.0') },
+    { label: 'Notifications', iconName: 'notifications-outline', onPress: () => Alert.alert('Notifications', 'Push, Email, and SMS notification preferences can be managed from your device settings.') },
+    { label: 'Payment Methods', iconName: 'card-outline', onPress: () => Alert.alert('Payment Methods', 'Stripe Connect is used for payouts. Manage your payout settings in the Earnings tab.') },
+    { label: 'Help & Support', iconName: 'help-circle-outline', onPress: () => Linking.openURL('mailto:support@thesherpapros.com') },
+    { label: 'About', iconName: 'information-circle-outline', onPress: () => Alert.alert('Sherpa Pros v1.0.0', 'Built for pros, by builders.\n\nServing NH, ME, MA.') },
   ];
 
   const profile = PRO_PROFILE;
@@ -343,7 +354,11 @@ export default function ProProfileScreen() {
               style={[s.editProfilePill, { top: insets.top + spacing.sm }]}
               onPress={() => {
                 Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-                Alert.alert('Edit Profile', 'Profile editor coming soon.');
+                setEditProName(PRO_PROFILE.name);
+                setEditProTrade('Master Plumber');
+                setEditProBio(PRO_PROFILE.bio);
+                setEditProPhone('(603) 555-0142');
+                setEditProfileVisible(true);
               }}
             >
               <Ionicons name="create-outline" size={14} color={colors.text} />
@@ -651,7 +666,7 @@ export default function ProProfileScreen() {
             style={s.contactButton}
             onPress={() => {
               Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-              Alert.alert('Contact', 'Messaging coming soon.');
+              Linking.openURL('tel:+16035550101');
             }}
           >
             <Text style={s.contactButtonText}>Contact</Text>
@@ -660,7 +675,7 @@ export default function ProProfileScreen() {
             style={s.shareButton}
             onPress={() => {
               Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-              Alert.alert('Share Profile', 'Sharing coming soon.');
+              Share.share({ message: 'Check out Mike Rodriguez on Sherpa Pros! https://thesherpapros.com/pro/mike-rodriguez' });
             }}
           >
             <Text style={s.shareButtonText}>Share Profile</Text>
@@ -704,6 +719,45 @@ export default function ProProfileScreen() {
         </View>
       </ScrollView>
 
+      {/* ─── Edit Profile Modal ─────────────────────────────── */}
+      <Modal visible={editProfileVisible} animationType="slide" transparent>
+        <View style={s.editModalBackdrop}>
+          <View style={[s.editModalSheet, { paddingBottom: insets.bottom + spacing.lg }]}>
+            <View style={s.editModalHandle} />
+            <Text style={s.editModalTitle}>Edit Profile</Text>
+            <Text style={s.editModalLabel}>Name</Text>
+            <TextInput style={s.editModalInput} value={editProName} onChangeText={setEditProName} placeholder="Full name" placeholderTextColor={colors.textMuted} />
+            <Text style={s.editModalLabel}>Trade</Text>
+            <TextInput style={s.editModalInput} value={editProTrade} onChangeText={setEditProTrade} placeholder="Trade" placeholderTextColor={colors.textMuted} />
+            <Text style={s.editModalLabel}>Phone</Text>
+            <TextInput style={s.editModalInput} value={editProPhone} onChangeText={setEditProPhone} placeholder="Phone" placeholderTextColor={colors.textMuted} keyboardType="phone-pad" />
+            <Text style={s.editModalLabel}>Bio</Text>
+            <TextInput
+              style={[s.editModalInput, { minHeight: 80, textAlignVertical: 'top' }]}
+              value={editProBio}
+              onChangeText={setEditProBio}
+              placeholder="About you..."
+              placeholderTextColor={colors.textMuted}
+              multiline
+            />
+            <View style={s.editModalActions}>
+              <Pressable style={s.editModalCancelBtn} onPress={() => setEditProfileVisible(false)}>
+                <Text style={s.editModalCancelText}>Cancel</Text>
+              </Pressable>
+              <Pressable
+                style={s.editModalSaveBtn}
+                onPress={() => {
+                  Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+                  setEditProfileVisible(false);
+                }}
+              >
+                <Text style={s.editModalSaveText}>Save</Text>
+              </Pressable>
+            </View>
+          </View>
+        </View>
+      </Modal>
+
       {/* ------------------------------------------------------------------ */}
       {/* 10. Sticky Bottom Actions (other's profile only)                    */}
       {/* ------------------------------------------------------------------ */}
@@ -713,7 +767,7 @@ export default function ProProfileScreen() {
             style={s.stickyButtonPrimary}
             onPress={() => {
               Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-              Alert.alert('Message', 'Messaging coming soon.');
+              router.push('/(pro)/chat');
             }}
           >
             <Ionicons name="chatbubble-outline" size={18} color={colors.textInverse} />
@@ -723,7 +777,7 @@ export default function ProProfileScreen() {
             style={s.stickyButtonOutline}
             onPress={() => {
               Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-              Alert.alert('Request Quote', 'Quote request coming soon.');
+              router.push('/(pro)/post-job');
             }}
           >
             <Ionicons name="document-text-outline" size={18} color={colors.primary} />
@@ -1286,6 +1340,83 @@ const s = StyleSheet.create({
   versionText: {
     fontSize: 11,
     color: colors.textMuted,
+  },
+
+  // Edit Profile Modal ---------------------------------------------------
+  editModalBackdrop: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'flex-end',
+  },
+  editModalSheet: {
+    backgroundColor: colors.background,
+    borderTopLeftRadius: borderRadius.xl,
+    borderTopRightRadius: borderRadius.xl,
+    paddingHorizontal: spacing.xl,
+    paddingTop: spacing.md,
+  },
+  editModalHandle: {
+    width: 40,
+    height: 4,
+    borderRadius: 2,
+    backgroundColor: colors.borderMedium,
+    alignSelf: 'center',
+    marginBottom: spacing.lg,
+  },
+  editModalTitle: {
+    ...typography.subheading,
+    color: colors.text,
+    fontSize: 18,
+    marginBottom: spacing.lg,
+  },
+  editModalLabel: {
+    ...typography.caption,
+    color: colors.textMuted,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+    marginBottom: spacing.xs,
+    marginTop: spacing.sm,
+  },
+  editModalInput: {
+    backgroundColor: colors.surfaceSecondary,
+    borderRadius: borderRadius.md,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.md,
+    fontSize: 15,
+    color: colors.text,
+    borderWidth: 1,
+    borderColor: colors.borderLight,
+    marginBottom: spacing.sm,
+  },
+  editModalActions: {
+    flexDirection: 'row',
+    gap: spacing.md,
+    marginTop: spacing.lg,
+  },
+  editModalCancelBtn: {
+    flex: 1,
+    alignItems: 'center',
+    paddingVertical: spacing.md,
+    borderRadius: borderRadius.full,
+    borderWidth: 1,
+    borderColor: colors.borderMedium,
+  },
+  editModalCancelText: {
+    ...typography.bodySmall,
+    fontWeight: '600',
+    color: colors.textSecondary,
+  },
+  editModalSaveBtn: {
+    flex: 1,
+    alignItems: 'center',
+    paddingVertical: spacing.md,
+    borderRadius: borderRadius.full,
+    backgroundColor: colors.primary,
+  },
+  editModalSaveText: {
+    ...typography.bodySmall,
+    fontWeight: '600',
+    color: colors.textInverse,
   },
 
   // Sticky bottom ---------------------------------------------------------

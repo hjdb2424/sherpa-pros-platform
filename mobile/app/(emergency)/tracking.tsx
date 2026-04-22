@@ -8,6 +8,7 @@ import {
   Alert,
   Animated,
   Easing,
+  Linking,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -294,13 +295,19 @@ export default function TrackingScreen() {
           {/* Action buttons */}
           <Pressable
             style={styles.actionButton}
-            onPress={() => Alert.alert('Calling...', 'Phone call feature coming soon.')}
+            onPress={() => {
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+              Linking.openURL('tel:+16035550101');
+            }}
           >
             <Text style={styles.actionIcon}>{'\u{1F4DE}'}</Text>
           </Pressable>
           <Pressable
             style={[styles.actionButton, styles.actionButtonGray]}
-            onPress={() => Alert.alert('Messaging...', 'Chat feature coming soon.')}
+            onPress={() => {
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+              router.push('/(client)/chat');
+            }}
           >
             <Text style={styles.actionIcon}>{'\u{1F4AC}'}</Text>
           </Pressable>

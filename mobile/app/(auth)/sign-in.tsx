@@ -119,23 +119,37 @@ export default function SignInScreen() {
         <View style={styles.socialSection}>
           <Pressable
             style={styles.socialButton}
-            onPress={() => {
-              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-              Alert.alert('Coming Soon', 'Apple Sign-In will be available at launch.');
+            onPress={async () => {
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+              setSigningIn('apple');
+              try {
+                await signIn('client', 'Apple User', 'apple@icloud.com');
+                router.replace('/(client)');
+              } catch { setSigningIn(null); }
             }}
+            disabled={signingIn === 'apple'}
           >
             <Ionicons name="logo-apple" size={20} color={colors.text} />
-            <Text style={styles.socialButtonText}>Continue with Apple</Text>
+            <Text style={styles.socialButtonText}>
+              {signingIn === 'apple' ? 'Signing in...' : 'Continue with Apple'}
+            </Text>
           </Pressable>
           <Pressable
             style={styles.socialButton}
-            onPress={() => {
-              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-              Alert.alert('Coming Soon', 'Google Sign-In will be available at launch.');
+            onPress={async () => {
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+              setSigningIn('google');
+              try {
+                await signIn('client', 'Google User', 'user@gmail.com');
+                router.replace('/(client)');
+              } catch { setSigningIn(null); }
             }}
+            disabled={signingIn === 'google'}
           >
             <Ionicons name="logo-google" size={18} color={colors.text} />
-            <Text style={styles.socialButtonText}>Continue with Google</Text>
+            <Text style={styles.socialButtonText}>
+              {signingIn === 'google' ? 'Signing in...' : 'Continue with Google'}
+            </Text>
           </Pressable>
         </View>
 

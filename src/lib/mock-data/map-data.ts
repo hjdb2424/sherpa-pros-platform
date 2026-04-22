@@ -32,10 +32,8 @@ export interface MockRoute {
   distanceMiles: number;
 }
 
-import { SERVICE_AREA } from '@/lib/config/service-area';
-
-// Portsmouth, NH area — default hub center (from service area config)
-export const DEFAULT_CENTER = { lat: SERVICE_AREA.center.lat, lng: SERVICE_AREA.center.lng };
+// Portsmouth, NH area — default hub center (matches service-area.ts config)
+export const DEFAULT_CENTER = { lat: 43.0718, lng: -70.7626 };
 export const DEFAULT_ZOOM = 10;
 
 export const MOCK_PROS: MockProLocation[] = [

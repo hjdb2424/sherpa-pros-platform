@@ -4,15 +4,18 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import Logo from '@/components/brand/Logo';
-
-const navLinks = [
-  { href: '/how-it-works', label: 'How It Works' },
-  { href: '/for-pros', label: 'For Pros' },
-  { href: '#download-app', label: 'Get the App' },
-];
+import LanguageSwitcher from '@/components/i18n/LanguageSwitcher';
+import { useI18n } from '@/lib/i18n/context';
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { t } = useI18n();
+
+  const navLinks = [
+    { href: '/how-it-works', label: t('nav.howItWorks') },
+    { href: '/for-pros', label: t('nav.forPros') },
+    { href: '#download-app', label: t('nav.getApp') },
+  ];
 
   return (
     <header className="sticky top-0 z-50 border-b border-zinc-100 bg-white/95 backdrop-blur-md">
@@ -36,17 +39,18 @@ export default function Navbar() {
               {link.label}
             </Link>
           ))}
+          <LanguageSwitcher variant="compact" />
           <Link
             href="/sign-in"
             className="rounded-md text-sm font-medium text-zinc-600 transition-colors hover:text-zinc-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00a9e0] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
           >
-            Sign In
+            {t('nav.signIn')}
           </Link>
           <Link
             href="/client/post-job"
             className="rounded-full bg-[#00a9e0] px-5 py-2 text-sm font-semibold text-white transition-all hover:bg-[#0ea5e9] hover:shadow-lg hover:shadow-[#00a9e0]/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00a9e0] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
           >
-            Post a Job
+            {t('nav.postJob')}
           </Link>
         </div>
 
@@ -85,15 +89,19 @@ export default function Navbar() {
               className="block rounded-lg px-3 py-2.5 text-base font-medium text-zinc-700 transition-colors hover:bg-zinc-50 hover:text-zinc-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00a9e0] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
               onClick={() => setMobileOpen(false)}
             >
-              Sign In
+              {t('nav.signIn')}
             </Link>
+            <div className="flex items-center gap-3 px-3 py-2.5">
+              <span className="text-sm font-medium text-zinc-500">{t('nav.language')}</span>
+              <LanguageSwitcher variant="compact" />
+            </div>
             <div className="pt-2">
               <Link
                 href="/client/post-job"
                 className="block rounded-full bg-[#00a9e0] px-5 py-2.5 text-center text-base font-semibold text-white transition-all hover:bg-[#0ea5e9] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00a9e0] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                 onClick={() => setMobileOpen(false)}
               >
-                Post a Job
+                {t('nav.postJob')}
               </Link>
             </div>
           </div>

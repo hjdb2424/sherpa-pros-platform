@@ -8,6 +8,7 @@ import TestimonialCard from '@/components/marketing/TestimonialCard';
 import ScrollReveal from '@/components/marketing/ScrollReveal';
 import AppDownload from '@/components/marketing/AppDownload';
 import LandingMap from '@/components/marketing/LandingMap';
+import LandingCTA from '@/components/marketing/LandingCTA';
 import {
   ClipboardDocumentListIcon,
   ShieldCheckIcon,
@@ -457,31 +458,7 @@ export default function LandingPage() {
 
       {/* Final CTA */}
       <ScrollReveal>
-        <section className="bg-[#00a9e0] px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
-          <div className="mx-auto max-w-3xl text-center">
-            <h2 className="text-3xl font-bold text-white sm:text-4xl">
-              Ready to Get Started?
-            </h2>
-            <p className="mt-4 text-lg text-white/80">
-              Whether you need work done or you are the one doing the work —
-              Sherpa Pros has your back.
-            </p>
-            <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-              <Link
-                href="/client/post-job"
-                className="inline-flex w-full items-center justify-center rounded-full bg-[#ff4500] px-8 py-3.5 text-base font-semibold text-white shadow-lg shadow-[#ff4500]/25 transition-all hover:bg-[#e63e00] hover:shadow-xl sm:w-auto"
-              >
-                Post a Job
-              </Link>
-              <Link
-                href="/for-pros"
-                className="inline-flex w-full items-center justify-center rounded-full border border-white/30 px-8 py-3.5 text-base font-semibold text-white transition-all hover:border-white/50 hover:bg-white/10 sm:w-auto"
-              >
-                Join as a Pro
-              </Link>
-            </div>
-          </div>
-        </section>
+        <LandingCTA />
       </ScrollReveal>
     </div>
   );

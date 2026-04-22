@@ -1,6 +1,9 @@
+'use client';
+
 import Link from 'next/link';
 import StatsCounter from './StatsCounter';
 import Logo from '@/components/brand/Logo';
+import { useI18n } from '@/lib/i18n/context';
 
 interface HeroProps {
   /** Override stats displayed in the counter */
@@ -8,6 +11,7 @@ interface HeroProps {
 }
 
 export default function Hero({ stats }: HeroProps = {}) {
+  const { t } = useI18n();
   return (
     <section className="relative overflow-hidden bg-gradient-to-b from-white to-zinc-50">
       {/* Background pattern */}
@@ -37,20 +41,19 @@ export default function Hero({ stats }: HeroProps = {}) {
           <div className="animate-fade-slide-up mb-8 inline-flex items-center gap-2 rounded-full border border-[#00a9e0]/20 bg-[#00a9e0]/5 px-4 py-1.5">
             <span className="h-2 w-2 rounded-full bg-emerald-500" aria-hidden="true" />
             <span className="text-xs font-medium text-[#00a9e0] sm:text-sm">
-              Serving Greater Portsmouth — NH &middot; ME &middot; MA
+              {t('hero.badge')}
             </span>
           </div>
 
           <h1 className="animate-fade-slide-up stagger-1 text-4xl font-bold leading-tight tracking-tight text-zinc-900 sm:text-5xl lg:text-6xl">
-            The Only Marketplace That Actually{' '}
+            {t('hero.heading')}{' '}
             <span className="bg-gradient-to-r from-[#00a9e0] to-[#0ea5e9] bg-clip-text text-transparent">
-              Understands Construction
+              {t('hero.headingHighlight')}
             </span>
           </h1>
 
           <p className="animate-fade-slide-up stagger-2 mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-zinc-600 sm:text-xl">
-            Every Pro verified. Every project validated. AI-powered matching
-            that protects both sides.
+            {t('hero.subtitle')}
           </p>
 
           {/* CTAs */}
@@ -59,7 +62,7 @@ export default function Hero({ stats }: HeroProps = {}) {
               href="/client/post-job"
               className="inline-flex w-full items-center justify-center rounded-full bg-[#00a9e0] px-8 py-3.5 text-base font-semibold text-white shadow-lg shadow-[#00a9e0]/25 transition-all hover:bg-[#0ea5e9] hover:shadow-xl hover:shadow-[#00a9e0]/30 active:scale-[0.98] sm:w-auto"
             >
-              Post a Job
+              {t('hero.postJob')}
               <svg
                 className="ml-2 h-4 w-4"
                 viewBox="0 0 20 20"
@@ -77,18 +80,18 @@ export default function Hero({ stats }: HeroProps = {}) {
               href="/for-pros"
               className="inline-flex w-full items-center justify-center rounded-full border border-zinc-200 px-8 py-3.5 text-base font-semibold text-zinc-700 transition-all hover:bg-zinc-50 active:scale-[0.98] sm:w-auto"
             >
-              Join as a Pro
+              {t('hero.joinAsPro')}
             </Link>
           </div>
 
           {/* Login link */}
           <p className="animate-fade-slide-up stagger-4 mt-6 text-center text-sm text-zinc-500">
-            Already have an account?{' '}
+            {t('hero.alreadyHaveAccount')}{' '}
             <Link
               href="/sign-in"
               className="font-semibold text-[#00a9e0] transition-colors hover:text-[#0ea5e9]"
             >
-              Sign in
+              {t('hero.signIn')}
             </Link>
           </p>
         </div>

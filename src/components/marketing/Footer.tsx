@@ -1,5 +1,9 @@
+'use client';
+
 import Link from 'next/link';
 import Logo from '@/components/brand/Logo';
+import LanguageSwitcher from '@/components/i18n/LanguageSwitcher';
+import { useI18n } from '@/lib/i18n/context';
 
 const footerLinks = {
   Platform: [
@@ -90,10 +94,13 @@ export default function Footer() {
 
         {/* Bottom bar */}
         <div className="mt-16 flex flex-col items-center justify-between gap-4 border-t border-zinc-800 pt-8 sm:flex-row">
-          <p className="text-xs">
-            &copy; {new Date().getFullYear()} Sherpa Pros LLC. All rights
-            reserved.
-          </p>
+          <div className="flex items-center gap-4">
+            <p className="text-xs">
+              &copy; {new Date().getFullYear()} Sherpa Pros LLC. All rights
+              reserved.
+            </p>
+            <LanguageSwitcher variant="compact" />
+          </div>
           <div className="flex gap-4">
             {/* Social icons */}
             {[

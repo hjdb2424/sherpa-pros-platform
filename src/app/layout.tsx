@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { I18nProvider } from "@/lib/i18n/context";
 
 // Conditionally import ClerkProvider — skip when Clerk keys aren't configured
 const clerkConfigured = !!process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
@@ -65,11 +66,13 @@ export default function RootLayout({
           >
             Skip to main content
           </a>
+          <I18nProvider>
           {ClerkProvider ? (
             <ClerkProvider><main id="main-content">{children}</main></ClerkProvider>
           ) : (
             <main id="main-content">{children}</main>
           )}
+          </I18nProvider>
         </body>
     </html>
   );

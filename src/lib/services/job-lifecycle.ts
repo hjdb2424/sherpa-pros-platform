@@ -19,7 +19,9 @@ export interface LifecycleEvent {
     | 'milestone_completed'
     | 'job_completed'
     | 'payment_captured'
-    | 'review_requested';
+    | 'review_requested'
+    | 'review_posted'
+    | 'review_response_posted';
   jobId: string;
   timestamp: string;
   data: Record<string, unknown>;
@@ -46,6 +48,8 @@ const EVENT_DESCRIPTIONS: Record<LifecycleEvent['type'], string> = {
   job_completed: 'Job marked as complete',
   payment_captured: 'Payment captured and pro paid',
   review_requested: 'Review requested from both parties',
+  review_posted: 'Review posted — pro notified',
+  review_response_posted: 'Pro responded to review — client notified',
 };
 
 export function getEventDescription(type: LifecycleEvent['type']): string {
@@ -172,6 +176,49 @@ export async function onJobCompleted(
       proReviewRequested: true,
       clientReviewRequested: true,
       reviewDeadline: new Date(Date.now() + 7 * 86_400_000).toISOString(),
+    }),
+  ];
+}
+
+/**
+ * Called when a client posts a review.
+ * 1. Notify the pro about the new review
+ * 2. Update review metrics
+ */
+export async function onReviewPosted(
+  jobId: string,
+  reviewId: string,
+  proId: string,
+): Promise<LifecycleEvent[]> {
+  await new Promise((r) => setTimeout(r, 50));
+
+  return [
+    makeEvent('review_posted', jobId, {
+      reviewId,
+      proId,
+      proNotified: true,
+      notificationType: 'push+email',
+    }),
+  ];
+}
+
+/**
+ * Called when a pro responds to a review.
+ * 1. Notify the client about the response
+ */
+export async function onReviewResponsePosted(
+  jobId: string,
+  reviewId: string,
+  clientId: string,
+): Promise<LifecycleEvent[]> {
+  await new Promise((r) => setTimeout(r, 50));
+
+  return [
+    makeEvent('review_response_posted', jobId, {
+      reviewId,
+      clientId,
+      clientNotified: true,
+      notificationType: 'push+email',
     }),
   ];
 }

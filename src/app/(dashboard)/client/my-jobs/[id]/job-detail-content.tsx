@@ -841,6 +841,7 @@ export function JobDetailContent({ jobId }: JobDetailContentProps) {
               <WriteReview
                 jobTitle={job.title}
                 recipientName={job.assignedPro.name}
+                projectType={job.category}
                 onSubmit={(data) => {
                   console.log('Review submitted:', data);
                 }}

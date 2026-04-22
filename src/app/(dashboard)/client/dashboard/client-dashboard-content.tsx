@@ -15,6 +15,7 @@ import NearbyProsMap from '@/components/client/NearbyProsMap';
 import { ClipboardDocumentListIcon } from '@heroicons/react/24/outline';
 import { SCPBanner } from '@/components/ai';
 import ClientOnboarding from '@/components/client/ClientOnboarding';
+import ReviewPrompt from '@/components/reviews/ReviewPrompt';
 
 const ACTIVITY_ICONS: Record<string, { icon: string; bg: string }> = {
   bid_received: { icon: '📩', bg: 'bg-blue-100' },
@@ -123,6 +124,18 @@ export function ClientDashboardContent() {
       <div className="grid gap-8 lg:grid-cols-5">
         {/* Left column */}
         <div className="lg:col-span-3 space-y-6">
+          {/* Review prompt for completed jobs */}
+          <ReviewPrompt
+            proName="Marcus Rivera"
+            jobTitle="Window Trim Installation"
+            onStartReview={(rating) => {
+              console.log('Start review with rating:', rating);
+            }}
+            onDismiss={() => {
+              console.log('Review prompt dismissed');
+            }}
+          />
+
           {/* Sherpa Client Pro banner */}
           <SCPBanner clientName="Phyrom" isSubscribed={false} />
 

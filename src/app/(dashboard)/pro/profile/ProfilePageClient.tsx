@@ -1,40 +1,38 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import BadgeTier from '@/components/pro/BadgeTier';
 import AvailabilityCalendar from '@/components/pro/AvailabilityCalendar';
 import { mockProProfile } from '@/lib/mock-data/pro-data';
-import ReviewCard from '@/components/reviews/ReviewCard';
 import Portfolio from '@/components/pro/Portfolio';
 import ReviewAggregator from '@/components/social/ReviewAggregator';
+import ReviewStats from '@/components/reviews/ReviewStats';
+import ReviewList from '@/components/reviews/ReviewList';
+import ProResponseForm from '@/components/reviews/ProResponseForm';
 import Link from 'next/link';
-
-interface ReviewData {
-  id: string;
-  reviewerName: string;
-  rating: number;
-  text: string;
-  date: string;
-  role: 'client' | 'pro';
-}
 
 export default function ProfilePageClient() {
   const pro = mockProProfile;
   const [radiusValue, setRadiusValue] = useState(pro.serviceArea.travelRadiusMiles);
-  const [reviews, setReviews] = useState<ReviewData[]>([]);
+  const [respondingTo, setRespondingTo] = useState<string | null>(null);
+  const [respondingReview, setRespondingReview] = useState<{ reviewerName: string; text: string; rating: number } | null>(null);
 
-  useEffect(() => {
-    async function fetchReviews() {
-      try {
-        const res = await fetch('/api/reviews?proId=pro-001');
-        const data = await res.json();
-        setReviews(data.reviews ?? []);
-      } catch {
-        // Empty reviews on error
+  const handleRespondToReview = async (reviewId: string) => {
+    try {
+      const res = await fetch(`/api/reviews/${reviewId}`);
+      const data = await res.json();
+      if (data.review) {
+        setRespondingTo(reviewId);
+        setRespondingReview({
+          reviewerName: data.review.reviewerName,
+          text: data.review.text,
+          rating: data.review.rating,
+        });
       }
+    } catch {
+      // silent
     }
-    fetchReviews();
-  }, []);
+  };
 
   return (
     <div className="space-y-6">
@@ -251,27 +249,36 @@ export default function ProfilePageClient() {
           <ReviewAggregator />
         </div>
 
-        {/* Reviews */}
+        {/* Review Stats + List */}
         <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm sm:p-6 dark:border-zinc-800 dark:bg-zinc-900 lg:col-span-2">
           <h2 className="mb-4 text-base font-bold text-zinc-900 dark:text-zinc-50">
-            Platform Reviews ({reviews.length})
+            Platform Reviews
           </h2>
-          {reviews.length > 0 ? (
-            <div className="space-y-3">
-              {reviews.map((review) => (
-                <ReviewCard
-                  key={review.id}
-                  reviewerName={review.reviewerName}
-                  rating={review.rating}
-                  text={review.text}
-                  date={review.date}
-                  role={review.role}
-                />
-              ))}
+          <div className="grid gap-6 lg:grid-cols-3">
+            <div className="lg:col-span-1">
+              <ReviewStats proId="pro-001" />
             </div>
-          ) : (
-            <p className="text-sm text-zinc-500 dark:text-zinc-400">No reviews yet.</p>
-          )}
+            <div className="lg:col-span-2">
+              {respondingTo && respondingReview && (
+                <div className="mb-4">
+                  <ProResponseForm
+                    reviewId={respondingTo}
+                    reviewerName={respondingReview.reviewerName}
+                    reviewText={respondingReview.text}
+                    reviewRating={respondingReview.rating}
+                    proName={pro.name}
+                    onSubmit={() => { setRespondingTo(null); setRespondingReview(null); }}
+                    onCancel={() => { setRespondingTo(null); setRespondingReview(null); }}
+                  />
+                </div>
+              )}
+              <ReviewList
+                proId="pro-001"
+                showRespondButtons
+                onRespondToReview={handleRespondToReview}
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>

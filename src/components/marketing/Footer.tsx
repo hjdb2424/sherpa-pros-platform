@@ -16,8 +16,8 @@ const footerLinks = {
     { label: 'Contact', href: '#' },
   ],
   App: [
-    { label: 'iOS App', href: '#' },
-    { label: 'Android App', href: '#' },
+    { label: 'iOS App', href: 'https://apps.apple.com/app/sherpa-pros/id0000000000' },
+    { label: 'Android App', href: 'https://play.google.com/store/apps/details?id=com.sherpapros.app' },
     { label: 'App Features', href: '#download-app' },
   ],
   Legal: [

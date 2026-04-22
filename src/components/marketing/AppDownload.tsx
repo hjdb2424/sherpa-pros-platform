@@ -38,7 +38,7 @@ export default function AppDownload() {
               <div className="mt-8 flex flex-wrap gap-4">
                 {/* Apple App Store */}
                 <a
-                  href="#"
+                  href="https://apps.apple.com/app/sherpa-pros/id0000000000"
                   className="inline-flex items-center gap-3 rounded-xl border border-zinc-700 bg-black px-5 py-3 shadow-lg transition-all hover:border-zinc-500 hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00a9e0] focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900"
                   aria-label="Download on the App Store"
                 >
@@ -62,7 +62,7 @@ export default function AppDownload() {
 
                 {/* Google Play */}
                 <a
-                  href="#"
+                  href="https://play.google.com/store/apps/details?id=com.sherpapros.app"
                   className="inline-flex items-center gap-3 rounded-xl border border-zinc-700 bg-black px-5 py-3 shadow-lg transition-all hover:border-zinc-500 hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00a9e0] focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900"
                   aria-label="Get it on Google Play"
                 >

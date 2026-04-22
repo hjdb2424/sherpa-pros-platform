@@ -9,7 +9,127 @@
  * Subscribe click shows a mock alert (Stripe not wired yet).
  */
 
-import { useState } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
+
+// ---------------------------------------------------------------------------
+// Subscribe Modal
+// ---------------------------------------------------------------------------
+
+function SubscribeModal({
+  plan,
+  onClose,
+}: {
+  plan: { name: string; price: number };
+  onClose: () => void;
+}) {
+  const [email, setEmail] = useState('');
+  const [submitted, setSubmitted] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
+
+  const handleSubmit = useCallback(
+    (e: React.FormEvent) => {
+      e.preventDefault();
+      if (!email.trim()) return;
+      setSubmitted(true);
+    },
+    [email],
+  );
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+      role="dialog"
+      aria-modal="true"
+      aria-label={`Subscribe to ${plan.name}`}
+    >
+      <div className="relative mx-4 w-full max-w-md rounded-2xl border border-zinc-200 bg-white p-6 shadow-xl dark:border-zinc-700 dark:bg-zinc-900">
+        {/* Close */}
+        <button
+          type="button"
+          onClick={onClose}
+          className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full text-zinc-400 transition-colors hover:bg-zinc-100 hover:text-zinc-600 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
+          aria-label="Close"
+        >
+          <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+
+        {submitted ? (
+          <div className="py-4 text-center">
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emerald-50 dark:bg-emerald-950">
+              <svg className="h-7 w-7 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <h3 className="mt-4 text-lg font-bold text-zinc-900 dark:text-zinc-100">You are on the list!</h3>
+            <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">
+              We will notify you at <span className="font-medium text-zinc-700 dark:text-zinc-300">{email}</span> when billing is ready.
+            </p>
+            <button
+              type="button"
+              onClick={onClose}
+              className="mt-6 w-full rounded-full bg-[#00a9e0] px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#0ea5e9]"
+            >
+              Done
+            </button>
+          </div>
+        ) : (
+          <>
+            <div className="text-center">
+              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-sky-50 dark:bg-sky-950">
+                <svg className="h-6 w-6 text-[#00a9e0]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                </svg>
+              </div>
+              <h3 className="mt-4 text-lg font-bold text-zinc-900 dark:text-zinc-100">
+                {plan.name} Plan
+              </h3>
+              <p className="mt-1 text-2xl font-bold text-zinc-900 dark:text-zinc-100">
+                ${plan.price}<span className="text-sm font-normal text-zinc-500 dark:text-zinc-400">/mo</span>
+              </p>
+              <p className="mt-1 text-xs text-emerald-600 dark:text-emerald-400 font-medium">
+                14-day free trial included
+              </p>
+            </div>
+
+            <form onSubmit={handleSubmit} className="mt-6">
+              <label htmlFor="subscribe-email" className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">
+                Enter your email to get started
+              </label>
+              <input
+                ref={inputRef}
+                id="subscribe-email"
+                type="email"
+                required
+                placeholder="you@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="mt-2 w-full rounded-lg border border-zinc-300 bg-white px-4 py-3 text-sm text-zinc-900 placeholder-zinc-400 transition-colors focus:border-[#00a9e0] focus:outline-none focus:ring-2 focus:ring-[#00a9e0]/30 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder-zinc-500"
+              />
+              <button
+                type="submit"
+                className="mt-4 w-full rounded-full bg-[#00a9e0] px-4 py-3 text-sm font-semibold text-white shadow-md transition-all hover:bg-[#0ea5e9] hover:shadow-lg active:scale-[0.98]"
+              >
+                Start Free Trial
+              </button>
+              <p className="mt-3 text-center text-xs text-zinc-400 dark:text-zinc-500">
+                We will notify you when billing is ready. No charge until then.
+              </p>
+            </form>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
 
 // ---------------------------------------------------------------------------
 // Plan data
@@ -136,16 +256,7 @@ interface PricingTableProps {
 
 export default function PricingTable({ userType }: PricingTableProps) {
   const plans = userType === 'client' ? CLIENT_PLANS : PRO_PLANS;
-  const [subscribing, setSubscribing] = useState<string | null>(null);
-
-  function handleSubscribe(planId: string) {
-    setSubscribing(planId);
-    // Mock: show alert then reset
-    setTimeout(() => {
-      alert('Subscription coming soon \u2014 Stripe setup required');
-      setSubscribing(null);
-    }, 600);
-  }
+  const [modalPlan, setModalPlan] = useState<Plan | null>(null);
 
   return (
     <div
@@ -155,6 +266,12 @@ export default function PricingTable({ userType }: PricingTableProps) {
           : 'sm:grid-cols-2 lg:grid-cols-3 max-w-5xl'
       } mx-auto`}
     >
+      {modalPlan && (
+        <SubscribeModal
+          plan={modalPlan}
+          onClose={() => setModalPlan(null)}
+        />
+      )}
       {plans.map((plan) => {
         const isFree = plan.price === 0;
 
@@ -268,38 +385,11 @@ export default function PricingTable({ userType }: PricingTableProps) {
             ) : (
               <button
                 type="button"
-                onClick={() => handleSubscribe(plan.id)}
-                disabled={subscribing === plan.id}
-                className="w-full rounded-full bg-[#00a9e0] px-4 py-3 text-sm font-semibold text-white shadow-md transition-all duration-150 hover:bg-[#0ea5e9] hover:shadow-lg active:scale-[0.98] disabled:opacity-60"
+                onClick={() => setModalPlan(plan)}
+                className="w-full rounded-full bg-[#00a9e0] px-4 py-3 text-sm font-semibold text-white shadow-md transition-all duration-150 hover:bg-[#0ea5e9] hover:shadow-lg active:scale-[0.98]"
                 aria-label={`Subscribe to ${plan.name}`}
               >
-                {subscribing === plan.id ? (
-                  <span className="inline-flex items-center gap-2">
-                    <svg
-                      className="h-4 w-4 animate-spin"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      aria-hidden="true"
-                    >
-                      <circle
-                        className="opacity-25"
-                        cx="12"
-                        cy="12"
-                        r="10"
-                        stroke="currentColor"
-                        strokeWidth="4"
-                      />
-                      <path
-                        className="opacity-75"
-                        fill="currentColor"
-                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-                      />
-                    </svg>
-                    Processing...
-                  </span>
-                ) : (
-                  'Subscribe'
-                )}
+                Subscribe
               </button>
             )}
           </div>

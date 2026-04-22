@@ -7,6 +7,7 @@ import ComparisonTable from '@/components/marketing/ComparisonTable';
 import TestimonialCard from '@/components/marketing/TestimonialCard';
 import ScrollReveal from '@/components/marketing/ScrollReveal';
 import AppDownload from '@/components/marketing/AppDownload';
+import LandingMap from '@/components/marketing/LandingMap';
 import {
   ClipboardDocumentListIcon,
   ShieldCheckIcon,
@@ -315,24 +316,11 @@ export default function LandingPage() {
             </p>
           </div>
 
-          {/* Map placeholder + city list */}
+          {/* Map + city list */}
           <div className="mx-auto mt-16 grid max-w-5xl gap-8 lg:grid-cols-2">
-            {/* Map visual */}
-            <div className="flex aspect-square items-center justify-center rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-gradient-to-br from-slate-50 via-blue-50/30 to-slate-50 dark:from-zinc-900 dark:via-blue-950/30 dark:to-zinc-900 shadow-sm lg:aspect-auto lg:min-h-[400px]">
-              <div className="text-center">
-                <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-[#00a9e0]/5 dark:bg-[#00a9e0]/10">
-                  <MapPinIcon className="h-10 w-10 text-[#00a9e0]" aria-hidden="true" />
-                </div>
-                <p className="mt-4 text-lg font-semibold text-zinc-900 dark:text-zinc-50">
-                  Greater Portsmouth — 45 mi Radius
-                </p>
-                <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
-                  NH &middot; ME &middot; MA
-                </p>
-                <p className="mt-4 text-xs text-zinc-400">
-                  Interactive map coming soon
-                </p>
-              </div>
+            {/* Interactive Map */}
+            <div className="lg:min-h-[400px]">
+              <LandingMap />
             </div>
 
             {/* City list */}
@@ -365,12 +353,12 @@ export default function LandingPage() {
                 <p className="text-sm font-medium text-zinc-800 dark:text-zinc-200">
                   Expanding beyond the Seacoast in 2026. Want us in your area?
                 </p>
-                <Link
-                  href="#"
+                <a
+                  href="mailto:support@thesherpapros.com?subject=Request%20Service%20in%20My%20Area&body=I'd%20like%20Sherpa%20Pros%20to%20serve%20my%20area.%20My%20zip%20code%20is%20"
                   className="mt-2 inline-flex text-sm font-semibold text-[#00a9e0] transition-colors hover:text-[#0ea5e9]"
                 >
                   Request your city &rarr;
-                </Link>
+                </a>
               </div>
             </div>
           </div>

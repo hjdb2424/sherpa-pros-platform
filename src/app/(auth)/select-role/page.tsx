@@ -7,7 +7,7 @@ import Logo from "@/components/brand/Logo";
 export default function SelectRolePage() {
   const [isPending, startTransition] = useTransition();
 
-  function handleSelect(role: "pro" | "client") {
+  function handleSelect(role: "pro" | "client" | "pm") {
     startTransition(() => {
       setUserRole(role);
     });
@@ -28,7 +28,7 @@ export default function SelectRolePage() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
           {/* Pro Card */}
           <button
             type="button"
@@ -108,6 +108,50 @@ export default function SelectRolePage() {
             <p className="text-sm leading-relaxed text-zinc-500 dark:text-zinc-400">
               I need a Pro for my project. Post jobs, find trusted contractors,
               and manage my home projects.
+            </p>
+            <div className="mt-6 flex items-center text-sm font-medium text-[#00a9e0] opacity-0 transition-opacity group-hover:opacity-100">
+              Get started
+              <svg className="ml-1.5 h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+              </svg>
+            </div>
+          </button>
+
+          {/* Property Manager Card */}
+          <button
+            type="button"
+            onClick={() => handleSelect("pm")}
+            disabled={isPending}
+            className="group relative rounded-2xl border border-zinc-200 bg-white p-8 text-left
+                       shadow-sm transition-all duration-200
+                       hover:border-[#00a9e0]/50 hover:bg-[#00a9e0]/5 hover:shadow-lg hover:shadow-[#00a9e0]/10
+                       focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00a9e0] focus-visible:ring-offset-2
+                       disabled:cursor-not-allowed disabled:opacity-50
+                       dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-[#0ea5e9]/50 dark:hover:bg-[#0ea5e9]/5"
+          >
+            <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-xl bg-[#00a9e0]/10 text-[#00a9e0]
+                            transition-colors group-hover:bg-[#00a9e0]/20">
+              <svg
+                className="h-7 w-7"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21"
+                />
+              </svg>
+            </div>
+            <h2 className="mb-2 text-xl font-semibold text-zinc-900 dark:text-white">
+              I&apos;m a Property Manager
+            </h2>
+            <p className="text-sm leading-relaxed text-zinc-500 dark:text-zinc-400">
+              I manage commercial or residential properties. Track work orders,
+              vendors, compliance, and portfolio analytics.
             </p>
             <div className="mt-6 flex items-center text-sm font-medium text-[#00a9e0] opacity-0 transition-opacity group-hover:opacity-100">
               Get started

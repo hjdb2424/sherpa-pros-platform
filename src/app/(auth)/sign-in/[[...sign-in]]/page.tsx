@@ -88,6 +88,15 @@ const TEST_USERS = [
     icon: WrenchScrewdriverIcon,
     color: "bg-amber-50 text-amber-600",
   },
+  {
+    name: "Lisa Park",
+    label: "Property Manager",
+    email: "pm@test.com",
+    description: "Managing commercial and residential portfolios",
+    role: "pm" as const,
+    icon: BuildingOfficeIcon,
+    color: "bg-sky-50 text-[#00a9e0]",
+  },
 ];
 
 // ---------------------------------------------------------------------------
@@ -98,6 +107,12 @@ function TestPortal() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
+  function getDestination(role: string) {
+    if (role === "client") return "/client/dashboard";
+    if (role === "pm") return "/pm/dashboard";
+    return "/pro/dashboard";
+  }
+
   function handleAccess() {
     if (!userType) return;
     setLoading(true);
@@ -106,20 +121,16 @@ function TestPortal() {
     localStorage.setItem("sherpa-test-role", userType);
     localStorage.setItem("sherpa-test-auth", "true");
 
-    const destination =
-      userType === "client" ? "/client/dashboard" : "/pro/dashboard";
-    router.push(destination);
+    router.push(getDestination(userType));
   }
 
-  function handleTestUser(role: "pro" | "client", email: string) {
+  function handleTestUser(role: "pro" | "client" | "pm", email: string) {
     setLoading(true);
     localStorage.setItem("sherpa-test-role", role);
     localStorage.setItem("sherpa-test-auth", "true");
     localStorage.setItem("sherpa-test-email", email);
 
-    const destination =
-      role === "client" ? "/client/dashboard" : "/pro/dashboard";
-    router.push(destination);
+    router.push(getDestination(role));
   }
 
   return (
@@ -206,7 +217,7 @@ function TestPortal() {
             </option>
             <option value="client">Property Owner</option>
             <option value="pro">Pro / Service Provider</option>
-            <option value="pro-manager">Pro Manager</option>
+            <option value="pm">Property Manager</option>
           </select>
 
           {/* CTA Button */}

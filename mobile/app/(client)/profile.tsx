@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -22,6 +22,8 @@ import { useAuth } from '@/lib/auth';
 import Logo from '@/components/brand/Logo';
 import { ReviewCard as ReviewCardComponent } from '@/components/reviews';
 import type { Review } from '@/components/reviews';
+import { t, getLanguage, setLanguage, getAvailableLanguages, onLanguageChange } from '@/lib/i18n';
+import type { Language } from '@/lib/i18n';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const GALLERY_ITEM_SIZE = (SCREEN_WIDTH - spacing.lg * 2 - spacing.xs * 2) / 3;
@@ -90,6 +92,15 @@ export default function ClientProfileScreen() {
 
   // FAQ expand
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
+
+  // Language
+  const [currentLang, setCurrentLang] = useState<Language>(getLanguage());
+  const [langModalVisible, setLangModalVisible] = useState(false);
+  const availableLanguages = getAvailableLanguages();
+
+  useEffect(() => {
+    return onLanguageChange((lang) => setCurrentLang(lang));
+  }, []);
 
   // Edit Review state
   const [editReviewVisible, setEditReviewVisible] = useState(false);
@@ -377,6 +388,22 @@ export default function ClientProfileScreen() {
                 ))}
               </View>
             )}
+
+            {/* Language */}
+            <Pressable
+              style={[styles.settingsRow, styles.settingsRowBorder]}
+              onPress={() => {
+                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                setLangModalVisible(true);
+              }}
+            >
+              <Ionicons name="language-outline" size={20} color={colors.textMuted} style={{ marginRight: spacing.md }} />
+              <Text style={styles.settingsLabel}>{t('profile.language')}</Text>
+              <Text style={{ ...typography.bodySmall, color: colors.textMuted, marginRight: spacing.xs }}>
+                {availableLanguages.find((l) => l.code === currentLang)?.nativeName ?? 'English'}
+              </Text>
+              <Ionicons name="chevron-forward" size={16} color={colors.textMuted} />
+            </Pressable>
 
             {/* Payment Methods */}
             <Pressable
@@ -680,6 +707,37 @@ export default function ClientProfileScreen() {
                 <Text style={styles.editModalSaveText}>Update</Text>
               </Pressable>
             </View>
+          </View>
+        </View>
+      </Modal>
+
+      {/* ─── Language Picker Modal ──────────────────────────── */}
+      <Modal visible={langModalVisible} transparent animationType="slide">
+        <View style={styles.editModalBackdrop}>
+          <Pressable style={{ flex: 1 }} onPress={() => setLangModalVisible(false)} />
+          <View style={[styles.editModalSheet, { paddingBottom: insets.bottom + spacing.lg }]}>
+            <View style={styles.editModalHandle} />
+            <Text style={styles.editModalTitle}>{t('profile.language')}</Text>
+            {availableLanguages.map((lang) => {
+              const isActive = currentLang === lang.code;
+              return (
+                <Pressable
+                  key={lang.code}
+                  style={[styles.settingsRow, styles.settingsRowBorder, isActive && { backgroundColor: colors.primaryLight }]}
+                  onPress={() => {
+                    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+                    setLanguage(lang.code);
+                    setLangModalVisible(false);
+                  }}
+                >
+                  <View style={{ flex: 1 }}>
+                    <Text style={styles.settingsLabel}>{lang.nativeName}</Text>
+                    <Text style={{ ...typography.caption, color: colors.textMuted }}>{lang.name}</Text>
+                  </View>
+                  {isActive && <Ionicons name="checkmark-circle" size={22} color={colors.primary} />}
+                </Pressable>
+              );
+            })}
           </View>
         </View>
       </Modal>

@@ -22,6 +22,9 @@ import Badge from '@/components/common/Badge';
 import Button from '@/components/common/Button';
 import { AddPhotoSheet } from '@/components/portfolio';
 import FinancingOptions from '@/components/pro/FinancingOptions';
+import PlaceBidSheet from '@/components/pro/PlaceBidSheet';
+import type { BidData } from '@/components/pro/PlaceBidSheet';
+import { t } from '@/lib/i18n';
 import TaggingSystem from '@/components/social/TaggingSystem';
 import type { Tag } from '@/components/social/TaggingSystem';
 import { ReviewCard as ReviewCardComponent, ProResponseForm } from '@/components/reviews';
@@ -183,7 +186,13 @@ export default function ProJobDetailScreen() {
   const [clientReview, setClientReview] = useState<Review>(CLIENT_REVIEW);
   const [jobPhotoSheetVisible, setJobPhotoSheetVisible] = useState(false);
 
+  const [bidSheetVisible, setBidSheetVisible] = useState(false);
+
   const job = MOCK_JOB; // In production, fetch by `id`
+
+  // Available jobs have IDs starting with 'a'
+  const isAvailableJob = id?.startsWith('a') ?? false;
+  const availableBudget = { min: 500, max: 1500 }; // Fallback for available jobs
 
   const handleBack = useCallback(() => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -300,6 +309,20 @@ export default function ProJobDetailScreen() {
 
         <Text style={styles.descriptionText}>{job.description}</Text>
       </Card>
+
+      {/* Place Bid (for available jobs) */}
+      {isAvailableJob && (
+        <Pressable
+          style={styles.sendQuoteBtn}
+          onPress={() => {
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+            setBidSheetVisible(true);
+          }}
+        >
+          <Ionicons name="pricetag-outline" size={18} color={colors.textInverse} />
+          <Text style={styles.sendQuoteBtnText}>{t('pro.placeBid')}</Text>
+        </Pressable>
+      )}
 
       {/* Quote Action */}
       {quoteSent ? (
@@ -772,6 +795,19 @@ export default function ProJobDetailScreen() {
           </View>
         </View>
       </Modal>
+
+      {/* Place Bid Sheet */}
+      {isAvailableJob && (
+        <PlaceBidSheet
+          visible={bidSheetVisible}
+          jobTitle={job.title}
+          jobBudget={availableBudget}
+          onSubmit={(bid) => {
+            console.log('Bid submitted from detail:', bid);
+          }}
+          onClose={() => setBidSheetVisible(false)}
+        />
+      )}
 
       {/* Add Note Modal */}
       <Modal visible={showNoteInput} animationType="slide" transparent>

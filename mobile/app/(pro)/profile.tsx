@@ -1,4 +1,4 @@
-import { useCallback, useState, useEffect } from 'react';
+import { useCallback, useState, useEffect, useMemo } from 'react';
 import {
   View,
   Text,
@@ -43,6 +43,8 @@ import {
   MOCK_STATS,
 } from '@/components/reviews';
 import type { Review } from '@/components/reviews';
+import { t, getLanguage, setLanguage, getAvailableLanguages, onLanguageChange } from '@/lib/i18n';
+import type { Language } from '@/lib/i18n';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -201,6 +203,15 @@ export default function ProProfileScreen() {
   const [newItemIds, setNewItemIds] = useState<Set<string>>(new Set());
   const isOwnProfile = true; // viewing own profile
 
+  // Language
+  const [currentLang, setCurrentLang] = useState<Language>(getLanguage());
+  const [langModalVisible, setLangModalVisible] = useState(false);
+  const availableLanguages = getAvailableLanguages();
+
+  useEffect(() => {
+    return onLanguageChange((lang) => setCurrentLang(lang));
+  }, []);
+
   // Edit Profile state
   const [editProfileVisible, setEditProfileVisible] = useState(false);
   const [editProName, setEditProName] = useState(PRO_PROFILE.name);
@@ -321,6 +332,7 @@ export default function ProProfileScreen() {
   }, [signOut, router]);
 
   const settingsItems: SettingsItem[] = [
+    { label: t('profile.language'), iconName: 'language-outline', onPress: () => setLangModalVisible(true) },
     { label: 'Notifications', iconName: 'notifications-outline', onPress: () => Alert.alert('Notifications', 'Push, Email, and SMS notification preferences can be managed from your device settings.') },
     { label: 'Payment Methods', iconName: 'card-outline', onPress: () => Alert.alert('Payment Methods', 'Stripe Connect is used for payouts. Manage your payout settings in the Earnings tab.') },
     { label: 'Help & Support', iconName: 'help-circle-outline', onPress: () => Linking.openURL('mailto:support@thesherpapros.com') },
@@ -718,6 +730,37 @@ export default function ProProfileScreen() {
           <Text style={s.versionText}>v1.0.0</Text>
         </View>
       </ScrollView>
+
+      {/* ─── Language Picker Modal ─────────────────────────── */}
+      <Modal visible={langModalVisible} transparent animationType="slide">
+        <View style={s.editModalBackdrop}>
+          <Pressable style={{ flex: 1 }} onPress={() => setLangModalVisible(false)} />
+          <View style={[s.editModalSheet, { paddingBottom: insets.bottom + spacing.lg }]}>
+            <View style={s.editModalHandle} />
+            <Text style={s.editModalTitle}>{t('profile.language')}</Text>
+            {availableLanguages.map((lang) => {
+              const isActive = currentLang === lang.code;
+              return (
+                <Pressable
+                  key={lang.code}
+                  style={[s.settingsRow, s.settingsRowBorder, isActive && { backgroundColor: colors.primaryLight }]}
+                  onPress={() => {
+                    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+                    setLanguage(lang.code);
+                    setLangModalVisible(false);
+                  }}
+                >
+                  <View style={{ flex: 1 }}>
+                    <Text style={s.settingsLabel}>{lang.nativeName}</Text>
+                    <Text style={{ ...typography.caption, color: colors.textMuted }}>{lang.name}</Text>
+                  </View>
+                  {isActive && <Ionicons name="checkmark-circle" size={22} color={colors.primary} />}
+                </Pressable>
+              );
+            })}
+          </View>
+        </View>
+      </Modal>
 
       {/* ─── Edit Profile Modal ─────────────────────────────── */}
       <Modal visible={editProfileVisible} animationType="slide" transparent>

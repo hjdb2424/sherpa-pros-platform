@@ -1,20 +1,21 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Tabs } from 'expo-router';
 import { View, Text, StyleSheet } from 'react-native';
 import * as Haptics from 'expo-haptics';
 import { Ionicons } from '@expo/vector-icons';
 import { colors } from '@/lib/theme';
 import { useNotificationListener } from '@/lib/notifications';
+import { t, onLanguageChange } from '@/lib/i18n';
 
-function TabIcon({ name, focused, badge }: { name: string; focused: boolean; badge?: number }) {
+function TabIcon({ name, focused, badge, iconKey }: { name: string; focused: boolean; badge?: number; iconKey?: string }) {
   const icons: Record<string, { outline: keyof typeof Ionicons.glyphMap; filled: keyof typeof Ionicons.glyphMap }> = {
-    Map: { outline: 'map-outline', filled: 'map' },
-    Jobs: { outline: 'briefcase-outline', filled: 'briefcase' },
-    Earnings: { outline: 'wallet-outline', filled: 'wallet' },
-    Messages: { outline: 'chatbubbles-outline', filled: 'chatbubbles' },
-    Profile: { outline: 'person-outline', filled: 'person' },
+    map: { outline: 'map-outline', filled: 'map' },
+    jobs: { outline: 'briefcase-outline', filled: 'briefcase' },
+    earnings: { outline: 'wallet-outline', filled: 'wallet' },
+    messages: { outline: 'chatbubbles-outline', filled: 'chatbubbles' },
+    profile: { outline: 'person-outline', filled: 'person' },
   };
-  const entry = icons[name] ?? { outline: 'ellipse-outline', filled: 'ellipse' };
+  const entry = icons[iconKey ?? name.toLowerCase()] ?? { outline: 'ellipse-outline', filled: 'ellipse' };
   const iconName = focused ? entry.filled : entry.outline;
   return (
     <View style={styles.tabIcon}>
@@ -33,6 +34,12 @@ function TabIcon({ name, focused, badge }: { name: string; focused: boolean; bad
 
 export default function ProLayout() {
   const [notifCount, setNotifCount] = useState(0);
+  const [, setLangTick] = useState(0);
+
+  // Re-render tabs when language changes
+  useEffect(() => {
+    return onLanguageChange(() => setLangTick((n) => n + 1));
+  }, []);
 
   // Increment badge count when notifications arrive
   useNotificationListener(() => {
@@ -54,11 +61,11 @@ export default function ProLayout() {
     >
       <Tabs.Screen
         name="index"
-        options={{ title: 'Map', tabBarIcon: ({ focused }) => <TabIcon name="Map" focused={focused} /> }}
+        options={{ title: t('nav.map'), tabBarIcon: ({ focused }) => <TabIcon name={t('nav.map')} iconKey="map" focused={focused} /> }}
       />
       <Tabs.Screen
         name="jobs/index"
-        options={{ title: 'Jobs', tabBarIcon: ({ focused }) => <TabIcon name="Jobs" focused={focused} badge={notifCount} /> }}
+        options={{ title: t('nav.jobs'), tabBarIcon: ({ focused }) => <TabIcon name={t('nav.jobs')} iconKey="jobs" focused={focused} badge={notifCount} /> }}
       />
       <Tabs.Screen
         name="jobs/[id]"
@@ -69,15 +76,15 @@ export default function ProLayout() {
       />
       <Tabs.Screen
         name="earnings"
-        options={{ title: 'Earnings', tabBarIcon: ({ focused }) => <TabIcon name="Earnings" focused={focused} /> }}
+        options={{ title: t('nav.earnings'), tabBarIcon: ({ focused }) => <TabIcon name={t('nav.earnings')} iconKey="earnings" focused={focused} /> }}
       />
       <Tabs.Screen
         name="messages"
-        options={{ title: 'Messages', tabBarIcon: ({ focused }) => <TabIcon name="Messages" focused={focused} /> }}
+        options={{ title: t('nav.messages'), tabBarIcon: ({ focused }) => <TabIcon name={t('nav.messages')} iconKey="messages" focused={focused} /> }}
       />
       <Tabs.Screen
         name="profile"
-        options={{ title: 'Profile', tabBarIcon: ({ focused }) => <TabIcon name="Profile" focused={focused} /> }}
+        options={{ title: t('nav.profile'), tabBarIcon: ({ focused }) => <TabIcon name={t('nav.profile')} iconKey="profile" focused={focused} /> }}
       />
       <Tabs.Screen
         name="earnings-detail"

@@ -1,22 +1,24 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Tabs } from 'expo-router';
 import { View, Text, StyleSheet } from 'react-native';
 import * as Haptics from 'expo-haptics';
 import { Ionicons } from '@expo/vector-icons';
 import { colors } from '@/lib/theme';
 import { useNotificationListener } from '@/lib/notifications';
+import { t, onLanguageChange } from '@/lib/i18n';
 
-function TabIcon({ name, focused, badge }: { name: string; focused: boolean; badge?: number }) {
+function TabIcon({ name, focused, badge, iconKey }: { name: string; focused: boolean; badge?: number; iconKey?: string }) {
   const icons: Record<string, { outline: keyof typeof Ionicons.glyphMap; filled: keyof typeof Ionicons.glyphMap }> = {
-    Map: { outline: 'map-outline', filled: 'map' },
-    Jobs: { outline: 'briefcase-outline', filled: 'briefcase' },
-    Messages: { outline: 'chatbubbles-outline', filled: 'chatbubbles' },
-    Profile: { outline: 'person-outline', filled: 'person' },
-    Emergency: { outline: 'alert-circle-outline', filled: 'alert-circle' },
+    map: { outline: 'map-outline', filled: 'map' },
+    jobs: { outline: 'briefcase-outline', filled: 'briefcase' },
+    messages: { outline: 'chatbubbles-outline', filled: 'chatbubbles' },
+    profile: { outline: 'person-outline', filled: 'person' },
+    emergency: { outline: 'alert-circle-outline', filled: 'alert-circle' },
   };
-  const entry = icons[name] ?? { outline: 'ellipse-outline', filled: 'ellipse' };
+  const key = iconKey ?? name.toLowerCase();
+  const entry = icons[key] ?? { outline: 'ellipse-outline', filled: 'ellipse' };
   const iconName = focused ? entry.filled : entry.outline;
-  const isEmergency = name === 'Emergency';
+  const isEmergency = key === 'emergency';
   const iconColor = focused
     ? isEmergency ? colors.danger : colors.primary
     : colors.textMuted;
@@ -43,6 +45,11 @@ function TabIcon({ name, focused, badge }: { name: string; focused: boolean; bad
 
 export default function ClientLayout() {
   const [notifCount, setNotifCount] = useState(0);
+  const [, setLangTick] = useState(0);
+
+  useEffect(() => {
+    return onLanguageChange(() => setLangTick((n) => n + 1));
+  }, []);
 
   useNotificationListener(() => {
     setNotifCount((prev) => prev + 1);
@@ -63,11 +70,11 @@ export default function ClientLayout() {
     >
       <Tabs.Screen
         name="index"
-        options={{ title: 'Map', tabBarIcon: ({ focused }) => <TabIcon name="Map" focused={focused} /> }}
+        options={{ title: t('nav.map'), tabBarIcon: ({ focused }) => <TabIcon name={t('nav.map')} iconKey="map" focused={focused} /> }}
       />
       <Tabs.Screen
         name="my-jobs/index"
-        options={{ title: 'Jobs', tabBarIcon: ({ focused }) => <TabIcon name="Jobs" focused={focused} badge={notifCount} /> }}
+        options={{ title: t('nav.jobs'), tabBarIcon: ({ focused }) => <TabIcon name={t('nav.jobs')} iconKey="jobs" focused={focused} badge={notifCount} /> }}
       />
       <Tabs.Screen
         name="my-jobs/[id]"
@@ -78,15 +85,15 @@ export default function ClientLayout() {
       />
       <Tabs.Screen
         name="messages"
-        options={{ title: 'Messages', tabBarIcon: ({ focused }) => <TabIcon name="Messages" focused={focused} /> }}
+        options={{ title: t('nav.messages'), tabBarIcon: ({ focused }) => <TabIcon name={t('nav.messages')} iconKey="messages" focused={focused} /> }}
       />
       <Tabs.Screen
         name="profile"
-        options={{ title: 'Profile', tabBarIcon: ({ focused }) => <TabIcon name="Profile" focused={focused} /> }}
+        options={{ title: t('nav.profile'), tabBarIcon: ({ focused }) => <TabIcon name={t('nav.profile')} iconKey="profile" focused={focused} /> }}
       />
       <Tabs.Screen
         name="emergency"
-        options={{ title: 'Emergency', tabBarIcon: ({ focused }) => <TabIcon name="Emergency" focused={focused} /> }}
+        options={{ title: t('nav.emergency'), tabBarIcon: ({ focused }) => <TabIcon name={t('nav.emergency')} iconKey="emergency" focused={focused} /> }}
       />
       <Tabs.Screen
         name="post-job/index"

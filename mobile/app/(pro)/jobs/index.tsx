@@ -18,6 +18,9 @@ import Badge from '@/components/common/Badge';
 import Button from '@/components/common/Button';
 import SkeletonCard from '@/components/common/SkeletonCard';
 import { apiFetch } from '@/lib/api';
+import PlaceBidSheet from '@/components/pro/PlaceBidSheet';
+import type { BidData } from '@/components/pro/PlaceBidSheet';
+import { t } from '@/lib/i18n';
 
 type TabKey = 'available' | 'bids' | 'active' | 'completed';
 
@@ -120,6 +123,9 @@ export default function ProJobsScreen() {
   const [refreshing, setRefreshing] = useState(false);
   const [loading, setLoading] = useState(true);
   const [availableJobs, setAvailableJobs] = useState<AvailableJob[]>(AVAILABLE_JOBS);
+  const [bidSheetVisible, setBidSheetVisible] = useState(false);
+  const [bidSheetJob, setBidSheetJob] = useState<AvailableJob | null>(null);
+  const [bidSheetPrefill, setBidSheetPrefill] = useState<number | undefined>(undefined);
 
   useEffect(() => {
     apiFetch<any>('/jobs?status=open')
@@ -146,9 +152,23 @@ export default function ProJobsScreen() {
     router.push(`/(pro)/jobs/${id}`);
   }, [router]);
 
-  const handleQuickBid = useCallback(() => {
+  const handleQuickBid = useCallback((job: AvailableJob) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-    Alert.alert('Quick Bid', 'Bidding flow coming in next update');
+    setBidSheetJob(job);
+    setBidSheetPrefill(Math.round((job.budgetMin + job.budgetMax) / 2));
+    setBidSheetVisible(true);
+  }, []);
+
+  const handlePlaceBid = useCallback((job: AvailableJob) => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    setBidSheetJob(job);
+    setBidSheetPrefill(undefined);
+    setBidSheetVisible(true);
+  }, []);
+
+  const handleBidSubmit = useCallback((bid: BidData) => {
+    // In production, send bid to API
+    console.log('Bid submitted:', bid);
   }, []);
 
   const renderStars = (count: number) => {
@@ -186,7 +206,7 @@ export default function ProJobsScreen() {
             <Text style={styles.budgetText}>
               ${item.budgetMin.toLocaleString()} - ${item.budgetMax.toLocaleString()}
             </Text>
-            <Button title="Quick Bid" onPress={handleQuickBid} size="sm" />
+            <Button title={t('pro.quickBid')} onPress={() => handleQuickBid(item)} size="sm" />
           </View>
         </Card>
       </Pressable>
@@ -341,6 +361,20 @@ export default function ProJobsScreen() {
       </View>
 
       {renderContent()}
+
+      {/* Place Bid Sheet */}
+      {bidSheetJob && (
+        <PlaceBidSheet
+          visible={bidSheetVisible}
+          jobTitle={bidSheetJob.title}
+          jobBudget={{ min: bidSheetJob.budgetMin, max: bidSheetJob.budgetMax }}
+          onSubmit={handleBidSubmit}
+          onClose={() => {
+            setBidSheetVisible(false);
+            setBidSheetJob(null);
+          }}
+        />
+      )}
     </View>
   );
 }

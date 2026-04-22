@@ -19,6 +19,7 @@ import Badge from '@/components/common/Badge';
 import Button from '@/components/common/Button';
 import Avatar from '@/components/common/Avatar';
 import MaterialsFlow from '@/components/checklist/MaterialsFlow';
+import { t } from '@/lib/i18n';
 import type { Material } from '@/components/checklist/MaterialsFlow';
 import EstimateDocument from '@/components/quotes/EstimateDocument';
 import type { QuoteData } from '@/components/quotes/EstimateDocument';
@@ -81,6 +82,25 @@ const REVIEW_BADGE: Record<string, { label: string; variant: 'success' | 'warnin
   warning: { label: 'Warning', variant: 'warning' },
   flagged: { label: 'Flagged', variant: 'danger' },
 };
+
+// ---------------------------------------------------------------------------
+// Mock bids
+// ---------------------------------------------------------------------------
+interface MockBid {
+  id: string;
+  proName: string;
+  proInitials: string;
+  amount: number;
+  duration: string;
+  message: string;
+  rating: number;
+}
+
+const MOCK_BIDS: MockBid[] = [
+  { id: 'b1', proName: 'Mike Rodriguez', proInitials: 'MR', amount: 1200, duration: '3-5 days', message: 'I can start next week. 15 years experience with bathroom remodels.', rating: 4.9 },
+  { id: 'b2', proName: 'Sarah Chen', proInitials: 'SC', amount: 1450, duration: '5-7 days', message: 'Certified plumber. I include a 1-year warranty on all work.', rating: 4.8 },
+  { id: 'b3', proName: 'James Wilson', proInitials: 'JW', amount: 980, duration: '2-3 days', message: 'Quick turnaround. Materials included in my price.', rating: 4.7 },
+];
 
 // ---------------------------------------------------------------------------
 // Component
@@ -171,6 +191,7 @@ export default function ClientJobDetailScreen() {
   const [showWriteReview, setShowWriteReview] = useState(false);
   const [reviewDismissed, setReviewDismissed] = useState(false);
   const [reviewSubmitted, setReviewSubmitted] = useState(false);
+  const [acceptedBidId, setAcceptedBidId] = useState<string | null>(null);
   const hasQuote = true; // Mock: always show for demo
   const isCompleted = true; // Mock: show review prompt for demo
 
@@ -294,6 +315,58 @@ export default function ClientJobDetailScreen() {
             </View>
           </Card>
         )}
+
+        {/* Bids Received */}
+        <Card style={styles.section} variant="elevated">
+          <View style={styles.bidsHeader}>
+            <Ionicons name="pricetags-outline" size={20} color={colors.primary} />
+            <Text style={styles.sectionTitle}>
+              {t('client.bidsReceived', { count: MOCK_BIDS.length })}
+            </Text>
+          </View>
+          {MOCK_BIDS.map((bid) => {
+            const isAccepted = acceptedBidId === bid.id;
+            return (
+              <View key={bid.id} style={[styles.bidCard, isAccepted && styles.bidCardAccepted]}>
+                <View style={styles.bidCardHeader}>
+                  <Avatar initials={bid.proInitials} size={40} />
+                  <View style={styles.bidProInfo}>
+                    <Text style={styles.bidProName}>{bid.proName}</Text>
+                    <View style={styles.bidRatingRow}>
+                      <Ionicons name="star" size={12} color={colors.warning} />
+                      <Text style={styles.bidRatingText}>{bid.rating}</Text>
+                    </View>
+                  </View>
+                  <View style={styles.bidAmountBox}>
+                    <Text style={styles.bidAmount}>${bid.amount.toLocaleString()}</Text>
+                    <Text style={styles.bidDuration}>{bid.duration}</Text>
+                  </View>
+                </View>
+                <Text style={styles.bidMessage} numberOfLines={2}>{bid.message}</Text>
+                {isAccepted ? (
+                  <View style={styles.bidAcceptedBadge}>
+                    <Ionicons name="checkmark-circle" size={16} color={colors.success} />
+                    <Text style={styles.bidAcceptedText}>Accepted</Text>
+                  </View>
+                ) : !acceptedBidId ? (
+                  <Pressable
+                    style={styles.acceptBidBtn}
+                    onPress={() => {
+                      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+                      setAcceptedBidId(bid.id);
+                      Alert.alert(
+                        t('client.acceptBid'),
+                        t('client.bidAccepted', { name: bid.proName }),
+                      );
+                    }}
+                  >
+                    <Text style={styles.acceptBidBtnText}>{t('client.acceptBid')}</Text>
+                  </Pressable>
+                ) : null}
+              </View>
+            );
+          })}
+        </Card>
 
         {/* Quote Received Card */}
         {hasQuote && !quoteAccepted && (
@@ -594,6 +667,93 @@ const styles = StyleSheet.create({
     paddingTop: spacing.md,
     borderTopWidth: 1,
     borderTopColor: colors.borderLight,
+  },
+
+  // Bids
+  bidsHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+    marginBottom: spacing.md,
+  },
+  bidCard: {
+    backgroundColor: colors.surfaceSecondary,
+    borderRadius: borderRadius.md,
+    padding: spacing.md,
+    marginBottom: spacing.md,
+    borderWidth: 1,
+    borderColor: colors.borderLight,
+  },
+  bidCardAccepted: {
+    borderColor: colors.success,
+    backgroundColor: colors.successLight,
+  },
+  bidCardHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: spacing.sm,
+  },
+  bidProInfo: {
+    flex: 1,
+    marginLeft: spacing.sm,
+  },
+  bidProName: {
+    ...typography.bodySmall,
+    fontWeight: '600',
+    color: colors.text,
+  },
+  bidRatingRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 2,
+    marginTop: 2,
+  },
+  bidRatingText: {
+    ...typography.caption,
+    fontWeight: '600',
+    color: colors.text,
+  },
+  bidAmountBox: {
+    alignItems: 'flex-end',
+  },
+  bidAmount: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: colors.primary,
+  },
+  bidDuration: {
+    ...typography.caption,
+    color: colors.textMuted,
+    marginTop: 2,
+  },
+  bidMessage: {
+    ...typography.bodySmall,
+    color: colors.textSecondary,
+    lineHeight: 20,
+    marginBottom: spacing.sm,
+  },
+  acceptBidBtn: {
+    backgroundColor: colors.primary,
+    borderRadius: borderRadius.full,
+    paddingVertical: spacing.sm,
+    alignItems: 'center',
+  },
+  acceptBidBtnText: {
+    ...typography.bodySmall,
+    fontWeight: '600',
+    color: colors.textInverse,
+  },
+  bidAcceptedBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: spacing.xs,
+    paddingVertical: spacing.sm,
+  },
+  bidAcceptedText: {
+    ...typography.bodySmall,
+    fontWeight: '600',
+    color: colors.success,
   },
 
   // Pro card

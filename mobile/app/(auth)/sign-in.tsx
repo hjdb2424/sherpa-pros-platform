@@ -16,6 +16,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '@/lib/auth';
 import { colors, shadows, spacing, borderRadius } from '@/lib/theme';
 import Logo from '@/components/brand/Logo';
+import { t } from '@/lib/i18n';
 
 interface TestUser {
   name: string;
@@ -111,7 +112,7 @@ export default function SignInScreen() {
         {/* Logo */}
         <View style={styles.logoSection}>
           <Logo size="xl" />
-          <Text style={styles.tagline}>On-demand construction services</Text>
+          <Text style={styles.tagline}>{t('auth.tagline')}</Text>
           <Text style={styles.serviceArea}>Serving NH {'\u00B7'} ME {'\u00B7'} MA</Text>
         </View>
 
@@ -131,7 +132,7 @@ export default function SignInScreen() {
           >
             <Ionicons name="logo-apple" size={20} color={colors.text} />
             <Text style={styles.socialButtonText}>
-              {signingIn === 'apple' ? 'Signing in...' : 'Continue with Apple'}
+              {signingIn === 'apple' ? t('common.loading') : t('auth.continueApple')}
             </Text>
           </Pressable>
           <Pressable
@@ -148,7 +149,7 @@ export default function SignInScreen() {
           >
             <Ionicons name="logo-google" size={18} color={colors.text} />
             <Text style={styles.socialButtonText}>
-              {signingIn === 'google' ? 'Signing in...' : 'Continue with Google'}
+              {signingIn === 'google' ? t('common.loading') : t('auth.continueGoogle')}
             </Text>
           </Pressable>
         </View>
@@ -156,7 +157,7 @@ export default function SignInScreen() {
         {/* Divider */}
         <View style={styles.divider}>
           <View style={styles.dividerLine} />
-          <Text style={styles.dividerText}>Test Accounts</Text>
+          <Text style={styles.dividerText}>{t('auth.testAccounts')}</Text>
           <View style={styles.dividerLine} />
         </View>
 

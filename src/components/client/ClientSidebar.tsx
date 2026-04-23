@@ -16,14 +16,14 @@ const NAV_ITEMS = [
     highlight: false,
   },
   {
-    label: 'Post Job',
-    href: '/client/post-job',
+    label: 'Find Pros',
+    href: '/client/find-pros',
     icon: (
       <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
       </svg>
     ),
-    highlight: true,
+    highlight: false,
   },
   {
     label: 'My Jobs',
@@ -36,11 +36,32 @@ const NAV_ITEMS = [
     highlight: false,
   },
   {
-    label: 'Find Pros',
-    href: '/client/find-pros',
+    label: 'Post a Job',
+    href: '/client/post-job',
     icon: (
       <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+      </svg>
+    ),
+    highlight: true,
+  },
+  {
+    label: 'Messages',
+    href: '/client/messages',
+    icon: (
+      <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 01-2.555-.337A5.972 5.972 0 015.41 20.97a5.969 5.969 0 01-.474-.065 4.48 4.48 0 00.978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z" />
+      </svg>
+    ),
+    highlight: false,
+    badge: 2,
+  },
+  {
+    label: 'Emergency',
+    href: '/client/emergency',
+    icon: (
+      <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
       </svg>
     ),
     highlight: false,
@@ -64,27 +85,6 @@ const NAV_ITEMS = [
       </svg>
     ),
     highlight: false,
-  },
-  {
-    label: 'Subscription',
-    href: '/client/subscription',
-    icon: (
-      <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
-      </svg>
-    ),
-    highlight: false,
-  },
-  {
-    label: 'Messages',
-    href: '/client/messages',
-    icon: (
-      <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 01-2.555-.337A5.972 5.972 0 015.41 20.97a5.969 5.969 0 01-.474-.065 4.48 4.48 0 00.978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z" />
-      </svg>
-    ),
-    highlight: false,
-    badge: 2,
   },
   {
     label: 'Referrals',
@@ -114,12 +114,12 @@ export function ClientSidebar() {
   return (
     <>
       {/* Desktop sidebar */}
-      <aside className="hidden lg:flex lg:w-64 lg:flex-col lg:border-r lg:border-zinc-200 lg:bg-white">
-        <div className="flex h-16 items-center border-b border-zinc-200 px-6">
+      <aside className="hidden lg:flex lg:w-64 lg:flex-col lg:border-r lg:border-zinc-200 lg:bg-white dark:lg:border-zinc-800 dark:lg:bg-zinc-950">
+        <div className="flex h-16 items-center border-b border-zinc-200 px-6 dark:border-zinc-800">
           <Logo size="md" />
         </div>
 
-        <nav className="flex-1 space-y-1 p-4" aria-label="Main navigation">
+        <nav className="flex-1 space-y-1 overflow-y-auto p-4" aria-label="Main navigation">
           {NAV_ITEMS.map((item) => {
             const isActive =
               pathname === item.href ||
@@ -131,10 +131,10 @@ export function ClientSidebar() {
                 href={item.href}
                 className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
                   item.highlight && !isActive
-                    ? 'bg-sky-50 text-[#00a9e0] hover:bg-sky-100'
+                    ? 'bg-sky-50 text-[#00a9e0] hover:bg-sky-100 dark:bg-[#00a9e0]/10 dark:hover:bg-[#00a9e0]/20'
                     : isActive
-                      ? 'bg-sky-50 text-[#00a9e0]'
-                      : 'text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900'
+                      ? 'bg-sky-50 text-[#00a9e0] dark:bg-[#00a9e0]/10'
+                      : 'text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-white'
                 }`}
                 aria-current={isActive ? 'page' : undefined}
               >
@@ -150,35 +150,42 @@ export function ClientSidebar() {
           })}
         </nav>
 
-        <div className="border-t border-zinc-200 p-4 space-y-3">
-          <Link
-            href="/client/dashboard"
-            className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
-              pathname === '/client/dashboard'
-                ? 'bg-sky-50 text-[#00a9e0]'
-                : 'text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900'
-            }`}
-          >
-            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-            </svg>
-            Profile
-          </Link>
-          <div className="rounded-lg bg-sky-50 p-3">
+        {/* Bottom section: Avatar/settings block only (no public profile for clients) */}
+        <div className="border-t border-zinc-200 p-4 space-y-3 dark:border-zinc-800">
+          <div className="rounded-lg bg-sky-50 p-3 dark:bg-[#00a9e0]/10">
             <p className="text-xs font-medium text-[#00a9e0]">Escrow Protected</p>
-            <p className="mt-0.5 text-[10px] text-zinc-600">
+            <p className="mt-0.5 text-[10px] text-zinc-600 dark:text-zinc-400">
               Your payments are held safely until you approve the work.
             </p>
           </div>
+
+          {/* Avatar/name block — links to settings with gear icon */}
+          <Link
+            href="/client/settings"
+            className="flex items-center gap-3 rounded-lg px-2 py-2 transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800"
+          >
+            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-amber-50 text-sm font-bold text-amber-600 dark:bg-amber-500/10 dark:text-amber-400">
+              JD
+            </div>
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-sm font-medium text-zinc-900 dark:text-white">Jamie Davis</p>
+              <p className="truncate text-xs text-zinc-500 dark:text-zinc-400">Homeowner</p>
+            </div>
+            {/* Gear icon to hint settings */}
+            <svg className="h-4 w-4 text-zinc-400 dark:text-zinc-500" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z" />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+            </svg>
+          </Link>
         </div>
       </aside>
 
       {/* Mobile bottom tabs */}
       <nav
-        className="fixed inset-x-0 bottom-0 z-50 flex border-t border-zinc-200 bg-white/95 backdrop-blur-sm lg:hidden"
+        className="fixed inset-x-0 bottom-0 z-50 flex border-t border-zinc-200 bg-white/95 backdrop-blur-sm lg:hidden dark:border-zinc-800 dark:bg-zinc-950/95"
         aria-label="Mobile navigation"
       >
-        {NAV_ITEMS.map((item) => {
+        {NAV_ITEMS.slice(0, 5).map((item) => {
           const isActive =
             pathname === item.href ||
             (item.href !== '/client/dashboard' && pathname?.startsWith(item.href));
@@ -192,7 +199,7 @@ export function ClientSidebar() {
                   ? 'text-[#00a9e0]'
                   : isActive
                     ? 'text-[#00a9e0]'
-                    : 'text-zinc-400'
+                    : 'text-zinc-400 dark:text-zinc-500'
               }`}
               aria-current={isActive ? 'page' : undefined}
             >

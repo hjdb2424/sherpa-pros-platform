@@ -33,6 +33,16 @@ const navItems = [
     ),
   },
   {
+    label: 'Messages',
+    href: '/pro/messages',
+    icon: (
+      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden="true">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.41 20.97a5.969 5.969 0 0 1-.474-.065 4.48 4.48 0 0 0 .978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25Z" />
+      </svg>
+    ),
+    badge: 3,
+  },
+  {
     label: 'Tax Center',
     href: '/pro/tax',
     icon: (
@@ -58,25 +68,6 @@ const navItems = [
         <path strokeLinecap="round" strokeLinejoin="round" d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z" />
       </svg>
     ),
-  },
-  {
-    label: 'Subscription',
-    href: '/pro/subscription',
-    icon: (
-      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden="true">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
-      </svg>
-    ),
-  },
-  {
-    label: 'Messages',
-    href: '/pro/messages',
-    icon: (
-      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden="true">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.41 20.97a5.969 5.969 0 0 1-.474-.065 4.48 4.48 0 0 0 .978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25Z" />
-      </svg>
-    ),
-    badge: 3,
   },
   {
     label: 'Referrals',
@@ -109,14 +100,14 @@ export default function ProSidebar() {
   return (
     <>
       {/* Desktop sidebar */}
-      <aside className="fixed top-0 left-0 z-40 hidden h-full w-64 flex-col border-r border-zinc-100 bg-white lg:flex dark:border-zinc-800">
+      <aside className="fixed top-0 left-0 z-40 hidden h-full w-64 flex-col border-r border-zinc-100 bg-white lg:flex dark:border-zinc-800 dark:bg-zinc-950">
         {/* Logo */}
         <div className="flex h-16 items-center px-6">
           <Logo size="md" />
         </div>
 
         {/* Nav */}
-        <nav className="flex-1 space-y-1 px-3 py-4" aria-label="Pro dashboard navigation">
+        <nav className="flex-1 space-y-1 overflow-y-auto px-3 py-4" aria-label="Pro dashboard navigation">
           {navItems.map((item) => {
             const active = isActive(item.href);
             return (
@@ -125,8 +116,8 @@ export default function ProSidebar() {
                 href={item.href}
                 className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
                   active
-                    ? 'bg-sky-50 text-[#00a9e0]'
-                    : 'text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900'
+                    ? 'bg-sky-50 text-[#00a9e0] dark:bg-[#00a9e0]/10'
+                    : 'text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-white'
                 }`}
                 aria-current={active ? 'page' : undefined}
               >
@@ -142,48 +133,59 @@ export default function ProSidebar() {
           })}
         </nav>
 
-        {/* Profile & User section */}
-        <div className="border-t border-zinc-100 p-4 space-y-3">
+        {/* Bottom section: My Profile link + Avatar/settings block */}
+        <div className="border-t border-zinc-100 p-4 space-y-3 dark:border-zinc-800">
+          {/* My Profile link — public storefront */}
           <Link
             href="/pro/profile"
-            className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
+            className={`flex items-center gap-3 rounded-lg px-3 py-2 text-[13px] font-medium transition-colors ${
               isActive('/pro/profile')
-                ? 'bg-sky-50 text-[#00a9e0]'
-                : 'text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900'
+                ? 'bg-sky-50 text-[#00a9e0] dark:bg-[#00a9e0]/10'
+                : 'text-zinc-500 hover:bg-zinc-50 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-white'
             }`}
           >
-            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden="true">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+            {/* Portfolio/user icon */}
+            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
             </svg>
-            <span>Profile</span>
+            <span>My Profile</span>
           </Link>
-          <Link href="/pro/profile" className="flex items-center gap-3 rounded-lg px-2 py-2 transition-colors hover:bg-zinc-50">
-            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-sky-50 text-sm font-bold text-[#00a9e0]">
+
+          {/* Avatar/name block — links to settings */}
+          <Link
+            href="/pro/settings"
+            className="flex items-center gap-3 rounded-lg px-2 py-2 transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800"
+          >
+            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-sky-50 text-sm font-bold text-[#00a9e0] dark:bg-[#00a9e0]/10">
               MR
             </div>
             <div className="min-w-0 flex-1">
-              <p className="truncate text-sm font-medium text-zinc-900">Marcus Rivera</p>
-              <p className="truncate text-xs text-zinc-600">Silver Tier</p>
+              <p className="truncate text-sm font-medium text-zinc-900 dark:text-white">Marcus Rivera</p>
+              <p className="truncate text-xs text-zinc-500 dark:text-zinc-400">Silver Tier</p>
             </div>
+            {/* Chevron to hint clickable */}
+            <svg className="h-4 w-4 text-zinc-400 dark:text-zinc-500" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+            </svg>
           </Link>
         </div>
       </aside>
 
       {/* Mobile top header */}
-      <header className="fixed top-0 right-0 left-0 z-40 flex h-14 items-center justify-between border-b border-zinc-100 bg-white px-4 lg:left-64 dark:border-zinc-800">
+      <header className="fixed top-0 right-0 left-0 z-40 flex h-14 items-center justify-between border-b border-zinc-100 bg-white px-4 lg:left-64 dark:border-zinc-800 dark:bg-zinc-950">
         <div className="flex items-center lg:hidden">
           <Logo size="sm" />
         </div>
 
         <div className="hidden lg:block">
-          <h2 className="text-sm font-medium text-zinc-600">Pro Dashboard</h2>
+          <h2 className="text-sm font-medium text-zinc-600 dark:text-zinc-400">Pro Dashboard</h2>
         </div>
 
         <div className="flex items-center gap-3">
           {/* Notification bell */}
           <button
             type="button"
-            className="relative flex h-10 w-10 items-center justify-center rounded-lg text-zinc-600 transition-colors hover:bg-zinc-50 hover:text-zinc-900"
+            className="relative flex h-10 w-10 items-center justify-center rounded-lg text-zinc-600 transition-colors hover:bg-zinc-50 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-white"
             aria-label="Notifications"
           >
             <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden="true">
@@ -196,9 +198,9 @@ export default function ProSidebar() {
 
           {/* Profile avatar */}
           <Link
-            href="/pro/profile"
-            className="flex h-9 w-9 items-center justify-center rounded-full bg-sky-50 text-sm font-bold text-[#00a9e0]"
-            aria-label="View profile"
+            href="/pro/settings"
+            className="flex h-9 w-9 items-center justify-center rounded-full bg-sky-50 text-sm font-bold text-[#00a9e0] dark:bg-[#00a9e0]/10"
+            aria-label="Account settings"
           >
             MR
           </Link>
@@ -210,7 +212,7 @@ export default function ProSidebar() {
         className="fixed right-0 bottom-0 left-0 z-40 flex items-stretch border-t border-zinc-200 bg-white safe-area-pb lg:hidden dark:border-zinc-800 dark:bg-zinc-900"
         aria-label="Mobile navigation"
       >
-        {navItems.map((item) => {
+        {navItems.slice(0, 5).map((item) => {
           const active = isActive(item.href);
           return (
             <Link

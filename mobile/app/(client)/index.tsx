@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { View, Text, Pressable, StyleSheet, Alert, Modal, TextInput, FlatList } from 'react-native';
+import { View, Text, Pressable, StyleSheet, Alert, Modal, TextInput, FlatList, Animated } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import * as Haptics from 'expo-haptics';
@@ -54,6 +54,35 @@ function NotificationBell() {
       <Ionicons name="notifications-outline" size={22} color={colors.text} />
       <View style={styles.bellDot} />
     </Pressable>
+  );
+}
+
+function PostJobFAB() {
+  const router = useRouter();
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 400,
+      delay: 600,
+      useNativeDriver: true,
+    }).start();
+  }, []);
+
+  return (
+    <Animated.View style={[styles.fabContainer, { opacity: fadeAnim, transform: [{ translateY: fadeAnim.interpolate({ inputRange: [0, 1], outputRange: [20, 0] }) }] }]}>
+      <Pressable
+        style={styles.fab}
+        onPress={() => {
+          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+          router.push('/(client)/post-job');
+        }}
+      >
+        <Ionicons name="construct-outline" size={20} color={colors.textInverse} />
+        <Text style={styles.fabText}>What do you need done?</Text>
+      </Pressable>
+    </Animated.View>
   );
 }
 
@@ -144,6 +173,9 @@ export default function ClientMapScreen() {
       <View style={[styles.bellWrapper, { top: insets.top + 12 }]}>
         <NotificationBell />
       </View>
+
+      {/* Post a Job FAB — Uber-style floating action */}
+      <PostJobFAB />
 
       <ProSheet
         ref={sheetRef}
@@ -277,6 +309,31 @@ const styles = StyleSheet.create({
     backgroundColor: colors.danger,
     borderWidth: 1.5,
     borderColor: '#ffffff',
+  },
+
+  // Post Job FAB
+  fabContainer: {
+    position: 'absolute',
+    bottom: 100,
+    left: spacing.lg,
+    right: spacing.lg,
+    zIndex: 10,
+    alignItems: 'center',
+  },
+  fab: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    backgroundColor: colors.primary,
+    borderRadius: borderRadius.full,
+    paddingHorizontal: spacing.xl,
+    paddingVertical: 14,
+    ...shadows.primaryGlow,
+  },
+  fabText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: colors.textInverse,
   },
 
   // Location banner

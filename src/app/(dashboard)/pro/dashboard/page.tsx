@@ -8,6 +8,7 @@ import NearbyJobsMap from '@/components/pro/NearbyJobsMap';
 import EmptyState from '@/components/EmptyState';
 import { SSPBanner } from '@/components/ai';
 import QBOConnect from '@/components/integrations/QBOConnect';
+import ProDashboardGuard from '@/components/pro/ProDashboardGuard';
 import { UserCircleIcon } from '@heroicons/react/24/outline';
 import {
   mockProProfile,
@@ -47,6 +48,7 @@ export default function ProDashboardPage() {
   const stats = mockDashboardStats;
 
   return (
+    <ProDashboardGuard>
     <div className="space-y-6">
       {/* Welcome header */}
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
@@ -60,20 +62,6 @@ export default function ProDashboardPage() {
         </div>
         <BadgeTier tier={pro.badgeTier} size="lg" />
       </div>
-
-      {/* TODO: Replace mock check with real data */}
-      {/* First-time empty state — shown when pro has no activity yet */}
-      {mockActiveJobs.length === 0 && mockActivity.length === 0 && (
-        <EmptyState
-          icon={<UserCircleIcon className="h-8 w-8" />}
-          title="Welcome to Sherpa Pros"
-          description="Complete your profile to start receiving job matches in your area. The more detail you add, the better your matches."
-          ctaLabel="Complete Profile"
-          ctaHref="/pro/profile"
-          secondaryLabel="Browse Jobs"
-          secondaryHref="/pro/jobs"
-        />
-      )}
 
       {/* Incoming dispatch alert */}
       <DispatchAlert dispatch={mockDispatch} />
@@ -285,5 +273,6 @@ export default function ProDashboardPage() {
         </section>
       </div>
     </div>
+    </ProDashboardGuard>
   );
 }

@@ -16,16 +16,16 @@ import {
 import { useState } from "react";
 
 const navItems = [
-  { label: "Dashboard", href: "/admin/dashboard", icon: HomeIcon },
-  { label: "Pros", href: "/admin/pros", icon: WrenchScrewdriverIcon },
-  { label: "Jobs", href: "/admin/jobs", icon: BriefcaseIcon },
-  { label: "Payments", href: "/admin/payments", icon: CreditCardIcon },
+  { label: "Dashboard", href: "/dashboard", icon: HomeIcon },
+  { label: "Pros", href: "/pros", icon: WrenchScrewdriverIcon },
+  { label: "Jobs", href: "/jobs", icon: BriefcaseIcon },
+  { label: "Payments", href: "/payments", icon: CreditCardIcon },
   {
     label: "Disputes",
-    href: "/admin/disputes",
+    href: "/disputes",
     icon: ExclamationTriangleIcon,
   },
-  { label: "Settings", href: "/admin/settings", icon: Cog6ToothIcon },
+  { label: "Settings", href: "/settings", icon: Cog6ToothIcon },
 ];
 
 export function AdminSidebar() {

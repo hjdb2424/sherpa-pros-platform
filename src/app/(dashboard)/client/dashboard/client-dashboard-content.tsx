@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import {
   CLIENT_STATS,
   MOCK_ACTIVITY,
@@ -18,6 +19,9 @@ import ClientOnboarding from '@/components/client/ClientOnboarding';
 import ReviewPrompt from '@/components/reviews/ReviewPrompt';
 import { getCurrentSession } from '@/lib/auth/session';
 
+const STORAGE_KEY = 'sherpa-seen-dashboard';
+const FIRST_JOB_KEY = 'sherpa-first-job-posted';
+
 const ACTIVITY_ICONS: Record<string, { icon: string; bg: string }> = {
   bid_received: { icon: '📩', bg: 'bg-blue-100' },
   pro_assigned: { icon: '✅', bg: 'bg-emerald-100' },
@@ -27,16 +31,128 @@ const ACTIVITY_ICONS: Record<string, { icon: string; bg: string }> = {
   message: { icon: '💬', bg: 'bg-zinc-100' },
 };
 
+const SERVICE_CATEGORIES = [
+  { label: 'Plumbing', icon: '🔧' },
+  { label: 'Electrical', icon: '⚡' },
+  { label: 'HVAC', icon: '❄️' },
+  { label: 'Painting', icon: '🎨' },
+  { label: 'Roofing', icon: '🏠' },
+  { label: 'Landscaping', icon: '🌿' },
+  { label: 'General Repair', icon: '🛠️' },
+  { label: 'Emergency', icon: '🚨' },
+];
+
 export function ClientDashboardContent() {
+  const router = useRouter();
   const session = getCurrentSession('client');
   const activeJobs = getActiveJobs();
   const [hasOnboarded, setHasOnboarded] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
+  const [hasPostedJob, setHasPostedJob] = useState(true); // default true to avoid flash
+
+  // Check localStorage for first-job-posted flag (demo/mock mode)
+  useEffect(() => {
+    const posted = localStorage.getItem(FIRST_JOB_KEY);
+    setHasPostedJob(posted === 'true');
+  }, []);
+
+  // First-visit redirect: send new clients with zero jobs to the post-job wizard
+  useEffect(() => {
+    const hasSeen = localStorage.getItem(STORAGE_KEY);
+    if (!hasSeen && CLIENT_STATS.activeProjects === 0) {
+      router.replace('/client/post-job?from=dashboard');
+    }
+  }, [router]);
+
+  // Determine if we should show the empty state
+  const showEmptyState = CLIENT_STATS.activeProjects === 0 && !hasPostedJob;
 
   if (showOnboarding) {
     return <ClientOnboarding />;
   }
 
+  // --- Empty state: no active jobs ---
+  if (showEmptyState) {
+    return (
+      <div className="px-4 py-6 lg:px-8">
+        {/* Welcome */}
+        <div className="mb-8">
+          <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">
+            Welcome, {session.name}
+          </h1>
+          <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+            Let&apos;s get your first project started.
+          </p>
+        </div>
+
+        {/* Hero card */}
+        <div className="mx-auto mb-10 max-w-xl">
+          <div className="relative overflow-hidden rounded-2xl border-2 border-[#00a9e0]/20 bg-gradient-to-br from-sky-50 to-white p-8 text-center shadow-lg shadow-[#00a9e0]/5 dark:from-sky-950/30 dark:to-zinc-900 dark:border-[#00a9e0]/30">
+            <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-[#00a9e0]/10">
+              <svg className="h-8 w-8 text-[#00a9e0]" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+              </svg>
+            </div>
+            <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100">
+              Post your first job in 60 seconds
+            </h2>
+            <p className="mx-auto mt-2 max-w-sm text-sm text-zinc-500 dark:text-zinc-400">
+              Describe what you need, set your budget, and get matched with verified pros in your area.
+            </p>
+            <Link
+              href="/client/post-job"
+              className="mt-6 inline-flex items-center gap-2 rounded-full bg-[#00a9e0] px-8 py-3 text-sm font-semibold text-white shadow-lg shadow-[#00a9e0]/25 transition-all hover:bg-[#0090c0] hover:shadow-xl hover:shadow-[#00a9e0]/30 active:scale-[0.98]"
+            >
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+              </svg>
+              Post a Job
+            </Link>
+
+            {/* Simulate button for demo/dev */}
+            <div className="mt-4">
+              <button
+                type="button"
+                onClick={() => {
+                  localStorage.setItem(FIRST_JOB_KEY, 'true');
+                  setHasPostedJob(true);
+                }}
+                className="text-xs text-zinc-400 underline decoration-dashed underline-offset-2 transition-colors hover:text-zinc-600 dark:hover:text-zinc-300"
+              >
+                Simulate: mark first job as posted
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Quick category picker */}
+        <div className="mx-auto mb-10 max-w-xl">
+          <h3 className="mb-4 text-center text-sm font-semibold text-zinc-700 dark:text-zinc-300">
+            Or pick a category to get started
+          </h3>
+          <div className="flex flex-wrap justify-center gap-2">
+            {SERVICE_CATEGORIES.map((cat) => (
+              <Link
+                key={cat.label}
+                href={`/client/post-job?category=${encodeURIComponent(cat.label)}`}
+                className="inline-flex items-center gap-1.5 rounded-full border border-zinc-200 bg-white px-4 py-2 text-sm font-medium text-zinc-700 shadow-sm transition-all hover:border-[#00a9e0]/40 hover:bg-sky-50 hover:text-[#00a9e0] hover:shadow-md active:scale-[0.97] dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:border-[#00a9e0]/40 dark:hover:bg-sky-950/30"
+              >
+                <span>{cat.icon}</span>
+                {cat.label}
+              </Link>
+            ))}
+          </div>
+        </div>
+
+        {/* Nearby pros map — builds confidence */}
+        <div className="mx-auto max-w-xl">
+          <NearbyProsMap />
+        </div>
+      </div>
+    );
+  }
+
+  // --- Full dashboard: user has active jobs ---
   return (
     <div className="px-4 py-6 lg:px-8">
       {/* Onboarding banner */}

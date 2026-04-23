@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getJobs, getClientJobs, createJobPosting } from "@/db/queries/jobs";
 import { getSessionFromRequest } from "@/lib/auth/session";
+import { parsePagination, paginationMeta } from "@/db/config/performance";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -8,47 +9,56 @@ export async function GET(request: Request) {
   const category = searchParams.get("category") ?? undefined;
   const hubId = searchParams.get("hubId") ?? undefined;
   const urgency = searchParams.get("urgency") ?? undefined;
-  const limit = searchParams.get("limit")
-    ? parseInt(searchParams.get("limit")!, 10)
-    : undefined;
-  const offset = searchParams.get("offset")
-    ? parseInt(searchParams.get("offset")!, 10)
-    : undefined;
+  const { page, limit, offset } = parsePagination(searchParams);
 
   const session = getSessionFromRequest(request);
 
   try {
     let jobs;
+    let total = 0;
 
     switch (session.role) {
-      case "client":
+      case "client": {
         // Client sees only their posted jobs
-        jobs = await getClientJobs(session.userId);
+        const allClientJobs = await getClientJobs(session.userId);
         // Apply additional filters on the client's jobs
-        if (status) jobs = jobs.filter((j) => j.status === status);
-        if (category) jobs = jobs.filter((j) => j.category === category);
+        let filtered = allClientJobs;
+        if (status) filtered = filtered.filter((j) => j.status === status);
+        if (category) filtered = filtered.filter((j) => j.category === category);
+        total = filtered.length;
+        jobs = filtered.slice(offset, offset + limit);
         break;
+      }
 
       case "pro":
         // Pro sees all available jobs (marketplace) + their assigned jobs
-        // For MVP: show all with filters — real impl will add bid/assignment check
         jobs = await getJobs({ status, category, hubId, urgency, limit, offset });
+        total = jobs.length < limit ? offset + jobs.length : offset + limit + 1;
         break;
 
       case "pm":
         // PM sees jobs on their managed properties
-        // For MVP: show all with filters — real impl will join on property ownership
         jobs = await getJobs({ status, category, hubId, urgency, limit, offset });
+        total = jobs.length < limit ? offset + jobs.length : offset + limit + 1;
         break;
 
       default:
         jobs = await getJobs({ status, category, hubId, urgency, limit, offset });
+        total = jobs.length < limit ? offset + jobs.length : offset + limit + 1;
     }
 
-    return NextResponse.json({ jobs, session: { userId: session.userId, role: session.role } });
+    return NextResponse.json({
+      data: jobs,
+      pagination: paginationMeta(page, limit, total),
+      session: { userId: session.userId, role: session.role },
+    });
   } catch (error) {
     console.error("[api/jobs] GET failed:", error);
-    return NextResponse.json({ jobs: [], error: "Failed to fetch jobs" });
+    return NextResponse.json({
+      data: [],
+      pagination: paginationMeta(page, limit, 0),
+      error: "Failed to fetch jobs",
+    });
   }
 }
 

@@ -1,16 +1,18 @@
 import { NextResponse } from "next/server";
 import { query } from "@/db/connection";
 import { mockProperties, mockUnits } from "@/lib/mock-data/pm-data";
+import { parsePagination, paginationMeta } from "@/db/config/performance";
 
 /**
  * GET /api/pm/properties — List all properties for a PM user
- * Query params: ?pmUserId=...&propertyType=...&city=...
+ * Query params: ?pmUserId=...&propertyType=...&city=...&page=1&limit=25
  */
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const pmUserId = searchParams.get("pmUserId") ?? undefined;
   const propertyType = searchParams.get("propertyType") ?? undefined;
   const city = searchParams.get("city") ?? undefined;
+  const { page, limit, offset } = parsePagination(searchParams);
 
   try {
     const conditions: string[] = [];
@@ -31,9 +33,17 @@ export async function GET(request: Request) {
     }
 
     const where = conditions.length > 0 ? `WHERE ${conditions.join(" AND ")}` : "";
-    const sql = `SELECT * FROM properties ${where} ORDER BY created_at DESC`;
 
-    const rows = await query(sql, params);
+    // Count total
+    const countRows = await query(
+      `SELECT COUNT(*) as total FROM properties ${where}`,
+      params,
+    );
+    const total = Number((countRows[0] as Record<string, unknown>)?.total ?? 0);
+
+    // Paginated fetch
+    const sql = `SELECT * FROM properties ${where} ORDER BY created_at DESC LIMIT $${idx++} OFFSET $${idx++}`;
+    const rows = await query(sql, [...params, limit, offset]);
 
     // Attach unit summary per property
     const propertyIds = rows.map((r: Record<string, unknown>) => r.id);
@@ -63,7 +73,10 @@ export async function GET(request: Request) {
       },
     }));
 
-    return NextResponse.json({ properties });
+    return NextResponse.json({
+      data: properties,
+      pagination: paginationMeta(page, limit, total),
+    });
   } catch {
     // Fallback to mock data
     const filtered = mockProperties.filter((p) => {
@@ -73,7 +86,10 @@ export async function GET(request: Request) {
       return true;
     });
 
-    const properties = filtered.map((p) => {
+    const total = filtered.length;
+    const paged = filtered.slice(offset, offset + limit);
+
+    const properties = paged.map((p) => {
       const units = mockUnits.filter((u) => u.property_id === p.id);
       return {
         ...p,
@@ -86,7 +102,11 @@ export async function GET(request: Request) {
       };
     });
 
-    return NextResponse.json({ properties, _mock: true });
+    return NextResponse.json({
+      data: properties,
+      pagination: paginationMeta(page, limit, total),
+      _mock: true,
+    });
   }
 }
 

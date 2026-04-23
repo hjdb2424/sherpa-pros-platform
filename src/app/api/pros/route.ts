@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getPros, searchPros } from "@/db/queries/pros";
 import { getSessionFromRequest } from "@/lib/auth/session";
+import { parsePagination, paginationMeta } from "@/db/config/performance";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -8,12 +9,7 @@ export async function GET(request: Request) {
   const hubId = searchParams.get("hubId") ?? undefined;
   const badgeTier = searchParams.get("badgeTier") ?? undefined;
   const tradeCategory = searchParams.get("tradeCategory") ?? undefined;
-  const limit = searchParams.get("limit")
-    ? parseInt(searchParams.get("limit")!, 10)
-    : undefined;
-  const offset = searchParams.get("offset")
-    ? parseInt(searchParams.get("offset")!, 10)
-    : undefined;
+  const { page, limit, offset } = parsePagination(searchParams);
 
   const session = getSessionFromRequest(request);
 
@@ -24,11 +20,10 @@ export async function GET(request: Request) {
     const viewingSelf = searchParams.get("self") === "true";
 
     if (session.role === "pro" && viewingSelf) {
-      // Pro viewing own profile — filter to just their data
-      // For MVP with mock data, return all (real impl: WHERE user_id = session.userId)
       const pros = await getPros({ badgeTier, tradeCategory, hubId, limit: 1, offset: 0 });
       return NextResponse.json({
-        pros,
+        data: pros,
+        pagination: paginationMeta(1, 1, pros.length),
         session: { userId: session.userId, role: session.role },
       });
     }
@@ -36,20 +31,28 @@ export async function GET(request: Request) {
     // Default: marketplace view (all roles can browse)
     if (search) {
       const pros = await searchPros(search, hubId);
+      const paged = pros.slice(offset, offset + limit);
       return NextResponse.json({
-        pros,
+        data: paged,
+        pagination: paginationMeta(page, limit, pros.length),
         session: { userId: session.userId, role: session.role },
       });
     }
 
     const pros = await getPros({ badgeTier, tradeCategory, hubId, limit, offset });
+    const total = pros.length < limit ? offset + pros.length : offset + limit + 1;
     return NextResponse.json({
-      pros,
+      data: pros,
+      pagination: paginationMeta(page, limit, total),
       session: { userId: session.userId, role: session.role },
     });
   } catch (error) {
     console.error("[api/pros] GET failed:", error);
-    return NextResponse.json({ pros: [], error: "Failed to fetch pros" });
+    return NextResponse.json({
+      data: [],
+      pagination: paginationMeta(1, limit, 0),
+      error: "Failed to fetch pros",
+    });
   }
 }
 

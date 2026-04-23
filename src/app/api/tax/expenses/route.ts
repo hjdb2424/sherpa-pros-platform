@@ -14,6 +14,7 @@ import {
   categorizeExpense,
   getScheduleCMapping,
 } from "@/lib/services/tax-calculator";
+import { parsePagination, paginationMeta } from "@/db/config/performance";
 
 // ---------------------------------------------------------------------------
 // GET /api/tax/expenses — list expenses with filters
@@ -25,8 +26,7 @@ export async function GET(request: Request) {
   const taxYear = parseInt(searchParams.get("year") || "2026", 10);
   const category = searchParams.get("category");
   const source = searchParams.get("source");
-  const limit = parseInt(searchParams.get("limit") || "50", 10);
-  const offset = parseInt(searchParams.get("offset") || "0", 10);
+  const { page, limit, offset } = parsePagination(searchParams);
 
   // TODO: Replace with DB query + auth check
   let filtered = mockExpenses.filter(
@@ -63,7 +63,7 @@ export async function GET(request: Request) {
       byCategory,
     },
     scheduleCMapping: getScheduleCMapping(),
-    pagination: { limit, offset, total },
+    pagination: paginationMeta(page, limit, total),
     taxYear,
   });
 }

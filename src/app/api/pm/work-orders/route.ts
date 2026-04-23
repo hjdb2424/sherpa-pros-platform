@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server";
 import { query } from "@/db/connection";
 import { mockWorkOrders } from "@/lib/mock-data/pm-data";
+import { parsePagination, paginationMeta } from "@/db/config/performance";
 
 /**
  * GET /api/pm/work-orders — List work orders with filters
- * Query params: ?pmUserId=...&propertyId=...&status=...&priority=...&category=...&limit=...&offset=...
+ * Query params: ?pmUserId=...&propertyId=...&status=...&priority=...&category=...&page=1&limit=25
  */
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -13,12 +14,7 @@ export async function GET(request: Request) {
   const status = searchParams.get("status") ?? undefined;
   const priority = searchParams.get("priority") ?? undefined;
   const category = searchParams.get("category") ?? undefined;
-  const limit = searchParams.get("limit")
-    ? parseInt(searchParams.get("limit")!, 10)
-    : 50;
-  const offset = searchParams.get("offset")
-    ? parseInt(searchParams.get("offset")!, 10)
-    : 0;
+  const { page, limit, offset } = parsePagination(searchParams);
 
   try {
     const conditions: string[] = [];
@@ -66,7 +62,10 @@ export async function GET(request: Request) {
     const countRows = await query(countSql, params.slice(0, -2));
     const total = Number((countRows[0] as Record<string, unknown>)?.total ?? 0);
 
-    return NextResponse.json({ work_orders: workOrders, total, limit, offset });
+    return NextResponse.json({
+      data: workOrders,
+      pagination: paginationMeta(page, limit, total),
+    });
   } catch {
     // Mock fallback
     let filtered = [...mockWorkOrders];
@@ -89,10 +88,8 @@ export async function GET(request: Request) {
     const paged = filtered.slice(offset, offset + limit);
 
     return NextResponse.json({
-      work_orders: paged,
-      total,
-      limit,
-      offset,
+      data: paged,
+      pagination: paginationMeta(page, limit, total),
       _mock: true,
     });
   }

@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getSessionFromRequest } from '@/lib/auth/session';
+import { parsePagination, paginationMeta } from '@/db/config/performance';
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -454,9 +455,14 @@ export async function GET(request: Request) {
       break;
   }
 
+  // Pagination
+  const { page, limit, offset } = parsePagination(searchParams);
+  const total = filtered.length;
+  const paged = filtered.slice(offset, offset + limit);
+
   return NextResponse.json({
-    reviews: filtered,
-    total: filtered.length,
+    data: paged,
+    pagination: paginationMeta(page, limit, total),
     session: { userId: session.userId, role: session.role },
   });
 }

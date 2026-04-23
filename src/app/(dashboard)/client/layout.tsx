@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { ClientSidebar } from '@/components/client/ClientSidebar';
 
 export default function ClientLayout({
@@ -34,7 +35,7 @@ export default function ClientLayout({
             </button>
 
             {/* Profile dropdown */}
-            <button className="flex items-center gap-2 rounded-lg p-1.5 transition-colors hover:bg-zinc-100">
+            <Link href="/client/dashboard" className="flex items-center gap-2 rounded-lg p-1.5 transition-colors hover:bg-zinc-100">
               <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#1a1a2e] text-xs font-bold text-white">
                 PM
               </div>
@@ -44,7 +45,7 @@ export default function ClientLayout({
               <svg className="hidden h-4 w-4 text-zinc-400 sm:block" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
               </svg>
-            </button>
+            </Link>
           </div>
         </header>
 

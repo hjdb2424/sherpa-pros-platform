@@ -32,15 +32,6 @@ const navItems = [
       </svg>
     ),
   },
-  {
-    label: 'Profile',
-    href: '/tenant/profile',
-    icon: (
-      <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden="true">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-      </svg>
-    ),
-  },
 ];
 
 export default function TenantSidebar() {
@@ -80,9 +71,22 @@ export default function TenantSidebar() {
           })}
         </nav>
 
-        {/* User section */}
-        <div className="border-t border-zinc-100 p-4 dark:border-zinc-800">
-          <div className="flex items-center gap-3">
+        {/* Profile & User section */}
+        <div className="border-t border-zinc-100 p-4 space-y-3 dark:border-zinc-800">
+          <Link
+            href="/tenant/profile"
+            className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
+              isActive('/tenant/profile')
+                ? 'bg-sky-50 text-[#00a9e0] dark:bg-[#00a9e0]/10'
+                : 'text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-white'
+            }`}
+          >
+            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+            </svg>
+            <span>Profile</span>
+          </Link>
+          <Link href="/tenant/profile" className="flex items-center gap-3 rounded-lg px-2 py-2 transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800">
             <div className="flex h-9 w-9 items-center justify-center rounded-full bg-emerald-50 text-sm font-bold text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400">
               AR
             </div>
@@ -90,7 +94,7 @@ export default function TenantSidebar() {
               <p className="truncate text-sm font-medium text-zinc-900 dark:text-white">Alex Rivera</p>
               <p className="truncate text-xs text-zinc-500 dark:text-zinc-400">Tenant</p>
             </div>
-          </div>
+          </Link>
         </div>
       </aside>
 
@@ -112,9 +116,13 @@ export default function TenantSidebar() {
               <path strokeLinecap="round" strokeLinejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
             </svg>
           </button>
-          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-emerald-50 text-sm font-bold text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400">
+          <Link
+            href="/tenant/profile"
+            className="flex h-9 w-9 items-center justify-center rounded-full bg-emerald-50 text-sm font-bold text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400"
+            aria-label="View profile"
+          >
             AR
-          </div>
+          </Link>
         </div>
       </header>
 

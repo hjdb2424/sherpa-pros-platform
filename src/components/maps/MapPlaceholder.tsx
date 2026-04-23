@@ -22,7 +22,7 @@ export default function MapPlaceholder({
           Map View
         </h3>
         <p className="mt-1 max-w-xs text-sm text-slate-500 dark:text-zinc-400">
-          Add a Google Maps API key to enable the interactive map experience
+          Interactive map is loading. Switch to list view to browse pros now.
         </p>
       </div>
 

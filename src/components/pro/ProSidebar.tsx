@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Logo from '@/components/brand/Logo';
@@ -39,15 +38,6 @@ const navItems = [
     icon: (
       <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden="true">
         <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
-      </svg>
-    ),
-  },
-  {
-    label: 'Profile',
-    href: '/pro/profile',
-    icon: (
-      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden="true">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
       </svg>
     ),
   },
@@ -110,7 +100,6 @@ const navItems = [
 
 export default function ProSidebar() {
   const pathname = usePathname();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   function isActive(href: string) {
     if (href === '/pro/dashboard') return pathname === '/pro/dashboard';
@@ -153,9 +142,22 @@ export default function ProSidebar() {
           })}
         </nav>
 
-        {/* User section */}
-        <div className="border-t border-zinc-100 p-4">
-          <div className="flex items-center gap-3">
+        {/* Profile & User section */}
+        <div className="border-t border-zinc-100 p-4 space-y-3">
+          <Link
+            href="/pro/profile"
+            className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
+              isActive('/pro/profile')
+                ? 'bg-sky-50 text-[#00a9e0]'
+                : 'text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900'
+            }`}
+          >
+            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+            </svg>
+            <span>Profile</span>
+          </Link>
+          <Link href="/pro/profile" className="flex items-center gap-3 rounded-lg px-2 py-2 transition-colors hover:bg-zinc-50">
             <div className="flex h-9 w-9 items-center justify-center rounded-full bg-sky-50 text-sm font-bold text-[#00a9e0]">
               MR
             </div>
@@ -163,7 +165,7 @@ export default function ProSidebar() {
               <p className="truncate text-sm font-medium text-zinc-900">Marcus Rivera</p>
               <p className="truncate text-xs text-zinc-600">Silver Tier</p>
             </div>
-          </div>
+          </Link>
         </div>
       </aside>
 
@@ -193,14 +195,13 @@ export default function ProSidebar() {
           </button>
 
           {/* Profile avatar */}
-          <button
-            type="button"
+          <Link
+            href="/pro/profile"
             className="flex h-9 w-9 items-center justify-center rounded-full bg-sky-50 text-sm font-bold text-[#00a9e0]"
-            aria-label="Open profile menu"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="View profile"
           >
             MR
-          </button>
+          </Link>
         </div>
       </header>
 

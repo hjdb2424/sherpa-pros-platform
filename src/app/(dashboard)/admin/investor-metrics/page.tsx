@@ -19,6 +19,11 @@ export const revalidate = 300;
 // ---------------------------------------------------------------------------
 
 async function requireAdmin() {
+  // Skip auth gate when Clerk is not configured (dev/preview)
+  if (!process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY) {
+    return { id: "dev-admin", firstName: "Dev", lastName: "Admin" };
+  }
+
   const user = await currentUser();
   if (!user) redirect("/sign-in");
 

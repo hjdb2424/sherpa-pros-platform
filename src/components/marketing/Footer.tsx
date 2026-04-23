@@ -14,10 +14,8 @@ const footerLinks = {
     { label: 'Help Center', href: '/help' },
   ],
   Company: [
-    { label: 'About', href: '#' },
-    { label: 'Careers', href: '#' },
-    { label: 'Press', href: '#' },
-    { label: 'Contact', href: '#' },
+    { label: 'About', href: '/how-it-works' },
+    { label: 'Contact', href: 'mailto:support@thesherpapros.com' },
   ],
   App: [
     { label: 'iOS App', href: 'https://apps.apple.com/app/sherpa-pros/id0000000000' },
@@ -25,10 +23,8 @@ const footerLinks = {
     { label: 'App Features', href: '#download-app' },
   ],
   Legal: [
-    { label: 'Terms of Service', href: '#' },
-    { label: 'Privacy Policy', href: '#' },
-    { label: 'Cookie Policy', href: '#' },
-    { label: 'Licensing', href: '#' },
+    { label: 'Terms of Service', href: 'mailto:support@thesherpapros.com?subject=Terms%20of%20Service' },
+    { label: 'Privacy Policy', href: 'mailto:support@thesherpapros.com?subject=Privacy%20Policy' },
   ],
 };
 

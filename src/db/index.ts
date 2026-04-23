@@ -8,7 +8,7 @@
  */
 
 // Connection primitives
-export { getPool, sql, query } from "./connection";
+export { getPool, getSql, query } from "./connection";
 
 // Drizzle ORM instance
 export { db } from "./drizzle";

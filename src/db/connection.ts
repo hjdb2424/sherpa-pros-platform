@@ -4,6 +4,9 @@
  * Uses @neondatabase/serverless Pool for connection pooling optimized
  * for serverless environments (Vercel Functions). Each invocation reuses
  * the pool within the same warm instance and releases cleanly on cold starts.
+ *
+ * All initialization is lazy — importing this module will NOT crash when
+ * DATABASE_URL is absent. The error surfaces only when a query runs.
  */
 
 import { Pool, neon } from "@neondatabase/serverless";
@@ -35,11 +38,19 @@ export function getPool(): Pool {
 /**
  * One-shot SQL tagged-template function powered by Neon's HTTP driver.
  * Ideal for simple queries that don't need a persistent connection.
+ * Lazily initialized to avoid crashing when DATABASE_URL is not set.
  *
  * @example
- * const rows = await sql`SELECT * FROM users WHERE id = ${userId}`;
+ * const rows = await getSql()`SELECT * FROM users WHERE id = ${userId}`;
  */
-export const sql = neon(getDatabaseUrl());
+let _sql: ReturnType<typeof neon> | null = null;
+
+export function getSql() {
+  if (!_sql) {
+    _sql = neon(getDatabaseUrl());
+  }
+  return _sql;
+}
 
 /**
  * Execute a parameterized query against the pool and return typed rows.

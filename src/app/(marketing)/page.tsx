@@ -6,6 +6,7 @@ import TestimonialCard from '@/components/marketing/TestimonialCard';
 import ScrollReveal from '@/components/marketing/ScrollReveal';
 import LandingMap from '@/components/marketing/LandingMap';
 import LandingCTA from '@/components/marketing/LandingCTA';
+import AppDownload from '@/components/marketing/AppDownload';
 import {
   ClipboardDocumentListIcon,
   ShieldCheckIcon,
@@ -405,6 +406,9 @@ export default function LandingPage() {
           </div>
         </section>
       </ScrollReveal>
+
+      {/* App download section (anchored by #download-app) */}
+      <AppDownload />
 
       {/* Existing final CTA component (preserved as bottom cap) */}
       <LandingCTA />

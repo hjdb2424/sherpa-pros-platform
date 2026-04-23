@@ -285,7 +285,7 @@ export default function ForProsPage() {
           </p>
           <div className="mt-8 flex items-center justify-center gap-4">
             <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[#00a9e0] text-lg font-bold text-white">
-              PD
+              P
             </div>
             <div className="text-left">
               <p className="text-base font-semibold text-white">Phyrom</p>

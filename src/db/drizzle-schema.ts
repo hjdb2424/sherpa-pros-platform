@@ -64,6 +64,7 @@ export const hubs = pgTable(
       .default(0),
     isActive: boolean("is_active").notNull().default(true),
     config: jsonb("config").default({}),
+    metroLabel: varchar("metro_label", { length: 100 }),
     createdAt: timestamp("created_at", { withTimezone: true })
       .notNull()
       .defaultNow(),
@@ -113,6 +114,7 @@ export const pros = pgTable(
     ratingScore: integer("rating_score").default(0),
     visibilityScore: integer("visibility_score").default(0),
     badgeTier: varchar("badge_tier", { length: 10 }).default("bronze"),
+    isFoundingPro: boolean("is_founding_pro").notNull().default(false),
     joinedAt: timestamp("joined_at", { withTimezone: true })
       .notNull()
       .defaultNow(),
@@ -276,6 +278,7 @@ export const jobs = pgTable(
     permitRequired: boolean("permit_required").notNull().default(false),
     permitDetails: jsonb("permit_details").default({}),
     wisemanValidation: jsonb("wiseman_validation").default({}),
+    matchedAt: timestamp("matched_at", { withTimezone: true }),
     createdAt: timestamp("created_at", { withTimezone: true })
       .notNull()
       .defaultNow(),
@@ -290,6 +293,7 @@ export const jobs = pgTable(
     index("idx_jobs_urgency").on(table.urgency),
     index("idx_jobs_category").on(table.category),
     index("idx_jobs_created_at").on(table.createdAt),
+    index("idx_jobs_matched_at").on(table.matchedAt),
   ],
 );
 
@@ -655,5 +659,52 @@ export const jobChecklists = pgTable(
   (table) => [
     index("idx_job_checklists_job_id").on(table.jobId),
     index("idx_job_checklists_type").on(table.type),
+  ],
+);
+
+// ---------------------------------------------------------------------------
+// BETA TELEMETRY — Phase 0 traction surfaces (NPS, Wiseman events)
+// ---------------------------------------------------------------------------
+
+export const npsResponses = pgTable(
+  "nps_responses",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    role: varchar("role", { length: 10 }).notNull(),
+    score: integer("score").notNull(),
+    comment: text("comment"),
+    weekOf: date("week_of").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (table) => [
+    index("idx_nps_responses_user_id").on(table.userId),
+    index("idx_nps_responses_role").on(table.role),
+    index("idx_nps_responses_week_of").on(table.weekOf),
+  ],
+);
+
+export const wisemanEvents = pgTable(
+  "wiseman_events",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    eventType: varchar("event_type", { length: 25 }).notNull(),
+    userId: uuid("user_id").references(() => users.id, { onDelete: "set null" }),
+    jobId: uuid("job_id").references(() => jobs.id, { onDelete: "set null" }),
+    latencyMs: integer("latency_ms"),
+    payload: jsonb("payload").default({}),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (table) => [
+    index("idx_wiseman_events_event_type").on(table.eventType),
+    index("idx_wiseman_events_user_id").on(table.userId),
+    index("idx_wiseman_events_job_id").on(table.jobId),
+    index("idx_wiseman_events_created_at").on(table.createdAt),
   ],
 );

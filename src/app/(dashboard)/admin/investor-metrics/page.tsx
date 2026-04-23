@@ -703,7 +703,7 @@ export default async function InvestorMetricsPage() {
                     ? "sky"
                     : "emerald",
             }))}
-            valueFormatter={(v) => `${v} jobs`}
+            valueFormatter={(v: number) => `${v} jobs`}
             className="mt-6"
           />
           <Divider className="my-3" />

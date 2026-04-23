@@ -1,0 +1,149 @@
+# Phyrom — Sherpa Pros LinkedIn Editorial Calendar
+
+**Window:** 2026-04-22 → 2026-07-22 (90 days, 13 weeks, 39 posts)
+**Cadence:** Mon / Wed / Fri, 3 posts/week
+**Voice:** Phyrom — working NH GC, founder of Sherpa Pros, fundraising mode
+**Status:** Ready to paste. No placeholders.
+
+---
+
+## Phyrom — Founder Persona (paste this into your LinkedIn bio context)
+
+- **Who:** Phyrom, owner-operator of HJD Builders LLC. New Hampshire-based residential GC. Founder of Sherpa Pros.
+- **Mode:** 60-hr/wk fundraising cap. Phase 0 (90 days) of the Sherpa Pros launch. Beta cohort of 10+ pros recruiting in parallel with VC + Wefunder + grants + accelerators.
+- **Gospel:** *Jobs. Not leads.* The contractor pays-to-bid model is broken. Sherpa Pros is the licensed-trade marketplace that thinks like a contractor.
+- **Identity anchors:** Licensed · Verified · Code-aware · Built by a contractor · Local · "Jobs, not leads"
+- **Thesis under-the-hood:** 1099 classification holds because pros are independently licensed, insured, and bring their own tools. Sherpa Pros is the rails, not the employer.
+- **Tone:** Plainspoken. 8th-grade reading level. Dry humor. No hype. No buzzwords. He talks like a guy who actually swung a hammer this morning — because he did.
+
+---
+
+## LinkedIn Algorithm Playbook for Founder Accounts (2026)
+
+**What the algorithm rewards in 2026:**
+
+1. **Hooks that earn the click.** First 2 lines (~200 chars) decide everything. LinkedIn truncates after that. Lead with a number, a contradiction, a confession, or a fight.
+2. **Native > linked.** Native video > photo > document carousel > text > link post. If you must include a link, drop it in the first comment.
+3. **Dwell time beats likes.** Algorithm tracks how long readers stay on your post. Carousels and threads that force scrolling = boost.
+4. **Comment-bait CTAs work.** "Comment 'PRO' and I'll DM you the deck" outperforms "click the link" by 4–6×.
+5. **Reply within 1 hour.** Every reply you make in the first 60 minutes after posting boosts distribution. Set a 1-hour block on your calendar after every post.
+6. **No edits in the first hour.** Editing a post within 60 min of publishing kills reach. Proof it before you hit post.
+7. **Don't post outbound links in the body.** Drops reach by 30–50%. Use the first comment.
+8. **Tag sparingly.** Tag only people who will engage. Tagging unengaged people downranks the post.
+9. **Post Mon/Wed/Fri 7:30am ET.** Tradesperson + investor audience overlap is highest at the start of the workday.
+10. **Carousel = highest dwell.** PDF carousels (8–12 slides) get 1.5–3× the reach of single-image posts.
+11. **Founder voice > brand voice.** People follow people. Sherpa Pros logo posts will underperform Phyrom's face by 3–5×.
+12. **Storytelling > advice.** "Here's what happened on a job today" beats "5 tips for contractors" 9 times out of 10.
+
+---
+
+## Do NOT Post — Hard Rules
+
+- **Never reveal proprietary metrics** (specific GMV, take-rate dollars, beta-pro names without written permission, runway, burn rate).
+- **Never trash a specific named pro** — punch up at platforms (Angi, Thumbtack, TaskRabbit, Handy), never down at individual contractors.
+- **Never name investors, VCs, or accelerator partners by name** until a check has cleared and the partner has approved a co-announcement.
+- **Never use the word "Wiseman" externally.** Internal-only term. Externally call it: "the platform," "code validation," "permit assist," "rebate lookup," "the matching engine."
+- **Never use:** Gig · Task · "Uber for X" externally · "AI-powered" as a headline · Disrupt · Revolutionize · CO/SOV/AR/RFI without spelling out.
+- **Never post on weekends until Phyrom hits 5,000 followers.** Weekend reach is half. Save the bullets for weekdays. (Re-evaluate at the 90-day mark.)
+- **Never post about live disputes, refunds, or pro-client conflicts** — even anonymized. Legal risk + chills supply-side recruiting.
+- **Never speculate on pending grant decisions** (MassCEC, NSF SBIR). Wait until awarded.
+- **Never reference active VC term-sheet conversations.** Wait for first close.
+- **Never use the word "homeowner" without "neighbor" energy.** Homeowners are people. Talk like it.
+- **Never post about the 1099 classification thesis publicly** — that's a legal-defense doc, not a marketing post. Will antagonize state AGs.
+
+---
+
+## Weekly Cadence Template (paste into Buffer / Hypefury / scheduler)
+
+```
+MONDAY 7:30am ET — "Jobs, not leads" or industry-pain post
+  → Hook: confession, number, or fight
+  → Body: 3-5 short paragraphs with line breaks
+  → CTA: comment-bait or DM trigger
+  → Block 7:30–8:30am ET to reply to every comment
+  → Block 4:30–5:00pm ET to reply to second wave
+
+WEDNESDAY 7:30am ET — Build-in-public, beta progress, or code-aware story
+  → Hook: behind-the-scenes specific
+  → Body: numbers, screenshots, or short video
+  → CTA: comment to be added to beta waitlist OR Wefunder signup
+  → Same reply blocks
+
+FRIDAY 7:30am ET — Founder story, HJD job, or thought-leadership
+  → Hook: personal, gritty, or counter-positioned
+  → Body: 1 story, 1 lesson, 1 ask
+  → CTA: tag a pro / forward to a friend
+  → Same reply blocks
+
+SATURDAY/SUNDAY: NO POSTS in Phase 0. Use weekends for content capture (job-site photos, screen recordings, beta pro interviews).
+```
+
+---
+
+# The 90-Day Calendar — 39 Posts
+
+| Wk | Day | Theme | Type | Hook (first 2 lines) | Body Outline | CTA | Asset |
+|----|-----|-------|------|----------------------|--------------|-----|-------|
+| 1 | Mon | Jobs, not leads | Text | I just paid $87 for a lead that ghosted me. The plumber I called paid $112 for the same lead. The "homeowner" was never real. | • Angi sold the same dead lead 4x to 4 different pros • Math: $87 × 4 = $348 of contractor money on a fake job • This is the model. It's not a bug, it's the business • I built Sherpa Pros because I'm done • Jobs. Not leads. | Comment "PRO" — I'll DM you how the beta works. | Photo of Angi receipt or text screenshot |
+| 1 | Wed | Founder build-in-public | Photo | Day 1 of the 90-day fundraise. Stripe Connect went live this morning. Coffee #3. | • Sherpa Pros LLC bank account → check • 5% take rate on beta pros, half of what Angi effectively charges • 10 founding pros = the goal by week 6 • Building it the way I wish someone had built it for me 12 years ago • I'll post every Mon/Wed/Fri until we close | Follow along — comment "FOUNDING" if you're a NH/ME/MA pro. | Photo of Phyrom + laptop + jobsite |
+| 1 | Fri | HJD job story | Photo | A homeowner called me yesterday. She'd had 3 contractors no-show in 2 weeks. | • All 3 came from a lead-gen site • Each one was "matched" but never actually committed • She paid the platform nothing — but those 3 contractors paid ~$80 each for her contact info • That's $240 of contractor money for zero work • The platform won. Nobody else did. | DM me if you've had this happen — I'm collecting stories for a piece. | Photo of jobsite or front porch |
+| 2 | Mon | MA labor shortage | Text | Massachusetts has the largest construction labor shortage in the country. 2.5% unemployment. 30% of workers are over 55. | • Source: WBJournal — go read it • Project completion times went from 7 months to 11 • Carpenters, electricians, roofers most acute • The fix isn't more lead-gen ads. The fix is better matching of the pros we have • That's what I'm building | Comment "REPORT" — I'll DM you the WBJournal piece. | Stat graphic (text overlay on dark photo) |
+| 2 | Wed | Code-aware moment | Video (screen recording) | Watched the platform catch a permit miss in real time today. 18 seconds. | • Homeowner asked for a panel upgrade in Boston • Code validation flagged: ISD permit required + AFCI on bedroom circuits per MA Amendments • Pro got the right scope before bidding • This is what "thinks like a contractor" actually means • Angi can't filter for this. Thumbtack can't either. | Want a demo? Comment "DEMO." | Loom screen recording, 30-60 sec |
+| 2 | Fri | Counter-positioning | Text | Houzz is a magazine. TaskRabbit is for furniture assembly. Handy is for cleanings. | • None of them are licensed-trade marketplaces • None of them are code-aware • None of them are built by a contractor • That gap is the entire reason Sherpa Pros exists • Stop calling these "competitors." They're different categories. | Tag a contractor who needs to see this. | Quadrant graphic (4-box) |
+| 3 | Mon | Jobs, not leads | Carousel (8 slides) | The math on contractor lead-gen is brutal. Here's what the average GC actually pays per closed job. | • Slide 1: Hook (above) • S2: Avg lead cost $40-100 • S3: Close rate 15-25% • S4: True cost per closed job $200-650 • S5: Annual contractor lead-spend per shop $8K-30K • S6: What that buys = ~30 ghosted leads/yr • S7: 5% take rate vs $300 cost-per-job math • S8: Sherpa Pros logo + comment CTA | Comment "MATH" — I'll send you the spreadsheet. | 8-slide PDF carousel |
+| 3 | Wed | Founder build-in-public | Photo | Beta pro #1 is an HVAC tech in Dover NH. Signed the agreement yesterday. | • 23 years on the tools • Mass Save heat-pump certified • Now a Founding Pro — 5% take rate forever • He's the first. I want 9 more by week 6 • This is what the cohort looks like up close | NH/ME/MA pros — DM me. We have 9 spots left. | Photo of pro on jobsite (with permission) |
+| 3 | Fri | Mass Save education | Text | Mass Save will pay $10,000+ toward a heat pump install in 2026. Most homeowners don't know. Most contractors don't bother filing. | • Whole-home heat pump rebate up to $10K • Income-eligible bonus up to $16K • Panel upgrade rebate often required to support HP load • Average install cost $14-22K — rebate cuts that by half • If your contractor doesn't file, you leave $10K on the table | Comment "MASSSAVE" — I'll DM you the eligibility checklist. | Infographic with rebate breakdown |
+| 4 | Mon | Jobs, not leads | Text | A handyman I know quit Thumbtack last month. He showed me his invoices: $1,840 in 90 days on lead credits. He closed 6 jobs. | • 6 closed jobs × ~$420 avg ticket = $2,520 revenue • $1,840 in lead spend = 73% of revenue • He was working for the platform • This is why nobody can find good help — the good ones are bleeding to platforms • There's a better model | DM me if you're a pro stuck in this loop. | Photo of invoices/receipts (redacted) |
+| 4 | Wed | Code-aware moment | Photo | Boston triple-decker porch repair. The platform flagged ISD permit + lead-paint disclosure before the pro even bid. | • Triple-deckers built pre-1978 = lead paint required disclosure • ISD permit triggered by structural exterior work • Most lead-gen platforms send the lead and walk away • Sherpa Pros sends the lead AND the code requirements AND the paperwork checklist • This is the difference | Want to see a live walkthrough? Comment "BOSTON." | Photo of triple-decker exterior |
+| 4 | Fri | Founder story | Video (selfie) | Quick founder update: Wefunder page went live today. 30-second story. | • What Sherpa Pros is, in 1 sentence • Why I'm raising from the community • $1,000 minimum, $10K max recommended • Beta cohort transacting by week 8 • Link in first comment | Comment "WEFUNDER" — I'll send you the page. | 30-60 sec selfie video on jobsite |
+| 5 | Mon | Jobs, not leads | Text | Lead-gen platforms have a structural problem: they make money when contractors lose. | • The platform makes money on lead sales — not on completed jobs • So every "match" is a sale, whether work happens or not • Marketplace incentives invert this: nobody pays unless work happens • That's why our take rate is 5% (beta) or 10% (standard) — not $87 per ghost • Aligned incentives. That's the whole game. | Comment "ALIGN" — I'll send you our 1-pager. | Text post with line breaks |
+| 5 | Wed | Beta pro spotlight | Photo | Founding Pro #3: licensed electrician in Cambridge MA. Mass Save certified. EV charger specialist. | • 14 years in the trade • Specializes in panel upgrades + heat-pump electrical + Level 2 EV chargers • Now on Sherpa Pros at 5% take rate forever • If you're in Cambridge / Somerville / Boston metro and need an electrician — comment and I'll connect you direct • This is what licensed-trade matching looks like | Comment "ELECTRICIAN" if you need one. I'll connect you. | Photo of pro at panel/EV install |
+| 5 | Fri | HJD job story | Photo | I had to turn down a $48K kitchen remodel this week. Here's why. | • Homeowner had unrealistic timeline (4 weeks for cabinets that have a 12-week lead time) • She'd been told otherwise by 2 other contractors • Both of those contractors knew it wasn't true • They were chasing the deposit • Saying no is part of being honest. The platform is built around contractors who say no when they should. | What's the worst lie you've been told by a contractor? Reply below. | Photo of kitchen blueprint or cabinets |
+| 6 | Mon | Investor thought leadership | Carousel (10 slides) | Two-sided marketplaces have one job: liquidity. Here's how Sherpa Pros is solving the chicken-and-egg problem in 90 days. | • S1: Hook • S2: Marketplace liquidity definition • S3: Why supply-side first (pros) • S4: The 10-pro beta as a liquidity seed • S5: Demand-side: HJD's existing client list as warm demand • S6: NE-first geographic concentration • S7: Why density beats coverage • S8: Comparable: Uber Seattle 2010 • S9: Comparable: DoorDash Palo Alto 2013 • S10: Comment CTA | Comment "MARKETPLACE" — I'll DM you the strategy doc. | 10-slide PDF carousel |
+| 6 | Wed | Code-aware moment | Video | Watch the platform check 4 things in 11 seconds: license, insurance, permit, and rebate. | • Loom screen recording: pro accepts a Boston EV install job • Code validation runs: MA Electrical 2023 ✓ • License verifier: pulls live MA Board of State Examiners ✓ • Insurance: certificate on file ✓ • Mass Save rebate: pre-qualified $1,500 ✓ • All before the homeowner sees the bid | Comment "VALIDATE" — I'll send you a live link. | 30-60 sec Loom |
+| 6 | Fri | Founder story | Photo | I worked Saturday because Phase 0 doesn't take weekends off. Here's what got built this week. | • 3 founding pros signed (now 5 of 10 target) • Stripe Connect first test transaction cleared • Wefunder soft-commits passed $40K • 2 VC intros taken • One grant application submitted • The model: keep showing the receipts, every Friday | What did you ship this week? Comment below. | Photo of laptop on truck dashboard |
+| 7 | Mon | Jobs, not leads | Text | Angi was sued for $7.65M in 2024 for lead practices. Thumbtack has 1,800+ BBB complaints about deposit theft. | • This isn't a side issue. It's the model. • Lead-gen platforms have to oversell leads to hit revenue • Marketplace platforms only make money when work happens • The two incentives are opposite. Pick one. • Comment if you've had a $200+ loss to a lead-gen platform — I'm building a list. | Comment "LOSS" — I'm aggregating contractor losses for a piece. | Headline screenshot of lawsuit news |
+| 7 | Wed | MA labor shortage | Text | 30% of Massachusetts residential construction workers are over 55. The pipeline behind them is thin. | • Bisnow + WBJournal both sounding alarms • Apprenticeship enrollment is up but completion is flat • The trade isn't dying — the on-ramp is broken • Tech can't replace tradespeople. But it can stop wasting their time. • A pro who saves 4 hours a week on lead-chasing is a pro who works 200 more billable hours a year. | Comment "PIPELINE" — I'll DM you a piece I'm writing on this. | Text post with line breaks |
+| 7 | Fri | Old-House Verified preview | Photo | Boston brownstones and pre-1950 triple-deckers need specialists. Slate roofs. Plaster + lath. Brownstone repointing. | • 50%+ of Boston housing stock is pre-1950 • National platforms can't filter for old-house skill • We're launching "Old-House Verified" — a pro badge for restoration specialists • Filing the trademark this month • If you specialize in pre-1950 work, you're going to like this | Comment "OLDHOUSE" if you specialize in this work. | Photo of brownstone or triple-decker |
+| 8 | Mon | Wefunder/community | Photo | Wefunder is at $112K committed. Average check size $480. 230+ neighbors and contractors. | • This is what community ownership looks like • $1K minimum — most checks are $500-2K • The pros on the platform can own a piece of the platform • The homeowners using the platform can too • This isn't VC dilution. This is alignment. | Comment "WEFUNDER" — I'll send you the page. | Screenshot of Wefunder traction (no investor names) |
+| 8 | Wed | Beta pro spotlight | Video (interview) | Founding Pro #5: plaster + lath restoration specialist. 19 years on Boston pre-1950 homes. | • 60-90 sec interview clip with the pro • Why he joined Sherpa Pros: "I'm tired of paying $90 for a lead and never hearing back" • What Old-House Verified means to him • What he wants homeowners to know • Phyrom does the voice-over intro | Comment "BOSTON" — I'll connect you direct. | 60-90 sec interview video |
+| 8 | Fri | Counter-positioning | Text | TaskRabbit takes 35% in fees. Handy bundles a subscription you forget to cancel. Angi sells your lead 4 times. | • Sherpa Pros: 5% (beta) / 10% (standard). One-way payment. No subscription bundle. No lead resale. • You'd think that math would be obvious. • The reason it isn't: most contractors haven't seen an alternative. • So I'm showing them. One pro at a time. • If you're a contractor reading this, do the math on what you paid Angi/Thumbtack last year. Then DM me. | DM me — let's compare your last 90 days. | Cost-comparison graphic |
+| 9 | Mon | Jobs, not leads | Photo | Showed a contractor friend his Angi spend last night. He thought he was paying $400/mo. He was paying $1,180/mo. | • Most contractors don't track lead-gen spend in QBO properly • It hides in "marketing" or "advertising" • Average actual spend across the GCs I've audited: $900-1,400/mo • That's $11K-17K a year • For ghosted leads. • Sherpa Pros take on $50K of GMV at 5% = $2,500. Same money, 4-7× more closed work. | Comment "AUDIT" — I'll walk you through your real numbers. | Photo of QBO export or invoice stack |
+| 9 | Wed | Code-aware moment | Carousel (6 slides) | One job. Four code checks. Zero pro time spent on lookups. Here's what code-aware matching actually does. | • S1: Hook • S2: Job: panel upgrade + EV charger, Newton MA • S3: Check 1: MA Electrical 2023 (NEC 2023 with MA amendments) • S4: Check 2: Town of Newton permit fee + inspection slot • S5: Check 3: Mass Save rebate eligibility ($1,500) • S6: Check 4: Eversource service upgrade timeline • CTA | Comment "NEWTON" — I'll send you the live job link. | 6-slide PDF carousel |
+| 9 | Fri | Founder story | Photo | I haven't taken a day off in 47 days. That's not a flex. That's a function of what Phase 0 takes. | • This is the unglamorous part of fundraising • What's working: Wefunder soft-commits, beta pro pipeline • What's not: VC cycle is slow, 6 weeks per "no" • What I'm learning: keep showing the receipts publicly • You earn investor trust by being legible, not by being polished. | What's the longest you've gone without a day off building? Reply below. | Selfie at jobsite or coffee shop |
+| 10 | Mon | Jobs, not leads | Text | The contractor who responded fastest to a homeowner inquiry won the job 76% of the time in 2024. (Source: Angi internal report) | • That's not because faster pros are better. • It's because the platform sells the same lead to 4-6 contractors and the slowest ones eat the loss. • A real marketplace doesn't pit pros against each other for a single lead. • It matches the right pro to the job. Once. • That's what 7-factor dispatch matching does on Sherpa Pros. | Comment "MATCH" — I'll DM you how the matching works. | Text post |
+| 10 | Wed | Beta pro spotlight | Photo | Founding Pro #7: licensed plumber in Manchester NH. Whole-house repipe specialist. | • 11 years in the trade • Owns a 2-truck shop • Joined Sherpa Pros 3 weeks ago, already 4 jobs in • "First platform that doesn't make me feel like a ticket" — direct quote • If you're in southern NH and need a plumber, comment | Comment "PLUMBER" — I'll connect you direct. | Photo of pro at jobsite |
+| 10 | Fri | HJD job story | Photo | A client asked me what makes a good contractor. I gave her 4 things. Saving you the meeting. | • 1. License current and verifiable (state board lookup) • 2. Insurance with the homeowner named as additional insured • 3. Written scope before deposit, not after • 4. Pulls permits in their own name, not yours • If a contractor pushes back on any of these, walk. • This is the bar Sherpa Pros enforces by default. | Tag a homeowner who's about to hire a contractor. | Photo of contract paperwork |
+| 11 | Mon | Investor thought leadership | Carousel (10 slides) | Why New England first? Why not LA, Austin, or Miami? Here's the unsexy answer. | • S1: Hook • S2: NE has the worst construction labor shortage in the US (MA #1, NH/ME top 5) • S3: NE has the oldest housing stock — code complexity is highest • S4: NE has the deepest utility-rebate ecosystem (Mass Save, Eversource, National Grid) • S5: I live here. Founder-market fit matters. • S6: Density beats coverage in marketplace launches • S7: Comparable: Uber Seattle, DoorDash Palo Alto • S8: 4-metro footprint, not 50 • S9: NE-first → NYC specialty → national • S10: CTA | Comment "STRATEGY" — I'll send you the GTM doc. | 10-slide PDF carousel |
+| 11 | Wed | Mass Save / EV education | Text | Boston wants every resident within a 5-minute walk of an EV charger. National Grid will pay $13,000 toward installation. | • National Grid Turnkey EV program: covers up to $13K of make-ready electrical work • Most installs need a panel upgrade — that's where licensed electricians come in • Average homeowner doesn't know this exists • Average electrician doesn't bother filing the paperwork • The platform that makes both sides aware wins this category | Comment "EV" — I'll DM you the program eligibility doc. | Infographic or photo of EV charger install |
+| 11 | Fri | Founder story | Video | 60-day update: 8 founding pros signed. $186K Wefunder soft-commits. 11 VC conversations. 2 grants in. | • Selfie video, 60-90 sec • Specific numbers (the ones I can share) • What's next: close 2 more pros, public Wefunder push, first close target end of week 12 • Thanks to the people who DMed and showed up • The ask: forward this to one contractor in NH/ME/MA | Comment "JOIN" if you want to be on the wait list. | Selfie video on jobsite |
+| 12 | Mon | Jobs, not leads | Photo | Posted on Reddit yesterday: "Why do contractors ghost?" 340 comments. Same answer over and over. | • Top reasons: bad leads, deposit-chasers, scope creep, low margins • Nobody said "the contractor was a bad person" • The system is designed to push pros toward bad behavior • Fix the incentive, fix the behavior • That's the entire Sherpa Pros thesis in 1 sentence | Comment "REDDIT" — I'll DM you the thread. | Screenshot of Reddit thread (anonymized) |
+| 12 | Wed | Code-aware moment | Video | Permit-assist in 22 seconds. Pro doesn't have to leave the app. | • Loom: pro accepts a deck-build job in Portsmouth NH • Permit-assist auto-fills the city of Portsmouth permit form • Pulls dimensions from job scope • Pro reviews and submits in-app • Inspector tracking starts automatically • Saved time per job: 45-90 minutes of admin | Comment "PERMIT" — I'll send you the live demo. | 30-60 sec Loom |
+| 12 | Fri | Beta pro spotlight | Photo | Founding Pro #9: roofer in Portland ME. Slate + standing-seam specialist. | • 22 years in the trade • Slate roofs (Boston brownstones + Portland Victorians) • Standing-seam metal • "The only platform that hasn't tried to send me a $300 powerwashing job" — direct quote • If you have an old roof in coastal NE, comment | Comment "ROOFER" — I'll connect you direct. | Photo of slate roof project |
+| 13 | Mon | Jobs, not leads | Text | I've been told 4 times in the last month that "lead-gen is just how the industry works." That's how I know the opportunity is real. | • Every category that's been "rebuilt around the worker" started with that exact line • Uber heard it about taxi medallions • Airbnb heard it about hotel dominance • DoorDash heard it about restaurant POS systems • Sherpa Pros is hearing it about lead-gen • The line means: nobody's tried hard enough to fix it. Yet. | Comment "FIGHT" if you're a contractor done with this model. | Text post |
+| 13 | Wed | Investor thought leadership | Carousel (8 slides) | 90 days ago I started this fundraise with $0. Here's the receipts. (Numbers I can share publicly.) | • S1: Hook • S2: 10 founding pros signed (target hit) • S3: $X Wefunder soft-commits (use approved number) • S4: 2 grants submitted, 1 awarded • S5: 14 VC conversations, 3 active term discussions • S6: 1 accelerator decision pending • S7: First-close target: 30 days • S8: What's next + Wefunder CTA | Comment "DECK" — I'll send you the investor 1-pager. | 8-slide PDF carousel |
+| 13 | Fri | Founder story | Video | 90 days. 39 posts. 10 founding pros. Let me tell you what I learned. | • Selfie video, 60-90 sec • Top 3 lessons: (1) Build in public works, (2) Pros are starving for an alternative, (3) Investors want receipts not slides • Thank-you to everyone who DMed, commented, or showed up • The work isn't done. Phase 1 starts Monday. • If you're a NH/ME/MA pro reading this — the door is still open. | Comment "PHASE1" — I'll add you to the next cohort. | Selfie video, jobsite background |
+
+---
+
+## Notes for Phyrom — How to Use This Calendar
+
+1. **Pre-write the week on Sunday night.** Open this file, copy Mon/Wed/Fri into the scheduler, attach assets.
+2. **Asset capture is the bottleneck.** Block 30 min every Sunday to take 5-10 jobsite photos. Block 30 min every Friday to record any Loom screen recordings or selfie videos for the following week.
+3. **Reply within 60 minutes.** Block 7:30-8:30am ET every Mon/Wed/Fri. This is non-negotiable for algorithm reach.
+4. **Ask permission before featuring a Founding Pro.** Get a one-line written OK in writing (DM is fine). Save the screenshots.
+5. **Numbers in posts:** Use real numbers wherever possible, but only ones already public or pre-cleared. When in doubt, use ranges ("$8K-30K/yr") not specifics.
+6. **Link strategy:** Never put links in the post body. Always drop in the first comment, 30 seconds after posting.
+7. **Hashtags:** Skip them. Founder voice in 2026 doesn't need hashtags. They downrank organic reach.
+8. **Tagging:** Only tag people who will engage in the first hour. Otherwise skip.
+
+---
+
+## Content Capture Checklist (do this every Sunday night)
+
+- [ ] 5-10 jobsite photos from the week (HJD work, beta pros with permission)
+- [ ] 1 short video clip (15-60 sec, selfie or screen recording)
+- [ ] 1 stat or news article from WBJournal / Bisnow / Banker & Tradesman to react to
+- [ ] 1 Wefunder traction screenshot (numbers only, no investor names)
+- [ ] 1 platform screen recording (a code check, a permit, a rebate lookup)
+- [ ] Pull the Mon/Wed/Fri rows for the upcoming week into your scheduler

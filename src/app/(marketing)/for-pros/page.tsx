@@ -75,7 +75,7 @@ const foundingBenefits = [
     icon: MegaphoneIcon,
     title: 'Marketing exposure',
     description:
-      'We promote you. Phyrom records a free walk-the-job video at one of your sites. Your photo runs in the Mass Save and Old House Verified press push. Local PR pitches name you first.',
+      'We promote you. Phyrom records a free walk-the-job video at one of your sites. Your photo runs in the Mass Save and Old-House Verified press push. Local PR pitches name you first.',
   },
   {
     icon: ShieldCheckIcon,

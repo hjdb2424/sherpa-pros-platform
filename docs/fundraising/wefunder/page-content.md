@@ -102,7 +102,7 @@ Sherpa Pros is the licensed-trade marketplace that thinks like a contractor. Bui
 
 **3. Code-aware quote validation.** Every quote is checked against the relevant code base — NEC for electrical, IRC for general construction, MA Electrical Code, NH state code (RSA), Boston ISD permits — **before the homeowner sees the quote.** The platform catches missing line items, wrong materials, undersized panels, and code violations. Homeowner sees a green "code-checked" badge. The contractor saves the rework. The homeowner doesn't get burned.
 
-**4. Permit-aware and rebate-aware.** The platform knows which jobs need a Boston ISD permit, which qualify for **Mass Save heat-pump rebates** ($8,500 max in 2026), which qualify for **National Grid Turnkey EV charger** installation rebates, and walks both sides through the paperwork.
+**4. Permit-aware and rebate-aware.** The platform knows which jobs need a Boston ISD permit, which qualify for **Mass Save heat-pump rebates** ($10,000+ available in 2026), which qualify for **National Grid Turnkey EV charger** installation rebates, and walks both sides through the paperwork.
 
 **Built by a contractor — that's the moat.** The code-intelligence layer required a working GC plus a 3-year codebase to build. National lead-gen platforms can't copy it without a structural rebuild. They have no incentive — their entire P&L runs on lead-share fees. Ours doesn't.
 
@@ -184,7 +184,7 @@ Sherpa Pros is the licensed-trade marketplace that thinks like a contractor. Bui
 
 *[FOUNDER BIO PLACEHOLDER — confirm against docs/pitch/founder-bio.md before publishing. If file does not exist, this placeholder is the working copy.]*
 
-**Phyrom** is the founder of Sherpa Pros and a working New Hampshire general contractor. He started HJD Builders LLC in [YEAR] and has run residential and light-commercial GC operations across the Seacoast region for 12+ years. He has personally framed dwellings, managed multi-trade subs, walked inspectors through panel upgrades, fielded the 7am homeowner calls, and lived the lead-gen-platform problem from the buying side every week of his GC career. He built the broader BldSync platform — the code-intelligence layer that powers Sherpa Pros' code-aware quote validation — over the past 3 years. Sherpa Pros is the consumer-facing marketplace built on top of that foundation.
+**Phyrom** is the founder of Sherpa Pros and a working New Hampshire general contractor. He started HJD Builders LLC in [YEAR] and has run residential and light-commercial GC operations across the Seacoast region for 12+ years. He has personally framed dwellings, managed multi-trade subs, walked inspectors through panel upgrades, fielded the 7am homeowner calls, and lived the lead-gen-platform problem from the buying side every week of his GC career. He built the underlying code-intelligence layer that powers Sherpa Pros' code-aware quote validation over the past 3 years. Sherpa Pros is the consumer-facing marketplace built on top of that foundation.
 
 Phyrom is based in NH, mobile-first, and reachable directly at poum@hjd.builders.
 

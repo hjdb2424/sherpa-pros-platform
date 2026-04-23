@@ -134,7 +134,7 @@ Suffolk Technologies BOOST historically takes a **modest equity stake** for the 
 
 ## 6. Reviewer-Bias Tips for Suffolk Technologies
 
-1. **Operator-first, not technology-first.** Suffolk reviewers were construction operators before they were VCs. Lead every paragraph with the jobsite reality, not the AI/ML stack. Mention Wiseman/code-aware engine only after the operator narrative is established.
+1. **Operator-first, not technology-first.** Suffolk reviewers were construction operators before they were VCs. Lead every paragraph with the jobsite reality, not the AI/ML stack. Mention the code-aware quote validation engine only after the operator narrative is established.
 
 2. **Built-environment specificity wins over horizontal sweep.** Do not pitch "marketplace for everything." Pitch "licensed-trade marketplace for the Northern Triangle + Boston specialty lanes." Suffolk has explicitly funded vertical specialists and rejected horizontal me-toos.
 
@@ -159,7 +159,7 @@ Suffolk Technologies BOOST historically takes a **modest equity stake** for the 
 - [ ] Founder video shot on a real NH jobsite (not a Loom of slides)
 - [ ] Pitch deck PDF exported and linked
 - [ ] One-pager PDF Brand-Guardian-reviewed
-- [ ] No instance of the word "Wiseman" anywhere in the application narrative or video — externally always "code-aware quote validation" or "code intelligence layer"
+- [ ] No instance of the internal product name (see CLAUDE.md) anywhere in the application narrative or video — externally always "code-aware quote validation" or "code intelligence layer"
 - [ ] Cap table attached (Phyrom 100% pre-investment, no outstanding SAFEs)
 - [ ] Cycle window verified at https://www.suffolktechnologies.com/boost
 - [ ] Suffolk-affiliated warm intro requested before submission if available (BOOST alumni in HJD/NHHBA/MEHBA network)

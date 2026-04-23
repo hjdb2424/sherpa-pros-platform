@@ -237,11 +237,11 @@ export default function LandingPage() {
               <div className="rounded-2xl border border-[#00a9e0]/20 bg-gradient-to-br from-sky-50 to-white dark:from-sky-950 dark:to-zinc-900 p-6 shadow-sm">
                 <div className="flex items-center gap-4">
                   <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[#00a9e0] text-lg font-bold text-white">
-                    PD
+                    P
                   </div>
                   <div>
                     <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">Phyrom</p>
-                    <p className="text-xs text-zinc-500 dark:text-zinc-400">Founder · NH General Contractor</p>
+                    <p className="text-xs text-zinc-500 dark:text-zinc-400">Founder · NH General Contractor · HJD Builders LLC</p>
                   </div>
                 </div>
                 <p className="mt-4 text-sm leading-relaxed text-zinc-700 dark:text-zinc-300">

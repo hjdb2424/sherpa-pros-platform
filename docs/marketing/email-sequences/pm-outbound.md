@@ -19,7 +19,7 @@
 
 Hi {{first_name}},
 
-Phyrom Doung, founder of Sherpa Pros. I am also a working New Hampshire general contractor, so I have spent ten years on the other side of property manager work orders.
+Phyrom, founder of Sherpa Pros. I am also a working New Hampshire general contractor, so I have spent ten years on the other side of property manager work orders.
 
 Quick question. How many trade vendors does {{pm_company}} have in active rotation across your {{unit_count}} units, and how do you decide who gets the next work order when a heating call comes in at 2 am?
 

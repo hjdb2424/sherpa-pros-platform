@@ -39,7 +39,7 @@ Building Ventures has invested in:
 
 Building Ventures has **not** publicly announced an investment in:
 - Residential **dispatch marketplace** for licensed trades (the Sherpa Pros lane)
-- Code-compliance / permit-validation engines (the Wiseman lane — externally "code-aware quote validation")
+- Code-compliance / permit-validation engines (Sherpa Pros' code-aware quote validation lane)
 - Mass-market homeowner-facing service-procurement layer (everyone else's lane is enterprise/CRE)
 
 **This is the gap Sherpa Pros plants the flag in.**
@@ -197,7 +197,7 @@ Send directly to Jesse Devitte at his Building Ventures address (verifiable on t
 ## Pre-send checklist (run before EVERY email goes out)
 
 - [ ] Recipient name, title, firm, LinkedIn URL all re-verified within last 24 hours
-- [ ] No "Wiseman" anywhere in body (per spec §3.3 + CLAUDE.md naming rule). Use "code-aware quote validation" or "code intelligence layer."
+- [ ] No use of the internal product name (see CLAUDE.md) anywhere in body — use "code-aware quote validation" or "code intelligence layer"
 - [ ] No "AI-powered," "disrupt," "revolutionize," "Uber for X," "gig," "task" (per spec §3.3)
 - [ ] Founder hook in line 1 (Phyrom = working NH GC) — per spec §3.3
 - [ ] sherpa-pros-platform.vercel.app link present (live software is the credibility lever — per deck slide 5 notes)

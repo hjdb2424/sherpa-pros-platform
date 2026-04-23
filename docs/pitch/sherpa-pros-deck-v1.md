@@ -84,7 +84,7 @@ Four things no lead-gen platform does, and none of them can copy without a struc
 Side-by-side comparison table. Left column "Lead-gen platforms" (red Xs on Licensed verified, Code-aware, Permit-aware, Rebate-aware, Jobs-not-leads). Right column "Sherpa Pros" (green checks on all five). Tagline below: *"The licensed-trade marketplace that thinks like a contractor."*
 
 **Presenter notes:**
-The internal name for the code engine is "Wiseman" — never say that word externally. Externally always say "code-aware quote validation" or "code intelligence layer." (per spec §3.3) The Wiseman layer is the moat — not licensable, not easy to clone — because it required a working GC + a 3-year codebase to build.
+The code-intelligence layer is the moat — not licensable, not easy to clone — because it required a working GC plus a 3-year codebase to build. Externally always frame it as "code-aware quote validation" or "code intelligence layer."
 
 ---
 
@@ -105,7 +105,7 @@ Web at [sherpa-pros-platform.vercel.app](https://sherpa-pros-platform.vercel.app
 Three stacked mobile-frame screenshots from the live platform: (a) post-job wizard, (b) pro inbox with one accepted job + one declined, (c) homeowner-facing quote with the green "code-checked" badge. Bottom strip: tech-stack chips (Next.js · Stripe Connect · PostGIS · Clerk · Twilio).
 
 **Presenter notes:**
-**Capture three real screenshots from sherpa-pros-platform.vercel.app before the pitch — do not use mockups.** Live software is the single biggest credibility lever a pre-seed founder has. Walk the room through one job end-to-end in under 90 seconds. Reminder: the on-screen badge says **"Code-checked"** — never "Wiseman-checked." (per spec §3.3 + CLAUDE.md naming rule)
+**Capture three real screenshots from sherpa-pros-platform.vercel.app before the pitch — do not use mockups.** Live software is the single biggest credibility lever a pre-seed founder has. Walk the room through one job end-to-end in under 90 seconds. Verify before every screenshot capture that the production UI shows the **"Code-checked"** badge.
 
 ---
 
@@ -194,7 +194,7 @@ Six big-number tiles in a 2×3 grid (pros, jobs, GMV, match-time, NPS, code-viol
 **Body:**
 
 **Founder — Phyrom** (founder, HJD Builders LLC, NH)
-12+ years as a working general contractor in New Hampshire. Built and operates a multi-project residential GC business. Lived the lead-gen problem from the buy side every day for a decade. Founder of Sherpa Pros and the broader BldSync platform that powers the code-aware layer.
+12+ years as a working general contractor in New Hampshire. Built and operates a multi-project residential GC business. Lived the lead-gen problem from the buy side every day for a decade. Founder of Sherpa Pros and the underlying code-intelligence layer that powers code-aware quote validation across the platform.
 
 **Phase 1 hires (post-first-close, per spec §4.3 + §7):**
 - **Pro Success Manager** (covers NH/ME) — onboarding, retention, weekly pro check-ins
@@ -251,7 +251,7 @@ Close on the founder, not the ask. Last line should be: *"I'm a working contract
 
 ## Appendix (optional slides — not in main 10)
 
-- **A1.** Wiseman code-intelligence architecture (technical deep-dive — "code-aware layer" externally) — for technical due diligence rooms
+- **A1.** Code-intelligence architecture (technical deep-dive of the code-aware quote validation layer) — for technical due diligence rooms
 - **A2.** Risks & mitigations matrix (per spec §10) — for partner-meeting follow-up
 - **A3.** 5-year financial model (TAM/SAM/SOM build) — for term-sheet conversations
 - **A4.** Competitive analysis matrix (Angi / Thumbtack / TaskRabbit / Handy / Sherpa Pros) — for partner-meeting follow-up
@@ -264,7 +264,7 @@ Close on the founder, not the ask. Last line should be: *"I'm a working contract
 Before this deck leaves the building:
 
 - [ ] Slide 1 opens with Phyrom personally (founder story is the lead hook — per spec §3.3)
-- [ ] No instance of the word "Wiseman" anywhere visible to the investor (internal name only — per spec §3.3 + CLAUDE.md)
+- [ ] No instance of the internal product name (see CLAUDE.md) anywhere visible to the investor — externally always "code-aware quote validation" or "code intelligence layer"
 - [ ] No instance of "gig," "task," "Uber for X," "AI-powered" as a headline, "disrupt," or "revolutionize" (per spec §3.3)
 - [ ] Every abbreviation spelled out on first use: GMV (Gross Merchandise Value), NPS (Net Promoter Score), CAC, LTV, NHHBA, MEHBA, ARR, MRR (per spec §3.3 + §5.5)
 - [ ] All traction-slide placeholders (`[X beta pros]`, `[$Y GMV]`, etc.) replaced with real numbers from Stripe + dispatch logs + NPS survey, dated to within 7 days of the pitch

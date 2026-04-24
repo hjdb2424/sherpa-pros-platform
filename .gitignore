@@ -45,3 +45,6 @@ next-env.d.ts
 
 # superpowers brainstorm session files
 .superpowers/
+
+# Generated docs PDFs (regenerate with `npm run docs:pdf`)
+/docs-pdf/

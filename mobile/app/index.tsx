@@ -22,6 +22,10 @@ export default function RootIndex() {
     return <Redirect href="/(pro)" />;
   }
 
+  if (role === 'pm') {
+    return <Redirect href="/(pm)" />;
+  }
+
   return <Redirect href="/(client)" />;
 }
 

@@ -560,12 +560,15 @@ These cannot be delegated to a terminal:
 | Canonical email decision | Phyrom | Week 1 |
 | Canonical domain decision | Phyrom | Week 1 |
 | Mass Save 2026 rebate amount verification | Phyrom | Before any Mass Save mention publishes |
-| Attorney engagement (1099 classification + SAFE review + Wefunder MFN side-letter question) | Phyrom | Week 4 |
+| **Engage Vouch / Embroker / Newfront broker — Phase 0 platform insurance (CGL + Tech E&O + Cyber + Marketplace endorsement, $4K-$9K/yr realistic)** | Phyrom | Week 1, bind by Week 3 |
+| **Engage attorney for FULL package — 1099 memo + ToS + Pro Service Agreement + Work Order template + SAFE review ($10K-$15K)** | Phyrom | Week 1-2 |
 | Founder video on NH jobsite (for Suffolk, Techstars, YC, Greentown apps) | Phyrom | Week 2-3 |
 | Founder professional headshot (~$300 NH photographer) | Phyrom | Week 2-3 |
-| HJD network beta pro asks (close 6-7 to commitment) | Phyrom | Weeks 1-3 |
+| HJD network beta pro asks (close 6-7 to commitment — Project + Quick Job mix) | Phyrom | Weeks 1-3 |
 | Schema migration 005 deploy to Neon production | Phyrom + T1 | Week 1 |
 | Vercel env var add for live Stripe keys | Phyrom + T1 | Week 1 (after Stripe Connect approves) |
+| Resolve 8 open liability questions (work guarantee cap, reserve %, MA referral-service licensing, PM tier liability, specialty lane cap, Mass Save coverage, mandatory arbitration, class-action waiver enforceability) | Phyrom + attorney | Week 4 |
+| Approve Quick Job catalog + pricing bands per metro (use `docs/operations/quick-job-lane.md` §4 as starting point) | Phyrom | Phase 1 kickoff (Month 4) |
 
 ---
 

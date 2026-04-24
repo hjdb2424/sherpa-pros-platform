@@ -59,10 +59,10 @@ export default function PMLayout() {
       }}
     >
       <Tabs.Screen
-        name="index"
+        name="pros"
         options={{
-          title: 'Finance',
-          tabBarIcon: ({ focused }) => <TabIcon name="Finance" iconKey="finance" focused={focused} />,
+          title: 'Pros',
+          tabBarIcon: ({ focused }) => <TabIcon name="Pros" iconKey="pros" focused={focused} />,
         }}
       />
       <Tabs.Screen
@@ -80,10 +80,10 @@ export default function PMLayout() {
         }}
       />
       <Tabs.Screen
-        name="pros"
+        name="index"
         options={{
-          title: 'Pros',
-          tabBarIcon: ({ focused }) => <TabIcon name="Pros" iconKey="pros" focused={focused} />,
+          title: 'Finance',
+          tabBarIcon: ({ focused }) => <TabIcon name="Finance" iconKey="finance" focused={focused} />,
         }}
       />
       <Tabs.Screen

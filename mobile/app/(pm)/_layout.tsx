@@ -89,10 +89,17 @@ export default function PMLayout() {
       <Tabs.Screen
         name="work-orders"
         options={{
-          title: 'Work Orders',
+          title: 'Maintenance',
           tabBarIcon: ({ focused }) => (
-            <TabIcon name="Work Orders" iconKey="work orders" focused={focused} badge={woCount} />
+            <TabIcon name="Maint." iconKey="work orders" focused={focused} badge={woCount} />
           ),
+        }}
+      />
+      <Tabs.Screen
+        name="work-order-detail"
+        options={{
+          href: null,
+          tabBarStyle: { display: 'none' },
         }}
       />
       <Tabs.Screen

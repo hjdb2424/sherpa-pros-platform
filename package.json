@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "docs:pdf": "node scripts/build-docs-pdf.mjs"
+    "docs:pdf": "node scripts/build-docs-pdf.mjs",
+    "docs:binders": "node scripts/build-docs-binders.mjs",
+    "docs:all": "npm run docs:pdf && npm run docs:binders"
   },
   "dependencies": {
     "@clerk/nextjs": "^7.0.12",

@@ -10,10 +10,16 @@ export default function SelectRoleScreen() {
   const { switchRole } = useAuth();
   const router = useRouter();
 
-  async function handleSelect(role: 'pro' | 'client') {
+  async function handleSelect(role: 'pro' | 'client' | 'pm') {
     await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     await switchRole(role);
-    router.replace(role === 'client' ? '/(client)' : '/(pro)');
+    if (role === 'client') {
+      router.replace('/(client)');
+    } else if (role === 'pm') {
+      router.replace('/(pm)');
+    } else {
+      router.replace('/(pro)');
+    }
   }
 
   return (
@@ -41,6 +47,16 @@ export default function SelectRoleScreen() {
             </View>
             <Text style={styles.roleTitle}>I need a Pro</Text>
             <Text style={styles.roleDescription}>Post jobs, find contractors, and manage projects.</Text>
+          </Card>
+        </Pressable>
+
+        <Pressable onPress={() => handleSelect('pm')} style={({ pressed }) => [styles.cardPressable, pressed && styles.pressed]}>
+          <Card style={styles.roleCard}>
+            <View style={[styles.iconCircle, { backgroundColor: colors.primaryLight }]}>
+              <Text style={[styles.iconText, { color: colors.primary }]}>&#x1f3e2;</Text>
+            </View>
+            <Text style={styles.roleTitle}>I'm a Property Manager</Text>
+            <Text style={styles.roleDescription}>Manage properties, finances, and maintenance teams.</Text>
           </Card>
         </Pressable>
       </View>

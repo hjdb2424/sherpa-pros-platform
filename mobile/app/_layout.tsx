@@ -46,6 +46,7 @@ export default function RootLayout() {
           <Stack.Screen name="(auth)" />
           <Stack.Screen name="(client)" />
           <Stack.Screen name="(pro)" />
+          <Stack.Screen name="(pm)" />
           <Stack.Screen name="(emergency)" />
           <Stack.Screen name="notifications" />
           <Stack.Screen

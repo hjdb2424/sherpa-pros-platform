@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import * as SecureStore from 'expo-secure-store';
 
-type Role = 'pro' | 'client' | null;
+type Role = 'pro' | 'client' | 'pm' | null;
 
 interface AuthState {
   isAuthenticated: boolean;

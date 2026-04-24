@@ -21,7 +21,7 @@ import { t } from '@/lib/i18n';
 interface TestUser {
   name: string;
   email: string;
-  role: 'pro' | 'client';
+  role: 'pro' | 'client' | 'pm';
   badge: string;
   badgeColor: string;
   description: string;
@@ -47,10 +47,10 @@ const TEST_USERS: TestUser[] = [
   {
     name: 'Emily Watson',
     email: 'emily@test.com',
-    role: 'client',
-    badge: 'Client',
-    badgeColor: colors.primary,
-    description: 'Property manager, 3 buildings',
+    role: 'pm',
+    badge: 'PM',
+    badgeColor: '#8b5cf6',
+    description: 'Property manager, 3 buildings - 48 units',
   },
   {
     name: 'James Park',
@@ -59,6 +59,14 @@ const TEST_USERS: TestUser[] = [
     badge: 'Pro',
     badgeColor: colors.accent,
     description: 'Master Electrician - 4.8 stars',
+  },
+  {
+    name: 'Alex Rivera',
+    email: 'alex@test.com',
+    role: 'client',
+    badge: 'Client',
+    badgeColor: colors.primary,
+    description: 'Homeowner in Portsmouth, NH',
   },
 ];
 
@@ -95,6 +103,8 @@ export default function SignInScreen() {
       await signIn(user.role, user.name, user.email);
       if (user.role === 'pro') {
         router.replace('/(pro)');
+      } else if (user.role === 'pm') {
+        router.replace('/(pm)');
       } else {
         router.replace('/(client)');
       }

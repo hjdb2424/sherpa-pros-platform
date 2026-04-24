@@ -6,6 +6,11 @@
 **Source spec:** `docs/superpowers/specs/2026-04-22-gtm-marketing-design.md`
 **Brand audit:** `docs/pitch/brand-audit.md`
 
+**Phase 0 framework amendments (added 2026-04-24 — every terminal must read these):**
+- `docs/operations/liability-insurance-framework.md` — 4-layer liability model (pro CGL → platform CGL/E&O/Cyber → Work Guarantee → dispute workflow). **Plan §A5 budget revised: $800/yr → $4K-$9K/yr. Plan §A7 attorney scope expanded: $1.5-3K → $10-15K. New tasks A8/A9/A10 added** (Insurance Certificate Tracking, Dispute Resolution Workflow, COI verification API).
+- `docs/operations/embedded-protection-products.md` — Phase 1 white-label paid insurance products (per-job Project Protection $89/$249, annual membership $199/yr, PM portfolio protection). **Bookmark for first-close kickoff — do NOT spin up a terminal yet.**
+- `docs/operations/quick-job-lane.md` — Phase 1 small-job product mode ($200-$1,500). **Phase 0 amendment: beta cohort target 10+ → 15+** (add 4-5 Quick Job pros: dedicated handyman, small-project painter, light plumber, light electrician, move-in-ready handyman). Quick Job lane build itself is Phase 1.
+
 ---
 
 ## How to use this document
@@ -33,14 +38,16 @@
 
 ## T1 — Engineering / Code Work
 
-**Scope:** Phase 0 critical-path code from plan §A and §B (data scoping, beta finance backend, dashboard live queries).
+**Scope:** Phase 0 critical-path code from plan §A and §B (data scoping, beta finance backend, dashboard live queries) + new tasks A8/A9/A10 from liability framework amendment.
 
 **Owns these files:**
 - `src/app/api/**` (data scoping fixes per `docs/TODO-MVP-FIXES.md`)
 - `src/app/api/beta-feedback/route.ts` (new — per plan Task B4)
 - `src/app/(dashboard)/pro/feedback/page.tsx` (new — per plan Task B4)
+- `src/app/api/disputes/**` (new — per liability framework Task A9)
+- `src/app/(dashboard)/admin/disputes/**` (new — Concierge dispute view)
 - `src/lib/payments/stripe.ts` (Stripe Connect live keys per plan Task A1)
-- `src/db/migrations/006_*.sql` and onward (any new migrations needed)
+- `src/db/migrations/006_*.sql` and onward (any new migrations needed — including `pro_insurance_certificates` and `disputes` tables)
 - `tests/api/**` (TDD coverage)
 
 **Will NOT touch:**
@@ -65,6 +72,9 @@ Tasks I own (in priority order):
 2. Plan Task A3 — apply data scoping per docs/TODO-MVP-FIXES.md, TDD-style. Write failing scoping test → fix route → green test → commit per route.
 3. Plan Task B4 — beta feedback API + in-app form (use the schema already added in migration 005: nps_responses table)
 4. Deploy migration 005 to Neon production (via psql or drizzle-kit push) — coordinate timing with Phyrom
+5. **Task A8 (NEW per liability framework)** — Insurance Certificate Tracking: add `pro_insurance_certificates` table (migration 006), nightly expiry-check background job, Insurance tab on pro profile, real-time COI check at job acceptance (block if expired), Concierge admin view of expiring COIs (60/30/7 day alerts).
+6. **Task A9 (NEW per liability framework)** — Dispute Resolution Workflow: add `disputes` table, `/api/disputes` POST/GET/PUT routes, in-app dispute form on job-completion screen + 30-day post-completion access, Concierge admin view at `/admin/disputes` with triage queue + Track A (quality) and Track B (safety) flow per liability framework §7.
+7. **Task A10 (NEW per liability framework)** — Insurance verification API integration prep (Phase 0 = manual COI upload + Phase 1 = automated via Trust Layer / Evident / Certificial). Phase 0 deliverable: clean abstraction in `src/lib/insurance/verify.ts` so Phase 1 swap is trivial.
 
 Use superpowers:test-driven-development for each code task. Use superpowers:verification-before-completion before claiming any task done.
 
@@ -259,9 +269,9 @@ Pull --rebase before commit. Status updates to docs/fundraising/status/wefunder.
 
 ---
 
-## T5 — Marketing Channel Execution
+## T5 — Marketing Channel Execution + Beta Cohort Pro Recruiting
 
-**Scope:** Daily LinkedIn posting cadence, supply-house flyer distribution, NHHBA + MEHBA outreach, content calendar execution.
+**Scope:** Daily LinkedIn posting cadence, supply-house flyer distribution, NHHBA + MEHBA outreach, content calendar execution, AND beta cohort pro recruiting (Workstream B in plan — was implicit, now explicit).
 
 **Owns these files:**
 - `docs/marketing/*.md` (read-only on existing files; create new content as needed)
@@ -305,6 +315,21 @@ Tasks I own (3-week rolling cadence):
    - Client-recruiting (3 emails): for HJD existing clients onboarding
    - Pro re-engagement (3 emails): triggered for inactive Founding Pros
    - PM outbound (4 emails): B2B to property managers
+
+5. **BETA COHORT PRO RECRUITING (Weeks 1-6) — TARGET REVISED 10+ → 15+** per Phase 0 amendment for Quick Job lane (docs/operations/quick-job-lane.md §9).
+
+   Cohort composition (was 10-12, now 14-17):
+   - **Project mode pros (10-12):** 2 GCs (HJD network), 2 plumbers, 1 HVAC/heat-pump specialist, 1 painter (full-project), 1 landscaper, 1 licensed electrician (Mass Save cert preferred), 1 old-house specialist (Boston), 1 roofer, 1-2 handymen (cross-mode)
+   - **Quick Job mode pros (NEW — add 4-5):**
+     - +1 dedicated handyman (Boston metro — high Quick Job density area)
+     - +1 small-project painter (NH/ME — accent walls, single-room, drywall patches)
+     - +1 light plumber (Manchester or Portsmouth — high call volume for toilets, faucets, valves)
+     - +1 light electrician (Boston suburbs — ceiling fans, GFCIs, smart switches)
+     - +1 move-in-ready handyman (PM tier crossover — punch lists, quick fixes between tenants)
+
+   Tracker: docs/operations/beta-cohort-pipeline.md (per plan Task B2). Update weekly. Quick Job pros are EASIER to recruit (lower onboarding bar, faster decision, 5% take is dramatically cheaper than Angi's $400+ effective lead cost).
+
+   Coordinate with Phyrom for HJD network warm leads + with T6 (VC) for trade-association angel/Founding-Pro double-dip opportunities.
 
 Files I own: docs/marketing/posted/, docs/marketing/supply-house-distribution.md, docs/marketing/trade-association-outreach.md.
 Files I DON'T touch: docs/fundraising/ (T2/T3/T4/T6), src/, mobile/, public/.
@@ -393,6 +418,78 @@ Pull --rebase before commit. Status updates to docs/operations/weekly-status/<YY
 
 ---
 
+## Workstream J — Liability & Insurance (Phyrom-led, T1 supports)
+
+**Not a separate terminal.** Phyrom owns the broker/attorney engagement; T1 builds the supporting infrastructure (Tasks A8/A9/A10 listed in T1's prompt above).
+
+**Phyrom's actions (Phase 0):**
+
+- **Week 1:** Engage Vouch (or 2 brokers — Embroker, Newfront alternates) for Phase 0 platform insurance quote. Target bind by Week 3. Coverage spec per `docs/operations/liability-insurance-framework.md` §5 — CGL + Tech E&O + Cyber + Marketplace Endorsement. Realistic budget: $4K-$9K/yr (NOT the $800 placeholder in plan §A5).
+- **Week 1-2:** Engage attorney (per plan §A7) for FULL package — NOT just 1099 memo. Scope: 1099 classification memo + ToS + Pro Service Agreement + Work Order template + Wefunder SAFE review. Budget: $10K-$15K. Recommended firms: Foley Hoag (Boston), Devine Millimet (NH), Pierce Atwood (ME).
+- **Week 3:** Update `docs/legal/founding-pro-agreement.md` with Layer 1 insurance requirements (COI naming Sherpa Pros LLC as Additional Insured, expiry monitoring consent, license re-verification consent). Coordinate with T1 on OpenSign template update.
+- **Week 4:** Publish customer-facing "Sherpa Pros Work Guarantee" page (`/guarantee`) explaining caps + exclusions. T1 builds the page from copy Phyrom drafts.
+- **Week 4:** Train Concierge (Phyrom + 1 Upwork US contractor) on the Track A + Track B dispute workflow per liability framework §7.
+- **Weeks 4-6:** Pilot with first 5 beta pros — actually verify their COIs, run a mock dispute end-to-end before any real customer dispute happens.
+
+**Open questions Phyrom must resolve before any external customer-facing publication:**
+1. Work guarantee cap — $5K/job + $25K/customer/year — confirm or adjust
+2. Reserve fund — what % of trailing-90-day GMV held to fund Layer 3 guarantees before Tech E&O kicks in (suggest 2%)
+3. **MA contractor-referral-service licensing** — MA Office of Consumer Affairs may require state registration; confirm with attorney
+4. PM tier liability — when Sherpa Pros sends a pro to a PM's tenant unit, who's the customer of record for liability?
+5. Specialty lane risk concentration — Boston specialty (heat pump, EV, panel) jobs have $10K-$50K stakes; consider differential cap
+6. Mass Save / National Grid partnership coverage requirements — confirm during partnership outreach
+7. Mandatory arbitration enforceability — ME and MA courts increasingly skeptical
+8. Class-action waiver enforceability — same question, especially given AB5-style worker classification environment
+
+**Status:** Phyrom updates docs/operations/weekly-status/<YYYY-WW>.md weekly with section "## J Liability & Insurance" — broker quote status, attorney milestones, ToS draft progress, customer-facing guarantee page status.
+
+---
+
+## Phase 1 Bookmarked Workstreams (do NOT spin up yet)
+
+These workstreams launch AFTER Phase 0 first close. Bookmarked here so Phyrom + future terminals know they're queued.
+
+### Workstream K — Embedded Protection Products (Phase 1, Months 4-6)
+
+**Trigger:** Phase 0 first close + active Stripe Connect + 30+ jobs/month volume.
+
+**Source doc:** `docs/operations/embedded-protection-products.md`
+
+**Three-product roadmap:**
+- **K-A (Phase 1):** Per-job Project Protection ($89 Plus / $249 Premium) at checkout — white-label backend via Boost Insurance or Cover Genius
+- **K-B (Phase 2):** Annual Home Maintenance Membership ($199/yr) — partner with home warranty co (Super, 2-10, Old Republic)
+- **K-C (Phase 2/3):** PM Portfolio Protection ($24/unit/yr B2B) — specialty commercial insurance partner
+
+**First action when triggered:** email Boost Insurance + Cover Genius using template in `docs/operations/embedded-protection-products.md` §11.
+
+**Engineering scope:** ~2 weeks T1 work (new checkout flow, MGA API integration, Stripe charge bundling, policy management UI).
+
+**Revenue projection:** Phase 1 ~$2K/mo, Phase 2 ~$10K/mo, Phase 3 ~$48K/mo, combined Phase 4 (A+B+C) ~$1.1M/yr.
+
+### Workstream L — Quick Job Lane (Phase 1 build, Phase 0 cohort impact)
+
+**Trigger:** Phase 0 first close + base Project mode infrastructure stable + 15+ pros recruited (Quick Job pros now part of Phase 0 cohort target).
+
+**Source doc:** `docs/operations/quick-job-lane.md`
+
+**Phase 0 impact (already amended):** beta cohort target 10+ → 15+ to include 4-5 Quick Job pros. T5 prompt updated above.
+
+**Phase 1 build (after first close):**
+- L1: Define Quick Job catalog with metro-specific pricing (start with top 12 tasks per quick-job-lane.md §4)
+- L2: Engineering build (T1, ~3 weeks): catalog table, dispatch logic, pricing API, customer + pro Quick Job flows, Stripe 24-hour-hold variant
+- L3: Soft-launch Quick Job tab to existing beta customers (Month 4)
+- L4: Public launch Quick Job tab (Month 5)
+- L5: Same-Day Guarantee A/B test ($9 add-on at checkout)
+- L6: Measure attach rate, time-to-match, customer satisfaction lift, Project-mode-conversion rate (small-job → big-job upsell)
+
+**Why this matters strategically:** Quick Job is the **acquisition funnel** for Project work, the **liquidity engine** for matching algorithm, and the **defense** vs Angi/Thumbtack/Handy in their owned category.
+
+**Revenue projection:** Phase 1 ~$20K take/mo, Phase 2 ~$160K take/mo (~25% of total platform revenue at Phase 2 scale).
+
+**Brand check:** Quick Job lane uses different headline ("Real licensed pros. Pre-priced. Confirmed in 30 minutes. The handyman lane Angi can't deliver.") — same brand bible rules apply (Licensed, Verified, Local, Jobs not leads — no Wiseman externally, no surname for Phyrom).
+
+---
+
 ## Daily Standup (5-min, all terminals)
 
 **Cadence:** Every weekday morning. Each terminal posts in `docs/operations/weekly-status/<YYYY-WW>.md`:
@@ -419,6 +516,9 @@ Pull --rebase before commit. Status updates to docs/operations/weekly-status/<YY
 
 ### T6 VC
 - (same format)
+
+### J Liability & Insurance (Phyrom)
+- (same format — broker quote status, attorney milestones, ToS draft, guarantee page)
 ```
 
 When a terminal hits a blocker that requires Phyrom decision, the blocker line should be:
@@ -432,7 +532,7 @@ When a terminal hits a blocker that requires Phyrom decision, the blocker line s
 
 | Metric | Target | Current | On Track? |
 |---|---|---|---|
-| Beta pros active | 10+ | TBD | TBD |
+| Beta pros active | 15+ (10-12 Project + 4-5 Quick Job) | TBD | TBD |
 | Jobs in pipeline | 30+ in 60 days | TBD | TBD |
 | GMV captured | $24K+ in 60 days | TBD | TBD |
 | Non-dilutive committed | $250K+ | TBD | TBD |
@@ -485,6 +585,10 @@ sherpa-pros-platform/
 │   │   ├── tam-sam-som.md                               ← market sizing
 │   │   ├── metrics-dashboard-design.md                  ← admin/investor-metrics design
 │   │   └── brand-audit.md                               ← Brand Guardian P0/P1/P2 punch list
+│   ├── operations/
+│   │   ├── liability-insurance-framework.md             ← 4-layer liability model (Workstream J) ★
+│   │   ├── embedded-protection-products.md              ← Phase 1 paid insurance (Workstream K) — bookmark
+│   │   └── quick-job-lane.md                            ← Phase 1 small-jobs mode (Workstream L) — Phase 0 cohort impact
 │   ├── marketing/
 │   │   ├── linkedin-editorial.md                        ← 39-post 90-day calendar (T5)
 │   │   ├── referral-mechanics-design.md                 ← 4 loops, fraud controls

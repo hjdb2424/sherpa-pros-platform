@@ -389,13 +389,14 @@ export default function SplashPage() {
                 <div className="mb-1 text-xs font-bold uppercase tracking-widest text-[#00a9e0]/60">Live</div>
                 <h3 className="mb-2 text-xl font-semibold">Sherpa Marketplace</h3>
                 <p className="text-sm leading-relaxed text-white/50">
-                  The smart marketplace for trade work. Post a job, get matched with licensed pros,
-                  track progress in real time, and pay through escrow. Available on web and mobile.
+                  The smart marketplace for trade work. Post a job, get matched with verified pros,
+                  track progress in real time, and pay through escrow. From plumbing to smart home
+                  automation &mdash; available on web and mobile.
                 </p>
                 <div className="mt-4 flex flex-wrap gap-2">
                   <span className="rounded-full bg-[#00a9e0]/10 px-3 py-1 text-[10px] font-semibold text-[#00a9e0]">On-demand dispatch</span>
-                  <span className="rounded-full bg-[#00a9e0]/10 px-3 py-1 text-[10px] font-semibold text-[#00a9e0]">Real-time tracking</span>
                   <span className="rounded-full bg-[#00a9e0]/10 px-3 py-1 text-[10px] font-semibold text-[#00a9e0]">Escrow payments</span>
+                  <span className="rounded-full bg-[#00a9e0]/10 px-3 py-1 text-[10px] font-semibold text-[#00a9e0]">Smart home services</span>
                 </div>
               </div>
             </ScrollFadeIn>
@@ -434,7 +435,7 @@ export default function SplashPage() {
 
             <ScrollFadeIn delay={450}>
               <div className="group relative h-full overflow-hidden rounded-2xl border border-violet-500/15 bg-white/[0.03] p-8 transition-all duration-300 hover:border-violet-500/30 hover:bg-white/[0.05]">
-                <div className="mb-1 text-xs font-bold uppercase tracking-widest text-violet-400/60">Coming Soon</div>
+                <div className="mb-1 text-xs font-bold uppercase tracking-widest text-violet-400/60">Live</div>
                 <h3 className="mb-2 text-xl font-semibold">Sherpa Success Manager</h3>
                 <p className="text-sm leading-relaxed text-white/50">
                   Your dedicated account manager. Not a chatbot &mdash; a real person who manages your projects,

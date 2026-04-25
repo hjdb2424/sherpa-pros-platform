@@ -98,7 +98,7 @@ export default function AboutPage() {
               name: 'Sherpa Marketplace',
               status: 'Live',
               statusColor: 'text-[#00a9e0] bg-[#00a9e0]/10',
-              desc: 'The smart marketplace for trade work. Post a job, get matched with licensed pros, track progress, and pay through escrow.',
+              desc: 'The smart marketplace for trade work. From plumbing to smart home automation &mdash; post a job, get matched with verified pros, track progress, and pay through escrow.',
             },
             {
               name: 'Sherpa Hub',
@@ -114,7 +114,7 @@ export default function AboutPage() {
             },
             {
               name: 'Sherpa Success Manager',
-              status: 'Coming Soon',
+              status: 'Live',
               statusColor: 'text-violet-400 bg-violet-500/10',
               desc: 'Your dedicated account manager. Real project oversight, vendor coordination, and dispute resolution &mdash; not a chatbot.',
             },

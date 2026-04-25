@@ -17,6 +17,7 @@ import {
   mockActivity,
 } from '@/lib/mock-data/pro-data';
 import { getCurrentSession } from '@/lib/auth/session';
+import { getDemoProScore } from '@/lib/incentives/mock-metrics';
 
 export const metadata: Metadata = {
   title: 'Dashboard',
@@ -45,6 +46,15 @@ export default function ProDashboardPage() {
   const session = getCurrentSession('pro');
   const pro = mockProProfile;
   const stats = mockDashboardStats;
+  const proScore = getDemoProScore();
+  const { score } = proScore;
+
+  const tierColors: Record<string, { ring: string; bg: string; text: string; label: string }> = {
+    gold: { ring: '#f59e0b', bg: 'bg-amber-50 dark:bg-amber-900/20', text: 'text-amber-600 dark:text-amber-400', label: 'Gold' },
+    silver: { ring: '#94a3b8', bg: 'bg-slate-50 dark:bg-slate-800/30', text: 'text-slate-500 dark:text-slate-400', label: 'Silver' },
+    bronze: { ring: '#b45309', bg: 'bg-orange-50 dark:bg-orange-900/20', text: 'text-orange-700 dark:text-orange-400', label: 'Bronze' },
+  };
+  const tierCfg = tierColors[score.tier];
 
   return (
     <ProDashboardGuard>
@@ -61,6 +71,79 @@ export default function ProDashboardPage() {
         </div>
         <BadgeTier tier={pro.badgeTier} size="lg" />
       </div>
+
+      {/* Sherpa Score card */}
+      <Link
+        href="/pro/score"
+        className="block rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm transition-all hover:border-[#00a9e0]/30 hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900"
+      >
+        <div className="flex items-center gap-5">
+          {/* Circular score ring */}
+          <div className="relative flex h-20 w-20 shrink-0 items-center justify-center">
+            <svg className="h-20 w-20 -rotate-90" viewBox="0 0 120 120">
+              <circle
+                cx="60" cy="60" r="52"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="8"
+                className="text-zinc-100 dark:text-zinc-800"
+              />
+              <circle
+                cx="60" cy="60" r="52"
+                fill="none"
+                stroke={tierCfg.ring}
+                strokeWidth="8"
+                strokeLinecap="round"
+                strokeDasharray={`${(score.overall / 100) * 327} 327`}
+              />
+            </svg>
+            <span className="absolute text-2xl font-bold text-zinc-900 dark:text-zinc-50">
+              {score.overall}
+            </span>
+          </div>
+
+          <div className="min-w-0 flex-1">
+            <div className="flex items-center gap-2">
+              <h2 className="text-base font-bold text-zinc-900 dark:text-zinc-50">Sherpa Score</h2>
+              <span className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-semibold ${tierCfg.bg} ${tierCfg.text}`}>
+                <svg className="h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                </svg>
+                {tierCfg.label}
+              </span>
+            </div>
+
+            <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+              Your rate: <span className="font-semibold text-zinc-700 dark:text-zinc-300">{score.serviceFee}%</span>
+            </p>
+
+            {score.nextTier && (
+              <div className="mt-2">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="text-zinc-500 dark:text-zinc-400">
+                    {score.nextTier.pointsNeeded} points to {score.nextTier.nextTier}
+                  </span>
+                  <span className="text-zinc-400 dark:text-zinc-500">
+                    Improve: {score.nextTier.topMetricToImprove}
+                  </span>
+                </div>
+                <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-zinc-100 dark:bg-zinc-800">
+                  <div
+                    className="h-full rounded-full bg-gradient-to-r from-[#00a9e0] to-emerald-500"
+                    style={{
+                      width: `${Math.min(100, ((score.overall - (score.tier === 'bronze' ? 0 : 60)) / 20) * 100)}%`,
+                    }}
+                  />
+                </div>
+              </div>
+            )}
+
+            <p className="mt-2 text-xs font-medium text-[#00a9e0] dark:text-sky-400">
+              View full breakdown &rarr;
+            </p>
+          </div>
+        </div>
+      </Link>
 
       {/* Incoming dispatch alert */}
       <DispatchAlert dispatch={mockDispatch} />

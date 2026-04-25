@@ -14,6 +14,11 @@ import {
 } from '@/lib/mock-data/pro-data';
 import { GoogleMapProvider, MapView, BottomSheet, JobMarker } from '@/components/maps';
 import { MOCK_JOBS, DEFAULT_CENTER } from '@/lib/mock-data/map-data';
+import { getDemoProScore } from '@/lib/incentives/mock-metrics';
+
+// Check if demo pro is gold tier for priority access badge
+const demoScore = getDemoProScore();
+const isGoldTier = demoScore.score.tier === 'gold';
 
 const tabs = [
   { id: 'available', label: 'Available', count: mockAvailableJobs.length },
@@ -72,7 +77,7 @@ export default function JobsPageClient() {
           <div className="fixed inset-0 top-14 z-20 lg:flex lg:left-64">
             <BottomSheet peekContent={<p className="text-sm font-semibold text-zinc-900">{MOCK_JOBS.length} Jobs Available</p>}>
               <div className="p-4 space-y-3">
-                {filteredAvailable.map((job) => <JobCard key={job.id} job={job} />)}
+                {filteredAvailable.map((job) => <JobCard key={job.id} job={job} priorityAccess={isGoldTier} />)}
               </div>
             </BottomSheet>
             <div className="h-full flex-1">

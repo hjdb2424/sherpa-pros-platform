@@ -21,9 +21,11 @@ function timeAgo(dateStr: string): string {
 interface JobCardProps {
   job: Job;
   showBidButton?: boolean;
+  /** Gold tier early access indicator */
+  priorityAccess?: boolean;
 }
 
-export default function JobCard({ job, showBidButton = true }: JobCardProps) {
+export default function JobCard({ job, showBidButton = true, priorityAccess = false }: JobCardProps) {
   const urgency = urgencyConfig[job.urgency];
 
   return (
@@ -38,6 +40,11 @@ export default function JobCard({ job, showBidButton = true }: JobCardProps) {
         {job.dispatchScore && job.dispatchScore >= 90 && (
           <span className="rounded-md bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400">
             Top Match
+          </span>
+        )}
+        {priorityAccess && (
+          <span className="rounded-md bg-amber-50 px-2 py-0.5 text-xs font-semibold text-amber-600 dark:bg-amber-900/30 dark:text-amber-400">
+            Priority &middot; Gold: 4hr early access
           </span>
         )}
       </div>

@@ -15,12 +15,14 @@ import {
   MOCK_PROS as MAP_PROS,
   DEFAULT_CENTER,
 } from '@/lib/mock-data/map-data';
+import { getProScoreNumber } from '@/lib/incentives/mock-metrics';
 
 // Convert all 70 seeded pros to the client-data Pro shape
 const ALL_PROS: Pro[] = SEEDED_PROS.map(toClientPro);
 
 type ViewMode = 'list' | 'map';
 type BadgeFilter = 'all' | 'gold' | 'silver' | 'bronze' | 'new';
+type SortOption = 'rating' | 'reviews' | 'sherpa-score';
 
 export function FindProsContent() {
   const [search, setSearch] = useState('');
@@ -30,6 +32,7 @@ export function FindProsContent() {
   const [view, setView] = useState<ViewMode>('map');
   const [currentZoom, setCurrentZoom] = useState(12);
   const [selectedProId, setSelectedProId] = useState<string | null>(null);
+  const [sortBy, setSortBy] = useState<SortOption>('rating');
 
   const filtered = useMemo(() => {
     let pros = [...ALL_PROS];
@@ -55,8 +58,17 @@ export function FindProsContent() {
       pros = pros.filter((p) => p.available);
     }
 
+    // Sort
+    if (sortBy === 'sherpa-score') {
+      pros.sort((a, b) => getProScoreNumber(b.id) - getProScoreNumber(a.id));
+    } else if (sortBy === 'reviews') {
+      pros.sort((a, b) => b.reviewCount - a.reviewCount);
+    } else {
+      pros.sort((a, b) => b.rating - a.rating);
+    }
+
     return pros;
-  }, [search, badgeFilter, minRating, availableOnly]);
+  }, [search, badgeFilter, minRating, availableOnly, sortBy]);
 
   const tradeOptions = useMemo(() => {
     const trades = new Set<string>();
@@ -119,6 +131,18 @@ export function FindProsContent() {
             <option value={4}>4+ stars</option>
             <option value={4.5}>4.5+ stars</option>
             <option value={4.8}>4.8+ stars</option>
+          </select>
+
+          {/* Sort */}
+          <select
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value as SortOption)}
+            className="rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-xs font-medium text-zinc-700 focus:border-[#00a9e0] focus:outline-none"
+            aria-label="Sort by"
+          >
+            <option value="rating">Sort: Rating</option>
+            <option value="reviews">Sort: Reviews</option>
+            <option value="sherpa-score">Sort: Sherpa Score</option>
           </select>
 
           {/* Available toggle */}
@@ -193,6 +217,7 @@ export function FindProsContent() {
                     <ProCard
                       key={pro.id}
                       pro={pro}
+                      sherpaScore={getProScoreNumber(pro.id)}
                       onViewProfile={() => {
                         /* placeholder */
                       }}

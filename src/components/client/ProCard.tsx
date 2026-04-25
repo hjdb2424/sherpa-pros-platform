@@ -11,11 +11,12 @@ const BADGE_CONFIG: Record<Pro['badge'], { label: string; color: string; icon: s
 interface ProCardProps {
   pro: Pro;
   compact?: boolean;
+  sherpaScore?: number;
   onViewProfile?: () => void;
   onRequestQuote?: () => void;
 }
 
-export function ProCard({ pro, compact = false, onViewProfile, onRequestQuote }: ProCardProps) {
+export function ProCard({ pro, compact = false, sherpaScore, onViewProfile, onRequestQuote }: ProCardProps) {
   const badge = BADGE_CONFIG[pro.badge];
 
   if (compact) {
@@ -50,8 +51,22 @@ export function ProCard({ pro, compact = false, onViewProfile, onRequestQuote }:
   return (
     <div className="rounded-xl border border-zinc-200 bg-white p-5 transition-all hover:border-[#00a9e0]/30 hover:shadow-md">
       <div className="flex items-start gap-4">
-        <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-[#00a9e0] text-lg font-bold text-white">
+        <div className="relative flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-[#00a9e0] text-lg font-bold text-white">
           {pro.name.split(' ').map((n) => n[0]).join('')}
+          {sherpaScore != null && sherpaScore > 0 && (
+            <span
+              className={`absolute -right-1 -bottom-1 flex h-6 w-6 items-center justify-center rounded-full border-2 border-white text-[10px] font-bold text-white ${
+                sherpaScore >= 80
+                  ? 'bg-amber-500'
+                  : sherpaScore >= 60
+                    ? 'bg-slate-400'
+                    : 'bg-orange-600'
+              }`}
+              title={`Sherpa Score: ${sherpaScore}`}
+            >
+              {sherpaScore}
+            </span>
+          )}
         </div>
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">

@@ -165,8 +165,9 @@ export async function PATCH(request: NextRequest) {
 
   try {
     const body = await request.json();
-    const { email, name, defaultRole, notes, status } = body as {
+    const { email, newEmail, name, defaultRole, notes, status } = body as {
       email: string;
+      newEmail?: string;
       name?: string;
       defaultRole?: string;
       notes?: string;
@@ -181,6 +182,10 @@ export async function PATCH(request: NextRequest) {
     const params: unknown[] = [];
     let idx = 1;
 
+    if (newEmail !== undefined && newEmail.includes('@')) {
+      sets.push(`email = $${idx++}`);
+      params.push(newEmail.trim().toLowerCase());
+    }
     if (name !== undefined) {
       sets.push(`name = $${idx++}`);
       params.push(name);

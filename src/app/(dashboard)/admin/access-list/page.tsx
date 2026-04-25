@@ -82,6 +82,7 @@ export default function AccessListPage() {
 
   // Inline edit
   const [editId, setEditId] = useState<number | null>(null);
+  const [editEmail, setEditEmail] = useState("");
   const [editName, setEditName] = useState("");
   const [editRole, setEditRole] = useState("");
   const [editNotes, setEditNotes] = useState("");
@@ -218,11 +219,13 @@ export default function AccessListPage() {
   // ── Save inline edit ───────────────────────────────────────────
 
   async function saveEdit(entry: Entry) {
+    const newEmail = editEmail.trim().toLowerCase();
     await fetch("/api/admin/access-list", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         email: entry.email,
+        newEmail: newEmail !== entry.email.toLowerCase() ? newEmail : undefined,
         name: editName,
         defaultRole: editRole || null,
         notes: editNotes,
@@ -234,6 +237,7 @@ export default function AccessListPage() {
 
   function startEdit(entry: Entry) {
     setEditId(entry.id);
+    setEditEmail(entry.email);
     setEditName(entry.name);
     setEditRole(entry.defaultRole ?? "");
     setEditNotes(entry.notes);
@@ -407,7 +411,16 @@ export default function AccessListPage() {
                   className={`border-b border-zinc-50 transition ${i % 2 === 1 ? "bg-zinc-50/50" : "bg-white"} hover:bg-zinc-100/50`}
                 >
                   <td className="px-4 py-3 font-medium text-zinc-900">
-                    {entry.email}
+                    {isEditing ? (
+                      <input
+                        type="email"
+                        value={editEmail}
+                        onChange={(e) => setEditEmail(e.target.value)}
+                        className="w-full rounded border border-zinc-300 px-2 py-1 text-sm"
+                      />
+                    ) : (
+                      entry.email
+                    )}
                   </td>
                   <td className="px-4 py-3 text-zinc-700">
                     {isEditing ? (

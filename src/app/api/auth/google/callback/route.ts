@@ -15,18 +15,27 @@ export async function GET(request: NextRequest) {
     const tokens = await exchangeGoogleCode(code);
     const profile = await getGoogleProfile(tokens.accessToken);
 
-    // In production, create/find user in DB and set a session cookie.
-    // For now, redirect to role selection or dashboard with profile info
-    // stored in a short-lived cookie.
     const base = process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3001';
-    const response = NextResponse.redirect(new URL('/select-role', base));
 
-    // Set auth session data as cookies (in production, use encrypted sessions)
+    // Redirect to a client-side bridge that sets localStorage from the cookie,
+    // then forwards to role selection
+    const params = new URLSearchParams({
+      name: profile.name,
+      email: profile.email,
+      picture: profile.picture ?? '',
+      provider: 'google',
+    });
+
+    const response = NextResponse.redirect(
+      new URL(`/auth/callback?${params.toString()}`, base),
+    );
+
+    // Set auth cookie for server-side checks
     response.cookies.set('sherpa-auth', 'true', {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
-      maxAge: 60 * 60 * 24 * 7, // 7 days
+      maxAge: 60 * 60 * 24 * 7,
       path: '/',
     });
     response.cookies.set('sherpa-user', JSON.stringify({

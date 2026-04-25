@@ -1,17 +1,31 @@
 "use client";
 
-import { useState, useTransition } from "react";
-import { setUserRole } from "./actions";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Logo from "@/components/brand/Logo";
+import { seedUserData } from "@/lib/seed-user-data";
 
 export default function SelectRolePage() {
-  const [isPending, startTransition] = useTransition();
+  const [isPending, setIsPending] = useState(false);
   const [showMore, setShowMore] = useState(false);
+  const router = useRouter();
 
   function handleSelect(role: "pro" | "client" | "pm" | "tenant") {
-    startTransition(() => {
-      setUserRole(role);
-    });
+    setIsPending(true);
+    const email = localStorage.getItem("sherpa-test-email") ?? "user@test.com";
+    localStorage.setItem("sherpa-test-role", role);
+    localStorage.setItem(`sherpa:${email}:role`, role);
+    seedUserData(email, role);
+
+    if (role === "pm") {
+      router.replace("/pm/dashboard");
+    } else if (role === "pro") {
+      router.replace("/pro/dashboard");
+    } else if (role === "tenant") {
+      router.replace("/tenant/dashboard");
+    } else {
+      router.replace("/client/dashboard");
+    }
   }
 
   return (

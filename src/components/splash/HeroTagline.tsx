@@ -33,7 +33,7 @@ export default function HeroTagline() {
         Trade work, done right.
       </h1>
       <p
-        className="mt-4 text-lg font-medium transition-opacity duration-500 sm:text-xl"
+        className="mt-4 text-4xl font-bold leading-tight tracking-tight transition-opacity duration-500 sm:text-5xl md:text-6xl"
         style={{ opacity: fade ? 1 : 0 }}
       >
         <span className="bg-gradient-to-r from-[#00a9e0] to-[#0ea5e9] bg-clip-text text-transparent">

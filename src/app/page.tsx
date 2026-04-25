@@ -466,9 +466,6 @@ export default function SplashPage() {
               <Link href="/about" className="text-white/40 transition-colors hover:text-white/70">
                 About
               </Link>
-              <Link href="/invite" className="text-white/40 transition-colors hover:text-white/70">
-                Beta Invite
-              </Link>
               <a
                 href="mailto:info@thesherpapros.com"
                 className="text-white/40 transition-colors hover:text-white/70"

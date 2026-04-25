@@ -46,9 +46,11 @@ for (const deck of decks) {
     const outFile = join(OUT_DIR, `${stem}.${fmt}`);
 
     try {
-      execSync(`"${MARP}" "${inFile}" --${fmt} -o "${outFile}" --allow-local-files`, {
-        stdio: ["ignore", "pipe", "pipe"],
-      });
+      const themeSet = join(__dirname, "marp-themes", "sherpa-pros-editorial.css");
+      execSync(
+        `"${MARP}" "${inFile}" --${fmt} -o "${outFile}" --allow-local-files --theme-set "${themeSet}"`,
+        { stdio: ["ignore", "pipe", "pipe"] },
+      );
       console.log(`  ✓ ${stem}.${fmt}`);
       success++;
     } catch (err) {

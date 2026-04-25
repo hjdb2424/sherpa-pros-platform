@@ -25,7 +25,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
 const DOCS_DIR = join(ROOT, "docs");
 const PDF_DIR = join(ROOT, "docs-pdf");
-const CSS_FILE = join(__dirname, "docs-pdf.css");
+const CSS_FILE = join(__dirname, "docs-pdf-editorial.css");
 const BATCH_SIZE = 5;
 
 function findMarkdownFiles(dir) {

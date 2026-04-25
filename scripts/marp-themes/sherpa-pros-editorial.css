@@ -1,0 +1,1260 @@
+/* @theme sherpa-pros-editorial */
+
+/* =============================================================================
+   SHERPA PROS — EDITORIAL · TRADE · CONSIDERED
+   -----------------------------------------------------------------------------
+   A magazine-grade Marp theme for the Sherpa Pros deck system.
+
+   Type pairing — Fraunces (display serif) + Manrope (grotesque body) +
+   JetBrains Mono (mono). Fraunces brings real editorial character with its
+   variable-axis opsz (optical size) range, Manrope is a clean geometric
+   grotesque that holds up at body and small-cap sizes without the Inter
+   fatigue, JetBrains Mono has more personality than IBM Plex Mono.
+
+   Color discipline — dark text on warm cream paper (#FBF7EE), brand sky-blue
+   as a sharp accent only (rules, h1 emphasis, lower-third strips), navy as
+   the heavy hierarchy color. Amber and emerald are reserved for callouts
+   and verification semantics. NO gradient backgrounds.
+
+   Diagonal-cut accents — small clip-path polygons in slide corners reference
+   the SHERPA / PROS logo's diagonal cut. Used sparingly on hero, divider,
+   and bignumber slides.
+
+   Compromise note — clip-path corner cuts and ::before/::after pseudo
+   elements render perfectly in PDF and HTML. PPTX export through Marp
+   flattens these to bitmap regions; if a deck owner needs to edit the
+   PPTX, the corner accents may appear as raster blocks rather than vector
+   shapes. The typography, color, and layout all transfer cleanly.
+   ============================================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@200..800&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
+
+/* -----------------------------------------------------------------------------
+   1. DESIGN TOKENS
+   ----------------------------------------------------------------------------- */
+
+:root {
+  /* Brand palette */
+  --sp-sky:        #00a9e0;
+  --sp-sky-deep:   #0284b6;
+  --sp-navy:       #1a1a2e;
+  --sp-navy-soft:  #2a2a44;
+  --sp-amber:      #f59e0b;
+  --sp-amber-deep: #b8770a;
+  --sp-emerald:    #10b981;
+  --sp-rose:       #be1e3c;
+
+  /* Paper system */
+  --sp-paper:      #FBF7EE;          /* warm cream — primary slide bg */
+  --sp-paper-deep: #F2EBD9;          /* warmer cream — strip / table header bg */
+  --sp-ink:        #15151f;          /* near-navy ink for body text */
+  --sp-ink-soft:   #4a4a5c;          /* secondary text */
+  --sp-ink-mute:   #7a7a8a;          /* metadata / page numbers */
+  --sp-rule:       #d8cfb8;          /* hairline dividers, baseline rules */
+
+  /* Type scale (16:9, 1280x720 Marp default — px units) */
+  --sp-fs-mega:    320px;            /* bignumber slide */
+  --sp-fs-display: 96px;             /* lead h1 */
+  --sp-fs-h1:      52px;
+  --sp-fs-h2:      34px;
+  --sp-fs-h3:      24px;
+  --sp-fs-body:    21px;
+  --sp-fs-small:   16px;
+  --sp-fs-micro:   12px;             /* footers, page numbers, small caps */
+
+  /* Spacing — based on a 12pt baseline grid */
+  --sp-margin:     72px;             /* generous slide margin */
+  --sp-gap:        24px;
+  --sp-baseline:   12px;
+
+  /* Type families */
+  --sp-serif:  'Fraunces', 'Tiempos Headline', 'Iowan Old Style', Georgia, serif;
+  --sp-grot:   'Manrope', 'Söhne', 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+  --sp-mono:   'JetBrains Mono', 'IBM Plex Mono', 'SF Mono', Menlo, monospace;
+}
+
+/* -----------------------------------------------------------------------------
+   2. BASE SECTION (default slide)
+   ----------------------------------------------------------------------------- */
+
+section {
+  /* 16:9 — Marp uses 1280x720 by default for size: 16:9 */
+  width: 1280px;
+  height: 720px;
+  padding: var(--sp-margin) calc(var(--sp-margin) + 8px);
+
+  background-color: var(--sp-paper);
+  color: var(--sp-ink);
+
+  font-family: var(--sp-grot);
+  font-size: var(--sp-fs-body);
+  font-weight: 400;
+  font-feature-settings: 'ss01', 'ss02', 'cv01', 'cv11';   /* Manrope alternates */
+  line-height: 1.45;
+  letter-spacing: -0.005em;
+
+  position: relative;
+  overflow: hidden;
+
+  /* Hairline rule above the footer — editorial detail */
+  background-image: linear-gradient(to right, var(--sp-rule), var(--sp-rule));
+  background-repeat: no-repeat;
+  background-size: calc(100% - 144px) 1px;
+  background-position: 72px calc(100% - 48px);
+}
+
+/* -----------------------------------------------------------------------------
+   3. TYPOGRAPHY
+   -----------------------------------------------------------------------------
+   Fraunces uses opsz axis — bigger sizes get tighter, more elegant proportions.
+   We push opsz=144 for display sizes, opsz=72 for h2/h3, and tune SOFT axis up
+   on display for that magazine-warm feel.
+   ----------------------------------------------------------------------------- */
+
+h1, h2, h3, h4 {
+  font-family: var(--sp-serif);
+  color: var(--sp-navy);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  margin: 0 0 calc(var(--sp-baseline) * 1.5) 0;
+}
+
+h1 {
+  font-size: var(--sp-fs-h1);
+  font-variation-settings: 'opsz' 144, 'SOFT' 50, 'WONK' 0;
+  font-weight: 500;
+  margin-bottom: calc(var(--sp-baseline) * 2);
+  /* Editorial: a tiny sky-blue square sits just left of every h1 — anchors the page */
+  padding-left: 0;
+  position: relative;
+}
+
+h1::before {
+  content: '';
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  background: var(--sp-sky);
+  margin-right: 14px;
+  vertical-align: 0.12em;
+  /* Diagonal cut — the brand signature, miniaturized */
+  clip-path: polygon(0 0, 100% 0, 100% 60%, 60% 100%, 0 100%);
+}
+
+h2 {
+  font-size: var(--sp-fs-h2);
+  font-variation-settings: 'opsz' 96, 'SOFT' 30, 'WONK' 0;
+  font-weight: 500;
+  color: var(--sp-navy);
+}
+
+h3 {
+  font-size: var(--sp-fs-h3);
+  font-variation-settings: 'opsz' 48, 'SOFT' 0;
+  font-weight: 600;
+  color: var(--sp-navy);
+  font-family: var(--sp-grot);
+  letter-spacing: -0.01em;
+  text-transform: none;
+  /* h3 reads as section subhead in body grotesque, not serif — clearer hierarchy */
+}
+
+h4 {
+  font-size: 18px;
+  font-family: var(--sp-grot);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--sp-sky-deep);
+}
+
+p {
+  margin: 0 0 calc(var(--sp-baseline) * 1.25) 0;
+  max-width: 62ch;          /* editorial measure */
+}
+
+strong {
+  font-weight: 700;
+  color: var(--sp-navy);
+}
+
+em {
+  font-family: var(--sp-serif);
+  font-style: italic;
+  font-variation-settings: 'opsz' 24, 'SOFT' 30;
+}
+
+a {
+  color: var(--sp-navy);
+  text-decoration: none;
+  border-bottom: 1.5px solid var(--sp-sky);
+  padding-bottom: 1px;
+}
+
+/* -----------------------------------------------------------------------------
+   4. LISTS — editorial markers, not default disc bullets
+   ----------------------------------------------------------------------------- */
+
+ul, ol {
+  margin: 0 0 calc(var(--sp-baseline) * 1.5) 0;
+  padding-left: 0;
+  list-style: none;
+}
+
+ul li, ol li {
+  position: relative;
+  padding-left: 26px;
+  margin-bottom: calc(var(--sp-baseline) * 0.6);
+  line-height: 1.4;
+}
+
+ul li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 9px;
+  height: 9px;
+  background: var(--sp-sky);
+  /* Mini diagonal-cut block — same signature as h1 marker */
+  clip-path: polygon(0 0, 100% 0, 100% 60%, 60% 100%, 0 100%);
+}
+
+ol {
+  counter-reset: sp-list;
+}
+
+ol li {
+  counter-increment: sp-list;
+  padding-left: 38px;
+}
+
+ol li::before {
+  content: counter(sp-list, decimal-leading-zero);
+  position: absolute;
+  left: 0;
+  top: 0.05em;
+  font-family: var(--sp-mono);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--sp-sky-deep);
+  letter-spacing: -0.02em;
+}
+
+/* -----------------------------------------------------------------------------
+   5. BLOCKQUOTE — display-serif italic, brand-blue rule
+   ----------------------------------------------------------------------------- */
+
+blockquote {
+  margin: calc(var(--sp-baseline) * 2) 0;
+  padding: 4px 0 4px 28px;
+  border-left: 3px solid var(--sp-sky);
+  font-family: var(--sp-serif);
+  font-style: italic;
+  font-size: 28px;
+  font-variation-settings: 'opsz' 72, 'SOFT' 60;
+  font-weight: 400;
+  line-height: 1.25;
+  color: var(--sp-navy);
+  letter-spacing: -0.015em;
+  max-width: 72ch;
+}
+
+blockquote p {
+  margin-bottom: calc(var(--sp-baseline) * 0.5);
+}
+
+blockquote em {
+  font-style: italic;
+}
+
+/* -----------------------------------------------------------------------------
+   6. CODE & PRE
+   ----------------------------------------------------------------------------- */
+
+code {
+  font-family: var(--sp-mono);
+  font-size: 0.88em;
+  background: var(--sp-paper-deep);
+  padding: 2px 6px;
+  border-radius: 2px;
+  color: var(--sp-navy);
+  font-feature-settings: 'calt', 'ss01';
+}
+
+pre {
+  background: var(--sp-paper-deep);
+  border-left: 3px solid var(--sp-sky);
+  padding: 18px 24px;
+  margin: calc(var(--sp-baseline) * 1.5) 0;
+  font-family: var(--sp-mono);
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--sp-navy);
+  overflow-x: auto;
+  border-radius: 0;
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  font-size: inherit;
+  color: inherit;
+}
+
+/* -----------------------------------------------------------------------------
+   7. TABLES — designed, not default. No grid lines, baseline rules only.
+   ----------------------------------------------------------------------------- */
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: calc(var(--sp-baseline) * 1.5) 0;
+  font-size: 17px;
+  font-feature-settings: 'tnum';   /* tabular figures align columns */
+}
+
+thead th {
+  font-family: var(--sp-grot);
+  font-weight: 700;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--sp-sky-deep);
+  background: transparent;
+  text-align: left;
+  padding: 8px 14px 10px 14px;
+  border-bottom: 2px solid var(--sp-navy);
+  vertical-align: bottom;
+}
+
+tbody td {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--sp-rule);
+  vertical-align: top;
+  color: var(--sp-ink);
+  line-height: 1.4;
+}
+
+tbody tr:last-child td {
+  border-bottom: 1.5px solid var(--sp-navy);
+}
+
+tbody td strong {
+  color: var(--sp-navy);
+  font-weight: 700;
+}
+
+/* First column emphasis — common pattern in our decks (label column) */
+tbody td:first-child {
+  font-weight: 600;
+  color: var(--sp-navy);
+}
+
+/* -----------------------------------------------------------------------------
+   8. HORIZONTAL RULE
+   ----------------------------------------------------------------------------- */
+
+hr {
+  border: none;
+  border-top: 1px solid var(--sp-rule);
+  margin: calc(var(--sp-baseline) * 2) 0;
+}
+
+/* -----------------------------------------------------------------------------
+   9. PAGINATION & FOOTER — editorial small caps with brand accent
+   ----------------------------------------------------------------------------- */
+
+section::after {
+  /* Marp page number */
+  font-family: var(--sp-grot);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sp-navy);
+  bottom: 28px;
+  right: 72px;
+  /* Tiny sky-blue square preceding the page number */
+}
+
+footer {
+  font-family: var(--sp-grot);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sp-ink-mute);
+  bottom: 28px;
+  left: 72px;
+  right: auto;
+  max-width: 70%;
+}
+
+header {
+  font-family: var(--sp-grot);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sp-ink-mute);
+  top: 28px;
+  left: 72px;
+}
+
+/* =============================================================================
+   SLIDE LAYOUT CLASSES — invoked via <!-- _class: NAME -->
+   ============================================================================= */
+
+/* -----------------------------------------------------------------------------
+   .lead — hero / cover slide
+   -----------------------------------------------------------------------------
+   Dark navy paper with cream type. The brand color story inverted: SHERPA-blue
+   accent rule + amber lower-third metadata strip. Diagonal-cut accent in the
+   upper-right corner referencing the logo.
+   ----------------------------------------------------------------------------- */
+
+section.lead {
+  background-color: var(--sp-navy);
+  color: var(--sp-paper);
+  /* Override the hairline-rule background so the cover stays clean */
+  background-image: none;
+  padding: 96px 96px 120px 96px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: left;
+}
+
+/* Diagonal-cut accent — sharp brand-sky wedge in upper right */
+section.lead::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 240px;
+  height: 240px;
+  background: var(--sp-sky);
+  clip-path: polygon(100% 0, 100% 100%, 0 0);
+  z-index: 1;
+}
+
+/* Amber lower-third bar — metadata strip */
+section.lead::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 6px;
+  background: var(--sp-amber);
+  /* Reset the page-number positioning that ::after normally handles */
+  font-size: 0;
+  color: transparent;
+}
+
+section.lead h1 {
+  font-family: var(--sp-serif);
+  font-size: var(--sp-fs-display);
+  font-variation-settings: 'opsz' 144, 'SOFT' 80, 'WONK' 1;
+  font-weight: 400;
+  color: var(--sp-paper);
+  line-height: 0.96;
+  letter-spacing: -0.035em;
+  margin-bottom: calc(var(--sp-baseline) * 2);
+  max-width: 18ch;
+  position: relative;
+  z-index: 2;
+}
+
+section.lead h1::before {
+  /* Suppress the default sky square — the corner cut is the accent here */
+  display: none;
+}
+
+section.lead h2 {
+  font-family: var(--sp-grot);
+  font-size: 26px;
+  font-weight: 400;
+  color: rgba(251, 247, 238, 0.78);
+  letter-spacing: -0.005em;
+  line-height: 1.35;
+  max-width: 56ch;
+  margin-bottom: calc(var(--sp-baseline) * 3);
+}
+
+section.lead h3 {
+  color: var(--sp-amber);
+  font-family: var(--sp-grot);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  margin-bottom: var(--sp-baseline);
+}
+
+section.lead p {
+  color: rgba(251, 247, 238, 0.85);
+  max-width: 60ch;
+}
+
+section.lead strong {
+  color: var(--sp-paper);
+  font-weight: 700;
+}
+
+section.lead a {
+  color: var(--sp-sky);
+  border-bottom-color: var(--sp-sky);
+}
+
+section.lead blockquote {
+  border-left-color: var(--sp-amber);
+  color: var(--sp-paper);
+  font-size: 32px;
+}
+
+section.lead footer {
+  color: rgba(251, 247, 238, 0.55);
+}
+
+section.lead::after {
+  /* Override the page number on lead slides — they don't get one */
+}
+
+section.lead [data-marpit-pagination]::after {
+  display: none;
+}
+
+/* -----------------------------------------------------------------------------
+   .bignumber — the signature slide. ONE number is the entire slide.
+   -----------------------------------------------------------------------------
+   Use:
+     <!-- _class: bignumber -->
+     # 5%
+     ## Take rate in beta — half the all-in cost a contractor pays Angi today.
+   ----------------------------------------------------------------------------- */
+
+section.bignumber {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: var(--sp-margin) calc(var(--sp-margin) + 8px) 100px calc(var(--sp-margin) + 8px);
+}
+
+/* Diagonal sky accent at the top-right corner — small */
+section.bignumber::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 96px;
+  height: 96px;
+  background: var(--sp-sky);
+  clip-path: polygon(100% 0, 100% 100%, 0 0);
+}
+
+section.bignumber h1 {
+  font-family: var(--sp-serif);
+  font-size: var(--sp-fs-mega);
+  font-variation-settings: 'opsz' 144, 'SOFT' 100, 'WONK' 1;
+  font-weight: 400;
+  color: var(--sp-navy);
+  line-height: 0.85;
+  letter-spacing: -0.055em;
+  margin: 0 0 calc(var(--sp-baseline) * 2) 0;
+  max-width: 100%;
+}
+
+section.bignumber h1::before {
+  display: none;
+}
+
+section.bignumber h2 {
+  font-family: var(--sp-grot);
+  font-size: 28px;
+  font-weight: 400;
+  color: var(--sp-ink-soft);
+  letter-spacing: -0.005em;
+  line-height: 1.3;
+  max-width: 50ch;
+  margin: 0;
+  /* Caption set BELOW the number with breathing room */
+}
+
+section.bignumber p {
+  font-size: 18px;
+  color: var(--sp-ink-mute);
+  margin-top: calc(var(--sp-baseline) * 2);
+  max-width: 56ch;
+}
+
+/* Variant: when the bignumber is monetary or percent, the unit can be tagged
+   as <small> inline with the h1 to render at half-size with offset baseline. */
+section.bignumber h1 small {
+  font-size: 0.4em;
+  font-weight: 400;
+  color: var(--sp-sky-deep);
+  vertical-align: 0.7em;
+  margin-left: 0.05em;
+  letter-spacing: -0.02em;
+}
+
+/* -----------------------------------------------------------------------------
+   .quote — pull-quote slide
+   -----------------------------------------------------------------------------
+   Large display-serif italic quote, attribution in small caps.
+   ----------------------------------------------------------------------------- */
+
+section.quote {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: var(--sp-margin) 144px;
+}
+
+section.quote::before {
+  /* Oversized opening quote glyph — Fraunces — as a watermark */
+  content: '\201C';
+  position: absolute;
+  top: 24px;
+  left: 56px;
+  font-family: var(--sp-serif);
+  font-variation-settings: 'opsz' 144, 'SOFT' 100, 'WONK' 1;
+  font-size: 360px;
+  line-height: 1;
+  color: var(--sp-sky);
+  opacity: 0.12;
+  font-weight: 600;
+  z-index: 0;
+}
+
+section.quote blockquote {
+  border-left: none;
+  padding: 0;
+  font-family: var(--sp-serif);
+  font-style: italic;
+  font-size: 44px;
+  font-variation-settings: 'opsz' 144, 'SOFT' 80, 'WONK' 0;
+  font-weight: 400;
+  line-height: 1.18;
+  color: var(--sp-navy);
+  letter-spacing: -0.025em;
+  max-width: 22ch;
+  margin: 0 0 calc(var(--sp-baseline) * 2.5) 0;
+  position: relative;
+  z-index: 1;
+}
+
+section.quote h3 {
+  font-family: var(--sp-grot);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--sp-sky-deep);
+  margin: 0;
+  position: relative;
+  z-index: 1;
+}
+
+section.quote h3::before {
+  content: '';
+  display: inline-block;
+  width: 32px;
+  height: 1.5px;
+  background: var(--sp-sky);
+  vertical-align: 0.35em;
+  margin-right: 12px;
+}
+
+section.quote p {
+  font-size: 16px;
+  color: var(--sp-ink-mute);
+  font-family: var(--sp-grot);
+}
+
+/* -----------------------------------------------------------------------------
+   .split — left half visual, right half text
+   ----------------------------------------------------------------------------- */
+
+section.split {
+  display: grid;
+  grid-template-columns: 0.55fr 0.45fr;   /* asymmetric — editorial */
+  gap: 56px;
+  padding: var(--sp-margin) calc(var(--sp-margin) + 8px);
+  align-items: start;
+}
+
+section.split > * {
+  min-width: 0;
+}
+
+section.split img {
+  width: 100%;
+  height: auto;
+  max-height: 540px;
+  object-fit: cover;
+}
+
+/* -----------------------------------------------------------------------------
+   .contents — table of contents / chapter list
+   -----------------------------------------------------------------------------
+   Editorial layout: section number in mono left, chapter title in serif right.
+   ----------------------------------------------------------------------------- */
+
+section.contents {
+  padding: var(--sp-margin) 144px;
+}
+
+section.contents h1 {
+  font-size: 28px;
+  font-family: var(--sp-grot);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--sp-sky-deep);
+  margin-bottom: calc(var(--sp-baseline) * 4);
+}
+
+section.contents h1::before {
+  display: none;
+}
+
+section.contents ol {
+  counter-reset: sp-toc;
+}
+
+section.contents ol li {
+  counter-increment: sp-toc;
+  padding: 18px 0 18px 88px;
+  border-top: 1px solid var(--sp-rule);
+  font-family: var(--sp-serif);
+  font-variation-settings: 'opsz' 72, 'SOFT' 30;
+  font-size: 26px;
+  font-weight: 500;
+  color: var(--sp-navy);
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  position: relative;
+  margin: 0;
+}
+
+section.contents ol li:last-child {
+  border-bottom: 1px solid var(--sp-rule);
+}
+
+section.contents ol li::before {
+  content: counter(sp-toc, decimal-leading-zero);
+  position: absolute;
+  left: 0;
+  top: 22px;
+  font-family: var(--sp-mono);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--sp-sky);
+}
+
+/* -----------------------------------------------------------------------------
+   .divider — section break / chapter opener
+   ----------------------------------------------------------------------------- */
+
+section.divider {
+  background-color: var(--sp-paper-deep);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: var(--sp-margin) 144px;
+  background-image: none;
+}
+
+/* Diagonal cut at top-left, opposite of .lead's top-right — visual rhythm */
+section.divider::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 168px;
+  height: 168px;
+  background: var(--sp-sky);
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+}
+
+section.divider h3 {
+  font-family: var(--sp-mono);
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--sp-sky-deep);
+  margin-bottom: calc(var(--sp-baseline) * 1.5);
+}
+
+section.divider h1 {
+  font-family: var(--sp-serif);
+  font-size: 84px;
+  font-variation-settings: 'opsz' 144, 'SOFT' 80, 'WONK' 1;
+  font-weight: 400;
+  color: var(--sp-navy);
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+  max-width: 22ch;
+}
+
+section.divider h1::before {
+  display: none;
+}
+
+section.divider h2 {
+  font-family: var(--sp-grot);
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--sp-ink-soft);
+  margin-top: calc(var(--sp-baseline) * 2);
+  max-width: 56ch;
+  letter-spacing: -0.005em;
+}
+
+/* -----------------------------------------------------------------------------
+   .image — full-bleed image with text overlay
+   ----------------------------------------------------------------------------- */
+
+section.image {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  background-image: none;
+  background-color: var(--sp-navy);
+  color: var(--sp-paper);
+}
+
+section.image img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+section.image > *:not(img) {
+  position: relative;
+  z-index: 2;
+}
+
+/* Lower-third caption strip */
+section.image::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  background: linear-gradient(to bottom, rgba(26, 26, 46, 0), rgba(26, 26, 46, 0.92));
+  z-index: 1;
+}
+
+section.image h1 {
+  color: var(--sp-paper);
+  padding: 0 var(--sp-margin);
+  margin-bottom: calc(var(--sp-baseline) * 1.5);
+  font-family: var(--sp-serif);
+  font-variation-settings: 'opsz' 144, 'SOFT' 80;
+  font-size: 56px;
+}
+
+section.image h1::before {
+  background: var(--sp-amber);
+}
+
+section.image p {
+  color: rgba(251, 247, 238, 0.85);
+  padding: 0 var(--sp-margin);
+  max-width: 70ch;
+  margin-bottom: calc(var(--sp-baseline) * 4);
+}
+
+/* -----------------------------------------------------------------------------
+   .compare — two-column comparison (Sherpa Pros vs competitors)
+   -----------------------------------------------------------------------------
+   Sharp visual contrast. Sherpa column gets sky-blue accents, competitor
+   column gets a muted treatment. Color-coded sparingly via .good / .bad.
+   ----------------------------------------------------------------------------- */
+
+section.compare {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  padding: var(--sp-margin) calc(var(--sp-margin) + 8px);
+}
+
+section.compare > h1 {
+  margin-bottom: calc(var(--sp-baseline) * 2);
+}
+
+section.compare table {
+  width: 100%;
+  font-size: 17px;
+}
+
+section.compare table thead th {
+  font-size: 13px;
+  padding-bottom: 12px;
+}
+
+/* Highlight the rightmost column (assumed Sherpa Pros) with a subtle
+   sky-blue baseline tint. Authors put Sherpa Pros as the LAST column. */
+section.compare table thead th:last-child {
+  color: var(--sp-sky-deep);
+  border-bottom-color: var(--sp-sky);
+  border-bottom-width: 2.5px;
+}
+
+section.compare table tbody td:last-child {
+  font-weight: 600;
+  color: var(--sp-navy);
+  background: linear-gradient(to right, rgba(0, 169, 224, 0.04), rgba(0, 169, 224, 0.04));
+}
+
+/* -----------------------------------------------------------------------------
+   .timeline — phase 0/1/2/3/4 horizontal timeline
+   ----------------------------------------------------------------------------- */
+
+section.timeline {
+  padding: var(--sp-margin) 96px;
+}
+
+section.timeline h1 {
+  margin-bottom: calc(var(--sp-baseline) * 3);
+}
+
+/* Use a div.grid-N container OR a table for the phase columns.
+   Authors should use the .grid-4 / .grid-5 utility class with phase blocks. */
+section.timeline .phase {
+  position: relative;
+  padding-top: 40px;
+  border-top: 2px solid var(--sp-rule);
+}
+
+section.timeline .phase::before {
+  content: '';
+  position: absolute;
+  top: -7px;
+  left: 0;
+  width: 12px;
+  height: 12px;
+  background: var(--sp-sky);
+  border-radius: 50%;
+}
+
+section.timeline .phase h3 {
+  font-family: var(--sp-mono);
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--sp-sky-deep);
+  margin-bottom: calc(var(--sp-baseline) * 0.5);
+}
+
+section.timeline .phase h4 {
+  font-family: var(--sp-serif);
+  font-variation-settings: 'opsz' 48, 'SOFT' 30;
+  font-size: 22px;
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: -0.015em;
+  color: var(--sp-navy);
+  margin-bottom: calc(var(--sp-baseline));
+}
+
+section.timeline .phase p {
+  font-size: 15px;
+  color: var(--sp-ink-soft);
+  line-height: 1.4;
+}
+
+/* -----------------------------------------------------------------------------
+   .metric — investor metrics dashboard
+   ----------------------------------------------------------------------------- */
+
+section.metric {
+  padding: var(--sp-margin) calc(var(--sp-margin) + 8px);
+}
+
+section.metric h1 {
+  margin-bottom: calc(var(--sp-baseline) * 2);
+}
+
+/* When a .metric slide uses .grid-3 with .stat blocks inside */
+section.metric .stat,
+.stat {
+  padding: 24px 0;
+  border-top: 2px solid var(--sp-navy);
+}
+
+section.metric .stat .label,
+.stat .label {
+  display: block;
+  font-family: var(--sp-grot);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--sp-sky-deep);
+  margin-bottom: var(--sp-baseline);
+}
+
+section.metric .stat .value,
+.stat .value {
+  display: block;
+  font-family: var(--sp-serif);
+  font-variation-settings: 'opsz' 144, 'SOFT' 80, 'WONK' 0;
+  font-size: 64px;
+  font-weight: 500;
+  color: var(--sp-navy);
+  line-height: 1;
+  letter-spacing: -0.035em;
+  margin-bottom: var(--sp-baseline);
+}
+
+section.metric .stat .value small,
+.stat .value small {
+  font-size: 0.5em;
+  color: var(--sp-sky-deep);
+  vertical-align: 0.5em;
+  margin-left: 0.05em;
+}
+
+section.metric .stat .delta,
+.stat .delta {
+  display: block;
+  font-family: var(--sp-grot);
+  font-size: 14px;
+  color: var(--sp-ink-mute);
+  line-height: 1.4;
+}
+
+/* =============================================================================
+   UTILITY HELPERS — used inline in deck markdown via <span class="..."> etc.
+   ============================================================================= */
+
+.small {
+  font-size: var(--sp-fs-small);
+  color: var(--sp-ink-mute);
+  line-height: 1.45;
+}
+
+.large {
+  font-family: var(--sp-serif);
+  font-variation-settings: 'opsz' 96, 'SOFT' 50;
+  font-size: 36px;
+  font-weight: 500;
+  color: var(--sp-navy);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.huge {
+  font-family: var(--sp-serif);
+  font-variation-settings: 'opsz' 144, 'SOFT' 80, 'WONK' 1;
+  font-size: 56px;
+  font-weight: 500;
+  color: var(--sp-navy);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+
+.center {
+  text-align: center;
+}
+
+.center p,
+.center .large,
+.center .huge {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.smallcaps {
+  font-family: var(--sp-grot);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--sp-sky-deep);
+}
+
+.eyebrow {
+  display: inline-block;
+  font-family: var(--sp-grot);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--sp-sky-deep);
+  padding: 4px 0;
+  margin-bottom: var(--sp-baseline);
+  border-top: 1.5px solid var(--sp-sky);
+}
+
+/* ---- Grid utilities ---- */
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  margin: calc(var(--sp-baseline) * 1.5) 0;
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 36px;
+  margin: calc(var(--sp-baseline) * 1.5) 0;
+}
+
+.grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 28px;
+  margin: calc(var(--sp-baseline) * 1.5) 0;
+}
+
+.grid-5 {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px;
+  margin: calc(var(--sp-baseline) * 1.5) 0;
+}
+
+/* Asymmetric splits — 60/40 and 40/60 */
+.split-60-40 {
+  display: grid;
+  grid-template-columns: 0.6fr 0.4fr;
+  gap: 56px;
+  margin: calc(var(--sp-baseline) * 1.5) 0;
+}
+
+.split-40-60 {
+  display: grid;
+  grid-template-columns: 0.4fr 0.6fr;
+  gap: 56px;
+  margin: calc(var(--sp-baseline) * 1.5) 0;
+}
+
+/* ---- Callout blocks (good/bad/rule from brand bible) ---- */
+
+.good {
+  background: rgba(16, 185, 129, 0.08);
+  border-left: 3px solid var(--sp-emerald);
+  padding: 14px 20px;
+  margin: 10px 0;
+  color: #075b48;
+  font-size: 18px;
+  line-height: 1.4;
+}
+
+.bad {
+  background: rgba(190, 30, 60, 0.06);
+  border-left: 3px solid var(--sp-rose);
+  padding: 14px 20px;
+  margin: 10px 0;
+  color: #7a1226;
+  font-size: 18px;
+  line-height: 1.4;
+}
+
+.rule {
+  background: rgba(245, 158, 11, 0.08);
+  border-left: 3px solid var(--sp-amber);
+  padding: 14px 20px;
+  margin: 10px 0;
+  color: var(--sp-amber-deep);
+  font-size: 18px;
+  line-height: 1.4;
+}
+
+.good strong { color: #054532; }
+.bad strong { color: #5c0a1d; }
+.rule strong { color: #7a4d05; }
+
+/* ---- Color swatch (brand bible) ---- */
+
+.swatch {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  vertical-align: -4px;
+  margin-right: 10px;
+  /* Diagonal-cut swatch — references the logo */
+  clip-path: polygon(0 0, 100% 0, 100% 70%, 70% 100%, 0 100%);
+}
+
+/* ---- Stat blocks (used inside .grid-3 on traction / metric slides) ---- */
+
+.stat-label {
+  font-family: var(--sp-grot);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--sp-sky-deep);
+  margin-bottom: 8px;
+}
+
+.stat-value {
+  font-family: var(--sp-serif);
+  font-variation-settings: 'opsz' 144, 'SOFT' 80;
+  font-size: 56px;
+  font-weight: 500;
+  color: var(--sp-navy);
+  line-height: 1;
+  letter-spacing: -0.035em;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.stat-caption {
+  font-family: var(--sp-grot);
+  font-size: 14px;
+  color: var(--sp-ink-mute);
+  line-height: 1.4;
+  display: block;
+}
+
+/* ---- Brand chip (for "Founding Pro · Half-price forever" badges in copy) ---- */
+
+.chip {
+  display: inline-block;
+  font-family: var(--sp-grot);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  padding: 4px 10px 5px 10px;
+  background: var(--sp-navy);
+  color: var(--sp-paper);
+  margin: 0 4px;
+}
+
+.chip.sky    { background: var(--sp-sky); color: var(--sp-navy); }
+.chip.amber  { background: var(--sp-amber); color: var(--sp-navy); }
+.chip.emerald { background: var(--sp-emerald); color: white; }
+
+/* =============================================================================
+   PRINT / PDF FINE-TUNING
+   -----------------------------------------------------------------------------
+   Marp's PDF export uses Chromium under the hood — most CSS works, but we
+   nudge anti-aliasing and font rendering for the final print output.
+   ============================================================================= */
+
+@media print {
+  section {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+}

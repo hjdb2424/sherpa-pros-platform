@@ -7,7 +7,7 @@ import {
   ScrollView,
   Animated,
   Easing,
-  Alert,
+  TextInput,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -18,6 +18,10 @@ import { colors, shadows, spacing, borderRadius } from '@/lib/theme';
 import Logo from '@/components/brand/Logo';
 import { t } from '@/lib/i18n';
 
+// ---------------------------------------------------------------------------
+// Types
+// ---------------------------------------------------------------------------
+
 interface TestUser {
   name: string;
   email: string;
@@ -25,56 +29,61 @@ interface TestUser {
   badge: string;
   badgeColor: string;
   description: string;
+  location: string;
 }
 
-const TEST_USERS: TestUser[] = [
-  {
-    name: 'Sarah Chen',
-    email: 'sarah@test.com',
-    role: 'client',
-    badge: 'Client',
-    badgeColor: colors.primary,
-    description: 'Homeowner in Nashua, NH',
-  },
-  {
-    name: 'Mike Rodriguez',
-    email: 'mike@test.com',
-    role: 'pro',
-    badge: 'Pro',
-    badgeColor: colors.accent,
-    description: 'Licensed Plumber - 4.9 stars',
-  },
-  {
-    name: 'Emily Watson',
-    email: 'emily@test.com',
-    role: 'pm',
-    badge: 'PM',
-    badgeColor: '#8b5cf6',
-    description: 'Property manager, 3 buildings - 48 units',
-  },
-  {
-    name: 'James Park',
-    email: 'james@test.com',
-    role: 'pro',
-    badge: 'Pro',
-    badgeColor: colors.accent,
-    description: 'Master Electrician - 4.8 stars',
-  },
-  {
-    name: 'Alex Rivera',
-    email: 'alex@test.com',
-    role: 'client',
-    badge: 'Client',
-    badgeColor: colors.primary,
-    description: 'Homeowner in Portsmouth, NH',
-  },
+// ---------------------------------------------------------------------------
+// Account data — mirrors src/lib/demo-accounts.ts
+// ---------------------------------------------------------------------------
+
+const PM_ACCOUNTS: TestUser[] = [
+  { name: 'Lisa Park', email: 'lisa.park@test.com', role: 'pm', badge: 'PM', badgeColor: '#8b5cf6', description: 'Seacoast Property Management — 48 units, 4 properties', location: 'Portsmouth, NH' },
+  { name: 'David Chen', email: 'david.chen@test.com', role: 'pm', badge: 'PM', badgeColor: '#8b5cf6', description: 'Granite State Realty — 120 units, 8 properties', location: 'Manchester, NH' },
+  { name: 'Rachel Torres', email: 'rachel.torres@test.com', role: 'pm', badge: 'PM', badgeColor: '#8b5cf6', description: 'Coastal Living Properties — 36 units, 3 properties', location: 'Dover, NH' },
 ];
+
+const PRO_ACCOUNTS: TestUser[] = [
+  { name: 'Mike Rodriguez', email: 'mike.rodriguez@test.com', role: 'pro', badge: 'Pro', badgeColor: '#ff4500', description: 'Licensed Plumber — 4.9 stars, Gold tier', location: 'Portsmouth, NH' },
+  { name: 'James Wilson', email: 'james.wilson@test.com', role: 'pro', badge: 'Pro', badgeColor: '#ff4500', description: 'HVAC Technician — 4.8 stars, Silver tier', location: 'Dover, NH' },
+  { name: 'Sarah Chen', email: 'sarah.chen@test.com', role: 'pro', badge: 'Pro', badgeColor: '#ff4500', description: 'Master Electrician — 4.9 stars, Gold tier', location: 'Exeter, NH' },
+  { name: 'Carlos Rivera', email: 'carlos.rivera@test.com', role: 'pro', badge: 'Pro', badgeColor: '#ff4500', description: 'General Contractor — 4.7 stars, Silver tier', location: 'Newmarket, NH' },
+  { name: 'Diana Brooks', email: 'diana.brooks@test.com', role: 'pro', badge: 'Pro', badgeColor: '#ff4500', description: 'Interior Painter — 4.8 stars, Bronze tier', location: 'Kittery, ME' },
+  { name: 'Tom Sullivan', email: 'tom.sullivan@test.com', role: 'pro', badge: 'Pro', badgeColor: '#ff4500', description: 'Roofer — 4.6 stars, Silver tier', location: 'Hampton, NH' },
+  { name: 'Maria Santos', email: 'maria.santos@test.com', role: 'pro', badge: 'Pro', badgeColor: '#ff4500', description: 'Landscaper — 4.9 stars, Gold tier', location: 'Rye, NH' },
+  { name: "Kevin O'Brien", email: 'kevin.obrien@test.com', role: 'pro', badge: 'Pro', badgeColor: '#ff4500', description: 'Carpenter / Finish Work — 4.7 stars, Bronze tier', location: 'Somersworth, NH' },
+  { name: 'Andre Mitchell', email: 'andre.mitchell@test.com', role: 'pro', badge: 'Pro', badgeColor: '#ff4500', description: 'Appliance Repair — 4.5 stars, Bronze tier', location: 'Rochester, NH' },
+  { name: 'Jenny Kim', email: 'jenny.kim@test.com', role: 'pro', badge: 'Pro', badgeColor: '#ff4500', description: 'General Handyman — 4.8 stars, Silver tier', location: 'Newburyport, MA' },
+];
+
+const CLIENT_ACCOUNTS: TestUser[] = [
+  { name: 'Jamie Davis', email: 'jamie.davis@test.com', role: 'client', badge: 'Client', badgeColor: '#00a9e0', description: 'Homeowner — 3 projects completed', location: 'Portsmouth, NH' },
+  { name: 'Alex Rivera', email: 'alex.rivera@test.com', role: 'client', badge: 'Client', badgeColor: '#00a9e0', description: 'Property owner — new user', location: 'Dover, NH' },
+  { name: 'Morgan Lee', email: 'morgan.lee@test.com', role: 'client', badge: 'Client', badgeColor: '#00a9e0', description: 'Homeowner — 1 active project', location: 'Kittery, ME' },
+  { name: 'Sam Patel', email: 'sam.patel@test.com', role: 'client', badge: 'Client', badgeColor: '#00a9e0', description: 'Condo owner — 2 projects', location: 'Hampton, NH' },
+  { name: 'Chris Thompson', email: 'chris.thompson@test.com', role: 'client', badge: 'Client', badgeColor: '#00a9e0', description: 'Homeowner — new user', location: 'Exeter, NH' },
+  { name: 'Taylor Kim', email: 'taylor.kim@test.com', role: 'client', badge: 'Client', badgeColor: '#00a9e0', description: 'Rental property owner — 5 projects', location: 'Newmarket, NH' },
+  { name: 'Jordan Williams', email: 'jordan.williams@test.com', role: 'client', badge: 'Client', badgeColor: '#00a9e0', description: 'First-time homebuyer — new user', location: 'Rochester, NH' },
+  { name: 'Casey Martin', email: 'casey.martin@test.com', role: 'client', badge: 'Client', badgeColor: '#00a9e0', description: 'Homeowner — 2 active projects', location: 'Rye, NH' },
+  { name: 'Riley Anderson', email: 'riley.anderson@test.com', role: 'client', badge: 'Client', badgeColor: '#00a9e0', description: 'Condo owner — new user', location: 'Somersworth, NH' },
+  { name: 'Avery Brown', email: 'avery.brown@test.com', role: 'client', badge: 'Client', badgeColor: '#00a9e0', description: 'Homeowner — 4 projects completed', location: 'Newburyport, MA' },
+];
+
+const SECTIONS = [
+  { title: 'Property Managers', accounts: PM_ACCOUNTS },
+  { title: 'Service Pros', accounts: PRO_ACCOUNTS },
+  { title: 'Clients', accounts: CLIENT_ACCOUNTS },
+];
+
+// ---------------------------------------------------------------------------
+// Screen
+// ---------------------------------------------------------------------------
 
 export default function SignInScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { signIn } = useAuth();
   const [signingIn, setSigningIn] = useState<string | null>(null);
+  const [search, setSearch] = useState('');
 
   // Fade-in animation
   const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -101,10 +110,10 @@ export default function SignInScreen() {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     try {
       await signIn(user.role, user.name, user.email);
-      if (user.role === 'pro') {
-        router.replace('/(pro)');
-      } else if (user.role === 'pm') {
+      if (user.role === 'pm') {
         router.replace('/(pm)');
+      } else if (user.role === 'pro') {
+        router.replace('/(pro)');
       } else {
         router.replace('/(client)');
       }
@@ -113,17 +122,37 @@ export default function SignInScreen() {
     }
   };
 
+  const filteredSections = search.trim()
+    ? SECTIONS.map((s) => ({
+        ...s,
+        accounts: s.accounts.filter(
+          (a) =>
+            a.name.toLowerCase().includes(search.toLowerCase()) ||
+            a.description.toLowerCase().includes(search.toLowerCase()) ||
+            a.location.toLowerCase().includes(search.toLowerCase())
+        ),
+      })).filter((s) => s.accounts.length > 0)
+    : SECTIONS;
+
   return (
     <ScrollView
       style={styles.scroll}
-      contentContainerStyle={[styles.container, { paddingTop: insets.top + 60, paddingBottom: insets.bottom + 40 }]}
+      contentContainerStyle={[
+        styles.container,
+        { paddingTop: insets.top + 40, paddingBottom: insets.bottom + 40 },
+      ]}
+      keyboardShouldPersistTaps="handled"
     >
-      <Animated.View style={{ opacity: fadeAnim, transform: [{ translateY: slideAnim }] }}>
+      <Animated.View
+        style={{ opacity: fadeAnim, transform: [{ translateY: slideAnim }] }}
+      >
         {/* Logo */}
         <View style={styles.logoSection}>
           <Logo size="xl" />
           <Text style={styles.tagline}>{t('auth.tagline')}</Text>
-          <Text style={styles.serviceArea}>Serving NH {'\u00B7'} ME {'\u00B7'} MA</Text>
+          <Text style={styles.serviceArea}>
+            Serving NH {'\u00B7'} ME {'\u00B7'} MA
+          </Text>
         </View>
 
         {/* Social Sign-In Buttons */}
@@ -136,13 +165,17 @@ export default function SignInScreen() {
               try {
                 await signIn('client', 'Apple User', 'apple@icloud.com');
                 router.replace('/(client)');
-              } catch { setSigningIn(null); }
+              } catch {
+                setSigningIn(null);
+              }
             }}
             disabled={signingIn === 'apple'}
           >
             <Ionicons name="logo-apple" size={20} color={colors.text} />
             <Text style={styles.socialButtonText}>
-              {signingIn === 'apple' ? t('common.loading') : t('auth.continueApple')}
+              {signingIn === 'apple'
+                ? t('common.loading')
+                : t('auth.continueApple')}
             </Text>
           </Pressable>
           <Pressable
@@ -153,13 +186,17 @@ export default function SignInScreen() {
               try {
                 await signIn('client', 'Google User', 'user@gmail.com');
                 router.replace('/(client)');
-              } catch { setSigningIn(null); }
+              } catch {
+                setSigningIn(null);
+              }
             }}
             disabled={signingIn === 'google'}
           >
             <Ionicons name="logo-google" size={18} color={colors.text} />
             <Text style={styles.socialButtonText}>
-              {signingIn === 'google' ? t('common.loading') : t('auth.continueGoogle')}
+              {signingIn === 'google'
+                ? t('common.loading')
+                : t('auth.continueGoogle')}
             </Text>
           </Pressable>
         </View>
@@ -171,21 +208,53 @@ export default function SignInScreen() {
           <View style={styles.dividerLine} />
         </View>
 
-        {/* Test user cards */}
-        <View style={styles.userList}>
-          {TEST_USERS.map((user, index) => {
-            const isLoading = signingIn === user.email;
-            return (
-              <UserCard
-                key={user.email}
-                user={user}
-                index={index}
-                isLoading={isLoading}
-                onPress={() => handleSignIn(user)}
-              />
-            );
-          })}
+        {/* Search */}
+        <View style={styles.searchContainer}>
+          <Ionicons
+            name="search"
+            size={16}
+            color={colors.textMuted}
+            style={styles.searchIcon}
+          />
+          <TextInput
+            style={styles.searchInput}
+            placeholder="Search by name, trade, or location..."
+            placeholderTextColor={colors.textMuted}
+            value={search}
+            onChangeText={setSearch}
+            autoCapitalize="none"
+            autoCorrect={false}
+          />
         </View>
+
+        {/* Grouped user cards */}
+        {filteredSections.map((section) => (
+          <View key={section.title} style={styles.sectionContainer}>
+            <Text style={styles.sectionHeader}>
+              {section.title} ({section.accounts.length})
+            </Text>
+            <View style={styles.userList}>
+              {section.accounts.map((user, index) => {
+                const isLoading = signingIn === user.email;
+                return (
+                  <UserCard
+                    key={user.email}
+                    user={user}
+                    index={index}
+                    isLoading={isLoading}
+                    onPress={() => handleSignIn(user)}
+                  />
+                );
+              })}
+            </View>
+          </View>
+        ))}
+
+        {filteredSections.length === 0 && (
+          <Text style={styles.noResults}>
+            No accounts match &ldquo;{search}&rdquo;
+          </Text>
+        )}
 
         {/* Footer */}
         <Text style={styles.footer}>
@@ -196,15 +265,39 @@ export default function SignInScreen() {
   );
 }
 
-function UserCard({ user, index, isLoading, onPress }: { user: TestUser; index: number; isLoading: boolean; onPress: () => void }) {
+// ---------------------------------------------------------------------------
+// User card
+// ---------------------------------------------------------------------------
+
+function UserCard({
+  user,
+  index,
+  isLoading,
+  onPress,
+}: {
+  user: TestUser;
+  index: number;
+  isLoading: boolean;
+  onPress: () => void;
+}) {
   const scale = useRef(new Animated.Value(1)).current;
   const cardFade = useRef(new Animated.Value(0)).current;
   const cardSlide = useRef(new Animated.Value(20)).current;
 
   useEffect(() => {
     Animated.parallel([
-      Animated.timing(cardFade, { toValue: 1, duration: 400, delay: 200 + index * 80, useNativeDriver: true }),
-      Animated.timing(cardSlide, { toValue: 0, duration: 400, delay: 200 + index * 80, useNativeDriver: true }),
+      Animated.timing(cardFade, {
+        toValue: 1,
+        duration: 400,
+        delay: 100 + index * 40,
+        useNativeDriver: true,
+      }),
+      Animated.timing(cardSlide, {
+        toValue: 0,
+        duration: 400,
+        delay: 100 + index * 40,
+        useNativeDriver: true,
+      }),
     ]).start();
   }, [cardFade, cardSlide, index]);
 
@@ -216,7 +309,12 @@ function UserCard({ user, index, isLoading, onPress }: { user: TestUser; index: 
   };
 
   return (
-    <Animated.View style={{ opacity: cardFade, transform: [{ translateY: cardSlide }, { scale }] }}>
+    <Animated.View
+      style={{
+        opacity: cardFade,
+        transform: [{ translateY: cardSlide }, { scale }],
+      }}
+    >
       <Pressable
         style={[styles.userCard, isLoading && styles.userCardLoading]}
         onPress={onPress}
@@ -227,17 +325,28 @@ function UserCard({ user, index, isLoading, onPress }: { user: TestUser; index: 
         <View style={styles.userCardContent}>
           <View style={styles.userAvatar}>
             <Text style={styles.userAvatarText}>
-              {user.name.split(' ').map((n) => n[0]).join('')}
+              {user.name
+                .split(' ')
+                .map((n) => n[0])
+                .join('')}
             </Text>
           </View>
           <View style={styles.userInfo}>
             <View style={styles.userNameRow}>
               <Text style={styles.userName}>{user.name}</Text>
-              <View style={[styles.roleBadge, { backgroundColor: user.badgeColor }]}>
+              <View
+                style={[
+                  styles.roleBadge,
+                  { backgroundColor: user.badgeColor },
+                ]}
+              >
                 <Text style={styles.roleBadgeText}>{user.badge}</Text>
               </View>
             </View>
-            <Text style={styles.userDescription}>{user.description}</Text>
+            <Text style={styles.userDescription} numberOfLines={1}>
+              {user.description}
+            </Text>
+            <Text style={styles.userLocation}>{user.location}</Text>
           </View>
           <Text style={styles.arrow}>{isLoading ? '...' : '\u203A'}</Text>
         </View>
@@ -245,6 +354,10 @@ function UserCard({ user, index, isLoading, onPress }: { user: TestUser; index: 
     </Animated.View>
   );
 }
+
+// ---------------------------------------------------------------------------
+// Styles
+// ---------------------------------------------------------------------------
 
 const styles = StyleSheet.create({
   scroll: {
@@ -258,7 +371,7 @@ const styles = StyleSheet.create({
   // Logo
   logoSection: {
     alignItems: 'center',
-    marginBottom: 32,
+    marginBottom: 24,
   },
   tagline: {
     fontSize: 16,
@@ -276,7 +389,7 @@ const styles = StyleSheet.create({
   // Social
   socialSection: {
     gap: 12,
-    marginBottom: 32,
+    marginBottom: 24,
   },
   socialButton: {
     flexDirection: 'row',
@@ -299,7 +412,7 @@ const styles = StyleSheet.create({
   divider: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 24,
+    marginBottom: 16,
     gap: 12,
   },
   dividerLine: {
@@ -313,14 +426,48 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
 
+  // Search
+  searchContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: colors.borderLight,
+    borderRadius: borderRadius.lg,
+    backgroundColor: colors.surface,
+    marginBottom: 20,
+    paddingHorizontal: 12,
+  },
+  searchIcon: {
+    marginRight: 8,
+  },
+  searchInput: {
+    flex: 1,
+    paddingVertical: 10,
+    fontSize: 14,
+    color: colors.text,
+  },
+
+  // Sections
+  sectionContainer: {
+    marginBottom: 20,
+  },
+  sectionHeader: {
+    fontSize: 11,
+    fontWeight: '700',
+    color: colors.textMuted,
+    textTransform: 'uppercase',
+    letterSpacing: 0.8,
+    marginBottom: 8,
+  },
+
   // User cards
   userList: {
-    gap: 12,
+    gap: 8,
   },
   userCard: {
     backgroundColor: colors.surface,
     borderRadius: borderRadius.lg,
-    padding: spacing.lg,
+    padding: spacing.md,
     borderWidth: 1,
     borderColor: colors.borderLight,
     ...shadows.sm,
@@ -334,15 +481,15 @@ const styles = StyleSheet.create({
     gap: spacing.md,
   },
   userAvatar: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
     backgroundColor: colors.primaryLight,
     alignItems: 'center',
     justifyContent: 'center',
   },
   userAvatarText: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: '700',
     color: colors.primary,
   },
@@ -352,33 +499,47 @@ const styles = StyleSheet.create({
   userNameRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    gap: 6,
   },
   userName: {
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: '600',
     color: colors.text,
   },
   roleBadge: {
-    paddingHorizontal: 8,
-    paddingVertical: 2,
+    paddingHorizontal: 6,
+    paddingVertical: 1,
     borderRadius: borderRadius.full,
   },
   roleBadgeText: {
-    fontSize: 11,
+    fontSize: 10,
     fontWeight: '700',
     color: '#ffffff',
     textTransform: 'uppercase',
   },
   userDescription: {
-    fontSize: 13,
+    fontSize: 12,
     color: colors.textMuted,
-    marginTop: 2,
+    marginTop: 1,
+  },
+  userLocation: {
+    fontSize: 11,
+    color: colors.textMuted,
+    marginTop: 1,
+    opacity: 0.7,
   },
   arrow: {
-    fontSize: 24,
+    fontSize: 22,
     color: colors.textMuted,
     fontWeight: '300',
+  },
+
+  // No results
+  noResults: {
+    textAlign: 'center',
+    fontSize: 14,
+    color: colors.textMuted,
+    paddingVertical: 32,
   },
 
   // Footer
@@ -386,6 +547,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 13,
     color: colors.textMuted,
-    marginTop: 32,
+    marginTop: 24,
   },
 });

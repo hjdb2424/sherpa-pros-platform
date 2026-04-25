@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import HelpAndSupport from '@/components/onboarding/HelpAndSupport';
 
 export const metadata: Metadata = {
   title: 'Settings | Client',
@@ -150,6 +151,9 @@ export default function ClientSettingsPage() {
             </button>
           </div>
         </section>
+
+        {/* Help & Support */}
+        <HelpAndSupport role="client" />
 
         {/* Danger Zone */}
         <section className="rounded-xl border border-red-200 bg-white p-6 dark:border-red-900/50 dark:bg-zinc-900">

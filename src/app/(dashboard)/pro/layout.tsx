@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import ProSidebar from '@/components/pro/ProSidebar';
+import DemoBanner from '@/components/DemoBanner';
+import ProTour from '@/components/onboarding/ProTour';
 
 export const metadata: Metadata = {
   title: {
@@ -16,6 +18,8 @@ export default function ProDashboardLayout({
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950">
       <ProSidebar />
+      <DemoBanner />
+      <ProTour />
 
       {/* Main content area: offset by sidebar on desktop, top header + bottom tabs on mobile */}
       <main

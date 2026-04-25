@@ -1,5 +1,7 @@
 import Link from 'next/link';
 import { ClientSidebar } from '@/components/client/ClientSidebar';
+import DemoBanner from '@/components/DemoBanner';
+import ClientTour from '@/components/onboarding/ClientTour';
 
 export default function ClientLayout({
   children,
@@ -9,6 +11,8 @@ export default function ClientLayout({
   return (
     <div className="flex h-screen bg-zinc-50">
       <ClientSidebar />
+      <DemoBanner />
+      <ClientTour />
 
       <div className="flex flex-1 flex-col overflow-hidden">
         {/* Header */}

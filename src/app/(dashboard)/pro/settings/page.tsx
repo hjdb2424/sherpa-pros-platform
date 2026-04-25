@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import HelpAndSupport from '@/components/onboarding/HelpAndSupport';
 
 export const metadata: Metadata = {
   title: 'Settings | Pro',
@@ -175,6 +176,9 @@ export default function ProSettingsPage() {
             </div>
           </div>
         </section>
+
+        {/* Help & Support */}
+        <HelpAndSupport role="pro" />
 
         {/* Danger Zone */}
         <section className="rounded-xl border border-red-200 bg-white p-6 dark:border-red-900/50 dark:bg-zinc-900">

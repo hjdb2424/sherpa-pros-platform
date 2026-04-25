@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import PMSidebar from '@/components/pm/PMSidebar';
+import DemoBanner from '@/components/DemoBanner';
+import PMTour from '@/components/onboarding/PMTour';
 
 export const metadata: Metadata = {
   title: {
@@ -16,6 +18,8 @@ export default function PMDashboardLayout({
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950">
       <PMSidebar />
+      <DemoBanner />
+      <PMTour />
 
       {/* Main content area: offset by sidebar on desktop, top header + bottom tabs on mobile */}
       <main

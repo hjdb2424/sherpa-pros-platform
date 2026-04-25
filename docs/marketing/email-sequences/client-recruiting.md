@@ -27,9 +27,9 @@ You probably have a list. Stuff around the house that is too small for HJD to ta
 
 That is what Sherpa Pros is for.
 
-It is a new platform I built for the New England trades. Same standard you got from HJD. Every pro on it is license-checked, insurance-checked, and code-aware. You post the job in a few words, you get bids from real local pros, and you only pay when the work is done. No card to post, no fees, no spam.
+It is a new platform I built for licensed trade work — national in scope, launching here at home first. Same standard you got from HJD. Every pro on it is license-checked, insurance-checked, and code-aware. You post the job in a few words, you get bids from real local pros, and you only pay when the work is done. No card to post, no fees, no spam.
 
-It is live now in the Seacoast and growing into Manchester, Portland, and Boston specialty trades.
+It is live now in the Seacoast and rolling out across Manchester, Portland, and Boston specialty trades — with more metros coming.
 
 You are getting the link before it opens to the public. If you have a project on your list, post it and see what comes back.
 

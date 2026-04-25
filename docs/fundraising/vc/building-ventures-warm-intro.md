@@ -155,7 +155,7 @@ Send directly to Jesse Devitte at his Building Ventures address (verifiable on t
 >
 > I'm Phyrom. I run HJD Builders, a licensed GC in New Hampshire. I've spent twelve years buying leads from Angi and Thumbtack and watching the platforms send my crews homeowners who didn't need licensed work, and send licensed work to people who shouldn't be doing it.
 >
-> So I built the platform I wished existed. Sherpa Pros is the licensed-trade marketplace for New England. Jobs, not leads. Licensed only. Code-aware quote validation. Permit and rebate awareness. Live now at sherpa-pros-platform.vercel.app, with a beta cohort in Portsmouth, Manchester, Portland and Boston specialty lanes (Mass Save heat pumps, EV chargers, panel upgrades, old-house, triple-decker exteriors).
+> So I built the platform I wished existed. Sherpa Pros is the national licensed-trade marketplace — launching first in NH, ME, and MA, with Boston as our specialty-lane wedge. Jobs, not leads. Licensed only. Code-aware quote validation. Permit and rebate awareness. Live now at sherpa-pros-platform.vercel.app, with a beta cohort in Portsmouth, Manchester, Portland and Boston specialty lanes (Mass Save heat pumps, EV chargers, panel upgrades, old-house, triple-decker exteriors). The Boston specialty playbook is the template we'll deploy into every metro after.
 >
 > Two reasons I'm writing you specifically:
 >

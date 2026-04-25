@@ -66,7 +66,7 @@ const complianceItems: ComplianceItem[] = [
   },
   {
     id: 'C-004',
-    property: 'Elm Street Student Housing',
+    property: 'College Park Student Housing',
     item: 'Lead Paint Certification',
     type: 'Environmental',
     dueDate: 'May 30, 2026',
@@ -118,7 +118,7 @@ const complianceItems: ComplianceItem[] = [
   },
   {
     id: 'C-008',
-    property: 'Elm Street Student Housing',
+    property: 'College Park Student Housing',
     item: 'Pest Inspection',
     type: 'Health',
     dueDate: 'Nov 1, 2026',

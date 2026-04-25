@@ -85,7 +85,7 @@ const initialItems: MakeReadyItem[] = [
   {
     id: 'MR-005',
     unit: 'Unit 12',
-    property: 'Elm Street Student Housing',
+    property: 'College Park Student Housing',
     vacateDate: 'Mar 20',
     targetReadyDate: 'Apr 10',
     daysVacant: 26,

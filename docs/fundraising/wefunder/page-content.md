@@ -317,7 +317,7 @@ This is not the complete list. **The full risk disclosures are in the Form C fil
 
 ### 11.2 Risks specific to marketplaces
 
-- **Marketplace liquidity risk.** Two-sided marketplaces are notoriously hard to bootstrap. Both supply (licensed pros) and demand (homeowners) must scale together. If supply outpaces demand, pros leave. If demand outpaces supply, homeowners can't get matched. **The founder's primary mitigation:** start small with a curated 10-pro beta cohort in a metro the founder knows personally (Northern Triangle: Portsmouth, Manchester, Portland), then expand only after liquidity proves out.
+- **Marketplace liquidity risk.** Two-sided marketplaces are notoriously hard to bootstrap. Both supply (licensed pros) and demand (homeowners) must scale together. If supply outpaces demand, pros leave. If demand outpaces supply, homeowners can't get matched. **The founder's primary mitigation:** start small with a curated 10-pro beta cohort in the Phase 1 launch metros the founder knows personally (Portsmouth, Manchester, Portland), then expand only after liquidity proves out.
 - **Take-rate compression risk.** Competitors could cut their effective take rate to match Sherpa Pros' 5–10% range. Angi, Thumbtack, and Houzz have entire P&Ls built on lead-fee economics — they cannot easily switch — but other entrants could. **Mitigation:** the code-intelligence layer is the real moat, not the take rate. Take rate is the price; the code work is the product.
 
 ### 11.3 Risks specific to licensed-trade work
@@ -329,7 +329,7 @@ This is not the complete list. **The full risk disclosures are in the Form C fil
 ### 11.4 Risks specific to competitive pressure
 
 - **Incumbent response.** Angi, Thumbtack, or Houzz could launch a "licensed-only" or "Mass Save certified" feature. They've shown no urgency to do so because it would require rebuilding their lead-fee model — but the risk is real. **Mitigation:** speed to market in NE (founder is local; competitors are corporate), USPTO trademark on "Old-House Verified," and exclusive utility partnerships (Mass Save Network application; National Grid Turnkey relationship).
-- **New entrant.** A well-funded new entrant could attempt the same positioning. **Mitigation:** the code-intelligence layer is a multi-year build, the founder-as-GC narrative is unforgeable, and the Northern Triangle beachhead is too small to attract well-funded national entrants until we're already established.
+- **New entrant.** A well-funded new entrant could attempt the same positioning. **Mitigation:** the code-intelligence layer is a multi-year build, the founder-as-GC narrative is unforgeable, and the Phase 1 launch-metro beachhead is too small to attract well-funded national entrants until we're already established.
 
 ### 11.5 Risks specific to this raise
 

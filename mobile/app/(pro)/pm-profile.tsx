@@ -40,7 +40,7 @@ const PROPERTIES = [
   { id: 'maple-ridge', name: 'Maple Ridge Apartments', type: 'Multi-Family', units: 48, occupancy: 94, avgRent: 1850 },
   { id: '220-main', name: '220 Main St Mixed-Use', type: 'Mixed-Use', units: 15, occupancy: 87, avgRent: 2100 },
   { id: 'harbor-view', name: 'Harbor View Condos', type: 'Condo', units: 24, occupancy: 100, avgRent: 2450 },
-  { id: 'elm-street', name: 'Elm Street Student Housing', type: 'Student Housing', units: 36, occupancy: 92, avgRent: 1200 },
+  { id: 'elm-street', name: 'College Park Student Housing', type: 'Student Housing', units: 36, occupancy: 92, avgRent: 1200 },
 ];
 
 const RECENT_ACTIVITY = [

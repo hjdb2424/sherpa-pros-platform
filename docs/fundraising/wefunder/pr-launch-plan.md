@@ -29,7 +29,7 @@
 
 ### Dateline + lede
 
-**PORTSMOUTH, N.H. — [LAUNCH DAY DATE]** — Sherpa Pros, a New England licensed-trade marketplace built by working general contractor Phyrom of HJD Builders LLC, today launched a U.S. Securities and Exchange Commission Regulation Crowdfunding (Reg CF) community round on Wefunder, with a target raise of $250,000 to $500,000 and minimum investments of $100. The platform — live at sherpa-pros-platform.vercel.app — is the first home-services marketplace built specifically for the four problems lead-generation platforms structurally cannot solve: license verification, code-aware quote validation, permit-aware workflows, and rebate matching for state utility programs like Mass Save.
+**PORTSMOUTH, N.H. — [LAUNCH DAY DATE]** — Sherpa Pros, the national licensed-trade marketplace built by working general contractor Phyrom of HJD Builders LLC and launching first in New Hampshire, Maine, and Massachusetts, today launched a U.S. Securities and Exchange Commission Regulation Crowdfunding (Reg CF) community round on Wefunder, with a target raise of $250,000 to $500,000 and minimum investments of $100. The platform — live at sherpa-pros-platform.vercel.app — is the first home-services marketplace built specifically for the four problems lead-generation platforms structurally cannot solve: license verification, code-aware quote validation, permit-aware workflows, and rebate matching for state utility programs like Mass Save.
 
 ---
 
@@ -49,7 +49,7 @@ The Wefunder community round is one of four parallel funding tracks. The other t
 
 "The Wefunder round is the one where the community gets a seat at the table," said Phyrom. "We're running it because the homeowners and licensed contractors who use the platform should own a piece of the platform. That's the whole point."
 
-**About Sherpa Pros.** Sherpa Pros is a New England licensed-trade marketplace built by HJD Builders LLC founder Phyrom. The platform delivers vetted, code-checked jobs to licensed contractors and matches homeowners with verified pros via a mobile-first dispatch system inspired by ride-hail. Service categories include electrical, plumbing, HVAC, heat pumps, roofing, general construction, and 30+ residential trades. The platform is live in beta in NH, ME, and the Boston metro, with Phase 1 launch targeting Portsmouth, Manchester, Portland, and Boston specialty lanes. Web: sherpa-pros-platform.vercel.app.
+**About Sherpa Pros.** Sherpa Pros is the national licensed-trade marketplace built by HJD Builders LLC founder Phyrom (international roadmap). The platform delivers vetted, code-checked jobs to licensed contractors and matches homeowners with verified pros via a mobile-first dispatch system inspired by ride-hail. Service categories include electrical, plumbing, HVAC, heat pumps, roofing, general construction, and 30+ residential trades. The platform is live in beta in NH, ME, and the Boston metro, with Phase 1 launch targeting Portsmouth, Manchester, Portland, and Boston specialty lanes — expanding nationally through Phase 4. Web: sherpa-pros-platform.vercel.app.
 
 **Wefunder offering page:** [TO BE CONFIRMED — wefunder.com/sherpapros]
 **Founder direct:** Phyrom, poum@hjd.builders

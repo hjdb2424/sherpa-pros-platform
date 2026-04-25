@@ -59,7 +59,7 @@ const properties = [
   },
   {
     id: 'elm-street',
-    name: 'Elm Street Student Housing',
+    name: 'College Park Student Housing',
     type: 'Student Housing',
     photo: 'https://images.unsplash.com/photo-1554995207-c18c203602cb?w=400&h=250&fit=crop',
     units: 36,

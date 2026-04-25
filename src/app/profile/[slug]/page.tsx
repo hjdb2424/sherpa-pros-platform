@@ -75,7 +75,7 @@ const PROFILES: Record<string, PublicProfile> = {
       { name: 'Maple Ridge Apartments', units: 48, occupancy: 94 },
       { name: '220 Main St Mixed-Use', units: 15, occupancy: 87 },
       { name: 'Harbor View Condos', units: 24, occupancy: 100 },
-      { name: 'Elm Street Student Housing', units: 36, occupancy: 92 },
+      { name: 'College Park Student Housing', units: 36, occupancy: 92 },
     ],
     financials: { noi: '$114K/mo', occupancy: '91.1%', margin: '61%' },
     services: ['Tenant Placement', 'Rent Collection', 'Maintenance Coordination', 'Financial Reporting', 'Lease Management', 'Eviction Services', 'Capital Project Oversight'],

@@ -51,7 +51,7 @@ const properties = [
   },
   {
     id: 'elm-street',
-    name: 'Elm Street Student Housing',
+    name: 'College Park Student Housing',
     type: 'Student Housing',
     units: 36,
     occupancy: 92,

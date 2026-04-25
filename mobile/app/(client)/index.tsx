@@ -105,7 +105,7 @@ export default function ClientMapScreen() {
   const [showWizard, setShowWizard] = useState(false);
 
   useEffect(() => {
-    SecureStore.getItemAsync('sherpa_onboarding_complete').then((val) => {
+    SecureStore.getItemAsync('sherpa_onboarding_complete').catch(() => null).then((val) => {
       if (val !== 'true') setShowWizard(true);
     });
   }, []);

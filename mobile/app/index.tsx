@@ -26,13 +26,18 @@ export default function RootIndex() {
     return <Redirect href="/(pm)" />;
   }
 
-  return <Redirect href="/(client)" />;
+  if (role === 'client') {
+    return <Redirect href="/(client)" />;
+  }
+
+  // No role set — go to role selection
+  return <Redirect href="/(auth)/select-role" />;
 }
 
 const styles = StyleSheet.create({
   loading: {
     flex: 1,
-    backgroundColor: '#ffffff',
+    backgroundColor: colors.background,
     justifyContent: 'center',
     alignItems: 'center',
   },

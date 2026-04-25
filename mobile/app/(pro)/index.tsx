@@ -78,7 +78,7 @@ export default function ProMapScreen() {
   const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
-    SecureStore.getItemAsync('sherpa_onboarding_complete').then((val) => {
+    SecureStore.getItemAsync('sherpa_onboarding_complete').catch(() => null).then((val) => {
       const done = val === 'true';
       setOnboardingComplete(done);
       if (!done) setShowWizard(true);

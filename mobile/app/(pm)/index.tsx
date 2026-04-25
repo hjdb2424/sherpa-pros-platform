@@ -128,7 +128,7 @@ export default function FinanceScreen() {
   const [wizardChecked, setWizardChecked] = useState(false);
 
   useEffect(() => {
-    SecureStore.getItemAsync('sherpa_onboarding_complete').then((val) => {
+    SecureStore.getItemAsync('sherpa_onboarding_complete').catch(() => null).then((val) => {
       if (val !== 'true') setShowWizard(true);
       setWizardChecked(true);
     });

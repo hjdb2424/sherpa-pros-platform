@@ -220,7 +220,7 @@ export default function ProProfileScreen() {
   const [editProPhone, setEditProPhone] = useState('(603) 555-0142');
 
   useEffect(() => {
-    SecureStore.getItemAsync('sherpa_onboarding_complete').then((val) => {
+    SecureStore.getItemAsync('sherpa_onboarding_complete').catch(() => null).then((val) => {
       setOnboardingComplete(val === 'true');
     });
   }, []);
@@ -820,7 +820,7 @@ export default function ProProfileScreen() {
             style={s.stickyButtonOutline}
             onPress={() => {
               Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-              router.push('/(pro)/post-job');
+              router.push('/(pro)/quote');
             }}
           >
             <Ionicons name="document-text-outline" size={18} color={colors.primary} />

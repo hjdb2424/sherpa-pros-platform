@@ -86,6 +86,11 @@ export default function AccessListPage() {
   const [editRole, setEditRole] = useState("");
   const [editNotes, setEditNotes] = useState("");
 
+  // Invite email flow
+  const [inviteId, setInviteId] = useState<number | null>(null);
+  const [inviteEmail, setInviteEmail] = useState("");
+  const [inviteSent, setInviteSent] = useState<number | null>(null);
+
   // ── Fetch ───────────────────────────────────────────────────────
 
   const fetchEntries = useCallback(async () => {
@@ -470,31 +475,86 @@ export default function AccessListPage() {
                             >
                               Invite
                             </a>
-                            <button
-                              onClick={() => {
-                                const role = entry.defaultRole === "pm" ? "pm" : entry.defaultRole === "pro" ? "pro" : "client";
-                                const subject = encodeURIComponent("You're invited to Sherpa Pros Beta");
-                                const body = encodeURIComponent(
-                                  "Hi " + entry.name + ",\n\n" +
-                                  "You've been invited to test Sherpa Pros - the smart platform for trade work.\n\n" +
-                                  "Sign in here: https://thesherpapros.com/sign-in\n" +
-                                  "Use this email (" + entry.email + ") to access the platform.\n\n" +
-                                  "Quick start:\n" +
-                                  "1. Visit the link above\n" +
-                                  "2. Click Continue with Google or enter your email\n" +
-                                  "3. Complete the 30-second setup\n" +
-                                  "4. Take the guided tour\n\n" +
-                                  "Your role-specific guide: https://thesherpapros.com/invite/" + role + "\n\n" +
-                                  "Questions? Reply to this email or contact info@thesherpapros.com\n\n" +
-                                  "- The Sherpa Pros Team"
-                                );
-                                window.location.href = "mailto:" + entry.email + "?subject=" + subject + "&body=" + body;
-                              }}
-                              className="rounded bg-emerald-500 px-2.5 py-1 text-xs font-medium text-white hover:bg-emerald-600"
-                              title="Send invite email"
-                            >
-                              Email
-                            </button>
+                            {inviteId === entry.id ? (
+                              <div className="flex items-center gap-1.5">
+                                <input
+                                  type="email"
+                                  value={inviteEmail}
+                                  onChange={(e) => setInviteEmail(e.target.value)}
+                                  placeholder={entry.email}
+                                  className="w-44 rounded border border-zinc-300 px-2 py-1 text-xs focus:border-[#00a9e0] focus:outline-none focus:ring-1 focus:ring-[#00a9e0]"
+                                  autoFocus
+                                  onKeyDown={(e) => {
+                                    if (e.key === "Escape") setInviteId(null);
+                                  }}
+                                />
+                                <button
+                                  onClick={async () => {
+                                    const to = inviteEmail.trim() || entry.email;
+                                    const role = entry.defaultRole === "pm" ? "pm" : entry.defaultRole === "pro" ? "pro" : "client";
+                                    const inviteText =
+                                      "Hi " + entry.name + ",\n\n" +
+                                      "You've been invited to test Sherpa Pros - the smart platform for trade work.\n\n" +
+                                      "Sign in here: https://thesherpapros.com/sign-in\n" +
+                                      "Use this email (" + to + ") to access the platform.\n\n" +
+                                      "Quick start:\n" +
+                                      "1. Visit the link above\n" +
+                                      "2. Click \"Continue with Google\" or enter your email\n" +
+                                      "3. Complete the 30-second setup\n" +
+                                      "4. Take the guided tour\n\n" +
+                                      "Your role-specific guide: https://thesherpapros.com/invite/" + role + "\n\n" +
+                                      "Questions? Reply to this email or contact info@thesherpapros.com\n\n" +
+                                      "- The Sherpa Pros Team";
+
+                                    // Try sending via API first
+                                    try {
+                                      const res = await fetch("/api/admin/send-invite", {
+                                        method: "POST",
+                                        headers: { "Content-Type": "application/json" },
+                                        body: JSON.stringify({ to, name: entry.name, role }),
+                                      });
+                                      if (res.ok) {
+                                        setInviteSent(entry.id);
+                                        setInviteId(null);
+                                        setTimeout(() => setInviteSent(null), 3000);
+                                        return;
+                                      }
+                                    } catch { /* fall through to clipboard */ }
+
+                                    // Fallback: copy to clipboard
+                                    await navigator.clipboard.writeText(
+                                      "To: " + to + "\nSubject: You're invited to Sherpa Pros Beta\n\n" + inviteText
+                                    );
+                                    setInviteSent(entry.id);
+                                    setInviteId(null);
+                                    setTimeout(() => setInviteSent(null), 3000);
+                                    alert("Invite copied to clipboard! Paste into your email app.");
+                                  }}
+                                  className="rounded bg-emerald-500 px-2 py-1 text-xs font-medium text-white hover:bg-emerald-600"
+                                >
+                                  Send
+                                </button>
+                                <button
+                                  onClick={() => setInviteId(null)}
+                                  className="rounded border border-zinc-300 px-1.5 py-1 text-xs text-zinc-500 hover:bg-zinc-50"
+                                >
+                                  ✕
+                                </button>
+                              </div>
+                            ) : inviteSent === entry.id ? (
+                              <span className="text-xs font-medium text-emerald-600">Sent ✓</span>
+                            ) : (
+                              <button
+                                onClick={() => {
+                                  setInviteId(entry.id);
+                                  setInviteEmail(entry.email);
+                                }}
+                                className="rounded bg-emerald-500 px-2.5 py-1 text-xs font-medium text-white hover:bg-emerald-600"
+                                title="Send invite email"
+                              >
+                                Email
+                              </button>
+                            )}
                             <button
                               onClick={() => startEdit(entry)}
                               className="rounded border border-zinc-300 px-2.5 py-1 text-xs font-medium text-zinc-600 hover:bg-zinc-50"

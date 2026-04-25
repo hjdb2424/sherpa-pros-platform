@@ -211,13 +211,14 @@ Sherpa Hub spotlight (Wave 6.2 product line — pro-side ops dashboard).
 | **Facebook** | Same carousel | "The math on contractor lead-gen is brutal." | Same. | n/a | Same | — | Reply 4 hr |
 | **X (Phyrom)** | Thread | "$87 lead. Sold to 4 contractors. Homeowner never replied. Here's what that math does to a small GC:" | 7-tweet thread with screenshots. | none | none | — | Reply 60 min |
 
-#### Day 14 — Tue 2026-05-05 — Pillar: Pro spotlight
+#### Day 14 — Tue 2026-05-05 — Pillar: Pro spotlight + Sherpa Score launch
 | Platform | Type | Hook | Caption | Hashtags | Asset | AI prompt | Engagement |
 |---|---|---|---|---|---|---|---|
 | **Instagram Reel** | Reel | "Founding Pro #3: licensed electrician, Cambridge MA. EV charger specialist." | 60-sec interview with FP#3 (per `linkedin-editorial.md` Wk 5 Wed). Captions burned. | #SherpaPros #FoundingPro #BostonContractor #Electrician #EVCharger #MassSave | Pre-recorded interview | Sunday capture | Reply 4 hr |
 | **TikTok** | Video | "I install EV chargers in Cambridge. This is why I joined Sherpa Pros:" | Same. | #ContractorTok #Electrician #EVCharger | Same | — | Reply 4 hr |
 | **Facebook** | Same reel + text | Same hook | Same + 150-word add about Mass Save certification. | n/a | Same | — | Reply 4 hr |
 | **X (brand)** | Photo + text | "Founding Pro #3: licensed electrician, Cambridge MA. Mass Save certified. EV + panel specialist. 9 spots filled, 1 left." | Photo + DM CTA. | none | Real pro photo | — | Reply 4 hr |
+| **Instagram Reel (Sherpa Score launch)** | Reel | "Watch a Sherpa Score climb from 0 to 87 in 30 seconds." | 30-sec animated reel. Animated SVG progress ring fills from empty to a Gold-tier 87, with the 3 pillars (Quality / Communication / Reviews) lighting up in sequence. Phyrom voiceover: *"Sherpa Score is the 0-to-100 quality grade for every pro on the platform. Gold pros pay 8%. Bronze and Silver pros pay 12%. Built so being a better contractor mathematically pays better. Live today."* Burned-in captions. End frame: "Sherpa Score · Live now · Comment SCORE for the breakdown." | #SherpaPros #SherpaScore #GoldTier #ConstructionTech #JobsNotLeads #ContractorLife | 30-sec animated SVG progress ring + 3-pillar light-up | Runway: "animated radial progress ring filling from 0 to 87 over 20 seconds, sky blue #00A9E0 ring on warm cream #FBF7EE background, three pillar bars light up in sequence below the ring labeled Quality, Communication, Reviews, end on a gold burst, 9:16 vertical, flat editorial design" — pair with locked-color reminder | Pin top comment with thesherpapros.com/pro/score link |
 
 ### Week 3 (Day 15–21)
 
@@ -274,13 +275,14 @@ Sherpa Home is the homeowner subscription product (Wave 6.3 in flight per `docs/
 | **Facebook** | Same reel + text | Same hook | Long-form text version for older audience. | n/a | Same | — | Reply 4 hr |
 | **X (Phyrom)** | Thread | "A handyman I know paid Thumbtack $1,840 in 90 days. Closed 6 jobs. The math:" | 6-tweet thread. | none | none | — | Reply 60 min |
 
-#### Day 21 — Tue 2026-05-12 — Pillar: Pro spotlight
+#### Day 21 — Tue 2026-05-12 — Pillar: Pro spotlight + Gold-tier day-in-the-life
 | Platform | Type | Hook | Caption | Hashtags | Asset | AI prompt | Engagement |
 |---|---|---|---|---|---|---|---|
 | **Instagram Reel** | Reel | "A weekend in the life of a Founding Pro." | 60-sec day-in-the-life with one of the FPs. Permission required. Show jobsite + family + truck + tools. | #SherpaPros #FoundingPro #ContractorLife #SmallBusinessOwner #DayInTheLife | Pre-recorded with FP | Sunday capture, ride-along | Reply 4 hr |
 | **TikTok** | Video | "POV: a weekend in the life of a Founding Pro" | Same. | #ContractorTok #DayInMyLife #ContractorLife | Same | — | Reply 4 hr |
 | **Facebook** | Same reel + text | Same hook | Same + 150-word add about why volume + 5% take = a sustainable contractor income. | n/a | Same | — | Reply 4 hr |
 | **X (brand)** | Photo + text | "Weekend in the life of FP#3: 4 jobs, $1,800 GMV, $90 to Sherpa Pros, $1,710 to him. Imagine what Angi would've taken." | Photo. | none | Same | — | Reply 4 hr |
+| **TikTok (Sherpa Score)** | Video | "Day in the life of a Gold-tier Sherpa Pro." | 60-sec ride-along with a Gold-tier Founding Pro (permission required). Show: (1) phone buzzes with a job 4 hours before any Silver/Bronze pro can see it ("4hr early access" badge), (2) score-detail screen showing 87/100 with the 3 pillars, (3) accept-and-go in 30 seconds, (4) end on the 8% take-rate vs 12% comparison line. Phyrom voiceover bookends. Trending TikTok audio. | #ContractorTok #SherpaScore #GoldTier #DayInMyLife #ContractorLife #SmallBusinessOwner | 60-sec ride-along + on-screen score badge overlay | Capcut: animate the "4hr EARLY ACCESS" badge sliding in over the job-card frame in sky blue #00A9E0 + orange-red #FF4500 accent | Reply every comment 60 min — Gold-tier content drives recruit DMs |
 
 ### Week 4 (Day 22–28)
 
@@ -305,7 +307,7 @@ Sherpa Manager is the PM-tier product (Wave 6.2 in flight).
 | **X (brand)** | 30-sec clip | "Sherpa Manager: PMs get one platform for work orders + vendor + finance. $4/unit. 1 PM anchor signed, more onboarding." | Embed clip. | #PropTech #MultiFamily | Same | — | Reply 4 hr |
 | **LinkedIn (brand page)** | Single image + text | "Property managers: Sherpa Manager is live in beta with 1 NE anchor. Learn more." | 200-word LinkedIn post. Note: this is brand page, not Phyrom personal. | none | Product screenshot | — | Reply 60 min |
 
-#### Day 24 — Fri 2026-05-15 — Pillar: Founder voice (Community)
+#### Day 24 — Fri 2026-05-15 — Pillar: Founder voice (Community) + Bronze-to-Gold story
 | Platform | Type | Hook | Caption | Hashtags | Asset | AI prompt | Engagement |
 |---|---|---|---|---|---|---|---|
 | **LinkedIn (Phyrom)** | Video (selfie) | *(LinkedIn Editorial Wk 4 Fri — "Quick founder update: Wefunder page went live today. 30-second story.")* | See `linkedin-editorial.md` Wk 4 Fri | none | 30-60 sec selfie | Real capture | Reply 60 min |
@@ -313,6 +315,7 @@ Sherpa Manager is the PM-tier product (Wave 6.2 in flight).
 | **TikTok** | Video | Same | Same. | #ContractorTok #StartupTok #BuildInPublic | Same | — | Reply 4 hr |
 | **Facebook** | Same reel + 300-word text | Same hook | Long-form story about why community ownership matters. | n/a | Same | — | Reply 4 hr |
 | **X (Phyrom)** | Video + thread | "Wefunder page is live. Why community ownership matters for a contractor marketplace:" | Video + 4-tweet thread. Wefunder link in last tweet. | none | Same | — | Reply 60 min |
+| **Instagram Story sequence (Sherpa Score)** | Story (5 frames) | "How I went from Bronze to Gold." | 5-frame founder-pro progression story. F1: "Day 1 — Bronze. Score 47." Real screenshot of /pro/score detail page. F2: "Week 2 — focus on response time. Replied 30 min faster on average. +6 points → 53." F3: "Week 4 — closed 4 jobs scope-complete on first walkthrough. +14 → 67. Silver." F4: "Week 8 — 100% code-pass + 8 five-star reviews. +18 → 85. Gold." F5: "Locked in 5% forever. Comment SCORE for the playbook." Use real founding-pro footage with permission, OR Phyrom telling the story over /pro/score screen recordings. | n/a | 5 story frames + 4 score-detail screen recordings | Use template 2D.5 (Founding Pro spotlight) for F1+F5; story template 2D.7 (in-app screen recording) for F2-F4 | Reply DMs from any pro who asks "how" |
 
 #### Day 25 — Sat 2026-05-16 — Pillar: Engagement
 | Platform | Type | Hook | Caption | Hashtags | Asset | AI prompt | Engagement |
@@ -338,13 +341,14 @@ Sherpa Manager is the PM-tier product (Wave 6.2 in flight).
 | **Facebook** | Same reel + text | Same | Long-form. | n/a | Same | — | Reply 4 hr |
 | **X (Phyrom)** | Thread | "Lead-gen platforms make money when contractors lose. Marketplaces only make money when work happens. The two incentives are opposite. Pick one:" | 5-tweet thread. | none | none | — | Reply 60 min |
 
-#### Day 28 — Tue 2026-05-19 — Pillar: Pro spotlight
+#### Day 28 — Tue 2026-05-19 — Pillar: Pro spotlight + Sherpa Score 12-metric explainer
 | Platform | Type | Hook | Caption | Hashtags | Asset | AI prompt | Engagement |
 |---|---|---|---|---|---|---|---|
 | **Instagram Reel** | Reel | "Founding Pro #5: lath-and-plaster restoration specialist, Boston." | 60-sec interview cut (per `linkedin-editorial.md` Wk 8 Wed reference). | #SherpaPros #FoundingPro #BostonContractor #OldHouseLove #PlasterRepair #Restoration | Pre-recorded interview | Sunday capture | Reply 4 hr |
 | **TikTok** | Video | "I restore plaster walls in pre-1950 Boston homes. Most platforms can't even find me." | Same. | #ContractorTok #OldHouseLove #BostonTok | Same | — | Reply 4 hr |
 | **Facebook** | Same | Same | Same. | n/a | Same | — | Reply 4 hr |
 | **X (brand)** | Photo + text | "Founding Pro #5: lath-and-plaster restoration. 19 years on Boston pre-1950 homes. Old-House Verified specialty incoming." | Photo. | none | Real pro photo | — | Reply 4 hr |
+| **LinkedIn carousel (brand page) — Sherpa Score** | Carousel (5 slides) | "The 12 metrics behind Sherpa Score." | S1: Hook — "Sherpa Score = 12 metrics across 3 pillars. Here's the breakdown." S2: Pillar 1 — Quality (50%): on-time arrival · scope-completion rate · code-pass rate · dispute-free rate. S3: Pillar 2 — Communication (25%): response time · message frequency · professional tone. S4: Pillar 3 — Reviews (25%): star average · review volume · review-response rate · recency. S5: CTA — "Gold (80+) pays 8%. Silver/Bronze pay 12%. Comment SCORE for the climb-to-Gold playbook." | none on LinkedIn | 5-slide PDF carousel | Use Sherpa Score visual library Section 9 — "Sherpa Score progression infographic" template + per-slide pillar overlays. Aspect 4:5 (1080×1350). Style: Design. Character ref: Sherpa Pros icon. | Phyrom replies 60 min |
 
 ### Week 5 (Day 29–30)
 

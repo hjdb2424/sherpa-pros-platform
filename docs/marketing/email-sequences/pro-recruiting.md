@@ -31,6 +31,8 @@ Three things that are different:
 
 The first ten pros in get the 5 percent rate forever. After that it is 10 percent and a small monthly fee. The ten spots will go fast because most of them are already going to my own sub network.
 
+One more thing on the rate. We just turned on Sherpa Score, a 0-to-100 quality grade for every pro on the platform. Twelve metrics, three pillars: quality, communication, reviews. Founding Pros who hit Gold (80+) during beta lock the 5 percent rate forever. Pros who finish beta at Silver or Bronze convert to standard 12 percent. Build your score during beta, lock in Gold-tier 5 percent for life. Doing the work right is the whole game.
+
 If you want one, here is the apply link. Five minutes. I read every application myself.
 
 [Apply for the beta]({{apply_url}})

@@ -5,6 +5,7 @@ import {
   getImprovementSuggestion,
   estimatePointsGain,
 } from '@/lib/incentives/sherpa-score';
+import { getDemoRewardsData, getFeaturedRewards } from '@/lib/incentives/rewards';
 import ProDashboardGuard from '@/components/pro/ProDashboardGuard';
 
 export const metadata: Metadata = {
@@ -248,6 +249,30 @@ export default function SherpaScorePage() {
                 <p className="mt-1 text-lg font-bold text-zinc-900 dark:text-zinc-50">{reward.value}</p>
                 <p className="mt-0.5 text-xs text-zinc-400 dark:text-zinc-500">{reward.description}</p>
               </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Rewards Preview */}
+        <div className="rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-bold text-zinc-900 dark:text-zinc-50">Sherpa Rewards</h2>
+            <Link href="/pro/rewards" className="text-sm font-medium text-[#00a9e0] hover:underline">
+              View all rewards &rarr;
+            </Link>
+          </div>
+          <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+            Your points: <span className="font-bold text-[#00a9e0]">{getDemoRewardsData().points.toLocaleString()}</span>
+          </p>
+          <div className="mt-4 grid gap-3 sm:grid-cols-3">
+            {getFeaturedRewards().map((reward) => (
+              <Link key={reward.id} href="/pro/rewards" className="group rounded-xl border border-zinc-200 p-3 transition-colors hover:border-[#00a9e0] dark:border-zinc-700 dark:hover:border-[#00a9e0]">
+                <div className={`flex h-16 items-center justify-center rounded-lg bg-gradient-to-br ${reward.gradient}`}>
+                  <svg className="h-6 w-6 text-white/60" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M21 11.25v8.25a1.5 1.5 0 0 1-1.5 1.5H5.25a1.5 1.5 0 0 1-1.5-1.5v-8.25M12 4.875A2.625 2.625 0 1 0 9.375 7.5H12m0-2.625V7.5m0-2.625A2.625 2.625 0 1 1 14.625 7.5H12m0 0V21m-8.625-9.75h18c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125h-18c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z" /></svg>
+                </div>
+                <p className="mt-2 text-xs font-semibold text-zinc-900 dark:text-zinc-100">{reward.name}</p>
+                <p className="text-xs font-medium text-[#00a9e0]">{reward.pointCost.toLocaleString()} pts</p>
+              </Link>
             ))}
           </div>
         </div>

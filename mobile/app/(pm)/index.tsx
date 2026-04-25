@@ -14,6 +14,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { colors, spacing, borderRadius, shadows, typography } from '@/lib/theme';
 import Card from '@/components/common/Card';
 import Badge from '@/components/common/Badge';
+import Logo from '@/components/brand/Logo';
 import OnboardingWizard from '@/components/onboarding/OnboardingWizard';
 
 // ---------------------------------------------------------------------------
@@ -146,6 +147,7 @@ export default function FinanceScreen() {
     <View style={[styles.container, { paddingTop: insets.top }]}>
       {showWizard && <OnboardingWizard role="pm" onComplete={() => setShowWizard(false)} />}
       <View style={styles.header}>
+        <Logo size="sm" />
         <Text style={styles.headerTitle}>Finance</Text>
         <Text style={styles.headerSubtitle}>Portfolio Overview</Text>
       </View>

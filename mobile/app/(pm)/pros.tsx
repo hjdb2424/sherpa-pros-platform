@@ -4,6 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import * as Haptics from 'expo-haptics';
 import { Ionicons } from '@expo/vector-icons';
+import Logo from '@/components/brand/Logo';
 import MapScreen from '@/components/maps/MapScreen';
 import { Circle } from 'react-native-maps';
 import ProMarker from '@/components/maps/ProMarker';
@@ -111,6 +112,7 @@ export default function ProsMapScreen() {
 
       {/* Header overlay */}
       <View style={[styles.topBar, { top: insets.top + 8 }]}>
+        <Logo size="sm" />
         <Text style={styles.topTitle}>Find Pros</Text>
       </View>
 

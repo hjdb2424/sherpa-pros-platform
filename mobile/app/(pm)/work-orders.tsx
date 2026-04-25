@@ -15,6 +15,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { colors, spacing, borderRadius, shadows, typography } from '@/lib/theme';
 import Card from '@/components/common/Card';
 import Badge from '@/components/common/Badge';
+import Logo from '@/components/brand/Logo';
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -146,6 +147,7 @@ export default function WorkOrdersScreen() {
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
       <View style={styles.header}>
+        <Logo size="sm" />
         <Text style={styles.headerTitle}>Maintenance</Text>
         <Text style={styles.headerSubtitle}>
           {openCount} open {'\u00B7'} {inProgressCount} in progress {'\u00B7'} {SCHEDULE_ITEMS.length} scheduled

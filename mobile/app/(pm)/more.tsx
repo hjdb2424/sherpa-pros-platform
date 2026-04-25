@@ -5,6 +5,7 @@ import * as Haptics from 'expo-haptics';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '@/lib/auth';
 import { colors, spacing, borderRadius, shadows, typography } from '@/lib/theme';
+import Logo from '@/components/brand/Logo';
 
 // ---------------------------------------------------------------------------
 // Menu items
@@ -38,6 +39,7 @@ export default function MoreScreen() {
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
       <View style={styles.header}>
+        <Logo size="sm" />
         <Text style={styles.headerTitle}>More</Text>
       </View>
 

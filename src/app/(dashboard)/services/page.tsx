@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import CategoryBrowser from '@/components/search/CategoryBrowser';
+import BackNav from '@/components/common/BackNav';
 
 export const metadata: Metadata = {
   title: 'Services | Sherpa Pros',
@@ -9,6 +10,7 @@ export const metadata: Metadata = {
 export default function ServicesPage() {
   return (
     <div className="px-4 py-6 lg:px-8">
+      <BackNav />
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">
           Service Catalog

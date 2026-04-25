@@ -466,8 +466,16 @@ export default function AccessListPage() {
                               target="_blank"
                               rel="noopener noreferrer"
                               className="rounded bg-[#00a9e0] px-2.5 py-1 text-xs font-medium text-white hover:bg-[#0090c0]"
+                              title="View invite page"
                             >
                               Invite
+                            </a>
+                            <a
+                              href={`mailto:${entry.email}?subject=${encodeURIComponent("You're invited to Sherpa Pros Beta")}&body=${encodeURIComponent(`Hi ${entry.name},\n\nYou've been invited to test Sherpa Pros — the smart platform for trade work.\n\nSign in here: https://thesherpapros.com/sign-in\nUse this email (${entry.email}) to access the platform.\n\nQuick start:\n1. Visit the link above\n2. Click "Continue with Google" or enter your email\n3. Complete the 30-second setup\n4. Take the guided tour\n\nYour role-specific guide: https://thesherpapros.com/invite/${entry.defaultRole === "pm" ? "pm" : entry.defaultRole === "pro" ? "pro" : "client"}\n\nQuestions? Reply to this email or contact info@thesherpapros.com\n\n— The Sherpa Pros Team`)}`}
+                              className="rounded bg-emerald-500 px-2.5 py-1 text-xs font-medium text-white hover:bg-emerald-600"
+                              title="Send invite email"
+                            >
+                              Email
                             </a>
                             <button
                               onClick={() => startEdit(entry)}

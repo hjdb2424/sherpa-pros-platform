@@ -235,23 +235,29 @@ export default function OnboardingTour({ role, steps }: OnboardingTourProps) {
       borderRadius: 12,
     });
 
-    // Tooltip position
+    // Tooltip position — clamped to viewport
     const placement = step.placement || "right";
-    const style: React.CSSProperties = { position: "fixed" };
+    const style: React.CSSProperties = { position: "fixed", maxWidth: 320 };
+    const tooltipH = 200; // approximate height of tooltip
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
 
     if (placement === "right") {
-      style.top = rect.top;
-      style.left = rect.right + 16;
+      style.top = Math.min(rect.top, vh - tooltipH - 20);
+      style.left = Math.min(rect.right + 16, vw - 340);
     } else if (placement === "left") {
-      style.top = rect.top;
-      style.right = window.innerWidth - rect.left + 16;
+      style.top = Math.min(rect.top, vh - tooltipH - 20);
+      style.right = Math.min(vw - rect.left + 16, vw - 40);
     } else if (placement === "bottom") {
-      style.top = rect.bottom + 16;
-      style.left = rect.left;
+      style.top = Math.min(rect.bottom + 16, vh - tooltipH - 20);
+      style.left = Math.max(16, Math.min(rect.left, vw - 340));
     } else {
-      style.bottom = window.innerHeight - rect.top + 16;
-      style.left = rect.left;
+      style.bottom = Math.min(vh - rect.top + 16, vh - 40);
+      style.left = Math.max(16, Math.min(rect.left, vw - 340));
     }
+
+    // Ensure top never goes negative
+    if (typeof style.top === "number" && style.top < 20) style.top = 20;
 
     setTooltipStyle(style);
   }, [active, currentStep, steps]);

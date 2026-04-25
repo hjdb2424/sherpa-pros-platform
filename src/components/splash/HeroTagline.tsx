@@ -2,17 +2,14 @@
 
 import { useState, useEffect } from 'react';
 
-const TAGLINES = [
-  'Trade work, done right.',
+const FEATURES = [
+  'Verified pros. Verified quotes. Verified results.',
   'One place for the hire, the work, and the money.',
   'The right pro. The right price. The proof to back it up.',
-  'Trade work. Trusted pros. One platform.',
-  'The hire. The work. Done right.',
   'Find the pro. Fund the job. Track every dollar.',
   'From the first quote to the final walkthrough.',
-  'Verified pros. Verified quotes. Verified results.',
-  'The right trade. The right terms. The right outcome.',
   'Real pros. Real quotes. Real accountability.',
+  'The right trade. The right terms. The right outcome.',
 ];
 
 export default function HeroTagline() {
@@ -23,7 +20,7 @@ export default function HeroTagline() {
     const interval = setInterval(() => {
       setFade(false);
       setTimeout(() => {
-        setIndex((prev) => (prev + 1) % TAGLINES.length);
+        setIndex((prev) => (prev + 1) % FEATURES.length);
         setFade(true);
       }, 400);
     }, 5000);
@@ -31,13 +28,18 @@ export default function HeroTagline() {
   }, []);
 
   return (
-    <h1 className="text-4xl font-bold leading-tight tracking-tight sm:text-5xl md:text-6xl">
-      <span
-        className="inline-block bg-gradient-to-r from-white to-white/90 bg-clip-text text-transparent transition-opacity duration-500"
+    <div>
+      <h1 className="text-4xl font-bold leading-tight tracking-tight sm:text-5xl md:text-6xl">
+        Trade work, done right.
+      </h1>
+      <p
+        className="mt-4 text-lg font-medium transition-opacity duration-500 sm:text-xl"
         style={{ opacity: fade ? 1 : 0 }}
       >
-        {TAGLINES[index]}
-      </span>
-    </h1>
+        <span className="bg-gradient-to-r from-[#00a9e0] to-[#0ea5e9] bg-clip-text text-transparent">
+          {FEATURES[index]}
+        </span>
+      </p>
+    </div>
   );
 }

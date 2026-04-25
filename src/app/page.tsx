@@ -352,59 +352,83 @@ export default function SplashPage() {
         </div>
       </section>
 
-      {/* ━━━ SECTION 5: What You Won't Find on Competitors ━━━ */}
+      {/* ━━━ SECTION 5: The Problem → What If ━━━ */}
       <section className="relative px-4 py-24 sm:py-32">
         <div className="mx-auto max-w-5xl">
           <ScrollFadeIn>
             <div className="mb-16 text-center">
-              <p className="mb-3 text-sm font-medium uppercase tracking-widest text-[#ff4500]">
-                Why Sherpa Pros is different
+              <p className="mb-3 text-sm font-medium uppercase tracking-widest text-white/40">
+                Sound familiar?
               </p>
               <h2 className="text-3xl font-bold sm:text-4xl">
-                Three things you will not find on Angi, Thumbtack, or HomeAdvisor
+                The trade industry has a trust problem
               </h2>
             </div>
           </ScrollFadeIn>
 
           <div className="grid gap-6 sm:grid-cols-3">
             <ScrollFadeIn delay={0}>
-              <div className="relative h-full rounded-2xl border border-[#ff4500]/10 bg-[#ff4500]/[0.03] p-8">
-                <div className="mb-4 text-3xl">&#x1f6ab;</div>
-                <h3 className="mb-3 text-lg font-semibold">Zero lead fees</h3>
-                <p className="text-sm leading-relaxed text-white/50">
-                  Angi and Thumbtack charge pros $15&ndash;$100+ per lead &mdash; even if the client never responds.
-                  Sherpa Pros charges nothing until the job is done and the client pays.
-                </p>
-                <div className="mt-4 rounded-lg bg-white/[0.04] px-3 py-2 text-xs text-white/30">
-                  Angi: $15&ndash;$100/lead &bull; Thumbtack: $8&ndash;$80/lead &bull; Sherpa: $0
+              <div className="relative flex h-full flex-col rounded-2xl border border-white/[0.06] bg-white/[0.02] p-8">
+                {/* The problem */}
+                <div className="mb-6">
+                  <div className="mb-3 text-2xl">&#x1f62e;&#x200d;&#x1f4a8;</div>
+                  <h3 className="mb-2 text-lg font-semibold text-white/70">Pros pay to compete</h3>
+                  <p className="text-sm leading-relaxed text-white/40">
+                    On Angi and Thumbtack, pros pay $15&ndash;$100+ per lead &mdash; even when the homeowner
+                    never picks up the phone. The best pros stop bidding. The desperate ones raise prices.
+                  </p>
+                </div>
+                {/* The what-if */}
+                <div className="mt-auto rounded-xl border border-[#00a9e0]/15 bg-[#00a9e0]/[0.04] p-5">
+                  <p className="mb-2 text-xs font-bold uppercase tracking-widest text-[#00a9e0]/70">What if there was a better way?</p>
+                  <p className="text-sm leading-relaxed text-white/60">
+                    Sherpa Pros never charges for leads. Pros only pay a small service fee when the job is
+                    completed and the client pays. No upfront cost. No wasted bids. Better pros show up.
+                  </p>
                 </div>
               </div>
             </ScrollFadeIn>
 
             <ScrollFadeIn delay={150}>
-              <div className="relative h-full rounded-2xl border border-[#ff4500]/10 bg-[#ff4500]/[0.03] p-8">
-                <div className="mb-4 text-3xl">&#x1f50d;</div>
-                <h3 className="mb-3 text-lg font-semibold">Code-verified quotes</h3>
-                <p className="text-sm leading-relaxed text-white/50">
-                  Every quote is checked against building codes before it reaches your inbox.
-                  No other platform does this. On Angi, you get three random numbers and hope for the best.
-                </p>
-                <div className="mt-4 rounded-lg bg-white/[0.04] px-3 py-2 text-xs text-white/30">
-                  HomeAdvisor: no verification &bull; Angi: no verification &bull; Sherpa: code-checked
+              <div className="relative flex h-full flex-col rounded-2xl border border-white/[0.06] bg-white/[0.02] p-8">
+                {/* The problem */}
+                <div className="mb-6">
+                  <div className="mb-3 text-2xl">&#x1f3b0;</div>
+                  <h3 className="mb-2 text-lg font-semibold text-white/70">Quotes are a guessing game</h3>
+                  <p className="text-sm leading-relaxed text-white/40">
+                    You get three quotes and they are all different. Different scopes, different line items,
+                    no way to tell who is padding and who forgot something. If only someone checked the numbers first.
+                  </p>
+                </div>
+                {/* The what-if */}
+                <div className="mt-auto rounded-xl border border-[#00a9e0]/15 bg-[#00a9e0]/[0.04] p-5">
+                  <p className="mb-2 text-xs font-bold uppercase tracking-widest text-[#00a9e0]/70">If only it could do this&hellip;</p>
+                  <p className="text-sm leading-relaxed text-white/60">
+                    Every Sherpa quote is validated against local building codes and market pricing
+                    before it reaches your inbox. You see the right scope, the right number, the first time.
+                  </p>
                 </div>
               </div>
             </ScrollFadeIn>
 
             <ScrollFadeIn delay={300}>
-              <div className="relative h-full rounded-2xl border border-[#ff4500]/10 bg-[#ff4500]/[0.03] p-8">
-                <div className="mb-4 text-3xl">&#x1f4b0;</div>
-                <h3 className="mb-3 text-lg font-semibold">Escrow-protected payments</h3>
-                <p className="text-sm leading-relaxed text-white/50">
-                  Your money is held in escrow until the work passes inspection. If something is wrong, you do not pay.
-                  On Thumbtack, you pay the pro directly and pray.
-                </p>
-                <div className="mt-4 rounded-lg bg-white/[0.04] px-3 py-2 text-xs text-white/30">
-                  Thumbtack: direct pay &bull; Angi: direct pay &bull; Sherpa: escrow-protected
+              <div className="relative flex h-full flex-col rounded-2xl border border-white/[0.06] bg-white/[0.02] p-8">
+                {/* The problem */}
+                <div className="mb-6">
+                  <div className="mb-3 text-2xl">&#x1f6a8;</div>
+                  <h3 className="mb-2 text-lg font-semibold text-white/70">You pay and pray</h3>
+                  <p className="text-sm leading-relaxed text-white/40">
+                    On most platforms, you send money directly to the contractor and hope they finish.
+                    If they disappear mid-job or the work is wrong, good luck getting it back.
+                  </p>
+                </div>
+                {/* The what-if */}
+                <div className="mt-auto rounded-xl border border-[#00a9e0]/15 bg-[#00a9e0]/[0.04] p-5">
+                  <p className="mb-2 text-xs font-bold uppercase tracking-widest text-[#00a9e0]/70">There is a better way.</p>
+                  <p className="text-sm leading-relaxed text-white/60">
+                    Sherpa holds your payment in escrow until the work passes inspection. The pro gets paid
+                    when the job is done right. If something is wrong, your money stays protected.
+                  </p>
                 </div>
               </div>
             </ScrollFadeIn>
@@ -435,8 +459,8 @@ export default function SplashPage() {
                 <div className="mb-1 text-xs font-bold uppercase tracking-widest text-[#00a9e0]/60">Live</div>
                 <h3 className="mb-2 text-xl font-semibold">Sherpa Marketplace</h3>
                 <p className="text-sm leading-relaxed text-white/50">
-                  The Uber/DoorDash of trade work. Post a job, get matched with licensed pros,
-                  track progress in real time, pay through escrow. Available on web and mobile.
+                  The smart marketplace for trade work. Post a job, get matched with licensed pros,
+                  track progress in real time, and pay through escrow. Available on web and mobile.
                 </p>
                 <div className="mt-4 flex flex-wrap gap-2">
                   <span className="rounded-full bg-[#00a9e0]/10 px-3 py-1 text-[10px] font-semibold text-[#00a9e0]">On-demand dispatch</span>

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { exchangeGoogleCode, getGoogleProfile } from '@/lib/auth/oauth';
-import { isEmailAllowed, getAccessEntry } from '@/lib/access-list';
+import { isEmailAllowedAsync, getAccessEntryAsync, updateLastSignIn } from '@/lib/access-list';
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
@@ -16,15 +16,20 @@ export async function GET(request: NextRequest) {
     const tokens = await exchangeGoogleCode(code);
     const profile = await getGoogleProfile(tokens.accessToken);
 
-    // Check access list
-    if (!isEmailAllowed(profile.email)) {
+    // Check access list (DB-first with hardcoded fallback)
+    const allowed = await isEmailAllowedAsync(profile.email);
+    if (!allowed) {
       const base = process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3001';
       return NextResponse.redirect(
         new URL('/sign-in?error=not_on_list', base),
       );
     }
 
-    const entry = getAccessEntry(profile.email);
+    const entry = await getAccessEntryAsync(profile.email);
+
+    // Update last sign-in timestamp in the DB (fire and forget)
+    updateLastSignIn(profile.email);
+
     const base = process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3001';
 
     const params = new URLSearchParams({

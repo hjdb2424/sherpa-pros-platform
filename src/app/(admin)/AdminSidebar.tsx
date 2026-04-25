@@ -12,6 +12,7 @@ import {
   Cog6ToothIcon,
   Bars3Icon,
   XMarkIcon,
+  UserGroupIcon,
 } from "@heroicons/react/24/outline";
 import { useState } from "react";
 
@@ -25,6 +26,7 @@ const navItems = [
     href: "/disputes",
     icon: ExclamationTriangleIcon,
   },
+  { label: "Access List", href: "/admin/access-list", icon: UserGroupIcon },
   { label: "Settings", href: "/settings", icon: Cog6ToothIcon },
 ];
 

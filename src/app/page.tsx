@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import Logo from '@/components/brand/Logo';
+import HeroTagline from '@/components/splash/HeroTagline';
 import WaitlistForm from '@/components/splash/WaitlistForm';
 import ZipCapture from '@/components/splash/ZipCapture';
 import ScrollFadeIn from '@/components/splash/ScrollFadeIn';
@@ -117,12 +118,7 @@ export default function SplashPage() {
             <Logo size="xl" />
           </div>
 
-          <h1 className="text-4xl font-bold leading-tight tracking-tight sm:text-5xl md:text-6xl">
-            The licensed-trade marketplace{' '}
-            <span className="bg-gradient-to-r from-[#00a9e0] to-[#0ea5e9] bg-clip-text text-transparent">
-              that thinks like a contractor
-            </span>
-          </h1>
+          <HeroTagline />
 
           <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-white/60 sm:text-xl">
             Verified pros. Transparent pricing. Real reviews. Coming to your area soon.

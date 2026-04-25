@@ -467,14 +467,11 @@ export default function SplashPage() {
             </div>
 
             <nav className="flex flex-wrap justify-center gap-x-8 gap-y-3 text-sm">
-              <Link href="#" className="text-white/40 transition-colors hover:text-white/70">
+              <Link href="/about" className="text-white/40 transition-colors hover:text-white/70">
                 About
               </Link>
-              <Link href="#" className="text-white/40 transition-colors hover:text-white/70">
-                For Pros
-              </Link>
-              <Link href="#" className="text-white/40 transition-colors hover:text-white/70">
-                For Property Managers
+              <Link href="/invite" className="text-white/40 transition-colors hover:text-white/70">
+                Beta Invite
               </Link>
               <a
                 href="mailto:info@thesherpapros.com"

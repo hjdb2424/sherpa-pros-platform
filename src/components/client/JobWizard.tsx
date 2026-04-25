@@ -11,7 +11,6 @@ import {
   getCategory,
   getSubService,
   getCategoryConfidence,
-  getCategoryWisemanSource,
   type ServiceCategory,
   type SubService,
 } from '@/lib/config/service-catalog';

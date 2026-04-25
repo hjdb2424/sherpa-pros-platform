@@ -4,7 +4,6 @@ import { useState, useMemo } from 'react';
 import {
   SERVICE_CATALOG,
   getCategoryConfidence,
-  getCategoryWisemanSource,
   type ServiceCategory,
 } from '@/lib/config/service-catalog';
 
@@ -141,7 +140,6 @@ function CategoryCard({
   onToggle: () => void;
 }) {
   const confidence = getCategoryConfidence(category.id);
-  const source = getCategoryWisemanSource(category.id);
   const top3 = category.subServices.slice(0, 3);
 
   return (
@@ -205,7 +203,7 @@ function CategoryCard({
         {confidence > 0 && (
           <span
             className="mt-0.5 shrink-0 rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-semibold text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400"
-            title={`Validated by ${source}`}
+            title={`Sherpa Verified — ${confidence}% confidence`}
           >
             {confidence}%
           </span>

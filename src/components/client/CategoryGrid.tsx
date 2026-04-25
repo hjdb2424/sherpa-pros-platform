@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import { JOB_CATEGORIES, type JobCategory } from '@/lib/mock-data/client-data';
-import { getCategoryConfidence, getCategoryWisemanSource } from '@/lib/config/service-catalog';
+import { getCategoryConfidence } from '@/lib/config/service-catalog';
 
 interface CategoryGridProps {
   selected: string | null;
@@ -95,14 +95,13 @@ export function CategoryGrid({ selected, onSelect }: CategoryGridProps) {
 
 function WisemanBadge({ categoryId }: { categoryId: string }) {
   const confidence = getCategoryConfidence(categoryId);
-  const source = getCategoryWisemanSource(categoryId);
 
   if (confidence === 0) return null;
 
   return (
     <span
       className="mt-1 inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-semibold text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400"
-      title={`Validated by ${source} with ${confidence}% confidence`}
+      title={`Sherpa Verified with ${confidence}% confidence`}
     >
       <svg className="h-2.5 w-2.5" fill="currentColor" viewBox="0 0 20 20">
         <path

@@ -1,9 +1,7 @@
-import type { Metadata } from 'next';
-import HelpAndSupport from '@/components/onboarding/HelpAndSupport';
+'use client';
 
-export const metadata: Metadata = {
-  title: 'Settings | Client',
-};
+import HelpAndSupport from '@/components/onboarding/HelpAndSupport';
+import { useState, useEffect } from 'react';
 
 function ToggleSwitch({ defaultChecked = false }: { defaultChecked?: boolean }) {
   return (
@@ -24,7 +22,23 @@ function ToggleSwitch({ defaultChecked = false }: { defaultChecked?: boolean }) 
   );
 }
 
+function useOnboardingProfile() {
+  const [profile, setProfile] = useState<Record<string, string> | null>(null);
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem('sherpa-user-profile');
+      if (raw) setProfile(JSON.parse(raw));
+    } catch { /* ignore */ }
+  }, []);
+  return profile;
+}
+
 export default function ClientSettingsPage() {
+  const profile = useOnboardingProfile();
+  const displayName = profile?.fullName || 'Jamie Davis';
+  const displayEmail = profile?.email || 'jamie.davis@gmail.com';
+  const displayPhone = profile?.phone || '(603) 555-0287';
+
   return (
     <div className="mx-auto max-w-2xl px-4 py-8 sm:px-6 lg:px-8">
       <div className="mb-8">
@@ -43,7 +57,7 @@ export default function ClientSettingsPage() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400">Full Name</p>
-                <p className="text-sm text-zinc-900 dark:text-white">Jamie Davis</p>
+                <p className="text-sm text-zinc-900 dark:text-white">{displayName}</p>
               </div>
               <button type="button" className="text-xs font-medium text-[#00a9e0] hover:text-[#0090c0] transition-colors">Edit</button>
             </div>
@@ -51,7 +65,7 @@ export default function ClientSettingsPage() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400">Email</p>
-                <p className="text-sm text-zinc-900 dark:text-white">jamie.davis@gmail.com</p>
+                <p className="text-sm text-zinc-900 dark:text-white">{displayEmail}</p>
               </div>
               <button type="button" className="text-xs font-medium text-[#00a9e0] hover:text-[#0090c0] transition-colors">Edit</button>
             </div>
@@ -59,7 +73,7 @@ export default function ClientSettingsPage() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400">Phone</p>
-                <p className="text-sm text-zinc-900 dark:text-white">(603) 555-0287</p>
+                <p className="text-sm text-zinc-900 dark:text-white">{displayPhone}</p>
               </div>
               <button type="button" className="text-xs font-medium text-[#00a9e0] hover:text-[#0090c0] transition-colors">Edit</button>
             </div>

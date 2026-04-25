@@ -12,6 +12,7 @@ import JobSheet from '@/components/sheets/JobSheet';
 import type { SimpleBottomSheetRef } from '@/components/sheets/SimpleBottomSheet';
 import { MOCK_JOBS, SERVICE_AREA, type MockJobLocation } from '@/lib/types';
 import { getCurrentLocation } from '@/lib/location';
+import OnboardingWizardModal from '@/components/onboarding/OnboardingWizard';
 
 function generateNearbyJobs(centerLat: number, centerLng: number): MockJobLocation[] {
   // Spread across full 45-mile radius covering NH, ME, MA
@@ -70,6 +71,7 @@ export default function ProMapScreen() {
   } | undefined>(undefined);
   const [locationDenied, setLocationDenied] = useState(false);
   const [onboardingComplete, setOnboardingComplete] = useState(true);
+  const [showWizard, setShowWizard] = useState(false);
   const [nearbyJobs, setNearbyJobs] = useState(MOCK_JOBS);
   const [photoSheetVisible, setPhotoSheetVisible] = useState(false);
   const [searchVisible, setSearchVisible] = useState(false);
@@ -77,7 +79,9 @@ export default function ProMapScreen() {
 
   useEffect(() => {
     SecureStore.getItemAsync('sherpa_onboarding_complete').then((val) => {
-      setOnboardingComplete(val === 'true');
+      const done = val === 'true';
+      setOnboardingComplete(done);
+      if (!done) setShowWizard(true);
     });
   }, []);
 
@@ -116,6 +120,7 @@ export default function ProMapScreen() {
 
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
+      {showWizard && <OnboardingWizardModal role="pro" onComplete={() => { setShowWizard(false); setOnboardingComplete(true); }} />}
       {locationDenied && (
         <View style={styles.locationBanner}>
           <Text style={styles.locationBannerText}>

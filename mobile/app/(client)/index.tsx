@@ -3,6 +3,7 @@ import { View, Text, Pressable, StyleSheet, Alert, Modal, TextInput, FlatList, A
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import * as Haptics from 'expo-haptics';
+import * as SecureStore from 'expo-secure-store';
 import { Ionicons } from '@expo/vector-icons';
 import MapScreen from '@/components/maps/MapScreen';
 import { Circle } from 'react-native-maps';
@@ -14,6 +15,7 @@ import { getCurrentLocation } from '@/lib/location';
 import { colors, spacing, borderRadius, shadows, typography } from '@/lib/theme';
 import Logo from '@/components/brand/Logo';
 import { scheduleLocalNotification } from '@/lib/notifications';
+import OnboardingWizardModal from '@/components/onboarding/OnboardingWizard';
 
 // Generate pros near a given location by offsetting from that center
 function generateNearbyPros(centerLat: number, centerLng: number): MockProLocation[] {
@@ -100,6 +102,13 @@ export default function ClientMapScreen() {
   } | undefined>(undefined);
   const [locationDenied, setLocationDenied] = useState(false);
   const [nearbyPros, setNearbyPros] = useState(MOCK_PROS);
+  const [showWizard, setShowWizard] = useState(false);
+
+  useEffect(() => {
+    SecureStore.getItemAsync('sherpa_onboarding_complete').then((val) => {
+      if (val !== 'true') setShowWizard(true);
+    });
+  }, []);
 
   useEffect(() => {
     getCurrentLocation().then((loc) => {
@@ -131,6 +140,7 @@ export default function ClientMapScreen() {
 
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
+      {showWizard && <OnboardingWizardModal role="client" onComplete={() => setShowWizard(false)} />}
       {locationDenied && (
         <View style={styles.locationBanner}>
           <Text style={styles.locationBannerText}>

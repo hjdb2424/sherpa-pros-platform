@@ -154,11 +154,23 @@ export default function OnboardingTour({ role, steps }: OnboardingTourProps) {
 
   const storageKey = `sherpa-tour-completed-${role}`;
 
-  // Check if tour should auto-start
+  // Check if tour should auto-start (only after onboarding wizard is done)
   useEffect(() => {
     const completed = localStorage.getItem(storageKey);
     if (!completed) {
-      // Small delay so the dashboard has time to render its sidebar
+      // Wait for onboarding wizard to finish first
+      const onboardingDone = localStorage.getItem("sherpa-onboarding-complete");
+      if (!onboardingDone) {
+        // Poll until wizard completes, then start the tour
+        const interval = setInterval(() => {
+          if (localStorage.getItem("sherpa-onboarding-complete")) {
+            clearInterval(interval);
+            setTimeout(() => setActive(true), 400);
+          }
+        }, 500);
+        return () => clearInterval(interval);
+      }
+      // Onboarding already done, start tour with normal delay
       const timer = setTimeout(() => setActive(true), 600);
       return () => clearTimeout(timer);
     }

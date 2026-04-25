@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import {
   View,
   Text,
@@ -9,10 +9,12 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as Haptics from 'expo-haptics';
+import * as SecureStore from 'expo-secure-store';
 import { Ionicons } from '@expo/vector-icons';
 import { colors, spacing, borderRadius, shadows, typography } from '@/lib/theme';
 import Card from '@/components/common/Card';
 import Badge from '@/components/common/Badge';
+import OnboardingWizard from '@/components/onboarding/OnboardingWizard';
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -122,6 +124,15 @@ export default function FinanceScreen() {
   const insets = useSafeAreaInsets();
   const [refreshing, setRefreshing] = useState(false);
   const [selectedBar, setSelectedBar] = useState<number | null>(null);
+  const [showWizard, setShowWizard] = useState(false);
+  const [wizardChecked, setWizardChecked] = useState(false);
+
+  useEffect(() => {
+    SecureStore.getItemAsync('sherpa_onboarding_complete').then((val) => {
+      if (val !== 'true') setShowWizard(true);
+      setWizardChecked(true);
+    });
+  }, []);
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
@@ -129,8 +140,11 @@ export default function FinanceScreen() {
     setTimeout(() => setRefreshing(false), 800);
   }, []);
 
+  if (!wizardChecked) return null;
+
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
+      {showWizard && <OnboardingWizard role="pm" onComplete={() => setShowWizard(false)} />}
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Finance</Text>
         <Text style={styles.headerSubtitle}>Portfolio Overview</Text>

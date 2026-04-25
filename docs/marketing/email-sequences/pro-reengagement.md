@@ -63,6 +63,8 @@ All three have a checked scope and the homeowner has been verified. License and 
 
 If one looks good, bid. If none of them look good, hit reply and tell me what does — I will set up better filters on your account so the next batch is closer to the work you actually want.
 
+One more thing while I have you. We just shipped Sherpa Score, the 0-to-100 quality grade. Your current score is **[CURRENT SCORE]**. You are **[POINTS TO GOLD] points from Gold-tier**, which would drop your take rate to 8 percent and give you 4-hour early access on every job posting before Silver and Bronze pros see it. The 3 metrics that would close the gap fastest for you right now: response time on first message, scope-completion rate on the next 2 jobs, and your first review reply. Take one of the jobs above, do the work clean, and you are most of the way there. Full score breakdown lives at thesherpapros.com/pro/score.
+
 Phyrom
 
 ---

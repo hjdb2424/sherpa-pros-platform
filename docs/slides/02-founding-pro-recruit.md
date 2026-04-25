@@ -165,6 +165,16 @@ HJD Builders sends you overflow work when I'm booked. **Real revenue, not future
 
 ---
 
+<!-- _class: bignumber -->
+
+# **8%**
+
+## Gold-tier Sherpa Score = permanent 8% take rate. Silver/Bronze pros pay 12%. Earn your Gold during beta and lock 5% forever.
+
+<!-- ASSET REQUIRED: Sherpa Score Gold-tier badge graphic — sky-blue shield + warm yellow-gold (#D4A017) inner circle + "GOLD · 8% FEE" white text. See `docs/operations/social-media-prompt-library.md` Section 9A for the full Ideogram prompt. Place lower-right of slide at ~480px tall. Same graphic used across LinkedIn (Wks 14-15), IG/TikTok (Days 14, 21, 24, 28), pro recruiting + re-engagement emails, and /pro/score detail page. Generate this asset FIRST — it is the single most-referenced visual in the Sherpa Score sweep. -->
+
+---
+
 # What you commit to.
 
 - **90-day beta minimum.** Real licensed work only.

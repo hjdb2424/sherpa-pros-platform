@@ -730,7 +730,101 @@ An Open Graph social-share image for thesherpapros.com, 1200 by 630 pixels lands
 
 ---
 
-## SECTION 9 — Tactical Best Practices
+## SECTION 9 — Sherpa Score visual assets
+
+Sherpa Score went live in production (commit `164b23b`) — the 0–100 quality-incentive scoring system that grades every pro on 12 metrics across 3 pillars (Quality 50% · Communication 25% · Reviews 25%). Composite score determines tier and platform fee:
+
+- **Gold (80+):** 8% platform fee + 4-hour early access to job postings
+- **Silver (60–79):** 12% platform fee · standard dispatch
+- **Bronze (under 60):** 12% platform fee · standard dispatch · improvement-coaching tier
+
+Founding Pros who hit Gold during beta lock the 5% rate forever. Founding Pros who finish beta at Silver/Bronze convert to standard 12%.
+
+This section provides the Ideogram visual library for every Sherpa Score touchpoint — badges, celebration graphics, infographics, and improvement-tip cards. Pairs with `linkedin-editorial.md` Wks 14–15 (5 Sherpa Score launch posts) and `social-content-plan.md` Days 14, 21, 24, 28 (Sherpa Score social slots).
+
+**Universal Ideogram settings (apply to ALL prompts in this section):**
+- **Style:** Design
+- **Magic Prompt:** OFF
+- **Model:** v3
+- **Character reference:** upload `/Users/poum/sherpa-pros-platform/public/brand/sherpa-pros-icon-1024.png` for color discipline
+- **Aspect Ratio:** per-prompt (specified per asset)
+- **Color discipline:** locked palette `#00A9E0` sky blue, `#FF4500` orange-red, `#FFFFFF` white, `#1A1A2E` dark navy, `#FBF7EE` warm cream — append the locked-color sentence if Ideogram drifts
+
+### 9A. Sherpa Score badge — GOLD variant (1080×1080 px square, 1:1)
+
+The single highest-leverage asset in this section. Every Sherpa Score post — LinkedIn, IG, TikTok, email, deck — references this badge visually. Generate this first, then everything else.
+
+```
+A bold editorial Sherpa Score badge graphic for the Gold tier, 1080 by 1080 pixels square 1:1. Composition: solid warm cream #FBF7EE background fills the canvas. CENTERED both horizontally and vertically: a large stylized shield in solid sky blue #00A9E0 at approximately 720px tall, with a flat geometric design (no gradients, no glossy effects, no metallic rendering). INSIDE the shield, CENTERED: a perfect circle in solid metallic-gold tone (use a warm yellow-gold #D4A017, NOT orange-red — this circle is the only place in the brand where a non-palette accent color is permitted, because it represents the literal Gold tier) at approximately 380px diameter. INSIDE the gold circle, CENTERED: the word "GOLD" in white Manrope sans-serif bold uppercase 96pt letter-spacing 0.05em. BELOW the gold circle but still inside the shield, in white Manrope sans-serif bold uppercase 36pt letter-spacing 0.15em: the line "8% FEE" centered. ABOVE the gold circle but still inside the shield, in white Manrope sans-serif uppercase 22pt letter-spacing 0.2em: the line "SHERPA SCORE" arched along the top of the gold circle. UPPER-LEFT corner of the canvas with 32px padding: small dark navy #1A1A2E "Sherpa Pros" wordmark at 22pt. LOWER-RIGHT corner with 32px padding: small dark navy line "thesherpapros.com" in Manrope 16pt. Flat editorial design, no gradients, no shadows, no glossy effects, no realistic 3D rendering. The mood: a guild patch — earned, not decorative.
+```
+
+- **Aspect Ratio:** 1:1 (1080×1080 px)
+- **Caption overlay (Canva):** none — generate complete, drop directly in posts
+- **Use case:** every Sherpa Score Gold-tier mention across LinkedIn, IG, TikTok, email headers, /pro/score detail page hero
+- **Variants to generate in same session:** 9B (Silver) + 9C (Bronze) — keep the visual family tight
+
+### 9B. Sherpa Score badge — SILVER variant (1080×1080 px square, 1:1)
+
+```
+A bold editorial Sherpa Score badge graphic for the Silver tier, 1080 by 1080 pixels square 1:1. Composition: solid warm cream #FBF7EE background fills the canvas. CENTERED: a large stylized shield in solid sky blue #00A9E0 at approximately 720px tall, flat geometric design. INSIDE the shield, CENTERED: a perfect circle in solid silver tone (use a cool light gray #C0C0C0 with a thin 4px white inner outline, NOT metallic-rendered — flat silver) at approximately 380px diameter. INSIDE the silver circle, CENTERED: the word "SILVER" in dark navy #1A1A2E Manrope sans-serif bold uppercase 80pt letter-spacing 0.05em (smaller than Gold variant to fit the longer word). BELOW the silver circle but inside the shield, in white Manrope bold uppercase 36pt letter-spacing 0.15em: the line "12% FEE" centered. ABOVE the silver circle inside the shield, in white Manrope uppercase 22pt letter-spacing 0.2em: the arched line "SHERPA SCORE" along the top. UPPER-LEFT corner: small dark navy "Sherpa Pros" wordmark at 22pt. LOWER-RIGHT corner: small "thesherpapros.com" in dark navy Manrope 16pt. Flat editorial design — same family resemblance as the Gold variant, only the inner-circle color and the tier word change.
+```
+
+### 9C. Sherpa Score badge — BRONZE variant (1080×1080 px square, 1:1)
+
+```
+A bold editorial Sherpa Score badge graphic for the Bronze tier, 1080 by 1080 pixels square 1:1. Composition: solid warm cream #FBF7EE background fills the canvas. CENTERED: a large stylized shield in solid sky blue #00A9E0 at approximately 720px tall, flat geometric design. INSIDE the shield, CENTERED: a perfect circle in solid bronze tone (use a warm muted brown #8B5A2B with a thin 4px white inner outline, flat — NOT metallic-rendered) at approximately 380px diameter. INSIDE the bronze circle, CENTERED: the word "BRONZE" in white Manrope sans-serif bold uppercase 76pt letter-spacing 0.05em (smaller than Gold to fit the longer word). BELOW the bronze circle inside the shield, in white Manrope bold uppercase 36pt letter-spacing 0.15em: the line "12% FEE" centered. ABOVE the bronze circle inside the shield, in white Manrope uppercase 22pt letter-spacing 0.2em: the arched line "SHERPA SCORE" along the top. UPPER-LEFT corner: small dark navy "Sherpa Pros" wordmark at 22pt. LOWER-RIGHT corner: small "thesherpapros.com" in dark navy Manrope 16pt. Flat editorial design — same family resemblance as Gold and Silver variants, only the inner-circle color and tier word change.
+```
+
+### 9D. "Earned Gold" celebration story template (1080×1920 px vertical, 9:16)
+
+A pro-share-worthy graphic the platform auto-generates the moment a pro crosses 80 points and earns Gold tier. The pro can save it and post directly to their own Instagram / Facebook story — turning the celebration moment into supply-side marketing.
+
+```
+A celebratory Instagram story template for a Sherpa Pros pro who just earned Gold tier, 1080 by 1920 pixels vertical 9:16. Composition: solid warm cream #FBF7EE background fills the canvas. UPPER 15% of canvas: a horizontal sky blue #00A9E0 banner at 240px tall containing centered the words "GOLD TIER EARNED" in white Manrope sans-serif bold uppercase 56pt letter-spacing 0.15em. CENTERED in the middle 60% of the canvas: a large stylized Gold-tier badge — a sky blue #00A9E0 shield at 720px tall containing a metallic-gold (warm yellow-gold #D4A017) circle at 400px diameter, with the word "GOLD" in white Manrope bold uppercase 88pt letter-spacing 0.05em centered inside, and the smaller arched lines "SHERPA SCORE" above and "8% FEE" below in white Manrope. AROUND the shield, scattered with intentional asymmetry: 8 to 12 small white star sparkles at varying sizes (12px to 32px), creating a celebration burst (no Christmas-tree symmetry — keep it random and editorial). LOWER 15% of canvas: a placeholder area for the pro's name and date (Canva: "Mike Rodriguez · Earned 2026-05-22") in dark navy #1A1A2E Fraunces serif 36pt centered. BELOW the name placeholder, a small line in dark navy Manrope 22pt uppercase letter-spacing 0.1em centered ("FOUNDING PRO · NH"). LOWER-RIGHT corner with 32px padding: small dark navy "Sherpa Pros" wordmark at 22pt. LOWER-LEFT corner: small dark navy "thesherpapros.com" in Manrope 16pt. Flat editorial design, no gradients, no shadows. The mood: a yearbook moment, earned not given.
+```
+
+- **Aspect Ratio:** 9:16 (1080×1920)
+- **Caption overlay (Canva):** drop the pro's actual name + date in the lower placeholder
+- **Use case:** auto-generated by the platform on Gold-tier earn event; pushed to the pro via in-app notification ("Save this — share it with your network"); also used for IG story features when Sherpa Pros amplifies a pro's Gold-tier earn
+
+### 9E. "Sherpa Score progression" infographic template (1080×1350 px portrait, 4:5)
+
+The single shareable image that explains the entire Sherpa Score system — 3 pillars, 12 metrics, 3 tiers — in one frame. Used as the LinkedIn carousel cover (Wk 15 Mon), the IG carousel S1 hook (Day 28), and the /pro/score detail-page footer explainer.
+
+```
+A clean editorial infographic template explaining Sherpa Score, 1080 by 1350 pixels portrait 4:5. Composition: solid warm cream #FBF7EE background fills the canvas. UPPER 12% of canvas: a small horizontal dark navy #1A1A2E pill at 64px tall containing centered the words "HOW SHERPA SCORE WORKS" in white Manrope sans-serif bold uppercase 22pt letter-spacing 0.15em. BELOW the pill with 32px gap: a large dark navy Fraunces serif headline "12 metrics. 3 pillars. 1 score." rendered at 56pt centered. CENTER of canvas (middle 50% vertical): three vertical column sections side by side, each 320px wide, separated by thin sky blue #00A9E0 vertical divider lines at 2px tall. Each column has the same structure top-to-bottom: (1) a colored numeric weight callout — for column 1 a sky blue #00A9E0 numeral "50%" in Manrope bold display 96pt centered, for column 2 a sky blue "25%" at the same size, for column 3 a sky blue "25%" at the same size. (2) Below the percentage, a column heading in dark navy Manrope sans-serif bold uppercase 24pt letter-spacing 0.1em — column 1 "QUALITY", column 2 "COMMUNICATION", column 3 "REVIEWS". (3) Below the heading with 24px gap, a small bulleted list area in dark navy Manrope 16pt — column 1 lists "On-time arrival · Scope completion · Code-pass rate · Dispute-free", column 2 lists "Response time · Message frequency · Professional tone", column 3 lists "Star average · Review volume · Review response · Recency". LOWER 18% of canvas: a horizontal row of three small tier-pill chips with 24px gap between them, centered horizontally. Pill 1: sky blue #00A9E0 background, 280px wide by 80px tall, containing white Manrope bold uppercase text "GOLD 80+ · 8%". Pill 2: light slate gray background, same dimensions, containing dark navy text "SILVER 60–79 · 12%". Pill 3: warm muted brown #8B5A2B background, same dimensions, containing white text "BRONZE <60 · 12%". UPPER-LEFT corner: small dark navy "Sherpa Pros" wordmark at 22pt. LOWER-RIGHT corner: small "thesherpapros.com/pro/score" in dark navy Manrope 16pt. Flat editorial design, no gradients, no shadows, no glossy effects.
+```
+
+- **Aspect Ratio:** 4:5 (1080×1350)
+- **Caption overlay (Canva):** none — generate complete
+- **Use case:** Wk 15 Mon LinkedIn carousel S1 (resize to 1080×1080 square if needed), Day 28 IG carousel S1, /pro/score footer explainer, investor deck slide on quality moat
+- **Variants:** generate a square 1:1 version in the same session for LinkedIn carousel S1 native ratio
+
+### 9F. "How to climb to Gold" guide visual — improvement-tip card format (1080×1080 px square, 1:1)
+
+The improvement-tip card the /pro/score page renders dynamically for every pro ("Reply to messages 30 minutes faster on average → +6 points"). Phyrom uses the same template for social-share screenshots when a pro DMs asking how to improve.
+
+```
+A clean editorial improvement-tip card template for Sherpa Score, 1080 by 1080 pixels square 1:1. Composition: solid warm cream #FBF7EE background fills the canvas. UPPER 15% of canvas: a small horizontal sky blue #00A9E0 pill at 72px tall containing centered the words "CLIMB TO GOLD · TIP" in white Manrope sans-serif bold uppercase 24pt letter-spacing 0.15em. CENTERED in the middle 50% of the canvas: a large empty placeholder area approximately 880px wide by 400px tall for the tip headline copy added in Canva (e.g., "Reply to messages 30 minutes faster on average."). The tip headline area is intentionally clean cream space — Canva drops in dark navy #1A1A2E Fraunces serif 56pt headline. BELOW the tip headline area with 48px gap: a large stylized score-impact callout — a horizontal sky blue #00A9E0 arrow pointing right at 200px wide by 80px tall, containing on its right side a placeholder area for the score gain (Canva: "+6 POINTS") in white Manrope bold uppercase 36pt letter-spacing 0.1em. BELOW the arrow with 32px gap: a small line of dark navy Manrope 18pt italic placeholder ("Median response time today: 2h 14min · Gold-tier median: 1h 38min"). LOWER 12% of canvas: a horizontal row containing on the LEFT a small dark navy "Sherpa Pros" wordmark at 22pt, and on the RIGHT a small dark navy line "thesherpapros.com/pro/score" in Manrope 16pt. A thin sky blue #00A9E0 horizontal accent line at 4px tall stretches across the bottom edge of the canvas. Flat editorial design, no gradients, no shadows. The mood: a coach's note — specific, actionable, plainspoken.
+```
+
+- **Aspect Ratio:** 1:1 (1080×1080)
+- **Caption overlay (Canva):** drop the actual tip headline ("Reply to messages 30 minutes faster on average") and the actual median-comparison line
+- **Use case:** /pro/score detail-page improvement-suggestion card, IG carousel slides for "How to earn Gold" (Wk 15 Mon LinkedIn editorial post visual companion), DM responses to pros asking how to improve their score
+- **Variant series:** generate 6 variants in one session covering the most common improvement tips: response time · scope completion · code-pass rate · review-response rate · message frequency · review-recency
+
+### 9G. Sherpa Score quick-reference rules (apply across all 6 visuals above)
+
+- **Gold tier color exception:** the metallic-gold inner circle (#D4A017) is the ONLY non-palette color permitted in the Sherpa Pros visual library, and ONLY inside Sherpa Score Gold-tier badges. Never use #D4A017 anywhere else in the brand.
+- **Bronze tier color exception:** same rule for #8B5A2B — ONLY inside Sherpa Score Bronze-tier badges and the Bronze tier-pill chip in the progression infographic. Never elsewhere.
+- **Tier-pill chip family:** Gold = sky blue #00A9E0 background with white text. Silver = light slate gray background with dark navy text. Bronze = #8B5A2B background with white text. Hold these exactly across LinkedIn, IG, TikTok, email, and the /pro/score page so users learn to read tier at a glance.
+- **Never call Sherpa Score "AI-powered"** in any caption or alt text — it's a deterministic 12-metric scoring system. The brand bible bans "AI-powered" as a headline.
+- **Never reveal the exact metric weights inside each pillar** in public marketing — public copy should say "Quality (50%) · Communication (25%) · Reviews (25%)" but never break down the sub-weights of the 4 quality metrics. Reserved for /pro/score detail page only.
+- **Pro-attribution rules apply:** any "Earned Gold" celebration story featuring a real pro requires written permission per the beta agreement. Save the DM screenshot.
+
+---
+
+## SECTION 10 — Tactical Best Practices
 
 ### Caption-overlay strategy
 

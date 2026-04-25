@@ -111,7 +111,7 @@ Hey {{first_name}},
 
 Status check on the founding cohort.
 
-Eight pros in. Two spots left. Then we close the founding rate forever and new pros come in at 10 percent plus a $49 a month subscription. The eight who are in are locked at 5 percent and zero subscription for as long as they work the platform.
+Eight pros in. Two spots left. Then we close the founding rate forever and new pros come in at 10 percent plus a $49 a month subscription. The eight who are in are locked at 5 percent and zero subscription for as long as they work the platform — assuming they hit Gold-tier on Sherpa Score during beta. Sherpa Score is the 0-to-100 quality grade we just shipped: 12 metrics across quality, communication, and reviews. Gold (80+) Founding Pros stay at 5 percent forever. Founding Pros who finish beta at Silver or Bronze convert to standard 12 percent. The path to Gold is a checklist, not a mystery — and beta is the easiest time to build the score because the bar moves up after public launch.
 
 So far the cohort is:
 

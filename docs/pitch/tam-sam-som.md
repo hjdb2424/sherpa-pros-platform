@@ -10,8 +10,8 @@
 
 | Tier | Definition | Sherpa Pros 2026 Sizing | Confidence |
 |---|---|---|---|
-| **TAM** | All US residential remodeling + repair + maintenance spend, plus US commercial property maintenance services spend | **~$731B/year** ($524B residential remodeling [^1] + $207.5B commercial property maintenance [^2]) | High — both figures from primary industry sources, current to 2025–2026 |
-| **SAM** | New England 6-state addressable spend on the trades Sherpa Pros covers (electrical, plumbing, HVAC, roofing, carpentry, masonry, painting, landscaping, handyman, energy-efficiency installs), plus the four-metro Phase 1–2 footprint (Portsmouth NH, Manchester NH, Portland ME, Boston MA) | **~$32B NE-wide / ~$8.5B four-metro** | Medium — derived from NE share of national residential remodeling pie + IBISWorld MA commercial figures |
+| **TAM** | All US residential remodeling + repair + maintenance spend, plus US commercial property maintenance services spend (the national pie Sherpa Pros' national licensed-trade marketplace addresses) | **~$731B/year** ($524B residential remodeling [^1] + $207.5B commercial property maintenance [^2]) | High — both figures from primary industry sources, current to 2025–2026 |
+| **Phase 1–2 SAM** | The operational footprint Sherpa Pros captures first — New England 6-state addressable spend on the trades Sherpa Pros covers (electrical, plumbing, HVAC, roofing, carpentry, masonry, painting, landscaping, handyman, energy-efficiency installs), plus the four-metro Phase 1–2 launch (Portsmouth NH, Manchester NH, Portland ME, Boston MA). Brand-wise this is the slice we hit first, not the addressable ceiling. | **~$32B NE-wide / ~$8.5B four-metro** | Medium — derived from NE share of national residential remodeling pie + IBISWorld MA commercial figures |
 | **SOM (12 mo)** | Phase 1 GMV through obtainable share of four-metro pie at beta launch + Boston specialty | **$200K–$1M GMV** (per Phase 1 / Phase 2 exit gates in GTM spec) | High — direct from spec exit gates + pro cohort math |
 | **SOM (24 mo)** | Phase 2 scaled launch across four metros, $1M+ annualized GMV | **$1M–$5M GMV** | Medium — depends on Seed close + 200-pro supply target |
 | **SOM (36 mo)** | Phase 3 regional expansion (RI, CT, NYC specialty), 6 metros | **$5M–$25M GMV** | Lower — multi-metro execution risk; bounded by 6-month Phase 3 hard limit |
@@ -64,9 +64,9 @@ These confirm the TAM is real, large, and growing — not a one-source artifact.
 
 ---
 
-## 3. SAM — Serviceable Addressable Market
+## 3. SAM — Serviceable Addressable Market (Phase 1–2 Footprint)
 
-Sherpa Pros operates in **6 New England states** (NH, ME, MA, VT, RI, CT) with **Phase 1–2 four-metro execution focus** (Portsmouth, Manchester, Portland, Boston).
+Sherpa Pros is a **national** licensed-trade marketplace; the Phase 1–2 SAM sized below covers the **6 New England states** (NH, ME, MA, VT, RI, CT) with **four-metro launch focus** (Portsmouth, Manchester, Portland, Boston) — the slice the platform captures first, not the addressable ceiling. Phase 3+ expands SAM into the broader Northeast and then nationally; see GTM spec §4.5–§4.6.
 
 ### 3.1 New England residential remodeling spend
 

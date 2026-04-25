@@ -329,7 +329,7 @@ Email Boost Insurance with this:
 >
 > Hi [name],
 >
-> I'm Phyrom, founder of Sherpa Pros — a New England licensed-trade marketplace for residential and small-commercial home services. We launched our beta cohort in [month] and are running ~200 jobs/month across NH, ME, and MA, scaling to 1,000+/month over the next 12 months.
+> I'm Phyrom, founder of Sherpa Pros — the national licensed-trade marketplace for residential and small-commercial home services (international roadmap), launching first in NH, ME, and MA. We launched our beta cohort in [month] and are running ~200 jobs/month across the Phase 1 launch metros, scaling to 1,000+/month over the next 12 months.
 >
 > We want to add an optional Project Protection product at checkout — embedded insurance that gives customers a higher coverage cap and longer window than our built-in Work Guarantee. Tier structure tentatively: Standard (free, our guarantee) / Plus ($89, $25K cap, 1 year) / Premium ($249, $100K cap, 5 years).
 >

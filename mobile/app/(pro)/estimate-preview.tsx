@@ -17,7 +17,7 @@ const MOCK_QUOTE: QuoteData = {
   proTrade: 'General Contractor',
   proPhone: '(603) 555-0142',
   proEmail: 'carlos@riverabuilds.com',
-  proLicense: 'NH-GC-2024-1847',
+  proLicense: 'GC-2024-1847',
   clientName: 'John Davidson',
   clientAddress: '42 Maple St, Portsmouth, NH 03801',
   jobTitle: 'Bathroom Remodel \u2014 Phase 1',
@@ -47,7 +47,7 @@ const MOCK_QUOTE: QuoteData = {
   discountAmount: 0,
   grandTotal: 559720,
   scopeOfWork:
-    'Full bathroom remodel including demolition of existing tile and fixtures, rough plumbing updates, cement board installation, waterproof membrane application, subway tile installation on walls and floor, matte black fixture installation, and final cleanup. All work performed to current NH building code standards.',
+    'Full bathroom remodel including demolition of existing tile and fixtures, rough plumbing updates, cement board installation, waterproof membrane application, subway tile installation on walls and floor, matte black fixture installation, and final cleanup. All work performed to current building code standards.',
   timeline: '5-7 business days',
   paymentTerms: '50% deposit upon acceptance, 50% upon completion',
   notes: 'Price includes all labor, materials, and debris removal. Client to select grout color before start date.',

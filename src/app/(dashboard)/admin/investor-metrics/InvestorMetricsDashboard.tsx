@@ -36,10 +36,10 @@ import {
 
 interface GmvDailyPoint {
   date: string;
-  Portsmouth: number;
-  Manchester: number;
-  Portland: number;
-  Boston: number;
+  Northeast: number;
+  Southeast: number;
+  Central: number;
+  "West Coast": number;
 }
 
 interface TakeRatePoint {
@@ -294,7 +294,7 @@ export default function InvestorMetricsDashboard(props: DashboardProps) {
                   className="mt-4 h-64"
                   data={gmv7d}
                   index="date"
-                  categories={["Portsmouth", "Manchester", "Portland", "Boston"]}
+                  categories={["Northeast", "Southeast", "Central", "West Coast"]}
                   colors={["amber", "emerald", "sky", "violet"]}
                   valueFormatter={moneyShortFormatter}
                   stack
@@ -306,7 +306,7 @@ export default function InvestorMetricsDashboard(props: DashboardProps) {
                   className="mt-4 h-64"
                   data={gmv30d}
                   index="date"
-                  categories={["Portsmouth", "Manchester", "Portland", "Boston"]}
+                  categories={["Northeast", "Southeast", "Central", "West Coast"]}
                   colors={["amber", "emerald", "sky", "violet"]}
                   valueFormatter={moneyShortFormatter}
                   stack
@@ -318,7 +318,7 @@ export default function InvestorMetricsDashboard(props: DashboardProps) {
                   className="mt-4 h-64"
                   data={gmv90d}
                   index="date"
-                  categories={["Portsmouth", "Manchester", "Portland", "Boston"]}
+                  categories={["Northeast", "Southeast", "Central", "West Coast"]}
                   colors={["amber", "emerald", "sky", "violet"]}
                   valueFormatter={moneyShortFormatter}
                   stack

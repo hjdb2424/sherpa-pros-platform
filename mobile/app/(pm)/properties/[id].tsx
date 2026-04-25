@@ -75,7 +75,7 @@ const PROPERTIES_MAP: Record<string, PropertyDetail> = {
   'maple-ridge': {
     id: 'maple-ridge',
     name: 'Maple Ridge Apartments',
-    address: '124 Maple St, Portsmouth, NH 03801',
+    address: '124 Maple Ridge Dr, Portsmouth, NH 03801',
     totalUnits: 48,
     occupancyRate: 93.8,
     avgRentPerSqft: 2.15,
@@ -108,7 +108,7 @@ const PROPERTIES_MAP: Record<string, PropertyDetail> = {
   '220-main': {
     id: '220-main',
     name: '220 Main Street',
-    address: '220 Main St, Dover, NH 03820',
+    address: '220 Main St, Austin, TX 78701',
     totalUnits: 15,
     occupancyRate: 86.7,
     avgRentPerSqft: 2.45,
@@ -123,7 +123,7 @@ const PROPERTIES_MAP: Record<string, PropertyDetail> = {
       { label: 'General', cents: 170_000 },
     ],
     units: [
-      { id: 'u1', number: '1A', tenant: 'Dover Coffee Shop', rentCents: 2_800_00, status: 'occupied' },
+      { id: 'u1', number: '1A', tenant: 'Main Street Coffee', rentCents: 2_800_00, status: 'occupied' },
       { id: 'u2', number: '1B', tenant: null, rentCents: 2_200_00, status: 'vacant' },
       { id: 'u3', number: '2A', tenant: 'James Wilson', rentCents: 1_400_00, status: 'occupied' },
       { id: 'u4', number: '2B', tenant: 'Diana Brooks', rentCents: 1_350_00, status: 'notice' },
@@ -137,7 +137,7 @@ const PROPERTIES_MAP: Record<string, PropertyDetail> = {
   'harbor-view': {
     id: 'harbor-view',
     name: 'Harbor View Condos',
-    address: '55 Harbor Rd, Kittery, ME 03904',
+    address: '55 Harbor Rd, Denver, CO 80202',
     totalUnits: 24,
     occupancyRate: 95.8,
     avgRentPerSqft: 1.95,
@@ -161,8 +161,8 @@ const PROPERTIES_MAP: Record<string, PropertyDetail> = {
   },
   'student-housing': {
     id: 'student-housing',
-    name: 'UNH Student Housing',
-    address: '89 College Rd, Durham, NH 03824',
+    name: 'College Park Housing',
+    address: '89 College Rd, Atlanta, GA 30332',
     totalUnits: 36,
     occupancyRate: 88.9,
     avgRentPerSqft: 1.55,

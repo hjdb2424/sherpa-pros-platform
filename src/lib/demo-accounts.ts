@@ -33,8 +33,8 @@ export const PM_ACCOUNTS: DemoAccount[] = [
     role: 'pm',
     badge: 'PM',
     badgeColor: '#8b5cf6',
-    description: 'Granite State Realty — 120 units, 8 properties',
-    location: 'Manchester, NH',
+    description: 'Lone Star Realty — 120 units, 8 properties',
+    location: 'Austin, TX',
   },
   {
     name: 'Rachel Torres',
@@ -42,8 +42,8 @@ export const PM_ACCOUNTS: DemoAccount[] = [
     role: 'pm',
     badge: 'PM',
     badgeColor: '#8b5cf6',
-    description: 'Coastal Living Properties — 36 units, 3 properties',
-    location: 'Dover, NH',
+    description: 'Mile High Properties — 36 units, 3 properties',
+    location: 'Denver, CO',
   },
 ];
 
@@ -66,7 +66,7 @@ export const PRO_ACCOUNTS: DemoAccount[] = [
     badge: 'Pro',
     badgeColor: '#ff4500',
     description: 'HVAC Technician — 4.8 stars, Silver tier',
-    location: 'Dover, NH',
+    location: 'Tampa, FL',
   },
   {
     name: 'Sarah Chen',
@@ -75,7 +75,7 @@ export const PRO_ACCOUNTS: DemoAccount[] = [
     badge: 'Pro',
     badgeColor: '#ff4500',
     description: 'Master Electrician — 4.9 stars, Gold tier',
-    location: 'Exeter, NH',
+    location: 'Austin, TX',
   },
   {
     name: 'Carlos Rivera',
@@ -84,7 +84,7 @@ export const PRO_ACCOUNTS: DemoAccount[] = [
     badge: 'Pro',
     badgeColor: '#ff4500',
     description: 'General Contractor — 4.7 stars, Silver tier',
-    location: 'Newmarket, NH',
+    location: 'Los Angeles, CA',
   },
   {
     name: 'Diana Brooks',
@@ -93,7 +93,7 @@ export const PRO_ACCOUNTS: DemoAccount[] = [
     badge: 'Pro',
     badgeColor: '#ff4500',
     description: 'Interior Painter — 4.8 stars, Bronze tier',
-    location: 'Kittery, ME',
+    location: 'Denver, CO',
   },
   {
     name: 'Tom Sullivan',
@@ -102,7 +102,7 @@ export const PRO_ACCOUNTS: DemoAccount[] = [
     badge: 'Pro',
     badgeColor: '#ff4500',
     description: 'Roofer — 4.6 stars, Silver tier',
-    location: 'Hampton, NH',
+    location: 'Chicago, IL',
   },
   {
     name: 'Maria Santos',
@@ -111,7 +111,7 @@ export const PRO_ACCOUNTS: DemoAccount[] = [
     badge: 'Pro',
     badgeColor: '#ff4500',
     description: 'Landscaper — 4.9 stars, Gold tier',
-    location: 'Rye, NH',
+    location: 'Atlanta, GA',
   },
   {
     name: 'Kevin O\'Brien',
@@ -120,7 +120,7 @@ export const PRO_ACCOUNTS: DemoAccount[] = [
     badge: 'Pro',
     badgeColor: '#ff4500',
     description: 'Carpenter / Finish Work — 4.7 stars, Bronze tier',
-    location: 'Somersworth, NH',
+    location: 'Seattle, WA',
   },
   {
     name: 'Andre Mitchell',
@@ -129,7 +129,7 @@ export const PRO_ACCOUNTS: DemoAccount[] = [
     badge: 'Pro',
     badgeColor: '#ff4500',
     description: 'Appliance Repair — 4.5 stars, Bronze tier',
-    location: 'Rochester, NH',
+    location: 'Brooklyn, NY',
   },
   {
     name: 'Jenny Kim',
@@ -138,7 +138,7 @@ export const PRO_ACCOUNTS: DemoAccount[] = [
     badge: 'Pro',
     badgeColor: '#ff4500',
     description: 'General Handyman — 4.8 stars, Silver tier',
-    location: 'Newburyport, MA',
+    location: 'Phoenix, AZ',
   },
 ];
 
@@ -161,7 +161,7 @@ export const CLIENT_ACCOUNTS: DemoAccount[] = [
     badge: 'Client',
     badgeColor: '#00a9e0',
     description: 'Property owner — new user',
-    location: 'Dover, NH',
+    location: 'Miami, FL',
   },
   {
     name: 'Morgan Lee',
@@ -170,7 +170,7 @@ export const CLIENT_ACCOUNTS: DemoAccount[] = [
     badge: 'Client',
     badgeColor: '#00a9e0',
     description: 'Homeowner — 1 active project',
-    location: 'Kittery, ME',
+    location: 'Dallas, TX',
   },
   {
     name: 'Sam Patel',
@@ -179,7 +179,7 @@ export const CLIENT_ACCOUNTS: DemoAccount[] = [
     badge: 'Client',
     badgeColor: '#00a9e0',
     description: 'Condo owner — 2 projects',
-    location: 'Hampton, NH',
+    location: 'San Diego, CA',
   },
   {
     name: 'Chris Thompson',
@@ -197,7 +197,7 @@ export const CLIENT_ACCOUNTS: DemoAccount[] = [
     badge: 'Client',
     badgeColor: '#00a9e0',
     description: 'Rental property owner — 5 projects',
-    location: 'Newmarket, NH',
+    location: 'Nashville, TN',
   },
   {
     name: 'Jordan Williams',
@@ -206,7 +206,7 @@ export const CLIENT_ACCOUNTS: DemoAccount[] = [
     badge: 'Client',
     badgeColor: '#00a9e0',
     description: 'First-time homebuyer — new user',
-    location: 'Rochester, NH',
+    location: 'Charlotte, NC',
   },
   {
     name: 'Casey Martin',
@@ -215,7 +215,7 @@ export const CLIENT_ACCOUNTS: DemoAccount[] = [
     badge: 'Client',
     badgeColor: '#00a9e0',
     description: 'Homeowner — 2 active projects',
-    location: 'Rye, NH',
+    location: 'Portland, OR',
   },
   {
     name: 'Riley Anderson',
@@ -224,7 +224,7 @@ export const CLIENT_ACCOUNTS: DemoAccount[] = [
     badge: 'Client',
     badgeColor: '#00a9e0',
     description: 'Condo owner — new user',
-    location: 'Somersworth, NH',
+    location: 'Minneapolis, MN',
   },
   {
     name: 'Avery Brown',
@@ -233,7 +233,7 @@ export const CLIENT_ACCOUNTS: DemoAccount[] = [
     badge: 'Client',
     badgeColor: '#00a9e0',
     description: 'Homeowner — 4 projects completed',
-    location: 'Newburyport, MA',
+    location: 'Scottsdale, AZ',
   },
 ];
 

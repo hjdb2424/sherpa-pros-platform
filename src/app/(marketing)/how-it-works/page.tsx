@@ -138,7 +138,7 @@ const faqItems = [
   {
     question: 'What areas do you serve?',
     answer:
-      'We currently serve New Hampshire, Maine, and Massachusetts with active hub cities including Portsmouth, Manchester, Portland, Boston, and more. We are expanding across New England throughout 2026.',
+      'We serve major metros across the United States and are expanding every week. Pros set their own service area, so coverage grows as more verified pros join the platform.',
   },
   {
     question: 'Can I see a pro\'s past work before hiring?',

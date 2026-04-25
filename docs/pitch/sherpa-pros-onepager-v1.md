@@ -6,7 +6,7 @@
 
 ## The Answer (read this first)
 
-**Sherpa Pros is the licensed-trade marketplace for New England — built by a working general contractor to deliver jobs (not leads), verified licenses, and code-aware quotes that Angi, Thumbtack, TaskRabbit, and Handy structurally cannot.** We are raising a Phase 0 trigger of $250K non-dilutive *or* $500K Wefunder + angel *or* a tier-1 accelerator seat to convert a live 10-pro beta into a 50-pro Northern Triangle launch (Portsmouth NH, Manchester NH, Portland ME) plus 5 Boston specialty lanes (Mass Save heat pumps, EV chargers, electrical panel upgrades, old-house specialists, triple-decker exteriors).
+**Sherpa Pros is the national licensed-trade marketplace — built by a working general contractor to deliver jobs (not leads), verified licenses, and code-aware quotes that Angi, Thumbtack, TaskRabbit, and Handy structurally cannot.** We are raising a Phase 0 trigger of $250K non-dilutive *or* $500K Wefunder + angel *or* a tier-1 accelerator seat to convert a live 10-pro beta into a 50-pro Phase 1 launch across Portsmouth NH, Manchester NH, and Portland ME — plus 5 Boston specialty lanes (Mass Save heat pumps, EV chargers, electrical panel upgrades, old-house specialists, triple-decker exteriors) that template the specialty playbook for every metro after.
 
 ---
 

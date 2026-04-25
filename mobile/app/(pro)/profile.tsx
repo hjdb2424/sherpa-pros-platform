@@ -61,7 +61,7 @@ const PRO_PROFILE = {
   rating: 4.9,
   reviewCount: 142,
   badgeTier: 'gold' as const,
-  bio: 'Licensed master plumber with 15 years experience specializing in residential and light commercial plumbing throughout the Seacoast area. Emergency services available 24/7. I treat every home like my own.',
+  bio: 'Licensed master plumber with 15 years experience specializing in residential and light commercial plumbing. Emergency services available 24/7. I treat every home like my own.',
   specialties: [
     'Residential Plumbing',
     'Water Heater Install',
@@ -336,7 +336,7 @@ export default function ProProfileScreen() {
     { label: 'Notifications', iconName: 'notifications-outline', onPress: () => Alert.alert('Notifications', 'Push, Email, and SMS notification preferences can be managed from your device settings.') },
     { label: 'Payment Methods', iconName: 'card-outline', onPress: () => Alert.alert('Payment Methods', 'Stripe Connect is used for payouts. Manage your payout settings in the Earnings tab.') },
     { label: 'Help & Support', iconName: 'help-circle-outline', onPress: () => Linking.openURL('mailto:support@thesherpapros.com') },
-    { label: 'About', iconName: 'information-circle-outline', onPress: () => Alert.alert('Sherpa Pros v1.0.0', 'Built for pros, by builders.\n\nServing NH, ME, MA.') },
+    { label: 'About', iconName: 'information-circle-outline', onPress: () => Alert.alert('Sherpa Pros v1.0.0', 'Built for pros, by builders.\n\nLicensed pros. Nationwide.') },
   ];
 
   const profile = PRO_PROFILE;

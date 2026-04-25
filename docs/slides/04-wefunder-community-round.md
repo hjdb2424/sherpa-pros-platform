@@ -11,7 +11,7 @@ style: |
   /* ===========================================================
      WEFUNDER COMMUNITY-ROUND DECK — PUBLIC, WARM, STORY-FIRST
      Phone screen. Wefunder embed. Email attachment.
-     For homeowners, contractors, and NE small-biz folks.
+     For homeowners, contractors, and small-biz folks anywhere — launching in NH/ME/MA first.
      Tone: a working contractor at a kitchen table, not a CEO at a podium.
      =========================================================== */
 
@@ -489,7 +489,7 @@ A **licensed-trade marketplace for New Hampshire, Maine, and Massachusetts** —
   </div>
   <div class="uof-row">
     <div class="pct">~30%</div>
-    <div class="name">New England<br/>operations</div>
+    <div class="name">Phase 1 launch<br/>operations</div>
     <div class="what">First Pro Success Manager hire (NH and ME), Boston specialty-lane launch (Mass Save heat pumps, EV chargers, panel upgrades, old-house specialists), supply-house partnerships, NHHBA + MEHBA partnership execution.</div>
   </div>
   <div class="uof-row">
@@ -581,7 +581,7 @@ We are running **four parallel funding tracks**: non-dilutive grants, accelerato
   <li><strong>Code-aware quote validation.</strong> Every quote is checked against NEC, IRC, MA Electrical Code, NH state code (RSA), and Boston ISD permits before the homeowner sees it.</li>
   <li><strong>Jobs, not leads.</strong> 5% take rate during beta, 10% at scale — about half what a contractor pays Angi today, and tied to completed work, not $400–$800-per-lead pay-to-bid clicks.</li>
   <li><strong>Built by a working contractor.</strong> The code-intelligence layer required a working GC plus a 3-year codebase to build. Lead-gen platforms cannot copy it without a structural rebuild.</li>
-  <li><strong>Local New England first, national specialty after.</strong> Northern Triangle (Portsmouth, Manchester, Portland) full marketplace. Boston specialty lanes only.</li>
+  <li><strong>National marketplace, launching where the founder lives.</strong> Phase 1 launch metros (Portsmouth, Manchester, Portland) get the full marketplace. Boston enters with specialty lanes — the playbook we'll template into every metro after.</li>
 </ul>
 
 ---

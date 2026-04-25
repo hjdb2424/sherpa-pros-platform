@@ -66,7 +66,7 @@ Internal teaching deck for every PSM, Concierge, BD rep, and AI agent
 > *The licensed-trade marketplace that thinks like a contractor.*
 > *Built by a working GC. Code-aware. Permit-aware. Rebate-aware.*
 
-We are the marketplace for licensed trade work in New England — built by a working New Hampshire general contractor for the contractors he hires every week.
+We are the **national** licensed-trade marketplace (international roadmap) — built by a working New Hampshire general contractor for the contractors he hires every week. Launching in NH/ME/MA Phase 1, expanding nationally through Phase 4.
 
 We solve the two things lead-gen platforms structurally cannot: **verified licensed work** and **code-aware matching**.
 
@@ -102,14 +102,14 @@ Same brand, different headline per audience. Each line is approved copy from the
 
 | Audience | Headline |
 |---|---|
-| **NH/ME homeowners** | Trusted neighbor pros. Real people, verified work, no leads-for-sale. |
-| **Boston homeowners (specialty)** | Licensed specialty work. Mass Save certified. Code-aware. Permit-aware. Angi can't filter for this. |
-| **Contractors** | Jobs. Not leads. Get paid for work, not for paying to bid. |
-| **Property Managers** | Work orders, preferred vendors, unit-level finance in one platform. Stop juggling 40 contractors in spreadsheets. |
+| **Residential homeowners** | Trusted neighbor pros. Real people, verified work, no leads-for-sale. |
+| **Specialty / older-home owners** | Licensed specialty work. Code-aware. Permit-aware. Rebate-aware. National platforms can't filter for this. |
+| **Contractors (national)** | Jobs. Not leads. Get paid for work, not for paying to bid. |
+| **Property Managers (national)** | Work orders, preferred vendors, unit-level finance in one platform. Stop juggling 40 contractors in spreadsheets. |
 
 <br>
 
-<span class="small">When you write for an audience, pull their headline. Do not invent a new one. Do not blend two.</span>
+<span class="small">Audience messages reference *use cases* (residential, specialty, older-home, multi-family), not *regions*. Every market has homeowners, specialty work, and property managers. The launch sequence is operational; the audience is national. When you write for an audience, pull their headline. Do not invent a new one. Do not blend two.</span>
 
 ---
 
@@ -251,6 +251,50 @@ The bright lines. Each one is banned for a reason.
 **Jargon abbreviations on first use** — CO, SOV, AR, RFI, ARR, NPS, CAC, GMV. Spell out on first use, then the abbreviation is fine.
 
 </div>
+
+<div class="bad">
+
+**Region-anchored brand language** — "the New England licensed-trade marketplace," "Sherpa Pros for NH/ME/MA," "the NE marketplace." The brand is **national** (international roadmap). Launch geography is a Phase 1/2/3 sequence, not the brand identity. Spec §3.4 is canonical.
+
+</div>
+
+---
+
+# Geographic brand rules
+
+This is the rule that took the longest to learn. Read it twice.
+
+| Rule | Brand line |
+|---|---|
+| **Brand identity** | Always **national** (international roadmap). Sherpa Pros is THE national licensed-trade marketplace. |
+| **Launch geography** | Named operationally where relevant (e.g., "Phase 1 launches in Portsmouth, Manchester, Portland, and Boston"), never as a brand cap. |
+| **Founder origin** | "Working New Hampshire general contractor" — true, specific, builds trust. Reference Phyrom's NH-GC identity freely; this is biography, not brand cap. |
+| **Pricing bands** | Keep per-metro operational pricing (NH/ME band, MA band, NYC band as we add them). These are real cost-of-labor differences, not brand statements. |
+| **State-specific operational notes** | Keep grant programs (MassCEC), trade associations (NHHBA, MEHBA), supply houses (FW Webb), licensing (MA Office of Consumer Affairs) — these are how the work gets done in our launch markets, not brand identity. |
+
+<br>
+
+<div class="good">
+
+**RIGHT** — *"Sherpa Pros is the national licensed-trade marketplace, launching in NH, ME, and MA — expanding nationally."*
+
+</div>
+
+<div class="good">
+
+**RIGHT** — *"Phyrom is a working New Hampshire general contractor running HJD Builders LLC."* (founder biography — true and specific)
+
+</div>
+
+<div class="bad">
+
+**WRONG** — *"the New England licensed-trade marketplace"* / *"Sherpa Pros for NH/ME/MA"* / *"the Northern Triangle marketplace"*
+
+</div>
+
+<br>
+
+<span class="small">**The test:** if you removed the region word, would the sentence still make sense in five years when we're operating in Texas? If yes, the word is operational and stays. If no, it's brand-capping and goes.</span>
 
 ---
 

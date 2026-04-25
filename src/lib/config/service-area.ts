@@ -1,3 +1,4 @@
+// MVP: Portsmouth area default. Will be replaced with user-location-based radius.
 export const SERVICE_AREA = {
   center: { lat: 43.0718, lng: -70.7626 },
   radiusMiles: 45,

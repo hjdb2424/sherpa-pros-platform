@@ -23,7 +23,7 @@ import Logo from '@/components/brand/Logo';
 const PM_COMPANY = {
   name: 'Seacoast Property Management LLC',
   initials: 'SP',
-  tagline: 'Managing 123 units across Greater Portsmouth since 2019',
+  tagline: 'Managing 123 units since 2019',
   location: 'Portsmouth, NH',
   phone: '(603) 555-0190',
   email: 'info@seacoastpm.com',

@@ -230,12 +230,12 @@ US residential remodeling ($524B JCHS LIRA 2026) + US commercial property mainte
 
 <div>
 
-### SAM
+### Phase 1–2 SAM
 **~$32B / yr**
 <br>
-New England 6-state spend on the trades we cover (electrical, plumbing, HVAC, roofing, carpentry, masonry, painting, energy installs).
+New England 6-state spend on the trades we cover (electrical, plumbing, HVAC, roofing, carpentry, masonry, painting, energy installs) — the slice we capture first; national SAM expands by phase.
 <br>
-<span class="small">Four-metro footprint alone: ~$8.5B.</span>
+<span class="small">Four-metro launch footprint alone: ~$8.5B.</span>
 
 </div>
 
@@ -404,7 +404,7 @@ The capability turned the corner in the same 12-month window the rebates and the
 
 ### Phase 1 hires (post-first-close)
 - **Pro Success Manager** (NH/ME) — onboarding, retention, weekly pro check-ins
-- **Client Concierge** (part-time, remote NE) — proactive homeowner support, dispute triage
+- **Client Concierge** (part-time, remote) — proactive homeowner support, dispute triage
 - **Business Development** (NH/ME first, MA at Phase 2) — supply-house partnerships, NHHBA + MEHBA
 
 </div>
@@ -413,7 +413,7 @@ The capability turned the corner in the same 12-month window the rebates and the
 
 ### Advisor slots — open, recruiting
 - **Marketplace operator** (two-sided platform veteran)
-- **New England trades veteran** (NHHBA / MEHBA / MA AGC board member)
+- **Trades veteran** with launch-metro standing (NHHBA / MEHBA / MA AGC board member)
 - **Construction-tech VC partner** (Building Ventures, Brick & Mortar, Foundamental — warm intros open)
 - **Insurance / risk advisor** (1099 vs W-2 worker classification)
 
@@ -435,7 +435,7 @@ The capability turned the corner in the same 12-month window the rebates and the
 
 ### Use of funds — first $500K (Phase 1, Months 3–6)
 - **1 Pro Success Manager** (NH/ME) — ~$8K/mo loaded
-- **1 part-time Client Concierge** (remote NE) — ~$3K/mo
+- **1 part-time Client Concierge** (remote) — ~$3K/mo
 - **Paid acquisition test** (Meta + TikTok, homeowner-targeted) — $5–8K/mo
 - **Google Ads** on Boston specialty keywords — $3–5K/mo
 - **Platform liability insurance**, legal (1099 worker-class opinion, OpenSign templates, Old-House Verified USPTO filing) — ~$15K one-time

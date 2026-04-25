@@ -67,7 +67,7 @@ We deliberately do not compete in the following adjacencies. Stating this clearl
 6. **Insurance-tied repair networks (Servpro, Belfor, Travelers Home Repair Network).** Catastrophe restoration is its own world with carrier referral lock-in. **Future partnership opportunity** (Phase 4) — not Phase 1–3 competition.
 7. **Lead-gen for new home construction (BuildZoom for permits, NewHomeSource for builders).** New-construction GC selection is a months-long, six-figure relationship sale. We focus on remodel + repair + installation jobs $500–$50K.
 
-**The discipline:** Sherpa Pros is the licensed-trade execution layer for **post-purchase, in-place residential and small-commercial work in New England.** Anything outside that frame is partnership territory or out-of-scope.
+**The discipline:** Sherpa Pros is the national licensed-trade execution layer for **post-purchase, in-place residential and small-commercial work** — launching first in NH, ME, and MA, expanding nationally. Anything outside that frame is partnership territory or out-of-scope.
 
 ---
 

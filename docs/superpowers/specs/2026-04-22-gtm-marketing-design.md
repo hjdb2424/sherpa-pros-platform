@@ -9,13 +9,15 @@
 
 ## 1. Executive Summary
 
-Sherpa Pros is the licensed-trade marketplace for New England, built by a working general contractor (HJD Builders) to solve the two problems lead-gen platforms (Angi, Thumbtack, TaskRabbit, Handy) structurally cannot: **verified licensed work** and **code-aware matching**. The platform is already built — web, mobile, 8 APIs live, 37 service categories, Wiseman code intelligence, Dispatch Wiseman matching.
+Sherpa Pros is **the national licensed-trade marketplace** (international vision), built by a working general contractor (HJD Builders) to solve the two problems lead-gen platforms (Angi, Thumbtack, TaskRabbit, Handy) structurally cannot: **verified licensed work** and **code-aware matching**. The platform is already built — web, mobile, 8 APIs live, 37 service categories nationwide, Wiseman code intelligence, Dispatch Wiseman matching.
 
-This document specifies the Go-To-Market plan to move from built product to funded, scaled business across five phases spanning 18+ months.
+This document specifies the Go-To-Market plan to move from built product to funded, scaled business across five phases spanning 18+ months — beginning with a four-metro Phase 1 launch and scaling to national coverage by Series B and international expansion thereafter.
 
 **Key constraint:** zero starting budget. The GTM plan is simultaneously the fundraising vehicle. Phase 0 (first 90 days) runs four parallel funding tracks while launching a live-transacting 10+ pro beta cohort, creating the traction artifacts that unlock Phase 1 execution capital.
 
-**Primary markets:** Portsmouth NH, Manchester NH, Portland ME, Boston MA metro (four metros parallel). Boston enters with a specialty-only positioning (Mass Save heat pumps, EV chargers, electrical panel upgrades, old-house specialists, triple-decker exteriors) to avoid the knife fight against entrenched national lead-gen competitors.
+**Phase 1 launch markets** (operational starting point, not brand identity): Portsmouth NH, Manchester NH, Portland ME, Boston MA metro (four metros parallel). Boston enters with a specialty-only positioning (heat pumps, EV chargers, electrical panel upgrades, old-house specialists, triple-decker exteriors) to avoid head-to-head competition with entrenched lead-gen incumbents in their home market.
+
+**Brand identity:** national (international roadmap). Launch geography is a Phase 1/2/3 sequence, not the brand. Every external surface speaks to Sherpa Pros as the national licensed-trade marketplace — homeowners and contractors anywhere should see themselves in it.
 
 **Positioning:** *"The licensed-trade marketplace that thinks like a contractor. Built by a working GC. Code-aware. Permit-aware. Rebate-aware."*
 
@@ -42,17 +44,19 @@ Existing platforms cluster in the "unskilled + lead-gen (pay-to-play)" quadrant:
 
 The **"licensed + code-aware + true marketplace"** quadrant is empty. Sherpa Pros plants the flag there.
 
-### 2.3 Boston-specific underserved lanes (specialty focus)
+### 2.3 Phase 1 launch-metro specialty lanes (operational wedge, not brand)
 
-National platforms cannot filter for:
+The same underserved-trade pattern exists in every major US metro (heat-pump install backlogs, EV charger demand, panel upgrade chokepoints, pre-1950 housing requiring specialty work). Sherpa Pros enters each new metro through whichever 3–5 of these lanes are most acute locally — proven first in Boston, then templated nationally.
 
-1. **Mass Save heat-pump installations** — EPA cert + electrical panel upgrades + $10K+ per-home rebates
-2. **EV charger installations** — licensed electrician + panel upgrade; Boston goal: 5-min walk to charger
-3. **Electrical panel upgrades** — gateway trade for HP + EV + solar; massive backlog
-4. **Old-house specialists** — plaster/lath (50%+ of Boston housing pre-1950), slate roofs, brownstone repointing, historic restoration
-5. **Triple-decker porch + exterior** — Boston-specific code, ISD permits, liability-critical
+**Boston Phase 1 specialty lanes** (national platforms can't filter for these):
 
-Sherpa Pros wins these lanes because the Wiseman layer already validates NEC, IRC, MA Electrical, NH RSA, and permits — and the Dispatch Wiseman matches on license, cert, and skill.
+1. **Heat-pump installations** — EPA cert + electrical panel upgrades + significant utility/state rebates (in Boston: Mass Save program, $10K+ per-home)
+2. **EV charger installations** — licensed electrician + panel upgrade; high-density urban charging demand
+3. **Electrical panel upgrades** — gateway trade for HP + EV + solar; massive backlog in every major metro
+4. **Old-house specialists** — plaster/lath (50%+ of pre-1950 housing nationwide — Boston/NYC/Philly/SF brownstones, Victorians, row houses, historic restoration)
+5. **Triple-decker / multi-family exterior** — local building code + permit-critical (Boston-specific in Phase 1; New York City brownstones, Chicago two-flats, Philadelphia row houses follow same pattern)
+
+Sherpa Pros wins these lanes because the Wiseman layer validates national codes (NEC, IRC) plus state and municipal codes (MA Electrical, NH RSA, NYC DOB, etc.) — Dispatch Wiseman matches on license, cert, and skill regardless of geography.
 
 ---
 
@@ -67,20 +71,30 @@ Sherpa Pros wins these lanes because the Wiseman layer already validates NEC, IR
 
 | Audience | Message | Proof |
 |---|---|---|
-| NH/ME homeowners | *"Trusted neighbor pros. Real people, verified work, no leads-for-sale."* | License verified, insurance verified, code-checked quotes, real reviews |
-| Boston homeowners | *"Licensed specialty work. Mass Save certified. Code-aware. Permit-aware. Angi can't filter for this."* | Mass Save Network badge, Old-House Verified badge, permit-assist workflow |
-| Contractors | *"Jobs. Not leads. Get paid for work, not for paying to bid."* | 5% take (half Angi's effective cost), instant Stripe, QBO sync, Wisetack, Zinc, Uber Connect |
-| Property Managers | *"Work orders, preferred vendors, unit-level finance in one platform. Stop juggling 40 contractors in spreadsheets."* | PM tier, CapEx/OpEx, NOI impact, vendor scorecard, $4/unit → $1.50/unit |
+| Residential homeowners | *"Trusted neighbor pros. Real people, verified work, no leads-for-sale."* | License verified, insurance verified, code-checked quotes, real reviews |
+| Specialty / older-home owners | *"Licensed specialty work. Code-aware. Permit-aware. Rebate-aware. National platforms can't filter for this."* | Code-aware quote validation badge, Old-House Verified badge, permit-assist workflow, utility rebate matching |
+| Contractors (national) | *"Jobs. Not leads. Get paid for work, not for paying to bid."* | 5% take (half Angi's effective cost), instant Stripe, QBO sync, Wisetack, Zinc, Uber Connect |
+| Property Managers (national) | *"Work orders, preferred vendors, unit-level finance in one platform. Stop juggling 40 contractors in spreadsheets."* | PM tier, CapEx/OpEx, NOI impact, vendor scorecard, $4/unit → $1.50/unit |
+
+**Critical:** audience messages reference *use cases* (residential, specialty, older-home, multi-family), not *regions*. Every market has homeowners, specialty work, and property managers. The launch sequence is operational; the audience is national.
 
 ### 3.3 Voice & principles
 
 **Tone:** plainspoken, direct, tradesperson-friendly, dry, zero marketing-speak. 8th-grade reading level.
 
-**We always say:** Licensed · Verified · Code-aware · Built by a contractor · Local / Neighbor · Jobs, not leads
+**We always say:** Licensed · Verified · Code-aware · Built by a contractor · Local / Neighbor · Jobs, not leads · National
 
-**We never say:** "Wiseman" externally · Gig / Task · "Uber for X" externally · "AI-powered" as the headline · Disrupt / Revolutionize · Jargon abbreviations (CO, SOV, AR — always spell out)
+**We never say:** "Wiseman" externally · Gig / Task · "Uber for X" externally · "AI-powered" as the headline · Disrupt / Revolutionize · Jargon abbreviations (CO, SOV, AR — always spell out) · "New England marketplace" / "NE-only" / region-anchored brand language (the brand is national; launch geography is a Phase 1/2/3 sequence, not the identity)
 
-**Founder story is the lead hook.** A working NH GC built the platform he wished existed. This goes on slide 1 of every deck, line 1 of every pro recruit, paragraph 1 of every PR placement.
+**Founder story is the lead hook.** A working contractor built the platform he wished existed — Phyrom is the founder of HJD Builders LLC in New Hampshire (his origin is real and specific; the brand he built is national). The founder story leads slide 1 of every deck, line 1 of every pro recruit, paragraph 1 of every PR placement. Phyrom-is-a-real-NH-GC builds trust; Sherpa Pros-is-NE-only does not. Lead with the founder; do not cap the brand.
+
+### 3.4 Geographic brand rules
+
+- **Brand:** always national (with international roadmap). Sherpa Pros is THE national licensed-trade marketplace.
+- **Launch geography:** named operationally where relevant (e.g., "Phase 1 launches in Portsmouth, Manchester, Portland, and Boston"), never as a brand cap.
+- **Founder origin:** "working New Hampshire general contractor" — true, specific, builds trust. Reference Phyrom's NH-GC identity freely; this is biography, not brand cap.
+- **Pricing bands:** keep per-metro operational pricing (NH/ME band, MA band, NYC band as we add them). These are real cost-of-labor differences, not brand statements.
+- **State-specific operational notes:** keep grant programs (MassCEC), trade associations (NHHBA, MEHBA), supply houses (FW Webb), licensing (MA Office of Consumer Affairs) — these are how the work gets done in our launch markets, not brand identity.
 
 ---
 
@@ -91,10 +105,10 @@ Sherpa Pros wins these lanes because the Wiseman layer already validates NEC, IR
 | Phase | Months | Budget | Burn | Focus |
 |---|---|---|---|---|
 | Phase 0 | 0–3 | ~$0 in / $3–5K out | Minimal | Fundraise + 10-pro beta |
-| Phase 1 | 3–6 | $250–500K first close | $25–35K/mo | Lean launch (Northern Triangle + Boston specialty) |
-| Phase 2 | 6–12 | $750K–1.5M Seed | $60–80K/mo | Scaled 4-metro launch |
-| Phase 3 | 12–18 | $3–7M Series A | $150–200K/mo | Regional expansion (RI, CT, NYC specialty) **— HARD 6-MO BOUND** |
-| Phase 4 | 18+ | $15M+ Series B | Dependent on raise size | National scale / strategic exit |
+| Phase 1 | 3–6 | $250–500K first close | $25–35K/mo | Lean launch — first 4 metros (NH/ME/MA) + specialty wedge |
+| Phase 2 | 6–12 | $750K–1.5M Seed | $60–80K/mo | Scaled 4-metro footprint, PM tier signed |
+| Phase 3 | 12–18 | $3–7M Series A | $150–200K/mo | Multi-region expansion (Northeast US + NYC specialty) **— HARD 6-MO BOUND** |
+| Phase 4 | 18+ | $15M+ Series B+ | Dependent on raise size | National scale + international expansion preparation |
 
 ### 4.2 Phase 0 — Fundraise & Prove (Months 0–3)
 

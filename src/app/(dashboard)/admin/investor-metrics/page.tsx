@@ -44,10 +44,10 @@ async function requireAdmin() {
 
 interface GmvDailyPoint {
   date: string;
-  Portsmouth: number;
-  Manchester: number;
-  Portland: number;
-  Boston: number;
+  Northeast: number;
+  Southeast: number;
+  Central: number;
+  "West Coast": number;
 }
 
 function generateMockGmv(days: number): GmvDailyPoint[] {
@@ -59,10 +59,10 @@ function generateMockGmv(days: number): GmvDailyPoint[] {
     const ramp = (days - i) / days;
     out.push({
       date: d.toISOString().slice(0, 10),
-      Portsmouth: Math.round(ramp * 4200 + Math.random() * 800),
-      Manchester: Math.round(ramp * 2100 + Math.random() * 600),
-      Portland: Math.round(ramp * 1400 + Math.random() * 400),
-      Boston: Math.round(ramp * 1200 + Math.random() * 500),
+      Northeast: Math.round(ramp * 4200 + Math.random() * 800),
+      Southeast: Math.round(ramp * 2100 + Math.random() * 600),
+      Central: Math.round(ramp * 1400 + Math.random() * 400),
+      "West Coast": Math.round(ramp * 1200 + Math.random() * 500),
     });
   }
   return out;
@@ -169,10 +169,10 @@ export default async function InvestorMetricsPage() {
   const gmv7d = generateMockGmv(7);
   const takeRate = generateMockTakeRate();
   const liquidity = [
-    { metro: "Portsmouth", "Matched <2hr": 78 },
-    { metro: "Manchester", "Matched <2hr": 64 },
-    { metro: "Portland", "Matched <2hr": 71 },
-    { metro: "Boston (specialty)", "Matched <2hr": 52 },
+    { metro: "Northeast", "Matched <2hr": 78 },
+    { metro: "Southeast", "Matched <2hr": 64 },
+    { metro: "Central", "Matched <2hr": 71 },
+    { metro: "West Coast", "Matched <2hr": 52 },
   ];
   const avgBids = generateMockAvgBids();
   const avgBidsLatest = avgBids[avgBids.length - 1]["Avg bids"];
@@ -199,7 +199,7 @@ export default async function InvestorMetricsPage() {
   ];
 
   const totalGmv90d = gmv90d.reduce(
-    (acc, d) => acc + d.Portsmouth + d.Manchester + d.Portland + d.Boston,
+    (acc, d) => acc + d.Northeast + d.Southeast + d.Central + d["West Coast"],
     0,
   );
 

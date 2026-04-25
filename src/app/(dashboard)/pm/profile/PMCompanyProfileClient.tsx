@@ -9,14 +9,14 @@ import Link from 'next/link';
 
 const company = {
   name: 'Seacoast Property Management LLC',
-  tagline: 'Managing 123 units across Greater Portsmouth since 2019',
+  tagline: 'Managing 123 units since 2019',
   location: 'Portsmouth, NH',
   phone: '(603) 555-0190',
   email: 'info@seacoastpm.com',
   website: 'seacoastpm.com',
   logo: null as string | null,
   badges: [
-    { label: 'Licensed PM', detail: 'NH RSA 331-A' },
+    { label: 'Licensed PM', detail: 'State Licensed' },
     { label: 'Insured', detail: '$2M Liability' },
     { label: 'BBB A+', detail: 'Since 2020' },
   ],

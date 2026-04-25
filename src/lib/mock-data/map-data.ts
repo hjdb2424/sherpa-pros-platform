@@ -32,7 +32,7 @@ export interface MockRoute {
   distanceMiles: number;
 }
 
-// Portsmouth, NH area — default hub center (matches service-area.ts config)
+// MVP default center: Portsmouth, NH (founder's home base). Will be replaced with user-location-based center.
 export const DEFAULT_CENTER = { lat: 43.0718, lng: -70.7626 };
 export const DEFAULT_ZOOM = 10;
 

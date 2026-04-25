@@ -75,7 +75,7 @@ const foundingBenefits = [
     icon: MegaphoneIcon,
     title: 'Marketing exposure',
     description:
-      'We promote you. Phyrom records a free walk-the-job video at one of your sites. Your photo runs in the Mass Save and Old-House Verified press push. Local PR pitches name you first.',
+      'We promote you. Phyrom records a free walk-the-job video at one of your sites. Your photo runs in the Old-House Verified press push. Local PR pitches name you first.',
   },
   {
     icon: ShieldCheckIcon,
@@ -120,7 +120,7 @@ export default function ForProsPage() {
             </span>
           </h1>
           <p className="animate-fade-slide-up stagger-2 mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-zinc-600 dark:text-zinc-400 sm:text-xl">
-            Get paid for work, not for paying to bid. 5% take rate when the client pays. Instant Stripe payout. QuickBooks Online sync built in. Built by a working New Hampshire general contractor.
+            Get paid for work, not for paying to bid. 5% take rate when the client pays. Instant Stripe payout. QuickBooks Online sync built in. Built by a working general contractor.
           </p>
           <div className="mt-10">
             <Link
@@ -289,7 +289,7 @@ export default function ForProsPage() {
             </div>
             <div className="text-left">
               <p className="text-base font-semibold text-white">Phyrom</p>
-              <p className="text-sm text-zinc-400">Founder · NH General Contractor · HJD Builders LLC</p>
+              <p className="text-sm text-zinc-400">Founder · General Contractor · HJD Builders LLC</p>
             </div>
           </div>
         </div>

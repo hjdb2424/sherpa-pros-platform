@@ -203,7 +203,7 @@ export const mockProProfile: ProProfile = {
     { id: 't5', name: 'Trim & Molding', category: 'Carpentry', yearsExperience: 12, verified: true },
   ],
   serviceArea: {
-    homeHub: 'Manchester, NH',
+    homeHub: 'Portsmouth, NH',
     homeHubCoords: { lat: 42.9956, lng: -71.4548 },
     travelRadiusMiles: 35,
   },

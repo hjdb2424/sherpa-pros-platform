@@ -111,26 +111,26 @@ Three stacked mobile-frame screenshots from the live platform: (a) post-job wiza
 
 ## Slide 6 — Market
 
-**Title:** New England first. Boston specialty next. National specialty after that.
+**Title:** National marketplace. Phase 1 launches in four metros. Specialty wedge templated nationally from there.
 
 **Body:**
 
 **Total Addressable Market (TAM):** US residential trades services — over $500B annually across the licensed categories Sherpa Pros covers (electrical, plumbing, HVAC, roofing, GC, specialty).
 
-**Serviceable Addressable Market (SAM):** New England + NYC residential + light-commercial licensed trades — roughly $40–60B annually across our footprint.
+**Serviceable Addressable Market (SAM):** US residential + light-commercial licensed trades — the full national pie that Sherpa Pros' code-aware, license-verified platform is built to serve. Phase 1–2 SAM (the operational footprint we capture first — New England + NYC) is roughly $40–60B annually.
 
 **Serviceable Obtainable Market (SOM) — 18 months:**
 
-- **Northern Triangle** (Portsmouth NH, Manchester NH, Portland ME) — full marketplace. (per spec §1)
-- **Boston metro** — 5 specialty lanes only, to avoid the head-on lead-gen knife fight: Mass Save heat pumps, EV chargers, electrical panel upgrades, old-house specialists, triple-decker exteriors. (per spec §2.3)
+- **Phase 1 launch metros** (Portsmouth NH, Manchester NH, Portland ME) — full marketplace. (per spec §1)
+- **Boston metro** — 5 specialty lanes only, to avoid the head-on lead-gen knife fight: Mass Save heat pumps, EV chargers, electrical panel upgrades, old-house specialists, triple-decker exteriors. The specialty playbook we'll template into every metro. (per spec §2.3)
 - **NYC specialty beachhead** (months 14–18) — Old-House Verified for Brooklyn brownstones and Manhattan pre-war buildings only. (per spec §4.5)
 - **PM tier** — property management chains as enterprise upside, $4 → $1.50 per unit per month. (per spec §3.2)
 
 **Suggested visual:**
-US map zoomed to the Northeast. NH/ME/MA highlighted in solid amber (Phase 1–2 — full marketplace). Boston has 5 specialty-lane pins overlaid (heat pump, EV, panel, old-house, triple-decker). RI/CT highlighted in lighter amber (Phase 3). NYC has a single "Old-House Verified" pin (Phase 3, specialty-only). Side panel: TAM $500B+ / SAM $40–60B / SOM-18mo $5M+ GMV.
+US map. Phase 1 launch metros (NH/ME/MA) highlighted in solid amber (full marketplace). Boston has 5 specialty-lane pins overlaid (heat pump, EV, panel, old-house, triple-decker). RI/CT highlighted in lighter amber (Phase 3). NYC has a single "Old-House Verified" pin (Phase 3, specialty-only). Faded amber wash across the rest of the lower-48 with a Phase 4 label. Side panel: TAM $500B+ / Phase 1–2 SAM $40–60B / SOM-18mo $5M+ GMV.
 
 **Presenter notes:**
-Don't oversell the SOM number. Investors discount any SOM over 5% of SAM in 18 months. The honest play is: we go deep in the Northern Triangle where the founder lives, win specialty lanes in Boston that the incumbents structurally can't, and treat NYC as a beachhead — not a flag-plant.
+Don't oversell the SOM number. Investors discount any SOM over 5% of SAM in 18 months. The honest play is: the brand is a national licensed-trade marketplace; we go deep in the Phase 1 launch metros where the founder lives, win specialty lanes in Boston that the incumbents structurally can't (and template that playbook into every metro), and treat NYC as a beachhead — not a flag-plant.
 
 ---
 
@@ -198,12 +198,12 @@ Six big-number tiles in a 2×3 grid (pros, jobs, GMV, match-time, NPS, code-viol
 
 **Phase 1 hires (post-first-close, per spec §4.3 + §7):**
 - **Pro Success Manager** (covers NH/ME) — onboarding, retention, weekly pro check-ins
-- **Client Concierge** (part-time, remote NE) — proactive homeowner support, dispute triage
+- **Client Concierge** (part-time, remote) — proactive homeowner support, dispute triage
 - **Business Development** (NH/ME first, MA at Phase 2) — supply-house partnerships, NHHBA + MEHBA
 
 **Advisor slots (open — actively recruiting):**
 - Marketplace operator (NFX-shaped, two-sided platform veteran)
-- New England trades veteran (NHHBA / MEHBA / MA AGC board member)
+- Trades veteran with launch-metro standing (NHHBA / MEHBA / MA AGC board member)
 - Construction tech VC partner (Building Ventures, Brick & Mortar, Foundamental — warm intros open)
 - Insurance / risk advisor (1099 vs W-2 worker classification, per spec §10 R5)
 
@@ -228,7 +228,7 @@ Don't pretend the team is bigger than it is. A solo working-GC founder with a bu
 
 **Use of funds — first $500K (Phase 1, months 3–6):**
 - 1 Pro Success Manager (NH/ME) — `~$8K/mo loaded`
-- 1 part-time Client Concierge (remote NE) — `~$3K/mo`
+- 1 part-time Client Concierge (remote) — `~$3K/mo`
 - Paid acquisition test (Meta + TikTok homeowner-targeted) — $5–8K/mo (per spec §4.3)
 - Google Ads on Boston specialty keywords — $3–5K/mo
 - Platform liability insurance, legal (1099 opinion, OpenSign templates, USPTO Old-House Verified filing) — `~$15K one-time`

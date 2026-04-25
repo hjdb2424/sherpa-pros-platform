@@ -23,7 +23,7 @@ import {
 export const metadata: Metadata = {
   title: 'Sherpa Pros — The licensed-trade marketplace that thinks like a contractor',
   description:
-    'Licensed pros only. Code-aware quotes. Real reviews, no leads-for-sale. Built by a working New Hampshire general contractor. Post a job free.',
+    'Licensed pros only. Code-aware quotes. Real reviews, no leads-for-sale. Built by a working general contractor. Post a job free.',
 };
 
 // 3-section value prop (per spec section 2)
@@ -73,11 +73,11 @@ const howItWorksSteps = [
   },
 ];
 
-// Boston-aware specialty lanes (per spec section 5)
+// Popular specialty lanes (per spec section 5)
 const specialtyLanes = [
   {
     icon: BoltIcon,
-    title: 'Mass Save heat pump installers',
+    title: 'Heat pump installers',
     line: 'EPA-certified pros who know the rebate paperwork. We help you stack the $10K+ in incentives.',
   },
   {
@@ -92,18 +92,19 @@ const specialtyLanes = [
   },
 ];
 
-// Service area (preserved from prior content)
-const hubCities = [
-  { state: 'NH', cities: ['Portsmouth', 'Dover', 'Rochester', 'Exeter', 'Hampton', 'Manchester', 'Nashua', 'Concord', 'Derry', 'Salem'] },
-  { state: 'ME', cities: ['Kittery', 'York', 'Kennebunk', 'Biddeford', 'Portland', 'Sanford'] },
-  { state: 'MA', cities: ['Newburyport', 'Amesbury', 'Haverhill', 'Lawrence', 'Lowell'] },
+// Service regions — national coverage, growing weekly
+const hubRegions = [
+  { region: 'Northeast', cities: ['Portsmouth', 'Boston', 'Portland', 'Manchester', 'Hartford'] },
+  { region: 'Southeast', cities: ['Miami', 'Atlanta', 'Charlotte', 'Tampa', 'Nashville'] },
+  { region: 'Central', cities: ['Austin', 'Denver', 'Chicago', 'Dallas', 'Minneapolis'] },
+  { region: 'West Coast', cities: ['Los Angeles', 'Seattle', 'Phoenix', 'San Diego', 'Portland'] },
 ];
 
 // Testimonial slot (placeholder per spec section 6)
 const testimonials = [
   {
     name: 'Sarah M.',
-    role: 'Homeowner, Portsmouth NH',
+    role: 'Homeowner',
     quote:
       'Posted a kitchen job Friday. Three licensed pros bid by Monday. The one I picked pulled the permit, sent me a code-checked scope, and finished on time. First contractor experience that did not feel like pulling teeth.',
     rating: 5,
@@ -233,7 +234,7 @@ export default function LandingPage() {
               </div>
             </ScrollReveal>
 
-            {/* Founder card — built by a NH GC */}
+            {/* Founder card — built by a working GC */}
             <ScrollReveal delay={200}>
               <div className="rounded-2xl border border-[#00a9e0]/20 bg-gradient-to-br from-sky-50 to-white dark:from-sky-950 dark:to-zinc-900 p-6 shadow-sm">
                 <div className="flex items-center gap-4">
@@ -242,11 +243,11 @@ export default function LandingPage() {
                   </div>
                   <div>
                     <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">Phyrom</p>
-                    <p className="text-xs text-zinc-500 dark:text-zinc-400">Founder · NH General Contractor · HJD Builders LLC</p>
+                    <p className="text-xs text-zinc-500 dark:text-zinc-400">Founder · General Contractor · HJD Builders LLC</p>
                   </div>
                 </div>
                 <p className="mt-4 text-sm leading-relaxed text-zinc-700 dark:text-zinc-300">
-                  Built by a working New Hampshire general contractor. I built the platform I wished existed when I was hiring subs and bidding jobs. No marketing fluff. Just the basics done right.
+                  Built by a working general contractor. I built the platform I wished existed when I was hiring subs and bidding jobs. No marketing fluff. Just the basics done right.
                 </p>
               </div>
             </ScrollReveal>
@@ -254,13 +255,13 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* 5. Specialty lanes — Boston-aware */}
+      {/* 5. Popular services */}
       <section className="bg-slate-50 dark:bg-zinc-900 px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="mx-auto max-w-2xl text-center">
             <div className="inline-flex items-center gap-2 rounded-full border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950 px-4 py-1.5">
               <span className="text-xs font-medium text-amber-700 dark:text-amber-400 sm:text-sm">
-                Specialty lanes
+                Popular services
               </span>
             </div>
             <h2 className="mt-6 text-3xl font-bold text-zinc-900 dark:text-zinc-50 sm:text-4xl">
@@ -312,7 +313,7 @@ export default function LandingPage() {
         </section>
       </ScrollReveal>
 
-      {/* Service area (preserved — still accurate) */}
+      {/* Service area — nationwide */}
       <section className="bg-slate-50 dark:bg-zinc-900 px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="mx-auto max-w-2xl text-center">
@@ -323,10 +324,10 @@ export default function LandingPage() {
               </span>
             </div>
             <h2 className="mt-6 text-3xl font-bold text-zinc-900 dark:text-zinc-50 sm:text-4xl">
-              New Hampshire, Maine, Massachusetts
+              Licensed pros. Nationwide.
             </h2>
             <p className="mt-4 text-lg text-zinc-600 dark:text-zinc-400">
-              Within an hour of Portsmouth NH today. Boston specialty lanes live now. More towns rolling out monthly.
+              Active in major metros across the U.S. and growing every week. Pros set their own service area.
             </p>
           </div>
 
@@ -336,13 +337,13 @@ export default function LandingPage() {
             </div>
 
             <div className="space-y-6">
-              {hubCities.map((group) => (
-                <div key={group.state}>
+              {hubRegions.map((group) => (
+                <div key={group.region}>
                   <h3 className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
                     <span className="flex h-6 w-6 items-center justify-center rounded bg-[#00a9e0] text-[10px] font-bold text-white">
-                      {group.state}
+                      {group.region.charAt(0)}
                     </span>
-                    {group.state === 'NH' ? 'New Hampshire' : group.state === 'ME' ? 'Maine' : 'Massachusetts'}
+                    {group.region}
                   </h3>
                   <div className="mt-3 flex flex-wrap gap-2">
                     {group.cities.map((city) => (
@@ -358,7 +359,7 @@ export default function LandingPage() {
               ))}
               <div className="rounded-xl border border-[#00a9e0]/20 bg-sky-50 dark:bg-sky-950 p-4">
                 <p className="text-sm font-medium text-zinc-800 dark:text-zinc-200">
-                  Want us in your town? We listen.
+                  Don&apos;t see your city? We&apos;re expanding fast.
                 </p>
                 <a
                   href="mailto:support@thesherpapros.com?subject=Request%20Service%20in%20My%20Area&body=I'd%20like%20Sherpa%20Pros%20to%20serve%20my%20area.%20My%20zip%20code%20is%20"
@@ -401,7 +402,7 @@ export default function LandingPage() {
             </div>
             <p className="mt-6 flex items-center justify-center gap-2 text-sm text-zinc-400">
               <StarIcon className="h-4 w-4 text-amber-400" aria-hidden="true" />
-              Built by a working New Hampshire general contractor.
+              Built by a working general contractor.
             </p>
           </div>
         </section>

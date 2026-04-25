@@ -50,7 +50,7 @@ const PROPERTIES: Property[] = [
   {
     id: 'maple-ridge',
     name: 'Maple Ridge Apartments',
-    address: '124 Maple St, Portsmouth, NH 03801',
+    address: '124 Maple Ridge Dr, Portsmouth, NH 03801',
     occupiedUnits: 45,
     totalUnits: 48,
     monthlyNOICents: 1_960_000,
@@ -60,7 +60,7 @@ const PROPERTIES: Property[] = [
   {
     id: '220-main',
     name: '220 Main Street',
-    address: '220 Main St, Dover, NH 03820',
+    address: '220 Main St, Austin, TX 78701',
     occupiedUnits: 13,
     totalUnits: 15,
     monthlyNOICents: 280_000,
@@ -70,7 +70,7 @@ const PROPERTIES: Property[] = [
   {
     id: 'harbor-view',
     name: 'Harbor View Condos',
-    address: '55 Harbor Rd, Kittery, ME 03904',
+    address: '55 Harbor Rd, Denver, CO 80202',
     occupiedUnits: 23,
     totalUnits: 24,
     monthlyNOICents: 920_000,
@@ -79,8 +79,8 @@ const PROPERTIES: Property[] = [
   },
   {
     id: 'student-housing',
-    name: 'UNH Student Housing',
-    address: '89 College Rd, Durham, NH 03824',
+    name: 'College Park Housing',
+    address: '89 College Rd, Atlanta, GA 30332',
     occupiedUnits: 32,
     totalUnits: 36,
     monthlyNOICents: 480_000,

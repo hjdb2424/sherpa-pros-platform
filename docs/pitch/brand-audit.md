@@ -18,6 +18,17 @@
 2. **Pricing-comparison framing drift** — multiple files reach for "cheaper" / "half-price" / "lower fee" framing without consistent phrasing. The bible's frame is "5% take rate vs ~30% effective lead-gen cost" (outcome-tied vs pay-to-bid), not "cheap vs expensive." Brand bible should be amended to make this explicit.
 3. **Founder pronoun inconsistency** — Phyrom alternates between first-person ("I built…") and third-person ("the founder commits…"). First-person is the brand voice; third-person flattens it.
 
+**Update 2026-04-24 — NEW systemic brand rule:**
+
+4. **Region-anchored brand language must be removed.** Sherpa Pros is **a national licensed-trade marketplace** with international roadmap. The launch geography (NH/ME/MA + Boston specialty) is a Phase 1/2/3 operational sequence, NOT the brand identity. Common violations to fix in every customer-facing artifact:
+   - ❌ "the New England licensed-trade marketplace" → ✅ "the national licensed-trade marketplace, launching in New England Phase 1"
+   - ❌ "Sherpa Pros for NH/ME/MA" → ✅ "Sherpa Pros (launching in NH, ME, MA — expanding nationally)"
+   - ❌ "NH/ME homeowners" / "Boston homeowners" as audience labels → ✅ "Residential homeowners" / "Specialty / older-home owners" (use-case based, not region-based)
+   - ❌ "Northern Triangle" as brand language → ✅ "Phase 1 launch metros" or name them explicitly
+   - ✅ KEEP: founder story ("working New Hampshire general contractor" — Phyrom's real biography, not brand cap), state-specific operational notes (NHHBA, FW Webb, MassCEC, MA licensing), per-metro pricing bands (real cost-of-labor differences)
+
+   See spec §3.4 (Geographic brand rules) for the canonical guidance.
+
 **Estimated apply-time for all P0 + P1 fixes:** 40–60 minutes of Phyrom's time. P2 polish adds another ~30 min if desired.
 
 ---

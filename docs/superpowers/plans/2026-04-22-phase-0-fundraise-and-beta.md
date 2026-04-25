@@ -601,7 +601,7 @@ git commit -m "feat(beta): weekly NPS + friction feedback API and in-app form"
 
 Use `Agent` tool with `subagent_type: "Executive Summary Generator"`. Prompt:
 
-> Build a 10-slide investor pitch deck and 1-page executive summary for Sherpa Pros — a licensed-trade marketplace for New England, built by a working GC. Read the full GTM design at `docs/superpowers/specs/2026-04-22-gtm-marketing-design.md` for context.
+> Build a 10-slide investor pitch deck and 1-page executive summary for Sherpa Pros — the national licensed-trade marketplace (international roadmap), launching in NH/ME/MA Phase 1, built by a working GC. Read the full GTM design at `docs/superpowers/specs/2026-04-22-gtm-marketing-design.md` for context (especially §3.4 — geographic brand rules).
 >
 > Use SCQA (Situation-Complication-Question-Answer) for the deck arc and BCG Pyramid Principle for the one-pager. Slides:
 > 1. Hero / founder hook (Phyrom built it for himself)
@@ -609,7 +609,7 @@ Use `Agent` tool with `subagent_type: "Executive Summary Generator"`. Prompt:
 > 3. Why now (Mass Save tailwind, contractor retirements, AI moment)
 > 4. Solution (jobs not leads, Wiseman code intelligence)
 > 5. Product demo (live platform screenshots, Wiseman, mobile)
-> 6. Market (TAM/SAM/SOM — NE first, national specialty later)
+> 6. Market (TAM = national US, Phase 1–2 SAM = NE + four-metro launch, SOM by phase)
 > 7. Business model (5%→10% take + $49 sub, PM tier $4–$1.50/unit)
 > 8. Traction (beta cohort numbers — placeholder for live metrics)
 > 9. Team + advisors (Phyrom + planned hires)
@@ -646,8 +646,8 @@ git commit -m "docs(pitch): v1 investor deck + one-pager (text drafts via Execut
 Use `Agent` tool with `subagent_type: "product-trend-researcher"`. Prompt:
 
 > Produce two artifacts for the Sherpa Pros pitch:
-> 1. Competitive analysis matrix — Angi (ANGI ticker, public financials), Thumbtack (private, latest valuation), TaskRabbit (IKEA-owned, segment data), Handy (ANGI-owned). For each: revenue, take-rate model, market share in NE, weaknesses, our advantage.
-> 2. TAM/SAM/SOM sizing for licensed home services in New England + Boston metro. Use US Census construction spending, NAHB residential remodeling expenditure data, and Mass Save / National Grid heat pump install pipeline data (cite sources).
+> 1. Competitive analysis matrix — Angi (ANGI ticker, public financials), Thumbtack (private, latest valuation), TaskRabbit (IKEA-owned, segment data), Handy (ANGI-owned). For each: revenue, take-rate model, market share in our Phase 1 launch metros (NH/ME/MA + Boston), weaknesses, our advantage.
+> 2. TAM (national US) / Phase 1–2 SAM (New England + Boston metro) / SOM sizing for licensed home services. Use US Census construction spending, NAHB residential remodeling expenditure data, and Mass Save / National Grid heat pump install pipeline data (cite sources). Frame SAM as the slice we capture first, not the brand ceiling.
 >
 > Read context at `docs/superpowers/specs/2026-04-22-gtm-marketing-design.md`. Output to `docs/pitch/competitive-analysis.md` and `docs/pitch/tam-sam-som.md`.
 
@@ -1553,4 +1553,4 @@ Commit a weekly snapshot to `docs/operations/weekly-status/2026-WW-NN.md`.
 - [ ] Open new spec + plan: `docs/superpowers/specs/<date>-phase-1-lean-launch-design.md` and corresponding plan file
 - [ ] Begin Phase 1 hires (PSM NH/ME, PT Client Concierge)
 - [ ] Convert beta cohort to founding paying customers (5% take grandfathered forever)
-- [ ] Public launch in Northern Triangle + Boston specialty
+- [ ] Public launch in Phase 1 launch metros (Portsmouth, Manchester, Portland) + Boston specialty

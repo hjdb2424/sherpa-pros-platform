@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import Link from 'next/link';
 import ProDashboardGuard from '@/components/pro/ProDashboardGuard';
 import {
@@ -9,7 +9,12 @@ import {
   REWARDS_CATALOG,
   getDemoRewardsData,
   type RewardCategory,
+  type RewardItem,
 } from '@/lib/incentives/rewards';
+
+// ---------------------------------------------------------------------------
+// Constants
+// ---------------------------------------------------------------------------
 
 const TIER_BADGE: Record<string, { bg: string; text: string; label: string }> = {
   gold: { bg: 'bg-amber-50 dark:bg-amber-900/20', text: 'text-amber-600 dark:text-amber-400', label: 'Gold' },
@@ -29,17 +34,106 @@ const EARNING_ACTIONS = [
   { action: 'Pro of the Month winner', points: POINT_VALUES.proOfTheMonth },
 ];
 
+// Mock redemption history
+type RedemptionStatus = 'Delivered' | 'Pending' | 'Failed';
+
+interface RedemptionRecord {
+  id: string;
+  name: string;
+  points: number;
+  date: string;
+  status: RedemptionStatus;
+}
+
+const MOCK_REDEMPTION_HISTORY: RedemptionRecord[] = [
+  { id: 'rh-001', name: 'Home Depot $25', points: 2500, date: '2026-04-10', status: 'Delivered' },
+  { id: 'rh-002', name: 'Amazon $25', points: 2500, date: '2026-03-22', status: 'Delivered' },
+  { id: 'rh-003', name: 'Sherpa Pros T-Shirt', points: 500, date: '2026-03-05', status: 'Delivered' },
+];
+
+const STATUS_STYLES: Record<string, string> = {
+  Delivered: 'bg-emerald-50 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-400',
+  Pending: 'bg-amber-50 text-amber-700 dark:bg-amber-900/20 dark:text-amber-400',
+  Failed: 'bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-400',
+};
+
+// ---------------------------------------------------------------------------
+// Component
+// ---------------------------------------------------------------------------
+
 export default function RewardsPage() {
-  const { entry, points } = getDemoRewardsData();
+  const { entry, points: initialPoints } = getDemoRewardsData();
   const tier = entry.score.tier;
   const badge = TIER_BADGE[tier];
 
+  const [points, setPoints] = useState(initialPoints);
   const [category, setCategory] = useState<RewardCategory>('all');
   const [showEarning, setShowEarning] = useState(false);
+
+  // Redeem modal state
+  const [redeemItem, setRedeemItem] = useState<RewardItem | null>(null);
+  const [isRedeeming, setIsRedeeming] = useState(false);
+  const [redeemResult, setRedeemResult] = useState<'success' | 'error' | null>(null);
+  const [redeemIsMock, setRedeemIsMock] = useState(false);
+
+  // Redemption history
+  const [history, setHistory] = useState<RedemptionRecord[]>(MOCK_REDEMPTION_HISTORY);
 
   const filtered = category === 'all'
     ? REWARDS_CATALOG
     : REWARDS_CATALOG.filter((r) => r.category === category);
+
+  const handleRedeem = useCallback(async () => {
+    if (!redeemItem) return;
+    setIsRedeeming(true);
+    setRedeemResult(null);
+
+    try {
+      const res = await fetch('/api/rewards', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          productId: redeemItem.id,
+          amount: Math.floor(redeemItem.pointCost / 100), // convert points to dollar value
+          pointsCost: redeemItem.pointCost,
+          recipientName: entry.pro.name,
+          recipientEmail: 'pro@thesherpapros.com',
+        }),
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        setRedeemResult('success');
+        setRedeemIsMock(data.isMockMode ?? true);
+        // Deduct points
+        setPoints((prev) => Math.max(0, prev - redeemItem.pointCost));
+        // Add to history
+        setHistory((prev) => [
+          {
+            id: (data.order?.id as string) ?? `rh-${Date.now()}`,
+            name: redeemItem.name,
+            points: redeemItem.pointCost,
+            date: new Date().toISOString().split('T')[0],
+            status: 'Pending' as RedemptionStatus,
+          },
+          ...prev,
+        ]);
+      } else {
+        setRedeemResult('error');
+      }
+    } catch {
+      setRedeemResult('error');
+    } finally {
+      setIsRedeeming(false);
+    }
+  }, [redeemItem, entry.pro.name]);
+
+  const closeModal = () => {
+    setRedeemItem(null);
+    setRedeemResult(null);
+    setRedeemIsMock(false);
+  };
 
   return (
     <ProDashboardGuard>
@@ -127,7 +221,10 @@ export default function RewardsPage() {
                   <p className="mt-1 text-lg font-bold text-[#00a9e0]">
                     {item.goldOnly && item.pointCost === 0 ? 'Free' : `${item.pointCost.toLocaleString()} pts`}
                   </p>
-                  <button type="button" disabled={!canAfford}
+                  <button
+                    type="button"
+                    disabled={!canAfford}
+                    onClick={() => canAfford && setRedeemItem(item)}
                     className={`mt-3 w-full rounded-lg py-2 text-sm font-semibold transition-colors ${
                       canAfford
                         ? 'bg-[#00a9e0] text-white hover:bg-[#0090c0]'
@@ -142,12 +239,143 @@ export default function RewardsPage() {
         </div>
 
         {/* Redemption History */}
-        <div className="rounded-2xl border border-dashed border-zinc-200 bg-zinc-50/50 p-6 text-center dark:border-zinc-800 dark:bg-zinc-900/50">
-          <svg className="mx-auto h-8 w-8 text-zinc-300 dark:text-zinc-600" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M21 11.25v8.25a1.5 1.5 0 0 1-1.5 1.5H5.25a1.5 1.5 0 0 1-1.5-1.5v-8.25M12 4.875A2.625 2.625 0 1 0 9.375 7.5H12m0-2.625V7.5m0-2.625A2.625 2.625 0 1 1 14.625 7.5H12m0 0V21m-8.625-9.75h18c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125h-18c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z" /></svg>
-          <p className="mt-2 text-sm font-medium text-zinc-500 dark:text-zinc-400">No redemptions yet</p>
-          <p className="mt-0.5 text-xs text-zinc-400 dark:text-zinc-500">Your redeemed rewards will appear here</p>
+        <div className="rounded-2xl border border-zinc-200 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
+          <div className="p-5">
+            <h2 className="text-lg font-bold text-zinc-900 dark:text-zinc-50">Redemption History</h2>
+          </div>
+          {history.length === 0 ? (
+            <div className="border-t border-zinc-100 p-6 text-center dark:border-zinc-800">
+              <svg className="mx-auto h-8 w-8 text-zinc-300 dark:text-zinc-600" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M21 11.25v8.25a1.5 1.5 0 0 1-1.5 1.5H5.25a1.5 1.5 0 0 1-1.5-1.5v-8.25M12 4.875A2.625 2.625 0 1 0 9.375 7.5H12m0-2.625V7.5m0-2.625A2.625 2.625 0 1 1 14.625 7.5H12m0 0V21m-8.625-9.75h18c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125h-18c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z" /></svg>
+              <p className="mt-2 text-sm font-medium text-zinc-500 dark:text-zinc-400">No redemptions yet</p>
+              <p className="mt-0.5 text-xs text-zinc-400 dark:text-zinc-500">Your redeemed rewards will appear here</p>
+            </div>
+          ) : (
+            <div className="border-t border-zinc-100 dark:border-zinc-800">
+              <div className="divide-y divide-zinc-100 dark:divide-zinc-800">
+                {history.map((item) => (
+                  <div key={item.id} className="flex items-center justify-between px-5 py-3.5">
+                    <div className="min-w-0 flex-1">
+                      <p className="text-sm font-medium text-zinc-900 dark:text-zinc-100">{item.name}</p>
+                      <p className="text-xs text-zinc-500 dark:text-zinc-400">{item.date}</p>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <span className="text-sm font-semibold text-zinc-600 dark:text-zinc-300">
+                        -{item.points.toLocaleString()} pts
+                      </span>
+                      <span className={`inline-flex rounded-full px-2 py-0.5 text-xs font-semibold ${STATUS_STYLES[item.status] ?? ''}`}>
+                        {item.status}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
+
+      {/* ── Redeem Confirmation Modal ─────────────────────────────────── */}
+      {redeemItem && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          {/* Backdrop */}
+          <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={!isRedeeming ? closeModal : undefined} />
+
+          {/* Modal */}
+          <div className="relative w-full max-w-md rounded-2xl border border-zinc-200 bg-white p-6 shadow-2xl dark:border-zinc-700 dark:bg-zinc-900">
+            {/* Success state */}
+            {redeemResult === 'success' ? (
+              <div className="text-center">
+                <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-emerald-50 dark:bg-emerald-900/30">
+                  <svg className="h-8 w-8 text-emerald-500" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-bold text-zinc-900 dark:text-zinc-50">Reward Sent!</h3>
+                <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+                  Check your email for your {redeemItem.name}.
+                </p>
+                {redeemIsMock && (
+                  <div className="mt-3 rounded-lg bg-amber-50 px-3 py-2 text-xs text-amber-700 dark:bg-amber-900/20 dark:text-amber-400">
+                    Demo mode — in production, a real reward would be sent to your email
+                  </div>
+                )}
+                <button
+                  type="button"
+                  onClick={closeModal}
+                  className="mt-5 w-full rounded-lg bg-[#00a9e0] py-2.5 text-sm font-semibold text-white hover:bg-[#0090c0] transition-colors"
+                >
+                  Done
+                </button>
+              </div>
+            ) : redeemResult === 'error' ? (
+              /* Error state */
+              <div className="text-center">
+                <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-red-50 dark:bg-red-900/30">
+                  <svg className="h-8 w-8 text-red-500" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-bold text-zinc-900 dark:text-zinc-50">Redemption Failed</h3>
+                <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+                  Something went wrong. Please try again later.
+                </p>
+                <button
+                  type="button"
+                  onClick={closeModal}
+                  className="mt-5 w-full rounded-lg bg-zinc-200 py-2.5 text-sm font-semibold text-zinc-700 hover:bg-zinc-300 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700 transition-colors"
+                >
+                  Close
+                </button>
+              </div>
+            ) : (
+              /* Confirmation state */
+              <>
+                <h3 className="text-lg font-bold text-zinc-900 dark:text-zinc-50">Confirm Redemption</h3>
+                <div className="mt-4 rounded-xl border border-zinc-100 bg-zinc-50 p-4 dark:border-zinc-800 dark:bg-zinc-800/50">
+                  <div className={`mx-auto mb-3 flex h-16 w-full items-center justify-center rounded-lg bg-gradient-to-br ${redeemItem.gradient}`}>
+                    <svg className="h-8 w-8 text-white/60" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M21 11.25v8.25a1.5 1.5 0 0 1-1.5 1.5H5.25a1.5 1.5 0 0 1-1.5-1.5v-8.25M12 4.875A2.625 2.625 0 1 0 9.375 7.5H12m0-2.625V7.5m0-2.625A2.625 2.625 0 1 1 14.625 7.5H12m0 0V21m-8.625-9.75h18c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125h-18c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z" /></svg>
+                  </div>
+                  <p className="text-center text-base font-semibold text-zinc-900 dark:text-zinc-50">{redeemItem.name}</p>
+                  <p className="mt-1 text-center text-2xl font-bold text-[#00a9e0]">{redeemItem.pointCost.toLocaleString()} pts</p>
+                </div>
+
+                <p className="mt-4 text-sm text-zinc-600 dark:text-zinc-400">
+                  A reward will be sent to your email on file. Your point balance will be reduced by{' '}
+                  <span className="font-semibold">{redeemItem.pointCost.toLocaleString()}</span> points.
+                </p>
+
+                <div className="mt-1 text-xs text-zinc-400 dark:text-zinc-500">
+                  Remaining balance: {(points - redeemItem.pointCost).toLocaleString()} pts
+                </div>
+
+                <div className="mt-5 flex gap-3">
+                  <button
+                    type="button"
+                    onClick={closeModal}
+                    disabled={isRedeeming}
+                    className="flex-1 rounded-lg bg-zinc-100 py-2.5 text-sm font-semibold text-zinc-700 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700 transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleRedeem}
+                    disabled={isRedeeming}
+                    className="flex-1 rounded-lg bg-[#00a9e0] py-2.5 text-sm font-semibold text-white hover:bg-[#0090c0] disabled:opacity-60 transition-colors"
+                  >
+                    {isRedeeming ? (
+                      <span className="inline-flex items-center gap-2">
+                        <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" /></svg>
+                        Processing...
+                      </span>
+                    ) : 'Confirm'}
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      )}
     </ProDashboardGuard>
   );
 }

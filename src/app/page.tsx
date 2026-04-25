@@ -121,7 +121,7 @@ export default function SplashPage() {
           <HeroTagline />
 
           <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-white/60 sm:text-xl">
-            Pros keep more of what they earn. Clients know exactly what they&apos;re paying for. That&apos;s the whole idea.
+            Transparent pricing for clients. Steady work for pros. One platform that works for everyone.
           </p>
 
           <div className="mt-10">

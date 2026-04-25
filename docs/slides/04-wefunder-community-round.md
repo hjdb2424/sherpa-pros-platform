@@ -380,7 +380,7 @@ style: |
 
 The licensed-trade marketplace built by a working New Hampshire contractor — now opening up to the homeowners, pros, and neighbors who use it.
 
-<p class="meta">Reg CF · Minimum $100 · Anyone can invest · sherpa-pros-platform.vercel.app</p>
+<p class="meta">Reg CF · Minimum $100 · Anyone can invest · www.thesherpapros.com</p>
 
 ---
 
@@ -424,7 +424,7 @@ A **licensed-trade marketplace for New Hampshire, Maine, and Massachusetts** —
   <li><strong>Permit-aware and rebate-aware.</strong> The platform knows which jobs need a permit, which qualify for Mass Save heat-pump rebates, and walks both sides through it.</li>
 </ul>
 
-<p class="tags">Live today at <strong>sherpa-pros-platform.vercel.app</strong></p>
+<p class="tags">Live today at <strong>www.thesherpapros.com</strong></p>
 
 ---
 
@@ -471,7 +471,7 @@ A **licensed-trade marketplace for New Hampshire, Maine, and Massachusetts** —
   </div>
 </div>
 
-- **Live web platform:** sherpa-pros-platform.vercel.app — kick the tires today.
+- **Live web platform:** www.thesherpapros.com — kick the tires today.
 - **Mobile:** iOS via TestFlight (request access). Android via PWA.
 - **Beta cohort:** 2 GCs, 2 handymen, 1 plumber, 1 HVAC/heat-pump pro, 1 painter, 1 landscaper, 1 Boston licensed electrician, 1 old-house specialist, 1 roofer.
 
@@ -607,6 +607,6 @@ We are running **four parallel funding tracks**: non-dilutive grants, accelerato
 
 ## We're raising from the community by [LAUNCH DATE].
 
-Visit **wefunder.com/sherpapros** · Email Phyrom directly at **poum@hjd.builders** · Tour the live platform at **sherpa-pros-platform.vercel.app**
+Visit **wefunder.com/sherpapros** · Email Phyrom directly at **poum@hjd.builders** · Tour the live platform at **www.thesherpapros.com**
 
 <p class="meta">Reg CF · $100 minimum · Anyone can invest · You can lose your entire investment · Read the Form C before investing</p>

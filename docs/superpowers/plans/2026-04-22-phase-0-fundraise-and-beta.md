@@ -55,7 +55,7 @@ In Stripe Dashboard → Connect → Get Started. Choose **Express** (not Standar
 
 Dashboard → Developers → API keys → Reveal live secret key.
 Dashboard → Developers → Webhooks → Add endpoint:
-- URL: `https://sherpa-pros-platform.vercel.app/api/stripe/webhook`
+- URL: `https://www.thesherpapros.com/api/stripe/webhook`
 - Events: `account.updated`, `payout.created`, `payment_intent.succeeded`, `transfer.created`, `charge.dispute.created`
 
 Copy webhook signing secret.

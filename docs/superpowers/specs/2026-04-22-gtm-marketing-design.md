@@ -21,6 +21,10 @@ This document specifies the Go-To-Market plan to move from built product to fund
 
 **Positioning:** *"The licensed-trade marketplace that thinks like a contractor. Built by a working GC. Code-aware. Permit-aware. Rebate-aware."*
 
+**Product portfolio (announced 2026-04-24):** Sherpa Pros is now a four-product brand under one umbrella: (1) **Sherpa Marketplace** — the existing dispatch + match platform (Project + Quick Job modes); (2) **Sherpa Hub** — physical pro pickup locations for job kits, supplies, and branded gear (designed in `docs/superpowers/specs/2026-04-15-sherpa-hub-model-design.md`); (3) **Sherpa Home** (NEW) — homeowner subscription tier offering discounts and faster SLAs; (4) **Sherpa Account/Success Manager** (NEW) — managed-service white-glove tier for PMs, multi-property owners, and high-end homeowners. Marketplace is live in Phase 0 beta; Home and Manager are Phase 1 launch designs. See §3.5 for the full product matrix and cross-product flywheel.
+
+**Confirmed primary domain:** `https://www.thesherpapros.com/` — every external surface uses this URL. The legacy `sherpa-pros-platform.vercel.app` URL is deprecated as of 2026-04-24 and is internal-only (Vercel deployment URL).
+
 ---
 
 ## 2. Market Context
@@ -69,14 +73,34 @@ Sherpa Pros wins these lanes because the Wiseman layer validates national codes 
 
 ### 3.2 Audience-specific sub-positioning
 
+Updated 2026-04-24: audience expanded from 4 to 5 segments. Homeowners now split into two tiers (Subscription / White Glove). New B2B2C "Companies" segment added pending Phyrom scope clarification.
+
 | Audience | Message | Proof |
 |---|---|---|
-| Residential homeowners | *"Trusted neighbor pros. Real people, verified work, no leads-for-sale."* | License verified, insurance verified, code-checked quotes, real reviews |
-| Specialty / older-home owners | *"Licensed specialty work. Code-aware. Permit-aware. Rebate-aware. National platforms can't filter for this."* | Code-aware quote validation badge, Old-House Verified badge, permit-assist workflow, utility rebate matching |
-| Contractors (national) | *"Jobs. Not leads. Get paid for work, not for paying to bid."* | 5% take (half Angi's effective cost), instant Stripe, QBO sync, Wisetack, Zinc, Uber Connect |
-| Property Managers (national) | *"Work orders, preferred vendors, unit-level finance in one platform. Stop juggling 40 contractors in spreadsheets."* | PM tier, CapEx/OpEx, NOI impact, vendor scorecard, $4/unit → $1.50/unit |
+| Property Management Companies | *"Work orders, preferred vendors, unit-level finance — one platform replaces the 40-vendor spreadsheet."* | PM tier ($4 → $1.50/unit), CapEx/OpEx classification, NOI impact, vendor scorecard, compliance auto-tracked |
+| Multi-Property Owners | *"Sherpa Pros for the landlord who's not a property manager but owns 2-15 doors."* | Per-property dashboards, unit-level finance, Schedule E auto-prep, preferred-pro lists |
+| Trades / Pros | *"Jobs. Not leads. Get paid for work, not for paying to bid."* | 5% take, instant Stripe, QBO sync, Wisetack, Zinc, Uber Connect |
+| Companies (employees w/ available time) | TBD — see clarification flag below | TBD pending segment scope lock |
+| Homeowners — Subscription (Sherpa Home) | *"$X/month for faster service, member-priced quotes, Sherpa-on-call."* | Subscription tier — see Wave 6.3 brief being written in parallel |
+| Homeowners — White Glove (Sherpa Manager) | *"Your dedicated home manager handles every project end-to-end."* | Concierge, Account Manager assigned, SLA-backed response, white-glove |
 
-**Critical:** audience messages reference *use cases* (residential, specialty, older-home, multi-family), not *regions*. Every market has homeowners, specialty work, and property managers. The launch sequence is operational; the audience is national.
+**Clarification flag — "Companies with employees with available time":** This is a NEW B2B2C segment. Three possible interpretations:
+
+1. **Employee-benefit play** — companies offer Sherpa Pros memberships as a perk to employees (ClassPass-for-home-services model). Employer pays; employee uses subsidized homeowner-side services.
+2. **Workforce-utilization play** — companies whose tradespeople employees have downtime (slow weeks, weather days, between-jobs gaps) can earn additional income on Sherpa Pros, with their employer's blessing. Employer captures a revenue share or improved retention.
+3. **Both** — bidirectional B2B2C: a company sponsors Sherpa Home memberships for office staff AND lists its trades crew for utilization-fill jobs.
+
+**SCOPE: needs Phyrom clarification — defaulting to employee-benefit interpretation in Phase 1, validating in Phase 1 user research.** Workforce-utilization interpretation has 1099/W-2 classification implications (R5) that must be re-scoped if it becomes the lead motion.
+
+**Critical:** audience messages still reference *use cases* (PM, landlord, pro, employer, homeowner-tier), not *regions*. Every market has all five segments. The launch sequence is operational; the audience is national.
+
+**Audience-to-product mapping (cross-reference §3.5):**
+- Property Management Companies → Marketplace + Manager (PM tier upsell)
+- Multi-Property Owners → Marketplace + Manager (lighter-touch)
+- Trades / Pros → Marketplace + Hub
+- Companies (employees w/ time) → Home (employee-benefit) and/or Marketplace (workforce-utilization)
+- Homeowners — Subscription → Home + Marketplace
+- Homeowners — White Glove → Manager + Home + Marketplace
 
 ### 3.3 Voice & principles
 
@@ -84,7 +108,7 @@ Sherpa Pros wins these lanes because the Wiseman layer validates national codes 
 
 **We always say:** Licensed · Verified · Code-aware · Built by a contractor · Local / Neighbor · Jobs, not leads · National
 
-**We never say:** "Wiseman" externally · Gig / Task · "Uber for X" externally · "AI-powered" as the headline · Disrupt / Revolutionize · Jargon abbreviations (CO, SOV, AR — always spell out) · "New England marketplace" / "NE-only" / region-anchored brand language (the brand is national; launch geography is a Phase 1/2/3 sequence, not the identity)
+**We never say:** "Wiseman" externally · Gig / Task · "Uber for X" externally · "AI-powered" as the headline · Disrupt / Revolutionize · Jargon abbreviations (CO, SOV, AR — always spell out) · "New England marketplace" / "NE-only" / region-anchored brand language (the brand is national; launch geography is a Phase 1/2/3 sequence, not the identity) · **"the Sherpa Pros app"** — ambiguous now that we have multiple products (Marketplace, Hub, Home, Manager). Always say which product: "Sherpa Marketplace," "Sherpa Home," etc.
 
 **Founder story is the lead hook.** A working contractor built the platform he wished existed — Phyrom is the founder of HJD Builders LLC in New Hampshire (his origin is real and specific; the brand he built is national). The founder story leads slide 1 of every deck, line 1 of every pro recruit, paragraph 1 of every PR placement. Phyrom-is-a-real-NH-GC builds trust; Sherpa Pros-is-NE-only does not. Lead with the founder; do not cap the brand.
 
@@ -95,6 +119,30 @@ Sherpa Pros wins these lanes because the Wiseman layer validates national codes 
 - **Founder origin:** "working New Hampshire general contractor" — true, specific, builds trust. Reference Phyrom's NH-GC identity freely; this is biography, not brand cap.
 - **Pricing bands:** keep per-metro operational pricing (NH/ME band, MA band, NYC band as we add them). These are real cost-of-labor differences, not brand statements.
 - **State-specific operational notes:** keep grant programs (MassCEC), trade associations (NHHBA, MEHBA), supply houses (FW Webb), licensing (MA Office of Consumer Affairs) — these are how the work gets done in our launch markets, not brand identity.
+- **Domain:** confirmed as `https://www.thesherpapros.com/` — use this everywhere external (decks, ads, email signatures, press, app store listings, partnership collateral). Never reference `sherpa-pros-platform.vercel.app` (deprecated as of 2026-04-24, that's the Vercel internal URL).
+
+### 3.5 Product Portfolio
+
+Sherpa Pros is a multi-product brand. Each product solves a distinct customer problem; together they form a flywheel.
+
+| Product | What it is | Primary audience | Pricing model | Status |
+|---|---|---|---|---|
+| **Sherpa Marketplace** | Dispatch + match platform. Project mode (bidding) + Quick Job mode (pre-priced). The Uber/DoorDash for licensed trades. | All segments | 5% take rate (10% post-beta) on completed jobs | LIVE — Phase 0 beta |
+| **Sherpa Hub** | Physical locations where pros pick up job kits, supplies, branded gear. Hub-and-spoke model. | Trades / Pros | Free for Founding Pros (kit subsidy); membership/per-pickup fee post-beta | DESIGNED — `docs/superpowers/specs/2026-04-15-sherpa-hub-model-design.md` |
+| **Sherpa Home** | Homeowner subscription. Discounts + faster SLAs + member benefits. | Homeowners (residential) | $X/month or $Y/year (see Wave 6.3 brief) | NEW — Phase 1 launch design |
+| **Sherpa Account/Success Manager** | Managed-service tier — dedicated human owns the customer relationship. | Property Managers (PM tier upsell), Multi-Property Owners, White Glove homeowners, large Companies | $Z/month per account or % of managed portfolio (see Wave 6.3 brief) | NEW — Phase 1/2 launch design |
+
+**Cross-product flywheel:**
+- Marketplace acquires homeowners + pros → Home subscription up-sells homeowners → Manager up-sells PM/Multi-Owner/White-Glove
+- Hub creates supply-side moat (pros come for the kits + gear, stay for the jobs)
+- Manager service creates account stickiness + introduces Marketplace + Home to the portfolio
+- All four products share one identity (national licensed-trade marketplace), one brand bible, one founder
+
+**Naming convention rules:**
+- Always "Sherpa" + ProductName (Sherpa Marketplace, Sherpa Hub, Sherpa Home, Sherpa Manager)
+- "Sherpa Pros" remains the umbrella brand (not a product name)
+- "Sherpa Account Manager" and "Sherpa Success Manager" are interchangeable in Phase 1 — Phyrom to lock terminology by Phase 1 kickoff
+- Don't say: "the Sherpa Pros app" (which app?) — say: "Sherpa Marketplace" or "Sherpa Home" or whichever product
 
 ---
 

@@ -658,7 +658,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 // mobile/lib/api.ts
 const API_BASE = __DEV__
   ? 'http://localhost:3001/api'
-  : 'https://sherpa-pros-platform.vercel.app/api';
+  : 'https://www.thesherpapros.com/api';
 
 export async function apiFetch<T>(
   path: string,

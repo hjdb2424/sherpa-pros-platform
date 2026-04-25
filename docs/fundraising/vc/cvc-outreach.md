@@ -86,7 +86,7 @@ NGP track record: $450M+ deployed across 50+ investments since 2018, including 5
 >
 > The reason I'm writing you and not a generalist VC: Massachusetts homeowners who want a Mass Save heat pump today are waiting weeks to months for a qualified installer. Same problem on the National Grid Turnkey EV side — the program funds the install, but the throughput is gated by the small number of HPIN-listed electrical contractors who can actually accept the work. Your portfolio (Aina, Amperon, ev.energy) is solving the data and managed-charging side; Sherpa Pros is the dispatch and installer-aggregation layer underneath all of it.
 >
-> What we built: a marketplace that aggregates verified, licensed Mass Save HPIN and HPC contractors plus EV-cert electricians, dispatches a homeowner job to the nearest available pro in minutes, and validates the quote against MA Electrical, NEC, IRC, and rebate eligibility before the homeowner sees it. Live now at sherpa-pros-platform.vercel.app, with a beta cohort across NH/ME and Boston specialty lanes (Mass Save heat pumps, EV chargers, panel upgrades).
+> What we built: a marketplace that aggregates verified, licensed Mass Save HPIN and HPC contractors plus EV-cert electricians, dispatches a homeowner job to the nearest available pro in minutes, and validates the quote against MA Electrical, NEC, IRC, and rebate eligibility before the homeowner sees it. Live now at www.thesherpapros.com, with a beta cohort across NH/ME and Boston specialty lanes (Mass Save heat pumps, EV chargers, panel upgrades).
 >
 > Three reasons to look:
 >
@@ -100,7 +100,7 @@ NGP track record: $450M+ deployed across 50+ investments since 2018, including 5
 >
 > Phyrom
 > HJD Builders LLC · Sherpa Pros
-> sherpa-pros-platform.vercel.app
+> www.thesherpapros.com
 > [phone] · [email]
 
 ### LinkedIn DM — National Grid Partners (shorter, conversational)
@@ -108,7 +108,7 @@ NGP track record: $450M+ deployed across 50+ investments since 2018, including 5
 **Target:** Lisa Lambert OR Boston-based NGP investor.
 
 > Lisa — I'm a working NH general contractor who built the dispatch layer Mass Save and your Turnkey EV program don't have today. Marketplace aggregates verified HPIN/HPC + EV-cert electricians, dispatches in minutes, code-validates quotes before homeowner accepts. Live in NH/ME/MA. Aiming to reduce homeowner-to-installed-pump time from 60–90 days to under 21 — that's a direct PUC-scorecard input for NGM. Worth 30 min on calendar?
-> sherpa-pros-platform.vercel.app
+> www.thesherpapros.com
 
 ### Thesis fit one-pager — National Grid Partners
 
@@ -172,7 +172,7 @@ NGP track record: $450M+ deployed across 50+ investments since 2018, including 5
 >
 > 30 minutes with Lisa Lambert or the EV-electrification-thesis lead. Demo of one live job → match → code-checked quote in under 10 minutes.
 >
-> Phyrom · sherpa-pros-platform.vercel.app
+> Phyrom · www.thesherpapros.com
 
 ---
 
@@ -229,7 +229,7 @@ NGP track record: $450M+ deployed across 50+ investments since 2018, including 5
 >
 > I'm writing you specifically because the Mass Save heat-pump program has a throughput problem you already know better than I do: HPIN-listed installers are oversubscribed, homeowner wait times are weeks to months, and the static find-an-installer page on masssave.com isn't a marketplace — it's a directory.
 >
-> I built Sherpa Pros to be the marketplace surface above that directory. Verified-license dispatch in minutes (not weeks). Code-aware quote validation against MA Electrical, NEC, IRC, and Mass Save rebate eligibility before the homeowner accepts. Stripe-Connect escrow so the installer gets paid on completion, not on lead-purchase. Live now at sherpa-pros-platform.vercel.app, with a Boston specialty cohort already onboarding (Mass Save heat pumps, EV chargers, panel upgrades, old-house specialists).
+> I built Sherpa Pros to be the marketplace surface above that directory. Verified-license dispatch in minutes (not weeks). Code-aware quote validation against MA Electrical, NEC, IRC, and Mass Save rebate eligibility before the homeowner accepts. Stripe-Connect escrow so the installer gets paid on completion, not on lead-purchase. Live now at www.thesherpapros.com, with a Boston specialty cohort already onboarding (Mass Save heat pumps, EV chargers, panel upgrades, old-house specialists).
 >
 > I'm not pitching equity here. I'm asking whether the Mass Save Program Administrator office would consider a 90-day pilot in one MA metro (Boston or Worcester), measured on:
 >
@@ -243,13 +243,13 @@ NGP track record: $450M+ deployed across 50+ investments since 2018, including 5
 >
 > Phyrom
 > HJD Builders LLC · Sherpa Pros
-> sherpa-pros-platform.vercel.app
+> www.thesherpapros.com
 > [phone] · [email]
 
 ### LinkedIn DM — Eversource MA program contact
 
 > [Name] — I'm a working NH GC who built a marketplace that solves the Mass Save HPIN throughput bottleneck. Live in NH/ME/MA, beta cohort active. Asking for a 90-day pilot in one MA metro, funded out of Mass Save program budget, measured on installer throughput + homeowner wait time + quote-error reduction. Worth 20 min?
-> sherpa-pros-platform.vercel.app
+> www.thesherpapros.com
 
 ### Thesis fit one-pager — Eversource
 
@@ -315,7 +315,7 @@ NGP track record: $450M+ deployed across 50+ investments since 2018, including 5
 >
 > 20-minute conversation with Eversource MA Mass Save Program Administrator and (if available) the Energy Efficiency program ops lead. Live demo of one job-post → match → code-validated quote → install dispatch in under 10 minutes.
 >
-> Phyrom · sherpa-pros-platform.vercel.app
+> Phyrom · www.thesherpapros.com
 
 ---
 
@@ -340,7 +340,7 @@ NGP track record: $450M+ deployed across 50+ investments since 2018, including 5
 - [ ] Specific dollar / time / percentage targets (utility CVCs underwrite to KPIs; vague claims kill credibility)
 - [ ] Strategic value beyond capital named explicitly
 - [ ] Strategic asks Sherpa Pros will and will not trade named in writing before any IC meeting
-- [ ] Live link to sherpa-pros-platform.vercel.app
+- [ ] Live link to www.thesherpapros.com
 - [ ] [VERIFY: any partner/program-administrator names not yet CONFIRMED — recheck before send]
 - [ ] No PDF attachments in cold email (link to Notion / Loom)
 

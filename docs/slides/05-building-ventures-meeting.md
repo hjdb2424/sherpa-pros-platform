@@ -142,7 +142,7 @@ You've already invested twice in the licensed + code-aware + marketplace quadran
 
 # Live product walkthrough
 
-Web at **sherpa-pros-platform.vercel.app**. Mobile in TestFlight (iOS) and PWA (Android). Built on Next.js 16, Stripe Connect, Neon PostgreSQL + PostGIS, Clerk, Twilio.
+Web at **www.thesherpapros.com**. Mobile in TestFlight (iOS) and PWA (Android). Built on Next.js 16, Stripe Connect, Neon PostgreSQL + PostGIS, Clerk, Twilio.
 
 <div class="grid-3">
 
@@ -279,7 +279,7 @@ We'd start working with you the day the term sheet is signed.
 
 **Phyrom**
 HJD Builders LLC · Sherpa Pros
-sherpa-pros-platform.vercel.app
+www.thesherpapros.com
 [phyrom@hjd.builders] · [phone]
 
 <br>

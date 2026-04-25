@@ -21,7 +21,7 @@
 
 - [ ] Techstars / F6S application narrative (this doc)
 - [ ] Founder video (60-second self-record — see §6 reviewer biases)
-- [ ] Live demo link: https://sherpa-pros-platform.vercel.app
+- [ ] Live demo link: https://www.thesherpapros.com
 - [ ] Pitch deck PDF (link to `docs/pitch/sherpa-pros-deck-v1.md` exported)
 - [ ] LinkedIn URL (Phyrom's, fully populated with HJD Builders + Sherpa Pros)
 - [ ] Cap table snapshot (Phyrom 100%, no SAFEs)
@@ -34,7 +34,7 @@
 
 ### Q: Company name + URL + one-line pitch
 
-**Sherpa Pros** — https://sherpa-pros-platform.vercel.app — the national licensed-trade marketplace (international roadmap), launching first in NH, ME, and MA, built by a working general contractor. Jobs, not leads. Code-aware. Permit-aware. Rebate-aware.
+**Sherpa Pros** — https://www.thesherpapros.com — the national licensed-trade marketplace (international roadmap), launching first in NH, ME, and MA, built by a working general contractor. Jobs, not leads. Code-aware. Permit-aware. Rebate-aware.
 
 ### Q: What does your company do? (~150 words)
 
@@ -75,7 +75,7 @@ Three specific asks:
 
 ### Q: What is your traction? (~100 words)
 
-- **Platform live** at https://sherpa-pros-platform.vercel.app + iOS TestFlight + Android PWA. Built on Next.js 16, Stripe Connect, Neon Postgres + PostGIS, Clerk, Twilio.
+- **Platform live** at https://www.thesherpapros.com + iOS TestFlight + Android PWA. Built on Next.js 16, Stripe Connect, Neon Postgres + PostGIS, Clerk, Twilio.
 - **Beta cohort:** `[X active pros]` across 9 trade categories in 3 states (NH, ME, MA). `[Y jobs]` in first 60 days. `[$Z GMV]` transacted. `[N%]` matched in <2 hours. Pro NPS `[score]`. Code violations caught: `[count]`.
 - **Founder pipeline:** HJD Builders direct client list + NHHBA + MEHBA introductions seeded for Phase 1 demand.
 - **In flight:** Mass Save Network application, Old-House Verified USPTO trademark, MassCEC + NSF SBIR submissions.

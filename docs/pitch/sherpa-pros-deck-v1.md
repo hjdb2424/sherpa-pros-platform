@@ -93,7 +93,7 @@ The code-intelligence layer is the moat — not licensable, not easy to clone �
 **Title:** Live platform. Real jobs flowing today.
 
 **Body:**
-Web at [sherpa-pros-platform.vercel.app](https://sherpa-pros-platform.vercel.app). Mobile via TestFlight (iOS) and PWA (Android). Built on Next.js 16, Stripe Connect for marketplace splits, Neon Postgres + PostGIS for location matching, Clerk for verified pro/client roles. (per CLAUDE.md tech stack)
+Web at [www.thesherpapros.com](https://www.thesherpapros.com). Mobile via TestFlight (iOS) and PWA (Android). Built on Next.js 16, Stripe Connect for marketplace splits, Neon Postgres + PostGIS for location matching, Clerk for verified pro/client roles. (per CLAUDE.md tech stack)
 
 **Three flows to walk through live:**
 
@@ -105,7 +105,7 @@ Web at [sherpa-pros-platform.vercel.app](https://sherpa-pros-platform.vercel.app
 Three stacked mobile-frame screenshots from the live platform: (a) post-job wizard, (b) pro inbox with one accepted job + one declined, (c) homeowner-facing quote with the green "code-checked" badge. Bottom strip: tech-stack chips (Next.js · Stripe Connect · PostGIS · Clerk · Twilio).
 
 **Presenter notes:**
-**Capture three real screenshots from sherpa-pros-platform.vercel.app before the pitch — do not use mockups.** Live software is the single biggest credibility lever a pre-seed founder has. Walk the room through one job end-to-end in under 90 seconds. Verify before every screenshot capture that the production UI shows the **"Code-checked"** badge.
+**Capture three real screenshots from www.thesherpapros.com before the pitch — do not use mockups.** Live software is the single biggest credibility lever a pre-seed founder has. Walk the room through one job end-to-end in under 90 seconds. Verify before every screenshot capture that the production UI shows the **"Code-checked"** badge.
 
 ---
 
@@ -268,6 +268,6 @@ Before this deck leaves the building:
 - [ ] No instance of "gig," "task," "Uber for X," "AI-powered" as a headline, "disrupt," or "revolutionize" (per spec §3.3)
 - [ ] Every abbreviation spelled out on first use: GMV (Gross Merchandise Value), NPS (Net Promoter Score), CAC, LTV, NHHBA, MEHBA, ARR, MRR (per spec §3.3 + §5.5)
 - [ ] All traction-slide placeholders (`[X beta pros]`, `[$Y GMV]`, etc.) replaced with real numbers from Stripe + dispatch logs + NPS survey, dated to within 7 days of the pitch
-- [ ] Three real screenshots captured from sherpa-pros-platform.vercel.app for slide 5 (no mockups)
+- [ ] Three real screenshots captured from www.thesherpapros.com for slide 5 (no mockups)
 - [ ] Tone reads at 8th-grade level — no corporate-speak, no jargon (per spec §3.3)
 - [ ] Founder closing line on slide 10 lands as the contractor, not the CEO

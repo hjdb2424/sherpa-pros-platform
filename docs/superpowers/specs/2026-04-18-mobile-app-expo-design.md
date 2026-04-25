@@ -40,7 +40,7 @@ Native iOS + Android app built with Expo (React Native) that delivers an Uber/Do
 | `expo-haptics` | Haptic feedback | Button press, dispatch confirmed |
 
 ### API Communication
-- **Base URL:** `https://sherpa-pros-platform.vercel.app/api` (production)
+- **Base URL:** `https://www.thesherpapros.com/api` (production)
 - **Dev URL:** `http://localhost:3001/api` (local development)
 - **Auth:** Bearer token in headers (from Clerk or test portal localStorage equivalent)
 - **Pattern:** Custom `useApi()` hook wrapping `fetch` with auth headers, error handling, loading state

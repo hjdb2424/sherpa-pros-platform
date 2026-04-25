@@ -183,7 +183,7 @@ Code-aware quote validation runs in the background. Catches missing electrical p
 
 <br>
 
-<span class="small">**Live at sherpa-pros-platform.vercel.app** · iOS via TestFlight · PWA on Android · Built on Next.js 16, Stripe Connect (escrow), Neon Postgres + PostGIS, Clerk, Twilio.</span>
+<span class="small">**Live at www.thesherpapros.com** · iOS via TestFlight · PWA on Android · Built on Next.js 16, Stripe Connect (escrow), Neon Postgres + PostGIS, Clerk, Twilio.</span>
 
 <span class="small">**Phyrom: replace the three bracketed placeholders with real screenshots from the production site before any send. Verify the green "Code-checked" badge is visible in the quote screenshot.**</span>
 
@@ -495,4 +495,4 @@ The capability turned the corner in the same 12-month window the rebates and the
 <br>
 
 <span class="small">**Phyrom · Founder, Sherpa Pros · poum@hjd.builders** *(or phyrom@thesherpapros.com — Phyrom: confirm canonical alias before send)*</span>
-<span class="small">Live platform: **sherpa-pros-platform.vercel.app** *(or thesherpapros.com — Phyrom: confirm canonical web URL before send)*</span>
+<span class="small">Live platform: **www.thesherpapros.com** *(or thesherpapros.com — Phyrom: confirm canonical web URL before send)*</span>

@@ -22,7 +22,7 @@
 
 - [ ] Online application narrative (this doc)
 - [ ] Pitch deck (link to `docs/pitch/sherpa-pros-deck-v1.md` exported as PDF)
-- [ ] Live product demo link: https://sherpa-pros-platform.vercel.app
+- [ ] Live product demo link: https://www.thesherpapros.com
 - [ ] 2–3 minute founder + product video
 - [ ] Founder bio + headshot
 - [ ] Beta cohort metrics: `[X beta pros, $Y GMV, NPS Z]` (date-stamped)

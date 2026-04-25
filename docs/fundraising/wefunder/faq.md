@@ -90,7 +90,7 @@ There is a small per-transaction processing fee (typically 2% credit card or $0 
 
 Phyrom (founder, working GC, HJD Builders LLC) is being intentionally transparent here.
 
-- **Founder personal investment:** Phyrom has self-funded the platform build through HJD Builders for two years. Engineering, hosting, legal, tooling — funded out of pocket. The platform you can see at sherpa-pros-platform.vercel.app exists because the founder wrote those checks.
+- **Founder personal investment:** Phyrom has self-funded the platform build through HJD Builders for two years. Engineering, hosting, legal, tooling — funded out of pocket. The platform you can see at www.thesherpapros.com exists because the founder wrote those checks.
 - **Founder salary plan:** Phyrom takes **$0 salary** until the first close. Post-close, founder salary will be set at a market-floor rate for an early-stage NE founder ($90K–$120K/year), reviewed by the lead investor or board at Seed close. Lower than market for the role; deliberately so.
 - **Founder equity stake:** Phyrom retains majority equity in Sherpa Pros LLC at this stage (specifics in the cap table inside the data room). Future dilution is expected as the company raises priced rounds — that's normal.
 
@@ -212,7 +212,7 @@ Two reasons.
 
 ### Q22. Why should I trust this team to execute?
 
-Honest answer: read the founder's track record yourself. Phyrom has run HJD Builders LLC as a working NH general contractor for 12+ years. The Sherpa Pros platform is **already built and live** at sherpa-pros-platform.vercel.app. That is not a slide deck — it is software. License it, kick the tires, post a job, see what happens.
+Honest answer: read the founder's track record yourself. Phyrom has run HJD Builders LLC as a working NH general contractor for 12+ years. The Sherpa Pros platform is **already built and live** at www.thesherpapros.com. That is not a slide deck — it is software. License it, kick the tires, post a job, see what happens.
 
 Where the team is thin: this is a solo founder with a 60-hour weekly cap. Phase 1 hires (Pro Success Manager, Client Concierge) close that gap with first-close funding. Phase 2 hires (4 more PSMs, BD reps, ops lead) close it further. **Founder burnout is a real risk** — see the GTM spec's Risk R8.
 
@@ -242,7 +242,7 @@ Outcomes vary — some Wefunder companies have IPO'd or been acquired (notable w
 
 ### Q26. Can I tour the platform before I invest?
 
-Yes. Web platform live at [sherpa-pros-platform.vercel.app](https://sherpa-pros-platform.vercel.app). iOS via TestFlight (request access by email). Demo video on the Wefunder page. Founder is available for 15-minute Zoom calls with prospective investors writing $1K+ — book through the Wefunder messaging system.
+Yes. Web platform live at [www.thesherpapros.com](https://www.thesherpapros.com). iOS via TestFlight (request access by email). Demo video on the Wefunder page. Founder is available for 15-minute Zoom calls with prospective investors writing $1K+ — book through the Wefunder messaging system.
 
 ### Q27. What happens to me if Sherpa Pros pivots away from the marketplace model?
 
@@ -276,7 +276,7 @@ If you are **accredited**, there is no Reg CF cap for you. You can also explore 
 
 ## Where to learn more
 
-- **Live platform:** [sherpa-pros-platform.vercel.app](https://sherpa-pros-platform.vercel.app)
+- **Live platform:** [www.thesherpapros.com](https://www.thesherpapros.com)
 - **Investor deck:** see Wefunder offering page (data room link)
 - **One-pager:** see Wefunder offering page (data room link)
 - **Competitive analysis:** see Wefunder offering page (data room link)

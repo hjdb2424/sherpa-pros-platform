@@ -40,7 +40,7 @@ MassCEC Catalyst funds Massachusetts-based early-stage climatetech companies (ty
 | ≤4 full-time equivalents | Yes — 1 founder (Phyrom) + part-time Upwork US contractors (SDR, deck/content) ≈ 1.4 FTE | GTM spec §7 |
 | Climatetech or clean-energy demonstration in MA | Yes — Mass Save HP + National Grid Turnkey EV install acceleration | GTM spec §2.3, §4.3 |
 | Pre-revenue / early-stage | Yes — beta cohort launching, no scaled revenue yet | GTM spec §4.2 |
-| Working prototype | Yes — live platform at sherpa-pros-platform.vercel.app + mobile TestFlight/PWA | CLAUDE.md |
+| Working prototype | Yes — live platform at www.thesherpapros.com + mobile TestFlight/PWA | CLAUDE.md |
 | Plan to demonstrate at MA site | Yes — Boston specialty cohort onboarding plan | This doc §6 |
 | Project completion ≤12 months | Yes — 9-month prototype-to-pilot timeline | This doc §7 |
 
@@ -58,7 +58,7 @@ MassCEC Catalyst funds Massachusetts-based early-stage climatetech companies (ty
 
 ### 5.1 Executive Summary (≤0.5 page)
 
-Sherpa Pros is a Massachusetts-eligible licensed-trade marketplace prototype that matches homeowners to certified Mass Save heat-pump installers and National Grid Turnkey EV-charger electricians, validates contractor quotes against MA Electrical Code and program-eligibility rules in real time, and surfaces stacked rebate eligibility (Mass Save + IRA federal credits + utility-specific bonuses). The platform is live (sherpa-pros-platform.vercel.app), built by a working New Hampshire general contractor (Phyrom, HJD Builders LLC), and ready for a focused Boston-metro demonstration.
+Sherpa Pros is a Massachusetts-eligible licensed-trade marketplace prototype that matches homeowners to certified Mass Save heat-pump installers and National Grid Turnkey EV-charger electricians, validates contractor quotes against MA Electrical Code and program-eligibility rules in real time, and surfaces stacked rebate eligibility (Mass Save + IRA federal credits + utility-specific bonuses). The platform is live (www.thesherpapros.com), built by a working New Hampshire general contractor (Phyrom, HJD Builders LLC), and ready for a focused Boston-metro demonstration.
 
 **Catalyst funds will deploy the prototype with a 10-pro Boston specialty cohort over 9 months and produce the live operating data (installer throughput, quote accuracy, rebate-stack capture) needed to step up to the InnovateMass program at scale.**
 

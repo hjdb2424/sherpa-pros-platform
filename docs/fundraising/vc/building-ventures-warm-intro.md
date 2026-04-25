@@ -67,7 +67,7 @@ Building Ventures has **not** publicly announced an investment in:
 >
 > Phyrom
 > HJD Builders LLC · Sherpa Pros
-> sherpa-pros-platform.vercel.app
+> www.thesherpapros.com
 
 ---
 
@@ -82,7 +82,7 @@ Building Ventures has **not** publicly announced an investment in:
 
 > Hey [First name],
 >
-> Quick favor. I'm raising money for Sherpa Pros — that contractor marketplace I've been building (sherpa-pros-platform.vercel.app). The Boston VC that fits us best is Building Ventures. They invest in construction tech. The guy I want to talk to is Jesse Devitte.
+> Quick favor. I'm raising money for Sherpa Pros — that contractor marketplace I've been building (www.thesherpapros.com). The Boston VC that fits us best is Building Ventures. They invest in construction tech. The guy I want to talk to is Jesse Devitte.
 >
 > LinkedIn says you know him. Would you forward an email to him on my behalf? I drafted what I'd want him to see — pasted below. You can send it as-is or change anything.
 >
@@ -103,7 +103,7 @@ Building Ventures has **not** publicly announced an investment in:
 
 > [First name],
 >
-> I built Sherpa Pros because none of us are getting a fair shake from Angi or Thumbtack. It's a marketplace that pays contractors for work, not for the chance to bid. Licensed only. Code-checked. The whole thing. Live now: sherpa-pros-platform.vercel.app.
+> I built Sherpa Pros because none of us are getting a fair shake from Angi or Thumbtack. It's a marketplace that pays contractors for work, not for the chance to bid. Licensed only. Code-checked. The whole thing. Live now: www.thesherpapros.com.
 >
 > I need to raise some money to hire two people and run paid ads in Portsmouth and Boston. The Boston firm that backs construction-tech founders is Building Ventures. The partner is Jesse Devitte. LinkedIn says you know him.
 >
@@ -129,7 +129,7 @@ Phyrom drafts this. Mutual contact pastes it (with their name in the From) and s
 >
 > Wanted to put Phyrom in front of you. He's a working general contractor in New Hampshire (HJD Builders) who built a licensed-trade marketplace called Sherpa Pros — the platform he wished existed every time Angi or Thumbtack pitched his crew leads they couldn't afford.
 >
-> What he built: jobs (not leads) for licensed pros, code-aware quote validation, permit and rebate awareness. Live web at sherpa-pros-platform.vercel.app, mobile in TestFlight, beta cohort onboarding now in Portsmouth, Manchester, Portland and Boston specialty lanes (Mass Save heat pumps, EV chargers, panel upgrades, old-house specialists).
+> What he built: jobs (not leads) for licensed pros, code-aware quote validation, permit and rebate awareness. Live web at www.thesherpapros.com, mobile in TestFlight, beta cohort onboarding now in Portsmouth, Manchester, Portland and Boston specialty lanes (Mass Save heat pumps, EV chargers, panel upgrades, old-house specialists).
 >
 > I think this slots between Built Robotics (your labor-augmentation play) and Dandelion (your residential-energy play) — it's the dispatch layer the residential trades have been missing. Worth 15 min to look?
 >
@@ -155,7 +155,7 @@ Send directly to Jesse Devitte at his Building Ventures address (verifiable on t
 >
 > I'm Phyrom. I run HJD Builders, a licensed GC in New Hampshire. I've spent twelve years buying leads from Angi and Thumbtack and watching the platforms send my crews homeowners who didn't need licensed work, and send licensed work to people who shouldn't be doing it.
 >
-> So I built the platform I wished existed. Sherpa Pros is the national licensed-trade marketplace — launching first in NH, ME, and MA, with Boston as our specialty-lane wedge. Jobs, not leads. Licensed only. Code-aware quote validation. Permit and rebate awareness. Live now at sherpa-pros-platform.vercel.app, with a beta cohort in Portsmouth, Manchester, Portland and Boston specialty lanes (Mass Save heat pumps, EV chargers, panel upgrades, old-house, triple-decker exteriors). The Boston specialty playbook is the template we'll deploy into every metro after.
+> So I built the platform I wished existed. Sherpa Pros is the national licensed-trade marketplace — launching first in NH, ME, and MA, with Boston as our specialty-lane wedge. Jobs, not leads. Licensed only. Code-aware quote validation. Permit and rebate awareness. Live now at www.thesherpapros.com, with a beta cohort in Portsmouth, Manchester, Portland and Boston specialty lanes (Mass Save heat pumps, EV chargers, panel upgrades, old-house, triple-decker exteriors). The Boston specialty playbook is the template we'll deploy into every metro after.
 >
 > Two reasons I'm writing you specifically:
 >
@@ -169,7 +169,7 @@ Send directly to Jesse Devitte at his Building Ventures address (verifiable on t
 > - **A deck review** if you're slammed on calendar — I'll send it as a Notion link with a 90-second Loom intro, and you can give me 5 lines of feedback in 10 minutes.
 > - **A pass** if it's not a fit — quickly, so I can route my time elsewhere. I'd rather lose fast than slow.
 >
-> sherpa-pros-platform.vercel.app
+> www.thesherpapros.com
 > Deck + 1-pager ready on request.
 >
 > Phyrom
@@ -200,7 +200,7 @@ Send directly to Jesse Devitte at his Building Ventures address (verifiable on t
 - [ ] No use of the internal product name (see CLAUDE.md) anywhere in body — use "code-aware quote validation" or "code intelligence layer"
 - [ ] No "AI-powered," "disrupt," "revolutionize," "Uber for X," "gig," "task" (per spec §3.3)
 - [ ] Founder hook in line 1 (Phyrom = working NH GC) — per spec §3.3
-- [ ] sherpa-pros-platform.vercel.app link present (live software is the credibility lever — per deck slide 5 notes)
+- [ ] www.thesherpapros.com link present (live software is the credibility lever — per deck slide 5 notes)
 - [ ] Specific recent BV reference in opener (Boston Globe 2022 profile, BuildFactory Nov 2025 investment, etc.) — proves Phyrom did the homework
 - [ ] Specific ask (15 min, deck review, OR fast pass — pick one or list in order of preference)
 - [ ] No PDF attachments in cold email — link to Notion deck instead. Attachments trigger spam filters.

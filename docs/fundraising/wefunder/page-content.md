@@ -30,7 +30,7 @@
 - 0:05–0:15 → Phyrom speaks direct-to-camera, founder hook
 - 0:15–0:35 → Cut-in B-roll: phone screen showing the Sherpa Pros app — homeowner posting a job, pro accepting in <2 minutes, code-checked badge appearing on a quote (record this separately on a steady tripod, edit in)
 - 0:35–0:55 → Phyrom back on camera, the ask
-- 0:55–1:00 → Lower-third graphic: "Sherpa Pros · Built by a contractor · sherpa-pros-platform.vercel.app · Invest from $100"
+- 0:55–1:00 → Lower-third graphic: "Sherpa Pros · Built by a contractor · www.thesherpapros.com · Invest from $100"
 
 **Script (read as notes, not verbatim):**
 
@@ -64,7 +64,7 @@ I'm Phyrom. I'm a working general contractor in New Hampshire. I started HJD Bui
 
 I built Sherpa Pros because I got tired of watching the home-services platforms — Angi, Thumbtack, TaskRabbit, Handy — sell my crew leads we couldn't afford, and send homeowners to people who shouldn't be doing licensed work. Angi has a 41% service-quality complaint rate and isn't BBB-rated. Thumbtack has documented deposit-theft cases. TaskRabbit charges 35% in fees and doesn't even cover licensed trades. The whole industry runs on "pay to play, leads not jobs," and the people getting hurt are the homeowners who don't know what they're hiring and the licensed contractors who can't afford to keep buying leads that go to ten other people.
 
-So I built the tool I wished existed. **Jobs, not leads.** Licensed only — license and insurance verified at onboarding, re-checked on renewal. Code-aware quote validation — every quote runs against NEC, IRC, MA Electrical, and NH state code before the homeowner sees it, catching missing line items and code violations. Built mobile-first because that's where contractors actually work. The platform is live at [sherpa-pros-platform.vercel.app](https://sherpa-pros-platform.vercel.app), we're transacting real jobs in beta, and we're raising on Wefunder so the homeowners and contractors who use the platform can own a piece of it.
+So I built the tool I wished existed. **Jobs, not leads.** Licensed only — license and insurance verified at onboarding, re-checked on renewal. Code-aware quote validation — every quote runs against NEC, IRC, MA Electrical, and NH state code before the homeowner sees it, catching missing line items and code violations. Built mobile-first because that's where contractors actually work. The platform is live at [www.thesherpapros.com](https://www.thesherpapros.com), we're transacting real jobs in beta, and we're raising on Wefunder so the homeowners and contractors who use the platform can own a piece of it.
 
 ---
 
@@ -112,7 +112,7 @@ Sherpa Pros is the licensed-trade marketplace that thinks like a contractor. Bui
 
 ### Live today. Real jobs. Real money.
 
-**Web platform:** [sherpa-pros-platform.vercel.app](https://sherpa-pros-platform.vercel.app)
+**Web platform:** [www.thesherpapros.com](https://www.thesherpapros.com)
 **Mobile:** iOS via TestFlight (request access). Android via PWA.
 **Tech stack:** Next.js 16 · Stripe Connect (marketplace splits + escrow) · Neon Postgres + PostGIS (location-aware matching) · Clerk (verified pro/client roles) · Twilio (masked messaging)
 
@@ -373,7 +373,7 @@ After the round closes, the founder posts quarterly updates to this section and 
 **Sherpa Pros** · Built by a working contractor for the contractors he works with every day.
 **Licensed · Verified · Code-aware · Local · Jobs, not leads.**
 
-**Live platform:** [sherpa-pros-platform.vercel.app](https://sherpa-pros-platform.vercel.app)
+**Live platform:** [www.thesherpapros.com](https://www.thesherpapros.com)
 **Founder direct:** poum@hjd.builders
 **SEC Form C:** [linked from offering page once filed]
 
@@ -383,7 +383,7 @@ After the round closes, the founder posts quarterly updates to this section and 
 
 ## Appendix — Notes for Phyrom before publishing
 
-1. **Capture three real platform screenshots** from sherpa-pros-platform.vercel.app and replace the `[SCREENSHOT N]` placeholders in Section 5. No mockups. Real screens beat the best mockup every time.
+1. **Capture three real platform screenshots** from www.thesherpapros.com and replace the `[SCREENSHOT N]` placeholders in Section 5. No mockups. Real screens beat the best mockup every time.
 2. **Update all `[X]` `[Y]` `[$Z]` traction placeholders** in Section 6 with real Stripe Connect + dispatch log + NPS survey numbers within 7 days of Wefunder go-live. Date-stamp them.
 3. **Confirm the valuation cap with your SAFE attorney** (see Section 10 and FAQ Q23). The $5M–$8M range and $6M working-midpoint are starting points, not the final number.
 4. **Confirm the founder bio** in Section 7 against `docs/pitch/founder-bio.md` if that file exists. If not, the placeholder text is the working copy — review it personally before publishing.

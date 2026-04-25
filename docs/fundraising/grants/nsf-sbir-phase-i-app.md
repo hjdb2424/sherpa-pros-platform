@@ -113,7 +113,7 @@ This is not a static rule engine. It requires:
 
 US residential remodeling + repair = **$524B/year** (Harvard JCHS LIRA 2025) [tam-sam-som §2.1]. Even capturing 1 basis point (0.01%) of TAM = $52M GMV. New England 6-state residential SAM = ~$17–23B/year [tam-sam-som §3.1]. Boston metro alone produces 10,000–14,000 small-residential building permits per year (Boston ISD Open Data).
 
-Sherpa Pros' commercialization vehicle is the operational marketplace — sherpa-pros-platform.vercel.app, live, built on Next.js 16 + Stripe Connect + Neon Postgres + PostGIS — at a 5%–10% take rate vs. lead-gen platforms' effective $400–$800 per closed job. **The code-aware quote-validation system is the moat that makes the marketplace defensible.** Without it, Sherpa Pros is a thinner competitor to Angi. With it, Sherpa Pros plants a flag in the empty "licensed + code-aware + true marketplace" quadrant (per competitive analysis matrix).
+Sherpa Pros' commercialization vehicle is the operational marketplace — www.thesherpapros.com, live, built on Next.js 16 + Stripe Connect + Neon Postgres + PostGIS — at a 5%–10% take rate vs. lead-gen platforms' effective $400–$800 per closed job. **The code-aware quote-validation system is the moat that makes the marketplace defensible.** Without it, Sherpa Pros is a thinner competitor to Angi. With it, Sherpa Pros plants a flag in the empty "licensed + code-aware + true marketplace" quadrant (per competitive analysis matrix).
 
 ### 5.4 Company & Team (≈0.5 page)
 
@@ -148,7 +148,7 @@ Sherpa Pros' commercialization vehicle is the operational marketplace — sherpa
 - 2.6 Risks and mitigations table
 
 **Section 3 — Commercialization Plan (≈3 pages — or move to separate doc per NSF format)**
-- Live operational marketplace (sherpa-pros-platform.vercel.app) is the commercialization vehicle
+- Live operational marketplace (www.thesherpapros.com) is the commercialization vehicle
 - 5%–10% take rate, $49/mo subscription, $4–$1.50/unit PM tier
 - Phase 1 → 2 → 3 → 4 GTM trajectory (per GTM spec §4)
 - Customer pipeline: HJD Builders network (founding pros), Mass Save Network application, NHHBA + MEHBA, Boston supply-house partnerships

@@ -22,7 +22,7 @@ The **"licensed + code-aware + true marketplace"** quadrant is empty. We plant t
 
 ## Pillar 2 — The Solution and the Moat
 
-**Sherpa Pros: jobs, not leads. Licensed only. Code-aware. Permit-aware. Rebate-aware.** Web at [sherpa-pros-platform.vercel.app](https://sherpa-pros-platform.vercel.app), iOS via TestFlight, PWA on Android. Built on Next.js 16, Stripe Connect, Neon Postgres + PostGIS, Clerk. (per CLAUDE.md)
+**Sherpa Pros: jobs, not leads. Licensed only. Code-aware. Permit-aware. Rebate-aware.** Web at [www.thesherpapros.com](https://www.thesherpapros.com), iOS via TestFlight, PWA on Android. Built on Next.js 16, Stripe Connect, Neon Postgres + PostGIS, Clerk. (per CLAUDE.md)
 
 - **Take rate, not lead-share** — 5% during beta, 10% at scale, roughly half a contractor's all-in Angi cost. (per spec §5.2)
 - **License + insurance verified at onboarding,** re-checked on renewal.
@@ -52,7 +52,7 @@ The **"licensed + code-aware + true marketplace"** quadrant is empty. We plant t
 ## Contact + Data Room
 
 **Phyrom** · Founder, Sherpa Pros · poum@hjd.builders · [linkedin.com/in/phyrom (placeholder — confirm before send)]
-**Live platform:** [sherpa-pros-platform.vercel.app](https://sherpa-pros-platform.vercel.app)
+**Live platform:** [www.thesherpapros.com](https://www.thesherpapros.com)
 **Repo (private — access on request):** [github.com/hjdb2424/sherpa-pros-platform](https://github.com/hjdb2424/sherpa-pros-platform)
 **Data room:** `[Notion / DocSend link — TBD]` (cap table, financials, full traction dashboard, 5-year model, competitive analysis, technical architecture)
 **3-min product demo (Loom):** `[link — TBD before first send]`

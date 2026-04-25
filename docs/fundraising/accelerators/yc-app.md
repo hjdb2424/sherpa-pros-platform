@@ -24,7 +24,7 @@ YC's application is famously short. **Do not over-prepare.** Required:
 
 - [ ] Founder application (this doc — 12 short answers)
 - [ ] 1-minute founder video (YC's app form has an upload field — required)
-- [ ] Live demo link: https://sherpa-pros-platform.vercel.app
+- [ ] Live demo link: https://www.thesherpapros.com
 - [ ] LinkedIn URL for founder
 - [ ] Optional but encouraged: warm intro from a YC alum
 
@@ -42,7 +42,7 @@ YC questions evolve slightly each batch. The structure below mirrors the W26/S26
 
 ### Q: Company URL
 
-https://sherpa-pros-platform.vercel.app
+https://www.thesherpapros.com
 
 ### Q: Describe what your company does in 50 characters or less
 
@@ -93,7 +93,7 @@ I do not fear Angi or Thumbtack pivoting. They cannot. Their entire revenue mode
 
 ### Q: What's your progress so far?
 
-- Platform live at https://sherpa-pros-platform.vercel.app + iOS TestFlight + Android PWA. Built on Next.js 16, Stripe Connect, Neon Postgres + PostGIS, Clerk, Twilio.
+- Platform live at https://www.thesherpapros.com + iOS TestFlight + Android PWA. Built on Next.js 16, Stripe Connect, Neon Postgres + PostGIS, Clerk, Twilio.
 - `[X beta pros]` active across 9 trade categories in 3 states (NH, ME, MA). `[Y jobs]` posted in first 60 days. `[$Z GMV]` transacted. `[N%]` matched <2 hours. Pro NPS `[score]`. Code violations caught: `[count]`.
 - HJD Builders direct client list + NHHBA + MEHBA pre-seeding Phase 1 demand.
 - In flight: Mass Save Network application, Old-House Verified USPTO filing, MassCEC + NSF SBIR submissions.
@@ -230,6 +230,6 @@ Stack is mathematically defensible.
 - [ ] No "Wiseman" anywhere — "code-aware quote validation" externally
 - [ ] No "AI-powered," "disrupt," "revolutionize," "Uber for X" anywhere
 - [ ] LinkedIn URL fully populated
-- [ ] Demo link verified working at https://sherpa-pros-platform.vercel.app
+- [ ] Demo link verified working at https://www.thesherpapros.com
 - [ ] Application bookmarked for off-cycle resubmission if rejected — YC explicitly invites reapplication next batch
 - [ ] Warm intro from any YC alum requested via HJD / NHHBA / MEHBA network if available

@@ -44,7 +44,7 @@ Each email is short, founder-voiced, and addressed to a specific partner. Phyrom
 > Phyrom
 > Founder · Sherpa Pros
 > NH General Contractor · HJD Builders LLC
-> [phone] · poum@hjd.builders · sherpa-pros-platform.vercel.app
+> [phone] · poum@hjd.builders · www.thesherpapros.com
 
 ---
 
@@ -77,7 +77,7 @@ Each email is short, founder-voiced, and addressed to a specific partner. Phyrom
 > Phyrom
 > Founder · Sherpa Pros
 > NH General Contractor · HJD Builders LLC
-> [phone] · poum@hjd.builders · sherpa-pros-platform.vercel.app
+> [phone] · poum@hjd.builders · www.thesherpapros.com
 
 ---
 
@@ -108,7 +108,7 @@ Each email is short, founder-voiced, and addressed to a specific partner. Phyrom
 > Phyrom
 > Founder · Sherpa Pros
 > NH General Contractor · HJD Builders LLC
-> [phone] · poum@hjd.builders · sherpa-pros-platform.vercel.app
+> [phone] · poum@hjd.builders · www.thesherpapros.com
 
 ---
 

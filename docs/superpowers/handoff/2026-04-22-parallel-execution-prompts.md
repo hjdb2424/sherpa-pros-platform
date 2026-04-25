@@ -31,7 +31,7 @@
 **Phyrom's open decisions (block some terminal work):**
 - Surname: still UNKNOWN — never write a Phyrom surname until confirmed
 - Canonical email: `phyrom@thesherpapros.com` vs `poum@hjd.builders` — pick one
-- Canonical domain: `thesherpapros.com` vs `sherpa-pros-platform.vercel.app` — pick one
+- Canonical domain: `thesherpapros.com` vs `www.thesherpapros.com` — pick one
 - Mass Save 2026 rebate: spec says "$10K+", verify against current program docs
 
 ---

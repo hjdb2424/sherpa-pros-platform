@@ -89,7 +89,7 @@
 
 > Dear Professor [Chair],
 >
-> My name is Phyrom. I'm the founder of Sherpa Pros LLC, a New Hampshire-domiciled licensed-trade marketplace platform (sherpa-pros-platform.vercel.app), and the founder of HJD Builders LLC (a working NH GC).
+> My name is Phyrom. I'm the founder of Sherpa Pros LLC, a New Hampshire-domiciled licensed-trade marketplace platform (www.thesherpapros.com), and the founder of HJD Builders LLC (a working NH GC).
 >
 > I'm writing to explore a structured 6-month research engagement between Sherpa Pros and a UNH faculty-advised student or post-doc, funded through the NH Innovation Voucher program. The research project is well-bounded: NLP parsing of NH state (RSA 155-A) and 284 NH municipal building-code overlays, with specific published deliverables on code-corpus validation and jurisdictional data modeling.
 >
@@ -178,7 +178,7 @@
 
 **Summary of business.** Sherpa Pros LLC is a New Hampshire-domiciled licensed-trade marketplace platform. It matches New Hampshire, Maine, and Massachusetts homeowners to verified licensed tradespeople (electricians, plumbers, HVAC, heat-pump installers, general contractors, handymen, old-house specialists). It is built by Phyrom, a 12-year working NH general contractor, with a single-contractor dispatch model, verified license + insurance at onboarding, real-time code-aware quote validation, and a marketplace fee model (5% beta, 10% standard) that returns roughly half the effective lead-gen cost to contractors.
 
-**The platform is already built and operational.** Web at sherpa-pros-platform.vercel.app, mobile via TestFlight + PWA, Stripe Connect + Neon Postgres + Clerk auth all live. Beta cohort onboarding is underway in NH Seacoast (2 HJD-network GCs, 2 handymen, 1 plumber, 1 heat-pump specialist).
+**The platform is already built and operational.** Web at www.thesherpapros.com, mobile via TestFlight + PWA, Stripe Connect + Neon Postgres + Clerk auth all live. Beta cohort onboarding is underway in NH Seacoast (2 HJD-network GCs, 2 handymen, 1 plumber, 1 heat-pump specialist).
 
 **Why a BFA microloan now.** Sherpa Pros is in Phase 0 of an 18-month GTM plan (see GTM spec §4.1). Phase 0 runs parallel non-dilutive tracks (MassCEC Catalyst + InnovateMass, NSF SBIR, MA SBTA, MassDev Biz-M-Power, Wefunder Reg CF community round) but those awards and raises close in 60–120+ day cycles. A $25K BFA microloan provides **bridge working capital during Phase 0** so that critical-path items — Apple Developer, platform liability insurance, USPTO trademark, 1099 vs W-2 legal opinion, MA foreign-LLC, cloud infra, beta pro onboarding travel — are not delayed waiting on grant award cycles.
 

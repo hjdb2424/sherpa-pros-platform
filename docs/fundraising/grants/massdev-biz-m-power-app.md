@@ -60,7 +60,7 @@ MassDevelopment's Biz-M-Power program provides a $1-for-$1 matching grant (up to
 **Sherpa Pros LLC** is the national licensed-trade marketplace (international roadmap) built by a working New Hampshire general contractor (Phyrom, Founder of HJD Builders LLC), launching first in NH, ME, and MA. The platform matches homeowners to verified, code-validated, license-checked tradespeople with a single-contractor dispatch model (not lead-blast), 5%–10% take rate (vs. lead-gen platforms' effective $400–$800 per closed job), and a proprietary code-aware quote-validation layer that reads NEC, IRC, MA Electrical Code, and NH state code in real time.
 
 **Live operational footprint:**
-- Web: sherpa-pros-platform.vercel.app (Next.js 16, deployed on Vercel)
+- Web: www.thesherpapros.com (Next.js 16, deployed on Vercel)
 - Mobile: PWA + iOS TestFlight
 - Payments: Stripe Connect (marketplace splits + escrow + 1099-NEC reporting)
 - Database: Neon PostgreSQL + PostGIS for geo-matching
@@ -168,7 +168,7 @@ MassDevelopment's Biz-M-Power program provides a $1-for-$1 matching grant (up to
 
 > Dear MassDevelopment Small Business Programs team,
 >
-> My name is Phyrom. I'm the founder of HJD Builders LLC (a NH general contractor) and Sherpa Pros LLC (the national licensed-trade marketplace platform, launching first in New England — sherpa-pros-platform.vercel.app). I'm writing to introduce a Biz-M-Power application I plan to submit in the next 8–12 weeks following the close of a Wefunder community round.
+> My name is Phyrom. I'm the founder of HJD Builders LLC (a NH general contractor) and Sherpa Pros LLC (the national licensed-trade marketplace platform, launching first in New England — www.thesherpapros.com). I'm writing to introduce a Biz-M-Power application I plan to submit in the next 8–12 weeks following the close of a Wefunder community round.
 >
 > Sherpa Pros is deploying its first Massachusetts cohort across five specialty lanes the national lead-gen incumbents (Angi, Thumbtack) cannot serve: Mass Save heat-pump installations, National Grid Turnkey EV-charger installs, electrical panel upgrades, old-house specialists, and triple-decker porch and exterior work. The platform is live, built by a working contractor, and aligned with MA decarbonization program goals.
 >

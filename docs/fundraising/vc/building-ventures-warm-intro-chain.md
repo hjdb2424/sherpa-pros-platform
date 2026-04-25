@@ -193,7 +193,7 @@ Per Section 1.2: **Jesse Devitte** is the primary target, with **Mayra Arntz** a
 
 > [First name],
 >
-> Quick favor. You know I run HJD Builders. What you may not know is I spent the last two years building a platform on the side — Sherpa Pros — to fix the lead-gen problem every contractor I know complains about. It's live now: sherpa-pros-platform.vercel.app. Jobs, not leads. Licensed only. Built by a working contractor.
+> Quick favor. You know I run HJD Builders. What you may not know is I spent the last two years building a platform on the side — Sherpa Pros — to fix the lead-gen problem every contractor I know complains about. It's live now: www.thesherpapros.com. Jobs, not leads. Licensed only. Built by a working contractor.
 >
 > I'm raising a small first round to hire two people and run paid ads in Portsmouth, Manchester, Portland, and Boston. The cleanest path to the right Boston investor (Building Ventures) runs through the NH Home Builders Association → Massachusetts AGC → Suffolk Construction → Building Ventures. Four people, four warm intros.
 >
@@ -205,7 +205,7 @@ Per Section 1.2: **Jesse Devitte** is the primary target, with **Mayra Arntz** a
 >
 > Phyrom
 > HJD Builders LLC · Sherpa Pros
-> sherpa-pros-platform.vercel.app
+> www.thesherpapros.com
 > [phone] · [email]
 >
 > ---
@@ -233,7 +233,7 @@ This is the email the HJD contact actually sends. The body of Email 1 already dr
 
 > [NHHBA officer first name],
 >
-> Wanted to introduce you to Phyrom. He runs HJD Builders here in NH and just built a platform called Sherpa Pros — sherpa-pros-platform.vercel.app — that does what every member at our last chapter meeting was complaining Angi and Thumbtack don't: licensed only, code-aware, and pays the contractor for the *job*, not for the chance to bid.
+> Wanted to introduce you to Phyrom. He runs HJD Builders here in NH and just built a platform called Sherpa Pros — www.thesherpapros.com — that does what every member at our last chapter meeting was complaining Angi and Thumbtack don't: licensed only, code-aware, and pays the contractor for the *job*, not for the chance to bid.
 >
 > He's raising a small first round of money to hire and run ads. The cleanest path to the right Boston investor for him runs through NHHBA → MA AGC → Suffolk Construction. He needs one warm intro per hop. He'd love 15 minutes to walk you through what he built and ask if you'd consider passing him to your contact at MA AGC (or BRAGB).
 >
@@ -259,7 +259,7 @@ Sent by Phyrom *after* Email 2 has been received by the NHHBA officer and the of
 
 > [NHHBA officer first name],
 >
-> Thank you for the 15 minutes yesterday. The platform demo is at sherpa-pros-platform.vercel.app any time you want to share it with the next chapter meeting.
+> Thank you for the 15 minutes yesterday. The platform demo is at www.thesherpapros.com any time you want to share it with the next chapter meeting.
 >
 > The next hop in the path I sketched out: I'm hoping to land one warm intro at the Massachusetts Associated General Contractors (AGC MA). The reason is that AGC MA's chair (Jeffrey Navin of Consigli Construction) sits with Suffolk Construction's senior team on every Boston Chamber and Building Owners and Managers Association (BOMA) board. Suffolk Construction runs an accelerator (BOOST) that feeds into Building Ventures — the Boston VC firm I'm raising from.
 >
@@ -277,7 +277,7 @@ Sent by Phyrom *after* Email 2 has been received by the NHHBA officer and the of
 >
 > Jeffrey,
 >
-> Wanted to put Phyrom in front of you. He's a licensed NH GC (HJD Builders) who built a platform called Sherpa Pros — jobs, not leads, code-aware, licensed only. Live at sherpa-pros-platform.vercel.app. He is raising a small first round of investment. The Boston VC he's targeting (Building Ventures) is closest to him via Suffolk Construction's BOOST accelerator. Worth 15 min if you have it; he'd appreciate a thought on whether anyone on your side is the natural intro to Patrick Lucey or Jit Kee Chin at Suffolk.
+> Wanted to put Phyrom in front of you. He's a licensed NH GC (HJD Builders) who built a platform called Sherpa Pros — jobs, not leads, code-aware, licensed only. Live at www.thesherpapros.com. He is raising a small first round of investment. The Boston VC he's targeting (Building Ventures) is closest to him via Suffolk Construction's BOOST accelerator. Worth 15 min if you have it; he'd appreciate a thought on whether anyone on your side is the natural intro to Patrick Lucey or Jit Kee Chin at Suffolk.
 >
 > [Sender]
 
@@ -296,7 +296,7 @@ This is what Jeffrey Navin (or whichever AGC MA board member responds) sends to 
 
 > Patrick (cc Jit Kee, Parker),
 >
-> Wanted to put Phyrom in front of you. He's a working New Hampshire general contractor (HJD Builders) who built a marketplace called Sherpa Pros for the licensed residential trades in New England. Live web at sherpa-pros-platform.vercel.app, mobile in TestFlight, beta cohort onboarding now in Portsmouth, Manchester, Portland, and Boston specialty lanes (Mass Save heat pumps, EV chargers, electrical panel upgrades, old-house specialists, triple-decker exteriors).
+> Wanted to put Phyrom in front of you. He's a working New Hampshire general contractor (HJD Builders) who built a marketplace called Sherpa Pros for the licensed residential trades in New England. Live web at www.thesherpapros.com, mobile in TestFlight, beta cohort onboarding now in Portsmouth, Manchester, Portland, and Boston specialty lanes (Mass Save heat pumps, EV chargers, electrical panel upgrades, old-house specialists, triple-decker exteriors).
 >
 > Two reasons I think this is worth a Suffolk Tech / BOOST conversation:
 >
@@ -325,7 +325,7 @@ This is what Patrick Lucey (or Jit Kee Chin) sends to Jesse Devitte at Building 
 
 > Jesse (cc Mayra, Heather),
 >
-> Wanted to put Phyrom in front of you. He's a working New Hampshire general contractor (HJD Builders) who built a licensed-trade marketplace called Sherpa Pros — the platform he wished existed every time Angi or Thumbtack pitched his crew leads they couldn't afford. Live at sherpa-pros-platform.vercel.app. Mobile in TestFlight. Beta cohort onboarding now in Portsmouth, Manchester, Portland, and Boston specialty lanes (Mass Save heat pumps, EV chargers, electrical panel upgrades, old-house specialists, triple-decker exteriors).
+> Wanted to put Phyrom in front of you. He's a working New Hampshire general contractor (HJD Builders) who built a licensed-trade marketplace called Sherpa Pros — the platform he wished existed every time Angi or Thumbtack pitched his crew leads they couldn't afford. Live at www.thesherpapros.com. Mobile in TestFlight. Beta cohort onboarding now in Portsmouth, Manchester, Portland, and Boston specialty lanes (Mass Save heat pumps, EV chargers, electrical panel upgrades, old-house specialists, triple-decker exteriors).
 >
 > Three reasons we think this fits Building Ventures specifically:
 >
@@ -448,7 +448,7 @@ Memorize this. Open with it. Close with it. Everything in between is supporting 
 Watch for any **two or more** of these in a single 30-min meeting:
 
 - **Devitte (or whoever takes the meeting) returned the meeting request inside 48 hours of the warm intro landing.** (Speed is signal.)
-- **He references a *specific* Sherpa Pros feature during the meeting** — e.g., "the code-checked badge on the homeowner-facing quote" or "the Mass Save heat-pump specialty lane." This means he visited sherpa-pros-platform.vercel.app before the call.
+- **He references a *specific* Sherpa Pros feature during the meeting** — e.g., "the code-checked badge on the homeowner-facing quote" or "the Mass Save heat-pump specialty lane." This means he visited www.thesherpapros.com before the call.
 - **He brings up a portfolio company *unprompted* as an analog.** ("This reminds me of how BuildFactory thinks about prefab.") Means he's already pattern-matched.
 - **He asks about co-investors *during* the meeting.** ("Have you talked to NFX yet?") Means he's mentally syndicating.
 - **He offers a follow-up *during* the meeting** — second call, partner team intro, customer reference. Means he's moving inside his fund.

@@ -22,7 +22,7 @@
 - [ ] Pitch deck (link to `docs/pitch/sherpa-pros-deck-v1.md` — convert to PDF / Google Slides)
 - [ ] One-pager (Brand Guardian-reviewed — produce W4 of Phase 0)
 - [ ] 2–3 minute founder intro video (Phyrom on a real NH jobsite, not a Loom of slides — see §6 below for biases)
-- [ ] Live demo link: https://sherpa-pros-platform.vercel.app
+- [ ] Live demo link: https://www.thesherpapros.com
 - [ ] Founder bio + headshot
 - [ ] Cap table (clean — Phyrom 100%, no SAFEs outstanding pre-Suffolk)
 - [ ] Beta cohort traction snapshot: `[X beta pros, $Y GMV, NPS Z]` — date-stamped within 7 days of submission
@@ -72,7 +72,7 @@ Miss this window and somebody else will fill the licensed-marketplace quadrant i
 
 ### Q: What's your traction?
 
-- **Platform:** Live at https://sherpa-pros-platform.vercel.app. Mobile via TestFlight (iOS) + PWA (Android). Built on Next.js 16, Stripe Connect, Neon Postgres + PostGIS, Clerk, Twilio.
+- **Platform:** Live at https://www.thesherpapros.com. Mobile via TestFlight (iOS) + PWA (Android). Built on Next.js 16, Stripe Connect, Neon Postgres + PostGIS, Clerk, Twilio.
 - **Beta cohort:** `[X beta pros]` active across 9 trade categories in 3 states (NH, ME, MA). `[Y jobs]` posted in first 60 days. `[$Z GMV]` transacted. `[N%]` of jobs matched in under 2 hours. Pro NPS `[score]`. Code-aware validations run: `[count]`. Code violations caught before homeowner saw the quote: `[count]`.
 - **Founder pipeline:** HJD Builders' direct client network + NHHBA + MEHBA introductions = warm-side recruiting and demand pre-seeded for Phase 1.
 - **Mass Save Network application:** in flight. Old-House Verified USPTO trademark filing in Phase 0 W4.

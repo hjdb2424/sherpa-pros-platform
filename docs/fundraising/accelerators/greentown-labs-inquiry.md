@@ -29,7 +29,7 @@
 - [ ] Inquiry email (this doc — Section 3)
 - [ ] Application narrative (this doc — Section 4)
 - [ ] Pitch deck (link to `docs/pitch/sherpa-pros-deck-v1.md` exported as PDF)
-- [ ] Live product demo link: https://sherpa-pros-platform.vercel.app
+- [ ] Live product demo link: https://www.thesherpapros.com
 - [ ] Climate-impact one-pager (specific to Mass Save heat-pump install acceleration — produce as a Greentown-specific variant of the standard one-pager)
 - [ ] Founder bio + headshot
 - [ ] Beta cohort metrics: `[X beta pros, $Y GMV, NPS Z]`
@@ -59,7 +59,7 @@ I'm reaching out about Greentown Labs membership for three reasons:
 
 I'm aware Greentown has historically been hardware-heavy. Sherpa Pros is software, but the **climate-impact deployment thesis** is the fit — we're the missing market-acceleration layer for trades that install climate technology. Happy to walk through the platform live and discuss whether the Virtual or Coworking tier makes the most sense given that fit.
 
-Live platform: https://sherpa-pros-platform.vercel.app
+Live platform: https://www.thesherpapros.com
 Pitch deck: [attach PDF]
 Brief one-pager on climate-deployment angle: [attach Greentown-variant one-pager]
 
@@ -83,7 +83,7 @@ Sherpa Pros is the national licensed-trade marketplace (international roadmap), 
 1. **Every pro is license + insurance verified** before listing and re-checked on renewal.
 2. **Every quote is validated against code** in real time — NEC, IRC, MA Electrical, NH RSA, 284 NH municipal codes — before the homeowner sees it.
 
-The platform is live: web at https://sherpa-pros-platform.vercel.app, iOS via TestFlight, Android via PWA. Beta cohort transacting today across NH, ME, MA in 9 trade categories. Pre-seed; founder-funded; building toward a Phase 1 first close in Q3 2026.
+The platform is live: web at https://www.thesherpapros.com, iOS via TestFlight, Android via PWA. Beta cohort transacting today across NH, ME, MA in 9 trade categories. Pre-seed; founder-funded; building toward a Phase 1 first close in Q3 2026.
 
 ### Q: Climate impact — describe the climate-deployment thesis (~250 words)
 

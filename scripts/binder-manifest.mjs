@@ -29,6 +29,10 @@ export const BINDERS = [
         "pitch/brand-audit.md",
       ]},
       { name: "III. Operations Frameworks", files: [
+        "operations/brand-portfolio.md",
+        "operations/sherpa-product-portfolio.md",
+        "operations/sherpa-home-subscription.md",
+        "operations/companies-employee-time-segment.md",
         "operations/liability-insurance-framework.md",
         "operations/embedded-protection-products.md",
         "operations/quick-job-lane.md",
@@ -40,6 +44,8 @@ export const BINDERS = [
         "operations/attorney-engagement-package.md",
       ]},
       { name: "V. Marketing", files: [
+        "marketing/social-content-plan.md",
+        "operations/social-media-prompt-library.md",
         "marketing/linkedin-editorial.md",
         "marketing/referral-mechanics-design.md",
         "marketing/email-sequences/pro-recruiting.md",
@@ -107,20 +113,26 @@ export const BINDERS = [
     description:
       "How the business actually runs. Best for engineering, ops, attorney, and broker conversations.",
     sections: [
-      { name: "I. Liability + Insurance Frameworks", files: [
+      { name: "I. Brand + Product Portfolio", files: [
+        "operations/brand-portfolio.md",
+        "operations/sherpa-product-portfolio.md",
+        "operations/sherpa-home-subscription.md",
+        "operations/companies-employee-time-segment.md",
+      ]},
+      { name: "II. Liability + Insurance Frameworks", files: [
         "operations/liability-insurance-framework.md",
         "operations/embedded-protection-products.md",
       ]},
-      { name: "II. Quick Job Lane (Phase 1)", files: [
+      { name: "III. Quick Job Lane (Phase 1)", files: [
         "operations/quick-job-lane.md",
         "operations/quick-job-catalog-full.md",
       ]},
-      { name: "III. Wave 4 Execution Kits (Monday Morning)", files: [
+      { name: "IV. Wave 4 Execution Kits (Monday Morning)", files: [
         "operations/beta-cohort-recruiting-kit.md",
         "operations/insurance-broker-outreach.md",
         "operations/attorney-engagement-package.md",
       ]},
-      { name: "IV. Investor-Facing Metrics", files: [
+      { name: "V. Investor-Facing Metrics", files: [
         "pitch/metrics-dashboard-design.md",
       ]},
     ],
@@ -170,13 +182,20 @@ export const BINDERS = [
     description:
       "Phyrom's daily marketing playbook + agent-built copy assets. Best for T5 marketing terminal.",
     sections: [
-      { name: "I. Founder Voice (LinkedIn)", files: [
+      { name: "I. Brand Foundation", files: [
+        "operations/brand-portfolio.md",
+      ]},
+      { name: "II. Founder Voice (LinkedIn)", files: [
         "marketing/linkedin-editorial.md",
       ]},
-      { name: "II. Growth Mechanics", files: [
+      { name: "III. Cross-Platform Social", files: [
+        "marketing/social-content-plan.md",
+        "operations/social-media-prompt-library.md",
+      ]},
+      { name: "IV. Growth Mechanics", files: [
         "marketing/referral-mechanics-design.md",
       ]},
-      { name: "III. Email Sequences", files: [
+      { name: "V. Email Sequences", files: [
         "marketing/email-sequences/pro-recruiting.md",
         "marketing/email-sequences/client-recruiting.md",
         "marketing/email-sequences/pro-reengagement.md",

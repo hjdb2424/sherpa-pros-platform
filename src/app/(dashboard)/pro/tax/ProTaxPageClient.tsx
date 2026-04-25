@@ -55,10 +55,10 @@ export default function ProTaxPageClient() {
       {/* Header */}
       <div>
         <h1 className="text-2xl font-bold text-zinc-900 sm:text-3xl dark:text-white">
-          Tax Center
+          Finance Hub
         </h1>
         <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
-          Track expenses, mileage, quarterly payments, and year-end tax documents.
+          Expenses, mileage, quarterly payments, tax documents, and financial insights.
         </p>
       </div>
 

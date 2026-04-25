@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import ProTaxPageClient from './ProTaxPageClient';
 
 export const metadata: Metadata = {
-  title: 'Tax Center',
+  title: 'Finance Hub',
 };
 
 export default function ProTaxPage() {

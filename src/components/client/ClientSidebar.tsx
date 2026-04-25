@@ -70,7 +70,7 @@ const NAV_ITEMS = [
     highlight: false,
   },
   {
-    label: 'Tax & 1099s',
+    label: 'Finance Hub',
     href: '/client/tax',
     icon: (
       <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">

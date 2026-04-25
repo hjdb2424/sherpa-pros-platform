@@ -1,25 +1,12 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Logo from "@/components/brand/Logo";
 import LanguageSwitcher from "@/components/i18n/LanguageSwitcher";
 import { useI18n } from "@/lib/i18n/context";
-import {
-  PM_ACCOUNTS,
-  PRO_ACCOUNTS,
-  CLIENT_ACCOUNTS,
-  type DemoAccount,
-  getDestination,
-} from "@/lib/demo-accounts";
+import { isEmailAllowed, getAccessEntry } from "@/lib/access-list";
 import { seedUserData } from "@/lib/seed-user-data";
-
-// All demo accounts keyed by email for lookup
-const ALL_ACCOUNTS: DemoAccount[] = [
-  ...PM_ACCOUNTS,
-  ...PRO_ACCOUNTS,
-  ...CLIENT_ACCOUNTS,
-];
 
 // ---------------------------------------------------------------------------
 // Clerk-based sign-in (only rendered when Clerk env vars are present)
@@ -75,34 +62,56 @@ function BetaPortal() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { t } = useI18n();
+
+  // Show OAuth errors from redirect
+  useEffect(() => {
+    const urlError = searchParams.get("error");
+    if (urlError === "not_on_list") {
+      setError("Your Google account is not on the beta access list. Contact info@thesherpapros.com to request access.");
+    } else if (urlError === "google_auth_failed") {
+      setError("Google sign-in failed. Please try again.");
+    }
+  }, [searchParams]);
 
   function handleSignIn(e: React.FormEvent) {
     e.preventDefault();
     setError("");
 
     const normalizedEmail = email.trim().toLowerCase();
-    const account = ALL_ACCOUNTS.find(
-      (a) => a.email.toLowerCase() === normalizedEmail
-    );
 
-    if (!account) {
+    if (!isEmailAllowed(normalizedEmail)) {
       setError(
-        "No account found with that email. Please check your invite or contact info@thesherpapros.com."
+        "This email is not on the beta access list. Contact info@thesherpapros.com to request access."
       );
       return;
     }
 
+    const entry = getAccessEntry(normalizedEmail);
     setLoading(true);
-    localStorage.setItem("sherpa-test-role", account.role);
+
     localStorage.setItem("sherpa-test-auth", "true");
-    localStorage.setItem("sherpa-test-email", account.email);
-    localStorage.setItem("sherpa-test-name", account.name);
+    localStorage.setItem("sherpa-test-email", normalizedEmail);
+    localStorage.setItem("sherpa-test-name", entry?.name ?? email.split("@")[0]);
 
-    // Seed user-scoped data on first sign-in
-    seedUserData(account.email, account.role);
+    // Check if user has an existing role
+    const existingRole = localStorage.getItem(`sherpa:${normalizedEmail}:role`);
+    const role = existingRole ?? entry?.defaultRole;
 
-    router.push(getDestination(account.role));
+    if (role) {
+      localStorage.setItem("sherpa-test-role", role);
+      localStorage.setItem(`sherpa:${normalizedEmail}:role`, role);
+      seedUserData(normalizedEmail, role);
+
+      if (role === "pm") router.push("/pm/dashboard");
+      else if (role === "pro") router.push("/pro/dashboard");
+      else if (role === "tenant") router.push("/tenant/dashboard");
+      else router.push("/client/dashboard");
+    } else {
+      // No default role — let them choose
+      router.push("/select-role");
+    }
   }
 
   return (

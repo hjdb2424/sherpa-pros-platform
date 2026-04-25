@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { exchangeGoogleCode, getGoogleProfile } from '@/lib/auth/oauth';
+import { isEmailAllowed, getAccessEntry } from '@/lib/access-list';
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
@@ -15,22 +16,29 @@ export async function GET(request: NextRequest) {
     const tokens = await exchangeGoogleCode(code);
     const profile = await getGoogleProfile(tokens.accessToken);
 
+    // Check access list
+    if (!isEmailAllowed(profile.email)) {
+      const base = process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3001';
+      return NextResponse.redirect(
+        new URL('/sign-in?error=not_on_list', base),
+      );
+    }
+
+    const entry = getAccessEntry(profile.email);
     const base = process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3001';
 
-    // Redirect to a client-side bridge that sets localStorage from the cookie,
-    // then forwards to role selection
     const params = new URLSearchParams({
-      name: profile.name,
+      name: entry?.name ?? profile.name,
       email: profile.email,
       picture: profile.picture ?? '',
       provider: 'google',
+      ...(entry?.defaultRole ? { role: entry.defaultRole } : {}),
     });
 
     const response = NextResponse.redirect(
       new URL(`/auth/callback?${params.toString()}`, base),
     );
 
-    // Set auth cookie for server-side checks
     response.cookies.set('sherpa-auth', 'true', {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
@@ -41,7 +49,7 @@ export async function GET(request: NextRequest) {
     response.cookies.set('sherpa-user', JSON.stringify({
       id: profile.id,
       email: profile.email,
-      name: profile.name,
+      name: entry?.name ?? profile.name,
       picture: profile.picture,
       provider: 'google',
     }), {

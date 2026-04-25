@@ -13,6 +13,7 @@ function CallbackHandler() {
     const name = searchParams.get('name') ?? 'User';
     const email = searchParams.get('email') ?? '';
     const provider = searchParams.get('provider') ?? 'google';
+    const defaultRole = searchParams.get('role'); // from access list
 
     if (!email) {
       router.replace('/sign-in?error=no_email');
@@ -31,17 +32,27 @@ function CallbackHandler() {
       localStorage.setItem('sherpa-test-role', existingRole);
       seedUserData(email, existingRole);
 
-      if (existingRole === 'pm') {
-        router.replace('/pm/dashboard');
-      } else if (existingRole === 'pro') {
-        router.replace('/pro/dashboard');
-      } else {
-        router.replace('/client/dashboard');
-      }
+      if (existingRole === 'pm') router.replace('/pm/dashboard');
+      else if (existingRole === 'pro') router.replace('/pro/dashboard');
+      else if (existingRole === 'tenant') router.replace('/tenant/dashboard');
+      else router.replace('/client/dashboard');
       return;
     }
 
-    // New user — go to role selection
+    // New user with a default role from the access list — skip role selection
+    if (defaultRole && ['pm', 'pro', 'client', 'tenant'].includes(defaultRole)) {
+      localStorage.setItem('sherpa-test-role', defaultRole);
+      localStorage.setItem(`sherpa:${email}:role`, defaultRole);
+      seedUserData(email, defaultRole);
+
+      if (defaultRole === 'pm') router.replace('/pm/dashboard');
+      else if (defaultRole === 'pro') router.replace('/pro/dashboard');
+      else if (defaultRole === 'tenant') router.replace('/tenant/dashboard');
+      else router.replace('/client/dashboard');
+      return;
+    }
+
+    // New user, no default role — go to role selection
     router.replace('/select-role');
   }, [router, searchParams]);
 

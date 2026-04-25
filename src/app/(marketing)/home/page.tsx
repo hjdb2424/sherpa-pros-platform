@@ -21,9 +21,9 @@ import {
 } from '@heroicons/react/24/outline';
 
 export const metadata: Metadata = {
-  title: 'Sherpa Pros — The licensed-trade marketplace that thinks like a contractor',
+  title: 'Sherpa Pros — Where every project finds the right pro',
   description:
-    'Licensed pros only. Code-aware quotes. Real reviews, no leads-for-sale. Built by a working general contractor. Post a job free.',
+    'Verified pros. Code-checked quotes. Real reviews, no leads-for-sale. Built by a working contractor. Post a job free.',
 };
 
 // 3-section value prop (per spec section 2)

@@ -3,10 +3,10 @@
 import { useState, useEffect } from 'react';
 
 const TAGLINES = [
-  'that thinks like a contractor',
-  'where every quote is code-checked',
+  'backed by code-checked quotes',
   'with zero lead fees for pros',
-  'where your payment is protected',
+  'and every dollar tracked',
+  'from search to payment, all in one place',
   'built by a contractor, for the trade',
 ];
 
@@ -27,12 +27,12 @@ export default function HeroTagline() {
 
   return (
     <h1 className="text-4xl font-bold leading-tight tracking-tight sm:text-5xl md:text-6xl">
-      The licensed-trade marketplace{' '}
+      Where every project finds the right pro{' '}
       <span
         className="inline-block bg-gradient-to-r from-[#00a9e0] to-[#0ea5e9] bg-clip-text text-transparent transition-opacity duration-400"
         style={{ opacity: fade ? 1 : 0 }}
       >
-        {TAGLINES[index]}
+        &mdash; {TAGLINES[index]}
       </span>
     </h1>
   );

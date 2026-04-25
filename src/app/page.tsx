@@ -9,7 +9,7 @@ import ScrollFadeIn from '@/components/splash/ScrollFadeIn';
 export const metadata: Metadata = {
   title: 'Sherpa Pros — Coming to Your Area Soon',
   description:
-    'The licensed-trade marketplace that thinks like a contractor. Verified pros, transparent pricing, real reviews. Join the waitlist.',
+    'Where every project finds the right pro. Verified pros, transparent pricing, real reviews. Join the waitlist.',
 };
 
 /* ─── SVG Icons (inline, no external deps) ─── */
@@ -458,7 +458,7 @@ export default function SplashPage() {
             <div className="flex flex-col items-center sm:items-start">
               <Logo size="md" />
               <p className="mt-3 max-w-xs text-center text-sm text-white/30 sm:text-left">
-                The licensed-trade marketplace that thinks like a contractor.
+                Where every project finds the right pro.
               </p>
             </div>
 

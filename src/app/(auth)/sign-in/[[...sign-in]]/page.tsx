@@ -71,7 +71,8 @@ function BetaPortal() {
     if (urlError === "not_on_list") {
       setError("Your Google account is not on the beta access list. Contact info@thesherpapros.com to request access.");
     } else if (urlError === "google_auth_failed") {
-      setError("Google sign-in failed. Please try again.");
+      const detail = searchParams.get("detail") ?? "";
+      setError("Google sign-in failed: " + (detail || "Please try again."));
     }
   }, [searchParams]);
 

@@ -89,6 +89,8 @@ If you take one job through Sherpa Pros in the next 14 days, I will personally d
 
 Why am I making this offer? Because the second job is way easier to take than the first. I am willing to spend a little to get you over the first one.
 
+One more thing while I have you. You have earned **[CURRENT POINTS]** Sherpa Rewards points from your beta jobs already. That is **[NEXT REWARD]** away from a free redemption. Take one more job this month and pull the trigger. Sherpa Rewards is the points-redemption store we shipped this quarter — 21 items in the catalog right now (Milwaukee, DeWalt, Festool tools, Visa gift cards, prepaid debit, branded apparel, charity donations). Fulfillment runs through Tremendous, so the redemption is real-world, not a platform credit. Browse the catalog at thesherpapros.com/pro/rewards.
+
 [See open jobs in your area]({{jobs_url}})
 
 If this still is not the right time, that is fine. I will move you to a quarterly check-in list and you will not hear from me until {{next_quarter_month}}.

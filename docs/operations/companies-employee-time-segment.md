@@ -1,14 +1,29 @@
 # Companies with Employees with Available Time — Segment Brief
 
-**Date:** 2026-04-22
+**Date:** 2026-04-22 (v1) · **Updated 2026-04-25**
 **Author:** Claude (drafted for Phyrom review)
-**Status:** Draft — pending Phyrom decision on interpretation
+**Status:** v1 was draft — **as of 2026-04-25, both interpretations (A + B) are LIVE simultaneously** (see banner below)
 **Owner:** Phyrom (founder)
 **Companion docs:**
-- `docs/superpowers/specs/2026-04-22-gtm-marketing-design.md` (current GTM spec — this segment is not yet wired in)
-- `docs/operations/sherpa-home-subscription.md` (Wave 6.3 — Sherpa Home product spec, **not yet written**; this brief assumes it)
-- `docs/operations/sherpa-product-portfolio.md` (Wave 6.2 — 4-product brand context, **not yet written**; this brief assumes it)
-- `docs/operations/attorney-engagement-package.md` (Phase 0 attorney scope; does not currently cover the deeper employer-of-record questions raised by Interpretation B)
+- `docs/superpowers/specs/2026-04-22-gtm-marketing-design.md` (current GTM spec — Interpretation B now wired in via Sherpa Flex §3.5 + §5)
+- `docs/operations/sherpa-home-subscription.md` (Wave 6.3 — Sherpa Home product spec; Interpretation A vehicle)
+- `docs/operations/sherpa-product-portfolio.md` (Wave 6.2 — six-product brand context, including Sherpa Flex §2.6 — Interpretation B vehicle)
+- `docs/operations/attorney-engagement-package.md` (Phase 0 attorney scope; previously did not cover employer-of-record questions raised by Interpretation B — Sherpa Flex's structural design now sidesteps the highest-risk classification scenarios, see banner)
+
+---
+
+> **UPDATE 2026-04-25 — Interpretation B (Workforce Utilization) is now LIVE via Sherpa Flex.**
+>
+> See `/pro/flex` on production (commit `08b1a5f`). The previously-deferred **Interpretation B** path no longer requires Phase 2 attorney work. **Sherpa Flex's per-project platform liability insurance + sub-$5K job ceiling + explicit independent-contractor framing** structurally addresses the prior worker-classification risk that gated this interpretation:
+>
+> - The **platform** (Sherpa Pros), not the day-job employer, owns the per-project insurance — there is no joint-employer relationship with the construction company.
+> - The pro picks their own jobs, sets their own schedule, and gets paid on a 1099 — same independent-contractor status as every other Sherpa Pros pro.
+> - The **<$5K job ceiling** keeps individual job size below the threshold where IRS / state-AG wage-redirection scrutiny historically engages.
+> - The construction-company employer is **not in the transaction** — the employee transacts directly with Sherpa Pros, the same way they would with any other 1099 side-hustle platform.
+>
+> Net effect: Both interpretations of the "Companies with employees with available time" segment are now LIVE products simultaneously. **Interpretation A** (employee benefit / B2B2C demand-side) ships through **Sherpa Home Enterprise / Sherpa for Companies** (Wave 6.3 retail launch). **Interpretation B** (workforce utilization / B2B supply-side) ships through **Sherpa Flex**. Phase 1 sales motion now includes outreach to construction company HR + facilities operators whose tradesperson employees want side income — this is a Phase 1 unlock, not a Phase 2 deferral.
+>
+> The risk register entry **R5 (1099 vs W-2 worker classification)** in the GTM spec §10 has been downgraded from High to Medium severity to reflect this structural mitigation.
 
 ---
 
@@ -115,9 +130,11 @@ Classic B2B SaaS sale, founder-led for the first 10 logos:
 
 ## 3. Interpretation B — Workforce Utilization (B2B Supply-Side)
 
+> **STATUS UPDATE 2026-04-25:** Interpretation B is **NOT deferred anymore — it is LIVE** via the **Sherpa Flex** pro tier (commit `08b1a5f`, page at `/pro/flex`). The structural redesign described in §3.7 below has been **resolved**: the employer is no longer a party to the transaction. The construction-company tradesperson signs up directly with Sherpa Pros as a 1099 independent contractor on the Sherpa Flex tier (18% take rate, per-project platform liability insurance included, no LLC required, jobs <$5K only). The construction-company HR motion becomes a **referral / awareness** play, not an employer-of-record contractual play — which dissolves the worker-classification risk that originally pushed B to Phase 2.
+
 ### 3.1 What it is
 
-Companies whose employees have downtime, underutilized capacity, or scheduled gaps — facilities maintenance staff at large institutions, in-house tradespeople at multi-family operators, or construction company tradespeople between projects — can take Sherpa Pros jobs as additional revenue. The employer enables the access (and may take a cut), gets a workforce-retention story, and may offload some maintenance overflow to the same pool.
+Companies whose employees have downtime, underutilized capacity, or scheduled gaps — facilities maintenance staff at large institutions, in-house tradespeople at multi-family operators, or construction company tradespeople between projects — can take Sherpa Pros jobs as additional revenue. **As of 2026-04-25**, those employees join Sherpa Pros directly via the **Sherpa Flex** tier (no LLC required, no personal insurance required, platform-provided per-project liability coverage). The employer is **not in the transaction** — they are an awareness / referral channel. This is the structural change that makes Interpretation B safe to ship in Phase 1.
 
 ### 3.2 Audience
 
@@ -168,12 +185,14 @@ Long-cycle B2B operational sale. Buyer is **VP Facilities / Director of Operatio
 - Direct outreach to named accounts (university facilities, hospital systems)
 - Supply-house referrals (FW Webb, Lowe's Pro, Home Depot Pro)
 
-### 3.7 Why this is harder
+### 3.7 Why this is harder *(historical — see 2026-04-25 banner above for the resolved version)*
 
-- New platform surface (multi-pro accounts, splits, withholding) competes with core Phase 1 platform-stability work.
-- Buyer is operations + HR + legal — three stakeholders, three sales cycles in parallel.
-- Legal exposure is high (Section 6).
-- Even after legal greenlights, **employee buy-in is its own gate** — employees may not want their employer involved in their side income. Pilots that look great on paper can stall on enrollment.
+> **Resolved 2026-04-25 via Sherpa Flex.** The four blockers below were the original framing for an *employer-managed* product where the construction company would broker its tradespeople onto Sherpa Pros under a multi-pro account hierarchy. Sherpa Flex sidesteps every one of them by making the **individual tradesperson** the direct platform participant — the employer is removed from the contractual relationship. Sales motion shifts from "long-cycle B2B operational sale" to "construction-company HR awareness channel for an individual side-hustle product." Below preserved as historical record of why we deferred the prior structure.
+
+- New platform surface (multi-pro accounts, splits, withholding) competes with core Phase 1 platform-stability work. *(Resolved: Sherpa Flex uses standard single-pro accounts; no employer split engine needed.)*
+- Buyer is operations + HR + legal — three stakeholders, three sales cycles in parallel. *(Resolved: the "buyer" is now the individual tradesperson; HR is a referral channel, not a contracting party.)*
+- Legal exposure is high (Section 6). *(Resolved: Sherpa Flex tradesperson is a 1099 independent contractor, same as every other Sherpa Pros pro.)*
+- Even after legal greenlights, **employee buy-in is its own gate** — employees may not want their employer involved in their side income. Pilots that look great on paper can stall on enrollment. *(Resolved: employer is not involved — the tradesperson signs up independently.)*
 
 ---
 
@@ -190,23 +209,32 @@ This is the right end-state vision but the wrong starting point. The two motions
 
 ---
 
-## 5. Recommendation: Lead with A, Defer B
+## 5. Recommendation (UPDATED 2026-04-25): Run A AND B in Parallel — Both LIVE
 
-**Phase 1 priority: Interpretation A — Employee Benefit.**
+**Phase 1 priority remains Interpretation A** for the **enterprise sales motion + LTV** (10 logos = $500K–$1.5M ARR per Section 2.4). This has not changed. **Interpretation B is now also LIVE** via Sherpa Flex and opens an entirely **new Phase 1 outreach motion** that did not previously exist: direct-to-tradesperson recruitment with construction-company HR as a referral / awareness channel.
 
-Reasoning:
+### 5.1 Interpretation A — Employee Benefit (still the lead enterprise motion)
 
-1. **Faster sales cycle.** 60–90 days vs 90–180 days. Phase 1's Seed-raise gate (Month 5–6) needs visible enterprise traction, not pipeline.
+Reasoning unchanged:
+
+1. **Faster sales cycle.** 60–90 days vs B's individual-tradesperson recruitment cycle.
 2. **Leverages existing product.** Sherpa Home (Wave 6.3) is the vehicle. We add billing + seat management, not a whole new product surface.
-3. **Known buyer pattern.** HR / Total Rewards / Benefits Managers are a well-mapped sales motion with a clean broker channel. We don't have to invent the playbook.
-4. **Low legal exposure.** A is a benefits product. B requires labor-law work the attorney hasn't scoped (see Section 6).
+3. **Known buyer pattern.** HR / Total Rewards / Benefits Managers are a well-mapped sales motion with a clean broker channel.
+4. **Low legal exposure.** A is a benefits product.
 5. **Compounding distribution.** Every covered employee is a homeowner-side warm lead. The benefits motion seeds the consumer marketplace.
-6. **Fits founder bandwidth.** Phyrom can credibly close the first 10 logos himself in Phase 1 — "working contractor pitching HR" is a story that lands.
+6. **Fits founder bandwidth.** Phyrom can credibly close the first 10 logos himself in Phase 1.
 
-**Defer Interpretation B to Phase 2 minimum**, ideally Phase 3, conditional on:
-- Attorney engagement (Section 6) explicitly scoped to cover employer-of-record / multi-pro classification questions
-- Sherpa Marketplace stable at 200+ pros across 4 metros
-- A clear customer pull from existing A logos asking for the workforce-side product
+### 5.2 Interpretation B — Workforce Utilization via Sherpa Flex (NEW Phase 1 motion, opened 2026-04-25)
+
+Reasoning for shipping B in Phase 1 alongside A:
+
+1. **Sherpa Flex resolved the legal blocker structurally.** Per-project platform insurance + sub-$5K ceiling + direct-to-tradesperson sign-up sidesteps the employer-of-record / joint-employer questions that gated B. No new attorney scope required.
+2. **Outreach motion is acquisition, not contracting.** Construction-company HR + facilities operators become a *referral / awareness channel* — they tell their tradesperson employees "Sherpa Flex exists, no LLC required, take side jobs when you want." The company doesn't sign anything.
+3. **Sherpa Flex pros are immediate Sherpa Marketplace supply.** Every Sherpa Flex sign-up is a direct supply-side liquidity addition for Phase 1 metros. This is faster supply-build than waiting for licensed contractors to set up LLCs.
+4. **Same founder bandwidth investment.** Phyrom's existing trade-association relationships (NHHBA, MEHBA, AGC chapters) become the awareness channel for Sherpa Flex. No new sales hire required for Phase 1.
+5. **Sherpa Score climb path creates the upgrade economic.** Sherpa Flex pro completes 25+ jobs → Sherpa Score climbs → pro decides to acquire own insurance + LLC → drops to 12% Standard → keeps climbing to 8% Gold. The platform captures lifetime supply-side value across the climb.
+
+**The two motions are complementary, not competing.** A targets HR at white-collar tech / finance / healthcare-admin firms (where employees are *homeowners*, the buyer is HR). B targets HR + operations at construction / facilities / multi-family-operator firms (where employees are *tradespeople*, the awareness channel is HR but the sign-up is direct-to-pro). Different verticals, different conversion paths, both LIVE in Phase 1.
 
 ---
 

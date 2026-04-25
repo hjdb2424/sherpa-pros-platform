@@ -21,7 +21,7 @@ This document specifies the Go-To-Market plan to move from built product to fund
 
 **Positioning:** *"The licensed-trade marketplace that thinks like a contractor. Built by a working GC. Code-aware. Permit-aware. Rebate-aware."*
 
-**Product portfolio (announced 2026-04-24):** Sherpa Pros is now a four-product brand under one umbrella: (1) **Sherpa Marketplace** — the existing dispatch + match platform (Project + Quick Job modes); (2) **Sherpa Hub** — physical pro pickup locations for job kits, supplies, and branded gear (designed in `docs/superpowers/specs/2026-04-15-sherpa-hub-model-design.md`); (3) **Sherpa Home** (NEW) — homeowner subscription tier offering discounts and faster SLAs; (4) **Sherpa Success Manager** (NEW) — managed-service white-glove tier for PMs, multi-property owners, and high-end homeowners. Marketplace is live in Phase 0 beta; Home and Manager are Phase 1 launch designs. See §3.5 for the full product matrix and cross-product flywheel.
+**Product portfolio (announced 2026-04-24, expanded 2026-04-25):** Sherpa Pros is now a **six-product brand** under one umbrella: (1) **Sherpa Marketplace** — the existing dispatch + match platform (Project + Quick Job modes); (2) **Sherpa Hub** — physical pro pickup locations for job kits, supplies, and branded gear (designed in `docs/superpowers/specs/2026-04-15-sherpa-hub-model-design.md`); (3) **Sherpa Home** (NEW) — homeowner subscription tier offering discounts and faster SLAs; (4) **Sherpa Success Manager** (NEW) — managed-service white-glove tier for PMs, multi-property owners, and high-end homeowners; (5) **Sherpa Rewards** (LIVE) — points-based loyalty program with a 21-item redemption catalog, fulfilled in real money via the Tremendous API (gift cards, prepaid debit, charity donations); (6) **Sherpa Flex** (LIVE) — a 5th pro tier (18% fee, per-project platform liability insurance included) that opens a side-hustle path for skilled tradespeople without an LLC, jobs under $5,000 only. Marketplace is live in Phase 0 beta; Rewards and Sherpa Flex shipped to production 2026-04-25 (commits `08b1a5f` + `a4b455a`); Home and Manager are Phase 1 launch designs. See §3.5 for the full product matrix and cross-product flywheel, and §5 for the full **5-tier pro economics** (Founding Pro 5% · Gold 8% · Silver/Bronze 12% · Sherpa Flex 18% with insurance) plus the **Tremendous-backed loyalty layer** that compounds pro retention across every tier.
 
 **Confirmed primary domain:** `https://www.thesherpapros.com/` — every external surface uses this URL. The legacy `sherpa-pros-platform.vercel.app` URL is deprecated as of 2026-04-24 and is internal-only (Vercel deployment URL).
 
@@ -157,17 +157,23 @@ Sherpa Pros is a multi-product brand. Each product solves a distinct customer pr
 | **Sherpa Hub** | Physical locations where pros pick up job kits, supplies, branded gear. Hub-and-spoke model. | Trades / Pros | Free for Founding Pros (kit subsidy); membership/per-pickup fee post-beta | DESIGNED — `docs/superpowers/specs/2026-04-15-sherpa-hub-model-design.md` |
 | **Sherpa Home** | Homeowner subscription. Discounts + faster SLAs + member benefits. | Homeowners (residential) | $X/month or $Y/year (see Wave 6.3 brief) | NEW — Phase 1 launch design |
 | **Sherpa Success Manager** | Managed-service tier — dedicated human owns the customer relationship. | Property Managers (PM tier upsell), Multi-Property Owners, White Glove homeowners, large Companies | $Z/month per account or % of managed portfolio (see Wave 6.3 brief) | NEW — Phase 1/2 launch design |
+| **Sherpa Rewards** | Points-based loyalty program for pros. Earn on every job, review, photo upload, on-time arrival, monthly Sherpa Score tier bonus, and successful pro referrals. Redeem from a 21-item catalog (branded apparel, Milwaukee/DeWalt/Festool tools, gift cards, experiences) plus Gold-Exclusive items unlocked at Gold Sherpa Score. | Trades / Pros (every tier earns; Founding Pros + Gold tier maximize loyalty value) | No subscription fee — funded by platform margin; redemptions fulfilled via **Tremendous API** (gift cards, prepaid debit, charity donations) at real cash cost per redemption | **LIVE** — `/pro/rewards` shipped 2026-04-25 (commits `08b1a5f` + `a4b455a`) |
+| **Sherpa Flex** | A 5th pro tier purpose-built for the side-hustle / moonlighter path. **18% service fee** (vs Standard 12% vs Gold 8%) — premium fee covers $1M per-project platform liability insurance. **No LLC required**, **no personal insurance required**, jobs under **$5,000 only**, background check required. | Skilled tradespeople with a W-2 day job · moonlighters · construction-company employees with available time · pros who want to test the platform before forming an LLC | 18% take rate, no subscription. Insurance funded out of the 6% premium over Standard tier. | **LIVE** — `/pro/flex` shipped 2026-04-25 (commit `08b1a5f`) |
 
 **Cross-product flywheel:**
 - Marketplace acquires homeowners + pros → Home subscription up-sells homeowners → Manager up-sells PM/Multi-Owner/White-Glove
 - Hub creates supply-side moat (pros come for the kits + gear, stay for the jobs)
 - Manager service creates account stickiness + introduces Marketplace + Home to the portfolio
-- All four products share one identity (national licensed-trade marketplace), one brand bible, one founder
+- **Sherpa Rewards** runs underneath Marketplace + Sherpa Flex — every job, review, and on-time arrival mints points; loyalty compounds across every pro tier and feeds the Sherpa Score climb
+- **Sherpa Flex** is the entry-level on-ramp (no LLC, jobs <$5K) → pro upgrades to own insurance + LLC → drops to 12% Standard tier → climbs Sherpa Score → reaches Gold (8% + 4hr early job access)
+- All six products share one identity (national licensed-trade marketplace), one brand bible, one founder
 
 **Naming convention rules:**
-- Always "Sherpa" + ProductName (Sherpa Marketplace, Sherpa Hub, Sherpa Home, Sherpa Manager)
+- Always "Sherpa" + ProductName (Sherpa Marketplace, Sherpa Hub, Sherpa Home, Sherpa Success Manager, Sherpa Rewards, Sherpa Flex)
 - "Sherpa Pros" remains the umbrella brand (not a product name)
 - **LOCKED 2026-04-25:** the white-glove product is **Sherpa Success Manager** (per backend deployment commit `6097f83`). Drop "Account Manager" and "Sherpa Account/Success Manager" usage everywhere — they are deprecated.
+- **LOCKED 2026-04-25:** the side-hustle pro tier is **Sherpa Flex** (always with the "Sherpa" prefix — never "Flex tier" or "Flex" alone in external surfaces).
+- **LOCKED 2026-04-25:** the loyalty program is **Sherpa Rewards** (capitalized as a program name). Lowercase "rewards" refers to individual catalog items; "Sherpa Rewards" refers to the program.
 - Don't say: "the Sherpa Pros app" (which app?) — say: "Sherpa Marketplace" or "Sherpa Home" or whichever product
 
 ---
@@ -295,13 +301,23 @@ Sherpa Pros is a multi-product brand. Each product solves a distinct customer pr
 
 **MA / Boston specialty (2–3 pros):** 1 licensed electrician (EV / panel / Mass Save cert), 1 old-house specialist (plaster / masonry / slate), 1 roofer
 
-### 5.2 Finance model (Option D — beta-discounted hybrid)
+### 5.2 Finance model — full 5-tier pro economics (updated 2026-04-25)
 
-**Beta pricing (90-day beta):** $0 subscription + **5% take rate** on completed jobs
+**Beta cohort (90-day beta — unchanged):** $0 subscription + **5% take rate** on completed jobs. Beta cohort is grandfathered into the Founding Pro tier forever.
 
-**Standard pricing (post-beta):** $49/mo subscription + **10% take rate**
+**Phase 1+ pro economics — five tiers** (set by **Sherpa Score** plus the **Sherpa Flex** side-hustle path):
 
-**Founding Pros:** Beta cohort grandfathered at 5% take forever (if they stay) — permanent recruiting hook and loyalty lock.
+| Tier | Service Fee | Path | Notes |
+|---|---|---|---|
+| **Founding Pro** | **5% forever** | Beta cohort lock — Phase 0 only | Lock requires the pro to maintain Gold-tier Sherpa Score post-beta (loyalty floor) |
+| **Sherpa Score Gold** | **8%** + 4-hour early job access | Standard pro, 80+ Sherpa Score | Gold also unlocks Sherpa Rewards Gold-Exclusive catalog items |
+| **Sherpa Score Silver** | **12%** | Standard pro, 60–79 Sherpa Score | Default Standard-tier rate |
+| **Sherpa Score Bronze** | **12%** | Standard pro, <60 Sherpa Score | Default Standard-tier rate; Sherpa Rewards monthly tier-bonus is smallest at this tier |
+| **Sherpa Flex** | **18%** (insurance included) | Side-hustle path, **no LLC required**, jobs **<$5K only**, background check required | The 6% premium over Standard funds $1M per-project platform liability insurance. Upgrade path: Flex pro acquires own insurance + LLC → drops to 12% Standard → climbs Sherpa Score to 8% Gold |
+
+**Why this works.** The beta-period 5% take is unchanged — Founding Pros are protected. Phase 1+ introduces the Sherpa Score-driven Gold/Silver/Bronze split (gamified loyalty + clear path to lower fees) **and** the Sherpa Flex 18%-with-insurance side-hustle alternative for the pros who don't yet have an LLC or their own insurance. Together these five tiers cover the entire supply-side market — from full-time licensed contractors with their own insurance (8–12%) to the W-2 tradesperson who wants to take side jobs without the legal-entity overhead (18% with insurance handled). The platform gets supply liquidity at every commitment level; the pro gets a transparent climb path.
+
+**Founding Pros:** Beta cohort grandfathered at 5% take forever (if they stay) — permanent recruiting hook and loyalty lock. **Sherpa Rewards** layers on top of every tier — every job, review, photo upload, and on-time arrival mints points regardless of tier, with a monthly Sherpa Score tier-bonus (Gold > Silver > Bronze) that compounds loyalty without changing the underlying take rate.
 
 ### 5.3 Beta agreement terms
 
@@ -534,7 +550,7 @@ Run all four concurrently. Whichever closes first triggers Phase 1. No serial de
 | R2 | Stripe Connect KYC delays >48hr | 0 | High | No approval by W1 | Backup rails: Tilled / Bridgepay; Mercury for banking |
 | R3 | All Phase 0 funding tracks slow / fail | 0/1 | Critical | No closes by W14 | Revenue-based financing (Pipe / Capchase) once $5K MRR; Phyrom bridges from HJD for 60 more days |
 | R4 | Mass Save Network application rejected | 1 | Medium | Declined or stalled >90 days | Eversource Ventures intro instead; National Grid Turnkey as alt |
-| R5 | 1099 vs W-2 worker classification challenge | All | High | Cease & desist from MA AG / NH DOL | Pros are independently licensed contractors w/ own insurance — defensible. Legal opinion W4. |
+| R5 | 1099 vs W-2 worker classification challenge | All | High → **Medium** (downgraded 2026-04-25) | Cease & desist from MA AG / NH DOL | Pros are independently licensed contractors w/ own insurance — defensible. Legal opinion W4. **Sherpa Flex (LIVE 2026-04-25) structurally addresses the highest-risk workforce-utilization scenarios:** per-project platform liability insurance + sub-$5K job ceiling + explicit independent-contractor framing remove the wage-redirection / employer-of-record gray areas that previously gated the "Companies with employees with available time" segment Interpretation B. Side-hustle pros pick their own jobs, set their own schedules, and the platform — not the day-job employer — owns the per-project insurance. |
 | R6 | Pro fraud or dispute spike (insurance event) | All | High | >2% job dispute rate | Platform liability insurance (~$800/yr); 4.5★ floor; 7-day Stripe hold |
 | R7 | Angi / Thumbtack copy specialty positioning | 2/3 | Medium | Competitor "licensed only" or "Mass Save certified" launch | Wiseman code intelligence is the moat — not licensable. Fast USPTO on Old-House Verified. Exclusive utility partnerships. |
 | R8 | Phyrom burnout (single-point-of-failure) | 0/1 | Critical | Missed weekly milestones | 60-hr/wk hard cap; Upwork US offloads 30% lowest-leverage; AI agents draft deck/research |

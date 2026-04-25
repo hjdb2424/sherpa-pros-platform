@@ -33,6 +33,8 @@ The first ten pros in get the 5 percent rate forever. After that it is 10 percen
 
 One more thing on the rate. We just turned on Sherpa Score, a 0-to-100 quality grade for every pro on the platform. Twelve metrics, three pillars: quality, communication, reviews. Founding Pros who hit Gold (80+) during beta lock the 5 percent rate forever. Pros who finish beta at Silver or Bronze convert to standard 12 percent. Build your score during beta, lock in Gold-tier 5 percent for life. Doing the work right is the whole game.
 
+**Don't have an LLC yet? Sherpa Flex is for you.** Same platform, same job quality, $1M per-project liability insurance included in the platform fee. 18 percent take rate, jobs under $5,000, no LLC required. Start earning while you decide if forming an LLC is right for you. When the income justifies it, form the LLC, get your own insurance, and drop to standard 12 percent. Climb Sherpa Score to Gold and you are at 8 percent. One platform, three doors.
+
 If you want one, here is the apply link. Five minutes. I read every application myself.
 
 [Apply for the beta]({{apply_url}})
@@ -103,6 +105,8 @@ Phyrom
 
 **Subject:** Two spots left
 
+**Subject (no-LLC variant — use for prospects who flagged "no LLC" in their D0/D2 reply):** No LLC? Sherpa Flex is the side door — $1M insurance included.
+
 **Preview text:** Founding Pro rate is permanent. After this cohort, the rate doubles.
 
 **Body:**
@@ -156,6 +160,13 @@ But the beta is still running for another sixty days, and there is a second coho
 If you want to be on the list for cohort two, here is the link. No commitment, just gets you the early heads-up before public sign-ups open.
 
 [Get on the cohort two list]({{waitlist_url}})
+
+Two paths from here, depending on where you are:
+
+- **Founding Pro** — for licensed contractors with an LLC and your own insurance. 5 percent take rate forever if you hit Sherpa Score Gold during beta. Cohort two opens in {{next_cohort_month}}.
+- **Sherpa Flex** — for everyone else. No LLC required. $1M per-project liability insurance included in the 18 percent take rate. Jobs under $5,000. Background check is the only gate. Live now at thesherpapros.com/pro/flex.
+
+Pick the door that fits where you are today. Either way, you can always upgrade later — Sherpa Flex pros who form an LLC drop to standard 12 percent, then 8 percent at Gold.
 
 If this is not for you, that is okay too. Thanks for reading this far.
 

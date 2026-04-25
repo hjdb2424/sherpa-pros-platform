@@ -251,13 +251,14 @@ Sherpa Home is the homeowner subscription product (Wave 6.3 in flight per `docs/
 | **Facebook** | Reel + 200-word text | "Sherpa Pros Quick Job: a real toilet install in 90 minutes, start to finish." | Same content + caption explaining Quick Job lane (pre-priced, confirmed in 30 min, no bidding). | n/a | Same | — | Reply 4 hr |
 | **X (Phyrom)** | Video | "Real Quick Job: toilet install, MA, $325, confirmed in 30 min, done in 90. This is what 'jobs, not leads' looks like:" | 30-sec horizontal cut. | none | Same | — | Quote-RT 1 plumber account |
 
-#### Day 18 — Sat 2026-05-09 — Pillar: Engagement
+#### Day 18 — Sat 2026-05-09 — Pillar: Engagement + Sherpa Flex side-hustle launch
 | Platform | Type | Hook | Caption | Hashtags | Asset | AI prompt | Engagement |
 |---|---|---|---|---|---|---|---|
 | **Instagram Story Poll** | Story | "Quick Job lane survey: which would you book first?" | F1: poll — toilet install / wall paint / ceiling fan / GFCI outlet. F2: results recap. F3: "Pre-priced, confirmed in 30 min. Live in beta now. Link in bio." | n/a | 3 frames | — | Reply DMs |
 | **TikTok** | Video | "Y'all asked: how does a Quick Job get to me in 30 minutes?" | Phyrom answers a top comment from Day 17 viral toilet reel. Walks through Dispatch matching. | #ContractorTok #SmartTech | Phyrom selfie | — | Reply 4 hr |
 | **Facebook** | Photo + text | "Saturday: what's the smallest home project you've been putting off?" | Ask the question. Replies inform Quick Job catalog priorities. | n/a | Phyrom photo | — | Reply 4 hr |
 | **X (brand)** | Poll | "Which Quick Job would you book first?" | Same options as IG. | none | none | — | — |
+| **Instagram Reel (Sherpa Flex launch)** | Reel | "Side-hustle on Sherpa Flex — your weekend, your jobs, $1M insurance included." | 45-sec selfie reel. Phyrom on jobsite, walks through Sherpa Flex: *"You don't need an LLC. You don't need your own insurance. You need a background check and a trade you're good at. 18% take rate, $1M per-project liability covered by the platform, jobs under $5K. Side-hustle door open at /pro/flex."* Burned-in captions. End with the [ASSET REQUIRED: Sherpa Flex tier badge — generate via `docs/operations/social-media-prompt-library.md` §10A before publishing] orange-red shield + "FLEX · 18% · INSURANCE INCLUDED" overlay. | #SherpaPros #SherpaFlex #SideHustle #ContractorLife #TradeJobs #SmallBusinessOwner | 45-sec selfie reel + tier-badge animated overlay | Capcut: animate Sherpa Flex tier badge (orange-red #FF4500 shield) sliding in over Phyrom's left shoulder at 0:38, hold 5 sec | Reply DMs from anyone asking "no LLC?" — route to /pro/flex |
 
 #### Day 19 — Sun 2026-05-10 — Pillar: Inspiration
 | Platform | Type | Hook | Caption | Hashtags | Asset | AI prompt | Engagement |
@@ -295,8 +296,7 @@ Sherpa Home is the homeowner subscription product (Wave 6.3 in flight per `docs/
 | **YouTube Long-form** | Video | "Buying a Boston triple-decker? 7 things your contractor must check first." | 6-min explainer. | n/a | Long-form | — | Reply 10 |
 | **YouTube Shorts** | Short | "7 things to check before renovating a Boston triple-decker." | 60-sec cut. | n/a | Same | — | — |
 | **Facebook** | Same reel + 400-word text | Same hook | Long-form for older Boston homeowner audience. | n/a | Same | — | Reply 4 hr |
-
-#### Day 23 — Thu 2026-05-14 — Pillar: Product (Sherpa Manager)
+| **TikTok (Sherpa Rewards catalog walk-through)** | Video | "Walking through the Sherpa Rewards catalog — Festool drill for 12,000 points, here's how to earn it." | 60-sec catalog walk-through. Phyrom screen-records /pro/rewards on his phone, scrolls through the 21-item catalog. Voiceover: *"100 points per job. 50 per review. 25 per photo. 25 per on-time. Plus 50 to 200 per month based on your Sherpa Score tier. Plus 500 per pro you bring on. Festool drill at the top of the Gold Exclusive items? 12,000 points. Run the math on your week."* End with the Tremendous logo + line: *"Real-world fulfillment via Tremendous — gift cards, prepaid debit, charity donations all live."* | #SherpaPros #SherpaRewards #ContractorTok #ToolReview #ContractorLife #FoundingPro | 60-sec phone screen recording of /pro/rewards | Capcut: pin a "+100 PTS · JOB COMPLETE" sky-blue pill that animates in every 8 sec to reinforce the math. Reference [ASSET REQUIRED: Sherpa Rewards catalog teaser — 4-up grid generated via `docs/operations/social-media-prompt-library.md` §10C] for the static end-card. | Reply DMs from pros asking how to redeem · screenshot best comments for next week's content |
 Sherpa Manager is the PM-tier product (Wave 6.2 in flight).
 
 | Platform | Type | Hook | Caption | Hashtags | Asset | AI prompt | Engagement |
@@ -325,12 +325,13 @@ Sherpa Manager is the PM-tier product (Wave 6.2 in flight).
 | **Facebook** | Photo + text | "What questions do you have about investing in Sherpa Pros?" | Direct ask. | n/a | Photo | — | Reply 4 hr |
 | **X (brand)** | Poll | "If a marketplace lets you own equity, would you back it?" | Yes / Maybe / No | none | none | — | — |
 
-#### Day 26 — Sun 2026-05-17 — Pillar: Inspiration
+#### Day 26 — Sun 2026-05-17 — Pillar: Inspiration + 5-tier ladder explainer
 | Platform | Type | Hook | Caption | Hashtags | Asset | AI prompt | Engagement |
 |---|---|---|---|---|---|---|---|
 | **Instagram Carousel (8 slides)** | Carousel | "8 dream NE renovations that started with a Sherpa Marketplace quote." | S1: hook. S2-7: photos. S8: "Sherpa Marketplace. Code-aware quotes. Real licensed pros. Comment DREAM for early access." | #SherpaPros #DreamHome #HomeRenovation #BostonHomes #NewEnglandLife | 8-slide carousel | Midjourney: "8 dream NE home renovations: Boston brownstone interior, Portland Maine kitchen, NH timber frame, Cambridge Victorian library, Cape Cod beach house, etc., editorial 4:5, NOT stock" | Reply 4 hr |
 | **TikTok** | Video | "8 NE dream renovations. Save for later." | Same montage. | #HomeRenovation #DreamHome #NewEnglandLife | Same | — | Reply 4 hr |
 | **Facebook** | Same | Same | Same. | n/a | Same | — | Reply 4 hr |
+| **LinkedIn carousel (Phyrom personal) — 5-tier explainer** | Carousel (8 slides) | "Sherpa Pros has 5 pro tiers — from 5% Founding Pro to 18% Sherpa Flex. Here's where you fit." | S1: Hook + 5-tier table teaser. S2: Founding Pro 5% forever (beta cohort, requires Sherpa Score Gold to lock). S3: Sherpa Score Gold — 8% take + 4-hour early access. S4: Sherpa Score Silver — 12% take. S5: Sherpa Score Bronze — 12% + improvement coaching. S6: Sherpa Flex — 18% take, $1M insurance included, jobs under $5K, no LLC required. S7: How tiers move — Flex → form LLC → Standard 12% → climb Sherpa Score → Gold 8%. One ladder. S8: CTA — comment "TIER" and Phyrom DMs back which tier fits you. **Mirrors `linkedin-editorial.md` Wk 21 Mon — same content, native LinkedIn carousel format.** | none on LinkedIn | 8-slide PDF carousel | [ASSET REQUIRED: Sherpa Pros 5-tier ladder infographic — generate via `docs/operations/social-media-prompt-library.md` §10D before publishing. **This is the single most-referenced visual in the Rewards + Flex sweep — generate FIRST.** Use template at 1080×1350 portrait, sky-blue #00A9E0 + orange-red #FF4500 accents on warm cream #FBF7EE.] | Phyrom replies 60 min — this carousel is investor + pro recruiting in one image |
 
 #### Day 27 — Mon 2026-05-18 — Pillar: Founder voice
 | Platform | Type | Hook | Caption | Hashtags | Asset | AI prompt | Engagement |
@@ -369,6 +370,7 @@ Sherpa Manager is the PM-tier product (Wave 6.2 in flight).
 | **Facebook** | Reel + 300-word recap | "30 days in. Here's what we shipped at Sherpa Pros." | Long-form. | n/a | Same | — | Reply 4 hr |
 | **X (Phyrom)** | Thread | "30 days. Here's what shipped:" | 8-tweet thread with the receipts. Last tweet: Wefunder link. | none | none | — | Reply 60 min |
 | **LinkedIn (Phyrom)** | Text | *(LinkedIn Editorial Wk 5 Wed — Founding Pro #3 spotlight)* | See `linkedin-editorial.md` Wk 5 Wed | none | Pro photo | — | Reply 60 min |
+| **Instagram Story sequence — Pro of the Month + first redemption** | Story (5 frames) | "Pro of the month — earned Gold + redeemed first reward." | F1: "Pro of the month — [Pro Name], [Trade], [Metro]. Earned Gold-tier on Sherpa Score in 6 weeks." Real Founding Pro photo + permission required. F2: Score-detail screen recording showing 84/100 with Gold-tier badge. F3: "First Sherpa Rewards redemption — Milwaukee impact driver, 2,500 points." Photo of pro holding the tool. F4: Pro testimonial 1-line: *"First platform that pays me twice — once for the work, once for doing the work right."* (Get the quote in writing.) F5: "Comment GOLD — I'll send you the climb-to-Gold playbook + the Sherpa Rewards earning rules." | n/a | 5 story frames + real pro photos + score screen recording | Use template 2D.5 (Founding Pro spotlight) for F1+F4; story template 2D.7 (in-app screen recording) for F2; real pro tool-in-hand photo for F3. Reference [ASSET REQUIRED: Sherpa Rewards catalog teaser — generate via `docs/operations/social-media-prompt-library.md` §10C] for the F5 end card. | Reply DMs from any pro asking "how do I earn Gold" → route to /pro/score; from any asking "how do I redeem" → route to /pro/rewards |
 
 ---
 

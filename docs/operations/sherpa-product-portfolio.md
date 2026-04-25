@@ -1,6 +1,6 @@
-# Sherpa Pros — Four-Product Brand Portfolio
+# Sherpa Pros — Six-Product Brand Portfolio
 
-**Date:** 2026-04-22
+**Date:** 2026-04-22 (v1) · **Updated 2026-04-25** — expanded to six products with Sherpa Rewards + Sherpa Flex going LIVE in production (commits `08b1a5f` + `a4b455a`)
 **Status:** Brand-architecture spec — anchors Wave 6 GTM revisions
 **Authors:** Claude (Wave 6.2) + Phyrom (review)
 **Companion docs:**
@@ -14,7 +14,7 @@
 
 ## 1. Executive Summary
 
-Sherpa Pros is no longer a single marketplace — it is a **four-product brand** built by a working New Hampshire general contractor (Phyrom, HJD Builders LLC). Each product solves a distinct customer problem: **Sherpa Marketplace** is the dispatch + match engine that connects homeowners and property managers to licensed pros (Project mode + Quick Job mode); **Sherpa Hub** is the physical pickup point where pros grab kits, rent tools, and earn certifications; **Sherpa Home** is the homeowner subscription that converts one-time buyers into repeat members; and **Sherpa Manager** is the managed-service tier where a dedicated human owns the customer relationship for PMs, multi-property owners, white-glove homeowners, and large companies. Together they form a flywheel: a customer enters through Marketplace, deepens through Home or Hub, and ascends to Manager — each product feeding the next, each defending a different competitor's flank, each compounding LTV.
+Sherpa Pros is no longer a single marketplace — it is a **six-product brand under one umbrella** built by a working New Hampshire general contractor (Phyrom, HJD Builders LLC). Each product solves a distinct customer problem: **Sherpa Marketplace** is the dispatch + match engine that connects homeowners and property managers to licensed pros (Project mode + Quick Job mode); **Sherpa Hub** is the physical pickup point where pros grab kits, rent tools, and earn certifications; **Sherpa Home** is the homeowner subscription that converts one-time buyers into repeat members; **Sherpa Success Manager** is the managed-service tier where a dedicated human owns the customer relationship for PMs, multi-property owners, white-glove homeowners, and large companies; **Sherpa Rewards** (LIVE 2026-04-25) is the points-based loyalty layer that compounds pro retention across every tier, fulfilled in real money via the Tremendous API; and **Sherpa Flex** (LIVE 2026-04-25) is a 5th pro tier — 18% fee, per-project platform liability insurance included, no LLC required, jobs under $5K only — that opens a side-hustle path for skilled tradespeople who want to test the platform without forming an LLC. Together they form a flywheel: a customer enters through Marketplace, deepens through Home or Hub, and ascends to Sherpa Success Manager; a pro enters through Sherpa Flex (no LLC) or as a Standard pro, climbs the Sherpa Score ladder to Gold (8% fee), and earns Sherpa Rewards points across every job they complete — each product feeding the next, each defending a different competitor's flank, each compounding LTV.
 
 ---
 
@@ -154,6 +154,79 @@ Likely answer: hybrid (small base retainer + variable component).
 
 ---
 
+### 2.5 Sherpa Rewards — *the loyalty engine* (LIVE)
+
+**Product positioning.** *"Every job earns points. Real points, real money — gift cards, tools, branded gear, the things working pros actually want. Loyalty that pays."*
+
+**Primary audience.** Trades / Pros across every tier (Founding Pro, Gold, Silver, Bronze, Sherpa Flex). Gold-tier pros maximize value via Gold-Exclusive catalog access.
+
+**Secondary audience.** Pros considering platform-switch — Sherpa Rewards is a hard-to-copy retention moat versus Angi / Thumbtack lead-gen models.
+
+**What it does.**
+- Mints points on the actions that drive marketplace quality: **100 pts/job completed · 50 pts/5-star review · 25 pts/photo upload (before/after documentation) · 25 pts/on-time arrival · 50–200 pts/month Sherpa Score tier bonus (Bronze < Silver < Gold) · 500 pts/successful pro referral**.
+- Catalog: **21 items** spanning branded apparel, tools (Milwaukee, DeWalt, Festool), gift cards, personal items, experiences. **Gold-Exclusive items** locked behind Sherpa Score Gold tier (only Gold pros can redeem the top-shelf catalog).
+- Backend: redemption fulfillment via the **Tremendous API** (`src/lib/services/tremendous.ts`) — real money payout (gift cards, prepaid debit, charity donations, etc.) with sandbox + production environments. Mock mode runs when no API key is set so dev environments still preview the redemption flow.
+- API surface: `GET/POST /api/rewards`, `GET /api/rewards/products`, `POST /api/rewards/webhook` (handles Tremendous order created / delivered / canceled events).
+- UX: redeem confirmation modal with three states (confirm → processing → success), live point deduction, redemption history, mock-mode banner when running locally.
+
+**Pricing model.** **No subscription fee for the pro.** Funded by platform margin. Each redemption draws real cash against the Sherpa Pros Tremendous account balance (so unit economics are: GMV × take-rate − points-redeemed × Tremendous-cost). Phase 1 budget controls: Gold-tier monthly bonus cap, redemption cooldowns, anti-gaming rate limits (already wired into `src/lib/incentives/rewards`).
+
+**Status.** **LIVE.** `/pro/rewards` shipped 2026-04-25 (commits `08b1a5f` page + sidebar + `a4b455a` Tremendous integration). Sidebar entry uses gift icon. Score detail page (`/pro/score`) integrates point balance + 3 featured rewards.
+
+**Phase timing.**
+- Phase 0 (now, LIVE): Mock mode in dev; live Tremendous API in production with sandbox keys for the beta cohort. Beta pros begin earning points day-one.
+- Phase 1: Catalog tuning based on redemption analytics; Gold-Exclusive catalog expansion; pro-referral campaign formalized as the highest-value point action.
+- Phase 2: Tiered point-multiplier events (e.g., "double-points weekend" for capacity-fill); brand-partner co-funded catalog items (Milwaukee, DeWalt, Festool sponsorships).
+- Phase 3: Sherpa Rewards opens to homeowner side as well (cross-product loyalty — Sherpa Home members earn points on jobs that convert to Sherpa Marketplace bookings).
+
+**Tech / ops dependencies.** Tremendous API key (env-gated, lazy SDK init), `src/lib/incentives/rewards.ts` catalog + point-values, `src/lib/services/tremendous.ts` service wrapper, webhook signature verification, redemption history table, anti-gaming rate limiters.
+
+**Cross-product hooks.**
+- ← **Sherpa Marketplace**: every completed job, every 5-star review, every on-time arrival, every photo-doc upload mints points. Marketplace activity IS the points-earning engine.
+- ← **Sherpa Flex**: Sherpa Flex pros earn points on the same schedule as Standard pros — even before they form an LLC. Sherpa Flex + Sherpa Rewards together = the lowest-friction on-ramp for new tradespeople.
+- ↔ **Sherpa Score**: Sherpa Score tier (Gold/Silver/Bronze) drives the monthly point bonus and gates Gold-Exclusive catalog items. Score and Rewards are linked products — climbing Score increases the Rewards take.
+- → **Sherpa Marketplace** (retention loop): Sherpa Rewards is the hard-to-copy moat that keeps pros from drifting to Angi / Thumbtack — earned-but-unredeemed point balances are real switching cost.
+
+---
+
+### 2.6 Sherpa Flex — *the side-hustle on-ramp* (LIVE)
+
+**Product positioning.** *"For skilled tradespeople who do work on the side. No LLC required. No personal insurance policy required. Sherpa Pros provides per-project liability coverage built into the service fee."*
+
+**Primary audience.**
+- Skilled tradespeople with a W-2 day job — moonlighters who want side income without forming a business entity
+- Construction-company employees with available time (slow weeks, weather days, between-project gaps) — directly addresses the **"Companies with employees with available time"** segment Interpretation B that was previously deferred to Phase 2 (see `docs/operations/companies-employee-time-segment.md`)
+- Pros who want to test the Sherpa Pros platform before committing to LLC formation + insurance procurement
+
+**Secondary audience.** Newly-licensed tradespeople (recent-graduate apprentices, career-switchers) who haven't yet built the financial cushion to carry their own general-liability insurance.
+
+**What it does.**
+- Standard onboarding plus skills verification (photo portfolio + knowledge quiz) plus background check.
+- Every accepted job carries **per-project platform liability insurance** built in — $1M general liability per occurrence / $2M aggregate, $500K property damage, personal injury protection included. Coverage is valid only during active Sherpa Pros jobs (not the pro's day-job hours).
+- Pro is a **1099 independent contractor** — same legal status as every other Sherpa Pros pro. The pro picks their own jobs, sets their own schedule.
+- **Eligibility constraints:** jobs **under $5,000 only** (larger jobs require Standard insurance), pro must maintain **Bronze or higher Sherpa Score**, valid government ID + skills assessment + background check.
+- Includes in-product **LLC formation guide**, **insurance quote resources** (so the pro can graduate to Standard tier when ready), and a **fee comparison chart** (18% Sherpa Flex vs 12% Standard vs 8% Gold).
+
+**Pricing model.** **18% take rate, no subscription.** The 6% premium over the 12% Standard tier funds the per-project platform liability insurance. Net effective fee to a Sherpa Flex pro is *lower than 12% Standard once you factor in the cost of carrying their own general-liability policy* — Sherpa Flex bundles the insurance the pro would otherwise have to buy.
+
+**Status.** **LIVE.** `/pro/flex` shipped 2026-04-25 (commit `08b1a5f`). Sidebar entry in the bottom section.
+
+**Phase timing.**
+- Phase 0 (now, LIVE): Page live, eligibility flow live, insurance binder partner contracted (per-project rider).
+- Phase 1: Outreach to construction-company HR + facilities operators whose tradesperson employees want side income (the previously-deferred Interpretation B path now ships).
+- Phase 2: Sherpa Flex graduate cohort metric tracked — % of Flex pros who upgrade to Standard tier within 12 months becomes a key supply-side health indicator.
+- Phase 3: Sherpa Flex tier rolls out alongside national marketplace expansion; partnership channels with trade-school career-services offices and union-apprenticeship programs.
+
+**Tech / ops dependencies.** Per-project insurance binder API (carrier integration), eligibility gate (jobs <$5K, background check, Sherpa Score floor), fee-engine differentiation (18% vs 12% vs 8% by tier), upgrade flow (Sherpa Flex → Standard when own insurance + LLC verified).
+
+**Cross-product hooks.**
+- ↔ **Sherpa Marketplace**: Sherpa Flex pros transact through the same dispatch + match surface as every other tier. Sherpa Flex is a **fee/eligibility tier**, not a parallel marketplace.
+- → **Sherpa Score climb path**: Sherpa Flex pro completes jobs → Sherpa Score grows → at any point pro can acquire own insurance + LLC and drop to Standard tier (12%) → keeps climbing Score → reaches Gold (8% + 4hr early access).
+- ↔ **Sherpa Rewards**: Sherpa Flex pros earn rewards points on every job, review, photo, and on-time arrival. Loyalty engine works identically across all five tiers.
+- → **Companies-w/employee-time segment Interpretation B**: Sherpa Flex's per-project platform insurance + sub-$5K ceiling + explicit independent-contractor framing dissolves the worker-classification risk that previously deferred this segment to Phase 2. Construction company HR can now point tradesperson employees at Sherpa Flex as a side-income channel without joint-employer / payroll-tax exposure (see `docs/operations/companies-employee-time-segment.md` 2026-04-25 update).
+
+---
+
 ## 3. Cross-Product Flywheel
 
 ```
@@ -204,9 +277,11 @@ A Property Manager signs up for the **Sherpa Marketplace** PM tier ($4/unit/yr �
 | Bundle | Composition | Audience | Pricing strategy |
 |---|---|---|---|
 | **Sherpa Pros Owner Bundle** | Marketplace (free) + Sherpa Home subscription | Homeowner | Sherpa Home priced standalone; Marketplace usage is free either way. Bundle is "join Home, keep using Marketplace." |
-| **Sherpa Pros Pro Bundle** | Marketplace pro account + Sherpa Hub membership | Contractor | Marketplace $49/mo + Hub $99/yr. Bundle: "Founding Pros get Hub free for year 1." |
-| **Sherpa Pros PM Bundle** | Marketplace PM tier + Sherpa Manager | Property Manager | Marketplace PM tier ($4/unit/yr → $1.50/unit at scale) + Manager retainer ($999–$2,499/mo). Bundle: discount Manager retainer if PM has >100 units on Marketplace. |
-| **Sherpa Pros White Glove Bundle** | Marketplace + Sherpa Home + Sherpa Manager | Premium homeowner / Multi-Property Owner | Single quoted price ($299–$499/mo) wrapping all three. Most managed product. |
+| **Sherpa Pros Pro Bundle** | Marketplace pro account + Sherpa Hub membership + **Sherpa Rewards (auto-included)** | Contractor (Standard or Gold tier) | Marketplace $49/mo + Hub $99/yr + Sherpa Rewards points-from-day-one. Bundle: "Founding Pros get Hub free for year 1 + double Rewards points for first 90 days." |
+| **Sherpa Pros PM Bundle** | Marketplace PM tier + Sherpa Success Manager | Property Manager | Marketplace PM tier ($4/unit/yr → $1.50/unit at scale) + Manager retainer ($999–$2,499/mo). Bundle: discount Manager retainer if PM has >100 units on Marketplace. |
+| **Sherpa Pros White Glove Bundle** | Marketplace + Sherpa Home + Sherpa Success Manager | Premium homeowner / Multi-Property Owner | Single quoted price ($299–$499/mo) wrapping all three. Most managed product. |
+| **Sherpa Pros "No LLC Starter" Bundle** *(NEW)* | **Sherpa Flex** + **Sherpa Rewards** + LLC formation guide | Side-hustle / moonlighter / construction-company employee | Pro joins as Sherpa Flex (18%, insurance included, no LLC), earns Sherpa Rewards points on every job. In-product LLC formation walkthrough nudges upgrade to Standard tier when ready. Entry-level acquisition bundle for the supply side. |
+| **Sherpa Pros "All Tiers Earn"** *(structural)* | Every pro tier (Founding Pro · Gold · Silver · Bronze · Sherpa Flex) earns Sherpa Rewards | All pros | Sherpa Rewards is not a separate purchase — it's a loyalty layer that runs on every transaction. Catalog tier-locking (Gold-Exclusive items) creates the only Score-driven differentiation. |
 
 **Bundle pricing — open question.** Discount the bundle vs. standalone, OR keep prices independent and let the bundle exist as a marketing wrapper only? See §9 Q5.
 

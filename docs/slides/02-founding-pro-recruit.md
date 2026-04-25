@@ -175,6 +175,26 @@ HJD Builders sends you overflow work when I'm booked. **Real revenue, not future
 
 ---
 
+<!-- _class: compare -->
+
+# Where do you fit?
+
+## **5 pro tiers. One ladder. The fee you pay is the door you came in through.**
+
+| Tier | **Fee** | **Path** |
+|---|---|---|
+| **Founding Pro** | **5% forever** | Beta cohort · Locked at Sherpa Score Gold during beta |
+| **Sherpa Score Gold** | **8%** + 4hr early access to job postings | Score 80+ · Quality + Communication + Reviews |
+| **Sherpa Score Silver** | **12%** | Score 60-79 · Doing fine, room to climb |
+| **Sherpa Score Bronze** | **12%** + structured improvement coaching | Score under 60 · The path back up is a checklist |
+| **Sherpa Flex** | **18%** *(includes $1M per-project liability insurance)* | No LLC · Jobs under $5K · Background check · Side-hustle door |
+
+> **One ladder, both directions.** Sherpa Flex pros who form an LLC and get their own insurance drop to Standard 12%. Climb Sherpa Score to Gold and you are at 8%. Founding Pros who hit Gold during beta lock 5% forever.
+
+<!-- ASSET REQUIRED: Sherpa Pros 5-tier ladder infographic — Founding Pro → Gold → Silver → Bronze → Flex with fee + perks per tier. See `docs/operations/social-media-prompt-library.md` Section 10D for the full Ideogram prompt. Generate this asset FIRST — it is the single most-referenced visual in the Sherpa Rewards + Flex sweep AND the single image that explains Sherpa Pros' pro economics to investors AND pros simultaneously. Place as full-bleed background OR as a right-side 4:5 portrait if the table is rendered as the left column. Same graphic used across LinkedIn Wk 21 Mon, social-content-plan.md Day 26, investor pitch deck (Slide 7+), Wefunder Section 4. -->
+
+---
+
 # What you commit to.
 
 - **90-day beta minimum.** Real licensed work only.

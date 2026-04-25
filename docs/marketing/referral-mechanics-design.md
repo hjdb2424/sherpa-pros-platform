@@ -470,6 +470,57 @@ pm_referral_leads
 
 ---
 
+## 5.5 Sherpa Rewards integration with referral loops
+
+**Date added:** 2026-04-22 (Sherpa Rewards launch sweep — commits `08b1a5f`, `a4b455a`)
+
+Sherpa Rewards (live at `/pro/rewards`) is the points-redemption store for pros. The earning rules already include a **500 pts per successful referral** line item — this section documents how that integrates with the loop mechanics in §5.
+
+### What stacks (Loop 1 — Pro → Pro)
+
+A successful Pro→Pro referral earns the referrer **all of the following**, in addition to the Loop 1 reward structure in §5.2:
+
+- **500 Sherpa Rewards points** (≈$25 of redemption value at typical catalog price points — Visa gift card, Milwaukee accessories, Sherpa branded apparel)
+- The 1-month subscription waiver ($49 value) per §5.2
+- The "Bring a Pro" tally + badge progression per §5.2
+- The take-rate reduction tier-up at 3 successful referrals per §5.2
+
+This stacks intentionally. The Sherpa Rewards 500 pts is not a substitute for the existing Loop 1 incentive — it's an **additional immediate-gratification layer** that converts the abstract "fee waiver next billing cycle" into a tangible "I'm 1,500 points away from a free Festool drill" loop. Loyalty + retention research consistently shows that points-based loyalty programs lift referral conversion by 15–30% even when the absolute dollar value of the points is small, because the catalog browsing itself creates desire.
+
+### Math check (updates §5.2 cost basis)
+
+- Original Loop 1 cost per successful referral: **$327** (sub waiver + referee waiver + first-3-jobs commission give-back)
+- + Sherpa Rewards points cost (500 pts at platform redemption cost ≈ $25): **+$25**
+- **New total platform cost per successful Pro→Pro referral: $352**
+- Original payback: 1.6 months. New payback: **1.7 months** (still well below the 6-month CAC-payback threshold)
+- The +$25 is marginal. The conversion lift is the leverage.
+
+### What does NOT stack (Loops 2, 3, 4)
+
+The 500-pt referral bonus applies **only to the Pro→Pro loop** in Phase 1. Rationale:
+
+- **Loop 2 (Client→Client):** Clients don't have Sherpa Rewards accounts (Rewards is a pro-side surface). Their reward stays the $25 platform credit per §5.10.
+- **Loop 3 (Pro→Client):** The reward to the pro is a 0% commission on the first job — already richer than 500 pts. Adding pts here would create a "double-dip" optic that anti-fraud surfaces would have to mediate. Hold for Phase 2 review.
+- **Loop 4 (Client→PM):** Client referrer; same as Loop 2 — $250 platform credit, no Rewards points (clients don't have a Rewards account).
+
+### Implementation note
+
+The Sherpa Rewards points grant fires on the same trigger as the Loop 1 sub-waiver — referee's first paid job clears Stripe and `referrals.status` advances to `completed`. The commission engine writes a single `referral_rewards` row per reward type, and the Sherpa Rewards point ledger is an additional `pro_rewards_ledger` insert (separate table, separate audit trail).
+
+### Anti-fraud overlap
+
+The 500 pts inherits the same anti-fraud surface as the Loop 1 reward — no separate fraud queue. If a referral gets flagged and held under §5.3, the Sherpa Rewards points are held in escrow alongside the sub-waiver until manual review clears.
+
+### Copy update — Loop 1 in-app banner variants (§5.5)
+
+Replace the Loop 1 in-app banner copy with these updated variants that surface the Rewards stack:
+
+1. *"Bring another good pro. Both of you save — and you earn 500 Sherpa Rewards points per successful referral."*
+2. *"Half-price forever for the pros you bring on, plus 500 Sherpa Rewards points for you. That's a Festool drill in 24 referrals — or a Visa gift card in 1. Your code: JOSE-NH"*
+3. *"Tired of seeing good pros stuck on Angi? Send them your code: JOSE-NH. You both save. You also earn Sherpa Rewards points."*
+
+---
+
 ## 6. Cross-Loop Implementation Notes
 
 ### 6.1 Shared infrastructure

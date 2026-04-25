@@ -104,6 +104,8 @@ Sherpa Pros is the licensed-trade marketplace that thinks like a contractor. Bui
 
 **4. Permit-aware and rebate-aware.** The platform knows which jobs need a Boston ISD permit, which qualify for **Mass Save heat-pump rebates** ($10,000+ available in 2026), which qualify for **National Grid Turnkey EV charger** installation rebates, and walks both sides through the paperwork.
 
+**Sherpa Flex — the no-LLC entry point.** Most marketplaces force tradespeople to look like a small business before they can earn a dollar. We don't. **Sherpa Flex** is the 5th pro tier we shipped to production this quarter — 18% take rate, $1M per-project liability insurance included in the platform fee, jobs under $5,000, background check is the only gate. It opens the platform to moonlighters, employees of GC companies who want side income, weekend warriors, and tradespeople who are testing self-employment before they form an LLC. When the income justifies the paperwork, they form the LLC, get their own insurance, and drop to Standard 12% — then climb Sherpa Score to Gold and pay 8%. One platform, three doors. The whole point: don't lose a skilled tradesperson because the on-ramp was broken. Build the on-ramp.
+
 **Built by a contractor — that's the moat.** The code-intelligence layer required a working GC plus a 3-year codebase to build. National lead-gen platforms can't copy it without a structural rebuild. They have no incentive — their entire P&L runs on lead-share fees. Ours doesn't.
 
 ---
@@ -174,7 +176,13 @@ Sherpa Pros is the licensed-trade marketplace that thinks like a contractor. Bui
 - *[QUOTE 2 PLACEHOLDER]*
 - *[QUOTE 3 PLACEHOLDER]*
 
-**Founder commitment:** quarterly investor updates with real numbers — pros, jobs, GMV, runway, hires, NPS. The founder writes them personally.
+**Recent shipped features (build-in-public credibility):**
+
+- **Sherpa Score** — 0-to-100 quality grade for every pro on the platform. 12 metrics across 3 pillars (Quality 50% · Communication 25% · Reviews 25%). Gold-tier (80+) pros pay 8% take rate + get 4-hour early access to job postings; Silver and Bronze pay 12%. Live in production at `/pro/score`. The quality moat lead-gen platforms can't build because their P&L doesn't reward it.
+- **Sherpa Rewards** — points-redemption store for pros, live at `/pro/rewards`. Pros earn 100 pts per job, 50 per review, 25 per photo, 25 per on-time, 50–200 per month per Sherpa Score tier, 500 per referral. 21-item catalog (branded apparel, Milwaukee + DeWalt + Festool tools, Visa gift cards, prepaid debit, charity donations, experiences). Gold Exclusive items locked behind Sherpa Score Gold. Real-world fulfillment via **Tremendous API** integration — gift cards, prepaid debit, and charity donations are shipped through Tremendous, not platform credits. Loyalty + retention layer.
+- **Sherpa Flex** — 5th pro tier, live at `/pro/flex`. 18% take rate (includes $1M per-project liability insurance), no LLC required, jobs under $5K, background check gate. Opens the addressable supply-side to moonlighters, GC-company employees, and tradespeople testing the platform before incorporating. Includes LLC formation guide, insurance quote resources, and fee comparison chart. The "no-LLC" door investors and community alike asked us about.
+
+**Founder commitment:** quarterly investor updates with real numbers — pros, jobs, GMV, runway, hires, NPS, Sherpa Score distribution, Sherpa Rewards redemptions, Sherpa Flex tier conversions. The founder writes them personally.
 
 ---
 

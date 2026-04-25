@@ -254,17 +254,37 @@ Each lane = a **branded, defensible category.** Old-House Verified is filed for 
 
 ---
 
-# Business model: three revenue lines.
+# Business model: three revenue lines + 5 pro tiers.
 
 | Revenue line | Beta | Standard | Why it works |
 |---|---|---|---|
-| **Marketplace take rate** | 5% of completed job | **10%** of completed job | Roughly half a contractor's all-in Angi cost. Tied to outcome, not bid-clicks. |
+| **Marketplace take rate** | 5% of completed job | **8% Gold · 12% Silver/Bronze · 18% Flex** | Tier-priced by Sherpa Score quality grade. Tied to outcome, not bid-clicks. |
 | **Pro subscription** | $0 | **$49/mo per pro** | Predictable Monthly Recurring Revenue. Funded by the value of vetted, code-checked jobs. |
 | **Property Manager tier** | — | **$4/unit/mo entry → $1.50/unit/mo at scale (5,000+ units)** | Multi-year contracts. Net-Operating-Income (NOI) impacting product. |
 
-**Founding Pros** — the first 10–12 beta pros — keep **5% take forever.** Permanent recruiting hook. Permanent loyalty lock against any future competitor.
+**The 5 pro tiers — each tier prices to a real audience segment:**
 
-**Unit economics, back-of-envelope:** 200 pros at standard pricing ($49 sub + 10% take on $8K Gross Merchandise Value per pro per month) = **$2.0M Annual Recurring Revenue (ARR) before the PM tier turns on.**
+| Tier | Fee | Path |
+|---|---|---|
+| **Founding Pro** | **5% forever** | Beta cohort · Locked at Sherpa Score Gold during beta |
+| **Sherpa Score Gold** | **8%** + 4hr early access | Score 80+ · The quality moat |
+| **Sherpa Score Silver** | **12%** | Score 60-79 · Doing fine |
+| **Sherpa Score Bronze** | **12%** + improvement coaching | Score under 60 · Path back up is a checklist |
+| **Sherpa Flex** | **18%** *($1M insurance included)* | No LLC · Jobs under $5K · Side-hustle door · NEW |
+
+**Founding Pros** keep **5% take forever** if they hit Gold during beta. Permanent loyalty lock against any future competitor. **Sherpa Flex** is the 5th tier — opens the audience to moonlighters, employees of GC companies, and tradespeople testing the platform before forming an LLC. That entire segment was previously unreachable on lead-gen platforms.
+
+**Unit economics, back-of-envelope:** 200 pros at blended pricing ($49 sub + ~10.5% blended take on $8K Gross Merchandise Value per pro per month) = **~$2.0M Annual Recurring Revenue (ARR) before the PM tier turns on.**
+
+---
+
+<!-- _class: bignumber -->
+
+# **5 tiers**
+
+## Quality (Sherpa Score). Retention (Sherpa Rewards). Accessibility (Sherpa Flex). The marketplace economics no incumbent has.
+
+<!-- ASSET REQUIRED: Sherpa Pros 5-tier ladder infographic — Founding Pro → Gold → Silver → Bronze → Flex with fee + perks per tier. See `docs/operations/social-media-prompt-library.md` Section 10D for the full Ideogram prompt. Generate this asset FIRST — it is the single most-referenced visual in the Sherpa Rewards + Flex sweep AND the single image that explains Sherpa Pros' pro economics to investors AND pros simultaneously. Place lower-right of this bignumber slide at ~480px tall. Same graphic used across LinkedIn Wk 21 Mon, social-content-plan.md Day 26, founding-pro recruit deck slide "Where do you fit?", Wefunder Section 4. -->
 
 ---
 
@@ -317,6 +337,8 @@ Each lane = a **branded, defensible category.** Old-House Verified is filed for 
 **Liquidity signal:** [N]% of jobs matched in under 2 hours.
 **Quality signal:** Pro NPS [score] · Client NPS [score] (target > 50).
 **Moat signal:** [count] code-aware quote validations run · [count] code violations caught before homeowner saw the quote.
+**Retention signal:** **Sherpa Rewards** live in production — points-redemption store backed by **Tremendous API** for real-world fulfillment (gift cards, prepaid debit, charity donations). Pros earn 100 pts per job, 50 per review, 25 per photo, 25 per on-time, 50–200 per month per Sherpa Score tier, 500 per referral. 21-item catalog, Gold-tier exclusives gated behind Sherpa Score 80+.
+**Accessibility signal:** **Sherpa Flex** live in production — 5th pro tier, 18% take rate (includes $1M per-project liability insurance), no LLC required, jobs under $5K. Opens the addressable supply-side to moonlighters + employees of GC companies + tradespeople testing the platform before incorporating. Previously deferred to Phase 2+; now reachable in Phase 1.
 
 <span class="caption">Phyrom: replace bracketed numbers with live data within 24h of send.</span>
 

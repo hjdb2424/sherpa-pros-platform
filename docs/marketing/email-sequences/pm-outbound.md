@@ -42,6 +42,8 @@ Phyrom
 Founder, Sherpa Pros
 {{phone}}
 
+P.S. — Got tradesperson employees with side bandwidth? Sherpa Flex lets them moonlight on Sherpa Pros without forming an LLC. $1M per-project liability insurance is included in the platform fee. Win-win for you (employee retention) and them (extra income). I can walk you through the referral path during the demo.
+
 ---
 
 ## Email 2 — Day 4
@@ -78,6 +80,8 @@ Want to see it on your own portfolio? I can pull a sample report from the demo d
 
 Phyrom
 
+P.S. — Got tradesperson employees with side bandwidth? Sherpa Flex lets them moonlight on Sherpa Pros without forming an LLC. $1M per-project liability insurance is included in the platform fee. Win-win for you (employee retention) and them (extra income).
+
 ---
 
 ## Email 3 — Day 9
@@ -110,6 +114,8 @@ If those numbers do not work for your portfolio, tell me where they are off and 
 
 Phyrom
 
+P.S. — Got tradesperson employees with side bandwidth? Sherpa Flex lets them moonlight on Sherpa Pros without forming an LLC. $1M per-project liability insurance is included in the platform fee. Win-win for you (employee retention) and them (extra income).
+
 ---
 
 ## Email 4 — Day 17
@@ -141,6 +147,8 @@ Founder, Sherpa Pros
 {{phone}}
 
 PS — If you are wondering why a NH general contractor is selling property management software: I built it for HJD's own work-order intake first, realized the same plumbing solved a much bigger problem for PM operators, and the rest is product.
+
+PPS — Got tradesperson employees with side bandwidth? Sherpa Flex lets them moonlight on Sherpa Pros without forming an LLC. $1M per-project liability insurance is included in the platform fee. Win-win for you (employee retention) and them (extra income). Happy to walk through the referral path on a demo.
 
 ---
 

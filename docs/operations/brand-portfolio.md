@@ -21,7 +21,7 @@ It is intentionally substantive. A brand book that fits on one page does not sur
 
 ## 1. Brand Story
 
-Sherpa Pros is the national licensed-trade marketplace built by a working New Hampshire general contractor. It is one umbrella brand and four products: Sherpa Marketplace (the dispatch and match engine), Sherpa Hub (the physical pickup point for pros), Sherpa Home (the homeowner subscription), and Sherpa Manager (the managed-service tier for property managers and white-glove homeowners).
+Sherpa Pros is the national licensed-trade marketplace built by a working New Hampshire general contractor. It is one umbrella brand and **six products**: Sherpa Marketplace (the dispatch and match engine), Sherpa Hub (the physical pickup point for pros), Sherpa Home (the homeowner subscription), Sherpa Success Manager (the managed-service tier for property managers and white-glove homeowners), Sherpa Rewards (the points-based loyalty program for pros, fulfilled in real money via the Tremendous API), and Sherpa Flex (the side-hustle pro tier with per-project platform liability insurance built into the service fee — no LLC required).
 
 The company started as a problem the founder lived. Phyrom runs HJD Builders LLC out of New Hampshire and has been a working general contractor for twelve-plus years. Every week his crew gets pitched the same platforms — Angi, Thumbtack, TaskRabbit, Handy — and every week the same two things go wrong. The leads are sold three or four times before they reach the contractor's phone, so the homeowner already feels harassed and the contractor pays to bid against people who shouldn't be touching the wiring. And nobody on those platforms checks code. A heat pump install in Massachusetts has to clear NEC, MA Electrical, and a municipal inspection, plus a Mass Save rebate paperwork chain. None of the existing platforms know that. Phyrom's crew does.
 
@@ -833,23 +833,27 @@ Key principles that apply to social regardless of platform:
 
 ---
 
-## 9. Brand Hierarchy (for the 4-product portfolio)
+## 9. Brand Hierarchy (for the 6-product portfolio)
 
 Per `docs/operations/sherpa-product-portfolio.md`:
 
 - **Sherpa Pros** is the umbrella brand. Always say "Sherpa Pros" when referring to the company.
-- **Sherpa Marketplace · Sherpa Hub · Sherpa Home · Sherpa Manager** are products. Always say "Sherpa [Product]" when referring to a specific one.
-- **NEVER say** "the Sherpa Pros app" — which app? Always specify the product. This is the most common naming violation now that the portfolio has expanded from one product to four.
-- Visual treatment: each product can have its own sub-icon (per Wave 6.4 brand-asset prompts in `docs/operations/brand-asset-prompts.md` §7), all derived from the canonical wordmark and icon family. The four product icons share a single visual grammar so they read as a family.
+- The six products in canonical order are: **Sherpa Marketplace · Sherpa Hub · Sherpa Home · Sherpa Success Manager · Sherpa Rewards · Sherpa Flex**. Always say "Sherpa [Product]" when referring to a specific one.
+- **NEVER say** "the Sherpa Pros app" — which app? Always specify the product. This is the most common naming violation now that the portfolio has expanded from one product to six.
+- **NEVER say** "Flex" alone or "the Flex tier" alone in external surfaces — always **Sherpa Flex** or **the Sherpa Flex tier**.
+- **Sherpa Rewards** (capitalized, as a program name) refers to the loyalty program. Lowercase "rewards" refers to individual catalog items the pro can redeem. Don't blur the two.
+- Visual treatment: each product can have its own sub-icon (per Wave 6.4 brand-asset prompts in `docs/operations/brand-asset-prompts.md` §7), all derived from the canonical wordmark and icon family. The six product icons share a single visual grammar so they read as a family.
 
 The umbrella voice is one founder, one tone, one set of always-say words. Product voices specialize within that:
 
-- **Marketplace** voice: transactional + urgent. "Match in 30 minutes. Pre-priced. Confirmed."
-- **Hub** voice: pro-to-pro, gritty, equipment-and-supplies tone. "Pick up the kit. Rent the saw. Earn the cert."
-- **Home** voice: warm + savings-focused. "Membership that pays for itself. Faster pros. Five percent off every job."
-- **Manager** voice: enterprise + trust + relationship. "A real person owns your account. Not a chatbot. Not a portal."
+- **Sherpa Marketplace** voice: transactional + urgent. "Match in 30 minutes. Pre-priced. Confirmed."
+- **Sherpa Hub** voice: pro-to-pro, gritty, equipment-and-supplies tone. "Pick up the kit. Rent the saw. Earn the cert."
+- **Sherpa Home** voice: warm + savings-focused. "Membership that pays for itself. Faster pros. Five percent off every job."
+- **Sherpa Success Manager** voice: enterprise + trust + relationship. "A real person owns your account. Not a chatbot. Not a portal."
+- **Sherpa Rewards** voice: pro-to-pro, plainspoken, payoff-focused. "Every job earns points. Real points, real money. The things working pros actually want."
+- **Sherpa Flex** voice: matter-of-fact, on-ramp-focused. "For skilled tradespeople who do work on the side. No LLC required. Insurance built in." (Use "side-hustle" — it's the contractor-credible word. Never "gig" or "task.")
 
-The umbrella brand voice is what unifies them. The product voices specialize within it. Never let the product voices contradict the umbrella voice (no "AI-powered Hub experience," no "disrupt-the-PM-software Manager service").
+The umbrella brand voice is what unifies them. The product voices specialize within it. Never let the product voices contradict the umbrella voice (no "AI-powered Hub experience," no "disrupt-the-PM-software Sherpa Success Manager service," no "gig economy" framing for Sherpa Flex).
 
 ---
 
@@ -865,6 +869,7 @@ The umbrella brand voice is what unifies them. The product voices specialize wit
 | iOS app icon set | `public/icons/icon-{16,32,48,72,...,1024}x{}.png` | Native app + PWA |
 | Apple touch icon | `public/apple-touch-icon.png` | iOS home screen |
 | Generic logo (legacy) | `public/logo.png` | Audit and confirm: replace or remove |
+| **Sherpa Score + Sherpa Flex tier badges** *(needs to be populated)* | `public/badges/` (Gold / Silver / Bronze Sherpa Score badges + Sherpa Flex tier badge + Founding Pro badge) | Pro profile cards, score-detail page, marketplace listings, recruit collateral, Sherpa Rewards Gold-Exclusive lock visuals |
 | PWA manifest | `public/manifest.json` | PWA configuration (icon references) |
 | Marp editorial slide theme | `scripts/marp-themes/sherpa-pros-editorial.css` | Every slide deck. Includes 10 layout classes. |
 | Print editorial PDF theme | `scripts/docs-pdf-editorial.css` | Every PDF rendered from markdown |
@@ -915,9 +920,12 @@ When you find a conflict, fix the lower-precedence document to match the higher-
 
 - **Wordmark color secondary value: orange-red vs amber.** The canonical wordmark Phyrom shared uses orange-red (`#FF4500`) for the PROS block. The currently-shipped editorial themes (`scripts/marp-themes/sherpa-pros-editorial.css` and `scripts/docs-pdf-editorial.css`) and the existing brand bible deck use amber (`#F59E0B`) as the secondary brand color. This portfolio treats orange-red as the canonical wordmark color and reserves amber as a secondary editorial-theme accent (used in print-theme amber underlines, the lower-third strip on cover slides, and rule callouts). **Decision needed:** Phyrom should confirm whether (a) orange-red is canonical and the editorial themes need an update to swap amber for orange-red across the supporting design, or (b) amber stays as the print-and-deck secondary while orange-red lives only in the wordmark itself. This portfolio assumes (b) until Phyrom rules.
 - **Wordmark master file lives in iCloud, not the repo.** The primary wordmark master is in Phyrom's iCloud Drive, not in the project repository. **Recommendation:** copy the master to `public/brand/sherpa-pros-wordmark.png` (and a `sherpa-pros-wordmark.svg` if a vector source is available) before the next deployment so production builds don't depend on iCloud being mounted.
-- **Sherpa Account Manager vs Sherpa Success Manager.** Per `docs/operations/sherpa-product-portfolio.md` §9 Q4, the official product name is "Sherpa Manager" but the role title for the dedicated human is still being decided (Account Manager vs Success Manager). This portfolio uses "Sherpa Manager" as the product name and leaves the human-role title TBD.
+- **Sherpa Success Manager human-role title.** The product name is **Sherpa Success Manager** (locked 2026-04-25 per backend deployment commit `6097f83`). The role title for the dedicated human staffing the product (Account Manager vs Success Manager vs simply "your Sherpa Manager") is still being decided. This portfolio uses "Sherpa Success Manager" as the product name and leaves the human-role title TBD.
 - **Email canonical alias.** Brand audit P0-4 flagged that two email aliases appear in shipped materials (`phyrom@thesherpapros.com` and `poum@hjd.builders`). Phyrom needs to lock one as canonical for investor-facing materials and use it everywhere. This portfolio uses `poum@hjd.builders` in the §8.3 example signature per the CLAUDE.md project memory, but Phyrom should confirm.
 - **Domain canonical form.** `www.thesherpapros.com` vs `thesherpapros.com`. Spec §3.4 confirms `https://www.thesherpapros.com/` as canonical. This portfolio honors that. Update CLAUDE.md to drop the `sherpa-pros-platform.vercel.app` reference (deprecated as of 2026-04-24).
+- **~~Sherpa Flex naming~~** — **CLOSED 2026-04-25.** "Sherpa Flex" is locked as the canonical name for the 5th pro tier (18% fee, per-project insurance included, no LLC required, jobs <$5K only). Always use "Sherpa Flex" or "Sherpa Flex tier" in external surfaces — never "Flex" alone, never "the Flex tier" alone. Live page: `/pro/flex`. Position the 18% fee as a *feature, not a bug* — when you factor in the cost of carrying personal general-liability insurance (the alternative on Standard tier), the 6% premium over Standard is *less than* what the pro would pay out-of-pocket for their own policy. The headline is **"insurance included,"** not "higher fee."
+- **Sherpa Rewards visual treatment** *(NEW — flagged for resolution).* Sherpa Rewards shipped LIVE 2026-04-25 (`/pro/rewards`) but the visual identity is still using stock heroicons and Tailwind palette tokens. Needed: (1) **branded gift-category icons** for the 5 catalog categories (apparel, tools, gift cards, personal items, experiences) that share the diagonal-cut visual grammar of the Sherpa Pros wordmark; (2) **point-value display** treatment that pairs cleanly with the Manrope numeric scale used in score / earnings dashboards; (3) **Gold-Exclusive lock badge** that uses amber (`#F59E0B`) plus the Sherpa Score Gold tier visual cue without competing with the wordmark's orange-red; (4) **redemption-success modal animation** — quiet, contractor-credible (no confetti, no "you're a winner!" copy — match the plainspoken founder voice). Brand Guardian to spec these with Phyrom approval before any non-Phyrom designer touches the page.
+- **Sherpa Flex page color audit** *(NEW — flagged for resolution).* The shipped `/pro/flex` page uses **violet** (`violet-50`, `violet-100`, `violet-600` Tailwind tokens) as the dominant tier color. Violet is **not** in the canonical Sherpa Pros palette (sky blue `#00A9E0`, orange-red `#FF4500`, amber `#F59E0B`, dark navy `#1A1A2E`). Decision needed: should Sherpa Flex pick up an existing brand color (likely sky blue, since amber is reserved for Gold-tier and orange-red for the wordmark / urgency states) or should the brand palette officially expand to add a fifth tier-color for Sherpa Flex? Brand Guardian to recommend before Phase 1 marketing assets are produced.
 
 ---
 

@@ -824,7 +824,100 @@ A clean editorial improvement-tip card template for Sherpa Score, 1080 by 1080 p
 
 ---
 
-## SECTION 10 — Tactical Best Practices
+## SECTION 10 — Sherpa Rewards + Flex visual assets
+
+**Date added:** 2026-04-22 (Sherpa Rewards + Sherpa Flex launch sweep — commits `08b1a5f`, `a4b455a`)
+
+This section is the asset library for the **Sherpa Rewards** (points-redemption store, live at `/pro/rewards`) and **Sherpa Flex** (the 5th pro tier, no LLC required, live at `/pro/flex`) launch. Generation order matters: **Section 10D (5-tier ladder infographic) should be generated FIRST** because every other piece of content in the LinkedIn editorial Wks 19-21 and the social-content-plan.md Days 18/22/26/30 references it visually.
+
+### 10A. Sherpa Flex tier badge (1080×1080 px square, 1:1)
+
+The companion tier badge to the Sherpa Score Gold/Silver/Bronze badges in Section 9. Used inline in LinkedIn Wk 19 Mon, IG Reel Day 18, /pro/flex page header, founding-pro recruit deck (Slide "Where do you fit?"), Wefunder page Section 4, and the pro-recruiting Email 1 inline image.
+
+```
+A clean editorial tier-badge graphic for Sherpa Flex, 1080 by 1080 pixels square 1:1. Composition: solid warm cream #FBF7EE background fills the canvas. Centered: a large heraldic shield silhouette at 720px tall by 600px wide, filled solid orange-red #FF4500 (the Sherpa Pros accent color reserved for CTAs and the Flex tier specifically). Inside the shield: at the top, the word "FLEX" in white Manrope sans-serif bold uppercase 96pt letter-spacing 0.1em. Below "FLEX" with 24px gap: a thin horizontal white rule at 4px tall stretching 60% of the shield width, centered. Below the rule with 24px gap: the line "18% · INSURANCE INCLUDED" in white Manrope sans-serif bold uppercase 36pt letter-spacing 0.15em on a single line. Below that line with 32px gap: a tiny white Manrope italic 18pt sub-line "$1M PER-PROJECT LIABILITY". UPPER 8% of canvas (above the shield with 64px gap): a single horizontal sky blue #00A9E0 pill at 56px tall containing centered the words "SHERPA PROS · TIER 5" in white Manrope sans-serif bold uppercase 18pt letter-spacing 0.2em. LOWER 8% of canvas (below the shield with 64px gap): a centered dark navy #1A1A2E Manrope 22pt line "thesherpapros.com/pro/flex". Flat editorial design, no gradients, no drop-shadows on the shield itself, no metallic effects. The shield is the only orange-red on the canvas. The mood: a permanent platform credential — clean, contractor-credible, the side-hustle door.
+```
+
+- **Aspect Ratio:** 1:1 (1080×1080)
+- **Style filter:** Design
+- **Character ref:** Sherpa Pros icon (upload the canonical icon file referenced in Section 8)
+- **Use case:** LinkedIn Wk 19 Mon "Introducing Sherpa Flex" post, Day 18 IG Reel end-card, /pro/flex page header hero, recruit deck Slide "Where do you fit?", Wefunder Section 4 inline image, pro-recruiting Email 1 P.S. inline graphic
+- **Variants:** generate a 9:16 vertical version (1080×1920) in the same session for IG Story + TikTok use; the shield re-centers, the supporting text reflows above + below
+
+### 10B. "Insurance included" math chart — Sherpa Flex fee comparison (1080×1350 px portrait, 4:5)
+
+The cost-comparison graphic that explains why 18% take rate is actually competitive once the included $1M per-project liability insurance is netted out. Used in LinkedIn Wk 19 Fri, the /pro/flex page comparison module, and the recruit deck.
+
+```
+A clean editorial cost-comparison chart graphic for Sherpa Flex fee math, 1080 by 1350 pixels portrait 4:5. Composition: solid warm cream #FBF7EE background fills the canvas. UPPER 12% of canvas: a horizontal sky blue #00A9E0 pill at 64px tall containing centered the words "SHERPA FLEX · THE MATH" in white Manrope sans-serif bold uppercase 24pt letter-spacing 0.15em. CENTERED in the upper-middle 25%: a dark navy #1A1A2E Fraunces serif 56pt headline "18% sounds high. Until you do the math." reflowed across two lines, left-aligned within an 880px-wide centered text block. CENTERED in the middle 50% of canvas: a clean 2-row horizontal comparison bar chart. ROW 1: a long horizontal bar at 88px tall, 880px wide, filled solid orange-red #FF4500. White Manrope bold 36pt label centered inside the bar reading "SHERPA FLEX · 18% TAKE". To the right of the bar (outside, on cream): a small dark navy Manrope 18pt italic note "Includes $1M per-project liability insurance". 32px vertical gap. ROW 2: a shorter horizontal bar at 88px tall, 580px wide (proportionally ~12% of an arbitrary 100% scale), filled solid sky blue #00A9E0. White Manrope bold 36pt label centered inside the bar reading "NET ≈ 12% AFTER INSURANCE VALUE". To the right of the bar (outside, on cream): a small dark navy Manrope 18pt italic note "Independent handyman policy: $800–$1,500/yr". CENTERED below the chart with 64px gap: a dark navy Manrope 24pt italic single line "Same math as Sherpa Score Silver — without the LLC paperwork." LOWER 12% of canvas: small dark navy Sherpa Pros wordmark on the LEFT at 22pt; small dark navy "thesherpapros.com/pro/flex" Manrope 18pt on the RIGHT. A thin sky blue 4px horizontal accent rule sits at the bottom edge of the canvas. Flat editorial design, no gradients, no drop-shadows. Bars are flat solid color rectangles with crisp 90-degree corners.
+```
+
+- **Aspect Ratio:** 4:5 (1080×1350)
+- **Style filter:** Design
+- **Character ref:** Sherpa Pros icon
+- **Use case:** LinkedIn Wk 19 Fri "The math of Sherpa Flex" post photo asset, /pro/flex page comparison module, founding-pro recruit deck (companion slide to "Where do you fit?"), Day 18 IG carousel slide if Phyrom expands the launch into a multi-slide format
+- **Variants:** generate a 1:1 square version (1080×1080) in the same session for LinkedIn carousel S2-S3 native ratio, and a 9:16 vertical (1080×1920) for IG Story / TikTok
+
+### 10C. Sherpa Rewards catalog teaser — 4-up product grid (1080×1080 px square, 1:1)
+
+The catalog-tease graphic that drops 4 representative items from the 21-item /pro/rewards catalog into a single shareable image. Used in LinkedIn Wk 20 Mon, Day 22 TikTok end-card, IG Story F5 reward unlock, and the pro-reengagement Email 3 inline graphic.
+
+```
+A clean editorial catalog-teaser graphic for Sherpa Rewards, 1080 by 1080 pixels square 1:1. Composition: solid warm cream #FBF7EE background fills the canvas. UPPER 12% of canvas: a single horizontal sky blue #00A9E0 pill at 64px tall containing centered the words "SHERPA REWARDS · CATALOG" in white Manrope sans-serif bold uppercase 24pt letter-spacing 0.15em. CENTERED in the middle 70% of canvas: a clean 2-by-2 grid of four product cards. Each card is 420px wide by 420px tall, with 32px gutters between cards. Each card has a solid warm cream #FBF7EE inner fill, a thin sky blue #00A9E0 1px border, and a dark navy #1A1A2E header bar at 56px tall across the top. UPPER-LEFT card header bar text in white Manrope bold uppercase 18pt: "TOOLS". UPPER-LEFT card body: a clean studio product illustration of a Festool TID 18 cordless impact driver in green and black, centered in the white space, occupying ~60% of the card body, with a small dark navy Manrope 22pt point-cost label centered below the product reading "12,000 PTS · GOLD EXCLUSIVE". UPPER-RIGHT card header bar text: "TOOLS". UPPER-RIGHT card body: a clean studio product illustration of a Milwaukee M18 FUEL impact driver in red and black, with a label below reading "2,500 PTS". LOWER-LEFT card header bar text: "GIFT CARDS". LOWER-LEFT card body: a clean studio illustration of a Visa prepaid gift card in blue and gold, with a label below reading "5,000 PTS · $50 VALUE". LOWER-RIGHT card header bar text: "BRANDED APPAREL". LOWER-RIGHT card body: a clean studio illustration of a heather-gray hooded sweatshirt with a small Sherpa Pros wordmark embroidered on the left chest in sky blue, with a label below reading "1,500 PTS". LOWER 12% of canvas: small dark navy Sherpa Pros wordmark on the LEFT at 22pt; small dark navy "thesherpapros.com/pro/rewards · powered by Tremendous" Manrope 16pt on the RIGHT. A thin sky blue 4px horizontal accent rule sits at the bottom edge of the canvas. Flat editorial product illustrations, no photorealistic gradients, no drop-shadows. Each product is a clean recognizable silhouette in its brand colors. The mood: a contractor's wishlist — specific, earnable, the catalog you actually want to redeem from.
+```
+
+- **Aspect Ratio:** 1:1 (1080×1080)
+- **Style filter:** Design
+- **Character ref:** Sherpa Pros icon
+- **Use case:** LinkedIn Wk 20 Mon "Introducing Sherpa Rewards" carousel S5 end-card, Day 22 TikTok end-card after the catalog walk-through, Day 30 IG Story F5 redemption call-to-action, pro-reengagement Email 3 inline graphic
+- **Variants:** generate a 4:5 portrait (1080×1350) version with 6 products in a 2-by-3 grid for LinkedIn carousel use, and a 9:16 vertical (1080×1920) with 3 products stacked for IG Story / TikTok end-cards
+- **Brand-bible note:** the Tremendous attribution line in the lower-right is REQUIRED — it signals real-world fulfillment and differentiates Sherpa Rewards from "platform credit" loyalty programs that homeowners and pros distrust. Never omit.
+
+### 10D. Sherpa Pros 5-tier ladder infographic — Founding Pro → Gold → Silver → Bronze → Flex (1080×1350 px portrait, 4:5)
+
+**Generate this asset FIRST.** Every Sherpa Rewards + Flex content reference flows visually back to this infographic. Used in LinkedIn Wk 21 Mon, Day 26 LinkedIn carousel, founding-pro recruit deck slide "Where do you fit?", investor pitch deck Slide 7+ (5-tier business model), Wefunder Section 4, and any future "explain the platform" surface for both pros and investors.
+
+```
+A clean editorial 5-tier-ladder infographic for the Sherpa Pros pro tier system, 1080 by 1350 pixels portrait 4:5. Composition: solid warm cream #FBF7EE background fills the canvas. UPPER 10% of canvas: a horizontal sky blue #00A9E0 pill at 64px tall containing centered the words "SHERPA PROS · 5 PRO TIERS" in white Manrope sans-serif bold uppercase 24pt letter-spacing 0.15em. CENTERED in the upper-middle 12% with 32px gap below the pill: a dark navy #1A1A2E Fraunces serif 48pt headline "Where do you fit?" centered. CENTERED in the middle 65% of canvas: 5 horizontal tier-bar rows stacked vertically, 880px wide each, 96px tall each, with 24px vertical gaps between bars. Each bar has a solid color fill, a tier name on the LEFT at 36pt white Manrope bold uppercase, a fee value in the CENTER at 56pt white Manrope bold ("5%", "8%", "12%", "12%", "18%"), and a one-line tier descriptor on the RIGHT at 18pt white Manrope italic. ROW 1 (TOP): bar fill = sky blue #00A9E0 with a thin metallic-gold #D4A017 4px left edge accent stripe. LEFT label: "FOUNDING PRO". CENTER fee: "5%". RIGHT descriptor: "Forever · Beta cohort · Locked at Gold". ROW 2: bar fill = metallic gold #D4A017 (the only canvas use of this color). LEFT label: "GOLD". CENTER fee: "8%". RIGHT descriptor: "Score 80+ · 4hr early access". ROW 3: bar fill = light slate gray (a soft #94A3B8). LEFT label: "SILVER". CENTER fee: "12%". RIGHT descriptor: "Score 60-79 · Doing fine". ROW 4: bar fill = bronze #8B5A2B. LEFT label: "BRONZE". CENTER fee: "12%". RIGHT descriptor: "Score under 60 · Coaching included". ROW 5 (BOTTOM): bar fill = orange-red #FF4500 with a thin white 4px right-edge accent stripe. LEFT label: "FLEX". CENTER fee: "18%". RIGHT descriptor: "No LLC · $1M insurance included · jobs <$5K". CENTERED below the 5 bars with 48px gap: a dark navy Manrope italic 22pt single line "Climb the ladder: Flex → form LLC → Standard 12% → Gold 8%." LOWER 8% of canvas: small dark navy Sherpa Pros wordmark on the LEFT at 22pt; small dark navy "thesherpapros.com" Manrope 18pt on the RIGHT. A thin sky blue 4px horizontal accent rule sits at the bottom edge. Flat editorial design, no gradients, no drop-shadows. Each tier-bar is a flat solid rectangle with crisp 90-degree corners. The mood: an honest map of the pro economics — investors see the moat, pros see their path.
+```
+
+- **Aspect Ratio:** 4:5 (1080×1350)
+- **Style filter:** Design
+- **Character ref:** Sherpa Pros icon
+- **Use case:** LinkedIn Wk 21 Mon "5-tier ladder" carousel S1, Day 26 LinkedIn carousel S1 + S7 (full chart slide), founding-pro recruit deck slide "Where do you fit?", investor pitch deck (Slide 7 5-tier business model), Wefunder Section 4 inline image, /pro page mid-fold trust block
+- **Variants:** generate a 1:1 square (1080×1080) version with the bars compressed for LinkedIn single-image post + IG square use, and a 16:9 horizontal (1920×1080) for the investor deck slide insertion. The 9:16 vertical (1080×1920) variant is optional — use only if Phyrom wants an IG Story version
+- **Color discipline note:** This infographic is the ONE canvas in the entire Sherpa Pros visual library where ALL FIVE color exceptions appear simultaneously — sky blue (Founding Pro + Gold tier accent), metallic gold #D4A017 (Gold tier ONLY), slate gray (Silver tier ONLY), bronze #8B5A2B (Bronze tier ONLY), orange-red (Flex tier). Hold these colors EXACTLY. If any tier color drifts in a regenerated batch, regenerate — do not manually color-correct. The visual readability of the tier system depends on these colors being instantly recognizable across every surface they appear on.
+- **Brand-bible note:** the descriptor copy must NEVER call Sherpa Flex a "gig" tier — the brand bible explicitly bans "gig" because of Uber/DoorDash baggage. Use "side-hustle door" in any expanded copy, never "gig."
+
+### 10E. "Side-hustle on Sherpa" — Instagram square template (1080×1080 px square, 1:1)
+
+The square template Phyrom uses for IG square posts and Story call-out frames that promote Sherpa Flex without the full math chart in 10B.
+
+```
+A clean editorial Instagram square template for Sherpa Flex side-hustle promotion, 1080 by 1080 pixels square 1:1. Composition: solid warm cream #FBF7EE background fills the upper 70% of the canvas, transitioning to a solid orange-red #FF4500 horizontal band filling the bottom 30%. UPPER 10% of canvas (on cream): a single horizontal sky blue #00A9E0 pill at 56px tall containing centered the words "SHERPA FLEX · NO LLC REQUIRED" in white Manrope sans-serif bold uppercase 18pt letter-spacing 0.2em. CENTERED in the upper-middle 50% of canvas (on cream): a large empty placeholder area approximately 880px wide by 380px tall for the headline copy added in Canva (e.g., "Side-hustle on Sherpa Flex." or "Your weekend, your jobs, $1M insurance included."). The headline area is intentionally clean cream space — Canva drops in dark navy #1A1A2E Fraunces serif 64pt headline reflowed across 2 lines. WITHIN the orange-red band (lower 30%): on the LEFT at 32px from edge, a vertically-centered line of three small Manrope white sans-serif bold uppercase 24pt sub-claims stacked vertically with 16px between them — "JOBS UNDER $5K", "$1M LIABILITY INCLUDED", "BACKGROUND CHECK · NO LLC". On the RIGHT side of the orange-red band: a clean white sans-serif "thesherpapros.com/pro/flex" Manrope bold 24pt URL aligned right. The transition from cream to orange-red is a CRISP HORIZONTAL EDGE — no gradient, no fade, no shadow. Flat editorial design, no decorative elements beyond the pill at the top. The mood: a flyer at a supply-house counter — direct, honest, the side door to the platform.
+```
+
+- **Aspect Ratio:** 1:1 (1080×1080)
+- **Style filter:** Design
+- **Character ref:** Sherpa Pros icon
+- **Use case:** Day 18 IG square post variant (companion to the Reel), IG Story F1 of any 5-frame Sherpa Flex sequence, Lowe's Pro / FW Webb / Rockler print-flyer reuse (Phyrom prints at the supply house counter for in-person pro recruit), Wefunder Section 4 inline image
+- **Caption overlay (Canva):** the headline placeholder gets either *"Side-hustle on Sherpa Flex."* or a Phyrom-voice question like *"No LLC? You're not out."* — keep it under 80 characters
+- **Variants:** generate a 9:16 vertical (1080×1920) for IG Story + TikTok end-cards, and a 4:5 portrait (1080×1350) for LinkedIn carousel slot
+
+### 10F. Sherpa Rewards + Flex quick-reference rules (apply across all 5 visuals above)
+
+- **Orange-red #FF4500 is the Sherpa Flex tier color.** It was previously reserved for CTAs, "★ NEW" badges, and urgent callouts only. As of 2026-04-22 it is ALSO the Sherpa Flex tier identifier. When using orange-red elsewhere (CTAs, Wefunder badges), make sure the context is unambiguous — the eye should not confuse a Wefunder CTA button with a Sherpa Flex tier badge. Spatial separation in the layout fixes this.
+- **Tremendous attribution is required on every Sherpa Rewards visual** that shows the catalog or a reward redemption. The wording "powered by Tremendous" in the lower-right corner signals real-world fulfillment (gift cards, prepaid debit, charity donations) and differentiates Sherpa Rewards from generic platform-credit loyalty programs.
+- **Never call Sherpa Flex a "gig" tier** in any caption, alt text, or graphic. Brand bible bans "gig" because of Uber/DoorDash baggage. Use "side-hustle door," "5th tier," or "no-LLC tier."
+- **Always say "Sherpa Flex" — never "Flex" alone.** Same rule as Sherpa Score, Sherpa Rewards. The "Sherpa" prefix is the brand mark.
+- **Always say "Sherpa Rewards" — never "Rewards" alone.**
+- **The 5-tier ladder color stack (Section 10D) is the single most-referenced visual in the Sherpa Pros library after the wordmark itself.** Treat color drift as a regeneration trigger — never color-correct in Photoshop.
+- **Pro-attribution rules apply:** any "Pro of the month — earned Gold + redeemed first reward" celebration story (Day 30 IG Story sequence) requires written permission from the featured pro per the beta agreement. Save the DM screenshot in the same `social-content-permissions/` folder as Sherpa Score celebration assets.
+- **Phyrom's surname is UNKNOWN** — never invent one in any caption, alt text, filename, or attribution line on these new assets. "Phyrom" only.
+
+---
+
+## SECTION 11 — Tactical Best Practices
 
 ### Caption-overlay strategy
 

@@ -1,16 +1,21 @@
 import { NextResponse } from 'next/server';
 import { communicationService } from '@/lib/communication';
 import type { CreateConversationPayload } from '@/lib/communication';
-import { getConversations } from '@/db/queries/messages';
+import {
+  getConversations as getChatConversations,
+  createConversation as createChatConversation,
+} from '@/lib/communication/chat-service';
+import { getConversations as getDbConversations } from '@/db/queries/messages';
 
 /**
  * GET /api/chat?userId=xxx
  * List conversations for the authenticated user.
- * Tries DB query first, falls back to communication service, then mock.
+ * Priority: chat-service mock data > DB > communication service fallback.
  */
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const userId = searchParams.get('userId');
+  const role = searchParams.get('role') ?? undefined;
 
   if (!userId) {
     return NextResponse.json(
@@ -20,51 +25,81 @@ export async function GET(request: Request) {
   }
 
   try {
-    // Try DB-first approach with lateral join for last message
-    const dbConversations = await getConversations(userId);
+    // Use the chat service which handles mock mode automatically
+    const conversations = await getChatConversations(userId, role);
+
+    if (conversations.length > 0) {
+      return NextResponse.json({ conversations });
+    }
+
+    // Fallback: Try DB-first approach with lateral join for last message
+    const dbConversations = await getDbConversations(userId);
 
     if (dbConversations.length > 0) {
       const items = dbConversations.map((conv) => ({
-        conversation: {
-          id: conv.id,
-          jobId: conv.job_id,
-          proUserId: conv.pro_user_id,
-          clientUserId: conv.client_user_id,
-          status: conv.status,
-          createdAt: conv.created_at,
-        },
+        id: conv.id,
+        participants: [],
+        jobId: conv.job_id,
+        jobTitle: conv.job_title ?? `Job ${conv.job_id}`,
+        status: conv.status,
+        createdAt: conv.created_at,
         lastMessage: conv.last_message_body
-          ? { body: conv.last_message_body, createdAt: conv.last_message_at }
+          ? {
+              id: 'db-msg',
+              conversationId: conv.id,
+              senderId: '',
+              senderName: '',
+              senderRole: 'client',
+              text: conv.last_message_body,
+              timestamp: conv.last_message_at ?? conv.created_at,
+              readBy: [],
+              deliveryMethod: 'app',
+            }
           : null,
         unreadCount: 0,
-        otherPartyRole: conv.pro_user_id === userId ? 'client' : 'pro',
-        jobTitle: conv.job_title ?? `Job ${conv.job_id}`,
+        otherParticipant: null,
       }));
 
       return NextResponse.json({ conversations: items });
     }
 
-    // Fall back to communication service
-    const conversations =
+    // Final fallback: communication service
+    const convs =
       await communicationService.getConversationsForUser(userId);
 
     const items = await Promise.all(
-      conversations.map(async (conv) => {
+      convs.map(async (conv) => {
         const messages = await communicationService.getMessages(conv.id, 1);
         const allMessages = await communicationService.getMessages(conv.id, 100);
         const unreadCount = allMessages.filter(
           (m) => m.senderId !== userId && m.readAt === null,
         ).length;
 
-        const otherPartyRole =
-          conv.proUserId === userId ? 'client' : 'pro';
-
         return {
-          conversation: conv,
-          lastMessage: messages[0] ?? null,
-          unreadCount,
-          otherPartyRole,
+          id: conv.id,
+          participants: [],
+          jobId: conv.jobId,
           jobTitle: `Job ${conv.jobId}`,
+          status: conv.status,
+          createdAt: conv.createdAt.toISOString(),
+          lastMessage: messages[0]
+            ? {
+                id: messages[0].id,
+                conversationId: conv.id,
+                senderId: messages[0].senderId,
+                senderName: '',
+                senderRole: 'client',
+                text: messages[0].body,
+                timestamp:
+                  messages[0].createdAt instanceof Date
+                    ? messages[0].createdAt.toISOString()
+                    : messages[0].createdAt,
+                readBy: [],
+                deliveryMethod: 'app',
+              }
+            : null,
+          unreadCount,
+          otherParticipant: null,
         };
       }),
     );
@@ -82,7 +117,7 @@ export async function GET(request: Request) {
  * Create a new masked conversation between Pro and Client.
  */
 export async function POST(request: Request) {
-  let body: CreateConversationPayload;
+  let body: CreateConversationPayload & { jobTitle?: string };
   try {
     body = await request.json();
   } catch {
@@ -92,7 +127,7 @@ export async function POST(request: Request) {
     );
   }
 
-  const { jobId, proUserId, clientUserId } = body;
+  const { jobId, proUserId, clientUserId, jobTitle } = body;
 
   if (!jobId || !proUserId || !clientUserId) {
     return NextResponse.json(
@@ -101,20 +136,17 @@ export async function POST(request: Request) {
     );
   }
 
-  // TODO: Verify caller is either the pro or client on this job
-  // TODO: Check for existing active conversation on this job to prevent duplicates
-
   try {
-    const conversation = await communicationService.createConversation(
+    const conversation = await createChatConversation(
+      [
+        { id: proUserId, role: 'pro', name: 'Pro' },
+        { id: clientUserId, role: 'client', name: 'Client' },
+      ],
       jobId,
-      proUserId,
-      clientUserId,
+      jobTitle ?? `Job ${jobId}`,
     );
 
-    return NextResponse.json(
-      { conversation },
-      { status: 201 },
-    );
+    return NextResponse.json({ conversation }, { status: 201 });
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Unknown error';
     return NextResponse.json({ error: message }, { status: 500 });

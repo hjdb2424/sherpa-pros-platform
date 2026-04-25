@@ -9,6 +9,7 @@ import ReviewAggregator from '@/components/social/ReviewAggregator';
 import ReviewStats from '@/components/reviews/ReviewStats';
 import ReviewList from '@/components/reviews/ReviewList';
 import ProResponseForm from '@/components/reviews/ProResponseForm';
+import DocumentScanner from '@/components/ocr/DocumentScanner';
 import Link from 'next/link';
 
 export default function ProfilePageClient() {
@@ -16,6 +17,7 @@ export default function ProfilePageClient() {
   const [radiusValue, setRadiusValue] = useState(pro.serviceArea.travelRadiusMiles);
   const [respondingTo, setRespondingTo] = useState<string | null>(null);
   const [respondingReview, setRespondingReview] = useState<{ reviewerName: string; text: string; rating: number } | null>(null);
+  const [showDocScanner, setShowDocScanner] = useState(false);
 
   const handleRespondToReview = async (reviewId: string) => {
     try {
@@ -209,7 +211,25 @@ export default function ProfilePageClient() {
 
         {/* License & Insurance */}
         <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm sm:p-6 dark:border-zinc-800 dark:bg-zinc-900">
-          <h2 className="text-base font-bold text-zinc-900 dark:text-zinc-50">License &amp; Insurance</h2>
+          <div className="flex items-center justify-between">
+            <h2 className="text-base font-bold text-zinc-900 dark:text-zinc-50">License &amp; Insurance</h2>
+            <button
+              type="button"
+              onClick={() => setShowDocScanner(!showDocScanner)}
+              className="flex items-center gap-1.5 rounded-lg bg-[#00a9e0]/10 px-3 py-1.5 text-xs font-bold text-[#00a9e0] transition-colors hover:bg-[#00a9e0]/20"
+            >
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 0 1 5.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 0 0-1.134-.175 2.31 2.31 0 0 1-1.64-1.055l-.822-1.316a2.192 2.192 0 0 0-1.736-1.039 48.774 48.774 0 0 0-5.232 0 2.192 2.192 0 0 0-1.736 1.039l-.821 1.316Z" />
+                <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0Z" />
+              </svg>
+              Scan Document
+            </button>
+          </div>
+          {showDocScanner && (
+            <div className="mt-3 rounded-lg border border-zinc-100 bg-zinc-50 p-3 dark:border-zinc-800 dark:bg-zinc-800/50">
+              <DocumentScanner onSave={() => setShowDocScanner(false)} onClose={() => setShowDocScanner(false)} />
+            </div>
+          )}
           <div className="mt-3 space-y-2">
             {pro.licenses.map((lic) => (
               <div

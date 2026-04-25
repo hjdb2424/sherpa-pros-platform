@@ -2,6 +2,7 @@ import { useState, useCallback, useEffect } from 'react';
 import {
   View,
   Text,
+  TextInput,
   FlatList,
   Pressable,
   RefreshControl,
@@ -10,7 +11,7 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import * as Haptics from 'expo-haptics';
-import { colors, spacing, borderRadius, typography } from '@/lib/theme';
+import { colors, spacing, typography } from '@/lib/theme';
 import Avatar from '@/components/common/Avatar';
 import SkeletonCard from '@/components/common/SkeletonCard';
 import { apiFetch } from '@/lib/api';
@@ -25,50 +26,47 @@ interface Conversation {
   avatarColor: string;
   isOnline?: boolean;
   isSentByMe?: boolean;
+  jobTitle?: string;
+  role?: string;
 }
 
 const CONVERSATIONS: Conversation[] = [
   {
-    id: '1',
+    id: 'conv-1',
     name: 'Mike Thompson',
     initials: 'MT',
-    lastMessage: 'I\'ll be there tomorrow at 9am to start the faucet repair. Please make sure the water main...',
-    timestamp: '2m ago',
+    lastMessage: "All done! Faucet is installed and working great. No leaks.",
+    timestamp: '30m',
     unreadCount: 2,
-    avatarColor: colors.primary,
+    avatarColor: '#6366f1',
     isOnline: true,
+    jobTitle: 'Kitchen Faucet Replacement',
+    role: 'Pro',
   },
   {
-    id: '2',
-    name: 'Sarah Chen',
-    initials: 'SC',
-    lastMessage: 'The deck staining is complete! Here are some photos of the finished work.',
-    timestamp: '1h ago',
-    unreadCount: 0,
-    avatarColor: colors.success,
-    isOnline: true,
-    isSentByMe: true,
-  },
-  {
-    id: '3',
+    id: 'conv-6',
     name: 'Carlos Rodriguez',
     initials: 'CR',
-    lastMessage: 'Thanks for accepting my bid. I can start the electrical work on Monday.',
-    timestamp: '3h ago',
+    lastMessage: "You'll need to be home for the inspection afterward.",
+    timestamp: '12h',
     unreadCount: 1,
-    avatarColor: colors.warning,
-    isOnline: false,
+    avatarColor: '#f59e0b',
+    isOnline: true,
+    jobTitle: 'Electrical Panel Upgrade',
+    role: 'Pro',
   },
   {
-    id: '4',
+    id: 'conv-5',
     name: 'James Wilson',
     initials: 'JW',
-    lastMessage: 'Sure, I can provide a detailed breakdown of the HVAC maintenance costs.',
-    timestamp: 'Yesterday',
+    lastMessage: 'WOW the difference is night and day! Ice cold now.',
+    timestamp: '3d',
     unreadCount: 0,
-    avatarColor: colors.accent,
+    avatarColor: '#8b5cf6',
     isOnline: false,
     isSentByMe: true,
+    jobTitle: 'HVAC Tune-Up & Filter',
+    role: 'Pro',
   },
 ];
 
@@ -78,11 +76,27 @@ export default function ClientMessagesScreen() {
   const [refreshing, setRefreshing] = useState(false);
   const [loading, setLoading] = useState(true);
   const [conversations, setConversations] = useState<Conversation[]>(CONVERSATIONS);
+  const [search, setSearch] = useState('');
 
   useEffect(() => {
-    apiFetch<any>('/chat')
+    apiFetch<any>('/chat?userId=client-john')
       .then((data) => {
-        if (data.conversations?.length > 0) setConversations(data.conversations);
+        if (data.conversations?.length > 0) {
+          const mapped = data.conversations.map((c: any) => ({
+            id: c.id,
+            name: c.otherParticipant?.name ?? c.jobTitle,
+            initials: c.otherParticipant?.initials ?? c.jobTitle?.charAt(0) ?? '?',
+            lastMessage: c.lastMessage?.text ?? 'No messages yet',
+            timestamp: c.lastMessage ? formatRelative(c.lastMessage.timestamp) : '',
+            unreadCount: c.unreadCount ?? 0,
+            avatarColor: c.otherParticipant?.avatarColor ?? colors.primary,
+            isOnline: c.otherParticipant?.isOnline ?? false,
+            isSentByMe: c.lastMessage?.senderId === 'client-john',
+            jobTitle: c.jobTitle,
+            role: c.otherParticipant?.role === 'pm' ? 'PM' : 'Pro',
+          }));
+          setConversations(mapped);
+        }
       })
       .catch(() => {})
       .finally(() => setLoading(false));
@@ -91,9 +105,24 @@ export default function ClientMessagesScreen() {
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-    apiFetch<any>('/chat')
+    apiFetch<any>('/chat?userId=client-john')
       .then((data) => {
-        if (data.conversations?.length > 0) setConversations(data.conversations);
+        if (data.conversations?.length > 0) {
+          const mapped = data.conversations.map((c: any) => ({
+            id: c.id,
+            name: c.otherParticipant?.name ?? c.jobTitle,
+            initials: c.otherParticipant?.initials ?? '?',
+            lastMessage: c.lastMessage?.text ?? 'No messages yet',
+            timestamp: c.lastMessage ? formatRelative(c.lastMessage.timestamp) : '',
+            unreadCount: c.unreadCount ?? 0,
+            avatarColor: c.otherParticipant?.avatarColor ?? colors.primary,
+            isOnline: c.otherParticipant?.isOnline ?? false,
+            isSentByMe: c.lastMessage?.senderId === 'client-john',
+            jobTitle: c.jobTitle,
+            role: c.otherParticipant?.role === 'pm' ? 'PM' : 'Pro',
+          }));
+          setConversations(mapped);
+        }
       })
       .catch(() => {})
       .finally(() => setRefreshing(false));
@@ -111,6 +140,14 @@ export default function ClientMessagesScreen() {
     });
   }, [router]);
 
+  const filtered = search.trim()
+    ? conversations.filter(
+        (c) =>
+          c.name.toLowerCase().includes(search.toLowerCase()) ||
+          (c.jobTitle?.toLowerCase().includes(search.toLowerCase()) ?? false),
+      )
+    : conversations;
+
   const renderConversation = useCallback(
     ({ item }: { item: Conversation }) => (
       <Pressable
@@ -121,16 +158,30 @@ export default function ClientMessagesScreen() {
           <Avatar initials={item.initials} size={48} color={item.avatarColor} />
           <View style={[styles.onlineDot, { backgroundColor: item.isOnline ? colors.success : colors.borderMedium }]} />
         </View>
-        {item.unreadCount > 0 && <View style={styles.unreadDot} />}
         <View style={styles.conversationContent}>
           <View style={styles.conversationHeader}>
-            <Text style={[styles.conversationName, item.unreadCount > 0 && styles.conversationNameBold]}>{item.name}</Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, flex: 1 }}>
+              <Text style={[styles.conversationName, item.unreadCount > 0 && styles.conversationNameBold]} numberOfLines={1}>{item.name}</Text>
+              {item.role && (
+                <View style={styles.roleBadge}>
+                  <Text style={styles.roleBadgeText}>{item.role}</Text>
+                </View>
+              )}
+            </View>
             <Text style={styles.conversationTime}>{item.timestamp}</Text>
           </View>
+          {item.jobTitle && (
+            <Text style={styles.jobTitle} numberOfLines={1}>{item.jobTitle}</Text>
+          )}
           <View style={styles.conversationFooter}>
             <Text style={[styles.conversationMessage, item.unreadCount > 0 && styles.conversationMessageUnread]} numberOfLines={1}>
               {item.isSentByMe ? 'You: ' : ''}{item.lastMessage}
             </Text>
+            {item.unreadCount > 0 && (
+              <View style={styles.unreadBadge}>
+                <Text style={styles.unreadBadgeText}>{item.unreadCount > 99 ? '99+' : item.unreadCount}</Text>
+              </View>
+            )}
           </View>
         </View>
       </Pressable>
@@ -154,16 +205,27 @@ export default function ClientMessagesScreen() {
         <Text style={styles.headerTitle}>Messages</Text>
       </View>
 
+      {/* Search bar */}
+      <View style={styles.searchContainer}>
+        <TextInput
+          style={styles.searchInput}
+          placeholder="Search conversations..."
+          placeholderTextColor="#a1a1aa"
+          value={search}
+          onChangeText={setSearch}
+        />
+      </View>
+
       {loading ? (
         <SkeletonCard count={3} />
       ) : (
         <FlatList
-          data={conversations}
+          data={filtered}
           renderItem={renderConversation}
           keyExtractor={(item) => item.id}
           contentContainerStyle={[
             styles.listContent,
-            conversations.length === 0 && styles.listContentEmpty,
+            filtered.length === 0 && styles.listContentEmpty,
           ]}
           showsVerticalScrollIndicator={false}
           ItemSeparatorComponent={() => <View style={styles.separator} />}
@@ -181,6 +243,18 @@ export default function ClientMessagesScreen() {
   );
 }
 
+function formatRelative(ts: string): string {
+  const diff = Date.now() - new Date(ts).getTime();
+  const mins = Math.floor(diff / 60000);
+  const hrs = Math.floor(diff / 3600000);
+  const days = Math.floor(diff / 86400000);
+  if (mins < 1) return 'now';
+  if (mins < 60) return `${mins}m`;
+  if (hrs < 24) return `${hrs}h`;
+  if (days === 1) return 'Yesterday';
+  return `${days}d`;
+}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -189,11 +263,24 @@ const styles = StyleSheet.create({
   header: {
     paddingHorizontal: spacing.lg,
     paddingVertical: spacing.lg,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.borderLight,
+    borderBottomWidth: 0,
   },
   headerTitle: {
     ...typography.heading,
+    color: colors.text,
+  },
+  searchContainer: {
+    paddingHorizontal: spacing.lg,
+    paddingBottom: spacing.md,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.borderLight,
+  },
+  searchInput: {
+    backgroundColor: '#f4f4f5',
+    borderRadius: 10,
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+    fontSize: 15,
     color: colors.text,
   },
   listContent: {
@@ -221,13 +308,6 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: colors.background,
   },
-  unreadDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: colors.primary,
-    marginLeft: 6,
-  },
   conversationContent: {
     flex: 1,
     marginLeft: spacing.md,
@@ -236,20 +316,38 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 4,
+    marginBottom: 2,
   },
   conversationName: {
     ...typography.bodySmall,
     fontWeight: '600',
     color: colors.text,
+    flexShrink: 1,
   },
   conversationNameBold: {
     fontWeight: '700',
+  },
+  roleBadge: {
+    backgroundColor: '#f4f4f5',
+    paddingHorizontal: 5,
+    paddingVertical: 1,
+    borderRadius: 4,
+  },
+  roleBadgeText: {
+    fontSize: 9,
+    fontWeight: '600',
+    color: '#71717a',
   },
   conversationTime: {
     fontSize: 11,
     fontWeight: '400',
     color: colors.textMuted,
+    marginLeft: 8,
+  },
+  jobTitle: {
+    fontSize: 11,
+    color: colors.textMuted,
+    marginBottom: 2,
   },
   conversationFooter: {
     flexDirection: 'row',
@@ -264,6 +362,20 @@ const styles = StyleSheet.create({
   conversationMessageUnread: {
     color: colors.text,
     fontWeight: '500',
+  },
+  unreadBadge: {
+    minWidth: 18,
+    height: 18,
+    borderRadius: 9,
+    backgroundColor: '#00a9e0',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 4,
+  },
+  unreadBadgeText: {
+    fontSize: 10,
+    fontWeight: '700',
+    color: '#ffffff',
   },
   separator: {
     height: 1,

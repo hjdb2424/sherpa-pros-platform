@@ -1,10 +1,9 @@
 import { NextResponse } from 'next/server';
-import { communicationService } from '@/lib/communication';
-import type { SendMessagePayload } from '@/lib/communication';
+import { sendMessage } from '@/lib/communication/chat-service';
 
 /**
  * POST /api/chat/[conversationId]/send
- * Send a message in a masked conversation.
+ * Send a message in a conversation (triggers Twilio SMS when configured).
  */
 export async function POST(
   request: Request,
@@ -12,7 +11,7 @@ export async function POST(
 ) {
   const { conversationId } = await params;
 
-  let body: SendMessagePayload;
+  let body: { senderId: string; body: string };
   try {
     body = await request.json();
   } catch {
@@ -31,12 +30,8 @@ export async function POST(
     );
   }
 
-  // TODO: Verify caller is senderId and is a participant of this conversation
-  // const session = await auth();
-  // if (session?.userId !== senderId) return 401;
-
   try {
-    const message = await communicationService.sendMessage(
+    const message = await sendMessage(
       conversationId,
       senderId,
       messageBody.trim(),

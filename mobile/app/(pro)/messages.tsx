@@ -2,6 +2,7 @@ import { useState, useCallback, useEffect } from 'react';
 import {
   View,
   Text,
+  TextInput,
   FlatList,
   Pressable,
   RefreshControl,
@@ -25,39 +26,73 @@ interface Conversation {
   avatarColor: string;
   isOnline?: boolean;
   isSentByMe?: boolean;
+  jobTitle?: string;
+  role?: string;
+  deliveryMethod?: string;
 }
 
 const CONVERSATIONS: Conversation[] = [
   {
-    id: '1',
+    id: 'conv-1',
     name: 'John Davidson',
     initials: 'JD',
-    lastMessage: 'Great, the bathroom remodel timeline works. Can you send the material list?',
-    timestamp: '5m ago',
+    lastMessage: 'Looks amazing! Thank you so much. Left you a 5-star review.',
+    timestamp: '5m',
     unreadCount: 1,
-    avatarColor: '#6366f1',
+    avatarColor: '#0ea5e9',
     isOnline: true,
+    jobTitle: 'Kitchen Faucet Replacement',
+    role: 'Client',
   },
   {
-    id: '2',
-    name: 'Maria Santos',
-    initials: 'MS',
-    lastMessage: 'The fence looks amazing! Thank you so much for the great work.',
-    timestamp: '2h ago',
+    id: 'conv-6',
+    name: 'John Davidson',
+    initials: 'JD',
+    lastMessage: "You'll need to be home for the inspection afterward.",
+    timestamp: '12h',
     unreadCount: 0,
-    avatarColor: colors.success,
-    isOnline: false,
+    avatarColor: '#0ea5e9',
+    isOnline: true,
     isSentByMe: true,
+    jobTitle: 'Electrical Panel Upgrade',
+    role: 'Client',
   },
   {
-    id: '3',
+    id: 'conv-7',
+    name: 'Lisa Park',
+    initials: 'LP',
+    lastMessage: 'Can you send photos of the burst pipe for our records?',
+    timestamp: '45m',
+    unreadCount: 1,
+    avatarColor: '#14b8a6',
+    isOnline: true,
+    jobTitle: 'Invoice Discussion #1247',
+    role: 'PM',
+  },
+  {
+    id: 'conv-2',
+    name: 'Lisa Park',
+    initials: 'LP',
+    lastMessage: "Great work. I'll approve the invoice. Same rate as usual?",
+    timestamp: '2h',
+    unreadCount: 1,
+    avatarColor: '#14b8a6',
+    isOnline: true,
+    jobTitle: 'WO: Leaking Faucet — 4B',
+    role: 'PM',
+  },
+  {
+    id: 'conv-3',
     name: 'Robert Kim',
     initials: 'RK',
-    lastMessage: 'When can you start on the kitchen cabinets?',
-    timestamp: '5h ago',
-    unreadCount: 3,
-    avatarColor: colors.warning,
+    lastMessage: "Deal! When can you start?",
+    timestamp: '1d',
+    unreadCount: 0,
+    avatarColor: '#f97316',
     isOnline: true,
+    isSentByMe: false,
+    jobTitle: 'Deck Staining — 400 sqft',
+    role: 'Client',
   },
 ];
 
@@ -67,11 +102,28 @@ export default function ProMessagesScreen() {
   const [refreshing, setRefreshing] = useState(false);
   const [loading, setLoading] = useState(true);
   const [conversations, setConversations] = useState<Conversation[]>(CONVERSATIONS);
+  const [search, setSearch] = useState('');
 
   useEffect(() => {
-    apiFetch<any>('/chat')
+    apiFetch<any>('/chat?userId=pro-mike')
       .then((data) => {
-        if (data.conversations?.length > 0) setConversations(data.conversations);
+        if (data.conversations?.length > 0) {
+          const mapped = data.conversations.map((c: any) => ({
+            id: c.id,
+            name: c.otherParticipant?.name ?? c.jobTitle,
+            initials: c.otherParticipant?.initials ?? c.jobTitle?.charAt(0) ?? '?',
+            lastMessage: c.lastMessage?.text ?? 'No messages yet',
+            timestamp: c.lastMessage ? formatRelative(c.lastMessage.timestamp) : '',
+            unreadCount: c.unreadCount ?? 0,
+            avatarColor: c.otherParticipant?.avatarColor ?? colors.primary,
+            isOnline: c.otherParticipant?.isOnline ?? false,
+            isSentByMe: c.lastMessage?.senderId === 'pro-mike',
+            jobTitle: c.jobTitle,
+            role: c.otherParticipant?.role === 'pm' ? 'PM' : 'Client',
+            deliveryMethod: c.lastMessage?.deliveryMethod,
+          }));
+          setConversations(mapped);
+        }
       })
       .catch(() => {})
       .finally(() => setLoading(false));
@@ -80,9 +132,24 @@ export default function ProMessagesScreen() {
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-    apiFetch<any>('/chat')
+    apiFetch<any>('/chat?userId=pro-mike')
       .then((data) => {
-        if (data.conversations?.length > 0) setConversations(data.conversations);
+        if (data.conversations?.length > 0) {
+          const mapped = data.conversations.map((c: any) => ({
+            id: c.id,
+            name: c.otherParticipant?.name ?? c.jobTitle,
+            initials: c.otherParticipant?.initials ?? '?',
+            lastMessage: c.lastMessage?.text ?? 'No messages yet',
+            timestamp: c.lastMessage ? formatRelative(c.lastMessage.timestamp) : '',
+            unreadCount: c.unreadCount ?? 0,
+            avatarColor: c.otherParticipant?.avatarColor ?? colors.primary,
+            isOnline: c.otherParticipant?.isOnline ?? false,
+            isSentByMe: c.lastMessage?.senderId === 'pro-mike',
+            jobTitle: c.jobTitle,
+            role: c.otherParticipant?.role === 'pm' ? 'PM' : 'Client',
+          }));
+          setConversations(mapped);
+        }
       })
       .catch(() => {})
       .finally(() => setRefreshing(false));
@@ -100,6 +167,14 @@ export default function ProMessagesScreen() {
     });
   }, [router]);
 
+  const filtered = search.trim()
+    ? conversations.filter(
+        (c) =>
+          c.name.toLowerCase().includes(search.toLowerCase()) ||
+          (c.jobTitle?.toLowerCase().includes(search.toLowerCase()) ?? false),
+      )
+    : conversations;
+
   const renderConversation = useCallback(
     ({ item }: { item: Conversation }) => (
       <Pressable
@@ -110,16 +185,30 @@ export default function ProMessagesScreen() {
           <Avatar initials={item.initials} size={48} color={item.avatarColor} />
           <View style={[styles.onlineDot, { backgroundColor: item.isOnline ? colors.success : colors.borderMedium }]} />
         </View>
-        {item.unreadCount > 0 && <View style={styles.unreadDot} />}
         <View style={styles.conversationContent}>
           <View style={styles.conversationHeader}>
-            <Text style={[styles.conversationName, item.unreadCount > 0 && styles.conversationNameBold]}>{item.name}</Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, flex: 1 }}>
+              <Text style={[styles.conversationName, item.unreadCount > 0 && styles.conversationNameBold]} numberOfLines={1}>{item.name}</Text>
+              {item.role && (
+                <View style={styles.roleBadge}>
+                  <Text style={styles.roleBadgeText}>{item.role}</Text>
+                </View>
+              )}
+            </View>
             <Text style={styles.conversationTime}>{item.timestamp}</Text>
           </View>
+          {item.jobTitle && (
+            <Text style={styles.jobTitle} numberOfLines={1}>{item.jobTitle}</Text>
+          )}
           <View style={styles.conversationFooter}>
             <Text style={[styles.conversationMessage, item.unreadCount > 0 && styles.conversationMessageUnread]} numberOfLines={1}>
               {item.isSentByMe ? 'You: ' : ''}{item.lastMessage}
             </Text>
+            {item.unreadCount > 0 && (
+              <View style={styles.unreadBadge}>
+                <Text style={styles.unreadBadgeText}>{item.unreadCount > 99 ? '99+' : item.unreadCount}</Text>
+              </View>
+            )}
           </View>
         </View>
       </Pressable>
@@ -143,16 +232,27 @@ export default function ProMessagesScreen() {
         <Text style={styles.headerTitle}>Messages</Text>
       </View>
 
+      {/* Search bar */}
+      <View style={styles.searchContainer}>
+        <TextInput
+          style={styles.searchInput}
+          placeholder="Search conversations..."
+          placeholderTextColor="#a1a1aa"
+          value={search}
+          onChangeText={setSearch}
+        />
+      </View>
+
       {loading ? (
         <SkeletonCard count={3} />
       ) : (
         <FlatList
-          data={conversations}
+          data={filtered}
           renderItem={renderConversation}
           keyExtractor={(item) => item.id}
           contentContainerStyle={[
             styles.listContent,
-            conversations.length === 0 && styles.listContentEmpty,
+            filtered.length === 0 && styles.listContentEmpty,
           ]}
           showsVerticalScrollIndicator={false}
           ItemSeparatorComponent={() => <View style={styles.separator} />}
@@ -170,6 +270,18 @@ export default function ProMessagesScreen() {
   );
 }
 
+function formatRelative(ts: string): string {
+  const diff = Date.now() - new Date(ts).getTime();
+  const mins = Math.floor(diff / 60000);
+  const hrs = Math.floor(diff / 3600000);
+  const days = Math.floor(diff / 86400000);
+  if (mins < 1) return 'now';
+  if (mins < 60) return `${mins}m`;
+  if (hrs < 24) return `${hrs}h`;
+  if (days === 1) return 'Yesterday';
+  return `${days}d`;
+}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -178,11 +290,24 @@ const styles = StyleSheet.create({
   header: {
     paddingHorizontal: spacing.lg,
     paddingVertical: spacing.lg,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.borderLight,
+    borderBottomWidth: 0,
   },
   headerTitle: {
     ...typography.heading,
+    color: colors.text,
+  },
+  searchContainer: {
+    paddingHorizontal: spacing.lg,
+    paddingBottom: spacing.md,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.borderLight,
+  },
+  searchInput: {
+    backgroundColor: '#f4f4f5',
+    borderRadius: 10,
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+    fontSize: 15,
     color: colors.text,
   },
   listContent: {
@@ -210,13 +335,6 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: colors.background,
   },
-  unreadDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: colors.primary,
-    marginLeft: 6,
-  },
   conversationContent: {
     flex: 1,
     marginLeft: spacing.md,
@@ -225,20 +343,38 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 4,
+    marginBottom: 2,
   },
   conversationName: {
     ...typography.bodySmall,
     fontWeight: '600',
     color: colors.text,
+    flexShrink: 1,
   },
   conversationNameBold: {
     fontWeight: '700',
+  },
+  roleBadge: {
+    backgroundColor: '#f4f4f5',
+    paddingHorizontal: 5,
+    paddingVertical: 1,
+    borderRadius: 4,
+  },
+  roleBadgeText: {
+    fontSize: 9,
+    fontWeight: '600',
+    color: '#71717a',
   },
   conversationTime: {
     fontSize: 11,
     fontWeight: '400',
     color: colors.textMuted,
+    marginLeft: 8,
+  },
+  jobTitle: {
+    fontSize: 11,
+    color: colors.textMuted,
+    marginBottom: 2,
   },
   conversationFooter: {
     flexDirection: 'row',
@@ -253,6 +389,20 @@ const styles = StyleSheet.create({
   conversationMessageUnread: {
     color: colors.text,
     fontWeight: '500',
+  },
+  unreadBadge: {
+    minWidth: 18,
+    height: 18,
+    borderRadius: 9,
+    backgroundColor: '#00a9e0',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 4,
+  },
+  unreadBadgeText: {
+    fontSize: 10,
+    fontWeight: '700',
+    color: '#ffffff',
   },
   separator: {
     height: 1,

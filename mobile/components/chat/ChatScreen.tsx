@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import {
   View,
   Text,
@@ -7,47 +7,88 @@ import {
   Pressable,
   KeyboardAvoidingView,
   Platform,
+  Linking,
   StyleSheet,
+  Animated,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as Haptics from 'expo-haptics';
 import { useRouter } from 'expo-router';
-import { colors, spacing, borderRadius, typography } from '@/lib/theme';
+import { colors, spacing, typography } from '@/lib/theme';
 import Avatar from '@/components/common/Avatar';
+import { apiFetch } from '@/lib/api';
 
 interface ChatMessage {
   id: string;
   text: string;
   sender: 'me' | 'them';
   timestamp: string;
+  deliveryMethod?: 'app' | 'sms' | 'both';
+  senderName?: string;
+  attachments?: { type: 'photo'; url: string; caption?: string }[];
 }
 
 interface ChatScreenProps {
   conversationId: string;
   recipientName: string;
   recipientInitials: string;
+  recipientRole?: string;
+  recipientPhone?: string;
+  isOnline?: boolean;
 }
 
 function getInitialMessages(): ChatMessage[] {
   return [
-    { id: '1', text: 'Hi, I saw your profile. Are you available for a kitchen faucet replacement this week?', sender: 'me', timestamp: '10:15 AM' },
-    { id: '2', text: 'Hey! Yes I am. What kind of faucet are you looking at? Do you have one already or do you need me to source it?', sender: 'them', timestamp: '10:18 AM' },
-    { id: '3', text: 'I already bought a Moen pull-down from Home Depot. I just need the install.', sender: 'me', timestamp: '10:20 AM' },
-    { id: '4', text: 'Perfect, that makes it straightforward. I can come by Thursday around 2pm. Usually takes about an hour.', sender: 'them', timestamp: '10:23 AM' },
-    { id: '5', text: 'That works! Do I need to turn off the water beforehand?', sender: 'me', timestamp: '10:25 AM' },
-    { id: '6', text: 'Nope, I\'ll handle everything. Just make sure the area under the sink is clear. See you Thursday!', sender: 'them', timestamp: '10:27 AM' },
+    { id: '1', text: 'Hi, I saw your profile. Are you available for a kitchen faucet replacement this week?', sender: 'me', timestamp: '10:15 AM', deliveryMethod: 'both' },
+    { id: '2', text: 'Hey! Yes I am. What kind of faucet are you looking at? Do you have one already or do you need me to source it?', sender: 'them', timestamp: '10:18 AM', deliveryMethod: 'both' },
+    { id: '3', text: 'I already bought a Moen pull-down from Home Depot. I just need the install.', sender: 'me', timestamp: '10:20 AM', deliveryMethod: 'app' },
+    { id: '4', text: 'Perfect, that makes it straightforward. I can come by Thursday around 2pm. Usually takes about an hour. $150 for the install.', sender: 'them', timestamp: '10:23 AM', deliveryMethod: 'sms' },
+    { id: '5', text: 'Thursday at 2 works! Do I need to turn off the water beforehand?', sender: 'me', timestamp: '10:25 AM', deliveryMethod: 'app' },
+    { id: '6', text: 'Nope, I\'ll handle everything. Just make sure the area under the sink is clear. See you Thursday!', sender: 'them', timestamp: '10:27 AM', deliveryMethod: 'both' },
   ];
 }
 
 export default function ChatScreen({
+  conversationId,
   recipientName,
   recipientInitials,
+  recipientRole,
+  recipientPhone,
+  isOnline = false,
 }: ChatScreenProps) {
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const [messages, setMessages] = useState<ChatMessage[]>(getInitialMessages);
   const [inputText, setInputText] = useState('');
+  const [loading, setLoading] = useState(false);
   const listRef = useRef<FlatList>(null);
+  const typingDots = useRef(new Animated.Value(0)).current;
+
+  // Fetch messages from API
+  useEffect(() => {
+    if (!conversationId) return;
+    setLoading(true);
+    apiFetch<any>(`/chat/${conversationId}`)
+      .then((data) => {
+        if (data.messages?.length > 0) {
+          const mapped: ChatMessage[] = data.messages.map((m: any) => ({
+            id: m.id,
+            text: m.text ?? m.body ?? '',
+            sender: m.senderId?.includes('pro') ? 'them' : 'me',
+            timestamp: new Date(m.timestamp ?? m.createdAt).toLocaleTimeString([], {
+              hour: '2-digit',
+              minute: '2-digit',
+            }),
+            deliveryMethod: m.deliveryMethod,
+            senderName: m.senderName,
+            attachments: m.attachments,
+          }));
+          setMessages(mapped);
+        }
+      })
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, [conversationId]);
 
   const handleSend = useCallback(() => {
     const trimmed = inputText.trim();
@@ -56,20 +97,33 @@ export default function ChatScreen({
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 
     const newMessage: ChatMessage = {
-      id: Date.now().toString(),
+      id: `local-${Date.now()}`,
       text: trimmed,
       sender: 'me',
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      deliveryMethod: 'app',
     };
 
     setMessages((prev) => [...prev, newMessage]);
     setInputText('');
 
-    // Scroll to bottom
+    // Send via API
+    apiFetch<any>(`/chat/${conversationId}/send`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ senderId: 'current-user', body: trimmed }),
+    }).catch(() => {});
+
     setTimeout(() => {
       listRef.current?.scrollToEnd({ animated: true });
     }, 100);
-  }, [inputText]);
+  }, [inputText, conversationId]);
+
+  const handleCall = useCallback(() => {
+    if (recipientPhone) {
+      Linking.openURL(`tel:${recipientPhone}`);
+    }
+  }, [recipientPhone]);
 
   const renderMessage = useCallback(
     ({ item }: { item: ChatMessage }) => {
@@ -81,28 +135,55 @@ export default function ChatScreen({
             isMine ? styles.messageBubbleRowRight : styles.messageBubbleRowLeft,
           ]}
         >
-          <View
-            style={[
-              styles.messageBubble,
-              isMine ? styles.messageBubbleMine : styles.messageBubbleTheirs,
-            ]}
-          >
-            <Text
+          <View style={{ maxWidth: '78%' }}>
+            {/* Attachments placeholder */}
+            {item.attachments?.map((att, i) => (
+              <View
+                key={i}
+                style={[
+                  styles.attachmentPlaceholder,
+                  isMine ? { borderBottomRightRadius: 4 } : { borderBottomLeftRadius: 4 },
+                ]}
+              >
+                <Text style={styles.attachmentText}>{att.caption ?? 'Photo'}</Text>
+              </View>
+            ))}
+
+            {/* Message bubble */}
+            <View
               style={[
-                styles.messageText,
-                isMine ? styles.messageTextMine : styles.messageTextTheirs,
+                styles.messageBubble,
+                isMine ? styles.messageBubbleMine : styles.messageBubbleTheirs,
               ]}
             >
-              {item.text}
-            </Text>
-            <Text
-              style={[
-                styles.messageTimestamp,
-                isMine ? styles.messageTimestampMine : styles.messageTimestampTheirs,
-              ]}
-            >
-              {item.timestamp}
-            </Text>
+              <Text
+                style={[
+                  styles.messageText,
+                  isMine ? styles.messageTextMine : styles.messageTextTheirs,
+                ]}
+              >
+                {item.text}
+              </Text>
+            </View>
+
+            {/* Footer: time + delivery */}
+            <View style={[styles.messageFooter, isMine ? { alignSelf: 'flex-end' } : { alignSelf: 'flex-start' }]}>
+              <Text
+                style={[
+                  styles.messageTimestamp,
+                  isMine ? styles.messageTimestampMine : styles.messageTimestampTheirs,
+                ]}
+              >
+                {item.timestamp}
+              </Text>
+              {item.deliveryMethod && item.deliveryMethod !== 'app' && (
+                <View style={styles.smsBadge}>
+                  <Text style={styles.smsBadgeText}>
+                    {item.deliveryMethod === 'sms' ? 'SMS' : 'SMS synced'}
+                  </Text>
+                </View>
+              )}
+            </View>
           </View>
         </View>
       );
@@ -121,8 +202,21 @@ export default function ChatScreen({
         <Pressable style={styles.backButton} onPress={() => router.back()}>
           <Text style={styles.backArrow}>{'\u2190'}</Text>
         </Pressable>
-        <Avatar initials={recipientInitials} size={36} color={colors.primary} />
-        <Text style={styles.headerName}>{recipientName}</Text>
+        <View style={styles.headerAvatarContainer}>
+          <Avatar initials={recipientInitials} size={36} color={colors.primary} />
+          <View style={[styles.headerOnlineDot, { backgroundColor: isOnline ? colors.success : colors.borderMedium }]} />
+        </View>
+        <View style={styles.headerInfo}>
+          <Text style={styles.headerName}>{recipientName}</Text>
+          {recipientRole && (
+            <Text style={styles.headerRole}>{recipientRole}</Text>
+          )}
+        </View>
+        <View style={styles.headerActions}>
+          <Pressable style={styles.headerAction} onPress={handleCall}>
+            <Text style={styles.headerActionIcon}>{'\u{1F4DE}'}</Text>
+          </Pressable>
+        </View>
       </View>
 
       {/* Messages */}
@@ -133,10 +227,18 @@ export default function ChatScreen({
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.messagesList}
         showsVerticalScrollIndicator={false}
+        onContentSizeChange={() => {
+          listRef.current?.scrollToEnd({ animated: false });
+        }}
       />
 
       {/* Input area */}
       <View style={[styles.inputArea, { paddingBottom: insets.bottom + 8 }]}>
+        {/* Attach button */}
+        <Pressable style={styles.attachButton}>
+          <Text style={styles.attachIcon}>{'\u{1F4F7}'}</Text>
+        </Pressable>
+
         <TextInput
           style={styles.textInput}
           value={inputText}
@@ -188,17 +290,53 @@ const styles = StyleSheet.create({
     color: colors.primary,
     fontWeight: '600',
   },
+  headerAvatarContainer: {
+    position: 'relative',
+  },
+  headerOnlineDot: {
+    position: 'absolute',
+    bottom: -1,
+    right: -1,
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    borderWidth: 2,
+    borderColor: colors.background,
+  },
+  headerInfo: {
+    flex: 1,
+  },
   headerName: {
     fontSize: 17,
     fontWeight: '600',
     color: colors.text,
+  },
+  headerRole: {
+    fontSize: 11,
+    color: colors.textMuted,
+    marginTop: 1,
+  },
+  headerActions: {
+    flexDirection: 'row',
+    gap: 8,
+  },
+  headerAction: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: '#f4f4f5',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  headerActionIcon: {
+    fontSize: 18,
   },
 
   // Messages
   messagesList: {
     paddingHorizontal: spacing.lg,
     paddingVertical: spacing.md,
-    gap: 8,
+    gap: 6,
   },
   messageBubbleRow: {
     flexDirection: 'row',
@@ -211,13 +349,12 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   messageBubble: {
-    maxWidth: '78%',
     borderRadius: 18,
     paddingHorizontal: 14,
     paddingVertical: 10,
   },
   messageBubbleMine: {
-    backgroundColor: colors.primary,
+    backgroundColor: '#00a9e0',
     borderBottomRightRadius: 4,
   },
   messageBubbleTheirs: {
@@ -234,15 +371,44 @@ const styles = StyleSheet.create({
   messageTextTheirs: {
     color: '#18181b',
   },
+  messageFooter: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    marginTop: 3,
+  },
   messageTimestamp: {
     fontSize: 10,
-    marginTop: 4,
   },
   messageTimestampMine: {
-    color: 'rgba(255, 255, 255, 0.7)',
+    color: '#a1a1aa',
     textAlign: 'right',
   },
   messageTimestampTheirs: {
+    color: '#a1a1aa',
+  },
+  smsBadge: {
+    backgroundColor: '#f4f4f5',
+    paddingHorizontal: 4,
+    paddingVertical: 1,
+    borderRadius: 3,
+  },
+  smsBadgeText: {
+    fontSize: 8,
+    color: '#a1a1aa',
+    fontWeight: '600',
+  },
+  attachmentPlaceholder: {
+    width: 160,
+    height: 100,
+    backgroundColor: '#e4e4e7',
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 4,
+  },
+  attachmentText: {
+    fontSize: 11,
     color: '#a1a1aa',
   },
 
@@ -256,6 +422,18 @@ const styles = StyleSheet.create({
     borderTopColor: colors.borderLight,
     backgroundColor: colors.background,
     gap: 8,
+  },
+  attachButton: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: '#f4f4f5',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 2,
+  },
+  attachIcon: {
+    fontSize: 16,
   },
   textInput: {
     flex: 1,
@@ -271,7 +449,7 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: colors.primary,
+    backgroundColor: '#00a9e0',
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 2,

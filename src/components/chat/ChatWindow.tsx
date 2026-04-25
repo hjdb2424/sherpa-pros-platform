@@ -2,7 +2,8 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { MessageBubble } from './MessageBubble';
-import type { Message, ParticipantRole } from '@/lib/communication/types';
+import { ChatHeader } from './ChatHeader';
+import type { ChatMessage } from '@/lib/communication/chat-service';
 
 // ---------------------------------------------------------------------------
 // Props
@@ -11,7 +12,16 @@ import type { Message, ParticipantRole } from '@/lib/communication/types';
 interface ChatWindowProps {
   conversationId: string;
   currentUserId: string;
-  currentUserRole: ParticipantRole;
+  currentUserRole?: 'pro' | 'client' | 'pm';
+  /** Info about the other participant (for header display) */
+  participant?: {
+    name: string;
+    initials: string;
+    role: 'pro' | 'client' | 'pm';
+    avatarColor?: string;
+    isOnline?: boolean;
+    phone?: string;
+  };
   jobTitle?: string;
   onClose?: () => void;
   /** Inline mode (panel) vs full-screen mobile */
@@ -25,18 +35,17 @@ interface ChatWindowProps {
 export function ChatWindow({
   conversationId,
   currentUserId,
-  currentUserRole,
+  participant,
   jobTitle = 'Job Chat',
   onClose,
   inline = false,
 }: ChatWindowProps) {
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [draft, setDraft] = useState('');
   const [sending, setSending] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [isTyping, setIsTyping] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
 
   // -----------------------------------------------------------------------
   // Fetch messages
@@ -57,10 +66,18 @@ export function ChatWindow({
 
   useEffect(() => {
     fetchMessages();
-    // Poll for new messages every 3s (WebSocket upgrade is a future TODO)
     const interval = setInterval(fetchMessages, 3000);
     return () => clearInterval(interval);
   }, [fetchMessages]);
+
+  // Mark as read when conversation opens
+  useEffect(() => {
+    fetch(`/api/chat/${conversationId}/read`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId: currentUserId }),
+    }).catch(() => {});
+  }, [conversationId, currentUserId]);
 
   // -----------------------------------------------------------------------
   // Auto-scroll on new messages
@@ -68,6 +85,17 @@ export function ChatWindow({
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
+
+  // -----------------------------------------------------------------------
+  // Auto-grow textarea
+  // -----------------------------------------------------------------------
+  const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setDraft(e.target.value);
+    // Reset height then set to scrollHeight
+    const el = e.target;
+    el.style.height = 'auto';
+    el.style.height = `${Math.min(el.scrollHeight, 120)}px`;
+  };
 
   // -----------------------------------------------------------------------
   // Send message
@@ -79,14 +107,22 @@ export function ChatWindow({
     setSending(true);
     setDraft('');
 
+    // Reset textarea height
+    if (inputRef.current) {
+      inputRef.current.style.height = 'auto';
+    }
+
     // Optimistic insert
-    const optimistic: Message = {
+    const optimistic: ChatMessage = {
       id: `optimistic_${Date.now()}`,
       conversationId,
       senderId: currentUserId,
-      body,
-      createdAt: new Date(),
-      readAt: null,
+      senderName: 'You',
+      senderRole: 'client',
+      text: body,
+      timestamp: new Date().toISOString(),
+      readBy: [currentUserId],
+      deliveryMethod: 'app',
     };
     setMessages((prev) => [...prev, optimistic]);
 
@@ -99,13 +135,11 @@ export function ChatWindow({
 
       if (res.ok) {
         const data = await res.json();
-        // Replace optimistic with real message
         setMessages((prev) =>
           prev.map((m) => (m.id === optimistic.id ? data.message : m)),
         );
       }
     } catch {
-      // Revert optimistic on failure
       setMessages((prev) => prev.filter((m) => m.id !== optimistic.id));
       setDraft(body);
     } finally {
@@ -122,54 +156,64 @@ export function ChatWindow({
   };
 
   // -----------------------------------------------------------------------
-  // Determine sender role for each message
+  // Group messages by date for separator display
   // -----------------------------------------------------------------------
-  const otherRole: ParticipantRole =
-    currentUserRole === 'pro' ? 'client' : 'pro';
+  function getDateLabel(ts: string): string {
+    const date = new Date(ts);
+    const now = new Date();
+    const diffDays = Math.floor(
+      (now.getTime() - date.getTime()) / 86_400_000,
+    );
 
-  function roleForMessage(msg: Message): ParticipantRole {
-    return msg.senderId === currentUserId ? currentUserRole : otherRole;
+    if (diffDays === 0) return 'Today';
+    if (diffDays === 1) return 'Yesterday';
+    return new Intl.DateTimeFormat('en-US', {
+      weekday: 'short',
+      month: 'short',
+      day: 'numeric',
+    }).format(date);
   }
 
   // -----------------------------------------------------------------------
   // Container classes
   // -----------------------------------------------------------------------
   const containerClass = inline
-    ? 'flex flex-col h-full w-full rounded-xl overflow-hidden shadow-xl border border-gray-200'
-    : 'flex flex-col fixed inset-0 z-50 bg-white md:relative md:inset-auto md:h-[600px] md:w-[400px] md:rounded-xl md:shadow-xl md:border md:border-gray-200';
+    ? 'flex flex-col h-full w-full rounded-xl overflow-hidden shadow-xl border border-zinc-200'
+    : 'flex flex-col fixed inset-0 z-50 bg-white md:relative md:inset-auto md:h-full md:w-full md:rounded-xl md:shadow-xl md:border md:border-zinc-200';
 
   return (
     <div className={containerClass}>
-      {/* Header — dark navy */}
-      <div className="flex items-center justify-between px-4 py-3 bg-white border-b border-zinc-100 text-zinc-900 shrink-0">
-        <div className="min-w-0">
-          <h3 className="text-sm font-semibold truncate">{jobTitle}</h3>
-          <p className="text-xs text-zinc-500">
-            Chatting with {otherRole === 'pro' ? 'Pro' : 'Client'}
-          </p>
-        </div>
-        {onClose && (
-          <button
-            onClick={onClose}
-            className="ml-3 p-1.5 rounded-full hover:bg-zinc-100 transition-colors"
-            aria-label="Close chat"
-          >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+      {/* Header */}
+      {participant ? (
+        <ChatHeader
+          participantName={participant.name}
+          participantRole={participant.role}
+          participantInitials={participant.initials}
+          avatarColor={participant.avatarColor}
+          isOnline={participant.isOnline}
+          phone={participant.phone}
+          onBack={onClose}
+        />
+      ) : (
+        <div className="flex items-center justify-between px-4 py-3 bg-white border-b border-zinc-100 shrink-0">
+          <div className="min-w-0">
+            <h3 className="text-sm font-semibold truncate text-zinc-900">
+              {jobTitle}
+            </h3>
+          </div>
+          {onClose && (
+            <button
+              onClick={onClose}
+              className="ml-3 p-1.5 rounded-full hover:bg-zinc-100 transition-colors"
+              aria-label="Close chat"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          </button>
-        )}
-      </div>
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          )}
+        </div>
+      )}
 
       {/* Messages area */}
       <div className="flex-1 overflow-y-auto px-4 py-3 bg-white">
@@ -178,74 +222,81 @@ export function ChatWindow({
             <div className="w-6 h-6 border-2 border-[#00a9e0] border-t-transparent rounded-full animate-spin" />
           </div>
         ) : messages.length === 0 ? (
-          <div className="flex items-center justify-center h-full text-gray-400 text-sm">
+          <div className="flex items-center justify-center h-full text-zinc-400 text-sm">
             No messages yet. Start the conversation.
           </div>
         ) : (
           <>
-            {messages.map((msg) => (
-              <MessageBubble
-                key={msg.id}
-                body={msg.body}
-                role={roleForMessage(msg)}
-                isSender={msg.senderId === currentUserId}
-                timestamp={
-                  msg.createdAt instanceof Date
-                    ? msg.createdAt
-                    : new Date(msg.createdAt)
-                }
-              />
-            ))}
+            {messages.map((msg, idx) => {
+              // Show date separator between different days
+              const prevMsg = idx > 0 ? messages[idx - 1] : null;
+              const showDateSep =
+                !prevMsg ||
+                getDateLabel(msg.timestamp) !==
+                  getDateLabel(prevMsg.timestamp);
+
+              return (
+                <div key={msg.id}>
+                  {showDateSep && (
+                    <div className="flex items-center justify-center my-4">
+                      <span className="text-[10px] font-medium text-zinc-400 bg-zinc-100 px-3 py-1 rounded-full">
+                        {getDateLabel(msg.timestamp)}
+                      </span>
+                    </div>
+                  )}
+                  <MessageBubble
+                    body={msg.text}
+                    senderName={msg.senderName}
+                    isSender={msg.senderId === currentUserId}
+                    timestamp={new Date(msg.timestamp)}
+                    deliveryMethod={msg.deliveryMethod}
+                    attachments={msg.attachments}
+                    showSenderName={false}
+                  />
+                </div>
+              );
+            })}
           </>
         )}
-
-        {/* Typing indicator */}
-        {isTyping && (
-          <div className="flex items-center gap-1 px-3 py-2 text-gray-400 text-xs">
-            <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" />
-            <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce [animation-delay:0.15s]" />
-            <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce [animation-delay:0.3s]" />
-            <span className="ml-1">
-              {otherRole === 'pro' ? 'Pro' : 'Client'} is typing...
-            </span>
-          </div>
-        )}
-
         <div ref={bottomRef} />
       </div>
 
       {/* Input area */}
-      <div className="shrink-0 border-t border-gray-200 bg-gray-50 px-3 py-2">
-        <div className="flex items-center gap-2">
-          <input
+      <div className="shrink-0 border-t border-zinc-200 bg-zinc-50 px-3 py-2">
+        <div className="flex items-end gap-2">
+          {/* Attach photo button */}
+          <button
+            className="shrink-0 p-2 rounded-full text-zinc-400 hover:text-zinc-600 hover:bg-zinc-200/50 transition-colors"
+            aria-label="Attach photo"
+            title="Attach photo (coming soon)"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+          </button>
+
+          {/* Auto-growing textarea */}
+          <textarea
             ref={inputRef}
-            type="text"
             value={draft}
-            onChange={(e) => setDraft(e.target.value)}
+            onChange={handleTextChange}
             onKeyDown={handleKeyDown}
-            onFocus={() => setIsTyping(false)}
             placeholder="Type a message..."
-            className="flex-1 px-4 py-2.5 text-sm rounded-full border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-[#00a9e0] focus:border-transparent placeholder:text-gray-400"
+            rows={1}
+            className="flex-1 px-4 py-2.5 text-sm rounded-2xl border border-zinc-300 bg-white focus:outline-none focus:ring-2 focus:ring-[#00a9e0]/30 focus:border-[#00a9e0] placeholder:text-zinc-400 resize-none overflow-hidden transition-colors"
+            style={{ maxHeight: 120 }}
             disabled={sending}
           />
+
+          {/* Send button */}
           <button
             onClick={handleSend}
             disabled={sending || !draft.trim()}
             className="shrink-0 w-10 h-10 flex items-center justify-center rounded-full bg-[#00a9e0] text-white hover:bg-[#0ea5e9] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
             aria-label="Send message"
           >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
-              />
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
             </svg>
           </button>
         </div>

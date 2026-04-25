@@ -6,30 +6,29 @@ export const metadata: Metadata = {
 };
 
 /**
- * Pro Messages Page
+ * PM Messages Page
  *
- * Split-pane layout: conversation list (left) + chat window (right).
- * On mobile, shows list first, tapping a conversation pushes to chat view.
+ * Property managers message pros (about work orders) and tenants (about requests).
+ * Split-pane layout matching pro/client messages.
  *
- * Uses mock user ID "pro-mike" in development (matches chat-data.ts).
- * In production this would come from the authenticated session.
+ * Uses mock user ID "pm-lisa" in development (matches chat-data.ts).
  */
-export default function ProMessagesPage() {
+export default function PMMessagesPage() {
   // TODO: Get from Clerk session
-  const currentUserId = 'pro-mike';
+  const currentUserId = 'pm-lisa';
 
   return (
     <div>
       <div className="mb-4">
         <h1 className="text-2xl font-bold text-zinc-900">Messages</h1>
         <p className="mt-1 text-sm text-zinc-500">
-          Communicate with clients about jobs and bids. Messages are synced via SMS.
+          Communicate with pros and tenants about work orders and maintenance requests.
         </p>
       </div>
 
       <MessagesLayout
         currentUserId={currentUserId}
-        currentUserRole="pro"
+        currentUserRole="pm"
       />
     </div>
   );

@@ -1,6 +1,8 @@
 'use client';
 
 import { useState, useMemo, useCallback } from 'react';
+import ReceiptScanner from '@/components/ocr/ReceiptScanner';
+import type { ReceiptResult } from '@/lib/services/ocr-service';
 
 /* ------------------------------------------------------------------ */
 /* Category rules                                                      */
@@ -105,6 +107,7 @@ interface LoggedExpense {
 }
 
 export default function ExpenseAutoCategorizor() {
+  const [showScanner, setShowScanner] = useState(false);
   const [description, setDescription] = useState('');
   const [amount, setAmount] = useState('');
   const [overrideCategory, setOverrideCategory] = useState<string | null>(null);
@@ -148,11 +151,45 @@ export default function ExpenseAutoCategorizor() {
 
   const totalCents = expenses.reduce((s, e) => s + e.amountCents, 0);
 
+  const handleReceiptScanned = useCallback((data: ReceiptResult) => {
+    const newExpense: LoggedExpense = {
+      id: Date.now().toString(),
+      description: `${data.vendor} - ${data.items.map((i) => i.description).join(', ')}`,
+      amountCents: data.total,
+      date: data.date,
+      category: matchCategory(data.vendor)?.category ?? 'Supplies',
+      scheduleCLine: matchCategory(data.vendor)?.scheduleCLine ?? '22',
+      lineLabel: matchCategory(data.vendor)?.lineLabel ?? 'Supplies',
+    };
+    setExpenses((prev) => [newExpense, ...prev]);
+    setShowScanner(false);
+  }, []);
+
   return (
     <div className="space-y-6">
+      {/* Receipt Scanner Modal */}
+      {showScanner && (
+        <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm sm:p-6 dark:border-zinc-800 dark:bg-zinc-900">
+          <ReceiptScanner onAddExpense={handleReceiptScanned} onClose={() => setShowScanner(false)} />
+        </div>
+      )}
+
       {/* Input form */}
       <div className="rounded-xl border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
-        <h3 className="mb-4 text-base font-bold text-zinc-900 dark:text-white">Add Expense</h3>
+        <div className="mb-4 flex items-center justify-between">
+          <h3 className="text-base font-bold text-zinc-900 dark:text-white">Add Expense</h3>
+          <button
+            type="button"
+            onClick={() => setShowScanner(true)}
+            className="flex items-center gap-1.5 rounded-lg bg-[#00a9e0]/10 px-3 py-1.5 text-xs font-bold text-[#00a9e0] transition-colors hover:bg-[#00a9e0]/20"
+          >
+            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 0 1 5.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 0 0-1.134-.175 2.31 2.31 0 0 1-1.64-1.055l-.822-1.316a2.192 2.192 0 0 0-1.736-1.039 48.774 48.774 0 0 0-5.232 0 2.192 2.192 0 0 0-1.736 1.039l-.821 1.316Z" />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0Z" />
+            </svg>
+            Scan Receipt
+          </button>
+        </div>
 
         <div className="grid gap-4 sm:grid-cols-2">
           {/* Description */}

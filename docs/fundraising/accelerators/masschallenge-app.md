@@ -38,7 +38,7 @@ MassChallenge evaluates applicants on **four explicit criteria**: Innovation, Im
 
 ### Q1: Company name, one-line description, and stage
 
-**Sherpa Pros** — the licensed-trade marketplace for New England, built by a working general contractor. Pre-seed; live web + mobile beta with active GMV across NH, ME, MA. Founded and headquartered in New Hampshire; Boston metro is core to our Phase 1–2 specialty-lane execution.
+**Sherpa Pros** — the national licensed-trade marketplace (international roadmap), launching first in NH, ME, and MA, built by a working general contractor. Pre-seed; live web + mobile beta with active GMV across NH, ME, MA. Founded and headquartered in New Hampshire; Boston metro is core to our Phase 1–2 specialty-lane execution — the playbook we'll template into every metro after.
 
 ### Q2: Innovation — what is novel about your solution? (~200 words)
 
@@ -64,7 +64,7 @@ Sherpa Pros' measurable Massachusetts impact across three dimensions:
 
 ### Q4: Scalability — how does this scale? (~200 words)
 
-**Repeatable metro playbook.** Phase 1 (months 3–6) operates the Northern Triangle (Portsmouth NH, Manchester NH, Portland ME) as full marketplaces. Phase 2 (months 6–12) scales to Boston metro plus Northern Triangle, $1M+ GMV. Phase 3 (months 12–18) replicates to Providence RI, Hartford CT, with NYC specialty-only beachhead. Phase 4 expands to Philadelphia, DC, SF Bay, Chicago. **Each metro launch follows the same 60-day playbook**: beta cohort recruit → first $25K GMV → utility partnership outreach → Pro Success Manager hire → metro live.
+**Repeatable metro playbook.** Phase 1 (months 3–6) operates the Phase 1 launch metros (Portsmouth NH, Manchester NH, Portland ME) as full marketplaces. Phase 2 (months 6–12) scales to Boston metro plus the Phase 1 launch metros, $1M+ GMV. Phase 3 (months 12–18) replicates to Providence RI, Hartford CT, with NYC specialty-only beachhead. Phase 4 expands to Philadelphia, DC, SF Bay, Chicago — and onward nationally and internationally. **Each metro launch follows the same 60-day playbook**: beta cohort recruit → first $25K GMV → utility partnership outreach → Pro Success Manager hire → metro live.
 
 **Three revenue lines stack:**
 - Marketplace take: 5% (beta) → 10% (standard) → 12–15% (Phase 3)

@@ -34,7 +34,7 @@
 
 ### Q: Company name + one-line description
 
-**Sherpa Pros** — the licensed-trade marketplace for New England, built by a working general contractor.
+**Sherpa Pros** — the national licensed-trade marketplace (international roadmap), launching first in NH, ME, and MA, built by a working general contractor. Boston is the Phase 1 specialty-lane wedge — the playbook we'll template into every metro after.
 
 ### Q: What does Sherpa Pros do?
 
@@ -136,7 +136,7 @@ Suffolk Technologies BOOST historically takes a **modest equity stake** for the 
 
 1. **Operator-first, not technology-first.** Suffolk reviewers were construction operators before they were VCs. Lead every paragraph with the jobsite reality, not the AI/ML stack. Mention the code-aware quote validation engine only after the operator narrative is established.
 
-2. **Built-environment specificity wins over horizontal sweep.** Do not pitch "marketplace for everything." Pitch "licensed-trade marketplace for the Northern Triangle + Boston specialty lanes." Suffolk has explicitly funded vertical specialists and rejected horizontal me-toos.
+2. **Built-environment specificity wins over horizontal sweep.** Do not pitch "marketplace for everything." Pitch "the national licensed-trade marketplace, launching in our Phase 1 metros (Portsmouth, Manchester, Portland) plus the Boston specialty wedge." Suffolk has explicitly funded vertical specialists and rejected horizontal me-toos.
 
 3. **Suffolk Construction itself is a customer prospect.** Frame slide-7 PM tier as "this works for the Suffolk Construction-managed property portfolio" — not in those exact words, but the implication should be visible to the reviewer. They will run the math themselves.
 

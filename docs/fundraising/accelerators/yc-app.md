@@ -50,13 +50,13 @@ Licensed-trade marketplace for New England, by a GC.
 
 ### Q: Describe what your company does in more detail
 
-Sherpa Pros is the licensed-trade marketplace for New England. Homeowners and property managers post jobs (electrical, plumbing, HVAC, roofing, GC, specialty). We dispatch a single verified pro — license + insurance checked — and validate the quote against code (NEC, IRC, MA Electrical, NH RSA, 284 NH municipal codes) before the homeowner sees it. Pros pay 5% on completed jobs in beta (10% standard) instead of paying for leads. Homeowners pay nothing. Property managers pay $1.50/unit/month for the PM tier.
+Sherpa Pros is the national licensed-trade marketplace (international roadmap), launching first in NH, ME, and MA. Homeowners and property managers post jobs (electrical, plumbing, HVAC, roofing, GC, specialty). We dispatch a single verified pro — license + insurance checked — and validate the quote against code (NEC, IRC, MA Electrical, NH RSA, 284 NH municipal codes) before the homeowner sees it. Pros pay 5% on completed jobs in beta (10% standard) instead of paying for leads. Homeowners pay nothing. Property managers pay $1.50/unit/month for the PM tier.
 
 Live web + iOS TestFlight + Android PWA. Built by a working New Hampshire GC.
 
 ### Q: Where do you live now, and where will the company be based after YC?
 
-Phyrom lives in New Hampshire. The company is incorporated and operated from New Hampshire. We will relocate temporarily to the Bay Area for the YC batch and return to NH after Demo Day. **The marketplace itself is and remains a New England-first business — that is the moat, not a constraint.** Most accelerator applicants treat geography as a soft signal; for us it is a strategic commitment.
+Phyrom lives in New Hampshire. The company is incorporated and operated from New Hampshire. We will relocate temporarily to the Bay Area for the YC batch and return to NH after Demo Day. **The marketplace is national in ambition; the launch sequence is New England-first because that is where the founder operates and where the demand pull is most acute — that operational concentration is the moat, not a brand cap.** Most accelerator applicants treat geography as a soft signal; for us it is a strategic commitment to win the launch metros first, then template the playbook nationally.
 
 ### Q: How long have the founders known each other and how did you meet? Have any of you ever worked together before?
 
@@ -133,7 +133,7 @@ Phyrom — 100% common, no SAFEs outstanding.
 
 ### Q: Anything else we should know?
 
-I am still on jobsites in New Hampshire while Sherpa Pros is in beta. I built this because I needed it. The product is real, the founder-market fit is unforgeable, and the Northern Triangle (Portsmouth NH + Manchester NH + Portland ME) is a market YC has not funded a vertical specialist for. We do not need YC's money to survive Phase 0. We want YC because the YC alumni network compresses the Mass Save / utility / PM-anchor partnerships we are otherwise grinding out cold.
+I am still on jobsites in New Hampshire while Sherpa Pros is in beta. I built this because I needed it. The product is real, the founder-market fit is unforgeable, and the Phase 1 launch metros (Portsmouth NH + Manchester NH + Portland ME) are markets YC has not funded a vertical specialist for. We do not need YC's money to survive Phase 0. We want YC because the YC alumni network compresses the Mass Save / utility / PM-anchor partnerships we are otherwise grinding out cold — and the same alumni network is the multiplier when we expand the playbook into every other US metro.
 
 ---
 

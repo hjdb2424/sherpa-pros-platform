@@ -34,11 +34,11 @@
 
 ### Q: Company name + URL + one-line pitch
 
-**Sherpa Pros** — https://sherpa-pros-platform.vercel.app — the licensed-trade marketplace for New England, built by a working general contractor. Jobs, not leads. Code-aware. Permit-aware. Rebate-aware.
+**Sherpa Pros** — https://sherpa-pros-platform.vercel.app — the national licensed-trade marketplace (international roadmap), launching first in NH, ME, and MA, built by a working general contractor. Jobs, not leads. Code-aware. Permit-aware. Rebate-aware.
 
 ### Q: What does your company do? (~150 words)
 
-Sherpa Pros connects homeowners and property managers to verified licensed pros — electricians, plumbers, HVAC techs, roofers, GCs, and specialty trades — across New England. Two things make us different from Angi, Thumbtack, TaskRabbit, Handy, and Houzz Pro:
+Sherpa Pros connects homeowners and property managers to verified licensed pros — electricians, plumbers, HVAC techs, roofers, GCs, and specialty trades — nationally, with our Phase 1 launch focused on NH, ME, and MA. Two things make us different from Angi, Thumbtack, TaskRabbit, Handy, and Houzz Pro:
 
 1. **Every pro is license + insurance verified** before they list, and re-checked on renewal. No "find a guy."
 2. **Every quote is validated against code in real time** — NEC, IRC, MA Electrical, NH RSA, 284 NH municipal codes — before the homeowner ever sees it. We catch missing permits, wrong materials, and below-code quotes.

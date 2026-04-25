@@ -89,7 +89,7 @@ The Massachusetts SBTA Program is administered by the Massachusetts Growth Capit
 
 ### 6.1 Who We Are (≤0.5 page)
 
-Sherpa Pros LLC is a New England licensed-trade marketplace built by a working New Hampshire general contractor (Phyrom, Founder of HJD Builders LLC). The platform matches Massachusetts homeowners to verified, code-validated, license-checked tradespeople — heat-pump installers, electricians, plumbers, old-house specialists — with a single-contractor dispatch model and a 5%–10% take rate (vs. lead-gen platforms' effective $400–$800 per closed job).
+Sherpa Pros LLC is the national licensed-trade marketplace (international roadmap) built by a working New Hampshire general contractor (Phyrom, Founder of HJD Builders LLC), launching first in NH, ME, and MA. The platform matches Massachusetts homeowners to verified, code-validated, license-checked tradespeople — heat-pump installers, electricians, plumbers, old-house specialists — with a single-contractor dispatch model and a 5%–10% take rate (vs. lead-gen platforms' effective $400–$800 per closed job).
 
 The platform is live (sherpa-pros-platform.vercel.app), built on Next.js 16 + Stripe Connect + Neon Postgres + PostGIS, and ready for a focused Boston-metro deployment across five specialty lanes the national lead-gen incumbents (Angi, Thumbtack, HomeAdvisor) structurally cannot serve: Mass Save heat-pump installs, EV-charger installs, electrical panel upgrades, old-house specialists, and triple-decker exterior work.
 
@@ -123,7 +123,7 @@ Sherpa Pros enters Massachusetts as part of a four-metro Phase 1–2 GTM (Portsm
 
 > Dear EforAll Boston team,
 >
-> My name is Phyrom. I'm the founder of Sherpa Pros LLC, a New England licensed-trade marketplace platform that matches Boston homeowners to verified Mass Save heat-pump installers, licensed electricians for EV-charger and panel upgrade work, and old-house specialists in pre-1950 Boston housing. The platform is live (sherpa-pros-platform.vercel.app) and entering Boston as part of a four-metro deployment.
+> My name is Phyrom. I'm the founder of Sherpa Pros LLC, the national licensed-trade marketplace (international roadmap), launching first in New England — and matching Boston homeowners to verified Mass Save heat-pump installers, licensed electricians for EV-charger and panel upgrade work, and old-house specialists in pre-1950 Boston housing. The platform is live (sherpa-pros-platform.vercel.app) and entering Boston as part of a four-metro Phase 1 deployment.
 >
 > I'm a 12-year working New Hampshire general contractor (founder of HJD Builders LLC) and I built Sherpa Pros to solve the lead-gen problem from the contractor side. I'm reaching out to ask whether Sherpa Pros would be a fit for an upcoming EforAll Boston accelerator cohort. The fit factors I see:
 >
@@ -150,7 +150,7 @@ Sherpa Pros enters Massachusetts as part of a four-metro Phase 1–2 GTM (Portsm
 
 > Dear Lawyers Clearinghouse team,
 >
-> My name is Phyrom. I'm the founder of Sherpa Pros LLC, a New England licensed-trade marketplace platform deploying its first Massachusetts cohort across the Boston metro. The platform is live (sherpa-pros-platform.vercel.app) and ready for MA operations.
+> My name is Phyrom. I'm the founder of Sherpa Pros LLC, the national licensed-trade marketplace platform (international roadmap), launching first in New England and deploying its first Massachusetts cohort across the Boston metro. The platform is live (sherpa-pros-platform.vercel.app) and ready for MA operations.
 >
 > I'm requesting consideration for SBTA-funded legal services across the following scope:
 >

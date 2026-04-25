@@ -47,7 +47,7 @@ Send to: Greentown Labs membership team. Find current contact at https://greento
 
 Hi [Membership Director],
 
-I'm Phyrom. I run HJD Builders in New Hampshire — a licensed general contracting business — and I've spent the last 18 months building Sherpa Pros, a licensed-trade marketplace for New England that surfaces and verifies installers for **Mass Save heat-pump installations and National Grid Turnkey EV charger installations** at the matching layer.
+I'm Phyrom. I run HJD Builders in New Hampshire — a licensed general contracting business — and I've spent the last 18 months building Sherpa Pros, the national licensed-trade marketplace (international roadmap), launching first across New England, that surfaces and verifies installers for **Mass Save heat-pump installations and National Grid Turnkey EV charger installations** at the matching layer.
 
 I'm reaching out about Greentown Labs membership for three reasons:
 
@@ -78,7 +78,7 @@ Greentown Labs application typically asks: company overview, climate-impact stat
 
 ### Q: Company overview (~150 words)
 
-Sherpa Pros is the licensed-trade marketplace for New England, built by a working New Hampshire general contractor (HJD Builders LLC). We connect homeowners and property managers to verified licensed pros — electricians, plumbers, HVAC techs, roofers, GCs, specialty trades — with two structural differentiators that lead-gen platforms (Angi, Thumbtack, TaskRabbit, Handy, Houzz) cannot match:
+Sherpa Pros is the national licensed-trade marketplace (international roadmap), launching first across New England, built by a working New Hampshire general contractor (HJD Builders LLC). We connect homeowners and property managers to verified licensed pros — electricians, plumbers, HVAC techs, roofers, GCs, specialty trades — with two structural differentiators that lead-gen platforms (Angi, Thumbtack, TaskRabbit, Handy, Houzz) cannot match:
 
 1. **Every pro is license + insurance verified** before listing and re-checked on renewal.
 2. **Every quote is validated against code** in real time — NEC, IRC, MA Electrical, NH RSA, 284 NH municipal codes — before the homeowner sees it.

@@ -7,6 +7,7 @@ import {
   ShieldCheckIcon,
   BeakerIcon,
 } from "@heroicons/react/24/outline";
+import { seedUserData } from "@/lib/seed-user-data";
 
 // ---------------------------------------------------------------------------
 // Clerk-based sign-up (only rendered when Clerk env vars are present)
@@ -71,6 +72,9 @@ function TestSignUp() {
     localStorage.setItem("sherpa-test-auth", "true");
     localStorage.setItem("sherpa-test-email", email);
     localStorage.setItem("sherpa-test-name", name);
+
+    // Seed user-scoped data on first sign-up
+    seedUserData(email, role);
 
     const destination =
       role === "client" ? "/client/dashboard" : "/pro/dashboard";

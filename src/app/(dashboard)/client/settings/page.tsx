@@ -2,6 +2,7 @@
 
 import HelpAndSupport from '@/components/onboarding/HelpAndSupport';
 import { useState, useEffect } from 'react';
+import { userStorage } from '@/lib/user-storage';
 
 function ToggleSwitch({ defaultChecked = false }: { defaultChecked?: boolean }) {
   return (
@@ -26,8 +27,8 @@ function useOnboardingProfile() {
   const [profile, setProfile] = useState<Record<string, string> | null>(null);
   useEffect(() => {
     try {
-      const raw = localStorage.getItem('sherpa-user-profile');
-      if (raw) setProfile(JSON.parse(raw));
+      const p = userStorage.get<Record<string, string>>('user-profile');
+      if (p) setProfile(p);
     } catch { /* ignore */ }
   }, []);
   return profile;

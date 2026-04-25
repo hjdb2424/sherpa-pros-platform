@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Logo from "@/components/brand/Logo";
+import { seedUserData } from "@/lib/seed-user-data";
 
 export default function DemoPMPage() {
   const router = useRouter();
@@ -11,8 +12,8 @@ export default function DemoPMPage() {
     localStorage.setItem("sherpa-test-role", "pm");
     localStorage.setItem("sherpa-test-auth", "true");
     localStorage.setItem("sherpa-test-email", "lisa.park@test.com");
-    // Always trigger tour for demo entry
-    localStorage.removeItem("sherpa-tour-completed-pm");
+    // Seed user-scoped data on demo entry
+    seedUserData("lisa.park@test.com", "pm");
 
     const timer = setTimeout(() => {
       router.replace("/pm/dashboard");

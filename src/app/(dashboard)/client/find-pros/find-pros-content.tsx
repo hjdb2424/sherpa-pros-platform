@@ -1,12 +1,12 @@
 'use client';
 
-import { useState, useMemo, useCallback } from 'react';
-import { MOCK_PROS, JOB_CATEGORIES, type Pro } from '@/lib/mock-data/client-data';
+import { useState, useMemo } from 'react';
+import { type Pro } from '@/lib/mock-data/client-data';
+import { SEEDED_PROS, toClientPro } from '@/lib/mock-data/seeded-pros';
 import { ProCard } from '@/components/client/ProCard';
 import EmptyState from '@/components/EmptyState';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import GlobalSearch from '@/components/search/GlobalSearch';
-import { ALL_SUB_SERVICES } from '@/lib/config/service-catalog';
 import GoogleMapProvider from '@/components/maps/GoogleMapProvider';
 import MapView from '@/components/maps/MapView';
 import BottomSheet from '@/components/maps/BottomSheet';
@@ -15,6 +15,9 @@ import {
   MOCK_PROS as MAP_PROS,
   DEFAULT_CENTER,
 } from '@/lib/mock-data/map-data';
+
+// Convert all 70 seeded pros to the client-data Pro shape
+const ALL_PROS: Pro[] = SEEDED_PROS.map(toClientPro);
 
 type ViewMode = 'list' | 'map';
 type BadgeFilter = 'all' | 'gold' | 'silver' | 'bronze' | 'new';
@@ -29,7 +32,7 @@ export function FindProsContent() {
   const [selectedProId, setSelectedProId] = useState<string | null>(null);
 
   const filtered = useMemo(() => {
-    let pros = [...MOCK_PROS];
+    let pros = [...ALL_PROS];
 
     if (search.trim()) {
       const q = search.toLowerCase();
@@ -57,7 +60,7 @@ export function FindProsContent() {
 
   const tradeOptions = useMemo(() => {
     const trades = new Set<string>();
-    MOCK_PROS.forEach((p) => p.trades.forEach((t) => trades.add(t)));
+    ALL_PROS.forEach((p) => p.trades.forEach((t) => trades.add(t)));
     return Array.from(trades).sort();
   }, []);
 

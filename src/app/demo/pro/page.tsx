@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Logo from "@/components/brand/Logo";
+import { seedUserData } from "@/lib/seed-user-data";
 
 export default function DemoProPage() {
   const router = useRouter();
@@ -11,7 +12,8 @@ export default function DemoProPage() {
     localStorage.setItem("sherpa-test-role", "pro");
     localStorage.setItem("sherpa-test-auth", "true");
     localStorage.setItem("sherpa-test-email", "mike.rodriguez@test.com");
-    localStorage.removeItem("sherpa-tour-completed-pro");
+    // Seed user-scoped data on demo entry
+    seedUserData("mike.rodriguez@test.com", "pro");
 
     const timer = setTimeout(() => {
       router.replace("/pro/dashboard");

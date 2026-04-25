@@ -6,11 +6,9 @@ import {
   UserCircleIcon,
   BriefcaseIcon,
   ShieldCheckIcon,
-  CheckCircleIcon,
   ClipboardDocumentCheckIcon,
 } from '@heroicons/react/24/outline';
-
-const STORAGE_KEY = 'sherpa-pro-setup-complete';
+import { userStorage } from '@/lib/user-storage';
 
 const setupSteps = [
   { label: 'Complete Profile', key: 'profile' },
@@ -112,8 +110,8 @@ export default function ProDashboardGuard({ children }: ProDashboardGuardProps) 
   const [isSetupComplete, setIsSetupComplete] = useState<boolean | null>(null);
 
   useEffect(() => {
-    const flag = localStorage.getItem(STORAGE_KEY);
-    setIsSetupComplete(flag === 'true');
+    const flag = userStorage.get<boolean>('pro-setup-complete');
+    setIsSetupComplete(flag === true);
   }, []);
 
   // Avoid flash: render nothing until we know the state

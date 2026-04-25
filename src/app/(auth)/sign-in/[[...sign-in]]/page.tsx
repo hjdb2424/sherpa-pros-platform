@@ -12,6 +12,7 @@ import {
   type DemoAccount,
   getDestination,
 } from "@/lib/demo-accounts";
+import { seedUserData } from "@/lib/seed-user-data";
 
 // All demo accounts keyed by email for lookup
 const ALL_ACCOUNTS: DemoAccount[] = [
@@ -97,6 +98,10 @@ function BetaPortal() {
     localStorage.setItem("sherpa-test-auth", "true");
     localStorage.setItem("sherpa-test-email", account.email);
     localStorage.setItem("sherpa-test-name", account.name);
+
+    // Seed user-scoped data on first sign-in
+    seedUserData(account.email, account.role);
+
     router.push(getDestination(account.role));
   }
 

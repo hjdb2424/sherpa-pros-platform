@@ -18,9 +18,7 @@ import { SCPBanner } from '@/components/ai';
 import ClientOnboarding from '@/components/client/ClientOnboarding';
 import ReviewPrompt from '@/components/reviews/ReviewPrompt';
 import { getCurrentSession } from '@/lib/auth/session';
-
-const STORAGE_KEY = 'sherpa-seen-dashboard';
-const FIRST_JOB_KEY = 'sherpa-first-job-posted';
+import { userStorage } from '@/lib/user-storage';
 
 const ACTIVITY_ICONS: Record<string, { icon: string; bg: string }> = {
   bid_received: { icon: '📩', bg: 'bg-blue-100' },
@@ -50,15 +48,15 @@ export function ClientDashboardContent() {
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [hasPostedJob, setHasPostedJob] = useState(true); // default true to avoid flash
 
-  // Check localStorage for first-job-posted flag (demo/mock mode)
+  // Check user-scoped storage for first-job-posted flag (demo/mock mode)
   useEffect(() => {
-    const posted = localStorage.getItem(FIRST_JOB_KEY);
-    setHasPostedJob(posted === 'true');
+    const posted = userStorage.get<boolean>('first-job-posted');
+    setHasPostedJob(posted === true);
   }, []);
 
   // First-visit redirect: send new clients with zero jobs to the post-job wizard
   useEffect(() => {
-    const hasSeen = localStorage.getItem(STORAGE_KEY);
+    const hasSeen = userStorage.get<boolean>('seen-dashboard');
     if (!hasSeen && CLIENT_STATS.activeProjects === 0) {
       router.replace('/client/post-job?from=dashboard');
     }
@@ -114,7 +112,7 @@ export function ClientDashboardContent() {
               <button
                 type="button"
                 onClick={() => {
-                  localStorage.setItem(FIRST_JOB_KEY, 'true');
+                  userStorage.set('first-job-posted', true);
                   setHasPostedJob(true);
                 }}
                 className="text-xs text-zinc-400 underline decoration-dashed underline-offset-2 transition-colors hover:text-zinc-600 dark:hover:text-zinc-300"

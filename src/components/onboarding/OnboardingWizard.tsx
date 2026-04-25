@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { createPortal } from "react-dom";
+import { userStorage } from "@/lib/user-storage";
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -162,7 +163,7 @@ export default function OnboardingWizard({ role }: OnboardingWizardProps) {
   const totalSteps = role === "client" ? 2 : 3;
 
   useEffect(() => {
-    const done = localStorage.getItem("sherpa-onboarding-complete");
+    const done = userStorage.get<boolean>("onboarding-complete");
     if (!done) setVisible(true);
   }, []);
 
@@ -171,8 +172,8 @@ export default function OnboardingWizard({ role }: OnboardingWizardProps) {
   }, []);
 
   const finish = useCallback(() => {
-    localStorage.setItem("sherpa-user-profile", JSON.stringify({ ...data, role }));
-    localStorage.setItem("sherpa-onboarding-complete", "true");
+    userStorage.set("user-profile", { ...data, role });
+    userStorage.set("onboarding-complete", true);
     // Update display name for sidebar/header
     const name = data.fullName || data.name || "";
     if (name) localStorage.setItem("sherpa-test-name", name);
@@ -180,8 +181,8 @@ export default function OnboardingWizard({ role }: OnboardingWizardProps) {
   }, [data, role]);
 
   const skip = useCallback(() => {
-    localStorage.setItem("sherpa-onboarding-skipped", "true");
-    localStorage.setItem("sherpa-onboarding-complete", "true");
+    userStorage.set("onboarding-skipped", true);
+    userStorage.set("onboarding-complete", true);
     setVisible(false);
   }, []);
 

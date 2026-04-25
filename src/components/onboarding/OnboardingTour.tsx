@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import { createPortal } from "react-dom";
+import { userStorage } from "@/lib/user-storage";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -152,18 +153,18 @@ export default function OnboardingTour({ role, steps }: OnboardingTourProps) {
   const [spotlightStyle, setSpotlightStyle] = useState<React.CSSProperties>({});
   const tooltipRef = useRef<HTMLDivElement>(null);
 
-  const storageKey = `sherpa-tour-completed-${role}`;
+  const tourKey = `tour-completed-${role}`;
 
   // Check if tour should auto-start (only after onboarding wizard is done)
   useEffect(() => {
-    const completed = localStorage.getItem(storageKey);
+    const completed = userStorage.get<boolean>(tourKey);
     if (!completed) {
       // Wait for onboarding wizard to finish first
-      const onboardingDone = localStorage.getItem("sherpa-onboarding-complete");
+      const onboardingDone = userStorage.get<boolean>("onboarding-complete");
       if (!onboardingDone) {
         // Poll until wizard completes, then start the tour
         const interval = setInterval(() => {
-          if (localStorage.getItem("sherpa-onboarding-complete")) {
+          if (userStorage.get<boolean>("onboarding-complete")) {
             clearInterval(interval);
             setTimeout(() => setActive(true), 400);
           }
@@ -174,7 +175,7 @@ export default function OnboardingTour({ role, steps }: OnboardingTourProps) {
       const timer = setTimeout(() => setActive(true), 600);
       return () => clearTimeout(timer);
     }
-  }, [storageKey]);
+  }, [tourKey]);
 
   // Listen for manual re-trigger
   useEffect(() => {
@@ -266,9 +267,9 @@ export default function OnboardingTour({ role, steps }: OnboardingTourProps) {
   }, [positionTooltip]);
 
   const completeTour = useCallback(() => {
-    localStorage.setItem(storageKey, "true");
+    userStorage.set(tourKey, true);
     setActive(false);
-  }, [storageKey]);
+  }, [tourKey]);
 
   const next = () => {
     if (currentStep < steps.length - 1) {

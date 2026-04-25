@@ -1,0 +1,3 @@
+module.exports=[39595,(a,b,c)=>{let{createClientModuleProxy:d}=a.r(57931);a.n(d("[project]/sherpa-pros-platform/node_modules/next/dist/client/components/builtin/global-error.js <module evaluation>"))},16054,(a,b,c)=>{let{createClientModuleProxy:d}=a.r(57931);a.n(d("[project]/sherpa-pros-platform/node_modules/next/dist/client/components/builtin/global-error.js"))},51912,a=>{"use strict";a.i(39595);var b=a.i(16054);a.n(b)},65348,a=>{a.n(a.i(51912))}];
+
+//# sourceMappingURL=0pt8_next_dist_client_components_builtin_global-error_02ohx97.js.map

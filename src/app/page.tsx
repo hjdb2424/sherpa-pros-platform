@@ -3,7 +3,6 @@ import Link from 'next/link';
 import Logo from '@/components/brand/Logo';
 import WaitlistForm from '@/components/splash/WaitlistForm';
 import ZipCapture from '@/components/splash/ZipCapture';
-import CountUp from '@/components/splash/CountUp';
 import ScrollFadeIn from '@/components/splash/ScrollFadeIn';
 
 export const metadata: Metadata = {
@@ -58,55 +57,6 @@ function CheckBadgeIcon() {
   return (
     <svg className="h-7 w-7" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
       <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" />
-    </svg>
-  );
-}
-
-/* ─── Simple US Map SVG ─── */
-
-function USMapOutline() {
-  return (
-    <svg
-      viewBox="0 0 960 600"
-      className="mx-auto w-full max-w-2xl opacity-20"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      {/* Simplified continental US outline */}
-      <path
-        d="M 200 120 L 260 100 L 340 90 L 420 85 L 500 80 L 580 75 L 660 80 L 740 90 L 800 110 L 830 140 L 840 180 L 845 220 L 850 260 L 840 300 L 820 340 L 790 380 L 760 410 L 720 430 L 680 450 L 640 460 L 600 470 L 560 480 L 520 485 L 480 480 L 440 470 L 400 460 L 360 440 L 320 420 L 280 400 L 240 370 L 210 340 L 185 300 L 170 260 L 160 220 L 165 180 L 180 150 Z"
-        stroke="#00a9e0"
-        strokeWidth="1.5"
-        opacity="0.6"
-      />
-      {/* Hub dots */}
-      {[
-        { cx: 780, cy: 160 },
-        { cx: 740, cy: 200 },
-        { cx: 700, cy: 350 },
-        { cx: 620, cy: 420 },
-        { cx: 500, cy: 300 },
-        { cx: 400, cy: 350 },
-        { cx: 300, cy: 250 },
-        { cx: 220, cy: 200 },
-        { cx: 230, cy: 320 },
-        { cx: 550, cy: 150 },
-        { cx: 650, cy: 250 },
-        { cx: 350, cy: 200 },
-      ].map((dot, i) => (
-        <g key={i}>
-          <circle cx={dot.cx} cy={dot.cy} r="4" fill="#00a9e0" opacity="0.8" />
-          <circle
-            cx={dot.cx}
-            cy={dot.cy}
-            r="12"
-            fill="#00a9e0"
-            opacity="0.15"
-            className="animate-[ping_3s_ease-in-out_infinite]"
-            style={{ animationDelay: `${i * 250}ms` }}
-          />
-        </g>
-      ))}
     </svg>
   );
 }
@@ -182,9 +132,15 @@ export default function SplashPage() {
             <WaitlistForm />
           </div>
 
-          <p className="mt-8 text-sm text-white/30">
+          <p className="mt-6 text-sm text-white/30">
             Be the first to know when we launch in your area
           </p>
+          <Link
+            href="/sign-in"
+            className="mt-3 inline-block text-sm text-[#00a9e0]/60 transition-colors hover:text-[#00a9e0]"
+          >
+            Already have access? Sign in &rarr;
+          </Link>
         </div>
 
         {/* Scroll indicator */}
@@ -310,42 +266,20 @@ export default function SplashPage() {
         </div>
       </section>
 
-      {/* ━━━ SECTION 4: Hub Teaser ━━━ */}
+      {/* ━━━ SECTION 4: Zip Capture ━━━ */}
       <section className="relative px-4 py-24 sm:py-32">
-        <div className="mx-auto max-w-4xl text-center">
+        <div className="mx-auto max-w-md text-center">
           <ScrollFadeIn>
-            <div className="inline-flex items-center gap-2 rounded-full border border-[#00a9e0]/20 bg-[#00a9e0]/5 px-4 py-1.5">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#00a9e0] opacity-75" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-[#00a9e0]" />
-              </span>
-              <span className="text-xs font-medium text-[#00a9e0]">
-                Expanding nationwide
-              </span>
-            </div>
-          </ScrollFadeIn>
-
-          <ScrollFadeIn delay={100}>
-            <h2 className="mt-6 text-3xl font-bold sm:text-4xl">
-              Coming to a Sherpa Hub near you
+            <h2 className="text-2xl font-bold sm:text-3xl">
+              Launching soon in your area
             </h2>
-            <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-white/50">
-              Physical locations with supply kits, equipment rental, and
-              manufacturer training. The future of trade work starts here.
+            <p className="mx-auto mt-4 max-w-sm text-sm leading-relaxed text-white/50">
+              Enter your zip code and we will let you know when Sherpa Pros is available near you.
             </p>
           </ScrollFadeIn>
 
-          <ScrollFadeIn delay={200}>
-            <div className="mt-12">
-              <USMapOutline />
-            </div>
-          </ScrollFadeIn>
-
-          <ScrollFadeIn delay={300}>
-            <div className="mt-10">
-              <p className="mb-4 text-sm text-white/40">
-                Enter your zip code to check availability
-              </p>
+          <ScrollFadeIn delay={150}>
+            <div className="mt-8">
               <ZipCapture />
             </div>
           </ScrollFadeIn>
@@ -374,7 +308,7 @@ export default function SplashPage() {
                   <div className="mb-3 text-2xl">&#x1f62e;&#x200d;&#x1f4a8;</div>
                   <h3 className="mb-2 text-lg font-semibold text-white/70">Pros pay to compete</h3>
                   <p className="text-sm leading-relaxed text-white/40">
-                    On Angi and Thumbtack, pros pay $15&ndash;$100+ per lead &mdash; even when the homeowner
+                    On the big platforms, pros pay $15&ndash;$100+ per lead &mdash; even when the homeowner
                     never picks up the phone. The best pros stop bidding. The desperate ones raise prices.
                   </p>
                 </div>
@@ -397,7 +331,7 @@ export default function SplashPage() {
                   <h3 className="mb-2 text-lg font-semibold text-white/70">Quotes are a guessing game</h3>
                   <p className="text-sm leading-relaxed text-white/40">
                     You get three quotes and they are all different. Different scopes, different line items,
-                    no way to tell who is padding and who forgot something. If only someone checked the numbers first.
+                    no way to tell who is padding and who forgot something. Nobody checks the numbers. You just pick and hope.
                   </p>
                 </div>
                 {/* The what-if */}
@@ -418,8 +352,8 @@ export default function SplashPage() {
                   <div className="mb-3 text-2xl">&#x1f6a8;</div>
                   <h3 className="mb-2 text-lg font-semibold text-white/70">You pay and pray</h3>
                   <p className="text-sm leading-relaxed text-white/40">
-                    On most platforms, you send money directly to the contractor and hope they finish.
-                    If they disappear mid-job or the work is wrong, good luck getting it back.
+                    On most platforms, you send money directly to the contractor and hope for the best.
+                    If they disappear mid-job or cut corners, getting your money back is your problem.
                   </p>
                 </div>
                 {/* The what-if */}
@@ -579,12 +513,9 @@ export default function SplashPage() {
             <p className="text-xs text-white/20">
               &copy; 2026 Sherpa Pros. All rights reserved.
             </p>
-            <Link
-              href="/sign-in"
-              className="text-xs text-white/30 transition-colors hover:text-[#00a9e0]"
-            >
-              Already have access? Sign in
-            </Link>
+            <span className="text-xs text-white/20">
+              Built by a working general contractor.
+            </span>
           </div>
         </div>
       </footer>

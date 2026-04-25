@@ -13,6 +13,7 @@ function TabIcon({ name, focused, badge, iconKey }: { name: string; focused: boo
     properties: { outline: 'business-outline', filled: 'business' },
     pros: { outline: 'map-outline', filled: 'map' },
     'work orders': { outline: 'construct-outline', filled: 'construct' },
+    messages: { outline: 'chatbubbles-outline', filled: 'chatbubbles' },
     more: { outline: 'menu-outline', filled: 'menu' },
   };
   const key = iconKey ?? name.toLowerCase();
@@ -97,6 +98,20 @@ export default function PMLayout() {
       />
       <Tabs.Screen
         name="work-order-detail"
+        options={{
+          href: null,
+          tabBarStyle: { display: 'none' },
+        }}
+      />
+      <Tabs.Screen
+        name="messages"
+        options={{
+          title: 'Messages',
+          tabBarIcon: ({ focused }) => <TabIcon name="Messages" iconKey="messages" focused={focused} />,
+        }}
+      />
+      <Tabs.Screen
+        name="chat"
         options={{
           href: null,
           tabBarStyle: { display: 'none' },

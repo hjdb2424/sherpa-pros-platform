@@ -461,6 +461,14 @@ export default function AccessListPage() {
                           </>
                         ) : (
                           <>
+                            <a
+                              href={`/invite/${entry.defaultRole === "pm" ? "pm" : entry.defaultRole === "pro" ? "pro" : "client"}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="rounded bg-[#00a9e0] px-2.5 py-1 text-xs font-medium text-white hover:bg-[#0090c0]"
+                            >
+                              Invite
+                            </a>
                             <button
                               onClick={() => startEdit(entry)}
                               className="rounded border border-zinc-300 px-2.5 py-1 text-xs font-medium text-zinc-600 hover:bg-zinc-50"

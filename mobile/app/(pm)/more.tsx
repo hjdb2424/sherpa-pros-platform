@@ -89,7 +89,7 @@ export default function MoreScreen() {
           onPress={async () => {
             Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
             await signOut();
-            router.replace('/(auth)/select-role');
+            router.replace('/(auth)/sign-in');
           }}
         >
           <Ionicons name="log-out-outline" size={20} color={colors.danger} />

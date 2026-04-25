@@ -719,7 +719,6 @@ export default function ProProfileScreen() {
 
         {/* Actions */}
         <View style={s.actionsSection}>
-          <Button title="Switch to Client" onPress={handleSwitchRole} variant="ghost" fullWidth />
           <Pressable style={s.signOutButton} onPress={handleSignOut}>
             <Text style={s.signOutText}>Sign Out</Text>
           </Pressable>

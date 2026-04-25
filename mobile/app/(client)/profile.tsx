@@ -522,19 +522,6 @@ export default function ClientProfileScreen() {
             <Ionicons name="chevron-forward" size={18} color={colors.textMuted} />
           </Pressable>
 
-          {/* Switch Role */}
-          <Pressable
-            style={styles.switchRoleButton}
-            onPress={async () => {
-              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-              await switchRole('pro');
-              router.replace('/(pro)');
-            }}
-          >
-            <Ionicons name="swap-horizontal-outline" size={20} color={colors.primary} />
-            <Text style={styles.switchRoleText}>Switch to Pro</Text>
-          </Pressable>
-
           {/* Sign Out */}
           <Pressable style={styles.signOutButton} onPress={handleSignOut}>
             <Ionicons name="log-out-outline" size={20} color={colors.danger} />

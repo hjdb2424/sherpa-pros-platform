@@ -305,22 +305,22 @@ export default function OnboardingWizard({ role }: OnboardingWizardProps) {
   const renderStep = role === "pm" ? renderPMStep : role === "pro" ? renderProStep : renderClientStep;
 
   return createPortal(
-    <div className="fixed inset-0 z-[9998] flex items-center justify-center" aria-modal="true" role="dialog">
+    <div className="fixed inset-0 z-[9998] flex items-center justify-center p-4" aria-modal="true" role="dialog">
       {/* Backdrop */}
       <div className="absolute inset-0 bg-black/50" />
 
       {/* Card */}
-      <div className="relative z-10 mx-4 w-full max-w-md rounded-2xl bg-white shadow-2xl">
+      <div className="relative z-10 flex w-full max-w-md max-h-[90vh] flex-col rounded-2xl bg-white shadow-2xl">
         {/* Skip button */}
         <button
           type="button"
           onClick={skip}
-          className="absolute right-4 top-4 text-xs text-zinc-400 hover:text-zinc-600 transition-colors"
+          className="absolute right-4 top-4 z-10 text-xs text-zinc-400 hover:text-zinc-600 transition-colors"
         >
           I'll do this later
         </button>
 
-        <div className="p-6">
+        <div className="flex-1 overflow-y-auto p-6">
           {/* Progress dots */}
           <div className="mb-4 flex items-center gap-1.5">
             {Array.from({ length: totalSteps }).map((_, i) => (
@@ -345,8 +345,8 @@ export default function OnboardingWizard({ role }: OnboardingWizardProps) {
           {renderStep()}
         </div>
 
-        {/* Footer */}
-        <div className="flex items-center justify-between border-t border-zinc-100 px-6 py-4">
+        {/* Footer — always visible at bottom */}
+        <div className="flex shrink-0 items-center justify-between border-t border-zinc-100 px-6 py-4">
           {step > 0 ? (
             <button
               type="button"

@@ -470,13 +470,31 @@ export default function AccessListPage() {
                             >
                               Invite
                             </a>
-                            <a
-                              href={`mailto:${entry.email}?subject=${encodeURIComponent("You're invited to Sherpa Pros Beta")}&body=${encodeURIComponent(`Hi ${entry.name},\n\nYou've been invited to test Sherpa Pros — the smart platform for trade work.\n\nSign in here: https://thesherpapros.com/sign-in\nUse this email (${entry.email}) to access the platform.\n\nQuick start:\n1. Visit the link above\n2. Click "Continue with Google" or enter your email\n3. Complete the 30-second setup\n4. Take the guided tour\n\nYour role-specific guide: https://thesherpapros.com/invite/${entry.defaultRole === "pm" ? "pm" : entry.defaultRole === "pro" ? "pro" : "client"}\n\nQuestions? Reply to this email or contact info@thesherpapros.com\n\n— The Sherpa Pros Team`)}`}
+                            <button
+                              onClick={() => {
+                                const role = entry.defaultRole === "pm" ? "pm" : entry.defaultRole === "pro" ? "pro" : "client";
+                                const subject = encodeURIComponent("You're invited to Sherpa Pros Beta");
+                                const body = encodeURIComponent(
+                                  "Hi " + entry.name + ",\n\n" +
+                                  "You've been invited to test Sherpa Pros - the smart platform for trade work.\n\n" +
+                                  "Sign in here: https://thesherpapros.com/sign-in\n" +
+                                  "Use this email (" + entry.email + ") to access the platform.\n\n" +
+                                  "Quick start:\n" +
+                                  "1. Visit the link above\n" +
+                                  "2. Click Continue with Google or enter your email\n" +
+                                  "3. Complete the 30-second setup\n" +
+                                  "4. Take the guided tour\n\n" +
+                                  "Your role-specific guide: https://thesherpapros.com/invite/" + role + "\n\n" +
+                                  "Questions? Reply to this email or contact info@thesherpapros.com\n\n" +
+                                  "- The Sherpa Pros Team"
+                                );
+                                window.location.href = "mailto:" + entry.email + "?subject=" + subject + "&body=" + body;
+                              }}
                               className="rounded bg-emerald-500 px-2.5 py-1 text-xs font-medium text-white hover:bg-emerald-600"
                               title="Send invite email"
                             >
                               Email
-                            </a>
+                            </button>
                             <button
                               onClick={() => startEdit(entry)}
                               className="rounded border border-zinc-300 px-2.5 py-1 text-xs font-medium text-zinc-600 hover:bg-zinc-50"

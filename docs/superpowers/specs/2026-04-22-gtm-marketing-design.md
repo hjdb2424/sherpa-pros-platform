@@ -21,7 +21,7 @@ This document specifies the Go-To-Market plan to move from built product to fund
 
 **Positioning:** *"The licensed-trade marketplace that thinks like a contractor. Built by a working GC. Code-aware. Permit-aware. Rebate-aware."*
 
-**Product portfolio (announced 2026-04-24):** Sherpa Pros is now a four-product brand under one umbrella: (1) **Sherpa Marketplace** — the existing dispatch + match platform (Project + Quick Job modes); (2) **Sherpa Hub** — physical pro pickup locations for job kits, supplies, and branded gear (designed in `docs/superpowers/specs/2026-04-15-sherpa-hub-model-design.md`); (3) **Sherpa Home** (NEW) — homeowner subscription tier offering discounts and faster SLAs; (4) **Sherpa Account/Success Manager** (NEW) — managed-service white-glove tier for PMs, multi-property owners, and high-end homeowners. Marketplace is live in Phase 0 beta; Home and Manager are Phase 1 launch designs. See §3.5 for the full product matrix and cross-product flywheel.
+**Product portfolio (announced 2026-04-24):** Sherpa Pros is now a four-product brand under one umbrella: (1) **Sherpa Marketplace** — the existing dispatch + match platform (Project + Quick Job modes); (2) **Sherpa Hub** — physical pro pickup locations for job kits, supplies, and branded gear (designed in `docs/superpowers/specs/2026-04-15-sherpa-hub-model-design.md`); (3) **Sherpa Home** (NEW) — homeowner subscription tier offering discounts and faster SLAs; (4) **Sherpa Success Manager** (NEW) — managed-service white-glove tier for PMs, multi-property owners, and high-end homeowners. Marketplace is live in Phase 0 beta; Home and Manager are Phase 1 launch designs. See §3.5 for the full product matrix and cross-product flywheel.
 
 **Confirmed primary domain:** `https://www.thesherpapros.com/` — every external surface uses this URL. The legacy `sherpa-pros-platform.vercel.app` URL is deprecated as of 2026-04-24 and is internal-only (Vercel deployment URL).
 
@@ -68,8 +68,34 @@ Sherpa Pros wins these lanes because the Wiseman layer validates national codes 
 
 ### 3.1 Hero message
 
+The brand has TWO canonical hero messages — they serve different surfaces and both are correct in their context.
+
+**Public marketing surface (live splash, social ads, landing pages):**
+
+> *Where every project finds the right pro.*
+
+This is the conversion-anchored homeowner-facing tagline. It appears on the public splash at `https://www.thesherpapros.com/` (waitlist landing) and across paid acquisition. **Locked 2026-04-25** per backend production deployment (commit `9537007` rebrand tagline).
+
+**Investor / partner / brand-bible surface (decks, one-pagers, Wefunder, press kit):**
+
 > *The licensed-trade marketplace that thinks like a contractor.*
 > *Built by a working GC. Code-aware. Permit-aware. Rebate-aware.*
+
+This is the strategic positioning anchor that explains what we are and why we win. Used in pitch deck slide 1, the executive one-pager, the Wefunder page, all founder-voice press placements.
+
+### 3.1.1 Rotating tagline rotation (homeowner splash)
+
+The public splash at `/` rotates seven taglines via `<HeroTagline>` (5-second rotation). These are paired to specific value propositions and may be reused across social copy when a longer-form headline is needed:
+
+1. *Verified pros. Verified quotes. Verified results.* — trust positioning
+2. *One place for the hire, the work, and the money.* — workflow positioning
+3. *The right pro. The right price. The proof to back it up.* — outcome positioning
+4. *Find the pro. Fund the job. Track every dollar.* — control positioning
+5. *From the first quote to the final walkthrough.* — end-to-end positioning
+6. *Real pros. Real quotes. Real accountability.* — anti-Angi positioning
+7. *The right trade. The right terms. The right outcome.* — match positioning
+
+**Brand rule:** the rotating taglines may appear individually on social posts, but the canonical splash hero is always *"Where every project finds the right pro."* Don't replace it with a rotating variant.
 
 ### 3.2 Audience-specific sub-positioning
 
@@ -130,7 +156,7 @@ Sherpa Pros is a multi-product brand. Each product solves a distinct customer pr
 | **Sherpa Marketplace** | Dispatch + match platform. Project mode (bidding) + Quick Job mode (pre-priced). The Uber/DoorDash for licensed trades. | All segments | 5% take rate (10% post-beta) on completed jobs | LIVE — Phase 0 beta |
 | **Sherpa Hub** | Physical locations where pros pick up job kits, supplies, branded gear. Hub-and-spoke model. | Trades / Pros | Free for Founding Pros (kit subsidy); membership/per-pickup fee post-beta | DESIGNED — `docs/superpowers/specs/2026-04-15-sherpa-hub-model-design.md` |
 | **Sherpa Home** | Homeowner subscription. Discounts + faster SLAs + member benefits. | Homeowners (residential) | $X/month or $Y/year (see Wave 6.3 brief) | NEW — Phase 1 launch design |
-| **Sherpa Account/Success Manager** | Managed-service tier — dedicated human owns the customer relationship. | Property Managers (PM tier upsell), Multi-Property Owners, White Glove homeowners, large Companies | $Z/month per account or % of managed portfolio (see Wave 6.3 brief) | NEW — Phase 1/2 launch design |
+| **Sherpa Success Manager** | Managed-service tier — dedicated human owns the customer relationship. | Property Managers (PM tier upsell), Multi-Property Owners, White Glove homeowners, large Companies | $Z/month per account or % of managed portfolio (see Wave 6.3 brief) | NEW — Phase 1/2 launch design |
 
 **Cross-product flywheel:**
 - Marketplace acquires homeowners + pros → Home subscription up-sells homeowners → Manager up-sells PM/Multi-Owner/White-Glove
@@ -141,7 +167,7 @@ Sherpa Pros is a multi-product brand. Each product solves a distinct customer pr
 **Naming convention rules:**
 - Always "Sherpa" + ProductName (Sherpa Marketplace, Sherpa Hub, Sherpa Home, Sherpa Manager)
 - "Sherpa Pros" remains the umbrella brand (not a product name)
-- "Sherpa Account Manager" and "Sherpa Success Manager" are interchangeable in Phase 1 — Phyrom to lock terminology by Phase 1 kickoff
+- **LOCKED 2026-04-25:** the white-glove product is **Sherpa Success Manager** (per backend deployment commit `6097f83`). Drop "Account Manager" and "Sherpa Account/Success Manager" usage everywhere — they are deprecated.
 - Don't say: "the Sherpa Pros app" (which app?) — say: "Sherpa Marketplace" or "Sherpa Home" or whichever product
 
 ---

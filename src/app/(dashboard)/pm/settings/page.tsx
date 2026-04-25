@@ -1,6 +1,7 @@
 'use client';
 
 import HelpAndSupport from '@/components/onboarding/HelpAndSupport';
+import QBOConnect from '@/components/integrations/QBOConnect';
 import { useState, useEffect } from 'react';
 import { userStorage } from '@/lib/user-storage';
 
@@ -174,6 +175,39 @@ export default function PMSettingsPage() {
                 </div>
               </div>
             ))}
+          </div>
+        </section>
+
+        {/* Integrations */}
+        <section className="rounded-xl border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900">
+          <h2 className="text-base font-semibold text-zinc-900 dark:text-white">Integrations</h2>
+          <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">Connect third-party services to sync your data.</p>
+          <div className="mt-5 space-y-4">
+            {/* QuickBooks Online */}
+            <QBOConnect />
+
+            {/* Future integrations */}
+            <div className="h-px bg-zinc-100 dark:bg-zinc-800" />
+            <div className="space-y-3">
+              {[
+                { name: 'Stripe', desc: 'Advanced payment processing and reporting', icon: 'S' },
+                { name: 'Xero', desc: 'Accounting and bookkeeping sync', icon: 'X' },
+                { name: 'FreshBooks', desc: 'Invoice and expense management', icon: 'F' },
+              ].map((integration) => (
+                <div key={integration.name} className="flex items-center gap-3 rounded-xl border border-zinc-100 bg-zinc-50/50 p-4 opacity-60 dark:border-zinc-800 dark:bg-zinc-800/30">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-zinc-200/60 dark:bg-zinc-700">
+                    <span className="text-sm font-bold text-zinc-400 dark:text-zinc-500">{integration.icon}</span>
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm font-semibold text-zinc-500 dark:text-zinc-400">{integration.name}</p>
+                    <p className="text-xs text-zinc-400 dark:text-zinc-500">{integration.desc}</p>
+                  </div>
+                  <span className="shrink-0 rounded-full bg-zinc-100 px-2.5 py-1 text-xs font-medium text-zinc-400 dark:bg-zinc-800 dark:text-zinc-500">
+                    Coming Soon
+                  </span>
+                </div>
+              ))}
+            </div>
           </div>
         </section>
 

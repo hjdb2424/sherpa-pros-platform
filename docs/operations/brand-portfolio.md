@@ -37,6 +37,23 @@ The promise is five words long and we say all five every time:
 
 We are not a lead-generation platform with better marketing. We are a different model. The homeowner gets a verified licensed pro. The pro gets a job, not a sales lead. The platform takes a cut only when work happens. Built by a contractor, for the contractors he works with every day.
 
+### 1.1 Two canonical hero messages — when to use which
+
+**Public splash + paid acquisition** (homeowner-facing, conversion-anchored):
+
+> *Where every project finds the right pro.*
+
+This is what runs at `https://www.thesherpapros.com/` (live), in paid social, and in any homeowner outreach. **Locked 2026-04-25** per backend production deployment.
+
+**Investor + partner + press kit + decks** (strategic positioning anchor):
+
+> *The licensed-trade marketplace that thinks like a contractor.*
+> *Built by a working GC. Code-aware. Permit-aware. Rebate-aware.*
+
+This is what appears on slide 1 of every pitch deck, the executive one-pager, the Wefunder page, and all founder-voice press placements.
+
+**Seven rotating taglines** also live on the splash (`<HeroTagline>` component, 5-second rotation). Reuse-per-context is fine for social copy; do not substitute them for the canonical splash hero. Full list in spec §3.1.1.
+
 ---
 
 ## 2. Logo System
@@ -698,11 +715,35 @@ How the brand applies to specific surfaces. Each is a brief — not a full desig
 
 ### 8.1 Website (thesherpapros.com)
 
-Primary wordmark in the header, left-aligned, with 24 px clearspace from the navigation. Sky-blue accent rules above section titles. Warm cream sections alternating with dark navy "lead" sections (dark navy used sparingly — once or twice per page, for hero or cta-band). Fraunces for hero typography (96 pt display weight on desktop, 56 pt on mobile). Manrope for body (16 pt minimum). Editorial-magazine layout, generous negative space.
+The web surface has THREE distinct contexts. Brand application differs per context.
 
-Buttons: primary action is sky-blue background with white text. Secondary action is orange-red background with white text. Tertiary action is a text link with a sky-blue underline. Never more than one primary action visible on a single screen.
+**8.1a — Public splash + waitlist (`/`, `/about`, `/invite`, `/invite/pro`, `/invite/pm`, `/invite/client`)**
 
-Footer: dark navy background, warm-cream text, sky-blue accent rule above. Links underlined in sky-blue. Phyrom's email and the canonical domain visible.
+This is the live pre-launch acquisition surface (`src/app/page.tsx`, deployed). Dark navy background (`#0a0a0f`-ish near-black, NOT pure black) with white text. Primary wordmark in header, left-aligned, with 24 px clearspace from the navigation. Hero canonical: *"Where every project finds the right pro."* with seven rotating taglines via `<HeroTagline>` (5-second rotation — see §1.1 + spec §3.1.1). Components in use: `<Logo>`, `<HeroTagline>`, `<WaitlistForm>`, `<ZipCapture>`, `<ScrollFadeIn>`, `<CountUp>`. Above-the-fold contains the waitlist email capture; below-the-fold contains competitor comparison + Sherpa ecosystem section.
+
+The About page (`/about`) uses the same dark theme but switches to hero text *"Built by a contractor. For everyone in the trade."* — founder-origin story. No personal info, no HJD references in body copy (HJD identity used only on the wordmark and where the founder is named).
+
+Invite pages are role-specific (pro / pm / client) — same dark theme, role-specific value props, prefilled mailto for sharing.
+
+**8.1b — Post-auth dashboards (`/(dashboard)/client/...`, `/(dashboard)/pm/...`, `/(dashboard)/pro/...`, `/(dashboard)/admin/...`)**
+
+The signed-in product surface. Brand applies as: warm cream sections (`#FBF7EE`) alternating with dark navy "lead" sections (used sparingly — once or twice per page, for hero or CTA-band). Sky-blue accent rules above section titles. Fraunces for h1 page titles (44–56 pt). Manrope for body (15 pt minimum). Editorial-magazine layout. Sidebar navigation uses Manrope small caps with sky-blue active-state rule. Investor metrics dashboard at `/admin/investor-metrics` follows the same editorial discipline.
+
+**8.1c — Marketing landing pages (NOT yet shipped — Phase 1 work)**
+
+The aspirational homeowner / pro / PM marketing landing pages drafted in `docs/marketing/email-sequences/` and the original Wave 1 `marketing-content-creator` agent output are NOT live yet. They were drafted for post-launch when the public splash flips from waitlist to full marketplace. When they ship, they'll inherit the same warm-cream + dark-navy editorial discipline as the dashboards (§8.1b above) — not the pre-launch dark-navy splash style of §8.1a.
+
+**Universal button rules (apply across all 3 contexts):**
+- Primary action: sky-blue background with white text
+- Secondary action: orange-red background with white text  
+- Tertiary action: text link with sky-blue underline
+- Never more than one primary action visible on a single screen
+
+**Universal footer rules:**
+- Dark navy background, warm-cream text, sky-blue accent rule above
+- Links underlined in sky-blue
+- Canonical domain (thesherpapros.com) and contact (Phyrom email) visible
+- About page link, invite page link, sign-in link in nav
 
 ### 8.2 Mobile app (Sherpa Marketplace)
 

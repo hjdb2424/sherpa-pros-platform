@@ -500,24 +500,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 2,
   },
-  starFilled: {
-    fontSize: 16,
-    color: colors.warning,
-  },
-  starEmpty: {
-    fontSize: 16,
-    color: colors.borderMedium,
-  },
   emptyState: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: spacing.xxl,
     paddingTop: spacing.xxxl,
-  },
-  emptyIcon: {
-    fontSize: 48,
-    marginBottom: spacing.lg,
   },
   emptyTitle: {
     ...typography.subheading,

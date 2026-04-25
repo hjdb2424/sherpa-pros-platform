@@ -419,7 +419,7 @@ export default function ProProfileScreen() {
           {/* Badge tier */}
           <View style={s.tierRow}>
             <View style={s.tierBadge}>
-              <Ionicons name="shield-checkmark" size={14} color="#b8860b" />
+              <Ionicons name="shield-checkmark" size={14} color={colors.warningDark} />
               <Text style={s.tierText}>Gold Pro</Text>
             </View>
           </View>
@@ -942,12 +942,12 @@ const s = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: borderRadius.full,
-    backgroundColor: '#fef3c7',
+    backgroundColor: colors.warningLight,
   },
   tierText: {
     fontSize: 12,
     fontWeight: '600',
-    color: '#b8860b',
+    color: colors.warningDark,
   },
   verifiedRow: {
     flexDirection: 'row',

@@ -22,6 +22,15 @@ export const colors = {
   border: 'rgba(0, 169, 224, 0.2)',
   borderLight: '#f4f4f5',
   borderMedium: '#e4e4e7',
+  warningDark: '#b8860b',
+};
+
+export const emergencyColors = {
+  background: '#0f172a',
+  surface: '#1e293b',
+  text: '#ffffff',
+  textMuted: '#a1a1aa',
+  accent: '#00a9e0',
 };
 
 export const spacing = {

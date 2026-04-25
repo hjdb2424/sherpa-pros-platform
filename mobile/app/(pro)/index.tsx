@@ -46,6 +46,8 @@ function NotificationBell() {
   return (
     <Pressable
       style={styles.bellButton}
+      accessibilityLabel="Notifications"
+      accessibilityRole="button"
       onPress={() => {
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
         router.push('/notifications');
@@ -310,7 +312,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 10,
-    backgroundColor: '#ffffff',
+    backgroundColor: colors.background,
     borderRadius: 9999,
     paddingHorizontal: 16,
     paddingVertical: 12,
@@ -332,13 +334,10 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: 22,
-    backgroundColor: '#ffffff',
+    backgroundColor: colors.surface,
     alignItems: 'center',
     justifyContent: 'center',
     ...shadows.md,
-  },
-  bellIcon: {
-    fontSize: 20,
   },
   bellDot: {
     position: 'absolute',
@@ -349,7 +348,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     backgroundColor: colors.danger,
     borderWidth: 1.5,
-    borderColor: '#ffffff',
+    borderColor: colors.background,
   },
 
   // Location banner
@@ -378,7 +377,7 @@ const styles = StyleSheet.create({
     width: 48,
     height: 48,
     borderRadius: 24,
-    backgroundColor: '#ffffff',
+    backgroundColor: colors.surface,
     alignItems: 'center',
     justifyContent: 'center',
     zIndex: 10,

@@ -14,7 +14,7 @@ import * as Haptics from 'expo-haptics';
 import { Ionicons } from '@expo/vector-icons';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import { DEFAULT_CENTER } from '@/lib/types';
-import { colors } from '@/lib/theme';
+import { colors, emergencyColors } from '@/lib/theme';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -193,16 +193,18 @@ export default function EmergencyScreen() {
                   styles.categoryCard,
                   pressed && styles.categoryCardPressed,
                 ]}
+                accessibilityLabel={cat.title}
+                accessibilityRole="button"
                 onPress={() => handleCategorySelect(cat.id)}
               >
-                <Ionicons name={cat.icon} size={32} color="#ffffff" />
+                <Ionicons name={cat.icon} size={32} color={emergencyColors.text} />
                 <Text style={styles.categoryTitle}>{cat.title}</Text>
               </Pressable>
             </FadeInView>
           ))}
         </View>
 
-        <Pressable style={styles.cancelButton} onPress={handleCancel}>
+        <Pressable style={styles.cancelButton} accessibilityLabel="Cancel emergency" accessibilityRole="button" onPress={handleCancel}>
           <Text style={styles.cancelText}>Cancel</Text>
         </Pressable>
       </View>
@@ -268,7 +270,7 @@ export default function EmergencyScreen() {
           </FadeInView>
         )}
 
-        <Pressable style={styles.cancelButton} onPress={handleCancel}>
+        <Pressable style={styles.cancelButton} accessibilityLabel="Cancel emergency" accessibilityRole="button" onPress={handleCancel}>
           <Text style={styles.cancelText}>Cancel</Text>
         </Pressable>
       </View>
@@ -320,18 +322,18 @@ export default function EmergencyScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0f172a',
+    backgroundColor: emergencyColors.background,
     paddingHorizontal: 24,
   },
   title: {
     fontSize: 32,
     fontWeight: '700',
-    color: '#ffffff',
+    color: emergencyColors.text,
     marginBottom: 4,
   },
   subtitle: {
     fontSize: 16,
-    color: '#a1a1aa',
+    color: emergencyColors.textMuted,
     marginBottom: 32,
   },
 
@@ -356,7 +358,7 @@ const styles = StyleSheet.create({
   },
   categoryCardPressed: {
     backgroundColor: 'rgba(63, 63, 70, 1)',
-    borderColor: '#00a9e0',
+    borderColor: emergencyColors.accent,
   },
   categoryIcon: {
     marginBottom: 0,
@@ -364,7 +366,7 @@ const styles = StyleSheet.create({
   categoryTitle: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#ffffff',
+    color: emergencyColors.text,
   },
 
   // Severity
@@ -400,13 +402,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   nextButton: {
-    backgroundColor: '#00a9e0',
+    backgroundColor: emergencyColors.accent,
     borderRadius: 9999,
     paddingHorizontal: 48,
     paddingVertical: 16,
   },
   nextButtonText: {
-    color: '#ffffff',
+    color: emergencyColors.text,
     fontSize: 18,
     fontWeight: '700',
   },
@@ -418,7 +420,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   cancelText: {
-    color: '#a1a1aa',
+    color: emergencyColors.textMuted,
     fontSize: 16,
     fontWeight: '500',
   },
@@ -456,6 +458,6 @@ const styles = StyleSheet.create({
   searchText: {
     fontSize: 22,
     fontWeight: '700',
-    color: '#ffffff',
+    color: emergencyColors.text,
   },
 });

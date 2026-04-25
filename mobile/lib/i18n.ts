@@ -13,6 +13,11 @@ const translations: Record<Language, Record<string, string>> = {
     'nav.messages': 'Messages',
     'nav.profile': 'Profile',
     'nav.emergency': 'Emergency',
+    'nav.pros': 'Pros',
+    'nav.properties': 'Properties',
+    'nav.finance': 'Finance',
+    'nav.maintenance': 'Maint.',
+    'nav.more': 'More',
 
     // Common
     'common.search': 'Search',
@@ -98,6 +103,11 @@ const translations: Record<Language, Record<string, string>> = {
     'nav.messages': 'Mensajes',
     'nav.profile': 'Perfil',
     'nav.emergency': 'Emergencia',
+    'nav.pros': 'Profesionales',
+    'nav.properties': 'Propiedades',
+    'nav.finance': 'Finanzas',
+    'nav.maintenance': 'Manten.',
+    'nav.more': 'Mas',
 
     'common.search': 'Buscar',
     'common.cancel': 'Cancelar',
@@ -176,6 +186,11 @@ const translations: Record<Language, Record<string, string>> = {
     'nav.messages': 'Mensagens',
     'nav.profile': 'Perfil',
     'nav.emergency': 'Emergencia',
+    'nav.pros': 'Profissionais',
+    'nav.properties': 'Propriedades',
+    'nav.finance': 'Financas',
+    'nav.maintenance': 'Manut.',
+    'nav.more': 'Mais',
 
     'common.search': 'Buscar',
     'common.cancel': 'Cancelar',

@@ -13,6 +13,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "_googleMapsNote": "Client-side key, OK to embed in native build. Restrict by bundle ID in Google Cloud Console.",
     "ios": {
       "bundleIdentifier": "com.thesherpapros.app",
       "supportsTablet": true,

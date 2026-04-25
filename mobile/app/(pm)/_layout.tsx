@@ -62,15 +62,15 @@ export default function PMLayout() {
       <Tabs.Screen
         name="pros"
         options={{
-          title: 'Pros',
-          tabBarIcon: ({ focused }) => <TabIcon name="Pros" iconKey="pros" focused={focused} />,
+          title: t('nav.pros'),
+          tabBarIcon: ({ focused }) => <TabIcon name={t('nav.pros')} iconKey="pros" focused={focused} />,
         }}
       />
       <Tabs.Screen
         name="properties/index"
         options={{
-          title: 'Properties',
-          tabBarIcon: ({ focused }) => <TabIcon name="Properties" iconKey="properties" focused={focused} />,
+          title: t('nav.properties'),
+          tabBarIcon: ({ focused }) => <TabIcon name={t('nav.properties')} iconKey="properties" focused={focused} />,
         }}
       />
       <Tabs.Screen
@@ -83,16 +83,16 @@ export default function PMLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Finance',
-          tabBarIcon: ({ focused }) => <TabIcon name="Finance" iconKey="finance" focused={focused} />,
+          title: t('nav.finance'),
+          tabBarIcon: ({ focused }) => <TabIcon name={t('nav.finance')} iconKey="finance" focused={focused} />,
         }}
       />
       <Tabs.Screen
         name="work-orders"
         options={{
-          title: 'Maintenance',
+          title: t('nav.maintenance'),
           tabBarIcon: ({ focused }) => (
-            <TabIcon name="Maint." iconKey="work orders" focused={focused} badge={woCount} />
+            <TabIcon name={t('nav.maintenance')} iconKey="work orders" focused={focused} badge={woCount} />
           ),
         }}
       />
@@ -106,8 +106,8 @@ export default function PMLayout() {
       <Tabs.Screen
         name="messages"
         options={{
-          title: 'Messages',
-          tabBarIcon: ({ focused }) => <TabIcon name="Messages" iconKey="messages" focused={focused} />,
+          title: t('nav.messages'),
+          tabBarIcon: ({ focused }) => <TabIcon name={t('nav.messages')} iconKey="messages" focused={focused} />,
         }}
       />
       <Tabs.Screen
@@ -120,8 +120,8 @@ export default function PMLayout() {
       <Tabs.Screen
         name="more"
         options={{
-          title: 'More',
-          tabBarIcon: ({ focused }) => <TabIcon name="More" iconKey="more" focused={focused} />,
+          title: t('nav.more'),
+          tabBarIcon: ({ focused }) => <TabIcon name={t('nav.more')} iconKey="more" focused={focused} />,
         }}
       />
     </Tabs>

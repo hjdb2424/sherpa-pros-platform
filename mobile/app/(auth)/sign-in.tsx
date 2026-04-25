@@ -362,7 +362,7 @@ function UserCard({
 const styles = StyleSheet.create({
   scroll: {
     flex: 1,
-    backgroundColor: '#ffffff',
+    backgroundColor: colors.background,
   },
   container: {
     paddingHorizontal: 24,
@@ -514,7 +514,7 @@ const styles = StyleSheet.create({
   roleBadgeText: {
     fontSize: 10,
     fontWeight: '700',
-    color: '#ffffff',
+    color: colors.textInverse,
     textTransform: 'uppercase',
   },
   userDescription: {

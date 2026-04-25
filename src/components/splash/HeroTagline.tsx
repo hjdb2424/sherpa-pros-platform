@@ -3,11 +3,16 @@
 import { useState, useEffect } from 'react';
 
 const TAGLINES = [
-  'backed by code-checked quotes',
-  'with zero lead fees for pros',
-  'and every dollar tracked',
-  'from search to payment, all in one place',
-  'built by a contractor, for the trade',
+  'Trade work, done right.',
+  'One place for the hire, the work, and the money.',
+  'The right pro. The right price. The proof to back it up.',
+  'Trade work. Trusted pros. One platform.',
+  'The hire. The work. Done right.',
+  'Find the pro. Fund the job. Track every dollar.',
+  'From the first quote to the final walkthrough.',
+  'Verified pros. Verified quotes. Verified results.',
+  'The right trade. The right terms. The right outcome.',
+  'Real pros. Real quotes. Real accountability.',
 ];
 
 export default function HeroTagline() {
@@ -21,18 +26,17 @@ export default function HeroTagline() {
         setIndex((prev) => (prev + 1) % TAGLINES.length);
         setFade(true);
       }, 400);
-    }, 4000);
+    }, 5000);
     return () => clearInterval(interval);
   }, []);
 
   return (
     <h1 className="text-4xl font-bold leading-tight tracking-tight sm:text-5xl md:text-6xl">
-      Where every project finds the right pro{' '}
       <span
-        className="inline-block bg-gradient-to-r from-[#00a9e0] to-[#0ea5e9] bg-clip-text text-transparent transition-opacity duration-400"
+        className="inline-block bg-gradient-to-r from-white to-white/90 bg-clip-text text-transparent transition-opacity duration-500"
         style={{ opacity: fade ? 1 : 0 }}
       >
-        &mdash; {TAGLINES[index]}
+        {TAGLINES[index]}
       </span>
     </h1>
   );

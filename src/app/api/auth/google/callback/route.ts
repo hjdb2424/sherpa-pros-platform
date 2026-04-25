@@ -19,7 +19,7 @@ export async function GET(request: NextRequest) {
     // For now, redirect to role selection or dashboard with profile info
     // stored in a short-lived cookie.
     const base = process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3001';
-    const response = NextResponse.redirect(new URL('/pro/dashboard', base));
+    const response = NextResponse.redirect(new URL('/select-role', base));
 
     // Set auth session data as cookies (in production, use encrypted sessions)
     response.cookies.set('sherpa-auth', 'true', {

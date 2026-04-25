@@ -121,7 +121,7 @@ export default function SplashPage() {
           <HeroTagline />
 
           <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-white/60 sm:text-xl">
-            Verified pros. Transparent pricing. Real reviews. Coming to your area soon.
+            Pros keep more of what they earn. Clients know exactly what they&apos;re paying for. That&apos;s the whole idea.
           </p>
 
           <div className="mt-10">

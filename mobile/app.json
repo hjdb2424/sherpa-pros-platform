@@ -14,7 +14,7 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "bundleIdentifier": "com.sherpapros.app",
+      "bundleIdentifier": "com.thesherpapros.app",
       "supportsTablet": true,
       "config": {
         "googleMapsApiKey": "AIzaSyA8xY_ho-7i8UjyhcAfaP7wBbh-9Nd2kWU"
@@ -25,7 +25,7 @@
       }
     },
     "android": {
-      "package": "com.sherpapros.app",
+      "package": "com.thesherpapros.app",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"

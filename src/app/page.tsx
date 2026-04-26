@@ -188,8 +188,8 @@ export default function SplashPage() {
                 </div>
                 <h3 className="mb-3 text-xl font-semibold">For Pros</h3>
                 <p className="text-sm leading-relaxed text-white/50">
-                  No lead fees. No tire-kickers. Vetted jobs from real clients who
-                  are ready to hire.
+                  Whether you&apos;re full-time or side-hustle, find steady work with
+                  fair pay. No lead fees. Vetted jobs from real clients.
                 </p>
               </div>
             </ScrollFadeIn>
@@ -449,10 +449,174 @@ export default function SplashPage() {
               </div>
             </ScrollFadeIn>
           </div>
+
+          {/* Flex callout */}
+          <ScrollFadeIn delay={600}>
+            <div className="mt-10 rounded-2xl border border-[#ff4500]/20 bg-[#ff4500]/[0.04] p-6 text-center sm:p-8">
+              <p className="mb-1 text-xs font-bold uppercase tracking-widest text-[#ff4500]">New</p>
+              <h3 className="text-lg font-semibold sm:text-xl">
+                Sherpa Flex &mdash; Side-hustle pros welcome
+              </h3>
+              <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-white/50">
+                No LLC required. Per-project insurance included. 18% fee covers everything so you can earn on your terms.
+              </p>
+              <Link
+                href="/flex"
+                className="mt-5 inline-flex rounded-lg bg-[#ff4500] px-6 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-[#e03e00] hover:shadow-md"
+              >
+                Learn about Sherpa Flex &rarr;
+              </Link>
+            </div>
+          </ScrollFadeIn>
         </div>
       </section>
 
-      {/* ━━━ SECTION 6: Footer ━━━ */}
+      {/* ━━━ SECTION 7: Platform Features ━━━ */}
+      <section className="relative px-4 py-24 sm:py-32">
+        <div className="mx-auto max-w-6xl">
+          <ScrollFadeIn>
+            <div className="mb-16 text-center">
+              <p className="mb-3 text-sm font-medium uppercase tracking-widest text-[#00a9e0]">
+                Not just a marketplace
+              </p>
+              <h2 className="text-3xl font-bold sm:text-4xl">
+                Everything You Need, Built In
+              </h2>
+              <p className="mx-auto mt-4 max-w-xl text-base text-white/50">
+                Not just a marketplace. A complete platform for trade work.
+              </p>
+            </div>
+          </ScrollFadeIn>
+
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {[
+              {
+                title: 'Sherpa Score',
+                desc: 'Quality tracking that rewards great work. 12 metrics across quality, communication, and reviews.',
+                icon: (
+                  <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
+                  </svg>
+                ),
+              },
+              {
+                title: 'Rewards Program',
+                desc: 'Earn points on every job. Redeem for tools, gear, and gift cards.',
+                icon: (
+                  <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M21 11.25v8.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5v-8.25M12 4.875A2.625 2.625 0 109.375 7.5H12m0-2.625V7.5m0-2.625A2.625 2.625 0 1114.625 7.5H12m0 0V21m-8.625-9.75h18c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125h-18c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
+                  </svg>
+                ),
+              },
+              {
+                title: 'Smart Scan OCR',
+                desc: 'Snap a receipt, scan a document. AI-powered document processing.',
+                icon: (
+                  <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z" />
+                  </svg>
+                ),
+              },
+              {
+                title: 'In-App Messaging',
+                desc: 'Chat with your pro or client. Synced to SMS via Twilio.',
+                icon: (
+                  <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 01-2.555-.337A5.972 5.972 0 015.41 20.97a5.969 5.969 0 01-.474-.065 4.48 4.48 0 00.978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z" />
+                  </svg>
+                ),
+              },
+              {
+                title: 'Combined Maintenance',
+                desc: 'Kanban boards, schedules, and drill-down views for property managers.',
+                icon: (
+                  <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 4.5v15m6-15v15m-10.875 0h15.75c.621 0 1.125-.504 1.125-1.125V5.625c0-.621-.504-1.125-1.125-1.125H4.125C3.504 4.5 3 5.004 3 5.625v12.75c0 .621.504 1.125 1.125 1.125z" />
+                  </svg>
+                ),
+              },
+              {
+                title: 'Finance Hub',
+                desc: 'Track expenses, mileage, and quarterly estimates. 1099-ready.',
+                icon: (
+                  <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z" />
+                  </svg>
+                ),
+              },
+              {
+                title: 'Escrow Payments',
+                desc: 'Milestone-based payments held in escrow until work is verified.',
+                icon: (
+                  <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+                  </svg>
+                ),
+              },
+              {
+                title: 'Code-Verified Quotes',
+                desc: 'Every quote validated against local building codes.',
+                icon: (
+                  <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+                  </svg>
+                ),
+              },
+              {
+                title: '37 Service Categories',
+                desc: '251+ services from smart home to landscaping to finish carpentry.',
+                icon: (
+                  <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
+                  </svg>
+                ),
+              },
+              {
+                title: 'Sherpa Success Manager',
+                desc: 'A dedicated human account manager, not a chatbot.',
+                icon: (
+                  <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                  </svg>
+                ),
+              },
+              {
+                title: 'Materials Dispatch',
+                desc: 'Materials ordered and delivered to the job site. No more supply runs.',
+                icon: (
+                  <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" />
+                  </svg>
+                ),
+              },
+              {
+                title: 'Multi-Trade Coordination',
+                desc: 'One job, multiple trades. We coordinate the handoffs.',
+                icon: (
+                  <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />
+                  </svg>
+                ),
+              },
+            ].map((feature, i) => (
+              <ScrollFadeIn key={feature.title} delay={(i % 3) * 100}>
+                <div className="group flex gap-4 rounded-xl border border-white/[0.06] bg-white/[0.02] p-5 transition-all duration-300 hover:border-white/[0.12] hover:bg-white/[0.04]">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#00a9e0]/10 text-[#00a9e0] transition-colors duration-300 group-hover:bg-[#00a9e0]/20">
+                    {feature.icon}
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-semibold">{feature.title}</h3>
+                    <p className="mt-1 text-xs leading-relaxed text-white/40">{feature.desc}</p>
+                  </div>
+                </div>
+              </ScrollFadeIn>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ━━━ SECTION 8: Footer ━━━ */}
       <footer className="relative border-t border-white/[0.06] px-4 py-16">
         <div className="mx-auto max-w-6xl">
           <div className="flex flex-col items-center gap-10 sm:flex-row sm:items-start sm:justify-between">

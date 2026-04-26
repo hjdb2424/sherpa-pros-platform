@@ -136,6 +136,82 @@ export default function AboutPage() {
         {/* Divider */}
         <div className="my-16 h-px bg-white/[0.06]" />
 
+        {/* Sherpa Flex */}
+        <h2 className="text-2xl font-bold">Sherpa Flex</h2>
+        <p className="mt-4 text-sm leading-relaxed text-white/50">
+          Not every pro has an LLC or their own insurance &mdash; and that shouldn&apos;t stop them
+          from earning. Sherpa Flex is a side-hustle tier designed for skilled tradespeople who
+          want to work on their terms.
+        </p>
+
+        <div className="mt-6 rounded-xl border border-[#ff4500]/20 bg-[#ff4500]/[0.04] p-6">
+          <div className="grid grid-cols-3 gap-4 text-center">
+            <div>
+              <p className="text-2xl font-bold text-[#ff4500]">18%</p>
+              <p className="mt-1 text-xs text-white/40">Service fee</p>
+            </div>
+            <div>
+              <p className="text-2xl font-bold text-[#ff4500]">$1M</p>
+              <p className="mt-1 text-xs text-white/40">Per-project coverage</p>
+            </div>
+            <div>
+              <p className="text-2xl font-bold text-[#ff4500]">&lt;$5K</p>
+              <p className="mt-1 text-xs text-white/40">Job cap</p>
+            </div>
+          </div>
+          <p className="mt-5 text-sm leading-relaxed text-white/50">
+            No LLC required. No personal insurance policy needed. Per-project liability insurance
+            is included in the 18% fee. Background check required. When you are ready to go
+            full-time, upgrade to Standard Pro at 12% &mdash; your Sherpa Score and history carry over.
+          </p>
+          <div className="mt-4">
+            <Link
+              href="/flex"
+              className="text-sm font-semibold text-[#ff4500] transition-colors hover:text-[#ff6b35]"
+            >
+              Learn more about Sherpa Flex &rarr;
+            </Link>
+          </div>
+        </div>
+
+        {/* Divider */}
+        <div className="my-16 h-px bg-white/[0.06]" />
+
+        {/* What We've Built */}
+        <h2 className="text-2xl font-bold">What we&apos;ve built</h2>
+        <p className="mt-4 text-sm leading-relaxed text-white/50">
+          Sherpa Pros is not just a marketplace. Every feature below is built in &mdash; no
+          third-party add-ons, no upsells.
+        </p>
+
+        <div className="mt-8 space-y-4">
+          {[
+            { title: 'Sherpa Score', desc: 'Quality tracking that rewards great work. 12 metrics across quality, communication, and reviews.' },
+            { title: 'Rewards Program', desc: 'Earn points on every job. Redeem for tools, gear, and gift cards.' },
+            { title: 'Smart Scan OCR', desc: 'Snap a receipt, scan a document. AI-powered document processing.' },
+            { title: 'In-App Messaging', desc: 'Chat with your pro or client. Synced to SMS via Twilio.' },
+            { title: 'Combined Maintenance', desc: 'Kanban boards, schedules, and drill-down views for property managers.' },
+            { title: 'Finance Hub', desc: 'Track expenses, mileage, and quarterly estimates. 1099-ready.' },
+            { title: 'Escrow Payments', desc: 'Milestone-based payments held in escrow until work is verified.' },
+            { title: 'Code-Verified Quotes', desc: 'Every quote validated against local building codes.' },
+            { title: '37 Service Categories', desc: '251+ services from smart home to landscaping to finish carpentry.' },
+            { title: 'Sherpa Success Manager', desc: 'A dedicated human account manager, not a chatbot.' },
+            { title: 'Materials Dispatch', desc: 'Materials ordered and delivered to the job site. No more supply runs.' },
+            { title: 'Multi-Trade Coordination', desc: 'One job, multiple trades. We coordinate the handoffs.' },
+          ].map((feature) => (
+            <div key={feature.title} className="flex gap-3 rounded-lg border border-white/[0.06] bg-white/[0.02] px-5 py-4">
+              <div className="mt-0.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#00a9e0]" />
+              <div>
+                <h3 className="text-sm font-semibold">{feature.title}</h3>
+                <p className="mt-0.5 text-xs leading-relaxed text-white/40">{feature.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Divider */}
+        <div className="my-16 h-px bg-white/[0.06]" />
+
         {/* By the numbers */}
         <h2 className="text-2xl font-bold">By the numbers</h2>
         <div className="mt-8 grid grid-cols-2 gap-6 sm:grid-cols-4">

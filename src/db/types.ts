@@ -9,6 +9,10 @@
 
 export type UserRole = "pro" | "client" | "pm" | "tenant";
 
+export type UserSubtype = string | null; // e.g., role-specific subtypes
+
+export type VerificationStatus = "pending" | "approved" | "rejected";
+
 export type OnboardingStatus =
   | "draft"
   | "pending_verification"
@@ -67,6 +71,29 @@ export type ConversationStatus = "active" | "closed";
 export type StrikeSeverity = "warning" | "minor" | "major" | "critical";
 
 export type ChecklistType = "onboarding" | "offboarding";
+
+export type JobMaterialStatus =
+  | "recommended"
+  | "approved"
+  | "ordered"
+  | "delivered"
+  | "cancelled";
+
+export type MaterialOrderStatus =
+  | "pending"
+  | "confirmed"
+  | "ready_for_pickup"
+  | "picked_up"
+  | "cancelled";
+
+export type DeliveryRequestStatus =
+  | "requested"
+  | "accepted"
+  | "picked_up"
+  | "delivered"
+  | "cancelled";
+
+export type SupplierSource = "manual" | "wiseman" | "api";
 
 // ---------------------------------------------------------------------------
 // PM (Property Management) Enums
@@ -127,6 +154,8 @@ export interface User {
   email: string;
   phone: string | null;
   role: UserRole;
+  subtype: string | null;
+  is_admin: boolean;
   created_at: Date;
   updated_at: Date;
 }
@@ -164,6 +193,9 @@ export interface Pro {
   badge_tier: BadgeTier;
   joined_at: Date;
   location: unknown; // PostGIS GEOGRAPHY
+  verification_status: VerificationStatus;
+  verification_reviewed_at: Date | null;
+  verification_notes: string | null;
   created_at: Date;
   updated_at: Date;
 }
@@ -237,6 +269,9 @@ export interface Job {
   permit_required: boolean;
   permit_details: Record<string, unknown>;
   wiseman_validation: Record<string, unknown>;
+  parent_job_id: string | null;
+  sequence_order: number;
+  trade_required: string | null;
   created_at: Date;
   updated_at: Date;
 }
@@ -448,6 +483,122 @@ export type MessageInsert = Omit<Message, "id" | "created_at">;
 
 export type JobChecklistInsert = Omit<
   JobChecklist,
+  "id" | "created_at" | "updated_at"
+>;
+
+// ---------------------------------------------------------------------------
+// Pro Skills, Work Photos, References (Migration 007)
+// ---------------------------------------------------------------------------
+
+export interface ProSkill {
+  id: string;
+  pro_id: string;
+  skill_key: string;
+  skill_category: string;
+  created_at: Date;
+}
+
+export interface ProWorkPhoto {
+  id: string;
+  pro_id: string;
+  url: string;
+  caption: string | null;
+  uploaded_at: Date;
+}
+
+export interface ProReference {
+  id: string;
+  pro_id: string;
+  ref_name: string;
+  ref_phone: string;
+  ref_relationship: string | null;
+  verified: boolean;
+  created_at: Date;
+}
+
+export type ProSkillInsert = Omit<ProSkill, "id" | "created_at">;
+
+export type ProWorkPhotoInsert = Omit<ProWorkPhoto, "id" | "uploaded_at">;
+
+export type ProReferenceInsert = Omit<ProReference, "id" | "created_at">;
+
+// ---------------------------------------------------------------------------
+// Audit Logs (Migration 008)
+// ---------------------------------------------------------------------------
+
+export interface AuditLog {
+  id: string;
+  user_id: string | null;
+  email: string | null;
+  action: string;
+  target_type: string | null;
+  target_id: string | null;
+  metadata: Record<string, unknown>;
+  ip_address: string | null;
+  created_at: Date;
+}
+
+export type AuditLogInsert = Omit<AuditLog, "id" | "created_at">;
+
+// ---------------------------------------------------------------------------
+// Job Materials, Material Orders, Delivery Requests (Migration 010)
+// ---------------------------------------------------------------------------
+
+export interface JobMaterial {
+  id: string;
+  job_id: string;
+  material_name: string;
+  quantity: number;
+  unit: string;
+  estimated_cost_cents: number | null;
+  supplier_source: string;
+  supplier_product_id: string | null;
+  status: string;
+  wiseman_note: string | null;
+  created_at: Date;
+  updated_at: Date;
+}
+
+export interface MaterialOrder {
+  id: string;
+  job_id: string;
+  supplier_api: string;
+  external_order_id: string | null;
+  status: string;
+  total_cents: number | null;
+  items_count: number | null;
+  pickup_address: string | null;
+  pickup_instructions: string | null;
+  created_at: Date;
+  updated_at: Date;
+}
+
+export interface DeliveryRequest {
+  id: string;
+  material_order_id: string;
+  uber_delivery_id: string | null;
+  pickup_address: string;
+  dropoff_address: string;
+  status: string;
+  eta_minutes: number | null;
+  actual_delivery_at: Date | null;
+  cost_cents: number | null;
+  created_at: Date;
+  updated_at: Date;
+}
+
+export type JobMaterialInsert = Omit<
+  JobMaterial,
+  "id" | "created_at" | "updated_at"
+>;
+
+export type MaterialOrderInsert = Omit<
+  MaterialOrder,
+  "id" | "created_at" | "updated_at"
+>;
+
+export type DeliveryRequestInsert = Omit<
+  DeliveryRequest,
   "id" | "created_at" | "updated_at"
 >;
 

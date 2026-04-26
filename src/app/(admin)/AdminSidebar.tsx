@@ -14,6 +14,7 @@ import {
   XMarkIcon,
   UserGroupIcon,
   GiftIcon,
+  ClipboardDocumentListIcon,
 } from "@heroicons/react/24/outline";
 import { useState } from "react";
 
@@ -29,6 +30,7 @@ const navItems = [
   },
   { label: "Access List", href: "/admin/access-list", icon: UserGroupIcon },
   { label: "Rewards", href: "/admin/rewards", icon: GiftIcon },
+  { label: "Audit Logs", href: "/admin/logs", icon: ClipboardDocumentListIcon },
   { label: "Settings", href: "/settings", icon: Cog6ToothIcon },
 ];
 

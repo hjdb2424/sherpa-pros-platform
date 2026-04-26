@@ -29,6 +29,8 @@ import {
 } from '@/components/checklist';
 import QuotePreview from '@/components/quotes/QuotePreview';
 import type { Quote } from '@/lib/services/quote-builder';
+import DispatchTimeline, { buildDefaultSteps } from '@/components/jobs/DispatchTimeline';
+import MultiTradeBreakdown, { type TradeEntry } from '@/components/jobs/MultiTradeBreakdown';
 
 // ---------------------------------------------------------------------------
 // Materials Flow State Machine
@@ -145,6 +147,98 @@ export function JobDetailContent({ jobId }: JobDetailContentProps) {
   const [quoteLoading, setQuoteLoading] = useState(false);
   const [showFullQuote, setShowFullQuote] = useState(false);
   const [quoteAccepted, setQuoteAccepted] = useState(false);
+
+  // Multi-trade analysis state
+  const [analysisData, setAnalysisData] = useState<{
+    isMultiTrade: boolean;
+    trades: TradeEntry[];
+  } | null>(null);
+
+  useEffect(() => {
+    if (!job) return;
+    let cancelled = false;
+
+    async function analyzeJob() {
+      try {
+        const res = await fetch('/api/wiseman/analyze-job', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            description: `${job!.title} ${job!.description ?? ''}`,
+            category: job!.category,
+          }),
+        });
+        if (!res.ok) throw new Error('Analysis failed');
+        const data = await res.json();
+        if (cancelled) return;
+
+        const trades: TradeEntry[] = (data.trades ?? []).map((t: { tradeKey: string; tradeLabel: string; estimatedHours: number; sequenceOrder: number }) => ({
+          ...t,
+          status: 'assigned' as const,
+          assignedPro: undefined,
+        }));
+
+        setAnalysisData({ isMultiTrade: data.isMultiTrade, trades });
+      } catch {
+        // silent
+      }
+    }
+
+    analyzeJob();
+    return () => { cancelled = true; };
+  }, [job]);
+
+  // Build dispatch steps based on materials flow state
+  const dispatchSteps = useMemo(() => {
+    const stepMap: Record<MaterialsStep, Record<string, { status: 'completed' | 'active' | 'pending'; timestamp?: string; detail?: string }>> = {
+      review: {
+        recommended: { status: 'completed', timestamp: new Date().toISOString() },
+        pro_approved: { status: 'completed', timestamp: new Date().toISOString() },
+        client_approved: { status: 'active' },
+      },
+      payment: {
+        recommended: { status: 'completed', timestamp: new Date().toISOString() },
+        pro_approved: { status: 'completed', timestamp: new Date().toISOString() },
+        client_approved: { status: 'completed', timestamp: new Date().toISOString() },
+        order_placed: { status: 'active' },
+      },
+      delivery: {
+        recommended: { status: 'completed', timestamp: new Date().toISOString() },
+        pro_approved: { status: 'completed', timestamp: new Date().toISOString() },
+        client_approved: { status: 'completed', timestamp: new Date().toISOString() },
+        order_placed: { status: 'completed', timestamp: new Date().toISOString() },
+        ready_pickup: { status: 'active' },
+      },
+      ordered: {
+        recommended: { status: 'completed', timestamp: new Date().toISOString() },
+        pro_approved: { status: 'completed', timestamp: new Date().toISOString() },
+        client_approved: { status: 'completed', timestamp: new Date().toISOString() },
+        order_placed: { status: 'completed', timestamp: new Date().toISOString() },
+        ready_pickup: { status: 'completed', timestamp: new Date().toISOString() },
+        driver_assigned: { status: 'active' },
+      },
+      tracking: {
+        recommended: { status: 'completed', timestamp: new Date().toISOString() },
+        pro_approved: { status: 'completed', timestamp: new Date().toISOString() },
+        client_approved: { status: 'completed', timestamp: new Date().toISOString() },
+        order_placed: { status: 'completed', timestamp: new Date().toISOString() },
+        ready_pickup: { status: 'completed', timestamp: new Date().toISOString() },
+        driver_assigned: { status: 'completed', timestamp: new Date().toISOString() },
+        in_transit: { status: 'active', detail: 'ETA ~30 min' },
+      },
+      complete: {
+        recommended: { status: 'completed', timestamp: new Date().toISOString() },
+        pro_approved: { status: 'completed', timestamp: new Date().toISOString() },
+        client_approved: { status: 'completed', timestamp: new Date().toISOString() },
+        order_placed: { status: 'completed', timestamp: new Date().toISOString() },
+        ready_pickup: { status: 'completed', timestamp: new Date().toISOString() },
+        driver_assigned: { status: 'completed', timestamp: new Date().toISOString() },
+        in_transit: { status: 'completed', timestamp: new Date().toISOString() },
+        delivered: { status: 'completed', timestamp: new Date().toISOString() },
+      },
+    };
+    return buildDefaultSteps(stepMap[materialsStep]);
+  }, [materialsStep]);
 
   // Fetch quote for this job
   useEffect(() => {
@@ -773,6 +867,22 @@ export function JobDetailContent({ jobId }: JobDetailContentProps) {
               <div className="rounded-xl border-2 border-dashed border-zinc-200 dark:border-zinc-700 p-8 text-center">
                 <p className="text-sm text-zinc-500 dark:text-zinc-400">Materials list will be available once your Pro begins the project.</p>
               </div>
+            </div>
+          )}
+
+          {/* Multi-Trade Breakdown */}
+          {analysisData?.isMultiTrade && (
+            <div>
+              <h2 className="mb-3 text-lg font-bold text-zinc-900 dark:text-zinc-50">Trade Coordination</h2>
+              <MultiTradeBreakdown trades={analysisData.trades} />
+            </div>
+          )}
+
+          {/* Delivery Timeline */}
+          {checklist && (
+            <div>
+              <h2 className="mb-3 text-lg font-bold text-zinc-900 dark:text-zinc-50">Delivery Progress</h2>
+              <DispatchTimeline steps={dispatchSteps} />
             </div>
           )}
         </div>

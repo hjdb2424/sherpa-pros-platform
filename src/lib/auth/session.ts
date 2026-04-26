@@ -9,11 +9,12 @@
  * mock role for testing different user flows.
  */
 
-import type { UserRole } from './roles';
+import type { UserRole, UserSubtype } from './roles';
 
 export interface UserSession {
   userId: string;
   role: UserRole;
+  subtype: UserSubtype;
   email: string;
   name: string;
 }
@@ -26,26 +27,23 @@ const MOCK_USERS: Record<UserRole, UserSession> = {
   pro: {
     userId: 'b1000000-0000-0000-0000-000000000001',
     role: 'pro',
+    subtype: 'standard',
     email: 'mike.wilson@example.com',
     name: 'Mike Wilson',
   },
   client: {
     userId: 'c1000000-0000-0000-0000-000000000001',
     role: 'client',
+    subtype: 'residential',
     email: 'phyrom@hjd.builders',
     name: 'Phyrom',
   },
   pm: {
     userId: 'p1000000-0000-0000-0000-000000000001',
     role: 'pm',
+    subtype: null,
     email: 'dana.pm@example.com',
     name: 'Dana Kim',
-  },
-  tenant: {
-    userId: 't1000000-0000-0000-0000-000000000001',
-    role: 'tenant',
-    email: 'tenant@example.com',
-    name: 'Tenant User',
   },
 };
 
@@ -75,13 +73,13 @@ export function getCurrentSession(roleOverride?: UserRole): UserSession {
 export function getRoleFromRequest(request: Request): UserRole | undefined {
   // Header check
   const headerRole = request.headers.get('x-sherpa-test-role');
-  if (headerRole === 'pro' || headerRole === 'client' || headerRole === 'pm' || headerRole === 'tenant') {
+  if (headerRole === 'pro' || headerRole === 'client' || headerRole === 'pm') {
     return headerRole;
   }
 
   // Cookie check
   const cookieHeader = request.headers.get('cookie') ?? '';
-  const match = cookieHeader.match(/sherpa-test-role=(pro|client|pm|tenant)/);
+  const match = cookieHeader.match(/sherpa-test-role=(pro|client|pm)/);
   if (match) {
     return match[1] as UserRole;
   }

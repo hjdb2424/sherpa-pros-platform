@@ -188,6 +188,9 @@ function toJobRow(j: (typeof mockAvailableJobs)[0]) {
     permit_required: j.permitsRequired.length > 0,
     permit_details: {},
     wiseman_validation: {},
+    parent_job_id: null,
+    sequence_order: 0,
+    trade_required: null,
     created_at: new Date(j.postedAt),
     updated_at: new Date(j.postedAt),
   };
@@ -370,6 +373,9 @@ export async function createJobPosting(data: {
       permit_required: data.permitRequired ?? false,
       permit_details: {},
       wiseman_validation: {},
+      parent_job_id: null,
+      sequence_order: 0,
+      trade_required: null,
       created_at: new Date(),
       updated_at: new Date(),
     };

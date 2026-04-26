@@ -17,6 +17,9 @@ import {
 import type { HDProduct } from '@/lib/services/serpapi';
 import type { DeliveryTier } from '@/lib/services/zinc';
 import JobTimeline from '@/components/jobs/JobTimeline';
+import MaterialsTab, { type MaterialEntry } from '@/components/jobs/MaterialsTab';
+import DispatchTimeline, { buildDefaultSteps } from '@/components/jobs/DispatchTimeline';
+import MultiTradeBreakdown, { type TradeEntry } from '@/components/jobs/MultiTradeBreakdown';
 import QBOSyncStatus from '@/components/integrations/QBOSyncStatus';
 import QuoteBuilder from '@/components/quotes/QuoteBuilder';
 import {
@@ -43,7 +46,7 @@ const urgencyConfig = {
   emergency: { label: 'Emergency', classes: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' },
 };
 
-type TabKey = 'overview' | 'scope' | 'process' | 'checklist' | 'materials' | 'quote';
+type TabKey = 'overview' | 'scope' | 'process' | 'checklist' | 'materials' | 'dispatch' | 'quote';
 
 const TABS: { key: TabKey; label: string }[] = [
   { key: 'overview', label: 'Overview' },
@@ -51,6 +54,7 @@ const TABS: { key: TabKey; label: string }[] = [
   { key: 'process', label: 'Process' },
   { key: 'checklist', label: 'Checklist' },
   { key: 'materials', label: 'Materials' },
+  { key: 'dispatch', label: 'Dispatch' },
   { key: 'quote', label: 'Quote' },
 ];
 
@@ -151,6 +155,81 @@ export default function JobDetailClient({ jobId }: JobDetailClientProps) {
   const [clientSent, setClientSent] = useState(false);
   const [showInvoice, setShowInvoice] = useState(false);
   const [invoice, setInvoice] = useState<Invoice | null>(null);
+
+  // Multi-trade analysis state
+  const [analysisData, setAnalysisData] = useState<{
+    isMultiTrade: boolean;
+    trades: TradeEntry[];
+    dispatchMaterials: MaterialEntry[];
+  } | null>(null);
+  const [analysisLoading, setAnalysisLoading] = useState(false);
+
+  // Analyze job for multi-trade + materials on mount
+  useEffect(() => {
+    if (!job) return;
+    let cancelled = false;
+
+    async function analyzeJob() {
+      setAnalysisLoading(true);
+      try {
+        const res = await fetch('/api/wiseman/analyze-job', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            description: `${job!.title} ${job!.scope ?? ''} ${job!.description ?? ''}`,
+            category: job!.category,
+          }),
+        });
+        if (!res.ok) throw new Error('Analysis failed');
+        const data = await res.json();
+        if (cancelled) return;
+
+        const trades: TradeEntry[] = (data.trades ?? []).map((t: { tradeKey: string; tradeLabel: string; estimatedHours: number; sequenceOrder: number }) => ({
+          ...t,
+          status: 'pending' as const,
+          assignedPro: undefined,
+        }));
+
+        const dispatchMaterials: MaterialEntry[] = (data.materials ?? []).map((m: { name: string; quantity: number; unit: string; estimatedCostCents: number; supplierSource: string }, idx: number) => ({
+          id: `dm-${idx}`,
+          name: m.name,
+          quantity: m.quantity,
+          unit: m.unit,
+          estimatedCostCents: m.estimatedCostCents,
+          supplierSource: m.supplierSource,
+          status: 'recommended' as const,
+        }));
+
+        setAnalysisData({
+          isMultiTrade: data.isMultiTrade,
+          trades,
+          dispatchMaterials,
+        });
+      } catch {
+        // Silently fail -- page still works without analysis
+      } finally {
+        if (!cancelled) setAnalysisLoading(false);
+      }
+    }
+
+    analyzeJob();
+    return () => { cancelled = true; };
+  }, [job]);
+
+  // Dispatch timeline steps
+  const dispatchSteps = useMemo(() => {
+    if (!analysisData) return buildDefaultSteps();
+    // Show first step as active if we have materials
+    if (analysisData.dispatchMaterials.length > 0) {
+      return buildDefaultSteps({
+        recommended: { status: 'completed', timestamp: new Date().toISOString() },
+        pro_approved: { status: 'active' },
+      });
+    }
+    return buildDefaultSteps({
+      recommended: { status: 'active' },
+    });
+  }, [analysisData]);
 
   useEffect(() => {
     if (showInvoice && !invoice) {
@@ -277,6 +356,11 @@ export default function JobDetailClient({ jobId }: JobDetailClientProps) {
           )}
         </div>
       </div>
+
+      {/* Multi-Trade Breakdown (shown when job has multiple trades) */}
+      {analysisData?.isMultiTrade && (
+        <MultiTradeBreakdown trades={analysisData.trades} />
+      )}
 
       {/* Tab Bar */}
       <div className="overflow-x-auto border-b border-zinc-200 dark:border-zinc-700">
@@ -533,6 +617,54 @@ export default function JobDetailClient({ jobId }: JobDetailClientProps) {
             />
           ) : (
             <NoChecklistMessage />
+          )}
+        </div>
+      )}
+
+      {/* Dispatch Tab */}
+      {activeTab === 'dispatch' && (
+        <div role="tabpanel" id="panel-dispatch" aria-labelledby="tab-dispatch" className="space-y-6">
+          {analysisLoading ? (
+            <div className="rounded-xl border border-zinc-200 bg-white p-8 dark:border-zinc-800 dark:bg-zinc-900">
+              <div className="space-y-3">
+                {[1, 2, 3, 4].map((i) => (
+                  <div key={i} className="flex gap-3">
+                    <div className="h-8 w-8 animate-pulse rounded-full bg-zinc-200 dark:bg-zinc-700" />
+                    <div className="flex-1 space-y-2 pt-1">
+                      <div className="h-3 w-3/4 animate-pulse rounded bg-zinc-200 dark:bg-zinc-700" />
+                      <div className="h-2 w-1/2 animate-pulse rounded bg-zinc-100 dark:bg-zinc-800" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <>
+              {/* Dispatch Materials (from job analysis) */}
+              {analysisData && analysisData.dispatchMaterials.length > 0 && (
+                <MaterialsTab
+                  materials={analysisData.dispatchMaterials}
+                  role="pro"
+                  jobId={job.id}
+                />
+              )}
+
+              {/* Delivery Timeline */}
+              <DispatchTimeline steps={dispatchSteps} />
+
+              {/* Multi-trade breakdown (also visible from dispatch tab) */}
+              {analysisData?.isMultiTrade && (
+                <MultiTradeBreakdown trades={analysisData.trades} />
+              )}
+
+              {!analysisData && (
+                <div className="rounded-xl border border-zinc-200 bg-white p-8 text-center dark:border-zinc-800 dark:bg-zinc-900">
+                  <p className="text-sm text-zinc-500 dark:text-zinc-400">
+                    Job analysis will be available when the job is active.
+                  </p>
+                </div>
+              )}
+            </>
           )}
         </div>
       )}

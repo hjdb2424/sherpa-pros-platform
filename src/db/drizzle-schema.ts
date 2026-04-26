@@ -36,6 +36,8 @@ export const users = pgTable(
     createdAt: timestamp("created_at", { withTimezone: true })
       .notNull()
       .defaultNow(),
+    subtype: varchar("subtype", { length: 20 }),
+    isAdmin: boolean("is_admin").default(false),
     updatedAt: timestamp("updated_at", { withTimezone: true })
       .notNull()
       .defaultNow(),
@@ -119,6 +121,13 @@ export const pros = pgTable(
       .notNull()
       .defaultNow(),
     location: text("location"), // PostGIS GEOGRAPHY(Point, 4326)
+    verificationStatus: varchar("verification_status", { length: 20 }).default(
+      "pending",
+    ),
+    verificationReviewedAt: timestamp("verification_reviewed_at", {
+      withTimezone: true,
+    }),
+    verificationNotes: text("verification_notes"),
     createdAt: timestamp("created_at", { withTimezone: true })
       .notNull()
       .defaultNow(),
@@ -279,6 +288,9 @@ export const jobs = pgTable(
     permitDetails: jsonb("permit_details").default({}),
     wisemanValidation: jsonb("wiseman_validation").default({}),
     matchedAt: timestamp("matched_at", { withTimezone: true }),
+    parentJobId: uuid("parent_job_id").references((): any => jobs.id),
+    sequenceOrder: integer("sequence_order").default(0),
+    tradeRequired: varchar("trade_required", { length: 60 }),
     createdAt: timestamp("created_at", { withTimezone: true })
       .notNull()
       .defaultNow(),
@@ -294,6 +306,7 @@ export const jobs = pgTable(
     index("idx_jobs_category").on(table.category),
     index("idx_jobs_created_at").on(table.createdAt),
     index("idx_jobs_matched_at").on(table.matchedAt),
+    index("idx_jobs_parent").on(table.parentJobId),
   ],
 );
 
@@ -706,5 +719,166 @@ export const wisemanEvents = pgTable(
     index("idx_wiseman_events_user_id").on(table.userId),
     index("idx_wiseman_events_job_id").on(table.jobId),
     index("idx_wiseman_events_created_at").on(table.createdAt),
+  ],
+);
+
+// ---------------------------------------------------------------------------
+// PRO SKILLS (Migration 007)
+// ---------------------------------------------------------------------------
+
+export const proSkills = pgTable(
+  "pro_skills",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    proId: uuid("pro_id")
+      .notNull()
+      .references(() => pros.id, { onDelete: "cascade" }),
+    skillKey: varchar("skill_key", { length: 60 }).notNull(),
+    skillCategory: varchar("skill_category", { length: 40 }).notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
+  },
+  (table) => [
+    uniqueIndex("pro_skills_pro_id_skill_key_unique").on(
+      table.proId,
+      table.skillKey,
+    ),
+    index("idx_pro_skills_pro").on(table.proId),
+    index("idx_pro_skills_key").on(table.skillKey),
+  ],
+);
+
+// ---------------------------------------------------------------------------
+// PRO WORK PHOTOS (Migration 007)
+// ---------------------------------------------------------------------------
+
+export const proWorkPhotos = pgTable("pro_work_photos", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  proId: uuid("pro_id")
+    .notNull()
+    .references(() => pros.id, { onDelete: "cascade" }),
+  url: text("url").notNull(),
+  caption: text("caption"),
+  uploadedAt: timestamp("uploaded_at", { withTimezone: true }).defaultNow(),
+});
+
+// ---------------------------------------------------------------------------
+// PRO REFERENCES (Migration 007)
+// ---------------------------------------------------------------------------
+
+export const proReferences = pgTable("pro_references", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  proId: uuid("pro_id")
+    .notNull()
+    .references(() => pros.id, { onDelete: "cascade" }),
+  refName: varchar("ref_name", { length: 100 }).notNull(),
+  refPhone: varchar("ref_phone", { length: 20 }).notNull(),
+  refRelationship: varchar("ref_relationship", { length: 60 }),
+  verified: boolean("verified").default(false),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
+});
+
+// ---------------------------------------------------------------------------
+// AUDIT LOGS (Migration 008)
+// ---------------------------------------------------------------------------
+
+export const auditLogs = pgTable(
+  "audit_logs",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: uuid("user_id").references(() => users.id),
+    email: text("email"),
+    action: varchar("action", { length: 40 }).notNull(),
+    targetType: varchar("target_type", { length: 30 }),
+    targetId: uuid("target_id"),
+    metadata: jsonb("metadata").default({}),
+    ipAddress: varchar("ip_address", { length: 45 }),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
+  },
+  (table) => [
+    index("idx_audit_logs_user").on(table.userId),
+    index("idx_audit_logs_action").on(table.action),
+    index("idx_audit_logs_created").on(table.createdAt),
+  ],
+);
+
+// ---------------------------------------------------------------------------
+// JOB MATERIALS (Migration 010)
+// ---------------------------------------------------------------------------
+
+export const jobMaterials = pgTable(
+  "job_materials",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    jobId: uuid("job_id")
+      .notNull()
+      .references(() => jobs.id, { onDelete: "cascade" }),
+    materialName: varchar("material_name", { length: 200 }).notNull(),
+    quantity: decimal("quantity", { precision: 10, scale: 2 })
+      .notNull()
+      .default("1"),
+    unit: varchar("unit", { length: 20 }).default("each"),
+    estimatedCostCents: integer("estimated_cost_cents"),
+    supplierSource: varchar("supplier_source", { length: 20 }).default(
+      "manual",
+    ),
+    supplierProductId: text("supplier_product_id"),
+    status: varchar("status", { length: 20 }).default("recommended"),
+    wisemanNote: text("wiseman_note"),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow(),
+  },
+  (table) => [
+    index("idx_job_materials_job").on(table.jobId),
+    index("idx_job_materials_status").on(table.status),
+  ],
+);
+
+// ---------------------------------------------------------------------------
+// MATERIAL ORDERS (Migration 010)
+// ---------------------------------------------------------------------------
+
+export const materialOrders = pgTable(
+  "material_orders",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    jobId: uuid("job_id")
+      .notNull()
+      .references(() => jobs.id, { onDelete: "cascade" }),
+    supplierApi: varchar("supplier_api", { length: 20 }).notNull(),
+    externalOrderId: text("external_order_id"),
+    status: varchar("status", { length: 30 }).default("pending"),
+    totalCents: integer("total_cents"),
+    itemsCount: integer("items_count"),
+    pickupAddress: text("pickup_address"),
+    pickupInstructions: text("pickup_instructions"),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow(),
+  },
+  (table) => [index("idx_material_orders_job").on(table.jobId)],
+);
+
+// ---------------------------------------------------------------------------
+// DELIVERY REQUESTS (Migration 010)
+// ---------------------------------------------------------------------------
+
+export const deliveryRequests = pgTable(
+  "delivery_requests",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    materialOrderId: uuid("material_order_id")
+      .notNull()
+      .references(() => materialOrders.id, { onDelete: "cascade" }),
+    uberDeliveryId: text("uber_delivery_id"),
+    pickupAddress: text("pickup_address").notNull(),
+    dropoffAddress: text("dropoff_address").notNull(),
+    status: varchar("status", { length: 20 }).default("requested"),
+    etaMinutes: integer("eta_minutes"),
+    actualDeliveryAt: timestamp("actual_delivery_at", { withTimezone: true }),
+    costCents: integer("cost_cents"),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow(),
+  },
+  (table) => [
+    index("idx_delivery_requests_order").on(table.materialOrderId),
   ],
 );

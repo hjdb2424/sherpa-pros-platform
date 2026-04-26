@@ -4,6 +4,8 @@ import { Suspense, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Logo from '@/components/brand/Logo';
 import { seedUserData } from '@/lib/seed-user-data';
+import { isValidRole, getDashboardPath } from '@/lib/auth/roles';
+import type { UserRole } from '@/lib/auth/roles';
 
 function CallbackHandler() {
   const router = useRouter();
@@ -28,27 +30,22 @@ function CallbackHandler() {
 
     // Check if user has a role already (returning user)
     const existingRole = localStorage.getItem(`sherpa:${email}:role`);
-    if (existingRole) {
+    if (existingRole && isValidRole(existingRole)) {
       localStorage.setItem('sherpa-test-role', existingRole);
+      document.cookie = `sherpa-role=${existingRole}; path=/; max-age=${60 * 60 * 24 * 30}; samesite=lax`;
       seedUserData(email, existingRole);
-
-      if (existingRole === 'pm') router.replace('/pm/dashboard');
-      else if (existingRole === 'pro') router.replace('/pro/dashboard');
-      else if (existingRole === 'tenant') router.replace('/tenant/dashboard');
-      else router.replace('/client/dashboard');
+      router.replace(getDashboardPath(existingRole));
       return;
     }
 
     // New user with a default role from the access list — skip role selection
-    if (defaultRole && ['pm', 'pro', 'client', 'tenant'].includes(defaultRole)) {
-      localStorage.setItem('sherpa-test-role', defaultRole);
-      localStorage.setItem(`sherpa:${email}:role`, defaultRole);
-      seedUserData(email, defaultRole);
-
-      if (defaultRole === 'pm') router.replace('/pm/dashboard');
-      else if (defaultRole === 'pro') router.replace('/pro/dashboard');
-      else if (defaultRole === 'tenant') router.replace('/tenant/dashboard');
-      else router.replace('/client/dashboard');
+    if (defaultRole && isValidRole(defaultRole)) {
+      const role = defaultRole as UserRole;
+      localStorage.setItem('sherpa-test-role', role);
+      localStorage.setItem(`sherpa:${email}:role`, role);
+      document.cookie = `sherpa-role=${role}; path=/; max-age=${60 * 60 * 24 * 30}; samesite=lax`;
+      seedUserData(email, role);
+      router.replace(getDashboardPath(role));
       return;
     }
 

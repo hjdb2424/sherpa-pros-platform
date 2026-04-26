@@ -71,6 +71,24 @@ export default function ProInvitePage() {
           </div>
         </div>
 
+        {/* Sherpa Flex callout */}
+        <div className="mt-8 rounded-xl border-2 border-orange-200 bg-orange-50 p-6 print:mt-4">
+          <h2 className="text-lg font-bold text-zinc-900">Don&apos;t have insurance or an LLC?</h2>
+          <p className="mt-2 text-sm leading-relaxed text-zinc-600">
+            Check out <strong>Sherpa Flex</strong> &mdash; our side-hustle friendly tier. Per-project
+            liability insurance is included in an 18% service fee. No LLC required. Background check
+            required. Jobs under $5K. Build your Sherpa Score and upgrade to Standard Pro when you are ready.
+          </p>
+          <div className="mt-4 print:hidden">
+            <Link
+              href="/flex"
+              className="inline-flex items-center gap-1 rounded-lg bg-[#ff4500] px-5 py-2 text-sm font-semibold text-white shadow-sm transition-all hover:bg-[#e03e00] hover:shadow-md"
+            >
+              Learn about Sherpa Flex &rarr;
+            </Link>
+          </div>
+        </div>
+
         {/* What we need */}
         <div className="mt-8 print:mt-4">
           <h2 className="text-lg font-bold text-zinc-900">What we need from you</h2>

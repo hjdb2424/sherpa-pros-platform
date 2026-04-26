@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, afterEach } from 'vitest';
 import { getMessagingService } from '../messaging';
 import { mockService } from '@/lib/communication/mock-service';
 import { twilioService } from '@/lib/communication/twilio-service';

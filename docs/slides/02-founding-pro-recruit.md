@@ -241,6 +241,29 @@ HJD Builders sends you overflow work when I'm booked. **Real revenue, not future
 
 ---
 
+<!-- _class: compare -->
+
+# Run your business from your phone — Sherpa Mobile (TestFlight).
+
+## **iOS shipped to TestFlight today. Android via Expo right behind. First 50 founding pros get TestFlight invites.**
+
+| Capability | **Sherpa Web** | **Sherpa Mobile (TestFlight)** |
+|---|---|---|
+| **Bid jobs** | Full bidding interface | Same interface, optimized for the truck |
+| **Message clients** (Sherpa Threads) | In-app web chat | In-app mobile chat **+ push notifications when a client texts** |
+| **Scan receipts** (Sherpa Smart Scan) | Drag-and-drop file upload | **Native camera → instant OCR → auto-tagged for Schedule C** |
+| **Get paid** (Stripe Connect) | Web payout dashboard | Mobile payout dashboard + push notification on each clearance |
+| **Accept jobs in the field** | Requires a laptop | **One-tap accept from the phone in your pocket** |
+| **Sign up** | Laptop after dinner | **Phone in the field while you're already on a jobsite** |
+| **Code-aware quote validation** | Full validator | Same validator, mobile-formatted |
+| **Job-site photo capture** | Upload from desktop | **Native camera with auto-attach to the work order** |
+
+> **Most pros don't sit at a desk.** Sherpa Mobile lets you run your bidding, your client messaging, your receipt-scanning, and your payouts from the phone you already carry. **First 50 founding pros only — DM Phyrom or comment "MOBILE" on any LinkedIn post for the TestFlight invite.**
+
+<!-- ASSET REQUIRED: Sherpa Mobile iOS hero shot — single iPhone in dark navy with the job-inbox screen visible (sky blue status bar + Sherpa Pros wordmark + 3 stacked job cards). See `docs/operations/social-media-prompt-library.md` Section 11C for the canonical Ideogram prompt. Generate at 1080×1350 and crop to 16:9 for slide layout. Place lower-right of slide at ~480px tall. Same graphic used across LinkedIn Wk 24 Fri inset, IG Reel Day 33 end-card, investor pitch deck Slide 5 composite. -->
+
+---
+
 <!-- _class: split -->
 
 # Live walkthrough.

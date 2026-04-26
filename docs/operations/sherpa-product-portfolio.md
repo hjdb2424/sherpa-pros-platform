@@ -227,6 +227,44 @@ Likely answer: hybrid (small base retainer + variable component).
 
 ---
 
+## 2.7 Platform Capability Layer (shipped 2026-04-25)
+
+Underneath the six products, three platform-level capabilities span every product surface. They are **not products** — no separate purchase, no separate landing page — but they are **load-bearing brand assets** because they show up in pro and customer demos as the most-praised features. Marketing copy should reference them by name (Sherpa Threads · Sherpa Smart Scan · Sherpa Mobile) inside the relevant product story. They shipped to production in commits `67ccfc8`, `8933f67`, `60781c1`, and `2f1eec4`.
+
+### 2.7.1 Sherpa Threads — *in-app chat with Short Message Service (SMS) sync*
+
+**What it does.** Three-role messaging surface (pro to client to Property Manager) with read receipts, conversation list, message bubbles, and file attachments. Routes live at `/pro/messages`, `/pm/messages`, and `/client/messages`. The platform sends an SMS via Twilio when the recipient hasn't opened the app; their SMS reply is parsed and lands back in-app on the original thread. Files: `src/lib/communication/chat-service.ts`, `src/components/chat/*`, `/api/chat/*`.
+
+**Who it's for.** Every Sherpa Pros user. Pros need it because clients want to text. Clients need it because pros want to text. Property Managers need it because every work-order conversation needs an audit trail attached to the work order, not lost in a personal phone.
+
+**Why it's hard to copy.** Lead-gen platforms (Angi, Thumbtack) hand the conversation off to the pro's personal phone — that's the leakage point that costs them all the data downstream. Threads keeps both parties on-platform without forcing the client to install anything (the SMS bridge is invisible to the client). Twilio integration is straightforward; the *thread-attached-to-work-order* model is not, because it requires the marketplace to also be the project management substrate.
+
+**Surfaces in.** **Sherpa Marketplace** (pro to client, every job) · **Sherpa Hub** (Property Manager work-order threads, attached to specific work orders) · **Sherpa Success Manager** (the dedicated human owns the thread on the customer's behalf — Manager replies appear with the customer-facing voice).
+
+### 2.7.2 Sherpa Smart Scan — *Optical Character Recognition (OCR) for documents, photos, and receipts*
+
+**What it does.** One scanning surface at `/pro/scan` with three components: **Document Scanner** (permits, blueprints, contracts), **Photo Analyzer** (job-site photos to measurements + conditions), and **Receipt Scanner** (receipts + invoices). Scanned receipts are wired into `ExpenseAutoCategorizor.tsx` — they auto-categorize for tax (Schedule C lines for pros, Capital Expenditure / CapEx versus Operating Expenditure / OpEx for Property Managers). Files: `src/lib/services/ocr-service.ts`, `src/components/ocr/*`, `/api/ocr` endpoint.
+
+**Who it's for.** Pros (instant expense capture — most pros lose 15–25% of deductions to lost receipts) · Property Managers (auto-tagging work-order spend is the #1 audit pain point and the most-praised feature in PM demos per spec §10 R5) · Homeowners (rebate paperwork, permit uploads, instant parsing) · Sherpa Success Managers (annual tax-prep handled for the customer without the customer doing the filing legwork).
+
+**Why it's hard to copy.** OCR is commodity tech — the moat is **the categorization engine** and **the integration to the rest of the platform**. A scanned receipt is only useful if it lands on the right Schedule C line and shows up in the right work-order budget. Sherpa Smart Scan's value is the wiring, not the recognition.
+
+**Surfaces in.** **Sherpa Marketplace** (pro tax tools, expense capture for the 1099 pro) · **Sherpa Hub** (Property Manager finance + work-order spend tagging) · **Sherpa Home** (homeowner uploads rebate paperwork or permits for instant parsing) · **Sherpa Success Manager** (annual tax-prep handled by the dedicated human, fed by year-round receipt scans).
+
+### 2.7.3 Sherpa Mobile — *native iOS + Android*
+
+**What it does.** Native mobile-app shell for Sherpa Pros. Bundle ID `com.thesherpapros.app`. iOS in TestFlight beta as of 2026-04-25, Android via Expo. App Store Connect ID configured, Expo Application Services (EAS) configured for TestFlight submission. Built with Expo so iOS + Android ship from one codebase.
+
+**Who it's for.** Working pros (the field-first audience — pros take photos, accept jobs, message clients, and capture receipts from their phone) and Sherpa Home subscribers (homeowners reach for their phone, not their laptop, when something breaks).
+
+**Why it's hard to copy.** The mobile-app shell is straightforward (any team can ship Expo). The moat is **what the app exposes** — Sherpa Threads, Sherpa Smart Scan, the Sherpa Marketplace dispatch surface, and the Sherpa Score / Sherpa Rewards loop all work natively on the phone, with camera + push + offline + biometric login. Lead-gen platforms don't have a real mobile app for pros because they don't have a real workflow for pros — just a leads inbox.
+
+**Surfaces in.** **Sherpa Marketplace** (the pro app — pros work in the field) · **Sherpa Home** (the subscriber app — homeowners reach for their phone). **Sherpa Hub Property Manager dashboards stay web-first by design** — Property Managers do real reporting + financial work on a desktop, and forcing them onto mobile would be a downgrade. **Sherpa Success Manager** is human-led, so there is no Manager-side mobile app — the Manager works in their CRM (Customer Relationship Management) tool on desktop and communicates with the customer through Sherpa Mobile.
+
+**Status note.** Sherpa Mobile is a real **investor signal** — it proves product progress beyond the web app, and TestFlight + EAS distribution mean the beta cohort can install a real native app on day one. The deck and Wefunder page should reference "Sherpa Mobile in TestFlight beta" as a Phase 0 traction milestone.
+
+---
+
 ## 3. Cross-Product Flywheel
 
 ```

@@ -339,8 +339,21 @@ Each lane = a **branded, defensible category.** Old-House Verified is filed for 
 **Moat signal:** [count] code-aware quote validations run · [count] code violations caught before homeowner saw the quote.
 **Retention signal:** **Sherpa Rewards** live in production — points-redemption store backed by **Tremendous API** for real-world fulfillment (gift cards, prepaid debit, charity donations). Pros earn 100 pts per job, 50 per review, 25 per photo, 25 per on-time, 50–200 per month per Sherpa Score tier, 500 per referral. 21-item catalog, Gold-tier exclusives gated behind Sherpa Score 80+.
 **Accessibility signal:** **Sherpa Flex** live in production — 5th pro tier, 18% take rate (includes $1M per-project liability insurance), no LLC required, jobs under $5K. Opens the addressable supply-side to moonlighters + employees of GC companies + tradespeople testing the platform before incorporating. Previously deferred to Phase 2+; now reachable in Phase 1.
+**Defensibility signal:** **Sherpa Threads** live in production — in-app chat across pro / client / project manager with Twilio bridge to text message. The "I'll just text you" data leak that erodes marketplace defensibility — fixed. Audit trail for dispute resolution.
+**Bookkeeper signal:** **Sherpa Smart Scan** live in production — three-flavor optical character recognition (document scanner, photo analyzer, receipt scanner). Auto-tags Schedule C for pros and Capital Expenditure / Operating Expense for property managers at the work-order level. Per beta spec §10R5, the single most-praised feature in PM demos.
+**Mobile signal:** **Sherpa Mobile** in TestFlight — iOS bundle `com.thesherpapros.app` shipped to App Store Connect, Android via Expo right behind. Real product progress, not slide-ware. Lower customer acquisition cost: pros sign up from a phone in the field, not a laptop after dinner.
 
 <span class="caption">Phyrom: replace bracketed numbers with live data within 24h of send.</span>
+
+---
+
+<!-- _class: bignumber -->
+
+# **3 new pillars**
+
+## **Sherpa Threads · Sherpa Smart Scan · Sherpa Mobile.** In-app chat with text-message bridge. Optical character recognition with auto-tax categorization. iOS in TestFlight, Android via Expo. **All shipped this quarter. All live in production.**
+
+<!-- ASSET REQUIRED: Three new platform pillars stacked feature lineup — sky blue (Threads) · cream (Smart Scan) · orange-red (Mobile) horizontal blocks with Fraunces serif titles + Manrope body sub-lines. See `docs/operations/social-media-prompt-library.md` Section 11E for the full Ideogram prompt. Generate at 1080×1350 then crop to 16:9 for slide layout. Place lower-right of slide at ~480px tall. Same graphic used across LinkedIn brand-page recap, Wefunder Section 4.5, onepager product/feature row, founding-pro recruit deck Slide "Mobile compare." -->
 
 ---
 

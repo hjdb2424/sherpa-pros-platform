@@ -855,6 +855,23 @@ The umbrella voice is one founder, one tone, one set of always-say words. Produc
 
 The umbrella brand voice is what unifies them. The product voices specialize within it. Never let the product voices contradict the umbrella voice (no "AI-powered Hub experience," no "disrupt-the-PM-software Sherpa Success Manager service," no "gig economy" framing for Sherpa Flex).
 
+### 9.1 Platform Capability Layer (shipped 2026-04-25)
+
+Underneath the six products are three platform-level capabilities — features that span every product, not standalone products themselves. They have locked names, locked colors, and locked usage rules so that Brand Guardian audits treat them with the same care as the six products.
+
+- **Sherpa Threads** — the in-app chat surface that bridges to Short Message Service (SMS) via Twilio. Always **Sherpa Threads**, never "the chat," never "messages," never "the messaging feature." The "Sherpa" prefix is non-negotiable here because **"Threads" alone is a Meta product** (the social network) — dropping the prefix invites brand confusion. Color: **sky blue (#00A9E0)** to match the SHERPA block in the wordmark — Threads is *connection*, sky blue is *connection*. Marketing line: *"Work-order-attached messaging that bridges to text. Both parties stay on-platform without forcing the client to install anything."*
+- **Sherpa Smart Scan** — the Optical Character Recognition (OCR) surface for receipts, invoices, permits, blueprints, and job-site photos. Always **Sherpa Smart Scan**, never "the scanner," never "OCR," never "the AI scanner." OCR is the underlying tech, never the headline. Color: **orange-red (#FF4500)** to match the PROS block — Smart Scan is *action*, orange-red is *action / capture*. Marketing line: *"Snap a receipt, snap a permit, snap a blueprint — Sherpa Smart Scan reads it, files it, and tags it for tax."*
+- **Sherpa Mobile** — the native iOS + Android app shell. Always **Sherpa Mobile** when the conversation is about the native-app surface across products. Bundle ID `com.thesherpapros.app`. Currently in **TestFlight beta** (iOS) — say "in TestFlight beta" in marketing copy through Phase 0; drop the qualifier once it ships to the App Store. Android via Expo. Color treatment for app screenshots, mockups, and store-listing assets: **warm cream paper (#FBF7EE)** background — matches the editorial system, reads designed and intentional rather than default-browser. Marketing line: *"Sherpa Marketplace and Sherpa Home in your pocket. Native iOS and Android. In TestFlight beta now."*
+
+**Naming-conflict flag (resolved):** the word "Threads" alone refers to **Meta's social network** elsewhere in this portfolio (§2.2 social-avatar usage list, §8.9 social-media presence list — both correct uses of Meta Threads). To prevent any confusion when the same document discusses both **Sherpa Threads** (our product capability) and **Threads** (Meta's social network), the rule is: always use the **full "Sherpa Threads" name** for our capability, and always reserve the bare word **"Threads"** for the Meta social network. Brand Guardian audits this on every external send.
+
+**Capability-layer voice rules.** All three capabilities inherit the umbrella voice (plainspoken, founder-anchored, 8th-grade reading level). Capability voices are **modifiers** to product voices, not standalone voices: when Sherpa Marketplace promotes a job match in Sherpa Threads, the voice is Marketplace's (transactional + urgent), with Threads as the surface, not the speaker. Same for Smart Scan inside Sherpa Hub (the voice stays pro-to-pro / equipment-and-supplies; Smart Scan is the verb). Never invent a "Threads voice" or a "Smart Scan voice" — they don't speak, they enable.
+
+**Status-disclosure rules** (avoid investor / customer over-promising):
+- Sherpa Threads is **LIVE** — describe in present tense.
+- Sherpa Smart Scan is **LIVE** — describe in present tense.
+- Sherpa Mobile is **in TestFlight beta on iOS, Expo build on Android** — always disclose the beta status until App Store / Play Store launch. Never say "available in the App Store" before that day. Investor decks: "Sherpa Mobile in TestFlight beta — App Store launch Phase 1." Customer marketing: "Sherpa Mobile — invite-only beta, full launch coming."
+
 ---
 
 ## 10. Asset Library Reference

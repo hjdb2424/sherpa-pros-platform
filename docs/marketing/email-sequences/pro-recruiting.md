@@ -43,6 +43,8 @@ Phyrom
 HJD Builders LLC
 {{phone}}
 
+P.S. — Two things that just shipped you should know about. First: Sherpa Mobile is in TestFlight. iPhone first, Android right behind it via Expo. The first 50 founding pros get TestFlight invites — bid jobs, message clients, scan receipts, get paid, all from the phone you already carry. Second: Sherpa Smart Scan is live. Snap a photo of any receipt in the truck and it auto-categorizes for Schedule C (the IRS form for self-employed business income). Most pros lose 15 to 25 percent of their deductions to lost receipts. Snap and forget. Both are included in the founding rate.
+
 ---
 
 ## Email 2 — Day 2

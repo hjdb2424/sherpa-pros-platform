@@ -917,7 +917,79 @@ A clean editorial Instagram square template for Sherpa Flex side-hustle promotio
 
 ---
 
-## SECTION 11 — Tactical Best Practices
+## SECTION 11 — Platform Capability Visuals
+
+Five Ideogram prompts for the Sherpa Threads + Sherpa Smart Scan + Sherpa Mobile launch sweep (LinkedIn editorial Wks 22–24, social-content-plan Days 31–33). Each prompt is paste-ready, locked to brand color hex values, and pairs to a specific scheduled content slot.
+
+### 11A. Sherpa Threads — chat bubbles bridging to text message (1080×1350 portrait, 4:5)
+
+Pairs with: LinkedIn Editorial Wk 22 Mon · social-content-plan Day 31 (Sherpa Threads launch).
+
+```
+A clean editorial illustration of a two-way bridge between an in-app chat thread and a text-message thread, 1080 by 1350 pixels, 4:5 portrait. Composition: warm cream #FBF7EE background fills the canvas. CENTERED VERTICALLY: two stacked rounded-rectangle phone-style chat bubbles facing each other across the canvas with a horizontal bridge between them. The TOP bubble (representing the in-app pro side) is sky blue #00A9E0 with white text inside reading "Confirmed for Tuesday 9am — bringing the new shutoff valve" in Manrope sans-serif at 28pt. The BOTTOM bubble (representing the client text-message side) is dark navy #1A1A2E with white text reading "Perfect — door code 4421" in Manrope at 28pt. Between the two bubbles, a thin horizontal sky-blue line spans the full width of the canvas with a small white circular badge in the center containing two opposing arrows in dark navy (the bridge mark). In the LOWER-RIGHT corner with 40px padding, a small Sherpa Pros wordmark in dark navy at 22pt. In the UPPER-LEFT corner with 40px padding, the small Fraunces serif italic line "Sherpa Threads" in dark navy at 32pt. Flat editorial design, no gradients, no drop-shadows, no glossy phone-frame chrome. The mood: simple, contractor-credible, the bridge is the story. Use ONLY these five colors: #00A9E0, #FF4500, #FFFFFF, #1A1A2E, #FBF7EE. No other colors.
+```
+
+- **Aspect Ratio:** 4:5 (1080×1350 px)
+- **Style:** Design · Magic Prompt OFF · Character reference: Sherpa Pros icon
+- **Caption overlay (Canva, optional):** Below the bridge, in dark navy Manrope 18pt: *"In-app for the pro. Text message for the client. One conversation. One audit trail."*
+- **Asset placement:** LinkedIn Wk 22 Mon static graphic · IG Reel Day 31 end-card · Facebook Day 31 hero · X (brand) Day 31 photo
+
+### 11B. Sherpa Smart Scan — receipt to categorized line item (1080×1350 portrait, 4:5)
+
+Pairs with: LinkedIn Editorial Wk 23 Wed · social-content-plan Day 32 (Sherpa Smart Scan launch).
+
+```
+A clean editorial product still showing a receipt being scanned and parsed into a categorized line item, 1080 by 1350 pixels, 4:5 portrait. Composition: warm cream #FBF7EE background fills the canvas. The LEFT third of the canvas: a tilted photo-realistic Lowe's-style hardware-store paper receipt at about 480px tall, slightly creased, with visible printed line items in faded gray text — the receipt is the source. From the receipt, an orange-red #FF4500 thin arrow sweeps to the right, ending in the RIGHT two-thirds of the canvas at a clean white card with a thin sky-blue #00A9E0 1px border. Inside the white card: a stacked list of three parsed line items in dark navy #1A1A2E Manrope 22pt — "1/2 in. PEX-A pipe ($24.18) — OPEX", "Pressure regulator ($86.40) — CAPEX", "Brass fittings ($12.55) — OPEX". Each item has a small color pill at the right end — orange-red for CAPEX, sky blue for OPEX. In the UPPER-LEFT corner with 40px padding, the small Fraunces serif italic line "Sherpa Smart Scan" in dark navy at 32pt. In the LOWER-RIGHT corner with 40px padding, the Sherpa Pros wordmark in dark navy at 22pt. Flat editorial design with one realistic photographic element (the receipt). No drop-shadows, no glossy effects, no gradient washes. The mood: serious bookkeeper-credible, the parse is the story. Use ONLY these five colors: #00A9E0, #FF4500, #FFFFFF, #1A1A2E, #FBF7EE. No other colors.
+```
+
+- **Aspect Ratio:** 4:5 (1080×1350 px)
+- **Style:** Design (with receipt photographic descriptor in prompt)
+- **Caption overlay (Canva, optional):** Below the white card, in dark navy Manrope 18pt: *"Snap. Parse. Auto-tag. Done."*
+- **Asset placement:** LinkedIn Wk 23 Wed static graphic · IG Reel Day 32 end-card · Facebook Day 32 hero · X (Phyrom) Day 32 thread image
+
+### 11C. Sherpa Mobile — iOS hero shot mockup (1080×1350 portrait, 4:5)
+
+Pairs with: social-content-plan Day 33 (Sherpa Mobile TestFlight launch) · pitch deck Slide 5 product-shot composite.
+
+```
+A clean editorial product mockup of an iPhone displaying the Sherpa Mobile app job-inbox screen, 1080 by 1350 pixels, 4:5 portrait. Composition: warm cream #FBF7EE background fills the canvas. CENTERED in the canvas, slightly tilted at about 8 degrees clockwise: a single iPhone in matte dark navy #1A1A2E with a clean rounded silhouette, no Apple branding visible. The phone screen displays the Sherpa Mobile job-inbox interface — at the TOP a thin sky-blue #00A9E0 status bar with the small white Sherpa Pros wordmark inset; below it three stacked job cards on a warm cream background, each card with a bold dark navy headline ("Panel upgrade — Newton MA · $4,200"), a sub-line in slate gray ("Mass Save eligible · Code-checked · 4hr early access"), and a sky-blue "ACCEPT" pill button at the right. The third card has a small orange-red "★ NEW" badge in the upper-right. In the UPPER-LEFT corner of the full canvas with 40px padding, the small Fraunces serif italic line "Sherpa Mobile" in dark navy at 32pt with a sub-line "TestFlight beta · iOS · Android via Expo" in Manrope 18pt slate gray. In the LOWER-RIGHT corner with 40px padding, the Sherpa Pros wordmark in dark navy at 22pt. No phone-frame chrome detail (camera notch, speaker, side buttons). Flat editorial design, no gradients, no drop-shadows except a subtle 4px navy shadow under the phone for floating depth. The mood: clean product reveal, contractor-credible, mobile-first. Use ONLY these five colors: #00A9E0, #FF4500, #FFFFFF, #1A1A2E, #FBF7EE. No other colors.
+```
+
+- **Aspect Ratio:** 4:5 (1080×1350 px)
+- **Style:** Design · Character reference: Sherpa Pros icon
+- **Caption overlay (Canva, optional):** Below the phone, in dark navy Fraunces serif 36pt: *"Run your business from your phone."*
+- **Asset placement:** LinkedIn Wk 24 Fri inset · IG Reel Day 33 end-card · pitch deck Slide 5 composite · pro-recruiting email P.S. inline image
+
+### 11D. Sherpa Mobile — pro on a job site at dusk (1080×1920 vertical, 9:16)
+
+Pairs with: social-content-plan Day 33 IG Reel + TikTok hero shot · LinkedIn Editorial Wk 24 Fri photo asset.
+
+```
+A documentary-style 35mm film photograph of a tradesperson on a residential framing jobsite at dusk, 1080 by 1920 pixels, 9:16 vertical. Composition: a tradesperson in faded flannel and worn leather tool belt stands center-frame in mid-action, holding an iPhone in their right hand with the screen tilted slightly toward the camera. The phone screen glows sky blue #00A9E0 — the glow lights the underside of the contractor's chin and forearm in cool blue, contrasting against the warm orange-red #FF4500 sunset sky filling the upper third of the canvas behind exposed 2x4 wall framing. NO face fully visible — the framing of the shot crops at chin and lower jaw to keep identity ambiguous. The LOWER third of the canvas is in deeper dark-navy #1A1A2E shadow with hints of subfloor and stud wall. Natural late-afternoon light fading to dusk, fine 35mm film grain, warm cream #FBF7EE highlights catching the wood grain on the right edge. NO high-vis vest. NO smiling-construction-worker stock-photo energy. NO branded apparel. Documentary realism — Magnum Photos meets construction trade. The mood: a working contractor running their business from the phone glowing in their hand at the end of the day. Use these five colors: #00A9E0 (phone glow), #FF4500 (sunset sky), #FFFFFF (highlights), #1A1A2E (shadows), #FBF7EE (warm cream wood). No other colors.
+```
+
+- **Aspect Ratio:** 9:16 (1080×1920 px)
+- **Style:** Design (with photographic descriptors in prompt)
+- **Caption overlay (Canva):** Burned-in lower-third headline in white Fraunces serif 56pt: *"Sherpa Mobile · TestFlight beta is open."* Sub-line in Manrope 22pt: *"First 50 founding pros. Comment MOBILE."*
+- **Asset placement:** IG Reel Day 33 hero shot · TikTok Day 33 cover frame · LinkedIn Wk 24 Fri photo · X (Phyrom) Day 33 photo
+
+### 11E. Three capabilities — stacked feature lineup (1080×1350 portrait, 4:5)
+
+Pairs with: LinkedIn brand-page recap · pitch deck "Three new platform pillars" slide · Wefunder Section 4.5 inline graphic.
+
+```
+A clean editorial three-panel feature lineup in stacked horizontal blocks, 1080 by 1350 pixels, 4:5 portrait. Composition: warm cream #FBF7EE background fills the canvas. THREE equal horizontal blocks stacked vertically with 24px white gutter between each. Each block is 1080px wide and approximately 425px tall. TOP BLOCK: solid sky blue #00A9E0 background, with the Fraunces serif italic title "Sherpa Threads" in white at 56pt left-aligned with 60px padding from the left edge, sub-line in white Manrope 26pt below: "In-app chat. Twilio bridge to text message. The audit trail marketplaces need." A small white line-art icon of two opposing chat bubbles at about 80px tall floats in the right side of the block with 60px padding from the right edge. MIDDLE BLOCK: solid warm cream #FBF7EE background with a thin sky-blue 2px top and bottom border, with the Fraunces serif italic title "Sherpa Smart Scan" in dark navy #1A1A2E at 56pt left-aligned, sub-line in dark navy Manrope 26pt: "Document scanner. Photo analyzer. Receipt scanner. Auto-tags Schedule C and Capital Expenditure." A small dark navy line-art icon of a receipt with a magnifying glass at about 80px tall floats on the right side. BOTTOM BLOCK: solid orange-red #FF4500 background, with the Fraunces serif italic title "Sherpa Mobile" in white at 56pt left-aligned, sub-line in white Manrope 26pt: "iOS in TestFlight. Android via Expo. Run your business from your phone." A small white line-art icon of a phone outline at about 80px tall floats on the right side. ABOVE the three blocks, in dark navy Fraunces serif at 36pt centered: "Three new platform pillars" with a sub-line "Shipped this quarter" in Manrope 20pt slate-gray below. BELOW the three blocks, in the LOWER-RIGHT with 40px padding, the Sherpa Pros wordmark in dark navy at 22pt. Flat editorial design, no gradients, no drop-shadows, no glossy effects. The mood: confident product-reveal, editorial layout, Fraunces display + Manrope body discipline throughout. Use ONLY these five colors: #00A9E0, #FF4500, #FFFFFF, #1A1A2E, #FBF7EE. No other colors.
+```
+
+- **Aspect Ratio:** 4:5 (1080×1350 px)
+- **Style:** Design · Character reference: Sherpa Pros icon
+- **Caption overlay (Canva):** none — the prompt produces a finished asset. If a CTA is needed, add a thin 32px sky-blue strip below the three blocks with white Manrope 20pt: *"Live on www.thesherpapros.com"*
+- **Asset placement:** investor pitch deck Slide 11.5 ("Three new platform pillars") · onepager product/feature row · Wefunder Section 4 inline · LinkedIn brand-page Day 33 recap · IG carousel slide-1 cover (any "what we shipped" recap)
+- **Generation note:** This is the single most-leveraged asset in the Threads + Smart Scan + Mobile sweep. Generate FIRST, refine until the three-block balance is clean, then derive the per-block solo cuts (11A, 11B, 11C) with consistent typography and color discipline.
+
+---
+
+## SECTION 12 — Tactical Best Practices
 
 ### Caption-overlay strategy
 

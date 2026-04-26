@@ -149,7 +149,7 @@ Updated 2026-04-24: audience expanded from 4 to 5 segments. Homeowners now split
 
 ### 3.5 Product Portfolio
 
-Sherpa Pros is a multi-product brand. Each product solves a distinct customer problem; together they form a flywheel.
+Sherpa Pros is a multi-product brand. Each product solves a distinct customer problem; together they form a flywheel. Underneath the six products, three platform-level capabilities (Sherpa Threads · Sherpa Smart Scan · Sherpa Mobile) span every product — see §3.5.1 below for the capability layer detail.
 
 | Product | What it is | Primary audience | Pricing model | Status |
 |---|---|---|---|---|
@@ -174,7 +174,18 @@ Sherpa Pros is a multi-product brand. Each product solves a distinct customer pr
 - **LOCKED 2026-04-25:** the white-glove product is **Sherpa Success Manager** (per backend deployment commit `6097f83`). Drop "Account Manager" and "Sherpa Account/Success Manager" usage everywhere — they are deprecated.
 - **LOCKED 2026-04-25:** the side-hustle pro tier is **Sherpa Flex** (always with the "Sherpa" prefix — never "Flex tier" or "Flex" alone in external surfaces).
 - **LOCKED 2026-04-25:** the loyalty program is **Sherpa Rewards** (capitalized as a program name). Lowercase "rewards" refers to individual catalog items; "Sherpa Rewards" refers to the program.
-- Don't say: "the Sherpa Pros app" (which app?) — say: "Sherpa Marketplace" or "Sherpa Home" or whichever product
+- **LOCKED 2026-04-25:** the in-app messaging surface is **Sherpa Threads** (not "the chat," not "messages") — work-order-attached threading that bridges to Short Message Service (SMS).
+- **LOCKED 2026-04-25:** the document + photo + receipt scanning surface is **Sherpa Smart Scan** (Optical Character Recognition / OCR is the underlying tech but never the headline).
+- **LOCKED 2026-04-25:** the native iOS + Android app is **Sherpa Mobile** (iOS in TestFlight beta as of 2026-04-25, bundle ID `com.thesherpapros.app`; Android via Expo).
+- Don't say: "the Sherpa Pros app" (which app?) — say: "Sherpa Marketplace" or "Sherpa Home" or whichever product. **Sherpa Mobile** is the OK shorthand only when the conversation is specifically about the native-app shell across products.
+
+### 3.5.1 Platform Capability Layer (shipped 2026-04-25)
+
+The six products share a common capability layer — three platform-wide features that span every product, but are not products themselves. They were shipped to production in commits `67ccfc8`, `8933f67`, `60781c1`, and `2f1eec4`. Marketing copy should reference these capabilities by name (Sherpa Threads · Sherpa Smart Scan · Sherpa Mobile) inside the relevant product story, not as standalone products.
+
+- **Sherpa Threads — In-app chat with Short Message Service (SMS) sync.** Three-role messaging (pro to client to Property Manager) with read receipts, conversation list, file attachments, and bi-directional Twilio SMS sync. When a client doesn't open the app, the thread sends an SMS; the client's SMS reply lands back in-app. Eliminates the "I'll text you" leakage that costs marketplaces their data, gives both parties an audit trail for disputes, and on the Property Manager tier attaches every thread to its work order. Surfaces in **Sherpa Marketplace** (pro to client), **Sherpa Hub** (Property Manager work-order threads), and **Sherpa Success Manager** (the dedicated human owns the thread on the customer's behalf).
+- **Sherpa Smart Scan — Optical Character Recognition (OCR) for documents, photos, and receipts.** One scanning surface with three components: Document Scanner (permits, blueprints, contracts), Photo Analyzer (job-site photos to measurements + conditions), and Receipt Scanner (receipts + invoices). Receipts auto-categorize for tax — Schedule C lines for pros, Capital Expenditure (CapEx) versus Operating Expenditure (OpEx) split for Property Managers. Surfaces in **Sherpa Marketplace** (pro tax tools), **Sherpa Hub** (Property Manager finance + work-order spend tagging — the most-praised feature in PM demos per §10 R5), **Sherpa Home** (homeowner uploads rebate paperwork or permits for instant parsing), and **Sherpa Success Manager** (annual tax-prep handled for the customer).
+- **Sherpa Mobile — Native iOS + Android.** Bundle ID `com.thesherpapros.app`. iOS in TestFlight beta as of 2026-04-25, Android via Expo. App Store Connect ID configured, EAS configured for TestFlight submission. Surfaces in **Sherpa Marketplace** (the pro app — pros work in the field, not at a desktop) and **Sherpa Home** (the subscriber app — homeowners reach for their phone, not their laptop). **Sherpa Hub Property Manager dashboards stay web-first by design** (Property Managers do real reporting work on a desktop). **Sherpa Success Manager** is human-led so there is no Manager-side mobile app — the customer-facing Mobile app is what the Manager uses to communicate.
 
 ---
 
@@ -556,6 +567,12 @@ Run all four concurrently. Whichever closes first triggers Phase 1. No serial de
 | R8 | Phyrom burnout (single-point-of-failure) | 0/1 | Critical | Missed weekly milestones | 60-hr/wk hard cap; Upwork US offloads 30% lowest-leverage; AI agents draft deck/research |
 | R9 | Beta → paying conversion drop at M4 | 1 | Medium | >30% pro churn at price step-up | Founding Pros keep 5% forever (promised); new pros enter at 10%; half-price grandfathering = recruiting hook |
 | R10 | 4-metro execution complexity | 2 | Medium | 2 of 4 metros <50% of plan at M9 | Concentrate on top 2 performing metros; reduce paid spend on laggers; don't force a metro that isn't taking |
+
+### 10.1 Open Decisions (capability layer)
+
+| # | Decision | Phase | Why it matters | Working answer (pending Phyrom lock) |
+|---|---|---|---|---|
+| **R6 (Open Decision)** | **Sherpa Threads — Phase 1 chat retention policy.** How long do we keep in-app threads + Short Message Service (SMS) sync logs? | 1 | Construction-record retention norms run **7 years** (matches Schedule C audit window + the typical state statute-of-limitations ceiling for residential construction defects). The Property Manager tier may want **longer** for litigation defense — multi-year property-management litigation can outlast 7-year retention. Too-short = audit / dispute exposure. Too-long = storage cost + Twilio archival cost + General Data Protection Regulation (GDPR) / California Consumer Privacy Act (CCPA) deletion-request complexity. | **Working default: 7 years** baseline retention for all tiers (matches construction-record norms). **Property Manager + Sherpa Success Manager tiers: opt-in extension to 10 years** for litigation defense (storage cost passed through in tier pricing). Customer-initiated deletion request always honored within 30 days regardless of tier. Lock with attorney before Phase 1 launch (`docs/operations/attorney-engagement-package.md` scope item). |
 
 ---
 

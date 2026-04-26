@@ -29,6 +29,7 @@ The **"licensed + code-aware + true marketplace"** quadrant is empty. We plant t
 - **Code-aware quote validation** runs every quote against NEC, IRC, MA Electrical, NH state code, and surfaces missing line items, wrong materials, and code violations before the homeowner sees the quote. (per spec §1)
 - **Permit-aware and rebate-aware** — knows which jobs need a Boston ISD permit, which qualify for Mass Save / National Grid / EV-charger rebates, and walks both sides through it. (per spec §2.3)
 - **Three revenue lines:** marketplace take rate (floor), $49/month Pro subscription (recurring), and a Property Manager tier at $4 → $1.50 per unit per month (enterprise upside). (per spec §3.2 + §5.2)
+- **Platform capabilities shipped this quarter:** Sherpa Marketplace · Sherpa Hub · Sherpa Home · Sherpa Manager · Sherpa Score · Sherpa Rewards · Sherpa Flex · **Sherpa Threads (in-app chat + text-message bridge) · Sherpa Smart Scan (optical character recognition for permits, jobsite photos, and receipts; auto-tags Schedule C and Capital Expenditure / Operating Expense) · Sherpa Mobile (iOS in TestFlight, Android via Expo)**.
 
 **The moat is the code-intelligence layer.** It is not licensable, not easily cloneable, and required a working GC plus a multi-year codebase to build. National lead-gen platforms cannot copy it without a structural rebuild.
 

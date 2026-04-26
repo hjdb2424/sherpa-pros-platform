@@ -172,6 +172,11 @@ Three revenue lines is the whole story. Investors love marketplaces with subscri
 - Pro NPS: `[score]` · Client NPS: `[score]` (target >50, per spec §4.3)
 - Code-aware quote validations run: `[count]` · code violations caught: `[count]`
 
+**Recently shipped (build-in-public credibility):**
+- **Sherpa Threads** — in-app chat across pro / client / project manager with Twilio bridge to text message. Live in production.
+- **Sherpa Smart Scan** — three-flavor optical character recognition (document scanner, photo analyzer, receipt scanner) with auto-tax categorization to Schedule C for pros and Capital Expenditure / Operating Expense for property managers. Live in production.
+- **Sherpa Mobile** — iOS bundle `com.thesherpapros.app` shipped to TestFlight via Expo Application Services; Android via Expo right behind. Real product progress, not slide-ware.
+
 **Cohort composition:**
 NH/Seacoast — 2 GCs (HJD network), 2 handymen, 1 plumber, 1 HVAC / heat-pump specialist.
 ME/Portland — 1 painter, 1 landscaper.
@@ -184,6 +189,26 @@ Six big-number tiles in a 2×3 grid (pros, jobs, GMV, match-time, NPS, code-viol
 
 **Presenter notes:**
 **Drop in real numbers from the live Stripe Connect dashboard, the dispatch logs, and the weekly NPS survey before every pitch.** Date the slide. If GMV is small, lean on liquidity (match time, fill rate) and quality (NPS, code catches). Investors at this stage care about slope, not size — show 4 weeks of week-over-week growth if the absolute numbers are small.
+
+---
+
+## Slide 8.5 — Three New Platform Pillars
+
+**Title:** Three new platform pillars shipped this quarter.
+
+**Body:**
+
+Three product capabilities went to production this quarter. Each one closes a defensibility gap a lead-gen platform structurally cannot close.
+
+- **Sherpa Threads — in-app chat with text-message bridge.** Pro, client, and project manager chat in-app. Clients can keep texting from their normal phone — replies land back in-app. Read receipts, file attachments, work-order-attached threading. Kills the "I'll just text you" data leak that erodes marketplace defensibility. Audit trail for dispute resolution.
+- **Sherpa Smart Scan — three-flavor optical character recognition.** Document scanner (permits, blueprints, contracts), photo analyzer (jobsite conditions), receipt scanner (invoices). Wired into auto-tax-categorization — scanned receipts auto-tag to Schedule C (the IRS form for self-employed business income) for pros and Capital Expenditure / Operating Expense for property managers. Per beta spec §10R5, the single most-praised feature in PM demos.
+- **Sherpa Mobile — iOS in TestFlight, Android via Expo.** Bundle `com.thesherpapros.app` deployed to App Store Connect; first 50 founding pros get TestFlight invites. iOS and Android via Expo Application Services. Real product progress, not slide-ware — and a lower customer acquisition cost lever because pros can sign up from a phone in the field.
+
+**Suggested visual:**
+Three stacked horizontal blocks (sky blue · cream · orange-red) with the three product names in Fraunces serif and one-line value props in Manrope. See `docs/operations/social-media-prompt-library.md` §11E for the canonical Ideogram prompt — generate at 1080×1350, crop to 16:9 for slide layout.
+
+**Presenter notes:**
+This slide is the answer to the implicit "what have you shipped since the last update" question every investor asks. Run it as proof, not promotion — each pillar gets one sentence, then move on. The mobile-in-TestFlight line is the single biggest credibility lever — most pre-seed founders pitch a roadmap; we have a build with a TestFlight ID. Per CLAUDE.md, Sherpa Mobile is the same Next.js production app delivered through Expo, so the engineering surface area is small and the velocity is high. Per `docs/operations/sherpa-product-portfolio.md`, these three are platform capabilities (cross-product), not standalone products — frame them that way to avoid "feature creep" follow-up questions.
 
 ---
 

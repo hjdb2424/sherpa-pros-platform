@@ -30,6 +30,7 @@ What you would get on the platform:
 - One inbox for every work order across the portfolio. Tenant-submitted, manager-submitted, recurring.
 - Preferred vendor list with a real scorecard — response time, completion time, cost variance, tenant rating. So you stop debating which vendor is actually the best one. The data tells you.
 - Unit-level finance: every work order rolled up by property and by unit, with Capital Expenditure versus Operating Expense tagged automatically. Your Net Operating Income reporting gets faster and your auditor stops asking questions.
+- In-app chat for site managers, vendors, and tenants — with a text-message bridge so the tenant doesn't have to install anything. The tenant texts from their normal phone. Replies land in-app for your team. Every conversation is attached to the work order — full audit trail.
 - Pricing: $4 per unit per month at {{unit_count}} units. Drops to $1.50 per unit at 5,000+ units.
 
 For your portfolio that runs about ${{monthly_price}} a month. Most operators we talk to save more than that in the first month just by cutting the time their site managers spend chasing vendor invoices.
@@ -80,7 +81,9 @@ Want to see it on your own portfolio? I can pull a sample report from the demo d
 
 Phyrom
 
-P.S. — Got tradesperson employees with side bandwidth? Sherpa Flex lets them moonlight on Sherpa Pros without forming an LLC. $1M per-project liability insurance is included in the platform fee. Win-win for you (employee retention) and them (extra income).
+P.S. — The single most-praised feature in our recent demos isn't the scorecard. It's Sherpa Smart Scan. Site manager snaps a photo of a vendor receipt in the field; the platform reads it, attaches it to the work order, and auto-tags every line as Capital Expenditure or Operating Expense. Your bookkeeper stops hand-coding 200 receipts a month. I will demo it live if you book the 20.
+
+P.P.S. — Got tradesperson employees with side bandwidth? Sherpa Flex lets them moonlight on Sherpa Pros without forming an LLC. $1M per-project liability insurance is included in the platform fee. Win-win for you (employee retention) and them (extra income).
 
 ---
 
@@ -104,7 +107,7 @@ For a {{unit_count}}-unit portfolio at typical New England trade rates:
 
 1. **Vendor cost variance.** Operators see a 6 to 11 percent reduction in trade spend in the first 90 days, just from the scorecard surfacing the over-priced vendors. On a typical {{unit_count}}-unit maintenance budget that is roughly ${{vendor_savings}} per year.
 2. **Site manager time.** Site managers in our pilots cut work-order-coordination time by 6 to 10 hours a week. At a fully-loaded $35 an hour, that is roughly ${{labor_savings}} per year per site.
-3. **Capital Expenditure versus Operating Expense tagging.** Auto-tagged at the work-order level. The audit and tax-prep time savings are hard to put a number on, but every controller we have shown this to has called it the most valuable feature.
+3. **Capital Expenditure versus Operating Expense tagging.** Auto-tagged at the work-order level by Sherpa Smart Scan — the receipt scanner reads every vendor invoice in the field, attaches it to the work order, and classifies every line as Capital Expenditure or Operating Expense automatically. Your bookkeeper stops hand-coding receipts. Your auditor stops asking questions. Every controller we have shown this to has called it the most valuable feature.
 
 Net effect: a $6,500 to $14,000 monthly Net Operating Income improvement on a typical {{unit_count}}-unit portfolio. We charge ${{monthly_price}}.
 

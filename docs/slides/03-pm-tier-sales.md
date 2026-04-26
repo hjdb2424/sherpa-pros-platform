@@ -203,7 +203,7 @@ So I built the one I wished existed. **Built by a contractor. For the people who
 | January 1099-NEC scramble | **Automatic 1099-NEC reporting** at year-end |
 | Annual COI chase | **License + insurance + W-9 + COI** auto-tracked, auto-renewed |
 | Property-level GL only | **Unit-level finance** — every job tagged to property + unit |
-| Manual CapEx vs OpEx tagging | **Automatic CapEx vs OpEx** classification on every line |
+| Manual CapEx vs OpEx tagging | **Sherpa Smart Scan auto-tags every work order to CapEx or OpEx — your bookkeeper stops hand-coding.** Receipt scanner reads vendor invoices in the field, attaches them to the work order, and classifies every line automatically. |
 
 **One login. One source of truth. Built by a contractor, not a software company.**
 
@@ -242,6 +242,8 @@ This is what your maintenance director will use ten times a week.
 `Tenant text → PM dispatches in 2 taps → Pro confirms in <30 min → On site within 24–48 hr → Pro marks done in app → Auto-posts to that property + unit P&L → Stripe releases pro in 24 hr`
 
 **No bidding war. No phone tag. No spreadsheet update.** The job is on a licensed pro's calendar before your maintenance director finishes their coffee.
+
+**Sherpa Threads — work-order-attached chat with a text-message bridge.** Every conversation between the tenant, the site manager, and the pro is attached to the work order. The tenant texts from their normal phone (no app to install); replies land in-app for your team and for the pro. Read receipts, file attachments, full audit trail when a dispute happens. The "they said in a text" leak that wrecks vendor accountability — fixed.
 
 ---
 

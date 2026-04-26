@@ -110,6 +110,22 @@ Sherpa Pros is the licensed-trade marketplace that thinks like a contractor. Bui
 
 ---
 
+## 4.5. THREE NEW PLATFORM PILLARS
+
+### What we shipped this quarter, in plain English.
+
+Three new capabilities went to production this quarter. None of them are roadmap promises — they are live in the platform today.
+
+**Sherpa Threads — in-app chat that bridges to text message.** Every contractor has had this happen: the job is in the platform, but the client texts your cell phone, and by Friday nobody can prove what was promised. Sherpa Threads kills that leak. The pro, the client, and the project manager all chat in-app. The client can keep texting from their normal phone — replies land back in-app on the pro's end. They don't have to install anything. Read receipts, file attachments, every conversation attached to the work order. Audit trail when something goes wrong. The data leak that erodes every other marketplace — fixed.
+
+**Sherpa Smart Scan — the platform reads your paperwork for you.** Three flavors of optical character recognition (the technology that turns a photo of text into editable, categorizable data). A document scanner reads permits, blueprints, and contracts. A photo analyzer reads jobsite conditions for scope checks. A receipt scanner reads vendor invoices and material spend. The receipt scanner is wired into auto-tax-categorization — for pros, scanned receipts auto-tag for Schedule C (the IRS form for self-employed business income). For property managers, the same scanner auto-tags every line as Capital Expenditure or Operating Expense at the work-order level. Most pros lose 15 to 25 percent of their deductions to lost receipts. Smart Scan eliminates that. For PMs, the bookkeeper stops hand-coding 200 receipts a month. Audit-friendly on both sides.
+
+**Sherpa Mobile — the platform now lives in your pocket.** iOS is in TestFlight today (bundle ID `com.thesherpapros.app` deployed to App Store Connect). Android is right behind via Expo. Pros bid jobs, message clients with Sherpa Threads, scan receipts with Sherpa Smart Scan, and get paid through Stripe Connect — all from the phone in their truck. The first 50 founding pros get TestFlight invites. For property managers, site managers can intake work orders from the field instead of waiting until they are back at a desk. For investors, this is real product progress, not slide-ware — and it is a lower customer acquisition cost lever, because pros can sign up from a phone in the field instead of a laptop at the kitchen table.
+
+These three pillars round out the platform from a desktop marketplace into the working tool a contractor (or a property manager) actually carries to the jobsite.
+
+---
+
 ## 5. THE PRODUCT
 
 ### Live today. Real jobs. Real money.

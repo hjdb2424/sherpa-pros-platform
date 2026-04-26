@@ -121,7 +121,6 @@ export const twilioService: CommunicationService = {
   },
 
   async sendMessage(conversationId, senderId, body) {
-    const client = getTwilioClient();
     const conversation = conversationCache.get(conversationId);
     if (!conversation) {
       throw new Error(`Conversation not found: ${conversationId}`);
@@ -133,6 +132,7 @@ export const twilioService: CommunicationService = {
       throw new Error(`Conversation ${conversationId} has no Twilio SID`);
     }
 
+    const client = getTwilioClient();
     const twilioMsg = await client.conversations.v1
       .conversations(conversation.twilioSid)
       .messages.create({

@@ -327,6 +327,34 @@ But the Wefunder round is the one where the community gets a seat at the table. 
 
 ---
 
+## 9.5 WHERE THE JOURNEY GOES — THE FOUR-PHASE GROWTH ARC
+
+### Plain English: what you're investing in over the long run.
+
+When you back a marketplace early, you're not just betting on what it looks like today. You're betting on the multi-year journey. So here's the journey, in four phases, in plain English.
+
+**Phase 1 — Lean Launch (Months 3 to 6 from first close).**
+This is what your investment funds first. We take the live beta and turn it into a real public launch across four New England metros: Portsmouth New Hampshire, Manchester New Hampshire, Portland Maine, and Boston (specialty work only — heat pumps, electric vehicle chargers, electrical panel upgrades, old-house specialists, triple-decker exteriors). The founding contractors who joined during the beta keep their 5 percent take rate — forever — as a thank-you for taking the early bet. Goal: 50+ working pros, 1 commercial property-management anchor, 500+ homeowners signed up. By the end of Phase 1, the company is set up to raise a Seed round.
+
+**Phase 2 — Scaled Launch (Months 6 to 12).**
+Seed round closes. Now we deepen all four metros instead of adding new ones. Goal: 200+ active pros, 1,000+ jobs flowing, $1M+ in total job value transacted, 3+ commercial property-management anchors signed, 5,000+ homeowners on the platform. The first physical Sherpa Hub (a small supply-and-tool-rental counter for member contractors) opens in either Portsmouth or Boston. Take rate stabilizes at 10 percent — about half what contractors pay Angi today. By the end of Phase 2, conversations open with venture capital firms about a Series A.
+
+**Phase 3 — Regional Expansion (Months 12 to 18).**
+Series A closed. Now we add two new metros: Providence Rhode Island, then Hartford Connecticut. We also open a New York City specialty beachhead — Brooklyn brownstone restorations and Manhattan pre-war apartment work, two niches no national platform handles well. We sign our first utility partnership (the platform powers an Eversource or National Grid contractor-finder behind the scenes). Goal: 6 active metros, 3 large property-management chains, $5M+ in annualized job value. Take rate climbs to 12 to 15 percent. By Month 17, we are preparing the Series B.
+
+**Phase 4 — National + International + Franchise (Month 18 and beyond).**
+Series B closed (target $20M to $40M). Now the platform goes national United States: Philadelphia, Washington DC, San Francisco, Chicago — specialty lanes only at first, then full coverage. International expansion follows on a one-country-per-year staircase: Canada Year 1, United Kingdom Year 2, Australia Year 3, European Union pilot Years 4 to 5. The Sherpa Hub model goes franchise from Hub #11 onwards, so local entrepreneurs can own and operate the physical pickup points. The platform earns Service Organization Control 2 Type 2 security certification by Month 30 (the standard enterprise customers and insurance carriers ask for). Around Months 27 to 30, the company is positioned for either a Series C or a strategic acquisition — the path forward depends on what the market tells us.
+
+**One brand. Four phases. Expanding footprint.**
+The brand identity does not change as we expand. The wordmark stays the same. The voice stays the same. The founder origin story — Phyrom, working New Hampshire general contractor at HJD Builders LLC — stays the same in every phase. What expands is the operational footprint, the cohorts of customers we serve, and the product surfaces that go live. A homeowner in Toronto in Phase 4 will see the same brand a homeowner in Portsmouth saw in Phase 1, and that continuity is the long-term equity you're investing in.
+
+**What this means for your investment.**
+You are not buying into a specific metro launch. You are buying into a multi-year platform that compounds across phases. Phase 1 proves the model. Phase 2 proves the model scales within a region. Phase 3 proves the model scales across regions. Phase 4 proves the model scales across countries. Each phase de-risks the next. Each phase opens a new capital round at a higher valuation. Your Wefunder Simple Agreement for Future Equity converts at whichever round closes first — typically the Seed (Phase 2) — meaning the Phase 3 and Phase 4 expansion happens with you already on the cap table.
+
+The standard early-stage investment risks still apply (see Section 11). The platform might not get past Phase 1. The platform might get past Phase 1 but not raise a Seed. The platform might raise a Seed but not deliver the metro density to attract a Series A. We are not promising any of these phases will close on schedule. We are showing you the road we are driving so you understand what you would be buying into for the long arc.
+
+---
+
 ## 10. THE ASK
 
 ### Target raise: $250K–$500K. SAFE terms. Open to anyone.

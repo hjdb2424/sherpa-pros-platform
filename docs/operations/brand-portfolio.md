@@ -315,6 +315,51 @@ The discipline is more important than the swatches. Most agencies fail this bran
 
 ---
 
+### 3.5 The four-phase brand growth arc
+
+The brand identity is national + international from Day 1. The operational footprint expands across four phases — but the brand story compounds, it does not pivot. The Brand Guardian's job is to defend that consistency: every phase should feel like the same Sherpa Pros, just operating in more places, serving more cohorts, with more product surfaces live.
+
+**Why this matters.** The most common mistake premium B2B marketplaces make is rebranding when they expand — adding a "Sherpa Pros National" sub-brand at Phase 3, then a "Sherpa Pros Global" mark at Phase 4, then a franchise sub-mark at Phase 4. That fragmentation kills the equity built in Phase 1. The discipline is: ONE wordmark, ONE color palette, ONE voice — operating across an expanding footprint.
+
+**The four operational phases:**
+
+- **Phase 1 — Lean Launch (Months 3 to 6).** First close signed, beta cohort converts to founding paying customers (5 percent beta-pricing grandfathered forever), 50+ active pros across the Northern Triangle (Portsmouth + Manchester + Portland), Boston specialty lanes proven (20+ jobs in 5 lanes), 1 commercial Project Manager anchor signed, 500+ homeowner accounts. Seed round teed up.
+- **Phase 2 — Scaled Launch (Months 6 to 12).** Seed closed, 4-metro parallel execution (Portsmouth + Manchester + Portland + Boston), 200+ active pros, 1,000+ jobs and $1M+ Gross Merchandise Value, 3+ Project Manager anchors, 5,000+ homeowner accounts. Series A conversations open Months 10 to 11. Take rate stable at 10 percent.
+- **Phase 3 — Regional Expansion (Months 12 to 18, hard 6-month bound).** Series A closed, +2 metros (Providence Months 13 to 14, Hartford Months 15 to 16), New York City specialty beachhead (Brooklyn brownstones + Manhattan pre-war, Months 14 to 18), 1 utility white-label live (Eversource Massachusetts/Connecticut or National Grid New York), 3 Project Manager chain anchors, $5M+ annualized Gross Merchandise Value. Series B prep complete Month 17. Take rate 12 to 15 percent.
+- **Phase 4 — National + International + Franchise + Scale (Month 18+).** Series B closed (target $20M to $40M), national United States footprint (Philadelphia + Washington DC + San Francisco + Chicago specialty lanes), international expansion Canada Year 1 → United Kingdom Year 2 → Australia Year 3 → European Union pilot Years 4 to 5, franchise model live (Hub #2 to #10 FW Webb co-located + Hub #11+ via franchise), Service Organization Control 2 Type 2 certified by Month 30, multi-region infrastructure (US-East / US-West / Canada / EU), enterprise Project Manager chains + insurance carrier partnerships. Path to Series C Months 27 to 30 or strategic acquisition.
+
+**What changes per phase, and what does NOT change:**
+
+| Element | Phase 1 | Phase 2 | Phase 3 | Phase 4 |
+|---|---|---|---|---|
+| Wordmark | Same | Same | Same | Same |
+| Color palette | Same | Same | Same | Same |
+| Typography | Same | Same | Same | Same |
+| Voice + tone | Same | Same | Same | Same |
+| Founder origin story (Phyrom, working New Hampshire general contractor at HJD Builders LLC) | Same | Same | Same | Same |
+| Footprint mention in copy | "Launching in NH/ME/MA" | "4 metros across New England" | "6 metros across New England + New York City specialty" | "6+ metros across the United States, plus Canada / United Kingdom / Australia" |
+| Audience cohorts addressed | Pros + homeowners + 1 Project Manager anchor | + 3 Project Manager anchors + utility pilots starting | + utility white-label + 3 Project Manager chains + franchise FDD prospects | + insurance carriers + enterprise Project Manager chains + international cohorts + franchisees |
+| Product surfaces LIVE (see §1 of `sherpa-product-portfolio.md`) | Marketplace + Hub #1 build | Marketplace + Hubs #1–3 + Home + Success Manager + Rewards + Flex + all platform capabilities | All 6 products LIVE in 6 metros + NYC specialty beachhead | Full national + 4 international countries + franchised Hubs |
+
+**Voice example — same brand, expanding footprint:**
+
+- Phase 1 lead hook: "Built by a working New Hampshire general contractor. Launching in Portsmouth, Manchester, and Portland."
+- Phase 2 lead hook: "Built by a working New Hampshire general contractor. Now serving 4 metros across New England."
+- Phase 3 lead hook: "Built by a working New Hampshire general contractor. Serving 6 metros plus a Brooklyn + Manhattan specialty beachhead."
+- Phase 4 lead hook: "Built by a working New Hampshire general contractor. Now serving 6+ United States metros, plus Canada, United Kingdom, and Australia."
+
+The hook compounds. It never resets. A Phase 4 prospect in Toronto reads the same brand story a Phase 1 pro in Portsmouth read — and that continuity is the equity.
+
+**Brand Guardian rules during phase expansion:**
+
+- NEVER spin up sub-brands per phase. No "Sherpa Pros National," "Sherpa Pros International," "Sherpa Pros Franchise." It is one brand.
+- NEVER drop the founder credit when expanding. Phyrom's working-contractor origin is the trust anchor in every phase, including Phase 4 international.
+- NEVER change the color palette to "feel more national" or "feel more international." The colors stay.
+- DO add the new metro / country to existing copy when it goes live. Update the lead hook footprint mention. Do not invent new copy frameworks.
+- DO grandfather Phase 1 founding pros' pricing forever, and tell that story in Phase 2/3/4 marketing as proof the brand keeps its promises.
+
+---
+
 ## 4. Typography System
 
 The typography stack is locked. It ships in the Marp slide theme (`scripts/marp-themes/sherpa-pros-editorial.css`) and the print theme (`scripts/docs-pdf-editorial.css`). Designers do not pick the typefaces — they apply them.

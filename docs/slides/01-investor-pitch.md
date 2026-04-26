@@ -420,6 +420,42 @@ Each lane = a **branded, defensible category.** Old-House Verified is filed for 
 
 <!-- _class: divider -->
 
+## VI.5
+
+# The Four-Phase Growth Arc
+
+---
+
+# Four-phase growth arc.
+
+## **One brand. Four phases. Expanding footprint.**
+
+### Phase 1 — Lean Launch (Months 3 to 6)
+First close signed. Beta cohort converts to founding paying customers (5 percent beta-pricing grandfathered forever). 50+ active pros across the Northern Triangle (Portsmouth + Manchester + Portland). Boston specialty lanes proven (20+ jobs across 5 lanes). 1 commercial Project Manager anchor signed. 500+ homeowner accounts. **Seed teed up.**
+
+### Phase 2 — Scaled Launch + Series A prep (Months 6 to 12)
+Seed closed. 4-metro parallel execution (Portsmouth + Manchester + Portland + Boston). 200+ active pros. **1,000+ jobs and $1M+ Gross Merchandise Value.** 3+ Project Manager anchors. 5,000+ homeowner accounts. Series A conversations open Months 10 to 11. **Take rate stable at 10 percent.**
+
+### Phase 3 — Regional Expansion + Series B prep (Months 12 to 18)
+Series A closed. +2 metros (Providence Months 13 to 14, Hartford Months 15 to 16). **New York City specialty beachhead** (Brooklyn brownstones + Manhattan pre-war, Months 14 to 18). 1 utility white-label live (Eversource Massachusetts/Connecticut or National Grid New York). 3 Project Manager chain anchors. **$5M+ annualized Gross Merchandise Value.** Take rate 12 to 15 percent. Series B prep complete Month 17.
+
+### Phase 4 — National + International + Franchise + Scale (Month 18+)
+Series B closed (target $20M to $40M). **National United States** (Philadelphia + Washington DC + San Francisco + Chicago specialty). **International expansion** Canada Year 1 → United Kingdom Year 2 → Australia Year 3 → European Union pilot Years 4 to 5. **Franchise model live** (Hub #2 to #10 FW Webb co-located, Hub #11+ via franchise). Service Organization Control 2 Type 2 certified by Month 30. Path to Series C Months 27 to 30 or strategic acquisition.
+
+<span class="caption">The brand identity does not change per phase — only the operational footprint expands. The wordmark, voice, color palette, and Phyrom's working-contractor origin story stay the same in every phase.</span>
+
+---
+
+<!-- _class: bignumber -->
+
+# **One brand. Four phases.**
+
+## Phase 1 lean launch · Phase 2 seed scale · Phase 3 Series A regional expansion · Phase 4 Series B national + international + franchise. **The brand stays the same. The footprint compounds.**
+
+---
+
+<!-- _class: divider -->
+
 ## VII.
 
 # Team & Use of Funds
@@ -467,7 +503,7 @@ Founder · NH General Contractor · HJD Builders LLC. **Twelve-plus years** as a
 
 # The Ask.
 
-## Phase 0 exit triggers on **any one** of these.
+## **This is the Phase 0 → Phase 1 transition raise.** Phase 0 exit triggers on **any one** of these.
 
 <div class="ask-grid">
 
@@ -485,6 +521,8 @@ Founder · NH General Contractor · HJD Builders LLC. **Twelve-plus years** as a
 </div>
 
 > The first door that opens is the one we walk through. **Help us pick the door.**
+
+<span class="caption">Forward-looking capital staircase (not part of this ask): Phase 2 Seed $2M to $3M (Months 6 to 12) · Phase 3 Series A $8M to $12M (Months 12 to 18) · Phase 4 Series B $20M to $40M (Month 18+) · then Series C or strategic acquisition (Months 27 to 30).</span>
 
 <div class="meta-strip">
 <span>Phyrom · Founder, Sherpa Pros</span>

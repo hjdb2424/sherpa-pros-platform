@@ -92,6 +92,26 @@ The code-intelligence layer is the moat — not licensable, not easy to clone �
 
 ---
 
+## Slide 4.5 — The four-phase growth arc
+
+**Title:** Phase 1 → Phase 4. One brand, expanding footprint.
+
+**Body:**
+Sherpa Pros is a national + international brand from Day 1, executed across four operational phases. The brand identity does not change per phase — only the footprint, the cohorts served, and the product surfaces live expand.
+
+- **Phase 1 — Lean Launch (Months 3 to 6).** First close signed. Beta cohort converts to founding paying customers (5 percent beta-pricing grandfathered forever). 50+ active pros across the Northern Triangle (Portsmouth + Manchester + Portland). Boston specialty lanes proven (20+ jobs across 5 lanes). 1 commercial Project Manager anchor signed. 500+ homeowner accounts. Seed round teed up.
+- **Phase 2 — Scaled Launch + Series A (Months 6 to 12).** Seed closed. 4-metro parallel execution (Portsmouth + Manchester + Portland + Boston). 200+ active pros. 1,000+ jobs and $1M+ Gross Merchandise Value. 3+ Project Manager anchors. 5,000+ homeowner accounts. Series A conversations open Months 10 to 11. Take rate stable at 10 percent.
+- **Phase 3 — Regional Expansion + Series B prep (Months 12 to 18, hard 6-month bound).** Series A closed. +2 metros (Providence Months 13 to 14, Hartford Months 15 to 16). New York City specialty beachhead (Brooklyn brownstones + Manhattan pre-war, Months 14 to 18). 1 utility white-label live (Eversource Massachusetts/Connecticut or National Grid New York). 3 Project Manager chain anchors. $5M+ annualized Gross Merchandise Value. Take rate 12 to 15 percent. Series B prep complete Month 17.
+- **Phase 4 — National + International + Franchise + Scale (Month 18+).** Series B closed (target $20M to $40M). National United States (Philadelphia + Washington DC + San Francisco + Chicago specialty lanes). International expansion Canada Year 1 → United Kingdom Year 2 → Australia Year 3 → European Union pilot Years 4 to 5. Franchise model live (Hub #2 to #10 FW Webb co-located, Hub #11+ via franchise). Service Organization Control 2 Type 2 certified by Month 30. Path to Series C Months 27 to 30 or strategic acquisition.
+
+**Suggested visual:**
+A 4-column horizontal arc. Each column is one phase, with months on top, the headline milestone in the middle, and the Gross Merchandise Value / pro count / metro count at the bottom. Below the arc: a single line "One brand. Four phases. Expanding footprint."
+
+**Presenter notes:**
+This is the "where are we headed" slide that comes BEFORE the demo so investors hold the long-arc context while watching the platform. The brand point matters: every phase is the same brand, the same Phyrom origin story, the same colors and voice. Operationally we expand; brand-wise we compound. Investors who have been burned by marketplaces that rebranded at Series B (Postmates → Uber Eats absorption, Munchery, Thumbtack rebrand cycles) hear this and relax.
+
+---
+
 ## Slide 5 — Product Demo
 
 **Title:** Live platform. Real jobs flowing today.
@@ -312,6 +332,8 @@ Don't pretend the team is bigger than it is. A solo working-GC founder with a bu
 
 **Title:** Phase 0 exit gate. We trigger Phase 1 the moment any one of three doors opens.
 
+**Where this raise sits in the four-phase arc.** This is the **Phase 0 → Phase 1 transition raise** (the lean-launch round). It funds the first close, the founding paying-customer cohort, and the move from beta into 4-metro New England public launch. The next raise is the Phase 2 Seed (Months 6 to 12), then Series A (Months 10 to 18) for Phase 3 regional expansion, then Series B (Months 17 to 24) for Phase 4 national + international + franchise scale.
+
 **Body:**
 
 **Ask:** **Phase 0 exit triggers on any one of these three** (per spec §4.2 + §12):
@@ -319,13 +341,18 @@ Don't pretend the team is bigger than it is. A solo working-GC founder with a bu
 - $500K+ Wefunder + angel soft-circled, **OR**
 - Tier-1 accelerator acceptance (Y Combinator, Techstars ConstructionTech, Suffolk Technologies, Building Ventures Studio)
 
-**Use of funds — first $500K (Phase 1, months 3–6):**
-- 1 Pro Success Manager (NH/ME) — `~$8K/mo loaded`
+**Use of funds — first $500K (Phase 1, Months 3 to 6 — Lean Launch):**
+- 1 Pro Success Manager (New Hampshire / Maine) — `~$8K/mo loaded`
 - 1 part-time Client Concierge (remote) — `~$3K/mo`
-- Paid acquisition test (Meta + TikTok homeowner-targeted) — $5–8K/mo (per spec §4.3)
-- Google Ads on Boston specialty keywords — $3–5K/mo
+- Paid acquisition test (Meta + TikTok homeowner-targeted) — $5K to $8K/mo (per spec §4.3)
+- Google Ads on Boston specialty keywords — $3K to $5K/mo
 - Platform liability insurance, legal (1099 opinion, OpenSign templates, USPTO Old-House Verified filing) — `~$15K one-time`
-- Phyrom salary (first paid month) + 60-hr/wk cap
+- Phyrom salary (first paid month) + 60-hour/week cap
+
+**Phase-aware capital staircase (forward-looking, not part of this ask):**
+- **Phase 2 Seed (Months 6 to 12)** — $2M to $3M to scale 4-metro footprint, Hub #1 launch, Sherpa Success Manager service rollout, take rate stable at 10 percent.
+- **Phase 3 Series A (Months 12 to 18)** — $8M to $12M to add Providence + Hartford metros, New York City specialty beachhead, utility white-label, Hubs #2 and #3.
+- **Phase 4 Series B (Month 18+)** — $20M to $40M to fund national United States rollout, international Canada Year 1 → United Kingdom Year 2 → Australia Year 3, franchise model, Service Organization Control 2 Type 2 certification.
 
 **90-day milestones (Phase 0 exit-gate proof):**
 1. Stripe Connect live; 10+ active beta pros transacting; first $25K+ GMV

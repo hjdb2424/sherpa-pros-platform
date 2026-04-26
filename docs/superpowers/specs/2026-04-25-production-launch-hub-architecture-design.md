@@ -477,12 +477,45 @@ Admin:
 - App reads QR via phone camera (no special hardware needed)
 - Validation: QR data matched against pick list in real-time
 
-### RFID Access (Phase 1 — Simple)
-- RFID reader at warehouse door (hardware: ~$200 USB reader)
-- Each pro gets an RFID badge/card
-- Reader connects to a tablet/kiosk running the admin app
-- Kiosk calls `/api/hub/access/entry` on badge tap
-- Future: automated door lock integration
+### Site Access — Ubiquiti UniFi Access (Phase 1)
+
+Hardware stack:
+- **UniFi Access Hub** — controller for door locks + readers
+- **UniFi Access Reader Pro** — NFC/RFID at warehouse entry (supports badges + phone tap)
+- **UniFi Access Lock** — electric door lock (auto-unlock on valid badge)
+- **UniFi Protect cameras** — entry/exit + warehouse floor coverage
+- **UniFi Network** — Dream Machine Pro for networking, PoE switches for cameras/readers
+
+Integration approach:
+- UniFi Access has a **local API** (REST) for door events, user management, access policies
+- `/api/hub/access/unifi-webhook` — receives door open/close events from UniFi Access Hub
+- When pro badges in: UniFi sends event → our webhook logs entry → door unlocks automatically
+- When pro exits: same flow in reverse
+- **Access policies:** set per-pro schedules (e.g., warehouse open 6am-6pm, no weekend access for Flex pros)
+- Pro badges: NFC cards provisioned through UniFi Access admin, linked to pro's user_id in our DB
+- Phone tap: UniFi Access Reader Pro supports NFC from iPhone/Android — pros can use phone instead of badge
+
+Camera integration (Protect API):
+- Entry/exit cameras capture face + timestamp on every door event
+- Tied to access_log entry for visual verification
+- Floor cameras: manual review now, AI object detection later (count items on shelves)
+- Protect API provides snapshot URLs that we store as references in hub_access_log
+
+Network segmentation:
+- VLAN 1: Hub operations (POS, tablets, kiosks)
+- VLAN 2: IoT devices (cameras, readers, sensors)
+- VLAN 3: Guest Wi-Fi (pros in warehouse)
+- Firewall rules: IoT VLAN can only talk to UniFi controller + our API webhook endpoint
+
+Estimated hardware cost (1 warehouse):
+- Dream Machine Pro: $379
+- Access Hub: $99
+- Access Reader Pro x2 (entry + exit): $598
+- Access Lock x2: $598
+- Protect G5 Bullet cameras x4: $796
+- PoE switch (USW-Lite-16-PoE): $199
+- NFC badges (50 pack): ~$50
+- **Total: ~$2,700**
 
 ### Camera/AI Upgrade Path (Phase 2 — Later)
 - Cameras at entry/exit for visual verification

@@ -12,6 +12,19 @@
 
 ---
 
+## Four-phase growth arc (the long-arc context)
+
+| Phase | Months | Headline | Funding | Footprint |
+|---|---|---|---|---|
+| **Phase 1 — Lean Launch** | 3 to 6 | First close + 4-metro New England public launch + founding paying customers | This raise (Phase 0 → Phase 1 trigger: $250K non-dilutive OR $500K Wefunder + angel OR tier-1 accelerator seat) | Portsmouth + Manchester + Portland + Boston specialty |
+| **Phase 2 — Scaled Launch** | 6 to 12 | Seed closed, 200+ pros, 1,000+ jobs, $1M+ Gross Merchandise Value, Hub #1 launches, take rate stable at 10 percent | Seed $2M to $3M | 4 metros, deepening density |
+| **Phase 3 — Regional Expansion** | 12 to 18 | Series A closed, +Providence + Hartford, New York City specialty beachhead, utility white-label, 3 Project Manager chains, $5M+ annualized Gross Merchandise Value | Series A $8M to $12M | 6 metros + NYC specialty |
+| **Phase 4 — National + International + Franchise** | 18+ | Series B closed, national United States (Philadelphia + Washington DC + San Francisco + Chicago specialty), international Canada → United Kingdom → Australia → European Union pilot, franchise model live, Service Organization Control 2 Type 2 certified | Series B $20M to $40M, then Series C or strategic acquisition Months 27 to 30 | National United States + 4 international countries |
+
+One brand. Four phases. Expanding footprint. The brand identity does not change per phase — only the operational footprint, the cohorts served, and the product surfaces live expand.
+
+---
+
 ## Pillar 1 — The Problem
 
 Lead-gen platforms waste contractors' money and fail homeowners on licensed work. Angi shows 41% service-quality inconsistency and is BBB un-rated. Thumbtack has reported deposit-theft losses of $300–$1,600 per incident. TaskRabbit charges 35% in fees and doesn't cover licensed trades. Handy has no code intelligence at all. (per spec §2.2)

@@ -327,6 +327,37 @@ Multi-trade coordination is the layer enterprise general contractors pay $1,000+
 
 ---
 
+## The long-arc roadmap (added 2026-04-25)
+
+### Q34. What's the multi-year roadmap for Sherpa Pros?
+
+We think about Sherpa Pros in four phases. Each phase has a clear goal, a clear funding round attached, and a clear set of metrics that have to land before we move to the next.
+
+**Phase 1 — Lean Launch (Months 3 to 6 from first close).** This is what your Wefunder investment funds first. We turn the live beta into a public launch across four New England metros: Portsmouth New Hampshire, Manchester New Hampshire, Portland Maine, and Boston (specialty work only at first). The beta contractors who joined early keep their 5 percent take rate forever. Goal: 50+ working pros, 1 commercial property-management anchor, 500+ homeowners signed up. End of Phase 1, we are positioned to raise a Seed round.
+
+**Phase 2 — Scaled Launch (Months 6 to 12).** Seed round closes (target $2M to $3M). We deepen all four metros instead of adding new ones. Goal: 200+ active pros, 1,000+ jobs, $1M+ in total job value, 3+ property-management anchors, 5,000+ homeowners. The first physical Sherpa Hub opens. Take rate stabilizes at 10 percent. End of Phase 2, conversations open with venture capital firms about a Series A.
+
+**Phase 3 — Regional Expansion (Months 12 to 18).** Series A closes (target $8M to $12M). We add Providence Rhode Island and Hartford Connecticut. We open a New York City specialty beachhead — Brooklyn brownstones and Manhattan pre-war work. We sign our first utility partnership (Eversource Massachusetts/Connecticut or National Grid New York). Goal: 6 active metros, $5M+ in annualized job value, take rate climbs to 12 to 15 percent. By Month 17, we are preparing the Series B.
+
+**Phase 4 — National + International + Franchise + Scale (Month 18 and beyond).** Series B closes (target $20M to $40M). National United States rollout: Philadelphia, Washington DC, San Francisco, Chicago — specialty lanes first. International expansion follows on a one-country-per-year staircase (see Q35). The Sherpa Hub model goes franchise from Hub #11 onwards. The platform earns Service Organization Control 2 Type 2 security certification by Month 30. Around Months 27 to 30, the company is positioned for either a Series C or a strategic acquisition.
+
+**One brand. Four phases. Expanding footprint.** The brand identity does not change as we expand — the wordmark stays the same, the founder origin story stays the same, the voice stays the same. What expands is the operational footprint, the cohorts of customers we serve, and the product surfaces live. A homeowner in Toronto in Phase 4 sees the same brand a homeowner in Portsmouth saw in Phase 1.
+
+The standard early-stage investment risks still apply (see Section 11 of the page-content). The platform might not get past Phase 1. We are not promising any of these phases will close on schedule. We are showing you the road we are driving.
+
+### Q35. When does international expansion begin?
+
+International expansion begins in Phase 4 — Month 18 and beyond, after the Series B closes. We expand on a one-country-per-year staircase to keep operational risk manageable.
+
+- **Year 1 of Phase 4 — Canada.** Closest regulatory and cultural fit to the United States. The Canadian licensed-trades market has the same shortage dynamics (aging workforce, lead-gen platforms underserve, code complexity is high). We expect Toronto + Vancouver + Calgary as the first three Canadian metros, mirroring the New England Northern Triangle pattern.
+- **Year 2 of Phase 4 — United Kingdom.** English-speaking, mature trade-licensing regime (Gas Safe Register, National Inspection Council for Electrical Installation Contracting (NICEIC)), and a comparable home-services market structure. London + Manchester + Edinburgh likely as the first three metros.
+- **Year 3 of Phase 4 — Australia.** English-speaking, mature trade-licensing regime, and a market that has historically been underserved by United States home-services platforms. Sydney + Melbourne + Brisbane likely.
+- **Years 4 to 5 of Phase 4 — European Union pilot.** One country first (likely Germany or the Netherlands), with the option to expand based on what we learn. The European Union introduces multi-language and General Data Protection Regulation complexity, so we wait until the international playbook is proven in Canada / United Kingdom / Australia.
+
+International expansion is a Phase 4 commitment, not a Phase 1 or Phase 2 promise. We are sharing the staircase so investors understand the long-term opportunity, not so anyone treats it as a near-term milestone.
+
+---
+
 ## Where to learn more
 
 - **Live platform:** [www.thesherpapros.com](https://www.thesherpapros.com)

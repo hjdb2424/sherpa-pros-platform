@@ -37,6 +37,8 @@ For your portfolio that runs about ${{monthly_price}} a month. Most operators we
 
 One more thing while I have you. Sherpa Dispatch handles multi-trade make-ready turnover (paint + carpet + appliance + cleaning) as one coordinated job, not 4 separate vendor calls — so a unit turn between leases is one work order on your end, not four.
 
+**One thing on the long arc.** I am being straight with you about where this is going. We are starting in New England — Phase 1 (four metros: Portsmouth NH, Manchester NH, Portland ME, Boston specialty) and Phase 2 (those same four metros, deepened, with the first physical Sherpa Hub opening in Year 1). Phase 3 (Months 12 to 18) adds Providence and Hartford and a New York City specialty beachhead. Phase 4 (Month 18+) goes national United States — Philadelphia, Washington DC, San Francisco, Chicago specialty — and then international Canada (Year 1) → United Kingdom (Year 2) → Australia (Year 3) → European Union pilot (Years 4 to 5). For a property manager portfolio that spans multiple states or expands into new metros over the next three to five years, this matters: as a founding Project Manager partner, you get founding-tier pricing on every metro we expand into for life. The $4-per-unit price you sign at today is the $4-per-unit price you keep when we cover your Philadelphia portfolio in Phase 4 and your Toronto portfolio after that. Brand stays the same. Wordmark stays the same. The same Sherpa Pros that handles your Boston make-readies today handles your Toronto make-readies in Phase 4.
+
 Worth a 20-minute look? Here is my calendar.
 
 [Book 20 minutes with me]({{cal_url}})

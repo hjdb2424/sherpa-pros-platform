@@ -37,6 +37,8 @@ One more thing on the rate. We just turned on Sherpa Score, a 0-to-100 quality g
 
 **Don't have an LLC yet? Sherpa Flex is for you.** Same platform, same job quality, $1M per-project liability insurance included in the platform fee. 18 percent take rate, jobs under $5,000, no LLC required. Start earning while you decide if forming an LLC is right for you. When the income justifies it, form the LLC, get your own insurance, and drop to standard 12 percent. Climb Sherpa Score to Gold and you are at 8 percent. One platform, three doors.
 
+**One more thing on the long arc.** I am being straight with you about where this is going. Sherpa Pros is in Phase 1 right now — Lean Launch, four New England metros (Portsmouth, Manchester, Portland, plus Boston specialty), about 50 active pros at the end of Phase 1. Phase 2 (Months 6 to 12) opens Hub #1 and scales to 200+ pros and $1M+ in transacted job value across the same four metros. Phase 3 (Months 12 to 18) adds Providence, Hartford, and a New York City specialty beachhead. Phase 4 (Month 18+) goes national United States — Philadelphia, Washington DC, San Francisco, Chicago specialty — and then international one country per year (Canada Year 1, United Kingdom Year 2, Australia Year 3, European Union pilot Years 4 to 5). The pros joining now in Phase 1 are founding members of a platform that will be national by Phase 3 and international by Phase 4. Founding pricing is locked forever — the 5 percent rate you sign at today is the 5 percent rate you keep when the platform serves Toronto and London, too.
+
 If you want one, here is the apply link. Five minutes. I read every application myself.
 
 [Apply for the beta]({{apply_url}})

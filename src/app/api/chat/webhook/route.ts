@@ -1,35 +1,37 @@
 import { NextResponse } from 'next/server';
+import Twilio from 'twilio';
 
 /**
  * POST /api/chat/webhook
- * Twilio webhook for incoming conversation events.
+ * Twilio webhook for incoming Conversations events.
  *
- * Twilio sends POST requests here when:
- * - A new message is added to a conversation
+ * Twilio posts here when:
+ * - A new message is added (onMessageAdded)
  * - A participant joins/leaves
  * - A conversation state changes
  *
- * In production, validate the X-Twilio-Signature header to ensure
- * the request actually came from Twilio.
+ * Signature is validated using Twilio.validateRequest. The shared secret
+ * is TWILIO_AUTH_TOKEN. Bad signatures get 403.
  */
 export async function POST(request: Request) {
-  // TODO: Validate Twilio signature
-  // const signature = request.headers.get('x-twilio-signature');
-  // const url = request.url;
-  // const params = await request.formData();
-  // if (!twilio.validateRequest(authToken, signature, url, params)) {
-  //   return NextResponse.json({ error: 'Invalid signature' }, { status: 403 });
-  // }
+  const authToken = process.env.TWILIO_AUTH_TOKEN;
+  const signature = request.headers.get('x-twilio-signature');
 
+  // Twilio sends form-encoded by default; capture raw body once.
+  const contentType = request.headers.get('content-type') ?? '';
   let body: Record<string, unknown>;
+  let paramsForSig: Record<string, string> = {};
+
   try {
-    // Twilio sends form-encoded by default, but can be configured for JSON
-    const contentType = request.headers.get('content-type') ?? '';
     if (contentType.includes('application/json')) {
       body = await request.json();
     } else {
       const formData = await request.formData();
-      body = Object.fromEntries(formData.entries());
+      const entries = Object.fromEntries(formData.entries());
+      body = entries;
+      paramsForSig = Object.fromEntries(
+        Object.entries(entries).map(([k, v]) => [k, String(v)]),
+      );
     }
   } catch {
     return NextResponse.json(
@@ -38,25 +40,37 @@ export async function POST(request: Request) {
     );
   }
 
+  // Validate signature when token + signature are present.
+  // In dev with no TWILIO_AUTH_TOKEN we skip (mock mode).
+  if (authToken && signature) {
+    const valid = Twilio.validateRequest(
+      authToken,
+      signature,
+      request.url,
+      paramsForSig,
+    );
+    if (!valid) {
+      return NextResponse.json({ error: 'Invalid signature' }, { status: 403 });
+    }
+  } else if (authToken && !signature) {
+    return NextResponse.json({ error: 'Missing signature' }, { status: 403 });
+  }
+
   const eventType = body['EventType'] as string | undefined;
 
   switch (eventType) {
     case 'onMessageAdded': {
-      // TODO: Persist message to database
-      // TODO: Send push notification to the other participant
-      // TODO: Update unread counts
       const conversationSid = body['ConversationSid'] as string;
       const author = body['Author'] as string;
       const messageBody = body['Body'] as string;
-
       console.log(
         `[webhook] New message in ${conversationSid} from ${author}: ${messageBody?.substring(0, 50)}`,
       );
+      // Persistence + push notifications land in followup plan (DB migration).
       break;
     }
 
     case 'onConversationStateUpdated': {
-      // TODO: Handle conversation close/archive
       const conversationSid = body['ConversationSid'] as string;
       const state = body['StateTo'] as string;
       console.log(
@@ -79,6 +93,5 @@ export async function POST(request: Request) {
       console.log(`[webhook] Unhandled event: ${eventType}`);
   }
 
-  // Twilio expects a 200 response to acknowledge the webhook
   return NextResponse.json({ received: true });
 }

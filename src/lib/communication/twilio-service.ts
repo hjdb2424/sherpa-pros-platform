@@ -11,6 +11,7 @@
  *   TWILIO_MESSAGING_SERVICE_SID
  */
 
+import Twilio from 'twilio';
 import type {
   CommunicationService,
   Conversation,
@@ -18,10 +19,32 @@ import type {
 } from './types';
 
 // ---------------------------------------------------------------------------
+// Twilio response shapes (only the fields we map onto local types)
+// ---------------------------------------------------------------------------
+
+interface TwilioMessageShape {
+  sid: string;
+  body: string | null;
+  author: string | null;
+  dateCreated: Date | null;
+}
+
+interface TwilioMessageWithIndex {
+  sid: string;
+  index: number;
+}
+
+// ---------------------------------------------------------------------------
 // Twilio client (lazy-initialized)
 // ---------------------------------------------------------------------------
 
-function getTwilioClient() {
+type TwilioClient = ReturnType<typeof Twilio>;
+
+let cachedClient: TwilioClient | null = null;
+
+function getTwilioClient(): TwilioClient {
+  if (cachedClient) return cachedClient;
+
   const accountSid = process.env.TWILIO_ACCOUNT_SID;
   const authToken = process.env.TWILIO_AUTH_TOKEN;
 
@@ -31,10 +54,8 @@ function getTwilioClient() {
     );
   }
 
-  // TODO: Replace with actual Twilio SDK import once `twilio` package is installed
-  // import Twilio from 'twilio';
-  // return Twilio(accountSid, authToken);
-  return { accountSid, authToken };
+  cachedClient = Twilio(accountSid, authToken);
+  return cachedClient;
 }
 
 // ---------------------------------------------------------------------------
@@ -59,36 +80,37 @@ const conversationCache = new Map<string, Conversation>();
 
 export const twilioService: CommunicationService = {
   async createConversation(jobId, proId, clientId) {
-    const _client = getTwilioClient();
+    const client = getTwilioClient();
     const id = generateId('conv');
 
-    // TODO: Actual Twilio Conversations API call
-    // const twilioConv = await client.conversations.v1.conversations.create({
-    //   friendlyName: `Job ${jobId} — Pro ↔ Client`,
-    //   uniqueName: id,
-    //   attributes: JSON.stringify({ jobId, proId, clientId }),
-    // });
-    //
-    // // Add Pro as participant with masked identity
-    // await twilioConv.participants().create({
-    //   identity: proId,
-    //   attributes: JSON.stringify({ role: 'pro', displayName: 'Pro' }),
-    // });
-    //
-    // // Add Client as participant with masked identity
-    // await twilioConv.participants().create({
-    //   identity: clientId,
-    //   attributes: JSON.stringify({ role: 'client', displayName: 'Client' }),
-    // });
+    const twilioConv = await client.conversations.v1.conversations.create({
+      friendlyName: `Job ${jobId} — Pro ↔ Client`,
+      uniqueName: id,
+      attributes: JSON.stringify({ jobId, proId, clientId }),
+    });
 
-    const twilioSid = `CH_placeholder_${id}`;
+    // Add Pro as participant with masked identity
+    await client.conversations.v1
+      .conversations(twilioConv.sid)
+      .participants.create({
+        identity: proId,
+        attributes: JSON.stringify({ role: 'pro', displayName: 'Pro' }),
+      });
+
+    // Add Client as participant with masked identity
+    await client.conversations.v1
+      .conversations(twilioConv.sid)
+      .participants.create({
+        identity: clientId,
+        attributes: JSON.stringify({ role: 'client', displayName: 'Client' }),
+      });
 
     const conversation: Conversation = {
       id,
       jobId,
       proUserId: proId,
       clientUserId: clientId,
-      twilioSid,
+      twilioSid: twilioConv.sid,
       status: 'active',
       createdAt: new Date(),
       closedAt: null,
@@ -99,7 +121,6 @@ export const twilioService: CommunicationService = {
   },
 
   async sendMessage(conversationId, senderId, body) {
-    const _client = getTwilioClient();
     const conversation = conversationCache.get(conversationId);
     if (!conversation) {
       throw new Error(`Conversation not found: ${conversationId}`);
@@ -107,21 +128,24 @@ export const twilioService: CommunicationService = {
     if (conversation.status !== 'active') {
       throw new Error(`Conversation is ${conversation.status}`);
     }
+    if (!conversation.twilioSid) {
+      throw new Error(`Conversation ${conversationId} has no Twilio SID`);
+    }
 
-    // TODO: Actual Twilio API call
-    // const twilioMsg = await client.conversations.v1
-    //   .conversations(conversation.twilioSid!)
-    //   .messages.create({
-    //     author: senderId,
-    //     body,
-    //   });
+    const client = getTwilioClient();
+    const twilioMsg = await client.conversations.v1
+      .conversations(conversation.twilioSid)
+      .messages.create({
+        author: senderId,
+        body,
+      });
 
     const message: Message = {
-      id: generateId('msg'),
+      id: twilioMsg.sid,
       conversationId,
-      senderId,
-      body,
-      createdAt: new Date(),
+      senderId: twilioMsg.author ?? senderId,
+      body: twilioMsg.body ?? body,
+      createdAt: twilioMsg.dateCreated ?? new Date(),
       readAt: null,
     };
 
@@ -129,28 +153,29 @@ export const twilioService: CommunicationService = {
   },
 
   async getMessages(conversationId, limit = 50, _before) {
-    const _client = getTwilioClient();
     const conversation = conversationCache.get(conversationId);
     if (!conversation) {
       throw new Error(`Conversation not found: ${conversationId}`);
     }
+    if (!conversation.twilioSid) {
+      return [];
+    }
 
-    // TODO: Actual Twilio API call with pagination
-    // const result = await client.conversations.v1
-    //   .conversations(conversation.twilioSid!)
-    //   .messages.list({ limit, order: 'desc' });
-    //
-    // return result.map(m => ({
-    //   id: m.sid,
-    //   conversationId,
-    //   senderId: m.author ?? 'unknown',
-    //   body: m.body ?? '',
-    //   createdAt: m.dateCreated ?? new Date(),
-    //   readAt: null,
-    // }));
+    const client = getTwilioClient();
+    // TODO: pagination — Twilio requires page() + pageBefore for cursor access;
+    // the _before arg is reserved for that future wiring.
+    const result = await client.conversations.v1
+      .conversations(conversation.twilioSid)
+      .messages.list({ limit, order: 'desc' });
 
-    void limit;
-    return [];
+    return result.map((m: TwilioMessageShape) => ({
+      id: m.sid,
+      conversationId,
+      senderId: m.author ?? 'unknown',
+      body: m.body ?? '',
+      createdAt: m.dateCreated ?? new Date(),
+      readAt: null,
+    }));
   },
 
   async getConversationsForUser(userId) {
@@ -167,16 +192,17 @@ export const twilioService: CommunicationService = {
   },
 
   async closeConversation(conversationId) {
-    const _client = getTwilioClient();
     const conversation = conversationCache.get(conversationId);
     if (!conversation) {
       throw new Error(`Conversation not found: ${conversationId}`);
     }
 
-    // TODO: Close the Twilio Conversation
-    // await client.conversations.v1
-    //   .conversations(conversation.twilioSid!)
-    //   .update({ state: 'closed' });
+    if (conversation.twilioSid) {
+      const client = getTwilioClient();
+      await client.conversations.v1
+        .conversations(conversation.twilioSid)
+        .update({ state: 'closed' });
+    }
 
     conversation.status = 'closed';
     conversation.closedAt = new Date();
@@ -202,17 +228,26 @@ export const twilioService: CommunicationService = {
     return { scheduledAt };
   },
 
-  async markRead(conversationId, _userId) {
-    const _client = getTwilioClient();
+  async markRead(conversationId, userId) {
     const conversation = conversationCache.get(conversationId);
     if (!conversation) {
       throw new Error(`Conversation not found: ${conversationId}`);
     }
+    if (!conversation.twilioSid) {
+      return;
+    }
 
-    // TODO: Update last read message index in Twilio
-    // await client.conversations.v1
-    //   .conversations(conversation.twilioSid!)
-    //   .participants(userId)
-    //   .update({ lastReadMessageIndex: latestIndex });
+    const client = getTwilioClient();
+    const messages = await client.conversations.v1
+      .conversations(conversation.twilioSid)
+      .messages.list({ limit: 1, order: 'desc' });
+
+    if (messages.length === 0) return;
+
+    const latestIndex = (messages[0] as TwilioMessageWithIndex).index;
+    await client.conversations.v1
+      .conversations(conversation.twilioSid)
+      .participants(userId)
+      .update({ lastReadMessageIndex: latestIndex });
   },
 };

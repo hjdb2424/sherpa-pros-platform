@@ -29,6 +29,11 @@ interface TwilioMessageShape {
   dateCreated: Date | null;
 }
 
+interface TwilioMessageWithIndex {
+  sid: string;
+  index: number;
+}
+
 // ---------------------------------------------------------------------------
 // Twilio client (lazy-initialized)
 // ---------------------------------------------------------------------------
@@ -187,16 +192,17 @@ export const twilioService: CommunicationService = {
   },
 
   async closeConversation(conversationId) {
-    const _client = getTwilioClient();
     const conversation = conversationCache.get(conversationId);
     if (!conversation) {
       throw new Error(`Conversation not found: ${conversationId}`);
     }
 
-    // TODO: Close the Twilio Conversation
-    // await client.conversations.v1
-    //   .conversations(conversation.twilioSid!)
-    //   .update({ state: 'closed' });
+    if (conversation.twilioSid) {
+      const client = getTwilioClient();
+      await client.conversations.v1
+        .conversations(conversation.twilioSid)
+        .update({ state: 'closed' });
+    }
 
     conversation.status = 'closed';
     conversation.closedAt = new Date();
@@ -222,17 +228,26 @@ export const twilioService: CommunicationService = {
     return { scheduledAt };
   },
 
-  async markRead(conversationId, _userId) {
-    const _client = getTwilioClient();
+  async markRead(conversationId, userId) {
     const conversation = conversationCache.get(conversationId);
     if (!conversation) {
       throw new Error(`Conversation not found: ${conversationId}`);
     }
+    if (!conversation.twilioSid) {
+      return;
+    }
 
-    // TODO: Update last read message index in Twilio
-    // await client.conversations.v1
-    //   .conversations(conversation.twilioSid!)
-    //   .participants(userId)
-    //   .update({ lastReadMessageIndex: latestIndex });
+    const client = getTwilioClient();
+    const messages = await client.conversations.v1
+      .conversations(conversation.twilioSid)
+      .messages.list({ limit: 1, order: 'desc' });
+
+    if (messages.length === 0) return;
+
+    const latestIndex = (messages[0] as TwilioMessageWithIndex).index;
+    await client.conversations.v1
+      .conversations(conversation.twilioSid)
+      .participants(userId)
+      .update({ lastReadMessageIndex: latestIndex });
   },
 };

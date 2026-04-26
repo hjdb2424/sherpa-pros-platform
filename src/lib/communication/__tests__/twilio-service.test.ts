@@ -19,17 +19,23 @@ vi.mock('twilio', () => {
   const conversationUpdate = vi.fn().mockResolvedValue({ sid: 'CH_mock_sid' });
 
   // Path accessor: client.conversations.v1.conversations(sid).<resource>
-  const conversationsAccessor = (sid: string) => ({
-    sid,
-    messages: { create: messagesCreate, list: messagesList },
-    participants: {
-      create: participantsCreate,
-    },
-    participantsBy: (_identity: string) => ({
+  const conversationsAccessor = (sid: string) => {
+    // participants(identity) returns a context with .update;
+    // participants.create(...) creates a new participant.
+    // The real Twilio SDK overloads these on the same accessor.
+    const participantsAccessor = (_identity: string) => ({
       update: participantUpdate,
-    }),
-    update: conversationUpdate,
-  });
+    });
+    (participantsAccessor as unknown as { create: typeof participantsCreate }).create =
+      participantsCreate;
+
+    return {
+      sid,
+      messages: { create: messagesCreate, list: messagesList },
+      participants: participantsAccessor,
+      update: conversationUpdate,
+    };
+  };
   // The .create method on the accessor is reached as conversations.create(...)
   // (no SID arg) — a separate pattern from conversations(sid)
   (conversationsAccessor as unknown as { create: typeof conversationsCreate }).create =

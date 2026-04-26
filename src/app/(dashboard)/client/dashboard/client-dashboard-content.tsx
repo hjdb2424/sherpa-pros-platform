@@ -40,6 +40,18 @@ const SERVICE_CATEGORIES = [
   { label: 'Emergency', icon: '🚨' },
 ];
 
+const COMMERCIAL_CATEGORIES = [
+  { label: 'Plumbing', icon: '🔧' },
+  { label: 'Electrical', icon: '⚡' },
+  { label: 'HVAC', icon: '❄️' },
+  { label: 'Painting', icon: '🎨' },
+  { label: 'Flooring', icon: '🪵' },
+  { label: 'Smart Home', icon: '📱' },
+  { label: 'Cleaning', icon: '🧹' },
+];
+
+type ClientSubtype = 'residential' | 'residential_pro' | 'commercial';
+
 export function ClientDashboardContent() {
   const router = useRouter();
   const session = getCurrentSession('client');
@@ -47,6 +59,17 @@ export function ClientDashboardContent() {
   const [hasOnboarded, setHasOnboarded] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [hasPostedJob, setHasPostedJob] = useState(true); // default true to avoid flash
+  const [clientSubtype, setClientSubtype] = useState<ClientSubtype>('residential');
+
+  // Read subtype from localStorage
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const email = localStorage.getItem('sherpa-test-email') || '';
+    const stored = localStorage.getItem(`sherpa:${email}:subtype`);
+    if (stored === 'residential_pro' || stored === 'commercial') {
+      setClientSubtype(stored);
+    }
+  }, []);
 
   // Check user-scoped storage for first-job-posted flag (demo/mock mode)
   useEffect(() => {
@@ -191,11 +214,87 @@ export function ClientDashboardContent() {
 
       {/* Welcome */}
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-zinc-900">Welcome back, {session.name}</h1>
+        <h1 className="text-2xl font-bold text-zinc-900">
+          {clientSubtype === 'commercial'
+            ? `Welcome back, ${session.name}`
+            : clientSubtype === 'residential_pro'
+              ? `Welcome back, ${session.name}. Managing 3 properties.`
+              : `Welcome back, ${session.name}`}
+        </h1>
         <p className="mt-1 text-sm text-zinc-500">
-          Here is what is happening with your projects.
+          {clientSubtype === 'commercial'
+            ? 'Your business maintenance overview.'
+            : clientSubtype === 'residential_pro'
+              ? 'Here is what is happening across your properties.'
+              : 'Here is what is happening with your projects.'}
         </p>
       </div>
+
+      {/* Residential Pro: Property Portfolio card */}
+      {clientSubtype === 'residential_pro' && (
+        <div className="mb-8 rounded-xl border-2 border-[#00a9e0]/20 bg-gradient-to-r from-sky-50 to-white p-5 shadow-sm dark:from-sky-950/20 dark:to-zinc-900 dark:border-[#00a9e0]/30">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-lg font-bold text-zinc-900 dark:text-zinc-100">Property Portfolio</h2>
+              <div className="mt-2 flex items-center gap-6">
+                <div>
+                  <p className="text-2xl font-bold text-[#00a9e0]">3</p>
+                  <p className="text-xs font-medium text-zinc-500">Properties</p>
+                </div>
+                <div className="h-8 w-px bg-zinc-200 dark:bg-zinc-700" />
+                <div>
+                  <p className="text-2xl font-bold text-zinc-900 dark:text-white">2</p>
+                  <p className="text-xs font-medium text-zinc-500">Active Jobs across properties</p>
+                </div>
+              </div>
+            </div>
+            <div className="flex gap-2">
+              <Link
+                href="/client/post-job"
+                className="rounded-full bg-[#00a9e0] px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-[#00a9e0]/25 transition-all hover:bg-[#0090c0]"
+              >
+                Post Job for Property
+              </Link>
+              <Link
+                href="/client/my-jobs"
+                className="rounded-full border border-zinc-200 bg-white px-4 py-2 text-sm font-semibold text-zinc-700 transition-colors hover:bg-zinc-50 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-300"
+              >
+                View All Properties
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Commercial: Business Maintenance header */}
+      {clientSubtype === 'commercial' && (
+        <div className="mb-8 rounded-xl border border-zinc-200 bg-white p-5 dark:border-zinc-700 dark:bg-zinc-900">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-lg font-bold text-zinc-900 dark:text-zinc-100">Business Maintenance</h2>
+              <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">Keep your facility running smoothly with on-demand maintenance pros.</p>
+            </div>
+            <Link
+              href="/client/post-job"
+              className="rounded-full bg-[#00a9e0] px-5 py-2 text-sm font-semibold text-white shadow-lg shadow-[#00a9e0]/25 transition-all hover:bg-[#0090c0]"
+            >
+              Schedule Regular Maintenance
+            </Link>
+          </div>
+          <div className="mt-4 flex flex-wrap gap-2">
+            {COMMERCIAL_CATEGORIES.map((cat) => (
+              <Link
+                key={cat.label}
+                href={`/client/post-job?category=${encodeURIComponent(cat.label)}`}
+                className="inline-flex items-center gap-1.5 rounded-full border border-zinc-200 bg-zinc-50 px-3 py-1.5 text-xs font-medium text-zinc-700 transition-all hover:border-[#00a9e0]/40 hover:bg-sky-50 hover:text-[#00a9e0] dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
+              >
+                <span>{cat.icon}</span>
+                {cat.label}
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Stats row */}
       <div className="mb-8 grid gap-4 sm:grid-cols-3">

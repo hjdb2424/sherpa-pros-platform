@@ -12,6 +12,7 @@ const portfolioStats = [
   { label: 'Total Units', value: '123', icon: KeyIcon },
   { label: 'Open Work Orders', value: '12', icon: ClipboardIcon, accent: true },
   { label: 'MTD Spend', value: '$14,200', icon: DollarIcon },
+  { label: 'Verified Vendors', value: '12', icon: ShieldIcon },
 ];
 
 const properties = [
@@ -181,6 +182,14 @@ function DollarIcon({ className }: { className?: string }) {
   );
 }
 
+function ShieldIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden="true">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" />
+    </svg>
+  );
+}
+
 /* ------------------------------------------------------------------ */
 /* Priority Badge                                                      */
 /* ------------------------------------------------------------------ */
@@ -255,7 +264,7 @@ export default function PMDashboardPage() {
       {/* ---------------------------------------------------------------- */}
       {/* Top Stats Row                                                     */}
       {/* ---------------------------------------------------------------- */}
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
         {portfolioStats.map((stat) => (
           <div
             key={stat.label}

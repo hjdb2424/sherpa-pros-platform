@@ -3,6 +3,7 @@
 import { useState, useMemo } from 'react';
 import { type Pro } from '@/lib/mock-data/client-data';
 import { SEEDED_PROS, toClientPro } from '@/lib/mock-data/seeded-pros';
+import { SKILL_CATEGORIES } from '@/lib/skills-catalog';
 import { ProCard } from '@/components/client/ProCard';
 import EmptyState from '@/components/EmptyState';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
@@ -16,6 +17,15 @@ import {
   DEFAULT_CENTER,
 } from '@/lib/mock-data/map-data';
 import { getProScoreNumber } from '@/lib/incentives/mock-metrics';
+
+// Skill category filter options (top-level categories with skills)
+const SKILL_FILTER_OPTIONS = SKILL_CATEGORIES
+  .filter((cat) => cat.skills.length > 0)
+  .map((cat) => ({
+    key: cat.key,
+    label: cat.label,
+    skillKeys: cat.skills.map((s) => s.key),
+  }));
 
 // Convert all 70 seeded pros to the client-data Pro shape
 const ALL_PROS: Pro[] = SEEDED_PROS.map(toClientPro);
@@ -33,6 +43,7 @@ export function FindProsContent() {
   const [currentZoom, setCurrentZoom] = useState(12);
   const [selectedProId, setSelectedProId] = useState<string | null>(null);
   const [sortBy, setSortBy] = useState<SortOption>('rating');
+  const [skillCategoryFilter, setSkillCategoryFilter] = useState<string | null>(null);
 
   const filtered = useMemo(() => {
     let pros = [...ALL_PROS];
@@ -58,6 +69,16 @@ export function FindProsContent() {
       pros = pros.filter((p) => p.available);
     }
 
+    // Skill category filter
+    if (skillCategoryFilter) {
+      const cat = SKILL_FILTER_OPTIONS.find((c) => c.key === skillCategoryFilter);
+      if (cat) {
+        pros = pros.filter((p) =>
+          p.skill_tags?.some((tag) => cat.skillKeys.includes(tag))
+        );
+      }
+    }
+
     // Sort
     if (sortBy === 'sherpa-score') {
       pros.sort((a, b) => getProScoreNumber(b.id) - getProScoreNumber(a.id));
@@ -68,7 +89,7 @@ export function FindProsContent() {
     }
 
     return pros;
-  }, [search, badgeFilter, minRating, availableOnly, sortBy]);
+  }, [search, badgeFilter, minRating, availableOnly, sortBy, skillCategoryFilter]);
 
   const tradeOptions = useMemo(() => {
     const trades = new Set<string>();
@@ -192,6 +213,24 @@ export function FindProsContent() {
               }`}
             >
               {trade}
+            </button>
+          ))}
+        </div>
+
+        {/* Skill category filters */}
+        <div className="flex gap-2 overflow-x-auto pb-1">
+          <span className="shrink-0 self-center text-[10px] font-semibold uppercase tracking-wider text-zinc-400">Skills:</span>
+          {SKILL_FILTER_OPTIONS.map((cat) => (
+            <button
+              key={cat.key}
+              onClick={() => setSkillCategoryFilter(skillCategoryFilter === cat.key ? null : cat.key)}
+              className={`shrink-0 rounded-full border px-3 py-1 text-xs font-medium transition-colors ${
+                skillCategoryFilter === cat.key
+                  ? 'border-[#00a9e0]/30 bg-sky-50 text-[#00a9e0]'
+                  : 'border-zinc-200 bg-white text-zinc-600 hover:border-[#00a9e0]/20'
+              }`}
+            >
+              {cat.label}
             </button>
           ))}
         </div>

@@ -40,6 +40,8 @@ export interface Pro {
   responseTime: string;
   backgroundChecked: boolean;
   available: boolean;
+  skill_tags?: string[];
+  subtype?: 'standard' | 'flex';
 }
 
 export interface Bid {

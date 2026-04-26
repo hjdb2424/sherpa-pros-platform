@@ -1,5 +1,6 @@
 import type { Pro } from '@/lib/mock-data/client-data';
 import { ShieldCheckIcon } from '@heroicons/react/24/solid';
+import { getSkillLabels } from '@/lib/skills-catalog';
 
 const BADGE_CONFIG: Record<Pro['badge'], { label: string; color: string; icon: string }> = {
   gold: { label: 'Gold Pro', color: 'text-[#ff4500] bg-orange-50 border-orange-200', icon: '★' },
@@ -95,12 +96,33 @@ export function ProCard({ pro, compact = false, sherpaScore, onViewProfile, onRe
           </div>
 
           <div className="mt-2 flex flex-wrap gap-1.5">
+            {pro.subtype === 'flex' && (
+              <span className="rounded-full bg-orange-100 px-2 py-0.5 text-[10px] font-semibold text-orange-600 dark:bg-orange-500/20 dark:text-orange-400">
+                Flex Pro
+              </span>
+            )}
             {pro.trades.map((trade) => (
               <span key={trade} className="rounded-full bg-zinc-100 px-2.5 py-0.5 text-xs text-zinc-600">
                 {trade}
               </span>
             ))}
           </div>
+
+          {/* Skill tags (show first 4) */}
+          {pro.skill_tags && pro.skill_tags.length > 0 && (
+            <div className="mt-1.5 flex flex-wrap gap-1">
+              {getSkillLabels(pro.skill_tags).slice(0, 4).map((label) => (
+                <span key={label} className="rounded bg-sky-50 px-1.5 py-0.5 text-[10px] font-medium text-sky-700 dark:bg-sky-500/10 dark:text-sky-400">
+                  {label}
+                </span>
+              ))}
+              {pro.skill_tags.length > 4 && (
+                <span className="rounded bg-zinc-50 px-1.5 py-0.5 text-[10px] font-medium text-zinc-400">
+                  +{pro.skill_tags.length - 4} more
+                </span>
+              )}
+            </div>
+          )}
 
           <div className="mt-3 flex items-center gap-4 text-xs text-zinc-500">
             <span>{pro.distance} away</span>

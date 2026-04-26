@@ -1,16 +1,17 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import JobCard from '@/components/pro/JobCard';
 import MilestoneTracker from '@/components/pro/MilestoneTracker';
 import EmptyState from '@/components/EmptyState';
-import { BriefcaseIcon } from '@heroicons/react/24/outline';
+import { BriefcaseIcon, InformationCircleIcon } from '@heroicons/react/24/outline';
 import {
   mockAvailableJobs,
   mockMyBids,
   mockActiveJobs,
   mockCompletedJobs,
+  mockProSkillKeys,
 } from '@/lib/mock-data/pro-data';
 import { GoogleMapProvider, MapView, BottomSheet, JobMarker } from '@/components/maps';
 import { MOCK_JOBS, DEFAULT_CENTER } from '@/lib/mock-data/map-data';
@@ -20,19 +21,13 @@ import { getDemoProScore } from '@/lib/incentives/mock-metrics';
 const demoScore = getDemoProScore();
 const isGoldTier = demoScore.score.tier === 'gold';
 
-const tabs = [
-  { id: 'available', label: 'Available', count: mockAvailableJobs.length },
-  { id: 'bids', label: 'My Bids', count: mockMyBids.length },
-  { id: 'active', label: 'Active', count: mockActiveJobs.length },
-  { id: 'completed', label: 'Completed', count: mockCompletedJobs.length },
-] as const;
-
-type TabId = typeof tabs[number]['id'];
+type TabId = 'available' | 'bids' | 'active' | 'completed';
 
 const bidStatusConfig = {
   pending: { label: 'Pending', classes: 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400' },
-  accepted: { label: 'Accepted', classes: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400' },
-  rejected: { label: 'Not Selected', classes: 'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400' },
+  accepted: { label: 'Won', classes: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400' },
+  rejected: { label: 'Lost', classes: 'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400' },
+  pending_materials_review: { label: 'Materials Review', classes: 'bg-sky-100 text-sky-700 dark:bg-sky-900/30 dark:text-sky-400' },
 };
 
 function timeAgo(dateStr: string): string {
@@ -52,22 +47,50 @@ export default function JobsPageClient() {
   const [viewMode, setViewMode] = useState<'map' | 'list'>('map');
   const [currentZoom, setCurrentZoom] = useState(12);
   const [selectedJobId, setSelectedJobId] = useState<string | null>(null);
+  const [showAllJobs, setShowAllJobs] = useState(false);
 
-  const categories = ['all', ...new Set(mockAvailableJobs.map((j) => j.category))];
+  // Skill-filtered jobs
+  const skillFilteredJobs = useMemo(() => {
+    if (showAllJobs) return mockAvailableJobs;
+    return mockAvailableJobs.filter((job) => {
+      if (!job.skill_tags || job.skill_tags.length === 0) return false;
+      return job.skill_tags.some((tag) => mockProSkillKeys.includes(tag));
+    });
+  }, [showAllJobs]);
+
+  const categories = ['all', ...new Set(skillFilteredJobs.map((j) => j.category))];
   const urgencies = ['all', 'low', 'medium', 'high', 'emergency'];
 
-  const filteredAvailable = mockAvailableJobs.filter((job) => {
+  const filteredAvailable = skillFilteredJobs.filter((job) => {
     if (categoryFilter !== 'all' && job.category !== categoryFilter) return false;
     if (urgencyFilter !== 'all' && job.urgency !== urgencyFilter) return false;
     return true;
   });
+
+  // Bid stats
+  const bidStats = useMemo(() => {
+    const won = mockMyBids.filter((b) => b.status === 'accepted').length;
+    const lost = mockMyBids.filter((b) => b.status === 'rejected').length;
+    const pending = mockMyBids.filter((b) => b.status === 'pending' || b.status === 'pending_materials_review').length;
+    return { won, lost, pending };
+  }, []);
+
+  const tabs = [
+    { id: 'available' as const, label: 'Available', count: filteredAvailable.length },
+    { id: 'bids' as const, label: 'My Bids', count: mockMyBids.length },
+    { id: 'active' as const, label: 'Active', count: mockActiveJobs.length },
+    { id: 'completed' as const, label: 'Completed', count: mockCompletedJobs.length },
+  ];
 
   // Map view rendering
   if (viewMode === 'map' && activeTab === 'available') {
     return (
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">Jobs</h1>
+          <div className="flex items-center gap-2">
+            <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">Jobs</h1>
+            <span className="rounded-md bg-violet-100 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-violet-600 dark:bg-violet-900/30 dark:text-violet-400">Beta</span>
+          </div>
           <div className="flex items-center rounded-lg border border-zinc-200 p-0.5">
             <button onClick={() => setViewMode('map')} className="rounded-md px-3 py-1.5 text-xs font-semibold transition-all bg-[#00a9e0] text-white">Map</button>
             <button onClick={() => setViewMode('list')} className="rounded-md px-3 py-1.5 text-xs font-semibold transition-all text-zinc-500 hover:text-zinc-700">List</button>
@@ -96,7 +119,10 @@ export default function JobsPageClient() {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">Jobs</h1>
+        <div className="flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">Jobs</h1>
+          <span className="rounded-md bg-violet-100 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-violet-600 dark:bg-violet-900/30 dark:text-violet-400">Beta</span>
+        </div>
         {activeTab === 'available' && (
           <div className="flex items-center rounded-lg border border-zinc-200 p-0.5">
             <button onClick={() => setViewMode('map')} className={`rounded-md px-3 py-1.5 text-xs font-semibold transition-all ${viewMode === 'map' ? 'bg-[#00a9e0] text-white' : 'text-zinc-500 hover:text-zinc-700'}`}>Map</button>
@@ -132,7 +158,7 @@ export default function JobsPageClient() {
 
       {/* Filters — only shown on Available tab */}
       {activeTab === 'available' && (
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <select
             value={categoryFilter}
             onChange={(e) => setCategoryFilter(e.target.value)}
@@ -153,7 +179,30 @@ export default function JobsPageClient() {
               <option key={u} value={u}>{u === 'all' ? 'All Urgencies' : u.charAt(0).toUpperCase() + u.slice(1)}</option>
             ))}
           </select>
+
+          {/* Skill toggle */}
+          <div className="ml-auto flex items-center rounded-lg border border-zinc-200 p-0.5 dark:border-zinc-700">
+            <button
+              onClick={() => setShowAllJobs(false)}
+              className={`rounded-md px-3 py-1.5 text-xs font-semibold transition-all ${!showAllJobs ? 'bg-[#00a9e0] text-white' : 'text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200'}`}
+            >
+              My Skills
+            </button>
+            <button
+              onClick={() => setShowAllJobs(true)}
+              className={`rounded-md px-3 py-1.5 text-xs font-semibold transition-all ${showAllJobs ? 'bg-[#00a9e0] text-white' : 'text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200'}`}
+            >
+              All Available
+            </button>
+          </div>
         </div>
+      )}
+
+      {/* Skill match count */}
+      {activeTab === 'available' && !showAllJobs && (
+        <p className="text-sm text-zinc-500 dark:text-zinc-400">
+          Showing <span className="font-semibold text-zinc-700 dark:text-zinc-200">{filteredAvailable.length}</span> job{filteredAvailable.length !== 1 ? 's' : ''} matching your skills
+        </p>
       )}
 
       {/* Tab content */}
@@ -180,6 +229,15 @@ export default function JobsPageClient() {
         {/* My Bids */}
         {activeTab === 'bids' && (
           <div className="space-y-3">
+            {/* Win/loss stats */}
+            <div className="flex items-center gap-3 rounded-lg bg-zinc-50 px-4 py-2.5 text-sm dark:bg-zinc-800/50">
+              <span className="font-semibold text-emerald-600 dark:text-emerald-400">Won {bidStats.won}</span>
+              <span className="text-zinc-300 dark:text-zinc-600">&middot;</span>
+              <span className="font-semibold text-zinc-500 dark:text-zinc-400">Lost {bidStats.lost}</span>
+              <span className="text-zinc-300 dark:text-zinc-600">&middot;</span>
+              <span className="font-semibold text-amber-600 dark:text-amber-400">Pending {bidStats.pending}</span>
+            </div>
+
             {mockMyBids.map((bid) => {
               const statusCfg = bidStatusConfig[bid.status];
               return (
@@ -195,8 +253,14 @@ export default function JobsPageClient() {
                         Bid: ${bid.amount.toLocaleString()} &middot; {bid.estimatedDuration} &middot; {timeAgo(bid.submittedAt)}
                       </p>
                       <p className="mt-1 line-clamp-1 text-sm text-zinc-400">{bid.message}</p>
+                      {bid.status === 'rejected' && bid.rejectionReason && (
+                        <p className="mt-1 text-xs text-zinc-400 dark:text-zinc-500">Reason: {bid.rejectionReason}</p>
+                      )}
                     </div>
-                    <span className={`shrink-0 rounded-md px-2 py-0.5 text-xs font-semibold ${statusCfg.classes}`}>
+                    <span className={`flex shrink-0 items-center gap-1 rounded-md px-2 py-0.5 text-xs font-semibold ${statusCfg.classes}`}>
+                      {bid.status === 'pending_materials_review' && (
+                        <InformationCircleIcon className="h-3.5 w-3.5" />
+                      )}
                       {statusCfg.label}
                     </span>
                   </div>

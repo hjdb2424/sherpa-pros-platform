@@ -48,3 +48,4 @@ next-env.d.ts
 
 # Generated docs PDFs (regenerate with `npm run docs:pdf`)
 /docs-pdf/
+mobile/.next/

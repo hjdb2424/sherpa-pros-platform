@@ -1,45 +1,18 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import StatsCard from '@/components/pro/StatsCard';
-import BadgeTier from '@/components/pro/BadgeTier';
 import DispatchAlert from '@/components/pro/DispatchAlert';
-import MilestoneTracker from '@/components/pro/MilestoneTracker';
-import NearbyJobsMap from '@/components/pro/NearbyJobsMap';
-import EmptyState from '@/components/EmptyState';
-import { SSPBanner } from '@/components/ai';
-import ProDashboardGuard from '@/components/pro/ProDashboardGuard';
-import { UserCircleIcon } from '@heroicons/react/24/outline';
 import {
   mockProProfile,
   mockDashboardStats,
   mockDispatch,
   mockActiveJobs,
-  mockActivity,
 } from '@/lib/mock-data/pro-data';
 import { getCurrentSession } from '@/lib/auth/session';
 import { getDemoProScore } from '@/lib/incentives/mock-metrics';
+import { getDemoRewardsData } from '@/lib/incentives/rewards';
 
 export const metadata: Metadata = {
   title: 'Dashboard',
-};
-
-function timeAgo(dateStr: string): string {
-  const diff = Date.now() - new Date(dateStr).getTime();
-  const minutes = Math.floor(diff / 60000);
-  if (minutes < 60) return `${minutes}m ago`;
-  const hours = Math.floor(minutes / 60);
-  if (hours < 24) return `${hours}h ago`;
-  const days = Math.floor(hours / 24);
-  return `${days}d ago`;
-}
-
-const activityIcons: Record<string, { bg: string; icon: string }> = {
-  dispatch: { bg: 'bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400', icon: '\u26A1' },
-  bid_accepted: { bg: 'bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400', icon: '\u2713' },
-  payment: { bg: 'bg-sky-100 text-[#00a9e0] dark:bg-sky-900/30 dark:text-sky-400', icon: '$' },
-  rating: { bg: 'bg-purple-100 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400', icon: '\u2605' },
-  bid_rejected: { bg: 'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400', icon: '\u2717' },
-  job_completed: { bg: 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400', icon: '\u2714' },
 };
 
 export default function ProDashboardPage() {
@@ -48,6 +21,7 @@ export default function ProDashboardPage() {
   const stats = mockDashboardStats;
   const proScore = getDemoProScore();
   const { score } = proScore;
+  const { points: rewardPoints } = getDemoRewardsData();
 
   const tierColors: Record<string, { ring: string; bg: string; text: string; label: string }> = {
     gold: { ring: '#f59e0b', bg: 'bg-amber-50 dark:bg-amber-900/20', text: 'text-amber-600 dark:text-amber-400', label: 'Gold' },
@@ -56,151 +30,86 @@ export default function ProDashboardPage() {
   };
   const tierCfg = tierColors[score.tier];
 
+  // Rating stars helper
+  const stars = Array.from({ length: 5 }, (_, i) => i < Math.round(pro.overallRating));
+
   return (
-    <ProDashboardGuard>
     <div className="space-y-6">
-      {/* Welcome header */}
-      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">
-            Welcome back, {session.name.split(' ')[0]}
-          </h1>
-          <p className="mt-0.5 text-sm text-zinc-500 dark:text-zinc-400">
-            Here is what is happening with your jobs today.
-          </p>
-        </div>
-        <BadgeTier tier={pro.badgeTier} size="lg" />
-      </div>
-
-      {/* Sherpa Score card */}
-      <Link
-        href="/pro/score"
-        className="block rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm transition-all hover:border-[#00a9e0]/30 hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900"
-      >
-        <div className="flex items-center gap-5">
-          {/* Circular score ring */}
-          <div className="relative flex h-20 w-20 shrink-0 items-center justify-center">
-            <svg className="h-20 w-20 -rotate-90" viewBox="0 0 120 120">
-              <circle
-                cx="60" cy="60" r="52"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="8"
-                className="text-zinc-100 dark:text-zinc-800"
-              />
-              <circle
-                cx="60" cy="60" r="52"
-                fill="none"
-                stroke={tierCfg.ring}
-                strokeWidth="8"
-                strokeLinecap="round"
-                strokeDasharray={`${(score.overall / 100) * 327} 327`}
-              />
-            </svg>
-            <span className="absolute text-2xl font-bold text-zinc-900 dark:text-zinc-50">
-              {score.overall}
-            </span>
-          </div>
-
-          <div className="min-w-0 flex-1">
-            <div className="flex items-center gap-2">
-              <h2 className="text-base font-bold text-zinc-900 dark:text-zinc-50">Sherpa Score</h2>
-              <span className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-semibold ${tierCfg.bg} ${tierCfg.text}`}>
-                <svg className="h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                </svg>
-                {tierCfg.label}
-              </span>
+      {/* ── Row 1: Profile + Score Card ─────────────────────────── */}
+      <div className="rounded-2xl border border-zinc-200 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
+        <div className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between">
+          {/* Left: Profile info */}
+          <Link href="/pro/profile" className="flex items-center gap-4 group min-w-0">
+            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-sky-50 text-lg font-bold text-[#00a9e0] dark:bg-[#00a9e0]/10">
+              {session.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()}
             </div>
-
-            <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
-              Your rate: <span className="font-semibold text-zinc-700 dark:text-zinc-300">{score.serviceFee}%</span>
-            </p>
-
-            {score.nextTier && (
-              <div className="mt-2">
-                <div className="flex items-center justify-between text-xs">
-                  <span className="text-zinc-500 dark:text-zinc-400">
-                    {score.nextTier.pointsNeeded} points to {score.nextTier.nextTier}
-                  </span>
-                  <span className="text-zinc-400 dark:text-zinc-500">
-                    Improve: {score.nextTier.topMetricToImprove}
-                  </span>
-                </div>
-                <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-zinc-100 dark:bg-zinc-800">
-                  <div
-                    className="h-full rounded-full bg-gradient-to-r from-[#00a9e0] to-emerald-500"
-                    style={{
-                      width: `${Math.min(100, ((score.overall - (score.tier === 'bronze' ? 0 : 60)) / 20) * 100)}%`,
-                    }}
-                  />
-                </div>
+            <div className="min-w-0">
+              <h1 className="text-lg font-bold text-zinc-900 group-hover:text-[#00a9e0] transition-colors dark:text-zinc-50">
+                {session.name}
+              </h1>
+              <p className="text-sm text-zinc-500 dark:text-zinc-400">
+                {pro.trades[0]?.name ?? 'Pro'} &middot; {pro.serviceArea.homeHub}
+              </p>
+              <div className="mt-1 flex items-center gap-1">
+                {stars.map((filled, i) => (
+                  <svg key={i} className={`h-4 w-4 ${filled ? 'text-amber-400' : 'text-zinc-200 dark:text-zinc-700'}`} fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  </svg>
+                ))}
+                <span className="ml-1 text-xs text-zinc-500 dark:text-zinc-400">{pro.overallRating}</span>
               </div>
-            )}
+            </div>
+          </Link>
 
-            <p className="mt-2 text-xs font-medium text-[#00a9e0] dark:text-sky-400">
-              View full breakdown &rarr;
-            </p>
-          </div>
+          {/* Right: Score ring */}
+          <Link href="/pro/score" className="flex items-center gap-4 group shrink-0">
+            <div className="relative flex h-16 w-16 shrink-0 items-center justify-center">
+              <svg className="h-16 w-16 -rotate-90" viewBox="0 0 120 120">
+                <circle cx="60" cy="60" r="52" fill="none" stroke="currentColor" strokeWidth="8" className="text-zinc-100 dark:text-zinc-800" />
+                <circle cx="60" cy="60" r="52" fill="none" stroke={tierCfg.ring} strokeWidth="8" strokeLinecap="round" strokeDasharray={`${(score.overall / 100) * 327} 327`} />
+              </svg>
+              <span className="absolute text-xl font-bold text-zinc-900 dark:text-zinc-50">{score.overall}</span>
+            </div>
+            <div className="text-right sm:text-left">
+              <div className="flex items-center gap-2">
+                <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-semibold ${tierCfg.bg} ${tierCfg.text}`}>
+                  {tierCfg.label}
+                </span>
+              </div>
+              <p className="mt-0.5 text-xs text-zinc-500 dark:text-zinc-400">
+                Service fee: <span className="font-semibold text-zinc-700 dark:text-zinc-300">{score.serviceFee}%</span>
+              </p>
+            </div>
+          </Link>
         </div>
-      </Link>
+
+        {/* Progress bar to next tier */}
+        {score.nextTier && (
+          <div className="border-t border-zinc-100 px-5 py-3 dark:border-zinc-800">
+            <div className="flex items-center justify-between text-xs">
+              <span className="text-zinc-500 dark:text-zinc-400">
+                {score.nextTier.pointsNeeded} points to {score.nextTier.nextTier}
+              </span>
+              <Link href="/pro/score" className="font-medium text-[#00a9e0] hover:text-[#0ea5e9] dark:text-sky-400">
+                View details
+              </Link>
+            </div>
+            <div className="mt-1.5 h-2 overflow-hidden rounded-full bg-zinc-100 dark:bg-zinc-800">
+              <div
+                className="h-full rounded-full bg-gradient-to-r from-[#00a9e0] to-emerald-500 transition-all"
+                style={{
+                  width: `${Math.min(100, ((score.overall - (score.tier === 'bronze' ? 0 : 60)) / 20) * 100)}%`,
+                }}
+              />
+            </div>
+          </div>
+        )}
+      </div>
 
       {/* Incoming dispatch alert */}
       <DispatchAlert dispatch={mockDispatch} />
 
-      {/* Sherpa Success Pro banner */}
-      <SSPBanner proName={pro.name.split(' ')[0]} />
-
-      {/* Stats row */}
-      <div className="grid gap-4 grid-cols-2 lg:grid-cols-4">
-        <StatsCard
-          label="Your Active Jobs"
-          value={String(stats.activeJobs)}
-          trend={{ direction: 'up', label: '+1 this week' }}
-          icon={
-            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden="true">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M11.42 15.17 17.25 21A2.652 2.652 0 0 0 21 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 1 1-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 0 0 4.486-6.336l-3.276 3.277a3.004 3.004 0 0 1-2.25-2.25l3.276-3.276a4.5 4.5 0 0 0-6.336 4.486c.048.58.024 1.194-.14 1.743" />
-            </svg>
-          }
-        />
-        <StatsCard
-          label="Your Pending Bids"
-          value={String(stats.pendingBids)}
-          icon={
-            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden="true">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m3.75 9v6m3-3H9m1.5-12H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
-            </svg>
-          }
-        />
-        <StatsCard
-          label="This Month"
-          value={`$${stats.monthEarnings.toLocaleString()}`}
-          trend={{ direction: 'up', label: '+12% vs last month' }}
-          accentColor="text-emerald-600 dark:text-emerald-400"
-          icon={
-            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden="true">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-            </svg>
-          }
-        />
-        <StatsCard
-          label="Visibility Score"
-          value={`${stats.visibilityScore}%`}
-          trend={{ direction: 'up', label: '+3 pts' }}
-          accentColor="text-[#00a9e0] dark:text-sky-400"
-          icon={
-            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden="true">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-            </svg>
-          }
-        />
-      </div>
-
-      {/* Nearby jobs map */}
-      <NearbyJobsMap />
-
-      {/* Active jobs */}
+      {/* ── Row 2: Active Jobs ──────────────────────────────────── */}
       <section>
         <div className="mb-3 flex items-center justify-between">
           <h2 className="text-lg font-bold text-zinc-900 dark:text-zinc-50">Active Jobs</h2>
@@ -208,150 +117,191 @@ export default function ProDashboardPage() {
             View all
           </Link>
         </div>
-        <div className="space-y-3">
-          {mockActiveJobs.map((job) => {
-            const completed = job.milestones.filter((m) => m.status === 'completed').length;
-            const total = job.milestones.length;
-            const pct = total > 0 ? Math.round((completed / total) * 100) : 0;
 
-            return (
-              <Link
-                key={job.id}
-                href={`/pro/jobs/${job.id}`}
-                className="block rounded-xl border border-zinc-200 bg-white p-4 shadow-sm transition-shadow hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900"
-              >
-                <div className="flex items-start justify-between gap-2">
-                  <div className="min-w-0 flex-1">
-                    <h3 className="font-semibold text-zinc-900 dark:text-zinc-50">{job.title}</h3>
-                    <p className="mt-0.5 text-sm text-zinc-500 dark:text-zinc-400">
-                      {job.clientName} &middot; {job.distanceMiles} mi &middot; Next: {job.milestones.find((m) => m.status === 'in_progress')?.title ?? 'N/A'}
-                    </p>
-                  </div>
-                  <span className="shrink-0 rounded-md bg-sky-100 px-2 py-0.5 text-xs font-semibold text-[#00a9e0] dark:bg-sky-900/30 dark:text-sky-400">
-                    {pct}%
-                  </span>
-                </div>
-                <div className="mt-3 h-2 overflow-hidden rounded-full bg-zinc-200 dark:bg-zinc-700">
-                  <div
-                    className="h-full rounded-full bg-gradient-to-r from-[#00a9e0] to-emerald-500 transition-all"
-                    style={{ width: `${pct}%` }}
-                  />
-                </div>
-              </Link>
-            );
-          })}
-        </div>
-      </section>
+        {mockActiveJobs.length > 0 ? (
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {mockActiveJobs.slice(0, 3).map((job) => {
+              const statusMap: Record<string, { label: string; cls: string }> = {
+                active: { label: 'In Progress', cls: 'bg-sky-100 text-[#00a9e0] dark:bg-sky-900/30 dark:text-sky-400' },
+                completed: { label: 'Completed', cls: 'bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400' },
+              };
+              const currentMilestone = job.milestones.find((m) => m.status === 'in_progress');
+              const chip = statusMap[job.status] ?? statusMap.active;
 
-      {/* Social Connections summary */}
-      <section>
-        <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-purple-100 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400">
-                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z" />
-                </svg>
-              </span>
-              <div>
-                <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">Social Connections</p>
-                <p className="text-xs text-zinc-500 dark:text-zinc-400">3 of 5 platforms connected</p>
-              </div>
-            </div>
-            <Link
-              href="/pro/social"
-              className="text-sm font-medium text-[#00a9e0] hover:text-[#0ea5e9] dark:text-sky-400"
-            >
-              Manage
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Two-column: Activity + Quick Actions */}
-      <div className="grid gap-6 lg:grid-cols-3">
-        {/* Recent activity */}
-        <section className="lg:col-span-2">
-          <h2 className="mb-3 text-lg font-bold text-zinc-900 dark:text-zinc-50">Recent Activity</h2>
-          <div className="rounded-xl border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900">
-            <ul className="divide-y divide-zinc-100 dark:divide-zinc-800" role="list">
-              {mockActivity.map((item) => {
-                const iconCfg = activityIcons[item.type] ?? activityIcons.job_completed;
-                return (
-                  <li key={item.id} className="flex items-start gap-3 px-4 py-3">
-                    <span
-                      className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-sm font-bold ${iconCfg.bg}`}
-                      aria-hidden="true"
-                    >
-                      {iconCfg.icon}
+              return (
+                <Link
+                  key={job.id}
+                  href={`/pro/jobs/${job.id}`}
+                  className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm transition-all hover:border-zinc-300 hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-zinc-700"
+                >
+                  <div className="flex items-start justify-between gap-2">
+                    <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-50 line-clamp-1">{job.title}</h3>
+                    <span className={`shrink-0 rounded-md px-2 py-0.5 text-[11px] font-semibold ${chip.cls}`}>
+                      {chip.label}
                     </span>
-                    <div className="min-w-0 flex-1">
-                      <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">{item.title}</p>
-                      <p className="text-sm text-zinc-500 dark:text-zinc-400">{item.description}</p>
-                      {item.amount && (
-                        <p className="mt-0.5 text-sm font-semibold text-emerald-600 dark:text-emerald-400">+${item.amount.toLocaleString()}</p>
-                      )}
-                    </div>
-                    <span className="shrink-0 text-xs text-zinc-400">{timeAgo(item.timestamp)}</span>
-                  </li>
-                );
-              })}
-            </ul>
+                  </div>
+                  <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
+                    {job.clientName} &middot; {job.distanceMiles} mi
+                  </p>
+                  {currentMilestone && (
+                    <p className="mt-2 text-xs text-zinc-400 dark:text-zinc-500">
+                      Next: {currentMilestone.title}
+                    </p>
+                  )}
+                  <p className="mt-1 text-[11px] text-zinc-400 dark:text-zinc-500">{job.category}</p>
+                </Link>
+              );
+            })}
           </div>
-        </section>
-
-        {/* Quick actions */}
-        <section>
-          <h2 className="mb-3 text-lg font-bold text-zinc-900 dark:text-zinc-50">Quick Actions</h2>
-          <div className="space-y-2">
-            <Link
-              href="/pro/jobs"
-              className="flex items-center gap-3 rounded-xl border border-zinc-200 bg-white p-4 shadow-sm transition-shadow hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900"
-            >
-              <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-sky-100 text-[#00a9e0] dark:bg-sky-900/30 dark:text-sky-400">
-                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-                </svg>
-              </span>
-              <div>
-                <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">View Available Jobs</p>
-                <p className="text-xs text-zinc-500">Browse jobs matching your trades</p>
-              </div>
-            </Link>
-
-            <Link
-              href="/pro/profile"
-              className="flex items-center gap-3 rounded-xl border border-zinc-200 bg-white p-4 shadow-sm transition-shadow hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900"
-            >
-              <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400">
-                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
-                </svg>
-              </span>
-              <div>
-                <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">Update Availability</p>
-                <p className="text-xs text-zinc-500">Set your weekly schedule</p>
-              </div>
-            </Link>
-
-            <Link
-              href="/pro/profile"
-              className="flex items-center gap-3 rounded-xl border border-zinc-200 bg-white p-4 shadow-sm transition-shadow hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900"
-            >
-              <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400">
-                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-                </svg>
-              </span>
-              <div>
-                <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">Edit Profile</p>
-                <p className="text-xs text-zinc-500">Update trades, portfolio, and certs</p>
-              </div>
+        ) : (
+          <div className="rounded-xl border border-dashed border-zinc-300 bg-zinc-50 p-8 text-center dark:border-zinc-700 dark:bg-zinc-900">
+            <p className="text-sm font-medium text-zinc-600 dark:text-zinc-400">No active jobs</p>
+            <Link href="/pro/jobs" className="mt-2 inline-block text-sm font-medium text-[#00a9e0] hover:text-[#0ea5e9]">
+              Browse available work
             </Link>
           </div>
-        </section>
+        )}
+      </section>
+
+      {/* ── Row 3: Earnings Summary ─────────────────────────────── */}
+      <section>
+        <div className="mb-3 flex items-center justify-between">
+          <h2 className="text-lg font-bold text-zinc-900 dark:text-zinc-50">Earnings</h2>
+          <Link href="/pro/earnings" className="text-sm font-medium text-[#00a9e0] hover:text-[#0ea5e9] dark:text-sky-400">
+            View all
+          </Link>
+        </div>
+        <div className="grid gap-3 grid-cols-3">
+          <Link
+            href="/pro/earnings"
+            className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm transition-all hover:border-zinc-300 hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-zinc-700"
+          >
+            <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400">This Week</p>
+            <p className="mt-1 text-xl font-bold text-zinc-900 dark:text-zinc-50">$2,850</p>
+          </Link>
+          <Link
+            href="/pro/earnings"
+            className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm transition-all hover:border-zinc-300 hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-zinc-700"
+          >
+            <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400">Pending</p>
+            <p className="mt-1 text-xl font-bold text-amber-600 dark:text-amber-400">$3,325</p>
+          </Link>
+          <Link
+            href="/pro/earnings"
+            className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm transition-all hover:border-zinc-300 hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-zinc-700"
+          >
+            <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400">Next Payout</p>
+            <p className="mt-1 text-lg font-bold text-zinc-900 dark:text-zinc-50">Apr 25</p>
+          </Link>
+        </div>
+      </section>
+
+      {/* ── Row 4: Rewards + Referrals ──────────────────────────── */}
+      <div className="grid gap-4 sm:grid-cols-2">
+        {/* Sherpa Points card */}
+        <Link
+          href="/pro/rewards"
+          className="rounded-xl border border-zinc-200 bg-white p-5 shadow-sm transition-all hover:border-zinc-300 hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-zinc-700"
+        >
+          <div className="flex items-center gap-3">
+            <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400">
+              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M21 11.25v8.25a1.5 1.5 0 0 1-1.5 1.5H5.25a1.5 1.5 0 0 1-1.5-1.5v-8.25M12 4.875A2.625 2.625 0 1 0 9.375 7.5H12m0-2.625V7.5m0-2.625A2.625 2.625 0 1 1 14.625 7.5H12m0 0V21m-8.625-9.75h18c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125h-18c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z" />
+              </svg>
+            </span>
+            <div>
+              <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">Sherpa Points</p>
+              <p className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">{rewardPoints.toLocaleString()}</p>
+            </div>
+          </div>
+          <div className="mt-3">
+            <div className="flex items-center justify-between text-xs">
+              <span className="text-zinc-500 dark:text-zinc-400">500 points to next reward</span>
+            </div>
+            <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-zinc-100 dark:bg-zinc-800">
+              <div className="h-full w-3/4 rounded-full bg-gradient-to-r from-amber-400 to-amber-600" />
+            </div>
+          </div>
+          <p className="mt-3 text-xs font-medium text-[#00a9e0] dark:text-sky-400">View Rewards &rarr;</p>
+        </Link>
+
+        {/* Referrals card */}
+        <Link
+          href="/referral"
+          className="rounded-xl border border-zinc-200 bg-white p-5 shadow-sm transition-all hover:border-zinc-300 hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-zinc-700"
+        >
+          <div className="flex items-center gap-3">
+            <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400">
+              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" />
+              </svg>
+            </span>
+            <div>
+              <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">Referrals</p>
+              <p className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">3</p>
+            </div>
+          </div>
+          <p className="mt-3 text-sm text-zinc-500 dark:text-zinc-400">
+            Successful referrals. Earn 500 points per invite.
+          </p>
+          <p className="mt-3 text-xs font-medium text-[#00a9e0] dark:text-sky-400">Invite a Pro &rarr;</p>
+        </Link>
       </div>
+
+      {/* ── Row 5: Quick Actions ────────────────────────────────── */}
+      <section>
+        <h2 className="mb-3 text-lg font-bold text-zinc-900 dark:text-zinc-50">Quick Actions</h2>
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <Link
+            href="/pro/profile"
+            className="flex flex-col items-center gap-2 rounded-xl border border-zinc-200 bg-white p-4 shadow-sm transition-all hover:border-zinc-300 hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-zinc-700"
+          >
+            <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400">
+              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
+              </svg>
+            </span>
+            <span className="text-xs font-medium text-zinc-700 dark:text-zinc-300">Update Availability</span>
+          </Link>
+
+          <Link
+            href="/pro/scan"
+            className="flex flex-col items-center gap-2 rounded-xl border border-zinc-200 bg-white p-4 shadow-sm transition-all hover:border-zinc-300 hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-zinc-700"
+          >
+            <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-sky-100 text-[#00a9e0] dark:bg-sky-900/30 dark:text-sky-400">
+              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 0 1 5.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 0 0-1.134-.175 2.31 2.31 0 0 1-1.64-1.055l-.822-1.316a2.192 2.192 0 0 0-1.736-1.039 48.774 48.774 0 0 0-5.232 0 2.192 2.192 0 0 0-1.736 1.039l-.821 1.316Z" />
+                <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0Z" />
+              </svg>
+            </span>
+            <span className="text-xs font-medium text-zinc-700 dark:text-zinc-300">Smart Scan</span>
+          </Link>
+
+          <Link
+            href="/pro/social"
+            className="flex flex-col items-center gap-2 rounded-xl border border-zinc-200 bg-white p-4 shadow-sm transition-all hover:border-zinc-300 hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-zinc-700"
+          >
+            <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-purple-100 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400">
+              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z" />
+              </svg>
+            </span>
+            <span className="text-xs font-medium text-zinc-700 dark:text-zinc-300">Sync Social</span>
+          </Link>
+
+          <Link
+            href="/help"
+            className="flex flex-col items-center gap-2 rounded-xl border border-zinc-200 bg-white p-4 shadow-sm transition-all hover:border-zinc-300 hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-zinc-700"
+          >
+            <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
+              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z" />
+              </svg>
+            </span>
+            <span className="text-xs font-medium text-zinc-700 dark:text-zinc-300">Get Help</span>
+          </Link>
+        </div>
+      </section>
     </div>
-    </ProDashboardGuard>
   );
 }

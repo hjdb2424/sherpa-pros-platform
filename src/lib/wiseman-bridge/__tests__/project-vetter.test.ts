@@ -16,17 +16,15 @@ import type {
 // Mock Setup
 // -----------------------------------------------------------------------------
 
-vi.mock('../client', () => {
-  return {
-    WisemanClient: vi.fn().mockImplementation(() => ({
-      validateBudget: vi.fn(),
-      validateBid: vi.fn(),
-      checkPermits: vi.fn(),
-      generateChecklist: vi.fn(),
-      healthCheck: vi.fn(),
-    })),
-  };
-});
+vi.mock('../client', () => ({
+  WisemanClient: class {
+    validateBudget = vi.fn();
+    validateBid = vi.fn();
+    checkPermits = vi.fn();
+    generateChecklist = vi.fn();
+    healthCheck = vi.fn();
+  },
+}));
 
 function createMockClient() {
   return new WisemanClient() as unknown as {

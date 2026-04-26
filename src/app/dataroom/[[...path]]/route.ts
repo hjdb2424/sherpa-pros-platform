@@ -78,6 +78,9 @@ function rewriteHtml(html: string): string {
 
 function unauthorizedRedirect(request: NextRequest): NextResponse {
   const signInUrl = new URL("/sign-in", request.url);
+  // Clerk's standard query param is `redirect_url`; setting `redirect` too
+  // for compatibility with the existing proxy.ts convention.
+  signInUrl.searchParams.set("redirect_url", request.nextUrl.pathname);
   signInUrl.searchParams.set("redirect", request.nextUrl.pathname);
   return NextResponse.redirect(signInUrl);
 }

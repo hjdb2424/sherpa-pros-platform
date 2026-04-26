@@ -49,3 +49,6 @@ next-env.d.ts
 # Generated docs PDFs (regenerate with `npm run docs:pdf`)
 /docs-pdf/
 mobile/.next/
+
+# git worktrees (isolated feature workspaces)
+.worktrees/

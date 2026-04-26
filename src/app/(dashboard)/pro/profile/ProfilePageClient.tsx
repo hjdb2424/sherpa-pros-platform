@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import BadgeTier from '@/components/pro/BadgeTier';
 import AvailabilityCalendar from '@/components/pro/AvailabilityCalendar';
 import { mockProProfile } from '@/lib/mock-data/pro-data';
@@ -11,9 +11,19 @@ import ReviewList from '@/components/reviews/ReviewList';
 import ProResponseForm from '@/components/reviews/ProResponseForm';
 import DocumentScanner from '@/components/ocr/DocumentScanner';
 import Link from 'next/link';
+import { userStorage } from '@/lib/user-storage';
 
 export default function ProfilePageClient() {
   const pro = mockProProfile;
+  const [displayName, setDisplayName] = useState(pro.name);
+
+  useEffect(() => {
+    const profile = userStorage.get<Record<string, string>>('user-profile');
+    const name = profile?.fullName || profile?.name;
+    if (name) { setDisplayName(name); return; }
+    const authName = localStorage.getItem('sherpa-test-name');
+    if (authName) setDisplayName(authName);
+  }, []);
   const [radiusValue, setRadiusValue] = useState(pro.serviceArea.travelRadiusMiles);
   const [respondingTo, setRespondingTo] = useState<string | null>(null);
   const [respondingReview, setRespondingReview] = useState<{ reviewerName: string; text: string; rating: number } | null>(null);
@@ -44,11 +54,11 @@ export default function ProfilePageClient() {
       <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm sm:p-6 dark:border-zinc-800 dark:bg-zinc-900">
         <div className="flex flex-col items-center gap-4 sm:flex-row">
           <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-amber-500/20 text-2xl font-bold text-amber-600 dark:text-amber-400">
-            {pro.name.split(' ').map((n) => n[0]).join('')}
+            {displayName.split(' ').map((n) => n[0]).join('').slice(0, 2)}
           </div>
           <div className="flex-1 text-center sm:text-left">
             <div className="flex flex-col items-center gap-2 sm:flex-row">
-              <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-50">{pro.name}</h2>
+              <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-50">{displayName}</h2>
               <BadgeTier tier={pro.badgeTier} />
             </div>
             <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">

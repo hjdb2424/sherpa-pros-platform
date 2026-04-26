@@ -80,14 +80,14 @@ export default function ProSidebar() {
     <>
       {/* Desktop sidebar */}
       <aside className="fixed top-0 left-0 z-40 hidden h-full w-64 flex-col border-r border-zinc-100 bg-white lg:flex dark:border-zinc-800 dark:bg-zinc-950">
-        {/* Logo */}
+        {/* Logo — links to pro dashboard */}
         <div className="flex h-16 items-center px-6">
-          <Logo size="md" />
+          <Logo size="md" href="/pro/dashboard" />
         </div>
 
         {/* Profile card at top */}
         <div className="border-b border-zinc-100 px-3 pb-3 dark:border-zinc-800">
-          <SidebarUserBlock href="/pro/profile" fallbackName="Marcus Rivera" fallbackSubtitle="General Carpentry" />
+          <SidebarUserBlock href="/pro/profile" fallbackName="Pro" fallbackSubtitle="Service Professional" />
         </div>
 
         {/* Nav */}
@@ -122,7 +122,7 @@ export default function ProSidebar() {
       {/* Mobile top header */}
       <header className="fixed top-0 right-0 left-0 z-40 flex h-14 items-center justify-between border-b border-zinc-100 bg-white px-4 lg:left-64 dark:border-zinc-800 dark:bg-zinc-950">
         <div className="flex items-center lg:hidden">
-          <Logo size="sm" />
+          <Logo size="sm" href="/pro/dashboard" />
         </div>
 
         <div className="hidden lg:block">

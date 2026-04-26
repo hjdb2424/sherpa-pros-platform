@@ -1,13 +1,13 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import DispatchAlert from '@/components/pro/DispatchAlert';
+import UserName, { UserInitials } from '@/components/common/UserName';
 import {
   mockProProfile,
   mockDashboardStats,
   mockDispatch,
   mockActiveJobs,
 } from '@/lib/mock-data/pro-data';
-import { getCurrentSession } from '@/lib/auth/session';
 import { getDemoProScore } from '@/lib/incentives/mock-metrics';
 import { getDemoRewardsData } from '@/lib/incentives/rewards';
 
@@ -16,7 +16,6 @@ export const metadata: Metadata = {
 };
 
 export default function ProDashboardPage() {
-  const session = getCurrentSession('pro');
   const pro = mockProProfile;
   const stats = mockDashboardStats;
   const proScore = getDemoProScore();
@@ -41,12 +40,10 @@ export default function ProDashboardPage() {
           {/* Left: Profile info */}
           <Link href="/pro/profile" className="flex items-center gap-4 group min-w-0">
             <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-sky-50 text-lg font-bold text-[#00a9e0] dark:bg-[#00a9e0]/10">
-              {session.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()}
+              <UserInitials fallback="SP" />
             </div>
             <div className="min-w-0">
-              <h1 className="text-lg font-bold text-zinc-900 group-hover:text-[#00a9e0] transition-colors dark:text-zinc-50">
-                {session.name}
-              </h1>
+              <UserName fallback="Pro" as="h1" className="text-lg font-bold text-zinc-900 group-hover:text-[#00a9e0] transition-colors dark:text-zinc-50" />
               <p className="text-sm text-zinc-500 dark:text-zinc-400">
                 {pro.trades[0]?.name ?? 'Pro'} &middot; {pro.serviceArea.homeHub}
               </p>

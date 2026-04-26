@@ -28,24 +28,56 @@ const MOCK_USERS: Record<UserRole, UserSession> = {
     userId: 'b1000000-0000-0000-0000-000000000001',
     role: 'pro',
     subtype: 'standard',
-    email: 'mike.wilson@example.com',
-    name: 'Mike Wilson',
+    email: 'user@test.com',
+    name: 'Pro User',
   },
   client: {
     userId: 'c1000000-0000-0000-0000-000000000001',
     role: 'client',
     subtype: 'residential',
-    email: 'phyrom@hjd.builders',
-    name: 'Phyrom',
+    email: 'user@test.com',
+    name: 'Client User',
   },
   pm: {
     userId: 'p1000000-0000-0000-0000-000000000001',
     role: 'pm',
     subtype: null,
-    email: 'dana.pm@example.com',
-    name: 'Dana Kim',
+    email: 'user@test.com',
+    name: 'PM User',
   },
 };
+
+/**
+ * Read real user name from browser storage (onboarding profile or auth).
+ * Returns null on server or when no name is stored.
+ */
+function getStoredUserName(): string | null {
+  if (typeof window === 'undefined') return null;
+  try {
+    const email = localStorage.getItem('sherpa-test-email') ?? '';
+    const profileRaw = localStorage.getItem(`sherpa:${email}:user-profile`);
+    if (profileRaw) {
+      const profile = JSON.parse(profileRaw);
+      const name = profile?.fullName || profile?.name || profile?.companyName;
+      if (name) return name;
+    }
+    return localStorage.getItem('sherpa-test-name');
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Read real user email from browser storage.
+ */
+function getStoredUserEmail(): string | null {
+  if (typeof window === 'undefined') return null;
+  try {
+    return localStorage.getItem('sherpa-test-email');
+  } catch {
+    return null;
+  }
+}
 
 // ---------------------------------------------------------------------------
 // Public API
@@ -62,7 +94,15 @@ const MOCK_USERS: Record<UserRole, UserSession> = {
  */
 export function getCurrentSession(roleOverride?: UserRole): UserSession {
   const role = roleOverride ?? 'pro';
-  return MOCK_USERS[role];
+  const base = MOCK_USERS[role];
+  // Overlay real user data from localStorage when available
+  const realName = getStoredUserName();
+  const realEmail = getStoredUserEmail();
+  return {
+    ...base,
+    ...(realName ? { name: realName } : {}),
+    ...(realEmail ? { email: realEmail } : {}),
+  };
 }
 
 /**

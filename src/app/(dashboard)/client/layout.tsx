@@ -1,5 +1,6 @@
-import Link from 'next/link';
+import Logo from '@/components/brand/Logo';
 import { ClientSidebar } from '@/components/client/ClientSidebar';
+import HeaderAvatar from '@/components/common/HeaderAvatar';
 import DemoBanner from '@/components/DemoBanner';
 import ClientTour from '@/components/onboarding/ClientTour';
 import OnboardingWizard from '@/components/onboarding/OnboardingWizard';
@@ -20,10 +21,7 @@ export default function ClientLayout({
         {/* Header */}
         <header className="flex h-16 shrink-0 items-center justify-between border-b border-zinc-200 bg-white px-4 lg:px-8">
           <div className="flex items-center gap-2 lg:hidden">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#1a1a2e]">
-              <span className="text-sm font-bold text-amber-400">S</span>
-            </div>
-            <span className="text-lg font-bold text-[#1a1a2e]">Sherpa Pros</span>
+            <Logo size="sm" href="/client/dashboard" />
           </div>
 
           <div className="hidden lg:block" />
@@ -40,18 +38,8 @@ export default function ClientLayout({
               <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-red-500" />
             </button>
 
-            {/* Profile dropdown */}
-            <Link href="/client/dashboard" className="flex items-center gap-2 rounded-lg p-1.5 transition-colors hover:bg-zinc-100">
-              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#1a1a2e] text-xs font-bold text-white">
-                PM
-              </div>
-              <span className="hidden text-sm font-medium text-zinc-700 sm:block">
-                Phyrom M.
-              </span>
-              <svg className="hidden h-4 w-4 text-zinc-400 sm:block" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-              </svg>
-            </Link>
+            {/* Avatar only — name is in the sidebar profile card */}
+            <HeaderAvatar href="/client/settings" fallbackInitials="SP" />
           </div>
         </header>
 

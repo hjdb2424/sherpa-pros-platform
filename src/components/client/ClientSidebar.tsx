@@ -68,12 +68,12 @@ export function ClientSidebar() {
       {/* Desktop sidebar */}
       <aside className="hidden lg:flex lg:w-64 lg:flex-col lg:border-r lg:border-zinc-200 lg:bg-white dark:lg:border-zinc-800 dark:lg:bg-zinc-950">
         <div className="flex h-16 items-center border-b border-zinc-200 px-6 dark:border-zinc-800">
-          <Logo size="md" />
+          <Logo size="md" href="/client/dashboard" />
         </div>
 
         {/* Profile card at top */}
         <div className="border-b border-zinc-200 px-3 py-3 dark:border-zinc-800">
-          <SidebarUserBlock href="/client/settings" fallbackName="Jamie Davis" fallbackSubtitle="Homeowner" />
+          <SidebarUserBlock href="/client/settings" fallbackName="Client" fallbackSubtitle="Homeowner" />
         </div>
 
         <nav className="flex-1 space-y-1 overflow-y-auto p-4" aria-label="Main navigation">

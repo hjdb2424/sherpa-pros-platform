@@ -203,14 +203,16 @@ export default function ProProfileScreen() {
   // Load real user data from onboarding profile
   useEffect(() => {
     getUserProfile().then((p) => {
-      if (!p) return;
-      if (p.fullName || p.name) setUserDisplayName(p.fullName || p.name || '');
-      if (p.email) setUserEmail(p.email);
-      if (p.phone) setUserPhone(p.phone);
-      if (p.trade) setUserTrade(p.trade);
-      if (p.city) setUserCity(p.city);
+      if (p?.fullName || p?.name) {
+        setUserDisplayName(p.fullName || p.name || '');
+      } else {
+        getUserName(PRO_PROFILE.name).then(setUserDisplayName);
+      }
+      if (p?.email) setUserEmail(p.email);
+      if (p?.phone) setUserPhone(p.phone);
+      if (p?.trade) setUserTrade(p.trade);
+      if (p?.city) setUserCity(p.city);
     });
-    getUserName(PRO_PROFILE.name).then(setUserDisplayName);
     getUserEmail('').then((e) => { if (e) setUserEmail(e); });
   }, []);
   const [portfolio, setPortfolio] = useState<PortfolioItem[]>(MOCK_PORTFOLIO);

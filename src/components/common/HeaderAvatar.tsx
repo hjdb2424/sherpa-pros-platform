@@ -1,8 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { userStorage } from '@/lib/user-storage';
+import { useUserInitials } from '@/hooks/useUserIdentity';
 
 interface HeaderAvatarProps {
   href: string;
@@ -10,20 +9,7 @@ interface HeaderAvatarProps {
 }
 
 export default function HeaderAvatar({ href, fallbackInitials }: HeaderAvatarProps) {
-  const [initials, setInitials] = useState(fallbackInitials);
-
-  useEffect(() => {
-    const profile = userStorage.get<Record<string, string>>('user-profile');
-    const name = profile?.fullName || profile?.name || profile?.companyName;
-    if (name) {
-      setInitials(name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase());
-      return;
-    }
-    const authName = localStorage.getItem('sherpa-test-name');
-    if (authName) {
-      setInitials(authName.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase());
-    }
-  }, []);
+  const initials = useUserInitials(fallbackInitials);
 
   return (
     <Link

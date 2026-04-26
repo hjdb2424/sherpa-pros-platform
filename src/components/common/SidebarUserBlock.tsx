@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { userStorage } from '@/lib/user-storage';
+import { useUserName, toInitials } from '@/hooks/useUserIdentity';
 
 interface SidebarUserBlockProps {
   href: string;
@@ -11,28 +12,17 @@ interface SidebarUserBlockProps {
 }
 
 export default function SidebarUserBlock({ href, fallbackName, fallbackSubtitle }: SidebarUserBlockProps) {
-  const [name, setName] = useState(fallbackName);
+  const name = useUserName(fallbackName);
   const [subtitle, setSubtitle] = useState(fallbackSubtitle);
 
   useEffect(() => {
-    // Try onboarding profile first
     const profile = userStorage.get<Record<string, string>>('user-profile');
-    const profileName = profile?.fullName || profile?.name || profile?.companyName;
-    if (profileName) {
-      setName(profileName);
-    } else {
-      // Fall back to auth display name
-      const authName = localStorage.getItem('sherpa-test-name');
-      if (authName) setName(authName);
-    }
-
-    // Subtitle from profile
     if (profile?.trade) setSubtitle(profile.trade);
     else if (profile?.companyName) setSubtitle('Property Manager');
     else if (profile?.propertyType) setSubtitle('Homeowner');
   }, []);
 
-  const initials = name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+  const initials = toInitials(name);
 
   return (
     <Link

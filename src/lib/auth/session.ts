@@ -47,35 +47,18 @@ const MOCK_USERS: Record<UserRole, UserSession> = {
   },
 };
 
-/**
- * Read real user name from browser storage (onboarding profile or auth).
- * Returns null on server or when no name is stored.
- */
-function getStoredUserName(): string | null {
-  if (typeof window === 'undefined') return null;
-  try {
-    const email = localStorage.getItem('sherpa-test-email') ?? '';
-    const profileRaw = localStorage.getItem(`sherpa:${email}:user-profile`);
-    if (profileRaw) {
-      const profile = JSON.parse(profileRaw);
-      const name = profile?.fullName || profile?.name || profile?.companyName;
-      if (name) return name;
-    }
-    return localStorage.getItem('sherpa-test-name');
-  } catch {
-    return null;
-  }
-}
+import { userStorage } from '@/lib/user-storage';
 
-/**
- * Read real user email from browser storage.
- */
-function getStoredUserEmail(): string | null {
-  if (typeof window === 'undefined') return null;
+function getStoredIdentity(): { name: string | null; email: string | null } {
+  if (typeof window === 'undefined') return { name: null, email: null };
   try {
-    return localStorage.getItem('sherpa-test-email');
+    const profile = userStorage.get('user-profile') as Record<string, string> | null;
+    const name = profile?.fullName || profile?.name || profile?.companyName
+      || localStorage.getItem('sherpa-test-name') || null;
+    const email = localStorage.getItem('sherpa-test-email') || null;
+    return { name, email };
   } catch {
-    return null;
+    return { name: null, email: null };
   }
 }
 
@@ -95,13 +78,11 @@ function getStoredUserEmail(): string | null {
 export function getCurrentSession(roleOverride?: UserRole): UserSession {
   const role = roleOverride ?? 'pro';
   const base = MOCK_USERS[role];
-  // Overlay real user data from localStorage when available
-  const realName = getStoredUserName();
-  const realEmail = getStoredUserEmail();
+  const { name, email } = getStoredIdentity();
   return {
     ...base,
-    ...(realName ? { name: realName } : {}),
-    ...(realEmail ? { email: realEmail } : {}),
+    ...(name ? { name } : {}),
+    ...(email ? { email } : {}),
   };
 }
 

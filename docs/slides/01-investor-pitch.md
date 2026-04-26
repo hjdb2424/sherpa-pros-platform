@@ -342,6 +342,10 @@ Each lane = a **branded, defensible category.** Old-House Verified is filed for 
 **Defensibility signal:** **Sherpa Threads** live in production — in-app chat across pro / client / project manager with Twilio bridge to text message. The "I'll just text you" data leak that erodes marketplace defensibility — fixed. Audit trail for dispute resolution.
 **Bookkeeper signal:** **Sherpa Smart Scan** live in production — three-flavor optical character recognition (document scanner, photo analyzer, receipt scanner). Auto-tags Schedule C for pros and Capital Expenditure / Operating Expense for property managers at the work-order level. Per beta spec §10R5, the single most-praised feature in PM demos.
 **Mobile signal:** **Sherpa Mobile** in TestFlight — iOS bundle `com.thesherpapros.app` shipped to App Store Connect, Android via Expo right behind. Real product progress, not slide-ware. Lower customer acquisition cost: pros sign up from a phone in the field, not a laptop after dinner.
+**Compliance signal:** **Sherpa Guard** live in production — Role-Based Access Control plus audit logs. Every action on the platform recorded with user, target, action, timestamp. Five role tiers (owner, admin, project manager, pro, client) with permission scoping. SOC 2-readiness signal for institutional-capital diligence; hard buy criterion for any property-management cohort over 5,000 units. Color: emerald `#10b981`.
+**Coordination signal:** **Sherpa Dispatch** live in production — multi-trade timeline orchestration sequences 6+ trades on a single project (kitchen renovations that normally run 11 weeks finish in 5 with Dispatch). Owns the handoffs, surfaces blockers before they become schedule slips. Color: sky blue `#00A9E0`.
+**Materials revenue line:** **Sherpa Materials** live in production — internal materials engine + Zinc API ordering + Uber Direct same-day delivery. 8–12% coordination fee stacks on top of labor commission. ~$540B US trade-materials TAM addressable on top of the labor TAM. Color: warm cream `#FBF7EE`.
+**Public surface signal:** Live `/flex` landing page (side-bandwidth tradesperson acquisition funnel) + public splash showcasing the full 12-capability lineup — both shipping in beta cohort this quarter.
 
 <span class="caption">Phyrom: replace bracketed numbers with live data within 24h of send.</span>
 
@@ -349,11 +353,42 @@ Each lane = a **branded, defensible category.** Old-House Verified is filed for 
 
 <!-- _class: bignumber -->
 
-# **3 new pillars**
+# **6 platform pillars**
 
-## **Sherpa Threads · Sherpa Smart Scan · Sherpa Mobile.** In-app chat with text-message bridge. Optical character recognition with auto-tax categorization. iOS in TestFlight, Android via Expo. **All shipped this quarter. All live in production.**
+## **Sherpa Threads · Sherpa Smart Scan · Sherpa Mobile · Sherpa Guard · Sherpa Dispatch · Sherpa Materials.** In-app chat with text-message bridge. Optical character recognition with auto-tax categorization. iOS in TestFlight, Android via Expo. **Role-Based Access Control + audit logs (SOC 2 readiness signal). Multi-trade timeline orchestration across 6+ trades on a single project. Internal materials engine + Zinc API ordering + Uber Direct same-day delivery.** All shipped this quarter. All live in production.
 
-<!-- ASSET REQUIRED: Three new platform pillars stacked feature lineup — sky blue (Threads) · cream (Smart Scan) · orange-red (Mobile) horizontal blocks with Fraunces serif titles + Manrope body sub-lines. See `docs/operations/social-media-prompt-library.md` Section 11E for the full Ideogram prompt. Generate at 1080×1350 then crop to 16:9 for slide layout. Place lower-right of slide at ~480px tall. Same graphic used across LinkedIn brand-page recap, Wefunder Section 4.5, onepager product/feature row, founding-pro recruit deck Slide "Mobile compare." -->
+<!-- ASSET REQUIRED: Six platform pillars stacked feature lineup — sky blue (Threads) · cream (Smart Scan) · orange-red (Mobile) · emerald #10b981 (Guard) · sky blue #00A9E0 (Dispatch) · warm cream #FBF7EE (Materials) horizontal blocks with Fraunces serif titles + Manrope body sub-lines. Adapt the canonical Ideogram prompt in `docs/operations/social-media-prompt-library.md` Section 11E for a 6-pillar variant. Generate at 1080×1350 then crop to 16:9 for slide layout. Place lower-right of slide at ~480px tall. Same graphic used across LinkedIn brand-page recap, Wefunder Section 4.5, onepager product/feature row, founding-pro recruit deck Slide "Mobile compare." -->
+
+---
+
+<!-- _class: bignumber -->
+
+# **$540B materials TAM**
+
+## **The new revenue line on top of labor.** Sherpa Materials charges an **8–12% coordination fee** on every materials order placed through the platform — stacks on top of the labor commission. Per-job economics shift from a 10% labor-only take to a **blended 18–25% take rate all-in** (labor commission + materials coordination fee + Pro subscription + Success Manager retainer). Capturing 0.5% of materials TAM = **$270M new annual revenue line** at zero incremental customer acquisition cost.
+
+<!-- ASSET REQUIRED: Two side-by-side stacked-bar comparison — left bar 10% labor-only, right bar 18–25% blended (labor + materials + sub + retainer color-coded). 1920x1080, sRGB, cream field, navy axes. Source: v0.dev or Phyrom's designer. Place center of slide. -->
+
+---
+
+<!-- _class: compare -->
+
+# Old marketplace vs. new orchestration layer.
+
+## The competitive set just shifted by an order of magnitude.
+
+| | **Angi · Thumbtack · TaskRabbit · Handy** *(labor only)* | **Sherpa Pros** *(orchestration layer)* |
+|---|---|---|
+| **Layer 1 — Labor matching** | Pay-to-bid leads, shared up to 40-deep | Single matched dispatch, paid for completed work |
+| **Layer 2 — Materials orchestration** | None — pro sources own materials | **Sherpa Materials** — internal engine + Zinc API ordering |
+| **Layer 3 — Same-day delivery** | None — pro picks up own materials | **Uber Direct** integration, same-day to jobsite |
+| **Layer 4 — Multi-trade coordination** | None — pro juggles handoffs themselves | **Sherpa Dispatch** — 6+ trades on one timeline |
+| **Take rate (effective)** | 10–15% labor-only ceiling | **18–25% blended** (labor + materials + sub + retainer) |
+| **Audit-grade compliance** | None — no Role-Based Access Control, no audit logs | **Sherpa Guard** — RBAC + audit logs (SOC 2 readiness) |
+| **Property-management cohort fit** | Fails 5,000+ unit buy criteria | Cleared for institutional cohort diligence |
+| **Competitive set** | Labor-marketplace category | **Trade-supply-chain stack** (FW Webb + Grainger + Uber Direct + Procore combined) |
+
+**The Stripe Connect moment for the trade economy.** Sherpa Pros vertically integrates the four layers a contractor used to stitch together themselves — labor + materials + delivery + coordination — into one orchestration layer.
 
 ---
 

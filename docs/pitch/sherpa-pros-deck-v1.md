@@ -11,6 +11,8 @@
 
 **Title:** Built by a working contractor for the contractors he works with every day.
 
+**Subtitle:** *The licensed-trade marketplace that thinks like a contractor — now also: materials orchestration + multi-trade dispatch.*
+
 **Body:**
 Hi, I'm Phyrom. I run HJD Builders, a licensed general contractor in New Hampshire. I built Sherpa Pros because the platforms my crew gets pitched every week — Angi, Thumbtack, TaskRabbit, Handy — sell us leads we can't afford and send homeowners to people who shouldn't be touching their wiring or their gas line.
 
@@ -57,6 +59,8 @@ Read the four bullets fast. Land hard on the empty quadrant. The four incumbents
 2. **30% of MA residential construction workers are 55+.** (vs. 26% nationally — per spec §2.1) The contractors retiring this decade are the ones homeowners trust. The replacement cohort needs a platform that delivers jobs, not pay-to-bid noise.
 
 3. **AI is finally good enough to do the code work.** A code-aware quote validator that reads NEC, IRC, MA Electrical, and NH RSA in real time was a research paper in 2022. It's a working product on our platform today.
+
+4. **The supply-chain shift.** Pure-labor marketplaces (Angi, Thumbtack, TaskRabbit) have hit a structural 10–15% take-rate ceiling — homeowners and pros revolt above that line. The next 5x of marketplace value is captured by **vertically integrating into materials and multi-trade coordination.** Sherpa Materials (internal materials engine + Zinc API ordering + Uber Direct same-day delivery) and Sherpa Dispatch (multi-trade timeline orchestration) push the blended take rate to 18–25% per job — without raising the labor commission.
 
 **Suggested visual:**
 Three vertical timeline columns: "Rebate dollars activating" (Mass Save 2026), "Trades workforce aging out" (30% over 55), "AI code-validation viable" (2026). All three arrows converge on a single point labeled **"Sherpa Pros · 2026."**
@@ -148,6 +152,8 @@ Don't oversell the SOM number. Investors discount any SOM over 5% of SAM in 18 m
 
 **Founding Pros** (the first 10–12 beta pros) keep 5% take **forever** — permanent recruiting hook and loyalty lock. (per spec §5.2)
 
+> **Footnote on stacked take rate:** Materials coordination fee (8–12%) stacks on top of the labor commission for any job that uses **Sherpa Materials** (internal materials engine + Zinc API ordering + Uber Direct same-day delivery). On a typical $10K labor job with $15K of materials passing through, the blended platform take rate climbs from 10% labor-only to **18–25% all-in** — without changing the headline labor commission a pro sees.
+
 **Unit economics back-of-the-envelope:** A typical beta pro doing $8K GMV per month at 5% take is $400 / month in revenue per pro. At standard pricing ($49 sub + 10% take on $8K GMV) that's $849 / month per pro. 200 pros at standard pricing is $2.0M ARR before the PM tier turns on.
 
 **Suggested visual:**
@@ -176,6 +182,7 @@ Three revenue lines is the whole story. Investors love marketplaces with subscri
 - **Sherpa Threads** — in-app chat across pro / client / project manager with Twilio bridge to text message. Live in production.
 - **Sherpa Smart Scan** — three-flavor optical character recognition (document scanner, photo analyzer, receipt scanner) with auto-tax categorization to Schedule C for pros and Capital Expenditure / Operating Expense for property managers. Live in production.
 - **Sherpa Mobile** — iOS bundle `com.thesherpapros.app` shipped to TestFlight via Expo Application Services; Android via Expo right behind. Real product progress, not slide-ware.
+- **Materials orchestration + Multi-trade dispatch + Role-Based Access Control (RBAC) + Audit logs all shipping in beta cohort.** Sherpa Materials (internal materials engine + Zinc API ordering + Uber Direct same-day delivery), Sherpa Dispatch (multi-trade timeline coordination across 6+ trades on a single project), Sherpa Guard (RBAC + audit logs — SOC 2-readiness signal), plus a public `/flex` landing page and a public splash showcasing the full 12-capability lineup.
 
 **Cohort composition:**
 NH/Seacoast — 2 GCs (HJD network), 2 handymen, 1 plumber, 1 HVAC / heat-pump specialist.
@@ -192,23 +199,84 @@ Six big-number tiles in a 2×3 grid (pros, jobs, GMV, match-time, NPS, code-viol
 
 ---
 
-## Slide 8.5 — Three New Platform Pillars
+## Slide 8.5 — Six Platform Pillars
 
-**Title:** Three new platform pillars shipped this quarter.
+**Title:** Six platform pillars shipped — three closing defensibility gaps, three opening a new revenue line.
 
 **Body:**
 
-Three product capabilities went to production this quarter. Each one closes a defensibility gap a lead-gen platform structurally cannot close.
+Six product capabilities are now in production. The first three close defensibility gaps a lead-gen platform structurally cannot close. The next three open the materials + coordination revenue line that turns Sherpa Pros from a labor marketplace into a vertically integrated trade orchestration layer.
 
 - **Sherpa Threads — in-app chat with text-message bridge.** Pro, client, and project manager chat in-app. Clients can keep texting from their normal phone — replies land back in-app. Read receipts, file attachments, work-order-attached threading. Kills the "I'll just text you" data leak that erodes marketplace defensibility. Audit trail for dispute resolution.
 - **Sherpa Smart Scan — three-flavor optical character recognition.** Document scanner (permits, blueprints, contracts), photo analyzer (jobsite conditions), receipt scanner (invoices). Wired into auto-tax-categorization — scanned receipts auto-tag to Schedule C (the IRS form for self-employed business income) for pros and Capital Expenditure / Operating Expense for property managers. Per beta spec §10R5, the single most-praised feature in PM demos.
-- **Sherpa Mobile — iOS in TestFlight, Android via Expo.** Bundle `com.thesherpapros.app` deployed to App Store Connect; first 50 founding pros get TestFlight invites. iOS and Android via Expo Application Services. Real product progress, not slide-ware — and a lower customer acquisition cost lever because pros can sign up from a phone in the field.
+- **Sherpa Mobile — iOS in TestFlight, Android via Expo.** Bundle `com.thesherpapros.app` deployed to App Store Connect; first 50 founding pros get TestFlight invites. Real product progress, not slide-ware — and a lower customer acquisition cost lever because pros can sign up from a phone in the field.
+- **Sherpa Guard — Role-Based Access Control (RBAC) + audit logs.** Every action on the platform is logged with user, target, action, and timestamp. Five role tiers (owner, admin, project manager, pro, client) with permission scoping. **The SOC 2-readiness signal any institutional-capital LP looks for in diligence — and a hard buy criterion for any property-management cohort over 5,000 units.** Color: emerald `#10b981`.
+- **Sherpa Dispatch — multi-trade timeline orchestration.** A single kitchen-renovation project touches 6+ trades (demo, electrical, plumbing, HVAC, drywall, paint, tile, cabinetry, finish carpentry). Sherpa Dispatch sequences them on one timeline, owns the handoffs, and surfaces blockers before they become schedule slips. Color: sky blue `#00A9E0`.
+- **Sherpa Materials — internal materials engine + Zinc API ordering + Uber Direct same-day delivery.** Pros pick line items from a catalog, the platform places the order through the Zinc API (programmatic access to major retail catalogs), and Uber Direct delivers same-day to the jobsite. **8–12% coordination fee stacks on top of the labor commission. Materials TAM expansion: ~$540B US residential + light-commercial trade-materials market.** Color: warm cream `#FBF7EE`.
 
 **Suggested visual:**
-Three stacked horizontal blocks (sky blue · cream · orange-red) with the three product names in Fraunces serif and one-line value props in Manrope. See `docs/operations/social-media-prompt-library.md` §11E for the canonical Ideogram prompt — generate at 1080×1350, crop to 16:9 for slide layout.
+Six stacked horizontal blocks (sky blue · cream · orange-red · emerald · sky blue · warm cream) with the six product names in Fraunces serif and one-line value props in Manrope. Generate from the canonical Ideogram prompt in `docs/operations/social-media-prompt-library.md` (request a 6-pillar variant) at 1080×1350, crop to 16:9 for slide layout.
 
 **Presenter notes:**
-This slide is the answer to the implicit "what have you shipped since the last update" question every investor asks. Run it as proof, not promotion — each pillar gets one sentence, then move on. The mobile-in-TestFlight line is the single biggest credibility lever — most pre-seed founders pitch a roadmap; we have a build with a TestFlight ID. Per CLAUDE.md, Sherpa Mobile is the same Next.js production app delivered through Expo, so the engineering surface area is small and the velocity is high. Per `docs/operations/sherpa-product-portfolio.md`, these three are platform capabilities (cross-product), not standalone products — frame them that way to avoid "feature creep" follow-up questions.
+This slide is the answer to the implicit "what have you shipped since the last update" question every investor asks. Run it as proof, not promotion — one sentence per pillar, then move on. The Mobile-in-TestFlight line is still the single biggest credibility lever, but the Materials + Dispatch + Guard line is what changes the story from "another marketplace" to "vertically integrated orchestration layer" (Slide 8.6 carries the full thesis). Per `docs/operations/sherpa-product-portfolio.md`, these are platform capabilities (cross-product), not standalone products — frame them that way to avoid "feature creep" follow-up questions.
+
+---
+
+## Slide 8.6 — The Stripe Connect Moment
+
+**Title:** The Stripe Connect moment for the trade economy.
+
+**Body:**
+
+Stripe Connect did not win because it processed payments — it won because it **vertically integrated the four layers of online commerce** (payments + payouts + identity + compliance) into one orchestration layer that turned single-transaction merchants into whole-business platforms.
+
+Sherpa Pros is doing the same thing for the trades. We vertically integrate the **four layers a contractor used to stitch together themselves** — labor + materials + delivery + coordination — into one orchestration layer.
+
+**The 4-layer competitive set, before vs. now:**
+
+| Layer | Old competitive set (point solutions) | Sherpa Pros (orchestration layer) |
+|---|---|---|
+| **Labor** | Angi · Thumbtack · TaskRabbit · Handy | Sherpa Marketplace + Sherpa Score (5-tier) + Sherpa Flex |
+| **Materials** | FW Webb · Grainger · Home Depot Pro · supply houses | Sherpa Materials (internal materials engine + Zinc API) |
+| **Delivery** | Pro picks up in own truck · supply-house delivery in 3–5 days | Sherpa Materials + Uber Direct same-day delivery |
+| **Coordination** | Procore (enterprise GC software) · spreadsheets · group texts | Sherpa Dispatch (multi-trade timeline orchestration) |
+
+**The thesis in one line:** *Sherpa Pros is the layer that turns single-job marketplaces into whole-project orchestration — the same way Stripe Connect turned single-transaction merchants into whole-business platforms.*
+
+**Suggested visual:**
+4-row table with the columns above. Left column = old competitive set (logos in muted grey). Right column = Sherpa Pros pillar names in brand colors. Bottom-right callout: *"The orchestration layer is the next 5x of marketplace value."*
+
+**Presenter notes:**
+This is the slide that reframes Sherpa Pros' competitive set. Investors who have heard "Angi for licensed trades" 50 times in the last decade need 30 seconds to understand we are not in that race. The four-layer table does the work — read the columns, then the one-line thesis. Pause. Move on. If a partner asks "who's doing this elsewhere," the honest answer is: the trade-supply-chain stack is fragmented across at least 8 incumbents, and nobody is integrating the layers. That fragmentation is the wedge.
+
+---
+
+## Slide 9.5 — Materials TAM Expansion
+
+**Title:** Materials TAM Expansion — the $540B revenue line on top of labor.
+
+**Body:**
+
+The platform shift from labor-only marketplace to vertically integrated orchestration layer **expands the addressable market by an order of magnitude.**
+
+| Metric | Labor-only (old) | Labor + materials orchestration (new) |
+|---|---|---|
+| **US TAM** | ~$500B residential trade services | **+ ~$540B residential + light-commercial trade materials** |
+| **Sherpa take rate** | 5–12% (labor commission) | **+ 8–12% (materials coordination fee, stacks)** |
+| **Per-job economics** | $10K labor × 10% = $1,000 | $10K labor × 10% + $15K materials × 10% = **$2,500 per job** |
+| **Subscription floor** | $49/month per pro | $49/month per pro (unchanged) |
+| **Property Manager tier** | $4 → $1.50 per unit/month | $4 → $1.50 per unit/month (unchanged) |
+| **Blended take rate per job** | 10% labor-only | **18–25% all-in** |
+
+**The math at scale.** Capturing **0.5% of the US materials TAM** at a 10% coordination fee = **$270M new annual revenue line** on top of labor commission. That is a second revenue line of equal weight to the labor commission, with the same supply (licensed pros) and the same demand (jobs in flight) — pure margin expansion, not new customer acquisition.
+
+**Why the materials line accelerates path to profitability.** Materials revenue has near-zero incremental customer acquisition cost (CAC) — every job booked through Sherpa Marketplace is a materials-coordination opportunity at zero acquisition cost. The materials line turns each labor job from a single-take-rate transaction into a stacked-revenue event, compressing the months-to-cash-flow-positive milestone for the same Phase 0 ask.
+
+**Suggested visual:**
+Two side-by-side stacked bar charts. Left: "Old model — labor only" with one bar at 10% take. Right: "New model — labor + materials + delivery + coordination" with stacked bars showing 5–12% labor + 8–12% materials + Sherpa Home subscription + Success Manager retainer = **18–25% blended.** Side annotation: *"~$540B materials TAM. 0.5% capture = $270M new annual revenue line."*
+
+**Presenter notes:**
+This is a math slide. Read the table, then the two callouts. The headline is not the $540B — it is the **18–25% blended take rate.** Most investors hear "marketplace take rate ceiling 10–15%" as a hard number; we are showing the structural way past it. The "same Phase 0 ask, faster path to cash-flow-positive" line is the bridge to the ask slide — keep the ask the same, but make sure the partner room understands the materials revenue line is what shortens the runway calculus.
 
 ---
 
@@ -265,6 +333,8 @@ Don't pretend the team is bigger than it is. A solo working-GC founder with a bu
 3. First non-dilutive grant submitted (MassCEC Catalyst + NSF SBIR Phase I)
 4. Wefunder community-round page live with $100K+ soft-committed
 5. Suffolk Technologies + Techstars ConstructionTech + YC + Building Ventures conversations open
+
+**Same ask, faster runway.** The Phase 0 ask is unchanged. But with the materials revenue line live (Sherpa Materials + Sherpa Dispatch + Sherpa Guard now in beta), the per-job economics shift from a 10% labor-only take to an 18–25% blended take. **The same dollars buy a materially shorter path to cash-flow-positive than an equivalent labor-only marketplace deal.**
 
 **Suggested visual:**
 Three-door diagram (the three exit-gate triggers, each labeled with $ amount and source). Below: a single-row 90-day Gantt with the 5 milestones plotted on a 12-week timeline. Bottom-right CTA: **"Open the door that fits you. We close on the first one."**

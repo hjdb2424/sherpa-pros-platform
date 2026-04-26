@@ -274,6 +274,59 @@ If you are **accredited**, there is no Reg CF cap for you. You can also explore 
 
 ---
 
+## What changed this quarter (the new vertical-integration story)
+
+### Q31. What is the difference between Sherpa Pros and Angi or Thumbtack?
+
+Angi and Thumbtack are **labor-only lead-gen platforms.** They sell a contractor the chance to bid on a homeowner job — and then the contractor still has to handle everything else themselves: ordering the materials, picking them up, coordinating any other trades on the project, and managing the schedule.
+
+Sherpa Pros is a **vertically integrated trade orchestration platform.** That is a long phrase for a simple idea: we handle four things on every job, not one.
+
+1. **Labor** — like Angi and Thumbtack, we match a homeowner with a licensed pro. Unlike them, we charge a take rate when the job actually completes (not a lead fee for the chance to bid).
+2. **Materials** — through Sherpa Materials, the platform orders all the materials for the job from the major retail catalogs and gets them delivered to the jobsite the same day through Uber Direct. Angi and Thumbtack do not do this at all.
+3. **Delivery** — same-day delivery is built in. The pro does not lose half a day driving to the supply house. Angi and Thumbtack do not do this either.
+4. **Coordination** — through Sherpa Dispatch, the platform sequences every trade on a multi-trade project (a kitchen renovation can involve 6+ trades) on one timeline, so the project finishes in 5 weeks instead of 11. Angi and Thumbtack do not touch this layer at all.
+
+The plain-English version: Angi and Thumbtack compete in one lane (labor matching). Sherpa Pros operates in four lanes (labor + materials + delivery + coordination). The competitive set for Sherpa Pros is no longer the labor-marketplace category — it is the entire trade-supply-chain stack (companies like FW Webb, Grainger, Procore, and the same-day delivery services). Nobody is putting all four of those lanes together for the residential and small-commercial trade. **That is the wedge.**
+
+For a longer explainer, see Section 4.5 and Section 4.6 of the Wefunder page.
+
+### Q32. How do you make money?
+
+We make money on every job in four stacked ways:
+
+1. **Labor commission.** When a pro completes a job, we take a percentage of the labor cost. The rate depends on the pro tier — 5 percent forever for our Founding Pros, 8 percent for top-rated Gold-tier pros, 12 percent for Silver and Bronze, 18 percent for Sherpa Flex (our no-LLC entry tier, which includes $1 million per-project liability insurance).
+2. **Materials coordination fee.** When the pro orders the job's materials through Sherpa Materials, we add an 8 to 12 percent coordination fee on top of the wholesale materials cost. This stacks on top of the labor commission — it is a separate revenue line.
+3. **Pro subscription.** Pros pay $49 per month for the standard subscription tier (free during beta).
+4. **Property Manager tier and Success Manager retainer.** Property managers pay $4 per unit per month at entry, dropping to $1.50 per unit per month at scale (5,000+ units). White-glove "Sherpa Manager" accounts pay an additional retainer for a real human running the account.
+
+**The blended take rate per job — all four revenue lines combined — works out to roughly 18 to 25 percent of the all-in job cost (labor + materials).** That is a different category of marketplace than Angi or Thumbtack, where the take rate ceiling is structurally 10 to 15 percent because labor is the only revenue line.
+
+This is also why Sherpa Materials matters so much for the company's path to profitability. Materials revenue has near-zero customer acquisition cost — every job we already booked is a materials-coordination opportunity at no extra acquisition spend. The materials line shortens the runway calculus for the same Phase 0 ask.
+
+### Q33. What does "multi-trade coordination" mean?
+
+The plain-English answer: a kitchen renovation looks simple from the outside, but inside it is **six or more separate trades that all have to show up in the right order.**
+
+Take a typical kitchen remodel:
+
+1. **Demolition** rips out the old cabinets, countertops, and flooring.
+2. **Electrical** has to rough-in new outlets, the dishwasher line, the range hood, and recessed lighting — but only after demo and before drywall.
+3. **Plumbing** has to rough-in the new sink, dishwasher, and refrigerator water line — same window as electrical.
+4. **Drywall** patches and finishes — only after electrical and plumbing are inspected.
+5. **Paint** has to come in after drywall is done — but before cabinets so paint splatter isn't an issue.
+6. **Tile** for the backsplash — after paint, before cabinets.
+7. **Cabinetry** install — after paint and backsplash tile.
+8. **Finish carpentry** for trim, crown molding, and any built-ins — last.
+
+If even one of those trades shows up on the wrong day — say plumbing arrives before electrical is done — the whole project slips by a week or more. Today, most contractors juggle that with a paper notebook, a spreadsheet, a group text, and a lot of swearing. **An 11-week kitchen renovation that runs 3 weeks late (so 14 weeks total) is the industry norm.**
+
+**Sherpa Dispatch puts every one of those trades on one timeline, owns the handoff between them, and warns everyone in the chain before a delay becomes a slip.** A real-world example from our beta: that same 11-week kitchen renovation finishes in **5 weeks** with Sherpa Dispatch — because the trades are sequenced correctly the first time. Faster project completion means happier homeowners, happier pros (who get paid sooner), and happier property managers (whose unit comes back online for rent sooner).
+
+Multi-trade coordination is the layer enterprise general contractors pay $1,000+ per user per month for software like Procore to handle. We bring it down to the residential and small-commercial scale and bake it into the Sherpa Pros platform every customer already uses. Nobody else in the licensed-trade marketplace category does this.
+
+---
+
 ## Where to learn more
 
 - **Live platform:** [www.thesherpapros.com](https://www.thesherpapros.com)

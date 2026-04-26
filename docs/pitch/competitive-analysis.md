@@ -12,6 +12,61 @@ The home-services platform market is dominated by lead-gen pay-to-play models (A
 
 **The "licensed + code-aware + true marketplace" quadrant is empty.** Sherpa Pros plants the flag there with built-in code-aware quote validation (NEC, IRC, MA Electrical, NH RSA), permit-awareness, rebate-awareness, and a 5–10% take-rate model that is roughly half the effective cost of Angi/Thumbtack lead-gen.
 
+**Update 2026-04-25 — vertical integration shipped.** With the materials orchestration layer (Wiseman Materials + Zinc Application Programming Interface (API) + Uber Direct same-day delivery) and the multi-trade dispatch + timeline shipped on 2026-04-25, the comparison frame changes. Sherpa Pros is no longer just a labor marketplace competing with Angi/Thumbtack/TaskRabbit. It is a **vertically-integrated labor + materials + delivery + coordination layer** competing across four formerly-separate categories. See §1.5 below for the new comp-set framing — the per-competitor matrix in §2 still applies inside the labor-marketplace layer, but it is now one of four layers Sherpa Pros covers.
+
+---
+
+## 1.5 Vertical Integration — Labor + Materials + Delivery + Coordination
+
+**The category-defining shift.** Until 2026-04-25, Sherpa Pros was best understood as the next-generation labor marketplace — better than Angi on take-rate, better than Thumbtack on lead-blast economics, better than TaskRabbit on licensed-trade depth. After 2026-04-25, the shorthand for what Sherpa Pros is changes from *labor marketplace* to *labor + materials + delivery + coordination layer under one orchestration plane*. The new competitive set splits into **four layers**:
+
+| Layer | What it does | Incumbent leaders | What Sherpa Pros ships |
+|---|---|---|---|
+| **1. Labor marketplace** | Match a homeowner / Property Manager to a licensed pro | Angi, Thumbtack, TaskRabbit, Houzz Pro | **Sherpa Marketplace** — single-pro dispatch, code-aware quote validation, 5–10% take rate, Stripe Connect escrow |
+| **2. Materials supply** | Source the parts the job needs and get them to the job site | FW Webb, Grainger, Home Depot Pro, Lowe's ProDesk, Build.com, supplyhouse.com | **Sherpa Materials** — Wiseman Materials auto-derives the parts list from job spec + code + assembly catalog; Zinc API procures from Amazon Business + supplier catalogs; transparent supplier invoice + 8-12% coordination fee (lower than dealer markup) |
+| **3. Last-mile delivery** | Same-day delivery of materials to the job site | Uber Direct, DoorDash Drive, Roadie | **Uber Direct** integrated as the delivery rail inside Sherpa Materials — pro doesn't burn 90 minutes on a supply-house run |
+| **4. Project coordination** | Sequence multi-trade work, manage handoffs, track blockers | BuildBook, BuilderTrend, JobNimbus, Procore (light commercial) | **Sherpa Dispatch** — multi-trade timeline auto-schedules handoffs (e.g., kitchen renovation: demo → plumbing rough-in → electrical rough-in → drywall → cabinet → counter → trim → paint), surfaces blocked work, re-sequences when a trade slips |
+
+**Sherpa Pros is the only player vertically integrating all four layers under one orchestration plane.** Each incumbent in the table above is single-layer by design — they do their layer well, they do not own the customer relationship across the other three layers. The coordination cost the homeowner / Property Manager pays today is exactly the cost Sherpa Pros eliminates by integrating across the four.
+
+### 1.5.1 Per-Layer Moat Comparison
+
+| Layer | Incumbent's moat | Why Sherpa Pros' integrated offering wins inside this layer |
+|---|---|---|
+| **Labor** | Angi/Thumbtack: paid acquisition + brand recognition. TaskRabbit: IKEA partnership. Houzz Pro: SaaS contractor lock-in. | All four incumbents are single-trade-job platforms — a homeowner asks for a plumber, gets a plumber. None of them coordinate the *other six trades* on a kitchen renovation. Sherpa Dispatch wins on multi-trade because the incumbents structurally can't ship it without the materials + coordination layers. |
+| **Materials** | FW Webb / Grainger: warehouse footprint + supplier relationships. Home Depot Pro / Lowe's ProDesk: retail footprint + Pro account credit lines. Build.com / supplyhouse.com: e-commerce convenience. | All five materials incumbents require the contractor or homeowner to **already know what to order** — they sell catalogs, not derived parts lists. Wiseman Materials auto-derives the list from job spec + code + assembly catalog. The contractor-facing value is "we figured out what you need" instead of "search our catalog." That derivation requires owning the labor + dispatch layers, which the incumbents do not. |
+| **Last-mile delivery** | Uber Direct / DoorDash Drive / Roadie: driver network + delivery technology. | These are infrastructure providers, not consumer brands in this category. Sherpa Pros uses Uber Direct as the rail (no need to compete with it) and wraps it in the job context — the homeowner sees "your cabinets arrive Wednesday at 10 AM" inside the same app where they approved the parts list. The integration is the moat; the rail is commodity. |
+| **Project coordination** | BuildBook / BuilderTrend / JobNimbus: SaaS contractor stack. Procore: large-commercial scale + real-time collaboration. | All four coordination tools assume the contractor **already has the labor + materials secured** — they are management overlays, not sourcing platforms. Sherpa Dispatch is sourcing + sequencing in one surface. Procore would have to acquire a labor marketplace and a materials catalog to ship the equivalent; the SaaS challengers would have to build supply across both to ship the equivalent. |
+
+**Combined moat:** the four-layer integration is itself a moat. An incumbent in any single layer would need to build or acquire across the other three, which is structurally hard (different business models, different customer bases, different unit economics). Vertical integration in two-sided marketplaces is famously hard to copy because each layer's economics depend on the others.
+
+### 1.5.2 Take-Rate Implication of Vertical Integration
+
+Single-layer labor marketplaces cap out at a **10–15% take rate on labor only.** Sherpa Pros stacks revenue lines across the four layers:
+
+- **5–12% labor commission** (Sherpa Flex 18%, Standard 12%, Gold 8%) on the labor side
+- **8–12% materials coordination fee** on the materials side (transparent supplier invoice + coordination fee broken out, lower than traditional dealer markup, working assumption per GTM spec §10.1 R7)
+- **Sherpa Home subscription** revenue from homeowners
+- **Sherpa Success Manager retainer** revenue from Property Manager / Multi-Property Owner / White-Glove customers
+
+**Blended take rate per job: 18–25%** with the materials line being the durability play (recurring per-job revenue, not per-pro subscription). Per-job materials-to-labor ratio runs ~60/40 materials-to-labor for trade work, so each $10K labor job has roughly $15K of materials passing through Sherpa Materials. See `docs/pitch/tam-sam-som.md` Vertical Integration Multiplier callout.
+
+---
+
+## 1.6 Compliance + Audit Posture as a Competitive Moat
+
+**The data-handling gap.** Angi, Thumbtack, TaskRabbit, Houzz Pro, and Handy were built as pre-Service Organization Control 2 (SOC 2), pre-General Data Protection Regulation (GDPR) consumer marketplaces — the data flow was "blast lead to many pros, hand off to phone / email, no further visibility." None of them ship a per-action audit log against the work order. None of them ship Role-Based Access Control (RBAC) middleware that enforces tier-appropriate dashboard routing across roles like *pro · client · Property Manager · admin*. The contractor reviews of all five platforms are full of "I never know what happened to that lead" / "they sold my information to my competitor" / "I can't get the call recording back" — all symptoms of weak data-handling architecture.
+
+**Sherpa Guard is the answer Sherpa Pros ships out of the box.** Per `docs/operations/sherpa-product-portfolio.md` §2.7.4, Sherpa Guard combines RBAC middleware (session-aware route enforcement on `/pro/*`, `/client/*`, `/pm/*`, `/admin/*` with admin as a permission flag, not a role) with an `audit_logs` table that records every load-bearing action — sign-in, role change, access granted, access revoked, reward redeemed, pro verified, pro rejected, job created, material approved, dispatch triggered — with user identifier, target type and identifier, JavaScript Object Notation (JSON) metadata, IP address, and timestamp. Admin view at `/admin/logs` is filterable by action, user, and date range.
+
+**Why this is a moat (not just a feature).** Three reasons:
+
+1. **Property Manager (PM) cohort gating.** The 5,000+ unit PM cohort — the highest-Annual Recurring Revenue (ARR) target on the Sherpa Pros customer map — runs internal compliance reviews before they sign any vendor contract. Sherpa Guard satisfies the audit-trail control out of the box; lead-gen incumbents fail it on day one. Without Sherpa Guard, the PM cohort cannot be sold to enterprise-style buyers — they would have to take Sherpa Pros through a 9-12 month custom-compliance build first. With Sherpa Guard, the cohort is addressable from day one.
+2. **Institutional-capital Limited Partner (LP) diligence.** Any institutional-capital fund (Insight, Bessemer, Andreessen, the family offices behind a Series A) runs Service Organization Control 2 (SOC 2) audit-trail-control checks on portfolio investments. Sherpa Guard makes the diligence answer "yes, here is the table and here is the admin view" instead of "we are working on it." Saves 3-6 months of go-to-market on the institutional-tier cohort.
+3. **Dispute defensibility per job.** When a $14K kitchen job goes sideways and the homeowner disputes the materials approval or the dispatch decision, Sherpa Pros has the per-event audit log to settle the dispute. Lead-gen incumbents do not — which is why their dispute-resolution function relies on subjective phone-call-based mediation and runs a several-percent loss rate per disputed transaction.
+
+**Defensibility against incumbent retrofit.** Could Angi or Thumbtack ship Sherpa Guard? Technically, yes — RBAC middleware and an audit log table are standard patterns. **Practically, no**, because the audit log is only useful if the platform owns the work order, the thread, the materials approval, and the dispatch event in one data model. Lead-gen incumbents fragment those events across the pro's personal phone (the call), the pro's personal email (the lead), the homeowner's bank (the payment), and the pro's accounting tool (the invoice) — there is no single data model to log against. Retrofitting would require re-architecting around the work order as the spine, which is a multi-year build that doesn't improve the lead-fee economics that pay the bills today. So the moat holds.
+
 ---
 
 ## 2. Comparison Matrix

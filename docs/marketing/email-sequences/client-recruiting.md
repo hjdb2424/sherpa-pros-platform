@@ -23,11 +23,15 @@ You know me from HJD Builders. We have worked together on {{project_reference}},
 
 I want to tell you about something else I built.
 
-You probably have a list. Stuff around the house that is too small for HJD to take on but too important to call a random handyman from Google. A bathroom faucet that has been dripping for a year. A deck board that is rotting. The garbage disposal that died last summer. The heat pump quote you have been meaning to get.
+Picture this. You decide to redo the kitchen. Six contractors. Four delivery trucks. Three reschedules. The cabinets show up before the electrician finishes. The trim guy shows up before the cabinet guy is done. Eleven weeks of half-finished kitchen and a dumpster you re-stage three times. That is the average kitchen renovation in 2026.
 
 That is what Sherpa Pros is for.
 
 It is a new platform I built for licensed trade work — national in scope, launching here at home first. Same standard you got from HJD. Every pro on it is license-checked, insurance-checked, and code-aware. You post the job in a few words, you get bids from real local pros, and you only pay when the work is done. No card to post, no fees, no spam.
+
+For the bigger projects, two pieces of the platform do the work you would normally have to do yourself. Sherpa Dispatch sequences the trades — demo, plumbing, electric, drywall, cabinet, counter, trim, paint — so each pro shows up at the right moment in the order, not the wrong one. Sherpa Materials orders what your job needs and has it on-site the day the right pro shows up. Zero supply runs. You and your pro both approve the materials list inside the app before anything ships. The 11-week kitchen turns into a 5-week scheduled flow.
+
+For the smaller stuff — the dripping faucet, the rotting deck board, the dead garbage disposal, the heat pump quote — same platform, same standard, just one trade at a time.
 
 Two things that make it easier for you specifically. You can chat with your pro from text message on your phone or from the web — pick whichever you prefer, the messages bridge between the two. And if you have a permit photo, a rebate application, or a manufacturer's spec sheet you want parsed, snap a picture in the platform and Sherpa Smart Scan reads it for you instantly.
 
@@ -42,6 +46,8 @@ If you have questions, just reply. This goes straight to me.
 Phyrom
 HJD Builders LLC
 Founder, Sherpa Pros
+
+P.S. — If anyone in your house has a tradesperson day-job (framer, electrician's helper, plumber's apprentice) and weekend bandwidth — send them to thesherpapros.com/flex. We just opened the side-bandwidth door. No LLC required, $1M per-project liability insurance is included in the platform fee, jobs under $5,000. Built so good people who aren't ready to form a company yet can still earn on the platform.
 
 ---
 

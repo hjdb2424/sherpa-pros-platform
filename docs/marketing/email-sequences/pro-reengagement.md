@@ -91,6 +91,10 @@ Why am I making this offer? Because the second job is way easier to take than th
 
 One more thing while I have you. You have earned **[CURRENT POINTS]** Sherpa Rewards points from your beta jobs already. That is **[NEXT REWARD]** away from a free redemption. Take one more job this month and pull the trigger. Sherpa Rewards is the points-redemption store we shipped this quarter — 21 items in the catalog right now (Milwaukee, DeWalt, Festool tools, Visa gift cards, prepaid debit, branded apparel, charity donations). Fulfillment runs through Tremendous, so the redemption is real-world, not a platform credit. Browse the catalog at thesherpapros.com/pro/rewards.
 
+If the reason you went quiet is "I don't have full-time bandwidth right now" — read this paragraph. We just opened thesherpapros.com/flex. It is the side-bandwidth tier. No LLC required. $1M per-project liability insurance is included in the platform fee. Jobs under $5,000. Background-check gate. The whole point of /flex is that you don't have to be full-time to be on the platform — you can take one Saturday job a month and stay on the rails. If that fits where you are right now, click the link, the on-ramp is short.
+
+If the reason you went quiet is "I'm spending too much windshield time at the supply house and can't add platform jobs to my week" — read this paragraph. We just shipped Sherpa Materials. The platform orders what your job needs and Uber Direct drops it on the job site the morning you show up. That's 60 to 90 minutes a day you stop spending in line at FW Webb or Lowe's Pro. Most pros tell me that single change is what made platform jobs profitable — windshield time is the silent margin killer.
+
 [See open jobs in your area]({{jobs_url}})
 
 If this still is not the right time, that is fine. I will move you to a quarterly check-in list and you will not hear from me until {{next_quarter_month}}.

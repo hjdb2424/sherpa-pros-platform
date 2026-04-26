@@ -989,7 +989,106 @@ A clean editorial three-panel feature lineup in stacked horizontal blocks, 1080 
 
 ---
 
-## SECTION 12 — Tactical Best Practices
+## SECTION 12 — Vertical Integration Visuals
+
+Seven Ideogram prompts for the Sherpa Dispatch + Sherpa Materials + Sherpa Guard + /flex landing + splash showcase launch sweep (LinkedIn editorial Wks 25–28, social-content-plan Days 34–37). These are the visuals that anchor the vertical-integration narrative — the shift from labor marketplace to labor + materials + delivery + coordination layer.
+
+### 12A. Multi-trade dispatch timeline — 8 trades scheduled in a Gantt-like horizontal flow (1080×1350 portrait, 4:5)
+
+Pairs with: LinkedIn Editorial Wk 25 Mon · social-content-plan Day 34 (Sherpa Dispatch + Sherpa Materials launch) · pitch deck "Multi-trade orchestration" slide.
+
+```
+A clean editorial Gantt-style multi-trade dispatch timeline, 1080 by 1350 pixels, 4:5 portrait. Composition: warm cream #FBF7EE background fills the canvas. CENTERED VERTICALLY: a horizontal Gantt-like timeline with eight stacked trade rows representing a kitchen renovation sequence. Each row is approximately 96px tall with a 16px gap. From top to bottom, rows are labeled in Manrope sans-serif 24pt dark navy #1A1A2E on the LEFT side with 80px padding: "Demo", "Plumbing", "Electric", "Drywall", "Cabinet", "Counter", "Trim", "Paint". To the RIGHT of each label, a sky-blue #00A9E0 horizontal bar of varying length representing each trade's scheduled window — bars overlap slightly where handoffs happen, with small white circular handoff markers between them. The bars stair-step down and to the right in a clean diagonal sequence, showing the ordered handoff flow. ABOVE the timeline, in dark navy Fraunces serif italic 36pt left-aligned with 80px padding: "Sherpa Dispatch — multi-trade sequence". BELOW the timeline, a thin orange-red #FF4500 progress line with the label "Week 1" on the far left and "Week 5" on the far right in Manrope 18pt dark navy. In the LOWER-RIGHT corner with 40px padding, the Sherpa Pros wordmark in dark navy at 22pt. Flat editorial design, no gradients, no drop-shadows, no glossy effects. The mood: serious, confident, contractor-credible — a Gantt chart drawn by someone who has actually been on a kitchen jobsite. Use ONLY these five colors: #00A9E0, #FF4500, #FFFFFF, #1A1A2E, #FBF7EE. No other colors.
+```
+
+- **Aspect Ratio:** 4:5 (1080×1350 px)
+- **Style:** Design · Magic Prompt OFF · Character reference: Sherpa Pros icon
+- **Caption overlay (Canva, optional):** Below the timeline, in dark navy Manrope 18pt: *"11-week kitchen → 5-week orchestrated. Sherpa Dispatch sequences the handoffs."*
+- **Asset placement:** LinkedIn Wk 25 Mon static graphic · IG Reel Day 34 end-card · pitch deck "Multi-trade orchestration" slide · client-recruiting email inline (when permitted)
+
+### 12B. Materials orchestration diagram — Sherpa Materials engine → Zinc API → Uber Direct truck → job site (1080×1350 portrait, 4:5)
+
+Pairs with: LinkedIn Editorial Wk 25 Mon · social-content-plan Day 34 (Sherpa Materials launch) · Wefunder vertical-integration deep-dive.
+
+```
+A clean editorial isometric illustration showing the four-stage materials orchestration flow, 1080 by 1350 pixels, 4:5 portrait. Composition: warm cream #FBF7EE background fills the canvas. FOUR isometric flat-design icons arranged in a stair-step diagonal sequence from upper-left to lower-right, connected by sky-blue #00A9E0 thin arrow-lines between each stage. STAGE 1 (upper-left, ~280px tall): an isometric flat-design glowing engine cube in dark navy #1A1A2E with sky-blue #00A9E0 internal grid lines suggesting a database / matching engine. Below it in Manrope 22pt dark navy: "Materials engine". STAGE 2 (slightly down and right, ~280px tall): an isometric flat-design API cloud icon with white packets flowing through it in sky-blue. Below it in Manrope 22pt: "Zinc API". STAGE 3 (further down and right, ~280px tall): an isometric flat-design delivery van in orange-red #FF4500 with "Uber Direct" type-set on the side in white Manrope 16pt. Below the van in Manrope 22pt dark navy: "Uber Direct". STAGE 4 (lower-right, ~280px tall): an isometric flat-design residential job site — a partially framed wall with a stack of materials beside it in dark navy outline + warm cream fill. Below it in Manrope 22pt dark navy: "Job site". ABOVE the four stages, in dark navy Fraunces serif italic 36pt centered: "Sherpa Materials — order to on-site". In the LOWER-RIGHT corner with 40px padding, the Sherpa Pros wordmark in dark navy at 22pt. Flat isometric editorial design, no gradients, no drop-shadows, no glossy effects. The mood: confident product-explainer, the orchestration is the story. Use ONLY these five colors: #00A9E0, #FF4500, #FFFFFF, #1A1A2E, #FBF7EE. No other colors.
+```
+
+- **Aspect Ratio:** 4:5 (1080×1350 px)
+- **Style:** Design · Character reference: Sherpa Pros icon
+- **Caption overlay (Canva, optional):** Below the four-stage flow, in dark navy Manrope 18pt: *"Pro and client approve. Platform orders + delivers. Zero supply runs."*
+- **Asset placement:** LinkedIn Wk 25 Mon supplemental graphic · IG carousel Day 34 slide 2 · Wefunder Section 4 inline · investor pitch deck Slide 12 ("Vertical integration")
+
+### 12C. Audit log dashboard mockup — clean table with emerald accents on "verified" actions (1080×1350 portrait, 4:5)
+
+Pairs with: LinkedIn Editorial Wk 26 Wed · social-content-plan Day 35 (Sherpa Guard launch) · pm-outbound Email 2 inline screenshot.
+
+```
+A clean editorial mockup of an audit log dashboard table, 1080 by 1350 pixels, 4:5 portrait. Composition: warm cream #FBF7EE background fills the canvas. CENTERED: a clean white card with a thin sky-blue #00A9E0 1px border, approximately 960px wide and 1080px tall, with 24px internal padding. AT THE TOP of the card, a horizontal filter bar in light cream with 4 small filter chips in Manrope 16pt dark navy #1A1A2E: "User: Site Manager", "Date: Last 30 days", "Action: All", "Work Order: WO-1042". BELOW the filter bar, a table with 5 columns in Manrope 14pt dark navy header row: "TIMESTAMP", "USER", "ACTION", "AMOUNT", "STATUS". TABLE BODY: 8 rows of audit log entries, each row 64px tall with a thin warm-cream divider. Sample row content (Manrope 14pt dark navy, but pure visual placeholder — no real PII): "2026-04-25 10:14 EST · jose.rivera@... · Approved invoice INV-882 · $1,840 · VERIFIED" with the "VERIFIED" pill in emerald green #10B981 with white text on the right edge of the row. Mix the rows so 6 of 8 say "VERIFIED" in emerald, 1 says "PENDING" in slate gray, 1 says "FLAGGED" in orange-red #FF4500. ABOVE the white card, in dark navy Fraunces serif italic 36pt left-aligned: "Sherpa Guard — audit log". In the LOWER-RIGHT corner of the canvas with 40px padding, the Sherpa Pros wordmark in dark navy at 22pt. Flat editorial design, no gradients, no drop-shadows, no glossy effects. The mood: serious, auditor-credible, the table is the story — like a New York Times data interactive screenshot. Use these six colors: #00A9E0, #FF4500, #10B981, #FFFFFF, #1A1A2E, #FBF7EE. No other colors.
+```
+
+- **Aspect Ratio:** 4:5 (1080×1350 px)
+- **Style:** Design · Character reference: Sherpa Pros icon
+- **Caption overlay (Canva, optional):** Below the table, in dark navy Manrope 18pt: *"Every action logged. Filterable. Exportable. Auditor-friendly."*
+- **Asset placement:** LinkedIn Wk 26 Wed static graphic · IG Reel Day 35 end-card · pm-outbound email inline · pitch deck "SOC 2 readiness signal" slide
+- **Color note:** This is the one prompt in the library that uses emerald `#10B981` — it is the locked color for Sherpa Guard. Never substitute.
+
+### 12D. Kitchen reno before/after with timeline overlay — 11 weeks chaos vs 5 weeks orchestrated (1080×1350 portrait, 4:5)
+
+Pairs with: LinkedIn Editorial Wk 25 Mon supplemental · social-content-plan Day 34 IG carousel slide 1 · Facebook reel cover.
+
+```
+A clean editorial side-by-side comparison, 1080 by 1350 pixels, 4:5 portrait. Composition: warm cream #FBF7EE background fills the canvas. The LEFT half (split vertically at the center): a dark navy #1A1A2E block with a chaotic timeline visual — four overlapping horizontal bars in slate gray, each labeled with a trade ("Cabinet", "Plumbing", "Trim", "Paint"), bars at different heights overlapping each other in disordered fashion. AT THE TOP of the left block, in white Fraunces serif italic 36pt: "Before". BELOW the chaotic timeline, in white Manrope 28pt: "11 weeks". BELOW that, in white Manrope 18pt: "Six contractors. Four delivery trucks. Three reschedules.". The RIGHT half: a warm cream #FBF7EE block with a clean Gantt-style sequenced timeline of four sky-blue #00A9E0 horizontal bars stair-stepping down and to the right (same four trade labels in dark navy Manrope 22pt). AT THE TOP of the right block, in dark navy Fraunces serif italic 36pt: "After". BELOW the clean timeline, in dark navy Manrope 28pt: "5 weeks". BELOW that, in dark navy Manrope 18pt: "Sherpa Dispatch + Sherpa Materials.". A thin orange-red #FF4500 vertical divider runs down the center of the canvas separating the two halves. In the LOWER-RIGHT corner with 40px padding, the Sherpa Pros wordmark in dark navy at 22pt. Flat editorial design, no gradients, no drop-shadows, no glossy effects. The mood: simple, confident, the contrast is the story. Use ONLY these five colors: #00A9E0, #FF4500, #FFFFFF, #1A1A2E, #FBF7EE. No other colors.
+```
+
+- **Aspect Ratio:** 4:5 (1080×1350 px)
+- **Style:** Design · Character reference: Sherpa Pros icon
+- **Caption overlay (Canva, optional):** none — the prompt produces a finished asset.
+- **Asset placement:** LinkedIn Wk 25 Mon supplemental · IG carousel Day 34 slide 1 cover · Facebook Day 34 reel cover frame
+
+### 12E. /flex hero illustration — tradesperson with day-job uniform + weekend tool belt (1080×1920 vertical, 9:16)
+
+Pairs with: LinkedIn Editorial Wk 28 Mon · social-content-plan Day 37 (/flex landing launch) · /flex landing page hero · pro-reengagement email inline.
+
+```
+A documentary-style 35mm film photograph composition showing the side-bandwidth life, 1080 by 1920 pixels, 9:16 vertical. Composition: a single tradesperson stands center-frame in mid-stride, split visually down the middle — the LEFT half of their body shows a faded button-down day-job uniform shirt with a small embroidered chest patch, the RIGHT half of their body shows the same person in a worn leather tool belt with a hammer and tape measure visible. The seam between the two halves is bridged by a thin orange-red #FF4500 vertical thread running from collar to belt — the visual metaphor that the same person has two work lives. Background: a warm cream #FBF7EE residential framing jobsite at golden hour, with exposed 2x4 wall framing and natural late-afternoon light streaming in from the right. The LOWER third of the canvas is in deeper dark-navy #1A1A2E shadow with hints of subfloor. NO face fully visible — the framing of the shot crops at chin and lower jaw to keep identity ambiguous. NO high-vis vest. NO smiling-construction-worker stock-photo energy. NO branded apparel logos. Documentary realism — Magnum Photos meets construction trade. The mood: a working tradesperson with a day job and weekend bandwidth, the on-ramp opening up. Use these five colors: #00A9E0 (small accent on the tool belt or tape measure clip), #FF4500 (the connecting thread), #FFFFFF (highlights), #1A1A2E (shadows), #FBF7EE (warm cream wood + background). No other colors.
+```
+
+- **Aspect Ratio:** 9:16 (1080×1920 px)
+- **Style:** Design (with photographic descriptors in prompt)
+- **Caption overlay (Canva):** Burned-in lower-third headline in white Fraunces serif 56pt: *"Do work on the side? We've got you covered."* Sub-line in Manrope 22pt: *"thesherpapros.com/flex · $1M insurance included · No LLC required."*
+- **Asset placement:** /flex landing page hero · LinkedIn Wk 28 Mon photo · IG Reel Day 37 hero · TikTok Day 37 cover frame · pro-reengagement email inline
+
+### 12F. Side-by-side competitive layer diagram — Angi vs FW Webb vs Uber Direct vs Procore + Sherpa Pros at the center (1080×1350 portrait, 4:5)
+
+Pairs with: LinkedIn Editorial Wk 27 Mon · social-content-plan Day 36 (vertical-integration shift carousel slide 3) · investor pitch deck "Comp set" slide.
+
+```
+A clean editorial competitive layer diagram, 1080 by 1350 pixels, 4:5 portrait. Composition: warm cream #FBF7EE background fills the canvas. CENTERED in the canvas: a small sky-blue #00A9E0 circular badge approximately 280px in diameter with the Sherpa Pros wordmark in white Manrope bold 22pt centered inside. RADIATING OUTWARD from the center badge in four cardinal directions (up, right, down, left), four smaller dark navy #1A1A2E circular badges approximately 180px in diameter, connected to the center by thin sky-blue #00A9E0 lines. Each outer badge contains the name of a comp-set category in white Manrope 18pt: TOP badge labeled "Labor Marketplace · Angi · Thumbtack", RIGHT badge labeled "Materials Supply · FW Webb · HD Supply", BOTTOM badge labeled "Same-day Delivery · Uber Direct", LEFT badge labeled "GC Project Plans · Procore". A small orange-red #FF4500 ring surrounds the center Sherpa Pros badge, suggesting the wrapping layer. AT THE TOP of the canvas with 60px padding, in dark navy Fraunces serif italic 36pt centered: "The new comp set". A sub-line in Manrope 20pt slate-gray below: "Sherpa Pros wraps all four". In the LOWER-RIGHT corner with 40px padding, the Sherpa Pros wordmark in dark navy at 22pt. Flat editorial design, no gradients, no drop-shadows, no glossy effects. The mood: confident competitive map, investor-credible, the wrapping layer is the story. Use ONLY these five colors: #00A9E0, #FF4500, #FFFFFF, #1A1A2E, #FBF7EE. No other colors.
+```
+
+- **Aspect Ratio:** 4:5 (1080×1350 px)
+- **Style:** Design · Character reference: Sherpa Pros icon
+- **Caption overlay (Canva, optional):** Below the diagram, in dark navy Manrope 18pt: *"Labor + Materials + Delivery + Coordination. The orchestration nobody else builds."*
+- **Asset placement:** LinkedIn Wk 27 Mon carousel slide · IG carousel Day 36 slide 3 · X (Phyrom) Day 36 thread image · investor pitch deck "Comp set" slide · Wefunder vertical-integration moat section
+- **Generation note:** This is the single most-leveraged investor visual in the Wave 9 sweep. Generate FIRST and refine until the wrapping-layer optic reads correctly at thumbnail size.
+
+### 12G. Splash feature showcase compositional layout — 12 capability cards in editorial grid (1080×1350 portrait, 4:5)
+
+Pairs with: social-content-plan Day 37 IG Story F2 · LinkedIn brand-page recap · `thesherpapros.com` homepage hero composite reference.
+
+```
+A clean editorial 4-by-3 grid of 12 capability cards, 1080 by 1350 pixels, 4:5 portrait. Composition: warm cream #FBF7EE background fills the canvas. AT THE TOP of the canvas with 60px padding, in dark navy #1A1A2E Fraunces serif italic 42pt centered: "What's on the platform". A sub-line in Manrope 20pt slate-gray below: "Twelve capabilities live now". BELOW the title block, a 4-column by 3-row grid of 12 equal cards, each card approximately 240px wide by 280px tall with 16px gutters. Each card has a warm cream background, a thin sky-blue #00A9E0 1px top border, and a small dark navy line-art icon centered horizontally at the top (about 64px tall). Below the icon, the capability name in dark navy Manrope bold 18pt centered, with a one-line sub-label in Manrope 14pt slate-gray below. The 12 capabilities in row order (left to right, top to bottom): 1. "Sherpa Score" / "0–100 quality grade", 2. "Sherpa Rewards" / "Points + catalog", 3. "Sherpa Smart Scan" / "Receipts + permits", 4. "Sherpa Threads" / "Chat + text bridge", 5. "Sherpa Maintenance" / "Recurring service", 6. "Sherpa Finance Hub" / "Payouts + invoices", 7. "Sherpa Escrow" / "Held until done", 8. "Code-verified quotes" / "State + town + national", 9. "37 trade categories" / "Licensed + insured", 10. "Sherpa Success Manager" / "Dedicated rep", 11. "Sherpa Dispatch" / "Multi-trade sequencing", 12. "Multi-Trade orchestration" / "End-to-end project". In the LOWER-RIGHT corner with 40px padding, the Sherpa Pros wordmark in dark navy at 22pt. Flat editorial design, no gradients, no drop-shadows, no glossy effects. The mood: confident product-reveal, editorial layout, Fraunces display + Manrope body discipline throughout. Use ONLY these five colors: #00A9E0, #FF4500, #FFFFFF, #1A1A2E, #FBF7EE. No other colors.
+```
+
+- **Aspect Ratio:** 4:5 (1080×1350 px)
+- **Style:** Design · Character reference: Sherpa Pros icon
+- **Caption overlay (Canva, optional):** Below the grid, in dark navy Manrope 18pt: *"Live at thesherpapros.com — one platform, every layer."*
+- **Asset placement:** IG Story Day 37 F2 splash showcase · LinkedIn brand-page recap · `thesherpapros.com` splash hero composite · pitch deck "Product surface area" slide · onepager feature row
+
+---
+
+## SECTION 13 — Tactical Best Practices
 
 ### Caption-overlay strategy
 

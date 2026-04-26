@@ -21,15 +21,15 @@
 
 ### Headline + dek
 
-**Working New Hampshire General Contractor Launches Sherpa Pros — the Licensed-Trade Marketplace Built to Replace Lead-Gen Platforms in New England — and Opens a Wefunder Community Round so Homeowners and Pros Can Own a Piece of the Platform**
+**Working New Hampshire General Contractor Launches Sherpa Pros — the Vertically Integrated Trade Orchestration Platform Replacing the Labor + Materials + Delivery + Coordination Stack in New England — and Opens a Wefunder Community Round so Homeowners and Pros Can Own a Piece of the Platform**
 
-*Founder built it after a decade of watching Angi, Thumbtack, and TaskRabbit waste contractor money and send homeowners to people who shouldn't be doing licensed work. Live in beta with real Gross Merchandise Value transacting across NH, ME, and Boston specialty lanes. Investments start at $100.*
+*Founder built it after a decade of watching Angi, Thumbtack, and TaskRabbit waste contractor money and send homeowners to people who shouldn't be doing licensed work — then expanded the platform this quarter into materials orchestration, same-day delivery, and multi-trade dispatch. Competitive set is no longer a lead-gen marketplace; it is the entire trade-supply-chain stack (FW Webb + Grainger + Uber Direct + Procore combined). Live in beta with real Gross Merchandise Value transacting across NH, ME, and Boston specialty lanes. Investments start at $100.*
 
 ---
 
 ### Dateline + lede
 
-**PORTSMOUTH, N.H. — [LAUNCH DAY DATE]** — Sherpa Pros, the national licensed-trade marketplace built by working general contractor Phyrom of HJD Builders LLC and launching first in New Hampshire, Maine, and Massachusetts, today launched a U.S. Securities and Exchange Commission Regulation Crowdfunding (Reg CF) community round on Wefunder, with a target raise of $250,000 to $500,000 and minimum investments of $100. The platform — live at www.thesherpapros.com — is the first home-services marketplace built specifically for the four problems lead-generation platforms structurally cannot solve: license verification, code-aware quote validation, permit-aware workflows, and rebate matching for state utility programs like Mass Save.
+**PORTSMOUTH, N.H. — [LAUNCH DAY DATE]** — Sherpa Pros, the vertically integrated trade orchestration platform built by working general contractor Phyrom of HJD Builders LLC and launching first in New Hampshire, Maine, and Massachusetts, today launched a U.S. Securities and Exchange Commission Regulation Crowdfunding (Reg CF) community round on Wefunder, with a target raise of $250,000 to $500,000 and minimum investments of $100. The platform — live at www.thesherpapros.com — is the first home-services platform to integrate **labor matching, materials orchestration, same-day delivery, and multi-trade coordination** into a single system, addressing the four structural problems no lead-generation platform solves: license verification, code-aware quote validation, permit-aware workflows, and rebate matching for state utility programs like Mass Save. With this quarter's launch of Sherpa Materials (programmatic materials ordering through the Zinc API plus Uber Direct same-day delivery), Sherpa Dispatch (multi-trade timeline coordination across 6+ trades on a single project), and Sherpa Guard (Role-Based Access Control plus audit logs for institutional-grade compliance), the company's competitive set has shifted from the labor-marketplace category (Angi, Thumbtack) to the entire trade-supply-chain stack (FW Webb, Grainger, Uber Direct, and Procore combined).
 
 ---
 
@@ -60,6 +60,31 @@ The Wefunder community round is one of four parallel funding tracks. The other t
 ### Required Reg CF tombstone (paste at bottom of release)
 
 > *Sherpa Pros is conducting an offering of securities pursuant to Regulation Crowdfunding (Reg CF) under the U.S. Securities and Exchange Commission. The offering page on Wefunder contains the offering documents, including the Form C filing with the SEC. This press release is for informational purposes only and is not an offer to sell or a solicitation to buy securities. Investing in early-stage startups is high-risk; investors may lose their entire investment. The U.S. Securities and Exchange Commission has not passed on the accuracy or adequacy of this offering. Read the SAFE document and the Form C before investing. Consult your own attorney, accountant, and financial advisor.*
+
+---
+
+### NEW launch-day asset — 2-paragraph press blurb (the "vertical integration thesis" pitch)
+
+*For use in trade-press pre-briefs, the launch-day LinkedIn caption, and as the first 2 paragraphs of any condensed reporter pitch. Reads as the "what changed this quarter" framing for outlets who have already covered Sherpa Pros once.*
+
+> **The licensed-trade marketplace just stopped being a marketplace.** When Sherpa Pros launched in beta last quarter, the company competed with Angi, Thumbtack, TaskRabbit, and Handy in one lane: matching homeowners with licensed contractors. This quarter, the platform shipped three capabilities that move it out of that lane entirely. **Sherpa Materials** orders the materials for every job through programmatic access to the major retail catalogs (the Zinc API) and delivers them to the jobsite the same day through Uber Direct. **Sherpa Dispatch** sequences six or more trades on a single multi-trade project (a kitchen renovation that normally runs 11 weeks finishes in 5 with Sherpa Dispatch). **Sherpa Guard** adds Role-Based Access Control and audit logs — the SOC 2-readiness signal institutional partners and large property-management cohorts require before signing.
+>
+> **The competitive set shifted accordingly.** Sherpa Pros no longer competes with the labor-marketplace category. It competes with the entire trade-supply-chain stack — FW Webb (the supply house), Grainger (industrial supply), Uber Direct (same-day delivery), and Procore (enterprise general-contractor coordination software) combined. Per-job economics shift in lockstep: a $10,000 labor job has roughly $15,000 of materials passing through it, and the take rate stacks — 5–12 percent labor commission, plus an 8–12 percent materials coordination fee, plus the $49 monthly Pro subscription, plus the Property Manager retainer — for a blended **18 to 25 percent take rate per job all-in.** Founder Phyrom calls it "the Stripe Connect moment for the trade economy" — the orchestration layer that turns single-job marketplaces into whole-project platforms. The Wefunder community round opens at $100 minimum so the homeowners and licensed contractors who use the platform can own a piece of the orchestration layer being built around them.
+
+---
+
+### Trade press / construction-tech outlets to pre-brief 7 days before public launch
+
+These outlets cover the construction technology and trade-supply-chain category specifically. Pre-briefing them with the vertical-integration thesis (and an embargoed copy of the press release) lets them prepare a longer story for launch day instead of running a quick wire summary.
+
+| Outlet | Beat | Why pre-brief |
+|---|---|---|
+| **Construction Dive** | Construction-technology funding rounds, contech startups, AEC platform shifts | Already on the press list (Matthew Thibault, Section 2 #26) — pre-brief gets the vertical-integration angle in front of him before launch day, not after |
+| **Builder Magazine (Hanley Wood)** | Residential builder business and technology coverage | Audience is exactly the contractor cohort whose materials-procurement pain Sherpa Materials solves; pre-brief lets them line up a "what this means for the small builder" angle |
+| **Inman News** | Real estate technology and proptech (residential focus) | Sherpa Pros' Property Manager tier and Sherpa Guard's audit-grade compliance are the hooks for the proptech beat — pre-brief lets them position the launch as the first labor + materials platform the residential property-management category has had |
+| **Multifamily Executive** | Multifamily property-management operations and technology | The 5,000+ unit property-management cohort is the buy-criterion audience for Sherpa Guard (RBAC + audit logs) and Sherpa Dispatch (make-ready unit turnover); pre-brief surfaces the operational case to the executive readers who sign these contracts |
+
+**Pre-brief format:** 20-minute Zoom with the founder, embargoed press release in advance, offer of an exclusive (longer story dropped 24 hours before the wire) to whichever outlet commits first. **Pre-briefs go out W6 Wednesday — 7 days ahead of public launch — so reporters have time to write a real piece, not a press-release rewrite.**
 
 ---
 

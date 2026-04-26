@@ -35,6 +35,8 @@ What you would get on the platform:
 
 For your portfolio that runs about ${{monthly_price}} a month. Most operators we talk to save more than that in the first month just by cutting the time their site managers spend chasing vendor invoices.
 
+One more thing while I have you. Sherpa Dispatch handles multi-trade make-ready turnover (paint + carpet + appliance + cleaning) as one coordinated job, not 4 separate vendor calls — so a unit turn between leases is one work order on your end, not four.
+
 Worth a 20-minute look? Here is my calendar.
 
 [Book 20 minutes with me]({{cal_url}})
@@ -75,6 +77,14 @@ You can sort it any way you want. You can also see the same scorecard at the pro
 
 The reason this matters: most portfolios I have seen are paying their worst vendor the most. Not because anyone wants that, but because nobody has the data to see it. Once you have the data in front of you, the next vendor renegotiation is a different conversation.
 
+One more screen worth seeing while you are here — the Sherpa Guard audit log:
+
+[Screenshot — Sherpa Guard audit log view]({{audit_log_screenshot_url}})
+
+Every action on the platform is logged. Every approval, every status change, every dollar moved — with the user, the timestamp, and the original payload. Filterable by user, by date, by action type, by work order, by dollar amount. Exportable.
+
+The reason this matters: most invoice disputes go sideways because the only "paper trail" was a forwarded text message between a site manager and a vendor. Sherpa Guard is the receipt. The dispute fight stops being a fight.
+
 Want to see it on your own portfolio? I can pull a sample report from the demo data in about ten minutes.
 
 [Book 20 minutes]({{cal_url}})
@@ -108,8 +118,9 @@ For a {{unit_count}}-unit portfolio at typical New England trade rates:
 1. **Vendor cost variance.** Operators see a 6 to 11 percent reduction in trade spend in the first 90 days, just from the scorecard surfacing the over-priced vendors. On a typical {{unit_count}}-unit maintenance budget that is roughly ${{vendor_savings}} per year.
 2. **Site manager time.** Site managers in our pilots cut work-order-coordination time by 6 to 10 hours a week. At a fully-loaded $35 an hour, that is roughly ${{labor_savings}} per year per site.
 3. **Capital Expenditure versus Operating Expense tagging.** Auto-tagged at the work-order level by Sherpa Smart Scan — the receipt scanner reads every vendor invoice in the field, attaches it to the work order, and classifies every line as Capital Expenditure or Operating Expense automatically. Your bookkeeper stops hand-coding receipts. Your auditor stops asking questions. Every controller we have shown this to has called it the most valuable feature.
+4. **Audit + dispute defense.** A typical property management portfolio fights three to five vendor invoice disputes per quarter. Average dispute size is $2,800. About 30 percent of those are unwinnable today because there is no paper trail — the only "record" was a forwarded text message between the site manager and the vendor. Sherpa Guard makes that 0. Every action on the platform — every approval, every status change, every dollar moved — is logged with the user, the timestamp, and the original payload. Recoverable: roughly 1 unwinnable dispute per quarter avoided × $2,800 × 4 quarters ≈ $11,000 per year, on top of the legal time you stop spending on it.
 
-Net effect: a $6,500 to $14,000 monthly Net Operating Income improvement on a typical {{unit_count}}-unit portfolio. We charge ${{monthly_price}}.
+Net effect: a $6,500 to $14,000 monthly Net Operating Income improvement on a typical {{unit_count}}-unit portfolio, plus the recovered audit + dispute defense above. We charge ${{monthly_price}}.
 
 If those numbers do not work for your portfolio, tell me where they are off and I will redo the math with your actual unit count and trade-spend ratio.
 

@@ -10,11 +10,15 @@
 
 | Tier | Definition | Sherpa Pros 2026 Sizing | Confidence |
 |---|---|---|---|
-| **TAM** | All US residential remodeling + repair + maintenance spend, plus US commercial property maintenance services spend (the national pie Sherpa Pros' national licensed-trade marketplace addresses) | **~$731B/year** ($524B residential remodeling [^1] + $207.5B commercial property maintenance [^2]) | High — both figures from primary industry sources, current to 2025–2026 |
-| **Phase 1–2 SAM** | The operational footprint Sherpa Pros captures first — New England 6-state addressable spend on the trades Sherpa Pros covers (electrical, plumbing, HVAC, roofing, carpentry, masonry, painting, landscaping, handyman, energy-efficiency installs), plus the four-metro Phase 1–2 launch (Portsmouth NH, Manchester NH, Portland ME, Boston MA). Brand-wise this is the slice we hit first, not the addressable ceiling. | **~$32B NE-wide / ~$8.5B four-metro** | Medium — derived from NE share of national residential remodeling pie + IBISWorld MA commercial figures |
-| **SOM (12 mo)** | Phase 1 GMV through obtainable share of four-metro pie at beta launch + Boston specialty | **$200K–$1M GMV** (per Phase 1 / Phase 2 exit gates in GTM spec) | High — direct from spec exit gates + pro cohort math |
-| **SOM (24 mo)** | Phase 2 scaled launch across four metros, $1M+ annualized GMV | **$1M–$5M GMV** | Medium — depends on Seed close + 200-pro supply target |
-| **SOM (36 mo)** | Phase 3 regional expansion (RI, CT, NYC specialty), 6 metros | **$5M–$25M GMV** | Lower — multi-metro execution risk; bounded by 6-month Phase 3 hard limit |
+| **TAM (labor)** | All US residential remodeling + repair + maintenance spend, plus US commercial property maintenance services spend (the national pie Sherpa Pros' national licensed-trade marketplace addresses) | **~$731B/year** ($524B residential remodeling [^1] + $207.5B commercial property maintenance [^2]) | High — both figures from primary industry sources, current to 2025–2026 |
+| **TAM (materials, NEW 2026-04-25)** | US residential + light-commercial trade materials market — the orchestration opportunity Sherpa Materials addresses (per §2.5) | **~$540B/year** (industry estimate; recommend BLS construction materials shipments series cross-check before IC) | Medium — order-of-magnitude figure, not a single primary source |
+| **TAM combined** | Labor + materials combined — Sherpa Pros vertically-integrated opportunity | **~$1.27T/year** ($731B labor + $540B materials) | Medium |
+| **Phase 1–2 SAM (labor)** | The operational footprint Sherpa Pros captures first — New England 6-state addressable spend on the trades Sherpa Pros covers (electrical, plumbing, HVAC, roofing, carpentry, masonry, painting, landscaping, handyman, energy-efficiency installs), plus the four-metro Phase 1–2 launch (Portsmouth NH, Manchester NH, Portland ME, Boston MA). Brand-wise this is the slice we hit first, not the addressable ceiling. | **~$32B NE-wide / ~$8.5B four-metro** | Medium — derived from NE share of national residential remodeling pie + IBISWorld MA commercial figures |
+| **Phase 1–2 SAM (materials, NEW 2026-04-25)** | NE 6-state materials addressable per §3.1 (NE share of $540B US materials TAM) | **~$27B NE-wide / ~$7B four-metro** | Medium |
+| **Phase 1–2 SAM combined** | NE labor + materials combined | **~$60B NE-wide / ~$15.5B four-metro** | Medium |
+| **SOM (12 mo)** | Phase 1 GMV through obtainable share of four-metro pie at beta launch + Boston specialty | **$200K–$1M GMV labor + ~$1.5M/month materials throughput target by Q2 2027** (per Phase 1 / Phase 2 exit gates in GTM spec + §4.6 materials throughput math) | High — direct from spec exit gates + pro cohort math |
+| **SOM (24 mo)** | Phase 2 scaled launch across four metros, $1M+ annualized GMV | **$1M–$5M GMV labor + ~$4.5M/month materials throughput** | Medium — depends on Seed close + 200-pro supply target |
+| **SOM (36 mo)** | Phase 3 regional expansion (RI, CT, NYC specialty), 6 metros | **$5M–$25M GMV labor + ~$9M/month materials throughput** | Lower — multi-metro execution risk; bounded by 6-month Phase 3 hard limit |
 
 **Take-rate translation (5% beta → 10% standard → 12–15% Phase 3):**
 
@@ -62,6 +66,20 @@ Even capturing **1 basis point** (0.01%) of TAM = **$73M GMV.** Even at the cons
 
 These confirm the TAM is real, large, and growing — not a one-source artifact.
 
+### 2.5 Materials Supply Chain TAM (NEW — added 2026-04-25 with Sherpa Materials launch)
+
+The materials orchestration layer (Wiseman Materials + Zinc Application Programming Interface (API) + Uber Direct same-day delivery) shipped on 2026-04-25 — see `docs/operations/sherpa-product-portfolio.md` §2.7.7 and the GTM spec §3.5.2. This **adds a new TAM line** on top of the labor TAM, because materials are a transaction the platform now coordinates and earns a coordination fee on. Before the Sherpa Materials launch, materials were customer-handled (the homeowner walked into Home Depot or the contractor ran their own purchase order through their own supply-house account) and the platform earned nothing on them. After launch, materials are platform-coordinated.
+
+**TAM-materials = approximately $540B/year US** — residential + light-commercial trade materials (industry estimate, derived from the Bureau of Labor Statistics (BLS) construction materials shipments series and adjacent industry research; not a single primary source — order-of-magnitude figure for sizing purposes, not for IC presentation as a precise number). For comparison, the labor TAM (residential remodeling + commercial property maintenance services) sits at ~$731B per §2.3 — so the materials TAM is the same order of magnitude as the labor TAM and adds a roughly equal-sized opportunity surface.
+
+**Coordination-fee revenue line.** At a transparent 8-12% coordination fee on materials moved through the platform (per GTM spec §10.1 R7 working assumption — cost-plus with the supplier invoice surfaced), even capturing **0.5% of materials TAM** = $2.7B of materials throughput × 8-12% = **$216M-$324M annual revenue line on top of labor commission**. Even capturing **0.1% of materials TAM** = $540M of materials throughput × 8-12% = $43M-$65M annual revenue. This is a venture-scale revenue line at well-below-1% capture.
+
+**Per-job materials-to-labor ratio.** Trade work runs roughly **60/40 materials-to-labor** for typical jobs (panel upgrade: ~$2,500 materials + ~$2,000 labor; kitchen cabinet install: ~$8,000 materials + ~$5,500 labor; water heater swap: ~$1,200 materials + ~$800 labor). So each $10K labor job has approximately $15K of materials passing through Sherpa Materials. The materials line is therefore not a small add-on — it is **larger per job than the labor line** in dollar terms. Take rate is lower (8-12% vs. 5-12% on labor), but volume is higher, so the dollar revenue per job from materials is comparable to or larger than the labor commission.
+
+**Why this is the durability play.** Per-pro subscription revenue (Houzz Pro at $59-$999/month, Angi Pro at $200/month) is fragile — pros churn when the leads dry up, and the recurring line evaporates. Per-job materials coordination revenue is **structurally durable**: it scales with the activity on the platform, not with the pro's willingness to keep paying a subscription whether or not they get a job. Every job that runs through Sherpa Pros generates both a labor commission and a materials coordination fee. The materials line is the recurring per-job revenue that compounds with platform activity — a durability profile closer to Stripe Connect's per-transaction take than to Houzz Pro's per-seat SaaS.
+
+**Source-disclosure note.** The $540B figure is presented as an **industry estimate** and order-of-magnitude figure. Before final IC presentation, recommend pulling the precise BLS construction materials shipments series for residential + light-commercial breakdown plus a cross-check against the National Association of Home Builders (NAHB) Eye on Housing materials price tracker. Marked **[NEEDS VERIFICATION — pull primary BLS series for IC]**.
+
 ---
 
 ## 3. SAM — Serviceable Addressable Market (Phase 1–2 Footprint)
@@ -91,7 +109,11 @@ Census C30 measures **new** residential construction. To extrapolate to **remode
 
 **Add NE commercial property maintenance share:** NE share of US commercial spend (using GDP-weighted) ≈ 5–6% of $207.5B = **~$10.4–12.5B**.
 
-**NE 6-state SAM = ~$27–35B/year. Midpoint: $32B.**
+**NE 6-state labor SAM = ~$27–35B/year. Midpoint: $32B.**
+
+**Materials-side SAM addition (NEW 2026-04-25 with Sherpa Materials launch).** Applying the same NE-share approach to the ~$540B US materials TAM (per §2.5): NE 6-state materials addressable ≈ 4-6% of $540B = **~$22–32B/year**. Midpoint **~$27B**. Combined NE labor + materials SAM ≈ **$54–67B/year. Midpoint: ~$60B**. The materials-side SAM is approximately the same order of magnitude as the labor-side SAM, doubling the addressable opportunity inside the same New England footprint without expanding geographic scope.
+
+**Working SAM headline (2026-04-25 update):** **NE 6-state ~$32B labor + ~$27B materials = ~$60B combined**. Phase 1–2 four-metro footprint splits proportionally — see §3.2.
 
 ### 3.2 Four-metro footprint (Phase 1–2 actual execution)
 
@@ -175,6 +197,47 @@ Drawn directly from the GTM spec phase gates [^11]:
 | Phase 3 exit | $25M | NE 6-state $32B | 0.08% |
 
 **Sub-1-basis-point capture rates.** Even Phase 3 exit ($25M run-rate) is < 0.1% of NE SAM. This is a **defensible, conservative trajectory** — investors should not pressure-test "how do you capture 5% of SAM?" because we don't need to.
+
+### 4.6 SOM math — Sherpa Materials throughput (NEW 2026-04-25)
+
+The materials orchestration layer (Wiseman Materials + Zinc Application Programming Interface (API) + Uber Direct same-day delivery) shipped on 2026-04-25 — see §2.5 for the materials TAM and `docs/operations/sherpa-product-portfolio.md` §2.7.7 for the product detail. This adds a SOM line on top of the labor SOM above.
+
+**Phase 1 (NH/MA/ME pilot, target ~100 multi-trade jobs/month by Q2 2027):**
+
+- ~100 multi-trade jobs/month × ~$15K materials per job (per the 60/40 materials-to-labor ratio in §2.5 applied to a typical $10K labor job) = **~$1.5M/month materials throughput**
+- 8% coordination fee (Property Manager / Sherpa Success Manager-tier floor per GTM spec §10.1 R7) × $1.5M throughput = **~$120K/month new revenue line**
+- **Annualized run-rate by Q2 2027: ~$1.4M/year materials coordination revenue** on top of the labor-commission revenue from those same jobs
+
+**Phase 2 scale (M6-12, four metros at 200+ pros, ~300 multi-trade jobs/month):**
+
+- ~300 multi-trade jobs/month × ~$15K materials = ~$4.5M/month materials throughput
+- 8-10% blended coordination fee (mix of PM floor + Sherpa Home homeowner ceiling) × $4.5M = **~$360-450K/month new revenue line**
+- **Annualized run-rate at Phase 2 exit: ~$4.3M-$5.4M/year materials coordination revenue**
+
+**Phase 3 expansion (M12-18, six metros, ~600 multi-trade jobs/month):**
+
+- ~600 multi-trade jobs/month × ~$15K materials = ~$9M/month materials throughput
+- ~9% blended coordination fee × $9M = **~$810K/month new revenue line**
+- **Annualized run-rate at Phase 3 exit: ~$9.7M/year materials coordination revenue**
+
+**Capture rate vs. NE materials SAM.** Even Phase 3 exit at ~$108M annual materials throughput is approximately **0.4% of the ~$27B NE materials SAM**. Same sub-1% capture discipline applies as the labor-side SOM math.
+
+### 4.7 Vertical Integration Multiplier (NEW 2026-04-25)
+
+**The take-rate stack.** Traditional single-layer labor marketplaces (Angi, Thumbtack, TaskRabbit, Houzz Pro) cap out at a **10-15% take rate on labor only** — that's the top of the durable economics in the lead-gen / labor-marketplace category. Sherpa Pros stacks revenue lines across the four-layer vertical integration (per `docs/pitch/competitive-analysis.md` §1.5):
+
+| Revenue line | Take rate | Per-job dollar contribution (typical $10K labor / $15K materials job) |
+|---|---|---|
+| **Labor commission** (Sherpa Marketplace) | 5-12% on labor (Sherpa Flex 18%, Standard 12%, Gold 8%) | $500-$1,200 |
+| **Materials coordination fee** (Sherpa Materials) | 8-12% on materials | $1,200-$1,800 |
+| **Sherpa Home subscription** (homeowner side) | $X/month per active subscriber (Wave 6.3 brief — assume $20-50/month band for sizing) | Allocate ~$5-15/job for active subscribers, $0 for non-subscribers |
+| **Sherpa Success Manager retainer** (Property Manager / Multi-Property Owner / White-Glove tier) | $Z/month per account (Wave 6.3 brief — assume $500-$2,500/month band for sizing) | Allocate ~$10-50/job for managed accounts, $0 for non-managed |
+
+**Blended take rate per job: 18-25%** — roughly double a single-layer labor marketplace's take rate, with the materials line being the durability play (recurring per-job revenue, not per-pro subscription). Per-job dollar contribution rises from ~$1,000-$1,500 (labor only) to ~$1,800-$3,200 (vertically-integrated stack), which roughly **doubles the unit economics per transaction** without increasing customer-acquisition cost.
+
+**Why the materials line is the durability play.** Per-pro subscription revenue (Houzz Pro at $59-$999/month, Angi Pro at $200/month) is **fragile** — pros churn when leads dry up, and the recurring line evaporates. Per-job materials coordination revenue is **structurally durable** — it scales with platform activity, not with the pro's willingness to keep paying a subscription whether or not they get a job. Every job that runs through Sherpa Pros generates both a labor commission and a materials coordination fee. The materials line has the per-transaction durability profile that closer resembles Stripe Connect's per-transaction take than Houzz Pro's per-seat SaaS.
+
+**IC-presentation framing.** "Sherpa Pros' take rate stack adds materials coordination on top of labor commission, doubling per-transaction unit economics versus single-layer labor marketplaces, with the materials line as a durable per-job revenue stream that compounds with platform activity." The story for the institutional-capital cohort is: this is not Angi 2.0; this is the four-layer vertically-integrated orchestrator with Stripe-Connect-shaped economics.
 
 ---
 

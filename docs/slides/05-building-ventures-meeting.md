@@ -68,7 +68,9 @@ We're at **[X jobs / month]** and growing across NH, ME, and Boston specialty la
 
 ---
 
-# Sherpa Pros maps onto three bets you've already placed.
+# Sherpa Pros maps onto the BV thesis bullseye: orchestrating the messy middle of construction.
+
+**The Building Ventures thesis in one line:** *invest in platforms that orchestrate the messy middle of construction.* This sweep — Sherpa Materials + Sherpa Dispatch + Sherpa Guard — is bullseye for that thesis.
 
 <div class="bv-portfolio-grid">
 
@@ -80,16 +82,16 @@ We're at **[X jobs / month]** and growing across NH, ME, and Boston specialty la
 ### BuildFactory
 *BV-led seed, late 2025.*
 **Marketplace structure works in the built environment.**
-**→ Same business-model shape, opposite end of the supply chain. BuildFactory is the offsite/prefab marketplace. Sherpa Pros is the residential-licensed-trade analog.**
+**→ Same business-model shape, opposite end of the supply chain. BuildFactory is the offsite/prefab marketplace. Sherpa Pros is the residential-licensed-trade analog — and now also the materials orchestration layer for that residential trade.**
 
 ### Built Robotics
 *BV portfolio.*
 **Labor augmentation on the supply side.**
-**→ We are labor allocation on the marketplace side. Same MA labor shortage (2.5% unemployment, project times 7→11 months). Opposite solution surface.**
+**→ We are labor allocation + materials orchestration + multi-trade coordination on the marketplace side. Same MA labor shortage (2.5% unemployment, project times 7→11 months). Sherpa Dispatch compresses an 11-week kitchen renovation to 5 weeks by sequencing 6+ trades on one timeline — exactly the messy-middle orchestration BV was built to fund.**
 
 </div>
 
-**You've already invested twice in this thesis (UpCodes + BuildFactory). Sherpa Pros is the consumer-facing proof point — the residential trade marketplace your portfolio is missing.**
+**You've already invested twice in this thesis (UpCodes + BuildFactory). Sherpa Pros is the consumer-facing proof point — the residential trade marketplace your portfolio is missing — and with this quarter's launch of Sherpa Materials, the residential trade-supply-chain orchestration layer your portfolio also doesn't have.**
 
 <span class="caption">Sources: BV portfolio per buildingventures.com (accessed 2026-04-22) · BuildFactory investment per BV Winter 2025 newsletter · UpCodes board involvement per Heather Widman BV bio.</span>
 
@@ -142,6 +144,36 @@ Two axes. Four quadrants. The top-right one is empty — until now.
 - **Sherpa Pros** — the **residential-execution marketplace** that uses code intelligence to validate every transaction
 
 **You've already invested twice in the licensed + code-aware + marketplace quadrant. Sherpa Pros is the consumer-facing proof point — the residential homeowner is the missing endpoint that closes the loop.**
+
+---
+
+<!-- _class: divider -->
+
+## III.5
+
+# Materials Orchestration
+
+---
+
+# Materials orchestration is the BV thesis bullseye.
+
+## "Orchestrate the messy middle of construction" — translated to the residential supply chain
+
+Building Ventures' explicit thesis is to fund **platforms that orchestrate the messy middle of construction**. This quarter, Sherpa Pros shipped exactly that orchestration layer for the residential and small-commercial trade.
+
+| Layer of the trade-supply-chain stack | Old fragmented incumbents (BV-funded categories) | Sherpa Pros (the orchestration layer) |
+|---|---|---|
+| **Code reference** | UpCodes-style code intelligence platforms *(BV portfolio)* | Sherpa Pros — code-aware quote validation, every quote checked against NEC + IRC + MA Electrical + NH RSA |
+| **Off-site supply / prefab** | BuildFactory and offsite-prefab marketplaces *(BV portfolio)* | Sherpa Pros' residential equivalent — the licensed-trade marketplace |
+| **Materials sourcing + delivery** | Industrial-supply incumbents · regional supply houses · same-day delivery services *(category fragmentation)* | **Sherpa Materials** — internal materials engine + Zinc API ordering + Uber Direct same-day delivery (8–12% coordination fee) |
+| **Multi-trade project coordination** | Enterprise general-contractor coordination software at $1,000+ per user per month *(category exists, residential gap)* | **Sherpa Dispatch** — multi-trade timeline orchestration across 6+ trades on a single project (11-week kitchen reno → 5 weeks) |
+| **Compliance + audit posture** | Manual COI tracking · spreadsheet vendor records · annual fire drill *(category gap)* | **Sherpa Guard** — Role-Based Access Control + audit logs (SOC 2 readiness signal) |
+
+**The pattern.** Building Ventures has funded reference-layer platforms (code), supply-chain platforms (offsite), and labor-augmentation platforms (robotics). Sherpa Pros is the **residential transaction layer** that integrates all three plus the missing materials and coordination layers — into one consumer-facing orchestration platform. **It is the consumer-facing proof point that the entire BV thesis converges on.**
+
+**Per-job economics shift accordingly.** A $10,000 labor job has roughly $15,000 of materials passing through it. Take rate stacks: 5–12% labor commission + 8–12% materials coordination + $49 monthly Pro subscription + Property Manager / Success Manager retainer = **blended 18–25% per job all-in.** Materials TAM expansion: ~$540B US residential + light-commercial trade-materials market on top of the labor TAM.
+
+**Why this matters for the BV partnership specifically.** The materials revenue line is a near-zero customer acquisition cost expansion — every job we already booked through Sherpa Marketplace is a materials-coordination opportunity at no additional acquisition spend. **The materials line accelerates the path to cash-flow-positive on the same Phase 0 ask** — i.e., the same dollars buy more runway than they would for an equivalent labor-only marketplace deal. That is the point we want partners around the table to walk out of the room with.
 
 ---
 
@@ -309,6 +341,8 @@ Phyrom is in NH; the platform's first three metros are Portsmouth, Manchester, P
 *Building Ventures leads with $[X]. We close $[Y total] by [date].*
 
 We'd start working with you the day the term sheet is signed.
+
+**Same ask. More runway than a labor-only marketplace deal would buy.** With Sherpa Materials live (8–12% coordination fee stacks on top of labor commission), per-job economics shift from a 10% labor-only take to a blended 18–25% take rate all-in. The materials revenue line has near-zero customer acquisition cost — every job we already book is a materials-coordination opportunity at no additional acquisition spend. **The same $[X] anchor check accelerates path to cash-flow-positive by a materially shorter window than the equivalent labor-only deal — because the per-job economics stack two revenue lines now, not one.**
 
 <div class="meta-strip">
 <span>Phyrom · HJD Builders LLC · Sherpa Pros</span>

@@ -110,11 +110,11 @@ Sherpa Pros is the licensed-trade marketplace that thinks like a contractor. Bui
 
 ---
 
-## 4.5. THREE NEW PLATFORM PILLARS
+## 4.5. SIX PLATFORM PILLARS
 
 ### What we shipped this quarter, in plain English.
 
-Three new capabilities went to production this quarter. None of them are roadmap promises — they are live in the platform today.
+Six new capabilities went to production this quarter. None of them are roadmap promises — they are live in the platform today. The first three closed defensibility gaps. The next three opened a whole new revenue line.
 
 **Sherpa Threads — in-app chat that bridges to text message.** Every contractor has had this happen: the job is in the platform, but the client texts your cell phone, and by Friday nobody can prove what was promised. Sherpa Threads kills that leak. The pro, the client, and the project manager all chat in-app. The client can keep texting from their normal phone — replies land back in-app on the pro's end. They don't have to install anything. Read receipts, file attachments, every conversation attached to the work order. Audit trail when something goes wrong. The data leak that erodes every other marketplace — fixed.
 
@@ -122,7 +122,41 @@ Three new capabilities went to production this quarter. None of them are roadmap
 
 **Sherpa Mobile — the platform now lives in your pocket.** iOS is in TestFlight today (bundle ID `com.thesherpapros.app` deployed to App Store Connect). Android is right behind via Expo. Pros bid jobs, message clients with Sherpa Threads, scan receipts with Sherpa Smart Scan, and get paid through Stripe Connect — all from the phone in their truck. The first 50 founding pros get TestFlight invites. For property managers, site managers can intake work orders from the field instead of waiting until they are back at a desk. For investors, this is real product progress, not slide-ware — and it is a lower customer acquisition cost lever, because pros can sign up from a phone in the field instead of a laptop at the kitchen table.
 
-These three pillars round out the platform from a desktop marketplace into the working tool a contractor (or a property manager) actually carries to the jobsite.
+**Sherpa Guard — keeping the records straight, automatically.** Every action a person takes in the platform — every job assigned, every payment released, every vendor approved — is recorded with who did it, what they did, and when. We also added Role-Based Access Control, which is the simple idea that an owner sees one thing, a property manager sees another, a pro sees only their own work, and a client sees only their own jobs. Why this matters for an everyday investor: large property-management companies and any future bank or institutional partner ask for proof that the platform tracks who does what. Sherpa Guard is that proof. It is also the first step toward a security certification called SOC 2, which institutional investors like to see before they write big checks.
+
+**Sherpa Dispatch — putting the trades in the right order, on one timeline.** A kitchen renovation looks simple from the outside — but inside it is six or more separate trades that all have to show up in the right order. Demolition, electrical, plumbing, drywall, paint, tile, cabinetry. If one of them shows up on the wrong day, the whole project slips. Today most contractors juggle that with a paper notebook, a group text, and a lot of swearing. Sherpa Dispatch puts every trade on one timeline, owns the handoff between them, and warns everyone before a delay becomes a slip. **Real-world example: an 11-week kitchen renovation that normally runs 3 weeks late finishes in 5 weeks with Sherpa Dispatch — because the trades are sequenced correctly the first time.**
+
+**Sherpa Materials — the platform orders the lumber, screws, fixtures, and gets them delivered the same day.** Most contractors lose 5 to 10 hours a week driving to the supply house, picking up materials, and re-driving back when the order is wrong. Sherpa Materials lets the pro pick everything they need from a built-in catalog, the platform places the order through a service called Zinc (which connects programmatically to the major retail catalogs), and Uber Direct delivers the materials to the jobsite the same day. The platform charges a small coordination fee on each order — typically 8 to 12 percent of the materials cost. **This is a brand-new revenue line for Sherpa Pros that did not exist a quarter ago. Every $10,000 labor job has roughly $15,000 of materials passing through it. Capturing even a slice of that materials flow on top of the labor commission is what changes Sherpa Pros from a single-revenue marketplace into a full trade orchestration platform.**
+
+These six pillars round out the platform from a desktop marketplace into the working tool a contractor (or a property manager) actually carries to the jobsite — and into a vertically integrated platform that handles labor, materials, delivery, and coordination on every job.
+
+---
+
+## 4.6. WHY WE JUST GOT BIGGER
+
+### In plain English: what Sherpa Materials and Sherpa Dispatch change about the company.
+
+When we filed the first version of this Wefunder page, Sherpa Pros was a labor marketplace. A homeowner posted a job, a licensed pro got the work, and we took a small commission on the labor cost. That was the whole story.
+
+This quarter, the story got bigger — without taking on more risk.
+
+**Two changes did it:**
+
+1. **Sherpa Materials.** We now also handle ordering the materials and getting them to the jobsite the same day. On a typical $10,000 labor job, there is roughly $15,000 of materials that the contractor used to have to source, order, and pick up themselves. We do that for them now, through a programmatic connection to the major retail catalogs and same-day delivery from Uber Direct. We charge a small coordination fee — 8 to 12 percent of the materials cost. **That is a brand-new revenue line on top of every job we already had.**
+
+2. **Sherpa Dispatch.** Most home renovations involve six or more different trades that have to show up in the right order. Demolition, electrical, plumbing, drywall, paint, tile, cabinets. Today most contractors juggle that with a notebook and a group text. We now put every trade on one timeline, own the handoffs, and warn the homeowner and the pros before a slip becomes a 3-week delay. That is a feature property managers and homeowners will pay for — and it is a reason a sophisticated client (a property management company with hundreds of units) chooses Sherpa Pros over a basic lead-gen platform.
+
+**What this means for an everyday investor.**
+
+The company you are investing in today is no longer just competing with Angi and Thumbtack. It is competing with the entire trade-supply-chain stack — companies like FW Webb (the old-school plumbing supply house), Grainger (the industrial-supply giant), Procore (the enterprise-grade general-contractor software platform), and the major same-day delivery services. **Nobody else is putting all four of those things together for the residential and small-commercial trade.** That is the wedge. That is why the valuation cap (the maximum company value at which your SAFE converts) reflects a bigger story than a labor-only marketplace would justify.
+
+**The math, plain and simple.**
+
+- The US trade-materials market is roughly $540 billion every year.
+- An 8 to 12 percent coordination fee on even half a percent of that market is roughly $270 million in annual revenue — on top of the labor commission we already charge.
+- That number is not a forecast. It is the size of the opportunity. Whether Sherpa Pros captures any of it depends on execution. But the addressable market just grew by an order of magnitude.
+
+If you want the long technical version of this thesis, ask the founder for the investor deck — the slide titled "The Stripe Connect Moment" walks through the four-layer competitive set in detail.
 
 ---
 
@@ -284,6 +318,8 @@ If you're a licensed pro in any of those metros taking jobs through Sherpa Pros 
 If you're an investor who believes the right place for the next 10 years of home-services money is **back in the hands of the people doing the work and the people paying for it** — this is a way to put a hundred dollars or a thousand dollars or ten thousand dollars on that thesis.
 
 **This is not philanthropy.** You are buying a SAFE. The expected return is the same as any early-stage investment — high upside if Sherpa Pros executes, total loss if it fails. The difference is that the upside, if it comes, comes back to a community that overlaps with the platform's users.
+
+**What you are investing in (extended scope).** When this Wefunder page first went live, Sherpa Pros was a licensed-trade labor marketplace — the platform took a commission when a homeowner hired a pro. That is still the foundation. But this quarter the company also shipped **Sherpa Materials** (the platform now orders the materials for the job and gets them to the site the same day) and **Sherpa Dispatch** (the platform now sequences six or more trades on one timeline so a kitchen renovation finishes in 5 weeks instead of 11). You are investing in a vertically integrated platform that handles **labor + materials + delivery + coordination** — not just a labor matching service. See Section 4.6 for the plain-English explainer.
 
 We are running four parallel funding tracks (non-dilutive grants, accelerators, VCs, and this Wefunder round) — see Section 6 of the GTM design spec. The Wefunder community round is one of four. None of the four is the company's only shot. Whichever closes first triggers Phase 1.
 

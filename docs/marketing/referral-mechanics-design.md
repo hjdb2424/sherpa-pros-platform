@@ -521,6 +521,104 @@ Replace the Loop 1 in-app banner copy with these updated variants that surface t
 
 ---
 
+## 5.6 Multi-Trade Project Referral Bonus
+
+**Date added:** 2026-04-25 (Wave 9 — Sherpa Dispatch + Sherpa Materials launch sweep)
+
+Sherpa Dispatch made multi-trade projects (kitchens, baths, additions) a first-class platform primitive. The supply-side referral loop has to follow — pros who bring in another trade for a multi-trade job should be rewarded for completing the orchestration loop.
+
+### What it is
+
+When a pro on the platform brings in another trade for a multi-trade Sherpa Dispatch job — for example, a trim carpenter brings in a finisher for a kitchen renovation, or a plumber brings in an electrician for a heat-pump panel-upgrade combo — **both pros earn a Sherpa Rewards bonus** when the job completes.
+
+- **Reward magnitude:** 200 Sherpa Rewards points per cross-trade referral (≈$20 of redemption value)
+- **Trigger:** the referred pro completes a job on a Sherpa Dispatch multi-trade work order, AND the work order's `project_status` advances to `completed`
+- **Both sides earn:** the referring pro earns 200 pts, the referred pro earns 200 pts. Symmetric reward, asymmetric origin.
+
+### Why both sides earn
+
+Cross-trade referrals are the platform's organic supply-side densifier. The referring pro is donating their relationship capital; the referred pro is putting their reputation behind the project sequencing. Symmetric rewards make the loop self-sustaining without creating a "spammer pro" failure mode.
+
+### What stacks (and what does not)
+
+- **Stacks with Loop 1.** A cross-trade referral that also brings a NEW pro to the platform (one who didn't have an account before) earns BOTH the 500-pt Loop 1 onboarding bonus AND the 200-pt Multi-Trade bonus when the multi-trade job completes. Total: 700 pts for the referring pro, plus standard Loop 1 fee waivers.
+- **Stacks with Sherpa Score.** Cross-trade referrals that complete cleanly count toward the referring pro's "Communication" pillar (the cross-trade hand-off is a communication signal). Climbing Sherpa Score is the long-game compound.
+- **Does not stack with itself.** Multi-Trade bonus fires once per (referring_pro, referred_pro, work_order) tuple. A pro can refer the same finisher to 50 different multi-trade jobs and earn 200 pts each time, but cannot earn multiple 200-pt bonuses on the same work order for the same referral.
+
+### Anti-fraud surface
+
+Multi-Trade referrals share the Loop 1 fraud queue — same `referral_fraud_events` table, same review surface, same kill-criteria. Specific signals to monitor:
+
+- Two pros co-referring each other in a tight loop (mutual-reward farming)
+- A single pro being referred into >5 multi-trade jobs by the same referring pro within 30 days (relationship laundering)
+- Cross-trade referrals that complete the work order in <24 hours from creation (the orchestration is fake)
+
+### Implementation note
+
+The cross-trade referral grant fires on the same trigger as the Loop 1 sub-waiver — work order's `project_status` advances to `completed`. Because Sherpa Dispatch already tags every work order with the `is_multi_trade` boolean and the `participant_pros[]` array, the trigger reads existing fields. New fields needed: `referrals.multi_trade_origin_pro_id` (FK to the referring pro) and `referrals.multi_trade_work_order_id` (FK to the work order).
+
+### Math check
+
+- Cost per successful cross-trade referral: 200 pts × 2 sides = 400 pts × $0.05/pt platform redemption cost = **$20 platform cost per referral**
+- Expected lift: cross-trade referrals close 35-50% faster than cold-pro acquisition (the trust transfer is real); platform GMV per multi-trade job averages 2.4× a single-trade job (per Sherpa Dispatch v1 telemetry); payback under 1 month at any reasonable conversion rate
+- Recommended Phase 1 launch month: Month 4 (one month after Loop 1 has been running and the analytics pipeline can isolate the cross-trade signal)
+
+---
+
+## 5.7 /flex Acquisition Loop
+
+**Date added:** 2026-04-25 (Wave 9 — /flex landing page launch sweep)
+
+The /flex landing page (`thesherpapros.com/flex`) is the public acquisition funnel for the side-bandwidth tradesperson cohort — day-job framers, electricians, and plumbers with weekend bandwidth who aren't ready to form an LLC. This loop is how full-time pros bring side-bandwidth peers onto the platform.
+
+### What it is
+
+When a full-time pro on the platform refers a side-bandwidth peer to /flex, **the referring pro earns a Sherpa Rewards bonus when the peer completes their first 3 jobs on Sherpa Flex.**
+
+- **Reward magnitude:** 500 Sherpa Rewards points per /flex referral (≈$50 of redemption value)
+- **Trigger:** the referred peer signs up via /flex with the referring pro's code, completes the background-check gate, and clears 3 jobs on the platform with `referrals.status = completed`
+- **One side earns:** the referring pro earns 500 pts. The referred /flex pro earns nothing additional from this loop (they earn their normal job revenue + their normal Sherpa Rewards points-per-job, which is the standard onboarding incentive).
+
+### Why only one side earns
+
+/flex is itself the on-ramp incentive — $1M per-project liability insurance included in the 18% take rate is a strong intrinsic offer. Adding a referee bonus on top would risk gaming the loop (people referring themselves under different identities). The asymmetric reward keeps the loop honest.
+
+### What stacks
+
+- **Stacks with Multi-Trade (§5.6).** A /flex pro who later participates in a multi-trade Sherpa Dispatch work order earns both bonuses for the originating referrer.
+- **Stacks with Sherpa Score.** The 3 completed jobs on /flex count toward the referred pro's own Sherpa Score — which is how they eventually upgrade out of /flex into Standard 12% (form an LLC) and then climb to Gold 8%.
+- **Does not stack with Loop 1.** /flex referrals are exclusive to this loop. A pro who refers a /flex peer cannot also claim the Loop 1 onboarding 500-pt bonus on the same referral — the same dollar of platform spend cannot fund two bonuses.
+
+### Anti-fraud surface
+
+/flex referrals inherit the Loop 1 fraud queue. Specific signals to monitor:
+
+- Repeated referrals from the same full-time pro to /flex peers who all share a single residence address or phone-number prefix (household-laundering)
+- /flex referees whose 3-job completion velocity is implausibly fast (<14 days from sign-up to 3rd completed job) — manual review required
+- /flex referees whose first 3 jobs are all under $200 (gaming the threshold) — auto-flag for review
+
+### Implementation note
+
+The /flex referral grant fires on a different trigger than other loops — the third completed job. New fields: `referrals.is_flex_referral` boolean, `referrals.flex_referee_completed_jobs` integer counter that increments per completed job and locks the bonus when it hits 3. The existing `pro_rewards_ledger` insert pattern handles the 500-pt grant.
+
+### Math check
+
+- Cost per successful /flex referral: 500 pts × $0.05/pt platform redemption cost = **$25 platform cost per referral**
+- Expected per-/flex-pro lifetime GMV (Phase 1 estimate): 18 jobs/year × $1,800 avg = $32,400/year × 18% take = $5,832/year platform revenue
+- Payback on the $25 incentive: under 1 month at any conversion rate above 1%
+- The leverage isn't the math — it's the supply-side densification. /flex pros form a feeder pool for Standard 12% (the LLC upgrade path), which is the platform's long-game retention loop.
+- Recommended Phase 1 launch month: Month 3 (same month /flex landing goes public — the loop is dependent on /flex traffic to seed referees)
+
+### Copy — /flex referral in-app banner variants
+
+For pros who have completed 5+ jobs (eligible to refer), surface this banner on the dashboard:
+
+1. *"Know a tradesperson with weekend bandwidth? Send them your /flex code: JOSE-NH. They earn on the side, you earn 500 Sherpa Rewards points when they finish 3 jobs."*
+2. *"The framer on your crew has a side hustle but no LLC. /flex is the door — and you earn 500 Sherpa Rewards points (≈$50) when they complete their first 3 jobs."*
+3. *"Bring a side-bandwidth peer to thesherpapros.com/flex. Your code: JOSE-NH. 500 Sherpa Rewards points after their 3rd job clears."*
+
+---
+
 ## 6. Cross-Loop Implementation Notes
 
 ### 6.1 Shared infrastructure

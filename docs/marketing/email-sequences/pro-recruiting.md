@@ -29,6 +29,8 @@ Three things that are different:
 2. Every quote you send is checked against your state and town building codes before it goes out. So you stop losing jobs because a homeowner did not understand what the work actually costs.
 3. License and insurance are pulled and verified by us. Clients know you are real before you ever talk to them.
 
+One more thing that matters if you specialize. Sherpa Dispatch sequences multi-trade jobs automatically — kitchens, baths, additions. If you are a trim carpenter, you get pulled in at the right moment in the sequence (right after cabinets are set, right before paint), no scheduling babysitting. Specialists stop having to manage 6 other trades' calendars to get to their own work.
+
 The first ten pros in get the 5 percent rate forever. After that it is 10 percent and a small monthly fee. The ten spots will go fast because most of them are already going to my own sub network.
 
 One more thing on the rate. We just turned on Sherpa Score, a 0-to-100 quality grade for every pro on the platform. Twelve metrics, three pillars: quality, communication, reviews. Founding Pros who hit Gold (80+) during beta lock the 5 percent rate forever. Pros who finish beta at Silver or Bronze convert to standard 12 percent. Build your score during beta, lock in Gold-tier 5 percent for life. Doing the work right is the whole game.
@@ -44,6 +46,8 @@ HJD Builders LLC
 {{phone}}
 
 P.S. — Two things that just shipped you should know about. First: Sherpa Mobile is in TestFlight. iPhone first, Android right behind it via Expo. The first 50 founding pros get TestFlight invites — bid jobs, message clients, scan receipts, get paid, all from the phone you already carry. Second: Sherpa Smart Scan is live. Snap a photo of any receipt in the truck and it auto-categorizes for Schedule C (the IRS form for self-employed business income). Most pros lose 15 to 25 percent of their deductions to lost receipts. Snap and forget. Both are included in the founding rate.
+
+P.P.S. — One more. Sherpa Materials is live. We order materials for the job and they show up the morning you do. You stop spending 90 minutes a day at the supply house. That's $40-60K of windshield time you bill back to actual work. Pro and client both approve the list inside the app before anything ships, so no surprise charges. Same-day delivery via Uber Direct.
 
 ---
 

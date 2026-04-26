@@ -375,6 +375,67 @@ If you are not convinced at Day 30, you walk away owing nothing on the platform 
 
 ---
 
+# Sherpa Guard — your auditor will thank you.
+
+## Role-Based Access Control + audit logs, baked in
+
+Every action a person takes in Sherpa Pros — every work order assigned, every payment released, every vendor approved, every COI uploaded — is recorded with **who did it, what they did, on which target, and when.** Every record. Every time. Sortable, filterable, exportable.
+
+**Five role tiers, permission-scoped:**
+
+| Role | Sees | Can do |
+|---|---|---|
+| **Owner** | Full portfolio, all properties, all units, all financials | Everything |
+| **Admin** | Full portfolio (configurable property scope) | Approve vendors, release escrow, configure tiers |
+| **Project Manager** | Assigned properties + units | Dispatch work orders, approve invoices |
+| **Pro** | Own assigned work orders only | Bid, message, mark complete, upload receipts |
+| **Client / Tenant** | Own jobs and own units only | Post work orders, message, rate |
+
+**Sample audit-log row (the format your auditor will ask for):**
+
+| Action | User | Role | Target | Timestamp |
+|---|---|---|---|---|
+| Work order #4017 dispatched | jdoe@portfolio.com | PM | Building 12 / Unit 4B | 2026-04-25 09:14:22 ET |
+| Vendor approved | mgray@portfolio.com | Admin | ABC Plumbing LLC | 2026-04-25 09:18:47 ET |
+| Escrow released $475.00 | mgray@portfolio.com | Admin | Work order #4017 | 2026-04-25 11:32:09 ET |
+| Insurance lapsed — auto-blocked | system | RBAC engine | XYZ Electric LLC | 2026-04-25 12:00:00 ET |
+
+**Why this matters at audit time:** when your accountant asks who approved the $12,000 capital expenditure on Property C in Q2, the answer is one filtered audit-log query — not a week of email archaeology. When a regulator asks how you ensure every vendor on a unit had current insurance, the answer is "RBAC blocks dispatch the moment a Certificate of Insurance lapses." When your insurance carrier asks for a chain of custody on a vendor incident, the answer is the audit log, exported to comma-separated values (CSV).
+
+**Sherpa Guard is the SOC 2-readiness signal.** SOC 2 is the security certification institutional partners (large lenders, large property-management chains, large insurance carriers) ask to see before signing. Most platforms in this category cannot produce this. Sherpa Guard ships it on Day 1.
+
+---
+
+# Make-ready in one job, not four.
+
+## Multi-trade unit turnover, sequenced on one timeline
+
+A typical apartment turnover involves **four separate trades** showing up on four separate days, often in the wrong order, often with idle days in between:
+
+1. **Cleaning** — appliances out, deep clean
+2. **Paint** — touch-up or full repaint
+3. **Carpet** — replacement or steam clean
+4. **Appliance** — refrigerator, dishwasher, range hood swap
+
+**Today: 4 separate vendors, 4 separate phone calls, 8–12 days of unit downtime, $300–$600 in lost rent.**
+
+**With Sherpa Dispatch — multi-trade timeline orchestration:** all four trades sequenced on one timeline, handoffs owned by the platform, blockers surfaced before they become slips. **Same turnover finishes in 4 days.**
+
+| Step | Today (4 vendors, 4 phone calls) | With Sherpa Dispatch |
+|---|---|---|
+| Schedule | Site manager calls 4 vendors over 3 days | One Dispatch request, all 4 trades sequenced |
+| Day 1 | Cleaning (or whoever picks up the phone first) | Cleaning |
+| Day 2 | Idle (waiting for paint vendor) | Paint (handoff owned by platform) |
+| Day 3 | Paint | Carpet (handoff owned by platform) |
+| Day 4 | Idle | Appliance — unit ready by end of day |
+| Day 5–8 | Carpet, then appliance, then re-walk | (already turned) |
+| **Total downtime** | **8–12 days** | **4 days** |
+| **Lost rent** | $300–$600 per turnover | $100–$200 per turnover |
+
+**On a 1,000-unit portfolio with ~25% annual turnover, that is 250 turnovers per year. Compressing each by 5 days at $40 per day in lost rent = $50,000 per year recovered, before any vendor cost savings.** The Dispatch upgrade pays for the platform fee on a 1,000-unit portfolio in 7 months on its own.
+
+---
+
 # The numbers, by portfolio size.
 
 ## Net annual savings — conservative case
@@ -407,6 +468,11 @@ If you are not convinced at Day 30, you walk away owing nothing on the platform 
 If you are not convinced at Day 30, you walk away. No platform-fee invoice.
 
 If you are, we roll out to the rest of the portfolio at your pace.
+
+**The differentiator vs. the spreadsheet-and-group-text status quo:**
+**Sherpa Guard** (Role-Based Access Control plus audit logs) gives your auditor and your insurance carrier the chain of custody they have been asking your team for since 2022.
+**Sherpa Dispatch** (multi-trade timeline orchestration) compresses unit-turnover downtime from 8–12 days to 4 days by sequencing cleaning, paint, carpet, and appliance handoffs on one timeline.
+Together they replace what your team is doing today in 40 vendor spreadsheets, an annual COI fire drill, and a group text — with one platform that documents every handoff and shortens every turnover.
 
 **Phyrom · Founder · Sherpa Pros**
 phyrom@thesherpapros.com

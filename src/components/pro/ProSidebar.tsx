@@ -4,6 +4,7 @@ import Link from 'next/link';
 import SidebarUserBlock from '@/components/common/SidebarUserBlock';
 import { usePathname } from 'next/navigation';
 import Logo from '@/components/brand/Logo';
+import HeaderAvatar from '@/components/common/HeaderAvatar';
 
 const navItems = [
   {
@@ -144,13 +145,7 @@ export default function ProSidebar() {
           </button>
 
           {/* Profile avatar */}
-          <Link
-            href="/pro/settings"
-            className="flex h-9 w-9 items-center justify-center rounded-full bg-sky-50 text-sm font-bold text-[#00a9e0] dark:bg-[#00a9e0]/10"
-            aria-label="Account settings"
-          >
-            MR
-          </Link>
+          <HeaderAvatar href="/pro/settings" fallbackInitials="SP" />
         </div>
       </header>
 

@@ -1,7 +1,7 @@
 ---
 title: "ADR 001: Sharding Strategy — Citus vs pg_partman vs Application-Layer"
 date: 2026-04-25
-status: draft (decision: Citus long-term, pg_partman Phase 4A)
+status: "draft (decision: Citus long-term, pg_partman Phase 4A)"
 owner: Phyrom + future SRE hire
 references:
   - 01-drizzle-replica-aware-client.md

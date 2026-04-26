@@ -16,8 +16,8 @@ locked_economics_envelope:
   - Total Initial Investment: $185,000–$420,000
   - Royalty: 6% Year 1 / 8% Year 2+ of gross revenue
   - Marketing Fund: 2% of gross revenue
-  - Year 2 Mid revenue target: $1.05M; Year 2 Mid EBITDA: 21%; franchisee cash flow at maturity: $236K
-  - Time to monthly cash-flow positive: 14–22 months
+  - "Year 2 Mid revenue target: $1.05M; Year 2 Mid EBITDA: 21%; franchisee cash flow at maturity: $236K"
+  - "Time to monthly cash-flow positive: 14–22 months"
   - Disclosure tier scenarios: Low (P25), Mid (P50), High (P75)
 disclaimer:
   - Item 19 is a Financial Performance Representation under the Federal Trade Commission (FTC) Franchise Rule.

@@ -19,6 +19,17 @@ import type {
 } from './types';
 
 // ---------------------------------------------------------------------------
+// Twilio response shapes (only the fields we map onto local types)
+// ---------------------------------------------------------------------------
+
+interface TwilioMessageShape {
+  sid: string;
+  body: string | null;
+  author: string | null;
+  dateCreated: Date | null;
+}
+
+// ---------------------------------------------------------------------------
 // Twilio client (lazy-initialized)
 // ---------------------------------------------------------------------------
 
@@ -146,11 +157,13 @@ export const twilioService: CommunicationService = {
     }
 
     const client = getTwilioClient();
+    // TODO: pagination — Twilio requires page() + pageBefore for cursor access;
+    // the _before arg is reserved for that future wiring.
     const result = await client.conversations.v1
       .conversations(conversation.twilioSid)
       .messages.list({ limit, order: 'desc' });
 
-    return result.map((m: { sid: string; body: string | null; author: string | null; dateCreated: Date | null }) => ({
+    return result.map((m: TwilioMessageShape) => ({
       id: m.sid,
       conversationId,
       senderId: m.author ?? 'unknown',

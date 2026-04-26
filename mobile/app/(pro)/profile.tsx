@@ -192,7 +192,7 @@ function CertRow({
 export default function ProProfileScreen() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
-  const { userName, email, signOut } = useAuth();
+  const { userName, email, signOut, switchRole } = useAuth();
   const [onboardingComplete, setOnboardingComplete] = useState(true);
   const [userDisplayName, setUserDisplayName] = useState(userName || PRO_PROFILE.name);
   const [userEmail, setUserEmail] = useState(email || '');

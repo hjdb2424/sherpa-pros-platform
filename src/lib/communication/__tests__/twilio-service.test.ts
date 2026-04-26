@@ -96,3 +96,55 @@ describe('twilioService.sendMessage', () => {
     ).rejects.toThrow(/Conversation not found/);
   });
 });
+
+describe('twilioService.getMessages', () => {
+  beforeEach(() => {
+    process.env.TWILIO_ACCOUNT_SID = 'AC_test';
+    process.env.TWILIO_AUTH_TOKEN = 'token_test';
+    vi.resetModules();
+  });
+
+  it('returns mapped messages from the Twilio API', async () => {
+    // Adjust the mock to return one message
+    vi.doMock('twilio', () => {
+      const factory = vi.fn().mockReturnValue({
+        conversations: {
+          v1: {
+            conversations: Object.assign(
+              (sid: string) => ({
+                sid,
+                messages: {
+                  list: vi.fn().mockResolvedValue([
+                    {
+                      sid: 'IM_one',
+                      body: 'hello',
+                      author: 'pro_x',
+                      dateCreated: new Date('2026-04-26T01:00:00Z'),
+                    },
+                  ]),
+                  create: vi.fn(),
+                },
+                update: vi.fn(),
+                participants: { create: vi.fn() },
+              }),
+              {
+                create: vi.fn().mockResolvedValue({
+                  sid: 'CH_x',
+                }),
+              },
+            ),
+          },
+        },
+      });
+      return { default: factory, __esModule: true };
+    });
+
+    const { twilioService } = await import('../twilio-service');
+    const conv = await twilioService.createConversation('job_3', 'pro_3', 'client_3');
+    const msgs = await twilioService.getMessages(conv.id);
+
+    expect(msgs).toHaveLength(1);
+    expect(msgs[0].body).toBe('hello');
+    expect(msgs[0].senderId).toBe('pro_x');
+  });
+});

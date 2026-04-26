@@ -137,28 +137,27 @@ export const twilioService: CommunicationService = {
   },
 
   async getMessages(conversationId, limit = 50, _before) {
-    const _client = getTwilioClient();
     const conversation = conversationCache.get(conversationId);
     if (!conversation) {
       throw new Error(`Conversation not found: ${conversationId}`);
     }
+    if (!conversation.twilioSid) {
+      return [];
+    }
 
-    // TODO: Actual Twilio API call with pagination
-    // const result = await client.conversations.v1
-    //   .conversations(conversation.twilioSid!)
-    //   .messages.list({ limit, order: 'desc' });
-    //
-    // return result.map(m => ({
-    //   id: m.sid,
-    //   conversationId,
-    //   senderId: m.author ?? 'unknown',
-    //   body: m.body ?? '',
-    //   createdAt: m.dateCreated ?? new Date(),
-    //   readAt: null,
-    // }));
+    const client = getTwilioClient();
+    const result = await client.conversations.v1
+      .conversations(conversation.twilioSid)
+      .messages.list({ limit, order: 'desc' });
 
-    void limit;
-    return [];
+    return result.map((m: { sid: string; body: string | null; author: string | null; dateCreated: Date | null }) => ({
+      id: m.sid,
+      conversationId,
+      senderId: m.author ?? 'unknown',
+      body: m.body ?? '',
+      createdAt: m.dateCreated ?? new Date(),
+      readAt: null,
+    }));
   },
 
   async getConversationsForUser(userId) {

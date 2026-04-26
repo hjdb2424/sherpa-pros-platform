@@ -152,7 +152,11 @@ export default function OnboardingWizard({ role, onComplete }: Props) {
     await SecureStore.setItemAsync('sherpa_user_profile', JSON.stringify({ ...data, role }));
     await SecureStore.setItemAsync('sherpa_onboarding_complete', 'true');
     const name = data.fullName || data.name || '';
-    if (name) await SecureStore.setItemAsync('sherpa_test_name', name);
+    if (name) {
+      await SecureStore.setItemAsync('sherpa_name', name);
+      await SecureStore.setItemAsync('sherpa_test_name', name);
+    }
+    if (data.email) await SecureStore.setItemAsync('sherpa_email', data.email);
     onComplete();
   }, [data, role, onComplete]);
 

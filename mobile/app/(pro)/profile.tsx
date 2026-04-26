@@ -22,6 +22,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { colors, spacing, borderRadius, shadows, typography } from '@/lib/theme';
 import { useAuth } from '@/lib/auth';
+import { getUserProfile, getUserName, getUserEmail, getInitials } from '@/lib/user-profile';
 import Avatar from '@/components/common/Avatar';
 import Button from '@/components/common/Button';
 import Logo from '@/components/brand/Logo';
@@ -191,8 +192,27 @@ function CertRow({
 export default function ProProfileScreen() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
-  const { userName, email, signOut, switchRole } = useAuth();
+  const { userName, email, signOut } = useAuth();
   const [onboardingComplete, setOnboardingComplete] = useState(true);
+  const [userDisplayName, setUserDisplayName] = useState(userName || PRO_PROFILE.name);
+  const [userEmail, setUserEmail] = useState(email || '');
+  const [userPhone, setUserPhone] = useState('');
+  const [userTrade, setUserTrade] = useState('');
+  const [userCity, setUserCity] = useState('');
+
+  // Load real user data from onboarding profile
+  useEffect(() => {
+    getUserProfile().then((p) => {
+      if (!p) return;
+      if (p.fullName || p.name) setUserDisplayName(p.fullName || p.name || '');
+      if (p.email) setUserEmail(p.email);
+      if (p.phone) setUserPhone(p.phone);
+      if (p.trade) setUserTrade(p.trade);
+      if (p.city) setUserCity(p.city);
+    });
+    getUserName(PRO_PROFILE.name).then(setUserDisplayName);
+    getUserEmail('').then((e) => { if (e) setUserEmail(e); });
+  }, []);
   const [portfolio, setPortfolio] = useState<PortfolioItem[]>(MOCK_PORTFOLIO);
   const [filterVisible, setFilterVisible] = useState(false);
   const [pendingImageUri, setPendingImageUri] = useState<string | null>(null);
@@ -214,10 +234,10 @@ export default function ProProfileScreen() {
 
   // Edit Profile state
   const [editProfileVisible, setEditProfileVisible] = useState(false);
-  const [editProName, setEditProName] = useState(PRO_PROFILE.name);
-  const [editProTrade, setEditProTrade] = useState('Master Plumber');
+  const [editProName, setEditProName] = useState(userDisplayName);
+  const [editProTrade, setEditProTrade] = useState(userTrade || 'Master Plumber');
   const [editProBio, setEditProBio] = useState(PRO_PROFILE.bio);
-  const [editProPhone, setEditProPhone] = useState('(603) 555-0142');
+  const [editProPhone, setEditProPhone] = useState(userPhone || '');
 
   useEffect(() => {
     SecureStore.getItemAsync('sherpa_onboarding_complete').catch(() => null).then((val) => {
@@ -339,7 +359,13 @@ export default function ProProfileScreen() {
     { label: 'About', iconName: 'information-circle-outline', onPress: () => Alert.alert('Sherpa Pros v1.0.0', 'Built for pros, by builders.\n\nLicensed pros. Nationwide.') },
   ];
 
-  const profile = PRO_PROFILE;
+  const profile = {
+    ...PRO_PROFILE,
+    name: userDisplayName,
+    initials: getInitials(userDisplayName),
+    ...(userTrade ? { headline: `${userTrade} · ${PRO_PROFILE.stats.yearsActive} years` } : {}),
+    ...(userCity ? { location: userCity } : {}),
+  };
 
   return (
     <View style={[s.container, { paddingTop: insets.top }]}>
@@ -366,7 +392,7 @@ export default function ProProfileScreen() {
               style={[s.editProfilePill, { top: insets.top + spacing.sm }]}
               onPress={() => {
                 Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-                setEditProName(PRO_PROFILE.name);
+                setEditProName(userDisplayName);
                 setEditProTrade('Master Plumber');
                 setEditProBio(PRO_PROFILE.bio);
                 setEditProPhone('(603) 555-0142');
@@ -687,7 +713,7 @@ export default function ProProfileScreen() {
             style={s.shareButton}
             onPress={() => {
               Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-              Share.share({ message: 'Check out Mike Rodriguez on Sherpa Pros! https://thesherpapros.com/pro/mike-rodriguez' });
+              Share.share({ message: `Check out ${userDisplayName} on Sherpa Pros! https://thesherpapros.com` });
             }}
           >
             <Text style={s.shareButtonText}>Share Profile</Text>

@@ -122,17 +122,12 @@ export default function SignInScreen() {
           Sign in with the email from your invite.
         </Text>
 
-        {/* Google OAuth */}
-        <Pressable
-          style={styles.googleButton}
-          onPress={handleGoogleSignIn}
-          disabled={loading}
-          accessibilityLabel="Continue with Google"
-          accessibilityRole="button"
-        >
-          <Ionicons name="logo-google" size={18} color={colors.text} />
-          <Text style={styles.googleButtonText}>Continue with Google</Text>
-        </Pressable>
+        {/* Google OAuth — disabled until deep link redirect is configured */}
+        <View style={[styles.googleButton, { opacity: 0.4 }]}>
+          <Ionicons name="logo-google" size={18} color={colors.textMuted} />
+          <Text style={[styles.googleButtonText, { color: colors.textMuted }]}>Continue with Google</Text>
+          <Text style={{ fontSize: 10, color: colors.textMuted, marginLeft: 4 }}>(coming soon)</Text>
+        </View>
 
         {/* Divider */}
         <View style={styles.divider}>

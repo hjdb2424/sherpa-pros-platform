@@ -3,10 +3,11 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 // Hoisted mock — twilio SDK swap before twilio-service.ts imports it
 vi.mock('twilio', () => {
   const participantsCreate = vi.fn().mockResolvedValue({ sid: 'PA_mock' });
+  const participantUpdate = vi.fn().mockResolvedValue({ identity: 'mock' });
+
   const conversationsCreate = vi.fn().mockResolvedValue({
     sid: 'CH_mock_sid',
     friendlyName: 'mock',
-    participants: () => ({ create: participantsCreate }),
   });
   const messagesCreate = vi.fn().mockResolvedValue({
     sid: 'IM_mock',
@@ -17,15 +18,22 @@ vi.mock('twilio', () => {
   const messagesList = vi.fn().mockResolvedValue([]);
   const conversationUpdate = vi.fn().mockResolvedValue({ sid: 'CH_mock_sid' });
 
+  // Path accessor: client.conversations.v1.conversations(sid).<resource>
   const conversationsAccessor = (sid: string) => ({
     sid,
     messages: { create: messagesCreate, list: messagesList },
-    update: conversationUpdate,
-    participants: (identity: string) => ({
-      update: vi.fn().mockResolvedValue({ identity }),
+    participants: {
+      create: participantsCreate,
+    },
+    participantsBy: (_identity: string) => ({
+      update: participantUpdate,
     }),
+    update: conversationUpdate,
   });
-  conversationsAccessor.create = conversationsCreate;
+  // The .create method on the accessor is reached as conversations.create(...)
+  // (no SID arg) — a separate pattern from conversations(sid)
+  (conversationsAccessor as unknown as { create: typeof conversationsCreate }).create =
+    conversationsCreate;
 
   const factory = vi.fn().mockReturnValue({
     conversations: {

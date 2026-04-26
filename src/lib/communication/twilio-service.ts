@@ -73,23 +73,21 @@ export const twilioService: CommunicationService = {
       attributes: JSON.stringify({ jobId, proId, clientId }),
     });
 
-    // The Twilio SDK ConversationInstance exposes participants() as a
-    // ParticipantListInstance — cast through unknown to call .create() on it.
-    type ParticipantList = () => { create: (opts: Record<string, string>) => Promise<unknown> };
-    const addParticipant = (twilioConv as unknown as { participants: ParticipantList })
-      .participants;
-
     // Add Pro as participant with masked identity
-    await addParticipant().create({
-      identity: proId,
-      attributes: JSON.stringify({ role: 'pro', displayName: 'Pro' }),
-    });
+    await client.conversations.v1
+      .conversations(twilioConv.sid)
+      .participants.create({
+        identity: proId,
+        attributes: JSON.stringify({ role: 'pro', displayName: 'Pro' }),
+      });
 
     // Add Client as participant with masked identity
-    await addParticipant().create({
-      identity: clientId,
-      attributes: JSON.stringify({ role: 'client', displayName: 'Client' }),
-    });
+    await client.conversations.v1
+      .conversations(twilioConv.sid)
+      .participants.create({
+        identity: clientId,
+        attributes: JSON.stringify({ role: 'client', displayName: 'Client' }),
+      });
 
     const conversation: Conversation = {
       id,

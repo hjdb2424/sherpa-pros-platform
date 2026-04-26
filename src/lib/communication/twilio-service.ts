@@ -105,7 +105,7 @@ export const twilioService: CommunicationService = {
   },
 
   async sendMessage(conversationId, senderId, body) {
-    const _client = getTwilioClient();
+    const client = getTwilioClient();
     const conversation = conversationCache.get(conversationId);
     if (!conversation) {
       throw new Error(`Conversation not found: ${conversationId}`);
@@ -113,21 +113,23 @@ export const twilioService: CommunicationService = {
     if (conversation.status !== 'active') {
       throw new Error(`Conversation is ${conversation.status}`);
     }
+    if (!conversation.twilioSid) {
+      throw new Error(`Conversation ${conversationId} has no Twilio SID`);
+    }
 
-    // TODO: Actual Twilio API call
-    // const twilioMsg = await client.conversations.v1
-    //   .conversations(conversation.twilioSid!)
-    //   .messages.create({
-    //     author: senderId,
-    //     body,
-    //   });
+    const twilioMsg = await client.conversations.v1
+      .conversations(conversation.twilioSid)
+      .messages.create({
+        author: senderId,
+        body,
+      });
 
     const message: Message = {
-      id: generateId('msg'),
+      id: twilioMsg.sid,
       conversationId,
-      senderId,
-      body,
-      createdAt: new Date(),
+      senderId: twilioMsg.author ?? senderId,
+      body: twilioMsg.body ?? body,
+      createdAt: twilioMsg.dateCreated ?? new Date(),
       readAt: null,
     };
 

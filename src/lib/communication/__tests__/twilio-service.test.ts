@@ -71,3 +71,28 @@ describe('twilioService.createConversation', () => {
     ).rejects.toThrow(/credentials not configured/i);
   });
 });
+
+describe('twilioService.sendMessage', () => {
+  beforeEach(() => {
+    process.env.TWILIO_ACCOUNT_SID = 'AC_test';
+    process.env.TWILIO_AUTH_TOKEN = 'token_test';
+    vi.resetModules();
+  });
+
+  it('posts the message via Conversations.messages.create', async () => {
+    const { twilioService } = await import('../twilio-service');
+    const conv = await twilioService.createConversation('job_2', 'pro_2', 'client_2');
+    const msg = await twilioService.sendMessage(conv.id, 'pro_2', 'hello');
+
+    expect(msg.body).toBe('hi'); // from the mock
+    expect(msg.senderId).toBe('user_1'); // mock returns author='user_1'
+    expect(msg.conversationId).toBe(conv.id);
+  });
+
+  it('throws when conversation does not exist', async () => {
+    const { twilioService } = await import('../twilio-service');
+    await expect(
+      twilioService.sendMessage('does_not_exist', 'pro_2', 'hello'),
+    ).rejects.toThrow(/Conversation not found/);
+  });
+});

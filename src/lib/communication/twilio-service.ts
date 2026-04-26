@@ -11,6 +11,7 @@
  *   TWILIO_MESSAGING_SERVICE_SID
  */
 
+import Twilio from 'twilio';
 import type {
   CommunicationService,
   Conversation,
@@ -21,7 +22,13 @@ import type {
 // Twilio client (lazy-initialized)
 // ---------------------------------------------------------------------------
 
-function getTwilioClient() {
+type TwilioClient = ReturnType<typeof Twilio>;
+
+let cachedClient: TwilioClient | null = null;
+
+function getTwilioClient(): TwilioClient {
+  if (cachedClient) return cachedClient;
+
   const accountSid = process.env.TWILIO_ACCOUNT_SID;
   const authToken = process.env.TWILIO_AUTH_TOKEN;
 
@@ -31,10 +38,8 @@ function getTwilioClient() {
     );
   }
 
-  // TODO: Replace with actual Twilio SDK import once `twilio` package is installed
-  // import Twilio from 'twilio';
-  // return Twilio(accountSid, authToken);
-  return { accountSid, authToken };
+  cachedClient = Twilio(accountSid, authToken);
+  return cachedClient;
 }
 
 // ---------------------------------------------------------------------------
@@ -59,36 +64,39 @@ const conversationCache = new Map<string, Conversation>();
 
 export const twilioService: CommunicationService = {
   async createConversation(jobId, proId, clientId) {
-    const _client = getTwilioClient();
+    const client = getTwilioClient();
     const id = generateId('conv');
 
-    // TODO: Actual Twilio Conversations API call
-    // const twilioConv = await client.conversations.v1.conversations.create({
-    //   friendlyName: `Job ${jobId} — Pro ↔ Client`,
-    //   uniqueName: id,
-    //   attributes: JSON.stringify({ jobId, proId, clientId }),
-    // });
-    //
-    // // Add Pro as participant with masked identity
-    // await twilioConv.participants().create({
-    //   identity: proId,
-    //   attributes: JSON.stringify({ role: 'pro', displayName: 'Pro' }),
-    // });
-    //
-    // // Add Client as participant with masked identity
-    // await twilioConv.participants().create({
-    //   identity: clientId,
-    //   attributes: JSON.stringify({ role: 'client', displayName: 'Client' }),
-    // });
+    const twilioConv = await client.conversations.v1.conversations.create({
+      friendlyName: `Job ${jobId} — Pro ↔ Client`,
+      uniqueName: id,
+      attributes: JSON.stringify({ jobId, proId, clientId }),
+    });
 
-    const twilioSid = `CH_placeholder_${id}`;
+    // The Twilio SDK ConversationInstance exposes participants() as a
+    // ParticipantListInstance — cast through unknown to call .create() on it.
+    type ParticipantList = () => { create: (opts: Record<string, string>) => Promise<unknown> };
+    const addParticipant = (twilioConv as unknown as { participants: ParticipantList })
+      .participants;
+
+    // Add Pro as participant with masked identity
+    await addParticipant().create({
+      identity: proId,
+      attributes: JSON.stringify({ role: 'pro', displayName: 'Pro' }),
+    });
+
+    // Add Client as participant with masked identity
+    await addParticipant().create({
+      identity: clientId,
+      attributes: JSON.stringify({ role: 'client', displayName: 'Client' }),
+    });
 
     const conversation: Conversation = {
       id,
       jobId,
       proUserId: proId,
       clientUserId: clientId,
-      twilioSid,
+      twilioSid: twilioConv.sid,
       status: 'active',
       createdAt: new Date(),
       closedAt: null,

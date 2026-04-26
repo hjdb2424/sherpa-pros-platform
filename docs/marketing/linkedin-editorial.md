@@ -147,6 +147,132 @@ SATURDAY/SUNDAY: NO POSTS in Phase 0. Use weekends for content capture (job-site
 
 ---
 
+## Wave 12 Appendix — Sherpa Materials Engine launch (Wk 32+, prose drafts)
+
+*The seven posts below are written as ready-to-publish prose, sequenced for Wk 32 / Wk 33 / Wk 34. Convert to the table format above when slotting into Metricool. Posts are designed to land alongside the Sherpa Materials engine launch announcement.*
+
+---
+
+**Wk 32 — Mon · "Sherpa Materials engine is live"**
+
+Sherpa Materials engine is live.
+
+For the last six months we've been quiet about a thing we knew would change the unit economics of every job we touch. As of [VERIFY-DATE], it's shipped.
+
+Here's what it does, in one sentence: when a Sherpa accepts a dispatch, the platform checks the materials list against retail inventory across 40+ suppliers, places the order through Zinc, and routes same-day delivery via Uber Direct — before the Sherpa rolls onto the jobsite.
+
+No more "I have to run to Home Depot" eating an hour of billable time. No more "the part isn't in stock at the local branch." The materials get to the job before the human does.
+
+This is what vertical integration looks like in skilled trades. Not a marketplace. A coordinated supply chain.
+
+CTA: Comment "MATERIALS" — I'll DM you the launch announcement.
+
+---
+
+**Wk 32 — Wed · "Technical deep-dive: how the lookup works"**
+
+Quick technical deep-dive on the Sherpa Materials engine for the builders in my feed.
+
+The hard problem isn't the order — it's the lookup. Most material requests come in as natural-language fragments ("standard 3/4 ply, BCX, half sheet OK") from a Sherpa typing on a phone with one hand. The platform has to map that to a real SKU, at a real supplier, at a real price, with real availability, in under 800ms.
+
+We do it with a structured materials catalog (~28K SKUs across the categories that matter for residential remodel) plus a fuzzy-match resolver that scores against historical accepted matches. Confidence below 0.85, the platform escalates to the GC for one-tap confirmation. Above 0.85, it just orders.
+
+Zinc handles the cross-retailer order placement. Uber Direct handles the last-mile. We keep the margin between supplier price and what the GC pays as a coordination fee — currently 8-12% blended.
+
+Built it because we needed it on our own jobs. Shipping it because every GC we've talked to has the same bleeding problem.
+
+CTA: Comment "LOOKUP" — I'll send you the technical breakdown.
+
+---
+
+**Wk 32 — Fri · "$540 billion"**
+
+$540 billion.
+
+That's the U.S. construction materials TAM that flows through residential and small-commercial GCs every year. Most of it routes through 3-4 big-box chains plus a long tail of regional suppliers (FW Webb, Grainger, local lumberyards).
+
+The dirty secret: GCs don't make money on materials. Markup got compressed by Home Depot Pro and Lowe's Pro accounts a decade ago. Today, the average GC nets 0-3% on the materials line of a job — and that's before factoring in the windshield time their crews spend running for parts.
+
+Sherpa Materials engine flips that. Because we coordinate the order + delivery as a service to the Sherpa workforce, the take rate sits at 8-12%, not 0-3%. And it doesn't come out of the GC's margin — it comes out of the time + fuel + missed-cut-list waste the platform eliminates.
+
+This is how skilled trades get vertically integrated. One coordinated layer between the worker, the supplier, and the jobsite — running the same play 50,000 times a day.
+
+CTA: DM "TAM" — I'll send you the unit economics one-pager.
+
+---
+
+**Wk 33 — Mon · "Customer story from last week"**
+
+Customer story from last week.
+
+A GC in Manchester accepted a Sherpa dispatch for a bath rough-in. Sherpa hit "accept," typed the rough materials list (PEX, fittings, escutcheons, a vanity supply kit), and drove to the job. Twenty-three minutes later — before he'd even finished demoing the existing fixtures — Uber Direct dropped the materials at the curb.
+
+The GC texted me a photo of the box on his porch with the caption: "I've never had this happen before in 18 years."
+
+That's the moment the Sherpa Materials engine pays for itself. Not the price savings (though those are real). The hour-and-a-half he didn't lose driving to the supply house and back.
+
+Multiply that by the 200+ Sherpa dispatches running through the platform each week and the math gets interesting fast.
+
+CTA: Comment "STORY" — I'll DM you the demo Loom of the Sherpa-side flow.
+
+---
+
+**Wk 33 — Wed · "Counter-positioning, since people keep asking"**
+
+Counter-positioning, since people keep asking.
+
+We are not Grainger. Grainger sells you parts. We coordinate parts + labor + delivery as one transaction.
+
+We are not Home Depot Pro. HD Pro is a discounted account at a retail chain. We're a software layer that orders across 40+ suppliers, including HD when it's the right answer.
+
+We are not Angi or Thumbtack. Those are lead-gen marketplaces — they sell a contact, then disappear. We dispatch a vetted Sherpa, coordinate the materials, and stay on the transaction through completion.
+
+We are not Procore. Procore is a system of record for commercial GCs running $50M+ in volume. We're an operating system for residential and small-commercial GCs running $500K-$15M.
+
+The right comp set is FW Webb + Grainger + Uber Direct + Procore — but stitched together as one platform, for a market segment none of them serve well alone.
+
+CTA: Comment "COMP" — I'll send you the comp-set deep-dive.
+
+---
+
+**Wk 33 — Fri · "The bottleneck isn't labor cost. It's labor coordination cost."**
+
+A thing I wish I'd understood five years ago: the bottleneck in residential construction isn't labor cost. It's labor coordination cost.
+
+A skilled tradesperson in New Hampshire bills $85-$140/hour. They cost their employer $55-$85 fully loaded. The gap should be margin — but most of it gets eaten by:
+
+- Drive time between jobs (30-90 min/day)
+- Material runs (45-90 min/day)
+- Punch-list returns (1-3 hrs/week)
+- Inspection coordination (variable, painful)
+- Rework from mis-spec'd parts (5-15% of jobs)
+
+Sherpa Materials engine kills the second one outright. The Sherpa dispatch system kills the first one. The Code Wiseman bridge kills the fourth. The materials confidence model kills the fifth.
+
+We're not chasing one big software win. We're chasing five medium ones, stacked. That's the thesis.
+
+CTA: DM "STACK" — I'll send you the five-loss-prevention map.
+
+---
+
+**Wk 34 — Mon · "How the engine handles supplier failure modes"**
+
+For the technical folks who asked how the Sherpa Materials engine handles supplier failure modes:
+
+Three layers of fallback.
+
+Layer 1: primary supplier in stock + same-day delivery window available. Order placed, ETA returned to Sherpa, done.
+
+Layer 2: primary out of stock. Engine queries the next 4 suppliers in the cost-weighted preference graph. If any has stock + delivery window, swaps SKU (or near-equivalent SKU above the 0.85 confidence threshold), notifies Sherpa with one-tap confirm.
+
+Layer 3: no supplier has stock + same-day. Engine routes to scheduled delivery (next business day) and pings the GC to flag schedule risk. Sherpa sees this on their phone before they leave the truck.
+
+The point isn't perfect fulfillment. The point is the GC and the Sherpa always know what's happening, in real time, on the surface they already use. No phone calls. No "let me check on that and get back to you."
+
+CTA: Comment "FALLBACK" — I'll send you the supplier-routing flow diagram.
+
+---
+
 ## Notes for Phyrom — How to Use This Calendar
 
 1. **Pre-write the week on Sunday night.** Open this file, copy Mon/Wed/Fri into the scheduler, attach assets.

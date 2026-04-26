@@ -60,7 +60,7 @@ Read the four bullets fast. Land hard on the empty quadrant. The four incumbents
 
 3. **AI is finally good enough to do the code work.** A code-aware quote validator that reads NEC, IRC, MA Electrical, and NH RSA in real time was a research paper in 2022. It's a working product on our platform today.
 
-4. **The supply-chain shift.** Pure-labor marketplaces (Angi, Thumbtack, TaskRabbit) have hit a structural 10–15% take-rate ceiling — homeowners and pros revolt above that line. The next 5x of marketplace value is captured by **vertically integrating into materials and multi-trade coordination.** Sherpa Materials (internal materials engine + Zinc API ordering + Uber Direct same-day delivery) and Sherpa Dispatch (multi-trade timeline orchestration) push the blended take rate to 18–25% per job — without raising the labor commission.
+4. **The supply-chain shift.** Pure-labor marketplaces (Angi, Thumbtack, TaskRabbit) have hit a structural 10–15% take-rate ceiling — homeowners and pros revolt above that line. The next 5x of marketplace value is captured by **vertically integrating into materials and multi-trade coordination.** Sherpa Materials (Sherpa Materials engine + Zinc API ordering + Uber Direct same-day delivery) and Sherpa Dispatch (multi-trade timeline orchestration) push the blended take rate to 18–25% per job — without raising the labor commission.
 
 **Suggested visual:**
 Three vertical timeline columns: "Rebate dollars activating" (Mass Save 2026), "Trades workforce aging out" (30% over 55), "AI code-validation viable" (2026). All three arrows converge on a single point labeled **"Sherpa Pros · 2026."**
@@ -172,7 +172,7 @@ Don't oversell the SOM number. Investors discount any SOM over 5% of SAM in 18 m
 
 **Founding Pros** (the first 10–12 beta pros) keep 5% take **forever** — permanent recruiting hook and loyalty lock. (per spec §5.2)
 
-> **Footnote on stacked take rate:** Materials coordination fee (8–12%) stacks on top of the labor commission for any job that uses **Sherpa Materials** (internal materials engine + Zinc API ordering + Uber Direct same-day delivery). On a typical $10K labor job with $15K of materials passing through, the blended platform take rate climbs from 10% labor-only to **18–25% all-in** — without changing the headline labor commission a pro sees.
+> **Footnote on stacked take rate:** Materials coordination fee (8–12%) stacks on top of the labor commission for any job that uses **Sherpa Materials** (Sherpa Materials engine + Zinc API ordering + Uber Direct same-day delivery). On a typical $10K labor job with $15K of materials passing through, the blended platform take rate climbs from 10% labor-only to **18–25% all-in** — without changing the headline labor commission a pro sees.
 
 **Unit economics back-of-the-envelope:** A typical beta pro doing $8K GMV per month at 5% take is $400 / month in revenue per pro. At standard pricing ($49 sub + 10% take on $8K GMV) that's $849 / month per pro. 200 pros at standard pricing is $2.0M ARR before the PM tier turns on.
 
@@ -202,7 +202,7 @@ Three revenue lines is the whole story. Investors love marketplaces with subscri
 - **Sherpa Threads** — in-app chat across pro / client / project manager with Twilio bridge to text message. Live in production.
 - **Sherpa Smart Scan** — three-flavor optical character recognition (document scanner, photo analyzer, receipt scanner) with auto-tax categorization to Schedule C for pros and Capital Expenditure / Operating Expense for property managers. Live in production.
 - **Sherpa Mobile** — iOS bundle `com.thesherpapros.app` shipped to TestFlight via Expo Application Services; Android via Expo right behind. Real product progress, not slide-ware.
-- **Materials orchestration + Multi-trade dispatch + Role-Based Access Control (RBAC) + Audit logs all shipping in beta cohort.** Sherpa Materials (internal materials engine + Zinc API ordering + Uber Direct same-day delivery), Sherpa Dispatch (multi-trade timeline coordination across 6+ trades on a single project), Sherpa Guard (RBAC + audit logs — SOC 2-readiness signal), plus a public `/flex` landing page and a public splash showcasing the full 12-capability lineup.
+- **Materials orchestration + Multi-trade dispatch + Role-Based Access Control (RBAC) + Audit logs all shipping in beta cohort.** Sherpa Materials (Sherpa Materials engine + Zinc API ordering + Uber Direct same-day delivery), Sherpa Dispatch (multi-trade timeline coordination across 6+ trades on a single project), Sherpa Guard (RBAC + audit logs — SOC 2-readiness signal), plus a public `/flex` landing page and a public splash showcasing the full 12-capability lineup.
 
 **Cohort composition:**
 NH/Seacoast — 2 GCs (HJD network), 2 handymen, 1 plumber, 1 HVAC / heat-pump specialist.
@@ -232,7 +232,7 @@ Six product capabilities are now in production. The first three close defensibil
 - **Sherpa Mobile — iOS in TestFlight, Android via Expo.** Bundle `com.thesherpapros.app` deployed to App Store Connect; first 50 founding pros get TestFlight invites. Real product progress, not slide-ware — and a lower customer acquisition cost lever because pros can sign up from a phone in the field.
 - **Sherpa Guard — Role-Based Access Control (RBAC) + audit logs.** Every action on the platform is logged with user, target, action, and timestamp. Five role tiers (owner, admin, project manager, pro, client) with permission scoping. **The SOC 2-readiness signal any institutional-capital LP looks for in diligence — and a hard buy criterion for any property-management cohort over 5,000 units.** Color: emerald `#10b981`.
 - **Sherpa Dispatch — multi-trade timeline orchestration.** A single kitchen-renovation project touches 6+ trades (demo, electrical, plumbing, HVAC, drywall, paint, tile, cabinetry, finish carpentry). Sherpa Dispatch sequences them on one timeline, owns the handoffs, and surfaces blockers before they become schedule slips. Color: sky blue `#00A9E0`.
-- **Sherpa Materials — internal materials engine + Zinc API ordering + Uber Direct same-day delivery.** Pros pick line items from a catalog, the platform places the order through the Zinc API (programmatic access to major retail catalogs), and Uber Direct delivers same-day to the jobsite. **8–12% coordination fee stacks on top of the labor commission. Materials TAM expansion: ~$540B US residential + light-commercial trade-materials market.** Color: warm cream `#FBF7EE`.
+- **Sherpa Materials — Sherpa Materials engine + Zinc API ordering + Uber Direct same-day delivery.** Pros pick line items from a catalog, the platform places the order through the Zinc API (programmatic access to major retail catalogs), and Uber Direct delivers same-day to the jobsite. **8–12% coordination fee stacks on top of the labor commission. Materials TAM expansion: ~$540B US residential + light-commercial trade-materials market.** Color: warm cream `#FBF7EE`.
 
 **Suggested visual:**
 Six stacked horizontal blocks (sky blue · cream · orange-red · emerald · sky blue · warm cream) with the six product names in Fraunces serif and one-line value props in Manrope. Generate from the canonical Ideogram prompt in `docs/operations/social-media-prompt-library.md` (request a 6-pillar variant) at 1080×1350, crop to 16:9 for slide layout.
@@ -257,7 +257,7 @@ Sherpa Pros is doing the same thing for the trades. We vertically integrate the 
 | Layer | Old competitive set (point solutions) | Sherpa Pros (orchestration layer) |
 |---|---|---|
 | **Labor** | Angi · Thumbtack · TaskRabbit · Handy | Sherpa Marketplace + Sherpa Score (5-tier) + Sherpa Flex |
-| **Materials** | FW Webb · Grainger · Home Depot Pro · supply houses | Sherpa Materials (internal materials engine + Zinc API) |
+| **Materials** | FW Webb · Grainger · Home Depot Pro · supply houses | Sherpa Materials (Sherpa Materials engine + Zinc API) |
 | **Delivery** | Pro picks up in own truck · supply-house delivery in 3–5 days | Sherpa Materials + Uber Direct same-day delivery |
 | **Coordination** | Procore (enterprise GC software) · spreadsheets · group texts | Sherpa Dispatch (multi-trade timeline orchestration) |
 

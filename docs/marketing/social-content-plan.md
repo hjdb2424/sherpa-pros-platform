@@ -704,6 +704,122 @@ Before publishing any post, run this checklist:
 
 ---
 
+## 10A. Wave 12 — Sherpa Materials Engine launch (Days 38-44)
+
+*Inserted 2026-04-26 to coincide with the Sherpa Materials engine production launch. Slots into Metricool after Day 37; matches existing per-platform format.*
+
+### Day 38 — Friday [VERIFY-DATE]
+**Theme: Sherpa Materials Engine — Launch Day**
+
+**LinkedIn (Phyrom personal)**
+Copy: "Six months of building. Today it ships. Sherpa Materials engine is live for our beta cohort: real-time materials lookup across 40+ suppliers, Zinc-coordinated order placement, Uber Direct same-day delivery — all from one tap on the Sherpa app. The materials get to the job before the human does. This is what vertical integration looks like in skilled trades. Link in comments."
+Asset prompt: 9:16 hero shot of Sherpa app dashboard with Materials tab highlighted, warm cream `#FBF7EE` accent, materials line items visible with delivery ETAs, no faces.
+CTA: "Beta cohort is full. Waitlist link in comments."
+
+**Instagram (Sherpa Pros brand handle)**
+Copy variant A (carousel): Slide 1 — "Materials. Solved." Slide 2 — "Tap accept." Slide 3 — "Materials get ordered." Slide 4 — "Uber Direct delivers same-day." Slide 5 — "You start work."
+Copy variant B (single image): "From accept to on-site materials in under 30 minutes."
+Asset prompt: Carousel, 1:1 squares, photo-real shots of: phone with app open, supplier warehouse interior (no logos visible), Uber Direct driver loading van, materials at jobsite door, Sherpa starting work. Warm cream + signature blue accent.
+
+**X / Twitter**
+Copy: "Shipped: Sherpa Materials engine. Real-time supplier lookup, Zinc order placement, Uber Direct same-day delivery, all coordinated from one tap. We just compressed 90 minutes of jobsite chaos into 23 seconds of background work."
+Asset: Static screenshot, 16:9, app dashboard.
+
+**Facebook (NH/NE community groups + Sherpa Pros page)**
+Copy: "If you're a builder, plumber, electrician, or remodeler in New England — Sherpa Materials engine is live. Your crew accepts a job, the materials show up at the jobsite the same day, you stop losing 90 minutes a day to supply runs. Beta cohort full but waitlist is open."
+Asset: Same hero image as LinkedIn.
+
+---
+
+### Day 39 — Saturday [VERIFY-DATE]
+**Theme: Customer Reaction**
+
+**Instagram Stories**
+3-frame sequence: (1) Anonymous text screenshot from a beta GC saying "I've never had this happen before in 18 years." (2) Photo of materials box on a jobsite porch. (3) "This is what we built. Link in bio."
+Asset prompt: Real text-message styling, paper-texture overlay on screenshot to read like a clipping.
+
+**LinkedIn**
+Skip — Saturday low engagement.
+
+**X**
+Copy: "Beta GC, week 1: 'I've never had this happen in 18 years.' What he's reacting to: materials arriving at the jobsite before he finishes demo. Sherpa Materials engine is live."
+No asset, text-only.
+
+---
+
+### Day 40 — Sunday [VERIFY-DATE]
+**Theme: Quiet day — single thoughtful long-form**
+
+**LinkedIn (Phyrom)**
+Long-form post (~250 words) on the labor coordination thesis from Wk 33 Fri editorial post. Cross-promote.
+Asset: None, text post.
+
+**Instagram**
+Skip.
+
+---
+
+### Day 41 — Monday [VERIFY-DATE]
+**Theme: Technical deep-dive (developer/operator audience)**
+
+**LinkedIn (Phyrom)**
+Copy: Republish Wk 32 Wed deep-dive on the lookup/confidence model.
+Asset prompt: Annotated diagram, 16:9, showing: Sherpa input → fuzzy-match → catalog → Zinc → Uber Direct → jobsite. Warm cream background, signature blue arrows.
+
+**X thread (5 tweets)**
+T1: "How the Sherpa Materials engine resolves a one-handed phone-typed materials request to a real SKU in under 800ms."
+T2: "Step 1: tokenize the input. 'standard 3/4 ply BCX' → [grade, thickness, species, format]"
+T3: "Step 2: fuzzy-match against ~28K-SKU catalog, score each hit."
+T4: "Step 3: above 0.85 confidence, place the order. Below, escalate to GC for one-tap confirm."
+T5: "We built this because every existing 'AI for trades' product makes the contractor type more, not less. We do the opposite."
+
+---
+
+### Day 42 — Tuesday [VERIFY-DATE]
+**Theme: Counter-positioning (vs Grainger / HD Pro)**
+
+**LinkedIn (Phyrom)**
+Copy: Republish Wk 33 Wed counter-positioning post.
+Asset prompt: Comparison table graphic, 1:1 square, 4 columns (Grainger / HD Pro / Angi / Sherpa Pros) × 5 rows (parts only? labor? delivery? coordination? stays on transaction?). Sherpa column all green checks, others mixed.
+
+**Instagram (carousel)**
+Same comparison table broken across 6 slides for swipe-through.
+
+**X**
+Copy: "We are not Grainger. We are not HD Pro. We are not Angi. We are not Procore. The right comp set is all four — stitched into one platform for the residential GC market none of them serve."
+
+---
+
+### Day 43 — Wednesday [VERIFY-DATE]
+**Theme: TAM / fundraising-adjacent**
+
+**LinkedIn (Phyrom)**
+Copy: Republish Wk 32 Fri $540B TAM post, with new Wefunder CTA appended.
+Asset prompt: Stat card graphic, 1:1, "$540B" in serif display type, warm cream background, source citation footnote, signature blue accent line.
+
+**Wefunder cross-post**
+Update Wefunder feed with same content + link to refreshed §4.5/§4.6 copy.
+
+**X**
+Copy: "$540B residential + small-commercial materials TAM. 0-3% margin for the GC under the status quo. 8-12% coordination fee under the Sherpa Materials model — paid out of the time + fuel waste, not the GC's margin. This is what vertical integration looks like in trades."
+
+---
+
+### Day 44 — Thursday [VERIFY-DATE]
+**Theme: Recap + waitlist push**
+
+**LinkedIn (Phyrom)**
+Copy: "Week one of Sherpa Materials engine in production. [VERIFY-METRIC: orders shipped] orders coordinated. [VERIFY-METRIC: avg delivery time] minutes average from Sherpa accept to materials on-site. [VERIFY-METRIC: # of GCs] GCs on the platform. Beta cohort closed. Waitlist below."
+Asset prompt: Single stat card, 1:1, three numbers stacked vertically with warm cream + signature blue.
+
+**Instagram (Reel, 30s)**
+Voiceover (Phyrom): "We shipped the Sherpa Materials engine on [VERIFY-DATE]. Here's what week one looks like." B-roll: Sherpas accepting jobs on phones, Uber Direct vans, materials at jobsites, GCs reviewing dashboards.
+
+**X**
+Copy: Same recap, condensed to single tweet with stat block.
+
+---
+
 ## 11. Sunday Capture Checklist (every weekend)
 
 To stay 7 days ahead of the calendar, Phyrom blocks Sunday 4–6pm for asset capture:

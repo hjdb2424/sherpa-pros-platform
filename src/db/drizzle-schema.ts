@@ -37,6 +37,13 @@ export const users = pgTable(
       .notNull()
       .defaultNow(),
     subtype: varchar("subtype", { length: 20 }),
+    stripeAccountId: varchar("stripe_account_id", { length: 64 }),
+    stripeAccountStatus: varchar("stripe_account_status", { length: 20 })
+      .notNull()
+      .default('none'),
+    stripeOnboardedAt: timestamp("stripe_onboarded_at", {
+      withTimezone: true,
+    }),
     isAdmin: boolean("is_admin").default(false),
     updatedAt: timestamp("updated_at", { withTimezone: true })
       .notNull()
@@ -46,6 +53,7 @@ export const users = pgTable(
     index("idx_users_clerk_id").on(table.clerkId),
     index("idx_users_email").on(table.email),
     index("idx_users_role").on(table.role),
+    index("idx_users_stripe_account_id").on(table.stripeAccountId),
   ],
 );
 

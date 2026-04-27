@@ -5,7 +5,7 @@
  * onboarding fields (stripe_account_id, stripe_account_status, stripe_onboarded_at).
  */
 
-import { eq } from 'drizzle-orm';
+import { eq, sql } from 'drizzle-orm';
 import { db } from '../drizzle';
 import { users } from '../drizzle-schema';
 import type { StripeAccountStatus } from '@/lib/services/payments/types';
@@ -50,7 +50,7 @@ export async function updateStripeAccountStatus(
   if (status === 'active') {
     await db
       .update(users)
-      .set({ stripeAccountStatus: status, stripeOnboardedAt: new Date() })
+      .set({ stripeAccountStatus: status, stripeOnboardedAt: sql`COALESCE(stripe_onboarded_at, NOW())` })
       .where(eq(users.stripeAccountId, stripeAccountId));
     return;
   }

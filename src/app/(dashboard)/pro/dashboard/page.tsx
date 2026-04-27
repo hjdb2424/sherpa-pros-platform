@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import DispatchAlert from '@/components/pro/DispatchAlert';
 import UserName, { UserInitials } from '@/components/common/UserName';
+import { StripeStatusBanner } from '@/components/pro/StripeStatusBanner';
+import { getCurrentSession } from '@/lib/auth/session';
 import {
   mockProProfile,
   mockDashboardStats,
@@ -16,6 +18,7 @@ export const metadata: Metadata = {
 };
 
 export default function ProDashboardPage() {
+  const session = getCurrentSession();
   const pro = mockProProfile;
   const stats = mockDashboardStats;
   const proScore = getDemoProScore();
@@ -34,6 +37,8 @@ export default function ProDashboardPage() {
 
   return (
     <div className="space-y-6">
+      <StripeStatusBanner status={session.stripeAccountStatus} />
+
       {/* ── Row 1: Profile + Score Card ─────────────────────────── */}
       <div className="rounded-2xl border border-zinc-200 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
         <div className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between">

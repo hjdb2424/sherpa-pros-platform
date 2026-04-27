@@ -19,6 +19,14 @@ export type {
   ParticipantRole,
 } from '@/lib/communication/types';
 
+// Payments — new in this plan (Stripe Connect onboarding only; money flow Plan 2)
+export type {
+  PaymentService,
+  StripeAccountStatus,
+  ConnectedAccountResult,
+  AccountSessionResult,
+} from '@/lib/services/payments/types';
+
 // Future interfaces — these get filled in as each integration lands.
 // Each interface lives next to its implementation, then is re-exported here.
 //

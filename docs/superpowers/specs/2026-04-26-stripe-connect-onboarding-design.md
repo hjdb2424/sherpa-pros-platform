@@ -26,8 +26,19 @@ Wire end-to-end Stripe Connect **onboarding** so pros can verify their identity 
 - **Embedded onboarding** (`<ConnectAccountOnboarding>` from `@stripe/react-connect-js`), not Stripe-hosted redirect. The user prioritized seamlessness; embedded keeps pros inside the app.
 - **Standard Connected Account type** (per umbrella spec section 2). Pros own their Stripe dashboards.
 - **Test mode for development** (`sk_test_*`). Live mode is unblocked by Phyrom's parallel platform activation; the env var flip is the only thing that switches modes — no code change.
+- **Test-mode dashboard prerequisite** ⚠️ — even in test mode, embedded onboarding requires basic Connect settings on the dashboard (platform name, branding, support URL). If `loadConnectAndInitialize` rejects with a "platform not configured" error during test, the fix is filling in those minimum fields under https://dashboard.stripe.com/test/connect/settings. Confirm during smoke test; if it bites, add to the runbook.
 - **In-memory cache stays out of this work.** Conversation cache is messaging-service concern, not payment.
 - **TypeScript strict.** No `any`. No `as unknown as` in production code.
+
+### Environment variables
+
+| Variable | Scope | Test value | Live value | Where it's used |
+|---|---|---|---|---|
+| `STRIPE_SECRET_KEY` | **Server only** | `sk_test_*` | `sk_live_*` | Stripe Node SDK initialization in `src/lib/services/payments/stripe-service.ts` |
+| `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | **Client + Server** | `pk_test_*` | `pk_live_*` | `loadConnectAndInitialize({ publishableKey })` in `src/components/pro/ConnectOnboardingClient.tsx` |
+| `STRIPE_WEBHOOK_SECRET` | **Server only** | `whsec_*` (from `stripe listen`) | `whsec_*` (from prod webhook endpoint) | `stripe.webhooks.constructEvent(...)` in `src/app/api/stripe/webhook/route.ts` |
+
+The `NEXT_PUBLIC_*` prefix is required for any env var that must reach the browser bundle in Next.js. The publishable key is safe to expose; secret and webhook secrets must never be `NEXT_PUBLIC_*`.
 
 ## Architecture
 
@@ -124,6 +135,23 @@ export interface PaymentService {
 
 `getPaymentService()` returns the real Stripe service when `STRIPE_SECRET_KEY` is set; mock otherwise. Same pattern as `getMessagingService()`.
 
+The `createAccountSession` implementation must scope the session to the `account_onboarding` component (Stripe rejects sessions without explicit component scoping):
+
+```typescript
+const session = await stripe.accountSessions.create({
+  account: stripeAccountId,
+  components: {
+    account_onboarding: { enabled: true },
+  },
+});
+return {
+  clientSecret: session.client_secret,
+  expiresAt: session.expires_at,
+};
+```
+
+When Plan 2 adds payment-related embedded components (e.g., `payments`, `payouts`), they'll join the same `components` object. For Plan 1, only `account_onboarding` is enabled.
+
 ## Schema changes (migration 012)
 
 ```sql
@@ -197,6 +225,8 @@ The session is short-lived (Stripe's default ~30 min). The frontend re-mints if 
 **Plan 1 fallthrough:**
 - Any other event type: log warning, return 200 (Stripe retries on non-2xx).
 
+**Idempotency:** Stripe sends webhooks at-least-once. Our `account.updated` handler is idempotent for the status update (writing `'active'` twice has the same effect). The `stripe_onboarded_at` set-once logic has a benign race: two simultaneous webhooks both pass the null check and write the same timestamp — last-write-wins, no real damage. Plan 1 accepts this; future plans (Plan 2's payment events with money implications) will need stronger idempotency via Stripe's `event.id` deduplication.
+
 Plan 2 will add handlers for `payment_intent.succeeded`, `transfer.created`, `charge.dispute.created`, `payout.failed`.
 
 ## UI components
@@ -217,10 +247,53 @@ export default async function OnboardingPayoutsPage() {
 
 ```typescript
 'use client';
-import { ConnectComponentsProvider, ConnectAccountOnboarding } from '@stripe/react-connect-js';
+
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { loadConnectAndInitialize } from '@stripe/connect-js';
-// ... renders the embedded component, onExit redirects to /pro/dashboard
+import {
+  ConnectComponentsProvider,
+  ConnectAccountOnboarding,
+} from '@stripe/react-connect-js';
+
+export function ConnectOnboardingClient() {
+  const router = useRouter();
+  const [stripeConnectInstance] = useState(() => {
+    const fetchClientSecret = async () => {
+      const res = await fetch('/api/stripe/connect/account-session', {
+        method: 'POST',
+      });
+      if (!res.ok) {
+        throw new Error('Could not mint AccountSession');
+      }
+      const { clientSecret } = await res.json();
+      return clientSecret;
+    };
+
+    return loadConnectAndInitialize({
+      publishableKey: process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
+      fetchClientSecret,
+      appearance: {
+        variables: {
+          colorPrimary: '#1a1a2e', // brand dark navy from CLAUDE.md
+        },
+      },
+    });
+  });
+
+  return (
+    <ConnectComponentsProvider connectInstance={stripeConnectInstance}>
+      <ConnectAccountOnboarding
+        onExit={() => router.push('/pro/dashboard')}
+      />
+    </ConnectComponentsProvider>
+  );
+}
 ```
+
+The `useState(() => ...)` initializer pattern ensures `loadConnectAndInitialize` runs exactly once per component lifecycle. `fetchClientSecret` is a callback Stripe invokes on demand (component init, session refresh) — it always hits our `/api/stripe/connect/account-session` endpoint, which has its own auth check.
+
+The server-component sibling that renders this client component does the prerequisite work: ensuring the connected account exists. It calls `ensureConnectedAccount(userId, email)` from the payment service so that by the time the client component mounts, `users.stripe_account_id` is set and ready for the AccountSession to reference.
 
 ### Modify: `/pro/dashboard/page.tsx` (existing)
 
@@ -299,14 +372,30 @@ Total: ~12 new tests. Failure baseline preserved at 0.
 
 ## Migration application
 
-This work assumes migration 012 lands BEFORE the code that reads/writes the new columns. Sequence:
-1. Apply migration to dev Neon DB (manual)
-2. Apply migration to Vercel Preview's Neon DB (manual or via Vercel Postgres CLI)
-3. Run code work, verify locally + on preview
-4. Apply migration to Vercel Production's Neon DB BEFORE merging to main
-5. Merge code to main → Vercel deploys with both schema and code in place
+**Confirmed setup** (investigated, not TBD): migrations are hand-authored SQL files in `src/db/migrations/` (existing files: `001_initial.sql` through `010_dispatch_materials_orders_deliveries.sql`). Drizzle Kit is installed and `drizzle.config.ts` is present, but it's used for the TypeScript schema only (`src/db/drizzle-schema.ts`) — not for auto-applying migrations. There's no `npm run migrate` script.
 
-If a migration runner exists in the project (TBD — confirm during implementation), use it. Otherwise apply via `psql` against the Neon connection string.
+Application sequence for migration 012:
+
+1. **Author the migration:** create `src/db/migrations/012_stripe_connect_accounts.sql` with the SQL from the schema section above.
+2. **Update Drizzle schema:** edit `src/db/drizzle-schema.ts` to add the matching column types so TypeScript queries see them. Match the SQL types exactly: `varchar({ length: 64 })` for the account ID, `varchar({ length: 20 }).notNull().default('none')` for the status, `timestamp({ withTimezone: true })` for `stripe_onboarded_at`.
+3. **Apply to dev DB:**
+   ```bash
+   psql "$DATABASE_URL" -f src/db/migrations/012_stripe_connect_accounts.sql
+   ```
+   Use the `DATABASE_URL` from `.env.local` (Neon connection string).
+4. **Apply to Vercel Preview's Neon branch** (if Preview is using a separate branch):
+   ```bash
+   psql "$NEON_PREVIEW_URL" -f src/db/migrations/012_stripe_connect_accounts.sql
+   ```
+5. **Verify locally:** `npx drizzle-kit introspect` (or `psql -c "\d users"`) should show the three new columns.
+6. **Apply to Vercel Production's Neon branch BEFORE merging code to main:**
+   ```bash
+   psql "$NEON_PROD_URL" -f src/db/migrations/012_stripe_connect_accounts.sql
+   ```
+   This is the highest-risk step — apply during low-traffic window. The migration is purely additive (adding nullable columns + indexes), so it's safe under concurrent reads/writes, but verify before merge.
+7. **Merge code to main** → Vercel auto-deploys → code reads/writes the new columns.
+
+If applying to a Neon branch and you hit "permission denied," it's likely you need the connection string with elevated permissions (Neon's "owner" role rather than the default app user).
 
 ## Followups (deferred to Plan 2 or future plans)
 
@@ -320,7 +409,9 @@ If a migration runner exists in the project (TBD — confirm during implementati
 
 ## Spec self-review checks
 
-- ✅ Placeholder scan: no TBDs except the migration runner (genuinely needs codebase investigation in implementation phase — flagged, not glossed)
-- ✅ Internal consistency: status enum values match between schema and TypeScript and webhook handler
-- ✅ Scope: focused on Plan 1 (onboarding only); money flow explicitly deferred to Plan 2
-- ✅ Ambiguity: status values explicitly defined with derivation logic from webhook payload
+- ✅ Placeholder scan: zero TBDs. Migration runner question resolved (hand-authored SQL files in `src/db/migrations/` applied via `psql`).
+- ✅ Internal consistency: status enum values match between schema, TypeScript interface, and webhook derivation logic.
+- ✅ Scope: focused on Plan 1 (onboarding only); money flow explicitly deferred to Plan 2.
+- ✅ Ambiguity: status values explicitly defined with derivation logic from webhook payload.
+- ✅ Env vars: all three Stripe env vars listed with scope (server-only vs `NEXT_PUBLIC_*`), test/live values, and use site.
+- ✅ Stripe API calls verified against `/websites/stripe` docs (current as of 2026-04-26): `loadConnectAndInitialize` signature, `accountSessions.create` with `components.account_onboarding`, `<ConnectAccountOnboarding>` props.

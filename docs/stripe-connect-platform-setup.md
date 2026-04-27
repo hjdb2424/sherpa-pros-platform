@@ -23,14 +23,14 @@ Edit `~/sherpa-pros-platform/.env.local`:
 
 ```
 STRIPE_SECRET_KEY=sk_test_...   # from step 1.1
-STRIPE_PUBLISHABLE_KEY=pk_test_...   # from same dashboard page, "Publishable key"
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_...   # from same dashboard page, "Publishable key"
 ```
 
 ### Step 1.3 — Add to Vercel preview environment
 
 1. Go to https://vercel.com/dashboard → sherpa-pros-platform → Settings → Environment Variables
 2. Add `STRIPE_SECRET_KEY` = `sk_test_...` for **Preview** environment only (NOT Production yet)
-3. Add `STRIPE_PUBLISHABLE_KEY` = `pk_test_...` for **Preview**
+3. Add `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` = `pk_test_...` for **Preview**
 
 This keeps prod safe while preview deploys exercise the real flow.
 
@@ -127,7 +127,7 @@ When Stripe emails you that the platform is approved:
 
 1. Vercel dashboard → sherpa-pros-platform → Settings → Environment Variables
 2. Add `STRIPE_SECRET_KEY` = `sk_live_...` for **Production** environment only
-3. Add `STRIPE_PUBLISHABLE_KEY` = `pk_live_...` for **Production**
+3. Add `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` = `pk_live_...` for **Production**
 
 ### Step 3.3 — Configure live webhook endpoint
 
@@ -163,11 +163,11 @@ Now invite real beta pros. They'll create real connected accounts. Plan 2 will l
 
 ## Reference: env var summary
 
-| Variable | Local (`.env.local`) | Vercel Preview | Vercel Production |
-|---|---|---|---|
-| `STRIPE_SECRET_KEY` | `sk_test_...` | `sk_test_...` | `sk_live_...` (after Phase 3) |
-| `STRIPE_PUBLISHABLE_KEY` | `pk_test_...` | `pk_test_...` | `pk_live_...` (after Phase 3) |
-| `STRIPE_WEBHOOK_SECRET` | from `stripe listen` output | from Vercel preview webhook | from prod webhook (Step 3.3) |
+| Variable | Scope | Local (`.env.local`) | Vercel Preview | Vercel Production |
+|---|---|---|---|---|
+| `STRIPE_SECRET_KEY` | Server only | `sk_test_...` | `sk_test_...` | `sk_live_...` (after Phase 3) |
+| `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | **Client + Server** (Next.js exposes `NEXT_PUBLIC_*` to browser) | `pk_test_...` | `pk_test_...` | `pk_live_...` (after Phase 3) |
+| `STRIPE_WEBHOOK_SECRET` | Server only | from `stripe listen` output | from Vercel preview webhook | from prod webhook (Step 3.3) |
 
 ## Common gotchas
 

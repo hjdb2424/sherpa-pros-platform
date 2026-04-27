@@ -1,6 +1,11 @@
 -- Migration 012: Stripe Connect Accounts
 -- Adds Stripe Connected Account tracking to users table for pro verification.
 -- Pro verification gates the ability to receive payouts (Plan 2).
+--
+-- Note: 011 is reserved for the Sherpa Hub tables (warehouse inventory,
+-- access logs, equipment, shipments, count sessions) per the umbrella spec
+-- at docs/superpowers/specs/2026-04-25-production-launch-hub-architecture-design.md.
+-- That migration ships in its own future plan; 012 lands first.
 
 ALTER TABLE users
   ADD COLUMN stripe_account_id VARCHAR(64),

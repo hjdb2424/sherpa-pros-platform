@@ -24,7 +24,7 @@ export async function POST(request: Request) {
 
   // In dev with no STRIPE_WEBHOOK_SECRET, skip validation. Production env
   // always has the secret set; this branch is for local Vitest runs without env.
-  if (!secretKey || !webhookSecret) {
+  if (!webhookSecret) {
     console.warn('[stripe-webhook] running without secrets — skipping signature validation');
     try {
       const parsed = JSON.parse(rawBody);
@@ -36,6 +36,10 @@ export async function POST(request: Request) {
 
   if (!signature) {
     return NextResponse.json({ error: 'Missing signature' }, { status: 403 });
+  }
+
+  if (!secretKey) {
+    return NextResponse.json({ error: 'Server misconfigured' }, { status: 403 });
   }
 
   let event: Stripe.Event;

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import Logo from '@/components/brand/Logo';
 
 /* ------------------------------------------------------------------ */
 /* Mock Profile Data                                                   */
@@ -195,12 +196,8 @@ export default async function PublicProfilePage({
       {/* Top bar */}
       <header className="border-b border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900">
         <div className="mx-auto flex h-14 max-w-4xl items-center justify-between px-4">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#00a9e0]">
-              <span className="text-sm font-bold text-white">S</span>
-            </div>
-            <span className="text-lg font-bold text-zinc-900 dark:text-white">Sherpa Pros</span>
-          </Link>
+          <Logo size="md" />
+          {/* Logo component renders its own Link wrapper to "/" */}
           <Link
             href="/"
             className="rounded-lg bg-[#00a9e0] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#0090c0]"

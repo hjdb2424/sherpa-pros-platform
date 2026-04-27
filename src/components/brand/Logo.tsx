@@ -10,18 +10,20 @@ interface LogoProps {
   asLink?: boolean;
 }
 
+// Sherpa Pros wordmark: 2114×320 master ≈ 6.6:1 aspect ratio.
+// Sizes preserve that ratio so the logo never squishes.
 const SIZES = {
-  sm: { width: 120, height: 24 },
-  md: { width: 160, height: 32 },
-  lg: { width: 200, height: 40 },
-  xl: { width: 260, height: 52 },
+  sm: { width: 132, height: 20 },
+  md: { width: 158, height: 24 },
+  lg: { width: 198, height: 30 },
+  xl: { width: 264, height: 40 },
 };
 
 export default function Logo({ size = 'md', className = '', href = '/', asLink = true }: LogoProps) {
   const s = SIZES[size];
   const img = (
     <Image
-      src="/logo.png"
+      src="/brand/sherpa-pros-wordmark.png"
       alt="Sherpa Pros"
       width={s.width}
       height={s.height}

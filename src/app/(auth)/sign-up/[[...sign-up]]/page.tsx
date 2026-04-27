@@ -7,6 +7,7 @@ import {
   ShieldCheckIcon,
   BeakerIcon,
 } from "@heroicons/react/24/outline";
+import Logo from "@/components/brand/Logo";
 import { seedUserData } from "@/lib/seed-user-data";
 
 // ---------------------------------------------------------------------------
@@ -20,11 +21,10 @@ function ClerkSignUp() {
     <div className="min-h-screen flex items-center justify-center bg-white px-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold tracking-tight">
-            <span className="text-zinc-900">SHERPA</span>{" "}
-            <span className="text-[#ff4500]">PROS</span>
-          </h1>
-          <p className="mt-2 text-sm text-zinc-500">Create your account</p>
+          <div className="flex justify-center">
+            <Logo size="xl" />
+          </div>
+          <p className="mt-4 text-sm text-zinc-500">Create your account</p>
         </div>
         <SignUp
           appearance={{
@@ -86,11 +86,10 @@ function TestSignUp() {
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold tracking-tight">
-            <span className="text-zinc-900">SHERPA</span>{" "}
-            <span className="text-[#ff4500]">PROS</span>
-          </h1>
-          <h2 className="mt-3 text-xl font-semibold text-zinc-900">
+          <div className="flex justify-center">
+            <Logo size="xl" />
+          </div>
+          <h2 className="mt-6 text-xl font-semibold text-zinc-900">
             Join the Beta
           </h2>
           <p className="mt-1 text-sm text-zinc-500">

@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Logo from '@/components/brand/Logo';
 
 export const metadata: Metadata = {
   title: 'Emergency Dispatch',
@@ -22,10 +23,7 @@ export default function EmergencyLayout({
           <svg className="h-5 w-5 text-zinc-400" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
           </svg>
-          <div className="flex h-7 w-7 items-center justify-center rounded-md bg-[#1a1a2e]">
-            <span className="text-xs font-bold text-amber-400">S</span>
-          </div>
-          <span className="text-sm font-bold text-white">Sherpa Pros</span>
+          <Logo size="sm" asLink={false} />
         </a>
         <span className="rounded-md bg-red-600/20 border border-red-600/40 px-2 py-0.5 text-xs font-bold text-red-400">
           EMERGENCY

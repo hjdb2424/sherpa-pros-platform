@@ -1,18 +1,92 @@
 /**
  * Sherpa Pros — Stripe Payment Service
  *
- * Real Stripe SDK implementation. Lazily initialized to keep the module
- * importable without env vars (build must pass).
+ * Real Stripe SDK implementation. Lazily initialized — the module imports
+ * cleanly without STRIPE_SECRET_KEY set; methods throw when called without it.
+ *
+ * The module-level cachedClient is populated on first call and reused across
+ * calls within the same module instance. vi.resetModules() between tests
+ * resets the cache.
  */
 
-import type { PaymentService } from './types';
+import Stripe from 'stripe';
+import type {
+  PaymentService,
+  ConnectedAccountResult,
+  AccountSessionResult,
+  StripeAccountStatus,
+} from './types';
+
+type StripeClient = Stripe;
+
+let cachedClient: StripeClient | null = null;
+
+function getStripeClient(): StripeClient {
+  if (cachedClient) return cachedClient;
+
+  const secretKey = process.env.STRIPE_SECRET_KEY;
+  if (!secretKey) {
+    throw new Error(
+      'STRIPE_SECRET_KEY not configured. Set sk_test_* for development or sk_live_* for production.',
+    );
+  }
+
+  cachedClient = new Stripe(secretKey, {
+    typescript: true,
+  });
+  return cachedClient;
+}
+
+/**
+ * Derive our local status from a Stripe Account object.
+ * See spec: 2026-04-26-stripe-connect-onboarding-design.md §"State model"
+ */
+function deriveStatus(account: Stripe.Account): StripeAccountStatus {
+  const reqs = account.requirements;
+  const disabledReason = reqs?.disabled_reason;
+  if (disabledReason) return 'disabled';
+
+  if (account.charges_enabled === true && account.details_submitted === true) {
+    return 'active';
+  }
+
+  const currentlyDue = reqs?.currently_due ?? [];
+  if (account.details_submitted === true && currentlyDue.length > 0) {
+    return 'restricted';
+  }
+
+  return 'pending';
+}
 
 export const stripePaymentService: PaymentService = {
-  async ensureConnectedAccount(_userId, _email) {
-    throw new Error('stripe-service: ensureConnectedAccount not yet implemented');
+  async ensureConnectedAccount(_userId, email): Promise<ConnectedAccountResult> {
+    const client = getStripeClient();
+    const account = await client.accounts.create({
+      type: 'standard',
+      email,
+    });
+    return {
+      stripeAccountId: account.id,
+      status: deriveStatus(account),
+    };
   },
 
-  async createAccountSession(_stripeAccountId) {
-    throw new Error('stripe-service: createAccountSession not yet implemented');
+  async createAccountSession(stripeAccountId): Promise<AccountSessionResult> {
+    const client = getStripeClient();
+    const session = await client.accountSessions.create({
+      account: stripeAccountId,
+      components: {
+        account_onboarding: { enabled: true },
+      },
+    });
+    return {
+      clientSecret: session.client_secret,
+      expiresAt: session.expires_at,
+    };
   },
 };
+
+// Exported for test isolation
+export function _resetCachedStripeClient() {
+  cachedClient = null;
+}

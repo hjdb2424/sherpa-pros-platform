@@ -31,7 +31,6 @@ export type {
 // Each interface lives next to its implementation, then is re-exported here.
 //
 // Tracked in followup plans:
-// - PaymentService     (Stripe Connect)
 // - StorageService     (Cloudflare R2)
 // - DeliveryService    (Uber Connect / DoorDash Drive)
 // - QueueService       (in-process → QStash)

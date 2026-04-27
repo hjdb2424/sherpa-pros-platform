@@ -17,6 +17,8 @@
     "@googlemaps/js-api-loader": "^2.0.2",
     "@heroicons/react": "^2.2.0",
     "@neondatabase/serverless": "^1.0.2",
+    "@stripe/connect-js": "^3.3.38",
+    "@stripe/react-connect-js": "^3.3.34",
     "@tanstack/react-table": "^8.21.3",
     "@tremor/react": "^3.18.7",
     "@vis.gl/react-google-maps": "^1.8.3",

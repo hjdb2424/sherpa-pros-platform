@@ -1,0 +1,1449 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>pr launch plan — Sherpa Pros</title>
+<link rel="icon" href="../../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="pr-launch-plan.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="sherpa-pros--wefunder-pr-launch-plan">Sherpa Pros — Wefunder PR Launch Plan</h1>
+<p><strong>Date:</strong> 2026-04-22
+<strong>Audience:</strong> Phyrom (founder) + future Comms hire (Phase 1)
+<strong>Founder:</strong> Phyrom, working GC (HJD Builders LLC, NH)
+<strong>Tone:</strong> Punchy. News-pegged. Founder-quote-driven.
+<strong>Cross-references:</strong> GTM spec §6.4 (Wefunder track) + §4.2 / §4.3 / §8 (PR channels) + spec §3.3 (brand voice) + page-content.md + faq.md (this folder)</p>
+<blockquote>
+<p><strong>Disclaimer:</strong> Communications materials in this plan are drafts. The press release should be reviewed by a securities lawyer before issuance to ensure compliance with SEC Reg CF advertising rules (issuers may direct investors to the Wefunder offering page but <strong>may not solicit outside the platform</strong> beyond a tombstone-style notice). This document is not legal, financial, or PR advice.</p>
+</blockquote>
+<hr>
+<h2 id="1-press-release">1. PRESS RELEASE</h2>
+<h3 id="embargo-line">Embargo line</h3>
+<p><strong>EMBARGOED UNTIL [LAUNCH DAY DATE], 6:00 AM ET</strong>
+<em>Distribute via PR Newswire (NH/NE wire) + direct to named-reporter list (Section 2 below)</em></p>
+<hr>
+<h3 id="headline--dek">Headline + dek</h3>
+<p><strong>Working New Hampshire General Contractor Launches Sherpa Pros — the Vertically Integrated Trade Orchestration Platform Replacing the Labor + Materials + Delivery + Coordination Stack in New England — and Opens a Wefunder Community Round so Homeowners and Pros Can Own a Piece of the Platform</strong></p>
+<p><em>Founder built it after a decade of watching Angi, Thumbtack, and TaskRabbit waste contractor money and send homeowners to people who shouldn't be doing licensed work — then expanded the platform this quarter into materials orchestration, same-day delivery, and multi-trade dispatch. Competitive set is no longer a lead-gen marketplace; it is the entire trade-supply-chain stack (FW Webb + Grainger + Uber Direct + Procore combined). Live in beta with real Gross Merchandise Value transacting across NH, ME, and Boston specialty lanes. Investments start at $100.</em></p>
+<hr>
+<h3 id="dateline--lede">Dateline + lede</h3>
+<p><strong>PORTSMOUTH, N.H. — [LAUNCH DAY DATE]</strong> — Sherpa Pros, the vertically integrated trade orchestration platform built by working general contractor Phyrom of HJD Builders LLC and launching first in New Hampshire, Maine, and Massachusetts, today launched a U.S. Securities and Exchange Commission Regulation Crowdfunding (Reg CF) community round on Wefunder, with a target raise of $250,000 to $500,000 and minimum investments of $100. The platform — live at <a href="http://www.thesherpapros.com">www.thesherpapros.com</a> — is the first home-services platform to integrate <strong>labor matching, materials orchestration, same-day delivery, and multi-trade coordination</strong> into a single system, addressing the four structural problems no lead-generation platform solves: license verification, code-aware quote validation, permit-aware workflows, and rebate matching for state utility programs like Mass Save. With this quarter's launch of Sherpa Materials (programmatic materials ordering through the Zinc API plus Uber Direct same-day delivery), Sherpa Dispatch (multi-trade timeline coordination across 6+ trades on a single project), and Sherpa Guard (Role-Based Access Control plus audit logs for institutional-grade compliance), the company's competitive set has shifted from the labor-marketplace category (Angi, Thumbtack) to the entire trade-supply-chain stack (FW Webb, Grainger, Uber Direct, and Procore combined).</p>
+<hr>
+<h3 id="body">Body</h3>
+<p>The platform launches into a market under acute strain. Massachusetts has the largest construction labor shortage in the United States, with 2.5% construction unemployment — the lowest in 17 years — according to reporting in <a href="https://wbjournal.com/article/help-needed-massachusetts-has-the-largest-construction-worker-shortage-in-the-nation/">Worcester Business Journal</a> and <a href="https://www.bisnow.com/boston/news/construction-development/as-bostons-construction-labor-shortage-persists-firms-look-to-new-solutions-126075">Bisnow Boston</a>. Thirty percent of Massachusetts residential construction workers are over 55, and project completion times across the state have stretched from seven to eleven months.</p>
+<p>At the same time, the existing home-services platforms have come under sustained criticism. <strong>Angi (NASDAQ: ANGI)</strong> is not Better Business Bureau-accredited and has 1,800+ BBB complaints since 2023. The <strong>Vermont Attorney General settled with Angi for $100,000 in October 2025</strong> over misleading "Certified Pro" terminology. <strong>Thumbtack</strong> is the subject of a BBB pattern-of-complaints review opened in November 2025 over documented contractor-deposit-theft cases. <strong>TaskRabbit</strong> charges a 22.5% effective platform fee and does not cover licensed trades. Sherpa Pros enters the market with a 5% take-rate during beta (10% at scale) — roughly half the all-in cost a contractor pays Angi today.</p>
+<p>"Every week, the platforms my crew gets pitched sell us leads we can't afford and send homeowners to people who shouldn't be touching their wiring or their gas line," said <strong>Phyrom, founder of Sherpa Pros and HJD Builders LLC</strong>. "I built the tool I wished existed. Jobs, not leads. Licensed only. Code-checked quotes. We're raising on Wefunder so the homeowners and contractors who actually use this thing can own a piece of it."</p>
+<p>The platform is built on a code-intelligence layer that validates every contractor quote against the National Electrical Code (NEC), International Residential Code (IRC), Massachusetts Electrical Code, New Hampshire state code (RSA), and Boston Inspectional Services Department (ISD) permit requirements before the homeowner sees the quote. The system catches missing line items, undersized panels, and code violations — surfacing a "code-checked" badge to homeowners. The code layer required a working general contractor and a multi-year codebase to build, and is what the founder describes as the platform's primary moat against incumbent response.</p>
+<p>Sherpa Pros enters Boston with a deliberately narrow specialty positioning rather than a head-on assault on entrenched lead-generation incumbents. The five Boston specialty lanes are: <strong>Mass Save heat-pump installations</strong> ($8,500 maximum 2026 rebate per <a href="https://www.masssave.com/residential/rebates-offers-services/heating-and-cooling/heat-pumps/air-source-heat-pumps">Mass Save program documents</a>), <strong>EV charger installations</strong> under the <a href="https://www.nationalgridus.com/electric-vehicle-hub/Programs/Massachusetts/Turnkey-EV-Charging-Installation-Program">National Grid Turnkey EV Charging Installation Program</a>, <strong>electrical panel upgrades</strong>, <strong>old-house specialists</strong> (plaster, slate, brownstone repointing, historic restoration), and <strong>triple-decker porch and exterior work</strong> subject to Boston ISD permits. National platforms cannot filter for any of these.</p>
+<p>The Wefunder community round is one of four parallel funding tracks. The other three — non-dilutive grants (MassCEC InnovateMass, NSF SBIR Phase I, MassDevelopment Biz-M-Power), accelerators (Suffolk Technologies, Techstars ConstructionTech, Y Combinator), and pre-seed venture capital (Building Ventures, Brick &amp; Mortar Ventures) — are all running concurrently. Whichever closes first triggers the company's Phase 1 launch.</p>
+<p>"The Wefunder round is the one where the community gets a seat at the table," said Phyrom. "We're running it because the homeowners and licensed contractors who use the platform should own a piece of the platform. That's the whole point."</p>
+<p><strong>About Sherpa Pros.</strong> Sherpa Pros is the national licensed-trade marketplace built by HJD Builders LLC founder Phyrom (international roadmap). The platform delivers vetted, code-checked jobs to licensed contractors and matches homeowners with verified pros via a mobile-first dispatch system inspired by ride-hail. Service categories include electrical, plumbing, HVAC, heat pumps, roofing, general construction, and 30+ residential trades. The platform is live in beta in NH, ME, and the Boston metro, with Phase 1 launch targeting Portsmouth, Manchester, Portland, and Boston specialty lanes — expanding nationally through Phase 4. Web: <a href="http://www.thesherpapros.com">www.thesherpapros.com</a>.</p>
+<p><strong>Wefunder offering page:</strong> [TO BE CONFIRMED — wefunder.com/sherpapros]
+<strong>Founder direct:</strong> Phyrom, <a href="mailto:poum@hjd.builders">poum@hjd.builders</a>
+<strong>Live demo:</strong> <a href="http://www.thesherpapros.com">www.thesherpapros.com</a></p>
+<hr>
+<h3 id="required-reg-cf-tombstone-paste-at-bottom-of-release">Required Reg CF tombstone (paste at bottom of release)</h3>
+<blockquote>
+<p><em>Sherpa Pros is conducting an offering of securities pursuant to Regulation Crowdfunding (Reg CF) under the U.S. Securities and Exchange Commission. The offering page on Wefunder contains the offering documents, including the Form C filing with the SEC. This press release is for informational purposes only and is not an offer to sell or a solicitation to buy securities. Investing in early-stage startups is high-risk; investors may lose their entire investment. The U.S. Securities and Exchange Commission has not passed on the accuracy or adequacy of this offering. Read the SAFE document and the Form C before investing. Consult your own attorney, accountant, and financial advisor.</em></p>
+</blockquote>
+<hr>
+<h3 id="new-launch-day-asset--2-paragraph-press-blurb-the-vertical-integration-thesis-pitch">NEW launch-day asset — 2-paragraph press blurb (the "vertical integration thesis" pitch)</h3>
+<p><em>For use in trade-press pre-briefs, the launch-day LinkedIn caption, and as the first 2 paragraphs of any condensed reporter pitch. Reads as the "what changed this quarter" framing for outlets who have already covered Sherpa Pros once.</em></p>
+<blockquote>
+<p><strong>The licensed-trade marketplace just stopped being a marketplace.</strong> When Sherpa Pros launched in beta last quarter, the company competed with Angi, Thumbtack, TaskRabbit, and Handy in one lane: matching homeowners with licensed contractors. This quarter, the platform shipped three capabilities that move it out of that lane entirely. <strong>Sherpa Materials</strong> orders the materials for every job through programmatic access to the major retail catalogs (the Zinc API) and delivers them to the jobsite the same day through Uber Direct. <strong>Sherpa Dispatch</strong> sequences six or more trades on a single multi-trade project (a kitchen renovation that normally runs 11 weeks finishes in 5 with Sherpa Dispatch). <strong>Sherpa Guard</strong> adds Role-Based Access Control and audit logs — the SOC 2-readiness signal institutional partners and large property-management cohorts require before signing.</p>
+<p><strong>The competitive set shifted accordingly.</strong> Sherpa Pros no longer competes with the labor-marketplace category. It competes with the entire trade-supply-chain stack — FW Webb (the supply house), Grainger (industrial supply), Uber Direct (same-day delivery), and Procore (enterprise general-contractor coordination software) combined. Per-job economics shift in lockstep: a $10,000 labor job has roughly $15,000 of materials passing through it, and the take rate stacks — 5–12 percent labor commission, plus an 8–12 percent materials coordination fee, plus the $49 monthly Pro subscription, plus the Property Manager retainer — for a blended <strong>18 to 25 percent take rate per job all-in.</strong> Founder Phyrom calls it "the Stripe Connect moment for the trade economy" — the orchestration layer that turns single-job marketplaces into whole-project platforms. The Wefunder community round opens at $100 minimum so the homeowners and licensed contractors who use the platform can own a piece of the orchestration layer being built around them.</p>
+</blockquote>
+<hr>
+<h3 id="trade-press--construction-tech-outlets-to-pre-brief-7-days-before-public-launch">Trade press / construction-tech outlets to pre-brief 7 days before public launch</h3>
+<p>These outlets cover the construction technology and trade-supply-chain category specifically. Pre-briefing them with the vertical-integration thesis (and an embargoed copy of the press release) lets them prepare a longer story for launch day instead of running a quick wire summary.</p>
+<table>
+<thead>
+<tr>
+<th>Outlet</th>
+<th>Beat</th>
+<th>Why pre-brief</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Construction Dive</strong></td>
+<td>Construction-technology funding rounds, contech startups, AEC platform shifts</td>
+<td>Already on the press list (Matthew Thibault, Section 2 #26) — pre-brief gets the vertical-integration angle in front of him before launch day, not after</td>
+</tr>
+<tr>
+<td><strong>Builder Magazine (Hanley Wood)</strong></td>
+<td>Residential builder business and technology coverage</td>
+<td>Audience is exactly the contractor cohort whose materials-procurement pain Sherpa Materials solves; pre-brief lets them line up a "what this means for the small builder" angle</td>
+</tr>
+<tr>
+<td><strong>Inman News</strong></td>
+<td>Real estate technology and proptech (residential focus)</td>
+<td>Sherpa Pros' Property Manager tier and Sherpa Guard's audit-grade compliance are the hooks for the proptech beat — pre-brief lets them position the launch as the first labor + materials platform the residential property-management category has had</td>
+</tr>
+<tr>
+<td><strong>Multifamily Executive</strong></td>
+<td>Multifamily property-management operations and technology</td>
+<td>The 5,000+ unit property-management cohort is the buy-criterion audience for Sherpa Guard (RBAC + audit logs) and Sherpa Dispatch (make-ready unit turnover); pre-brief surfaces the operational case to the executive readers who sign these contracts</td>
+</tr>
+</tbody></table>
+<p><strong>Pre-brief format:</strong> 20-minute Zoom with the founder, embargoed press release in advance, offer of an exclusive (longer story dropped 24 hours before the wire) to whichever outlet commits first. <strong>Pre-briefs go out W6 Wednesday — 7 days ahead of public launch — so reporters have time to write a real piece, not a press-release rewrite.</strong></p>
+<hr>
+<h2 id="2-press-list--30-named-reporters">2. PRESS LIST — 30 NAMED REPORTERS</h2>
+<p><strong>How to read this section.</strong> Each row is one reporter the founder should email personally on launch morning. <strong>Email patterns are best-guess based on outlet conventions</strong> (most NE outlets use <code>firstname.lastname@outlet.com</code> or <code>firstinitiallastname@outlet.com</code>). <strong>Verify each email through the outlet's masthead, Muck Rack, or RocketReach before sending</strong> — sending to unverified addresses risks bounces and spam-flag damage.</p>
+<p>For each reporter, the "pitch angle" is the one-sentence custom hook to put in the email subject + first line. Generic blast pitches will be ignored. <strong>Personalization is the entire game.</strong></p>
+<h3 id="nh-outlets">NH outlets</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Reporter</th>
+<th>Outlet</th>
+<th>Beat</th>
+<th>Recent relevant article</th>
+<th>Email pattern (verify)</th>
+<th>Pitch angle</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td><strong>David Brooks</strong></td>
+<td>Concord Monitor / Granite Geek</td>
+<td>Science + tech in NH; weekly Granite Geek column (<a href="https://www.nhpr.org/people/david-brooks-concord-monitor">Source: NHPR profile</a>)</td>
+<td>NH small-business AI adoption coverage in 2026</td>
+<td><code>dbrooks@cmonitor.com</code> (verify)</td>
+<td>"NH GC built a code-aware AI quote validator before VC ones existed. Built and live. Want to take a look?"</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>Bob Sanders</strong></td>
+<td>NH Business Review (NHBR)</td>
+<td>NH small business + economic development (<a href="https://www.nhbr.com/">Source: NHBR archive</a>)</td>
+<td>"Starting Small" feature on NH AI for SMBs (<a href="https://read.nhbr.com/nh-business-review/2026/03/13/?article=4380233">NHBR Mar 13 2026</a>)</td>
+<td><code>bsanders@nhbr.com</code> (verify)</td>
+<td>"NH GC just launched a Wefunder round. Built the platform he wished existed because Angi/Thumbtack were burning his crew."</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>Todd Bookman</strong></td>
+<td>NHPR (New Hampshire Public Radio)</td>
+<td>Senior reporter, business + labor topics (<a href="https://www.nhpr.org/people/todd-bookman">Source: NHPR profile</a>)</td>
+<td>"NH economic expert sees tough job market ahead in 2026" (<a href="https://www.nhpr.org/nh-news/2026-01-19/nh-economy-new-hampshire-job-market-tariffs-2026-economic-forecast">NHPR Jan 19 2026</a>)</td>
+<td><code>tbookman@nhpr.org</code> (verify)</td>
+<td>"Phyrom, NH GC, has a counterpoint to your Jan 19 piece — the trades shortage is being made worse by lead-gen platforms wasting licensed contractors' time. He built a fix."</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>Newsroom</strong></td>
+<td>Seacoast Online / Portsmouth Herald</td>
+<td>Seacoast NH + southern ME local business; main email-tip line (<a href="https://www.linkedin.com/company/seacoast-media-group">Source: Seacoast Media Group</a>)</td>
+<td>Local small-business coverage in 2026 (newsroom rotates writers)</td>
+<td><code>newsroom@seacoastonline.com</code> (verify via masthead)</td>
+<td>"Portsmouth-area founder, working GC, just launched a SEC Reg CF community round. Wefunder. Local-ownership angle for Seacoast readers."</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>Newsroom</strong></td>
+<td>Union Leader (Manchester NH)</td>
+<td>Statewide NH business reporting; SBA Small Business Week coverage 2026 (<a href="https://www.unionleader.com/news/business/sba-announces-national-small-business-week-2026-award-winners/article_75228d6c-4068-47f8-9cc4-05b205d4bd6d.html">Source: Union Leader</a>)</td>
+<td>SBA awards / small-business policy 2026</td>
+<td><code>business@unionleader.com</code> (verify)</td>
+<td>"NH GC launched Wefunder community round to fix what Angi/Thumbtack are doing to NH licensed contractors. Real story for your small-business beat."</td>
+</tr>
+<tr>
+<td>6</td>
+<td><strong>Editor</strong></td>
+<td>Business NH Magazine</td>
+<td>Statewide business publication; "Business Minute" partnership with NHPR (<a href="https://www.nhpr.org/inside-nhpr/2026-03-23/business-nh-magazine-joins-nhpr-for-the-business-minute">Source: NHPR</a>)</td>
+<td>NH startup ecosystem profiles</td>
+<td><code>editor@businessnhmagazine.com</code> (verify)</td>
+<td>"Pitching Phyrom for Startup Stars feature — NH GC building a marketplace, just opened community round on Wefunder."</td>
+</tr>
+<tr>
+<td>7</td>
+<td><strong>Editor</strong></td>
+<td>InDepthNH</td>
+<td>Investigative NH outlet; pattern of small-biz / labor coverage</td>
+<td>NH labor market, small biz</td>
+<td><code>editor@indepthnh.org</code> (verify)</td>
+<td>"Local-ownership angle: NH GC opening community round so the contractors and homeowners who use the platform own a piece. Worth a look?"</td>
+</tr>
+</tbody></table>
+<h3 id="ma--boston-outlets">MA / Boston outlets</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Reporter</th>
+<th>Outlet</th>
+<th>Beat</th>
+<th>Recent relevant article</th>
+<th>Email pattern (verify)</th>
+<th>Pitch angle</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>8</td>
+<td><strong>Catherine Carlock</strong></td>
+<td>Boston Globe</td>
+<td>Real estate + development reporter; covered Boston construction-cost Spotlight investigation with Tim Logan (<a href="https://www.bostonglobe.com/about/staff-list/staff/catherine-carlock/">Source: Boston Globe staff page</a>)</td>
+<td>Multifamily development cost coverage 2026</td>
+<td><code>catherine.carlock@globe.com</code> (verify)</td>
+<td>"Construction labor shortage angle: NH GC built a marketplace specifically to keep MA licensed pros from burning hours on pay-to-bid lead platforms. Wefunder round just opened."</td>
+</tr>
+<tr>
+<td>9</td>
+<td><strong>Tim Logan</strong></td>
+<td>Boston Globe (Rhode Island)</td>
+<td>Former Deputy Business Editor; now Globe RI reporter; deep housing/development background (<a href="https://www.bostonglobe.com/about/staff-list/staff/tim-logan/">Source: Boston Globe staff</a>)</td>
+<td>Housing + zoning coverage; Spotlight on Greater Boston building cost</td>
+<td><code>tim.logan@globe.com</code> (verify)</td>
+<td>"RI angle: Phase 3 includes a Providence specialty launch. NH-built marketplace targeting RI old-house + triple-decker work. Worth a Phase-3 watch?"</td>
+</tr>
+<tr>
+<td>10</td>
+<td><strong>Lucia Maffei</strong></td>
+<td>Boston Business Journal / formerly BostInno</td>
+<td>Tech reporter; covers VC + Boston startups (<a href="https://nationalpress.org/award-winner/lucia-maffei/">Source: National Press Foundation</a>)</td>
+<td>Boston startup funding rounds 2026</td>
+<td><code>lmaffei@bizjournals.com</code> (verify)</td>
+<td>"Solo NH founder, built construction marketplace, just opened SEC Reg CF round on Wefunder. Built-by-the-user angle is the local hook."</td>
+</tr>
+<tr>
+<td>11</td>
+<td><strong>Eli Chavez</strong></td>
+<td>Boston Business Journal / BostInno</td>
+<td>VC + startup funding reporter (<a href="https://www.linkedin.com/in/elias-chavez/">Source: LinkedIn</a>)</td>
+<td>58 Boston startups raised $624M in October coverage</td>
+<td><code>echavez@bizjournals.com</code> (verify)</td>
+<td>"Adding to your VC funding tracker: NH-based Sherpa Pros launching parallel Wefunder + VC tracks. Both running. Real product live, real GMV."</td>
+</tr>
+<tr>
+<td>12</td>
+<td><strong>Scott Van Voorhis</strong></td>
+<td>Banker &amp; Tradesman / Contrarian Boston</td>
+<td>Columnist on MA real estate, housing, development (<a href="https://bankerandtradesman.com/author/vanvoorhis/">Source: B&amp;T author page</a>)</td>
+<td>Boston multifamily construction declining (Apr 2026)</td>
+<td><code>svv@thewarrengroup.com</code> (verify)</td>
+<td>"Counter-data point to your apartment-construction decline piece: there's a structural way to keep more units moving — get the licensed-trade execution layer right. NH GC built it."</td>
+</tr>
+<tr>
+<td>13</td>
+<td><strong>Editor</strong></td>
+<td>Banker &amp; Tradesman</td>
+<td>Trade publication for MA real estate finance + construction; main news desk</td>
+<td>Spring 2026 MA housing market features</td>
+<td><code>news@bankerandtradesman.com</code> (verify)</td>
+<td>"Story: NH GC just launched community round on Wefunder for a code-aware NE marketplace. Beats every angle of the labor-shortage story you've been running."</td>
+</tr>
+<tr>
+<td>14</td>
+<td><strong>Bruce Gellerman</strong></td>
+<td>WBUR</td>
+<td>Senior correspondent; science + business + environment + clean energy (<a href="https://www.wbur.org/inside/staff/bruce-gellerman">Source: WBUR profile</a>)</td>
+<td>MA green hydrogen / energy economy 2026</td>
+<td><code>bgellerman@wbur.org</code> (verify)</td>
+<td>"Heat-pump rebate execution angle: Mass Save funnel works only if licensed installers can be matched fast. Sherpa Pros is the missing layer. Wefunder round just opened."</td>
+</tr>
+<tr>
+<td>15</td>
+<td><strong>Newsroom</strong></td>
+<td>WBUR Radio Boston</td>
+<td>Daily Boston-issues talk show; books guests on local business + labor</td>
+<td>Boston housing + labor coverage</td>
+<td><code>radioboston@wbur.org</code> (verify)</td>
+<td>"Pitching Phyrom for a Radio Boston segment — NH GC, working contractor, opening community round to fix what Angi is doing to the trades. Local-founder + Wefunder hook."</td>
+</tr>
+<tr>
+<td>16</td>
+<td><strong>Newsroom</strong></td>
+<td>GBH News (formerly WGBH)</td>
+<td>Boston-area NPR-affiliate news desk</td>
+<td>Boston economy + housing + labor coverage 2026</td>
+<td><code>news@wgbh.org</code> (verify)</td>
+<td>"GBH listener angle: working NH GC opens Reg CF community round so homeowners + pros can co-own the marketplace they use. Different model than every Boston platform you've covered."</td>
+</tr>
+<tr>
+<td>17</td>
+<td><strong>Mica Kanner-Mascolo</strong></td>
+<td>Worcester Business Journal</td>
+<td>Tech + small-biz reporter (<a href="https://muckrack.com/media-outlet/wbjournal">Source: Muck Rack</a>)</td>
+<td>NE labor shortage feature (<a href="https://wbjournal.com/article/help-needed-massachusetts-has-the-largest-construction-worker-shortage-in-the-nation/">Apr 2026 WBJournal</a>)</td>
+<td><code>mkanner@wbjournal.com</code> (verify)</td>
+<td>"Direct sequel to your MA labor-shortage story — NH GC built a marketplace that addresses the structural cause: lead-gen platforms wasting licensed contractor time. Wefunder round is live."</td>
+</tr>
+<tr>
+<td>18</td>
+<td><strong>Eric Casey</strong></td>
+<td>Worcester Business Journal</td>
+<td>Tech reporter (<a href="https://muckrack.com/media-outlet/wbjournal">Source: Muck Rack</a>)</td>
+<td>MA tech startup coverage 2026</td>
+<td><code>ecasey@wbjournal.com</code> (verify)</td>
+<td>"MA tech-startup ecosystem angle: NH-built marketplace launching parallel Wefunder + grant + accelerator tracks. Different fundraising playbook than your usual Boston-VC story."</td>
+</tr>
+</tbody></table>
+<h3 id="me-outlets">ME outlets</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Reporter</th>
+<th>Outlet</th>
+<th>Beat</th>
+<th>Recent relevant article</th>
+<th>Email pattern (verify)</th>
+<th>Pitch angle</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>19</td>
+<td><strong>Megan Gray</strong></td>
+<td>Portland Press Herald</td>
+<td>Tourism + outdoors; new hire 4/1/2026 (<a href="https://nationaltoday.com/us/me/portland-me/news/2026/04/07/portland-press-herald-hires-new-tourism-and-outdoors-reporter/">Source: Portland Today</a>)</td>
+<td>Maine outdoor recreation economy</td>
+<td><code>mgray@pressherald.com</code> (verify)</td>
+<td>"Maine angle: NH-built marketplace launching Portland as Phase 1 metro. Local-pro + local-homeowner ownership angle for Wefunder round."</td>
+</tr>
+<tr>
+<td>20</td>
+<td><strong>Penelope Overton</strong></td>
+<td>Portland Press Herald</td>
+<td>First climate reporter at Press Herald (<a href="https://www.pressherald.com/2026/01/22/maines-outdoor-recreation-industry-is-ripe-for-growth-leaders-say/">Source: Press Herald</a>)</td>
+<td>Climate + Maine industries</td>
+<td><code>poverton@pressherald.com</code> (verify)</td>
+<td>"Climate-tech angle: heat-pump installer matching for Maine. Mass Save model coming north. Wefunder round live to fund Portland launch."</td>
+</tr>
+<tr>
+<td>21</td>
+<td><strong>Newsroom — Business</strong></td>
+<td>Portland Press Herald</td>
+<td>Business desk for Maine economy stories</td>
+<td>Maine business 2026 coverage</td>
+<td><code>business@pressherald.com</code> (verify)</td>
+<td>"NH founder launching Portland as Phase 1 marketplace metro. Mainers can invest from $100. Wefunder round live."</td>
+</tr>
+<tr>
+<td>22</td>
+<td><strong>Editor</strong></td>
+<td>Mainebiz</td>
+<td>Maine statewide business publication</td>
+<td>Maine startup + small biz coverage</td>
+<td><code>news@mainebiz.biz</code> (verify)</td>
+<td>"Maine-founder angle (NH-based but Phase 1 includes Portland) — community round on Wefunder, $100 minimum, lets ME homeowners own a piece of the platform they hire pros from."</td>
+</tr>
+</tbody></table>
+<h3 id="national-construction-trade-outlets">National construction trade outlets</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Reporter</th>
+<th>Outlet</th>
+<th>Beat</th>
+<th>Recent relevant article</th>
+<th>Email pattern (verify)</th>
+<th>Pitch angle</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>23</td>
+<td><strong>Clayton DeKorne</strong></td>
+<td>Journal of Light Construction (JLC)</td>
+<td>JLC editor; deep residential/light-commercial contractor coverage (<a href="https://www.jlconline.com/">Source: JLC Online</a>)</td>
+<td>JLC LIVE March 2026, code-related Building Clinics</td>
+<td><code>cdekorne@jlconline.com</code> (verify)</td>
+<td>"JLC LIVE just wrapped — your readers asked about platforms that pay them for completed work, not for leads. NH GC just shipped that. Wefunder round live."</td>
+</tr>
+<tr>
+<td>24</td>
+<td><strong>Tyler Rhyan</strong></td>
+<td>Pro Remodeler magazine</td>
+<td>Associate editor; covers contractor technology adoption (<a href="https://www.proremodeler.com/industry-data-research/article/55361486/practical-technology-report">Source: Pro Remodeler 2026 Tech Report</a>)</td>
+<td>"Practical Technology Report" 2026</td>
+<td><code>trhyan@proremodeler.com</code> (verify)</td>
+<td>"Direct sequel to your 'reality capture + AI for remodelers' tech report: code-aware AI quote validation is shipping in NE. Working GC built it. Wefunder round live."</td>
+</tr>
+<tr>
+<td>25</td>
+<td><strong>Editor</strong></td>
+<td>Pro Builder magazine (Endeavor)</td>
+<td>NAHB official publication; Rich Binsacca editorial director (<a href="https://www.probuilder.com/about-contact">Source: Pro Builder masthead</a>)</td>
+<td>2026 IBS coverage; residential builder tech</td>
+<td><code>rbinsacca@probuilder.com</code> (verify)</td>
+<td>"NAHB-aligned story: NH GC built a marketplace solving the labor-shortage matching problem your readers complain about every quarter. Founder is willing to do bylined response."</td>
+</tr>
+<tr>
+<td>26</td>
+<td><strong>Matthew Thibault</strong></td>
+<td>Construction Dive</td>
+<td>Contech / proptech startup funding reporter (<a href="https://www.constructiondive.com/">Source: Construction Dive</a>)</td>
+<td>"6 contech firms raise $126M" early 2026</td>
+<td><code>mthibault@constructiondive.com</code> (verify)</td>
+<td>"Add to your contech funding tracker: NH-built marketplace running parallel grant + accelerator + Wefunder + VC tracks. Wefunder is the unusual one — community-round angle."</td>
+</tr>
+<tr>
+<td>27</td>
+<td><strong>Editor</strong></td>
+<td>Building Design + Construction</td>
+<td>AEC trade magazine; covers contractor tech adoption (<a href="https://www.bdcnetwork.com/">Source: BD+C network</a>)</td>
+<td>2026 contractor tech adoption coverage</td>
+<td><code>editor@bdcnetwork.com</code> (verify)</td>
+<td>"Code-intelligence layer angle: NEC + IRC + MA Electrical + NH RSA validation in real time. Working GC built it. Wefunder round live for community ownership."</td>
+</tr>
+<tr>
+<td>28</td>
+<td><strong>Editor</strong></td>
+<td>Remodeling Magazine (Zonda Media)</td>
+<td>Residential remodeling industry trade (<a href="https://www.builderonline.com/organization/hanley-wood/">Source: Zonda Media</a>)</td>
+<td>2026 contractor business + tech coverage</td>
+<td><code>editor@remodelingmag.com</code> (verify)</td>
+<td>"Contractor-economics angle: 5% take-rate vs. Angi's effective $400-$800/closed-job lead spend. Founder is a working GC who lived the math. Wefunder round live."</td>
+</tr>
+</tbody></table>
+<h3 id="climate--clean-energy-outlets-mass-save--utility-angle">Climate + clean-energy outlets (Mass Save / utility angle)</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Reporter</th>
+<th>Outlet</th>
+<th>Beat</th>
+<th>Recent relevant article</th>
+<th>Email pattern (verify)</th>
+<th>Pitch angle</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>29</td>
+<td><strong>Editor</strong></td>
+<td>CommonWealth Beacon (MA)</td>
+<td>MA policy + energy + housing reporting</td>
+<td>Mass Save plan coverage 2026</td>
+<td><code>editor@commonwealthbeacon.org</code> (verify)</td>
+<td>"Mass Save execution layer angle: NH GC's marketplace is applying to be a Mass Save Network installer-finder + execution layer. Wefunder round funds the Boston specialty launch."</td>
+</tr>
+<tr>
+<td>30</td>
+<td><strong>Editor</strong></td>
+<td>Heatmap News</td>
+<td>National climate-tech outlet; often covers heat-pump + EV deployment</td>
+<td>Heat-pump deployment + installer access stories</td>
+<td><code>editor@heatmap.news</code> (verify)</td>
+<td>"Heat-pump deployment bottleneck story: licensed installer matching is the missing layer. Working GC built it. NE pilot. Wefunder round live so the installers can co-own the platform."</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="press-list-operating-notes">Press list operating notes</h3>
+<ul>
+<li><strong>Verify every email before sending.</strong> Use Muck Rack (paid), RocketReach, or the outlet masthead. Bounces hurt domain reputation and reduce future deliverability.</li>
+<li><strong>Personalize subject lines.</strong> Generic blasts get ignored. Reference the reporter's specific recent piece in the subject line where possible.</li>
+<li><strong>Send Tuesday or Wednesday morning, 7:00–8:30 AM ET.</strong> Avoid Monday (full inboxes), Thursday-Friday (weekend bleed), holidays.</li>
+<li><strong>Lead with a 2-line pitch + 1-line ask + 1-line link.</strong> No attachments in the first email. Offer the press release as a clean Google Doc or copy-paste only on reporter request.</li>
+<li><strong>One reply-bump after 48 hours.</strong> If no response after the bump, drop. Don't spam.</li>
+<li><strong>Track responses in a simple Notion or Airtable database.</strong> Status: Sent / Opened / Replied / Declined / Wrote story / Ghosted. Refer back at Phase 1 PR push.</li>
+</ul>
+<hr>
+<h2 id="3-podcast-guest-pitches">3. PODCAST GUEST PITCHES</h2>
+<p>For each podcast: a 50-word "why Phyrom is a good guest," topic ideas, and notes on availability + outreach. <strong>Phyrom is generally available Tuesdays + Thursdays AM-ET for podcast bookings during the Wefunder window (W7–W12). Block these days now.</strong></p>
+<h3 id="31-nh-business-review-podcast">3.1 NH Business Review podcast</h3>
+<ul>
+<li><strong>Show:</strong> "NH Business Review" podcast — produced by NHBR, distributed via <a href="https://www.nhbr.com/">nhbr.com</a></li>
+<li><strong>Why Phyrom is a good guest (49 words):</strong> Phyrom is a 12-year working NH general contractor who built and shipped a code-aware New England marketplace. The story is a direct fit for NHBR's audience: NH small-business founder, construction trades, AI tooling for contractors, statewide labor-shortage angle, and an unusual SEC Reg CF community-round fundraising playbook that NH listeners can actually participate in.</li>
+<li><strong>Topic ideas:</strong><ol>
+<li>The math on why Angi-style lead-gen is destroying NH licensed-contractor margins</li>
+<li>What it actually took for a working GC to ship a software platform — solo founder reality check</li>
+<li>Why Reg CF community ownership for an NH marketplace is the right alignment</li>
+</ol>
+</li>
+<li><strong>Outreach pitch (subject line):</strong> <em>"NH GC, just shipped a code-aware marketplace, opened a Wefunder round — fits your Starting Small thread"</em></li>
+<li><strong>Best dates W7–W12:</strong> Tuesdays AM, Thursdays AM</li>
+<li><strong>Pre-record vs. live:</strong> OK either; Phyrom prefers live for energy</li>
+<li><strong>Pitch contact:</strong> <a href="mailto:podcast@nhbr.com">podcast@nhbr.com</a> (verify)</li>
+</ul>
+<h3 id="32-the-contractor-fight-with-tom-reber">3.2 The Contractor Fight (with Tom Reber)</h3>
+<ul>
+<li><strong>Show:</strong> "The Contractor Fight" with Tom Reber — top contractor-business podcast; recent guests include Hunter Ballew (sold roofing biz for $48M in 3 years) and Kortney Farhat (Coastal Kapital) per <a href="https://thecontractorfight.com/podcast/">thecontractorfight.com/podcast</a></li>
+<li><strong>Why Phyrom is a good guest (50 words):</strong> Phyrom is exactly the contractor Tom Reber's audience listens to: working GC, scarred by lead-gen platforms, built his own software fix instead of complaining about it. The angle is "contractor tells contractors how to stop paying Angi" — Reber's audience eats this. Add the Wefunder community-ownership angle as the kicker.</li>
+<li><strong>Topic ideas:</strong><ol>
+<li>The five-year true cost of a single Angi lead — math from a real GC's books</li>
+<li>How to build software when you've never written code (founder built it with AI agents + offshore team while running HJD)</li>
+<li>Why community ownership is a recruiting moat — your customers and your subs become your investors</li>
+</ol>
+</li>
+<li><strong>Outreach pitch (subject line):</strong> <em>"Working GC built the platform he wished existed — direct fit for your Hunter Ballew / Kortney Farhat thread"</em></li>
+<li><strong>Best dates W7–W12:</strong> Phyrom is flexible; Reber typically pre-records 4–6 weeks ahead, so pitch immediately at W3–W4 to land in the W7–W12 launch window</li>
+<li><strong>Pitch contact:</strong> Tom Reber via LinkedIn DM (<a href="https://www.linkedin.com/in/tomreber">linkedin.com/in/tomreber</a>) + producer email at thecontractorfight.com (find via site footer)</li>
+</ul>
+<h3 id="33-jlc-live-podcast--journal-of-light-construction-audio">3.3 JLC Live podcast / Journal of Light Construction audio</h3>
+<ul>
+<li><strong>Show:</strong> JLC's audio products (associated with <a href="https://www.jlconline.com/">jlcs.com</a>). JLC LIVE Providence wrapped March 2026.</li>
+<li><strong>Why Phyrom is a good guest (50 words):</strong> JLC's audience is the senior residential remodeler — code-rigorous, business-minded, allergic to platform marketing-speak. Phyrom belongs in that room. The angle is the code-intelligence layer (NEC, IRC, MA Electrical, NH RSA) — JLC listeners are the people who care most about whether the validation actually catches violations. Live demo possible.</li>
+<li><strong>Topic ideas:</strong><ol>
+<li>Code-aware quote validation in practice: walk through a real heat-pump install quote that the platform caught for under-sized panel</li>
+<li>Permit-aware workflows for Boston ISD specifically — what platforms get wrong</li>
+<li>Why a working GC, not a tech founder, ended up shipping this</li>
+</ol>
+</li>
+<li><strong>Outreach pitch (subject line):</strong> <em>"For a JLC podcast: working GC built a NEC + IRC + MA Electrical quote validator, live demo available"</em></li>
+<li><strong>Best dates W7–W12:</strong> Mondays + Wednesdays AM</li>
+<li><strong>Pitch contact:</strong> Clayton DeKorne (JLC editor) + producer via jlconline.com contact form</li>
+</ul>
+<h3 id="34-how-i-built-this-npr--guy-raz--long-shot">3.4 How I Built This (NPR / Guy Raz) — long-shot</h3>
+<ul>
+<li><strong>Show:</strong> "How I Built This" with Guy Raz — NPR/Wondery flagship founder-story podcast</li>
+<li><strong>Why Phyrom is a good guest (50 words):</strong> Long-shot because they typically book post-Series-A founders with breakout traction. But the story checks the HIBT boxes: working contractor sees a problem nobody else solves, builds the solution himself, ships it, opens it to community ownership. The Wefunder angle is news-pegged and the founder voice is exactly the show's tone.</li>
+<li><strong>Topic ideas:</strong> N/A at pitch stage — let producers shape</li>
+<li><strong>Outreach pitch (subject line):</strong> <em>"Pitch: NH general contractor who built the marketplace he wished existed — community-owned"</em></li>
+<li><strong>Best dates:</strong> N/A — book months ahead if they bite</li>
+<li><strong>Pitch contact:</strong> Pitch form at <a href="https://wondery.com/shows/how-i-built-this/">howibuiltthis.com</a> / Wondery</li>
+<li><strong>Realistic expectation:</strong> Phyrom should pitch but not count on it. The pitch itself, even if declined, is good practice for refining the founder story.</li>
+</ul>
+<h3 id="35-marketplace-pulse-check-podcasts">3.5 Marketplace pulse-check podcasts</h3>
+<p>Candidates (any one is a good fit; pitch all three):</p>
+<h4 id="a-the-marketplace-conference--sharetribe-podcast">a) "The Marketplace Conference" / Sharetribe podcast</h4>
+<ul>
+<li><strong>Why Phyrom is a good guest (49 words):</strong> Phyrom is the textbook two-sided marketplace cold-start case: solo founder, no demand-side budget, bootstrapped supply via the founder's own GC network. Sharetribe's audience is operators trying to solve exactly this. Adding the Reg CF community-ownership wrinkle gives them a fresh model they haven't covered.</li>
+<li><strong>Topic ideas:</strong> Cold-start liquidity from a single-metro GC network; how to recruit pros without paid CAC; the math on community-round investor recruitment as a marketing channel</li>
+<li><strong>Pitch contact:</strong> <a href="mailto:podcast@sharetribe.com">podcast@sharetribe.com</a> (verify)</li>
+</ul>
+<h4 id="b-marketplace-pulse-podcast-e-commerce-focused-but-covers-vertical-marketplaces">b) "Marketplace Pulse" podcast (e-commerce focused but covers vertical marketplaces)</h4>
+<ul>
+<li><strong>Why Phyrom is a good guest (50 words):</strong> MP's host Juozas Kaziukėnas covers vertical marketplaces beyond e-comm. A licensed-trade NE marketplace is a clean story: defensible niche, real moat (code intelligence), community-round angle. The audience leans operator/investor, both of whom should care about Sherpa Pros. The beta GMV traction would carry the segment.</li>
+<li><strong>Topic ideas:</strong> Vertical marketplace defensibility; why licensed trades are the last unsolved home-services category; community ownership as a moat</li>
+<li><strong>Pitch contact:</strong> <a href="https://www.marketplacepulse.com/">marketplacepulse.com</a> contact form</li>
+</ul>
+<h4 id="c-nfx-podcast-by-nfx-marketplace-vc-long-shot-but-worth-pitching">c) "NFX Podcast" by NFX (marketplace VC; long-shot but worth pitching)</h4>
+<ul>
+<li><strong>Why Phyrom is a good guest (50 words):</strong> NFX literally wrote the marketplace network-effects playbook. Phyrom's company is a textbook NFX-shaped marketplace (network effects + recurring revenue + enterprise upside via PM tier). Pitching for a podcast slot doubles as a soft VC introduction to the NFX team — two-for-one. Worth a swing even if the podcast says no.</li>
+<li><strong>Topic ideas:</strong> Marketplace cold-start in a vertical incumbents underserve; founder-as-user as the trust signal; community ownership as supply-side recruiting</li>
+<li><strong>Pitch contact:</strong> Pete Flint or James Currier via NFX site contact form (<a href="https://www.nfx.com/">nfx.com</a>)</li>
+</ul>
+<hr>
+<h2 id="4-social-launch-playbook--day-by-day-launch-week--w7">4. SOCIAL LAUNCH PLAYBOOK — DAY-BY-DAY (LAUNCH WEEK = W7)</h2>
+<p>The social launch is run primarily on <strong>Phyrom's personal LinkedIn</strong> (founder-voice channel). Secondary: Sherpa Pros LinkedIn company page (if exists by W7), Phyrom Twitter/X, and a coordinated push from supply-house + trade-org partners pre-briefed in W6.</p>
+<p><strong>Default voice rules</strong> (from GTM spec §3.3 and brand-bible constraints in this folder):</p>
+<ul>
+<li>Founder voice. First-person. Phyrom, not "we at Sherpa Pros."</li>
+<li>8th-grade reading level.</li>
+<li><strong>Always say:</strong> Licensed · Verified · Code-aware · Built by a contractor · Local · Jobs, not leads</li>
+<li><strong>Never say:</strong> Wiseman · Gig / Task · Uber for X · "AI-powered" as headline · Disrupt · Revolutionize</li>
+<li>Spell out abbreviations on first use.</li>
+</ul>
+<h3 id="w7--launch-week">W7 — LAUNCH WEEK</h3>
+<h4 id="monday-w7-d1--pre-launch-tease">Monday (W7-D1) — Pre-launch tease</h4>
+<ul>
+<li><strong>LinkedIn post (8:00 AM ET).</strong> <em>"Tomorrow morning I'm doing something that feels both terrifying and obvious. Twelve years ago I started HJD Builders. Tomorrow my crew, my clients, and anyone who's ever hired a licensed contractor in NE will be able to own a piece of the marketplace I built for them. More tomorrow. — Phyrom"</em></li>
+<li><strong>Twitter/X (same time).</strong> Cross-post short version + link to LinkedIn post.</li>
+<li><strong>Slack/text the inner circle</strong> (HJD high-trust clients, beta pros, NHHBA + MEHBA contacts, Building Ventures warm intro) — give them the heads-up that tomorrow is launch day. Ask them to like + repost LinkedIn tomorrow morning.</li>
+</ul>
+<h4 id="tuesday-w7-d2--launch-day">Tuesday (W7-D2) — LAUNCH DAY</h4>
+<ul>
+<li><strong>6:00 AM ET — Press release goes live.</strong> PR Newswire NE wire + direct emails to the 30-reporter list (Section 2). Founder personally sends top-10-priority reporters from Phyrom's own gmail.</li>
+<li><strong>6:30 AM ET — Wefunder page goes public.</strong> SEC Form C is filed (must be live before public solicitation).</li>
+<li><strong>7:00 AM ET — LinkedIn launch post.</strong> <em>"Today is the day. I'm Phyrom, I run HJD Builders, I built Sherpa Pros. The platform is live at <a href="http://www.thesherpapros.com">www.thesherpapros.com</a>. The community round is live at wefunder.com/sherpapros. Minimum is $100. You can lose it — startups are risky. But if this works, you helped build it. [link to Loom pitch video] [Wefunder link]"</em></li>
+<li><strong>7:00 AM ET — Twitter/X launch thread.</strong> 5-tweet thread: hook → problem → solution → ask → link.</li>
+<li><strong>8:00 AM ET — Phyrom personally calls the 5 highest-priority HJD clients</strong> to tell them the round is live and ask if they're in. Don't email — call.</li>
+<li><strong>All day — Phyrom replies to every LinkedIn comment within 30 minutes.</strong> Engagement velocity matters for LinkedIn algorithm.</li>
+<li><strong>End of day — Tomorrow's plan email</strong> to the inner circle: "Day 1 results. Here's where we are. Here's the ask for tomorrow."</li>
+</ul>
+<h4 id="wednesday-w7-d3--founder-voice-deep-dive">Wednesday (W7-D3) — Founder-voice deep-dive</h4>
+<ul>
+<li><strong>LinkedIn post (8:00 AM ET).</strong> Long-form (1,000+ word) post: <em>"The five-year true cost of a single Angi lead — math from a real GC's books."</em> Use real (anonymized) HJD numbers. End with: <em>"This is why I built Sherpa Pros. Round is live at [link]."</em></li>
+<li><strong>Phyrom personal email</strong> to top 25 HJD high-trust clients with personal note + Wefunder link. NOT a mass-email. Each one personalized in 30 seconds.</li>
+<li><strong>Pre-briefed supply-house partners post.</strong> Lowe's Pro NH, Rockler, FW Webb (if pre-briefed at W6) post a "we love that this exists" repost or quote-post on their LinkedIn.</li>
+</ul>
+<h4 id="thursday-w7-d4--beta-pro-testimonial-day">Thursday (W7-D4) — Beta pro testimonial day</h4>
+<ul>
+<li><strong>LinkedIn post (8:00 AM ET).</strong> Spotlight on one beta pro with their permission. Photo + quote + how they use Sherpa Pros + their personal Wefunder link (small thank-you commission/credit if they refer in investors — coordinate with Wefunder rep on whether this is allowed).</li>
+<li><strong>Repeat for second beta pro at 1:00 PM ET.</strong></li>
+<li><strong>NHHBA + MEHBA member newsletter inserts</strong> go out (pre-coordinated at W5).</li>
+</ul>
+<h4 id="friday-w7-d5--press-response-day">Friday (W7-D5) — Press response day</h4>
+<ul>
+<li><strong>LinkedIn post (8:00 AM ET).</strong> Quote and link any press hits from W7. <em>"Thanks to [reporter] at [outlet] for covering the launch. Read the piece [link]. The community round is still open."</em></li>
+<li><strong>Phyrom replies to every press inquiry that came in this week.</strong> Even "no thanks" replies — build relationships for Phase 1 PR push.</li>
+<li><strong>End-of-week numbers post.</strong> <em>"Day 4 of the Wefunder community round. Here's where we are: [$X committed], [Y investors]. We're heading toward [$250K target]. Here's what next week looks like."</em></li>
+</ul>
+<h3 id="w8--sustained-drive">W8 — Sustained drive</h3>
+<ul>
+<li><strong>Mon, Wed, Fri LinkedIn posts.</strong> Topics: code-aware quote validation deep-dive (Mon), Boston specialty-lane founder-voice piece (Wed), week-over-week numbers (Fri).</li>
+<li><strong>Tuesday — Podcast week.</strong> Block Tuesday for any landed podcast recordings (NHBR, Contractor Fight, JLC, marketplace shows).</li>
+<li><strong>Thursday — Trade-org partnership push.</strong> NHHBA + MEHBA member events pitch — <em>"Phyrom available to speak at your next chapter meeting in the next 60 days, free, no pitch — just to share what he built and why."</em></li>
+</ul>
+<h3 id="w9w12--sustained-engagement">W9–W12 — Sustained engagement</h3>
+<ul>
+<li><strong>2 LinkedIn posts per week minimum.</strong> Topics: investor stories ("Met an investor today who's a homeowner in Manchester who hired through the platform last month"), code-validation case studies, real beta-cohort GMV numbers, milestone celebrations.</li>
+<li><strong>Weekly Wefunder portal update</strong> — visible to current investors only.</li>
+<li><strong>Bi-weekly press reply-bumps</strong> to W7 outreach list.</li>
+</ul>
+<h3 id="asks-of-phyroms-network-during-launch-week">Asks of Phyrom's network during launch week</h3>
+<ul>
+<li><strong>Inner circle (HJD clients, beta pros, NHHBA contacts) — pre-briefed at W6:</strong><ol>
+<li><strong>Day 1:</strong> like + repost the launch LinkedIn post</li>
+<li><strong>Day 2:</strong> consider investing themselves (no pressure, but ask)</li>
+<li><strong>Day 3+:</strong> forward to one person in their network who'd care</li>
+</ol>
+</li>
+<li><strong>Beta pros — pre-briefed at W5:</strong><ol>
+<li>Permission for a testimonial post (week 1)</li>
+<li>Permission to use their face + name in the Wefunder page (already in beta agreement)</li>
+<li>Personal "vouch" to their pro network — direct messages to 5 trusted peer pros</li>
+</ol>
+</li>
+<li><strong>Supply-house + trade-org partners — pre-briefed at W6:</strong><ol>
+<li>Lowe's Pro NH, Rockler, FW Webb — soft repost on launch day</li>
+<li>NHHBA, MEHBA — newsletter insert in W7 distribution</li>
+<li>Mass Save / Eversource Ventures contacts — heads-up before public launch</li>
+</ol>
+</li>
+</ul>
+<hr>
+<h2 id="5-investor-recruitment-timeline">5. INVESTOR RECRUITMENT TIMELINE</h2>
+<p><strong>Cross-reference:</strong> GTM spec §6.6 (90-day fundraising calendar) + spec §6.4 (Wefunder track).</p>
+<h3 id="w3w6--pre-launch-list-build-private">W3–W6 — Pre-launch list-build (private)</h3>
+<p><strong>Goal: 100+ "interested" signups before public launch + $100K+ soft-circled before public Wefunder page goes live.</strong> Wefunder's own data shows that pages launching with $100K+ already committed convert at 3–5× the rate of cold-launched pages.</p>
+<h4 id="w3-now">W3 (now)</h4>
+<ul>
+<li><strong>Build the list.</strong> Spreadsheet of 200+ prospects: HJD high-trust clients, beta pros, NHHBA + MEHBA board members, Phyrom's personal network (high school + college + trades), local press readers (Seacoast Online subscribers Phyrom knows personally), early Belle Vie supporters (sister property under HJD), early BldSync interested parties.</li>
+<li><strong>Categorize by fit.</strong> Tier 1: likely $1K+ check, personally known to Phyrom (40–60 names). Tier 2: likely $250–$1K, in Phyrom's broader network (100+ names). Tier 3: $100 minimum, broader Wefunder organic reach (don't list-build — let public launch find them).</li>
+<li><strong>Wefunder page draft</strong> is built but not public. Use Wefunder's "Coming Soon" mode to start collecting signups — these become the soft-commit number for W6.</li>
+</ul>
+<h4 id="w4">W4</h4>
+<ul>
+<li><strong>Phyrom personally calls or texts every Tier 1 prospect.</strong> Goal: 30+ confirmed "I'll commit when you launch" conversations. Track in spreadsheet.</li>
+<li><strong>OpenSign templates ready</strong> for soft-commit pledges (no money moves yet — just an indication of interest).</li>
+<li><strong>Founder bio + Loom video</strong> finalized; placeholder screenshots in Wefunder draft replaced with real ones.</li>
+</ul>
+<h4 id="w5">W5</h4>
+<ul>
+<li><strong>Tier 2 outreach.</strong> Email + LinkedIn DM to ~100 Tier 2 prospects. Personalized ("Hey [name] — I'm finally launching Sherpa Pros publicly in two weeks. Thought of you because [specific reason]. Coming-Soon page is at [link]; you can sign up to be notified the moment it goes live.").</li>
+<li><strong>Press list final.</strong> Confirm the 30 reporter names + emails (Section 2 above) are live and verified.</li>
+<li><strong>NHHBA + MEHBA newsletter coordination.</strong> Get the W7 newsletter insert finalized.</li>
+</ul>
+<h4 id="w6">W6</h4>
+<ul>
+<li><strong>Final pre-launch push.</strong> Phyrom calls the 10 highest-priority Tier 1 holdouts. Asks for soft-commit confirmations.</li>
+<li><strong>Soft-commit count.</strong> Tally and document. Goal: $100K+ soft-circled (not in escrow yet, but verbally pledged).</li>
+<li><strong>Last-mile content.</strong> Founder bio doc finalized for distribution. Loom pitch video uploaded. Screenshots replaced. Brand Guardian agent does final review for forbidden phrases.</li>
+<li><strong>Press release embargo emails sent W6 Friday.</strong> Top 10 reporters get the embargoed release with Tuesday W7 release date.</li>
+</ul>
+<h3 id="w7w8--public-launch--pr-push">W7–W8 — Public launch + PR push</h3>
+<p><strong>Goal: hit $100K committed (in escrow, not just soft-circled) within 14 days of public launch. This is the trust-signal threshold that drives organic Wefunder discovery momentum.</strong></p>
+<ul>
+<li><strong>W7 (launch week):</strong> see Section 4 (Social Launch Playbook).</li>
+<li><strong>W8:</strong> sustained drive. Press follow-up. Podcast bookings. Conversion of W3–W6 soft-commits to actual escrow checks. Goal: convert 70%+ of soft-commits within 14 days.</li>
+</ul>
+<h3 id="w9w12--sustained-drive-to-250k-committed">W9–W12 — Sustained drive to $250K committed</h3>
+<p><strong>Goal: hit the $250K minimum target raise within 90 days of public launch (per Reg CF rules + per GTM spec §6.4 target). If hit early, hold open until the natural close at $500K maximum or until the 90-day window closes — whichever comes first.</strong></p>
+<h4 id="w9">W9</h4>
+<ul>
+<li><strong>First Wefunder portal update post</strong> — to current investors only. <em>"Day 14. We're at $X. Here's what we're learning."</em></li>
+<li><strong>Press reply-bumps</strong> to W7 outreach list.</li>
+<li><strong>Founder LinkedIn cadence:</strong> 2 posts/week minimum (see Section 4 W9–W12).</li>
+<li><strong>Phyrom does a Mass Save Network application status update</strong> publicly if landed.</li>
+</ul>
+<h4 id="w10">W10</h4>
+<ul>
+<li><strong>Halfway-mark post.</strong> 60 days into the 90-day window. Public LinkedIn + Wefunder portal update.</li>
+<li><strong>Tier 2 follow-up.</strong> People who said "let me think about it" in W3–W6 — re-engage with current numbers and a soft "what would help you decide?"</li>
+<li><strong>Live virtual investor Q&amp;A session</strong> on Zoom — open invite via Wefunder portal + LinkedIn. Phyrom takes any question for 60 minutes.</li>
+</ul>
+<h4 id="w11">W11</h4>
+<ul>
+<li><strong>Press refresh.</strong> Pitch new angle to any reporters who said "interesting but not now" in W7. Angles: 30-day update with real numbers, partnership announcements, product update.</li>
+<li><strong>Push to $250K target</strong> if not yet hit. Phyrom personally calls all Tier 1 holdouts who haven't yet committed.</li>
+</ul>
+<h4 id="w12">W12</h4>
+<ul>
+<li><strong>Final push.</strong> 5 days before close. <em>"This Friday is the last day to get in on the round at this cap."</em></li>
+<li><strong>Close announcement</strong> at 90 days (or earlier if hit $500K maximum). Public LinkedIn celebration. Wefunder portal close.</li>
+<li><strong>Day-of-close press release</strong> announcing the close (separate from the launch release). News-pegged on the dollar amount + investor count + community-ownership angle.</li>
+</ul>
+<h3 id="post-close-w13">Post-close (W13+)</h3>
+<ul>
+<li><strong>Day 7:</strong> Wire transfers settle. SAFEs are issued.</li>
+<li><strong>Day 14:</strong> First investor portal update with deployed-funds plan.</li>
+<li><strong>Day 30:</strong> First quarterly investor update (real numbers; founder-written).</li>
+<li><strong>Phase 1 hires kick off.</strong> Pro Success Manager search starts. Client Concierge search starts.</li>
+</ul>
+<hr>
+<h2 id="6-appendix--open-items-before-launch">6. APPENDIX — OPEN ITEMS BEFORE LAUNCH</h2>
+<ol>
+<li><strong>Securities-lawyer review of the press release</strong> for SEC Reg CF advertising compliance (especially Section 1 of this document and the launch-day LinkedIn posts in Section 4). Reg CF restricts what an issuer can say outside of the platform — typically only basic terms + a link to the offering page. <strong>Do not issue the press release in Section 1 without lawyer sign-off.</strong></li>
+<li><strong>Verify every reporter email</strong> in Section 2 before sending. Use Muck Rack, RocketReach, or the outlet masthead. Pattern-guesses are starting points, not final addresses.</li>
+<li><strong>Decide if a referral commission/credit for beta pros recruiting investors is allowed</strong> under Wefunder's policies (Section 4 W7-D4). Coordinate with Wefunder rep before promising anything.</li>
+<li><strong>Confirm Sherpa Pros LinkedIn company page exists</strong> by W6 (Section 4 references it). If not, default to founder-only LinkedIn voice.</li>
+<li><strong>Block Phyrom's calendar</strong> for W7 launch week — no jobsite supervision; HJD ops covered by trusted lead carpenter or sub-foreman. The launch week needs Phyrom's full attention.</li>
+<li><strong>Coordinate with the Brand Guardian agent</strong> for a final brand-voice review of the press release + launch-week LinkedIn posts before issuance. Specifically: scan for forbidden phrases ("Wiseman," "AI-powered" as headline, "disrupt," "revolutionize," "Uber for X," "gig," "task") and 8th-grade reading level.</li>
+<li><strong>Pull real beta-cohort numbers</strong> for the press release "real GMV" claim. If GMV is not yet meaningful at W7, soften the language to "live in beta with real jobs transacting" rather than naming a dollar number.</li>
+<li><strong>Confirm Wefunder URL</strong> (<code>wefunder.com/sherpapros</code> is a guess — confirm with Wefunder rep at W3).</li>
+<li><strong>Form C SEC filing must be live before any public solicitation.</strong> This is the legal trigger for everything in Section 4 onward. Do not post the launch LinkedIn before the Form C is on EDGAR.</li>
+<li><strong>Save this entire folder (<code>docs/fundraising/wefunder/</code>)</strong> as the launch-day reference. Pin it in the team Slack channel for the duration of W7–W12.</li>
+</ol>
+<hr>
+<p><em>Built by a working contractor for the contractors he works with every day.</em>
+<em>Licensed · Verified · Code-aware · Local · Jobs, not leads.</em></p>
+
+	
+
+
+</body>
+</html>

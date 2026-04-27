@@ -1,0 +1,1515 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2026 04 26 ai ml roadmap plan — Sherpa Pros</title>
+<link rel="icon" href="../../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="2026-04-26-ai-ml-roadmap-plan.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="aiml-roadmap--implementation-plan">AI/ML Roadmap — Implementation Plan</h1>
+<blockquote>
+<p><strong>For agentic workers:</strong> REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (<code>- [ ]</code>) syntax for tracking.</p>
+</blockquote>
+<p><strong>Goal:</strong> Move Sherpa Pros from rule-based heuristics to a five-pillar ML platform that compounds three proprietary data assets (job outcomes, materials demand, codes/permit telemetry) into a category-defining moat. Execution window: Y1 (Q3 2026 — Q2 2027) instrument + first model; Y2 (Q3 2027 — Q2 2028) two production models + third in shadow; Y3 (Q3 2028 — Q2 2029) all five pillars in production or shadow. ~24 tasks across 8 work streams.</p>
+<p><strong>Source spec:</strong> <code>docs/superpowers/specs/2026-04-26-ai-ml-roadmap-design.md</code></p>
+<p><strong>Owners:</strong></p>
+<ul>
+<li><strong>P</strong> = Phyrom (founder, decision authority on every vendor + budget)</li>
+<li><strong>VPE</strong> = VP Engineering (hired Phase 4 Month 0; until then Phyrom)</li>
+<li><strong>HML</strong> = Head of ML (hired Y3; until then VPE)</li>
+<li><strong>MLE</strong> = ML Engineer (Y1 first hire, Y2 second hire, Y3 third hire)</li>
+<li><strong>DE</strong> = Data Engineer (hired Y2)</li>
+<li><strong>GC</strong> = General Counsel (bias audit + ethics review co-authority)</li>
+</ul>
+<p><strong>Critical-path dependencies:</strong></p>
+<ul>
+<li>WS0 (data infrastructure) gates every ML work stream — no model without a feature store</li>
+<li>WS1 (Sherpa Score) and WS2 (Dispatch ML) are the Y1 candidate pair; spec §7 priority decision selects two of five</li>
+<li>WS6 (bias audit infrastructure) gates any production ML deployment that affects pro outcomes</li>
+<li>WS7 (hiring) gates everything — no engineer, no model</li>
+</ul>
+<hr>
+<h2 id="executive-summary">Executive summary</h2>
+<ul>
+<li>Five ML pillars (Sherpa Score, Dispatch ML, Predictive Materials, Codes RAG, Smart Scan multimodal) sequenced over 36 months against three proprietary data assets.</li>
+<li>Y1 spend ~$300-400K loaded for one MLE plus modest data plumbing; Y2 doubles with second MLE and a Data Engineer; Y3 adds Head of ML and an applied research role.</li>
+<li>Recommended Y1 pillar pair: Dispatch ML (revenue compound) + Predictive Materials (Hub margin compound). Sherpa Score, Codes RAG, Smart Scan defer to Y2.</li>
+<li>Build internal where the moat is the model (Score, Dispatch). Hybrid where the moat is the data (Materials, Codes). Buy where there is no moat (Smart Scan).</li>
+<li>Bias audit cadence is quarterly internal, annual external, with VPE+GC joint rollback authority. Mirrors platform-scale plan.</li>
+</ul>
+<hr>
+<h2 id="workstream-0-ws0--data-infrastructure-foundation">Workstream 0 (WS0) — Data Infrastructure Foundation</h2>
+<p><strong>Goal:</strong> Feature store + outcome telemetry + ML warehouse live by end of Y1 Q1. No model can be trained without this.</p>
+<h3 id="task-ws01-outcome-telemetry-schema--emit-hooks">Task WS0.1: Outcome telemetry schema + emit hooks</h3>
+<p><strong>Owner:</strong> VPE + MLE
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>src/lib/ml/outcomes/schema.ts</code> (NEW — typed outcome record)</p>
+</li>
+<li><p>Modify: <code>src/app/api/jobs/[id]/complete/route.ts</code> (emit outcome on job completion)</p>
+</li>
+<li><p>Modify: <code>src/app/api/dispatch/decide/route.ts</code> (emit dispatch decision record)</p>
+</li>
+<li><p>Create: <code>src/db/migrations/100_ml_outcomes.sql</code> (NEW — outcomes + dispatch_decisions tables)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Define typed outcome schema (5-star rating, on-time, rework, callback-30d, code-pass, payment-clean, comm-score)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Emit outcome record on every job completion + every dispatch decision</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Backfill outcomes from existing completed-job rows</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Verify outcome capture rate &gt;99% via dashboard</p>
+</li>
+</ul>
+<p><strong>Acceptance:</strong> 30 consecutive days of &gt;99% outcome capture across all metros
+<strong>Phase:</strong> Y1 Q1
+<strong>Dependencies:</strong> None</p>
+<hr>
+<h3 id="task-ws02-feature-store-on-top-of-neon--s3">Task WS0.2: Feature store on top of Neon + S3</h3>
+<p><strong>Owner:</strong> MLE + DE (when hired)
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>src/lib/ml/feature-store/index.ts</code> (NEW)</p>
+</li>
+<li><p>Create: <code>src/lib/ml/feature-store/registry.ts</code> (NEW — feature definitions)</p>
+</li>
+<li><p>Create: <code>docs/ml/feature-store.md</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Define feature schema (entity, feature name, value, timestamp, source)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Implement online store (Redis via Upstash) for sub-100ms feature lookup at dispatch time</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Implement offline store (S3 Parquet) for batch training jobs</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Build feature registry (which features exist, who owns them, freshness SLO)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 5:</strong> Wire offline-online consistency check (drift alert)</p>
+</li>
+</ul>
+<p><strong>Acceptance:</strong> Feature store serves &gt;100 features, p95 online lookup &lt;50ms, drift alert green for 30 days
+<strong>Phase:</strong> Y1 Q2
+<strong>Dependencies:</strong> WS0.1</p>
+<hr>
+<h3 id="task-ws03-ml-training-warehouse--experiment-tracking">Task WS0.3: ML training warehouse + experiment tracking</h3>
+<p><strong>Owner:</strong> MLE
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/ml/warehouse-architecture.md</code> (NEW)</p>
+</li>
+<li><p>Create: <code>src/lib/ml/experiments/tracker.ts</code> (NEW — MLflow client wrapper)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Provision SageMaker Studio + S3 ML bucket</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Set up MLflow tracking server (managed via SageMaker)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Document model lifecycle: experiment → registry → shadow → production</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Onboard first MLE through end-to-end experiment → registry round-trip</p>
+</li>
+</ul>
+<p><strong>Acceptance:</strong> First MLE runs full lifecycle without infra escalation
+<strong>Phase:</strong> Y1 Q2
+<strong>Dependencies:</strong> WS0.2</p>
+<hr>
+<h2 id="workstream-1-ws1--sherpa-score-evolution">Workstream 1 (WS1) — Sherpa Score Evolution</h2>
+<p><strong>Goal:</strong> Per-category ML-trained Score in shadow by end of Y2; production by end of Y3. Recommended Y2 priority.</p>
+<h3 id="task-ws11-score-outcome-calibration-baseline">Task WS1.1: Score outcome calibration baseline</h3>
+<p><strong>Owner:</strong> MLE
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>src/lib/ml/score/baseline.ts</code> (NEW)</p>
+</li>
+<li><p>Create: <code>docs/ml/score-baseline-report.md</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Compute current rule-based Score vs actual outcomes (calibration curve)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Quantify miscalibration per service category</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Identify the top 10 categories with the worst calibration as ML training priority</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Publish baseline report to VPE + Phyrom</p>
+</li>
+</ul>
+<p><strong>Acceptance:</strong> Baseline report signed off; top-10 categories selected
+<strong>Phase:</strong> Y2 Q1
+<strong>Dependencies:</strong> WS0.3</p>
+<hr>
+<h3 id="task-ws12-per-category-gradient-boosted-model-v1">Task WS1.2: Per-category gradient-boosted model v1</h3>
+<p><strong>Owner:</strong> MLE
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>src/lib/ml/score/model.py</code> (NEW — XGBoost training script)</p>
+</li>
+<li><p>Create: <code>src/lib/ml/score/predict.ts</code> (NEW — Node inference wrapper via SageMaker endpoint)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Train XGBoost model per top-10 category against outcome label</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Hold-out evaluation: AUC, calibration, fairness across protected groups</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Deploy SageMaker endpoint with auto-scaling</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Wire shadow inference (run alongside rule-based, log both)</p>
+</li>
+</ul>
+<p><strong>Acceptance:</strong> Shadow model live for 10 categories, AUC &gt; rule-based baseline by 5+ points, fairness within +/- 10%
+<strong>Phase:</strong> Y2 Q2
+<strong>Dependencies:</strong> WS1.1, WS0.2, WS6.1</p>
+<hr>
+<h3 id="task-ws13-score-model-production-replacement">Task WS1.3: Score model production replacement</h3>
+<p><strong>Owner:</strong> MLE + VPE
+<strong>Files:</strong></p>
+<ul>
+<li><p>Modify: <code>src/lib/dispatch-wiseman/score-resolver.ts</code> (route to ML model with rule-based fallback)</p>
+</li>
+<li><p>Create: <code>docs/ml/score-rollout-runbook.md</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Run shadow vs rule-based for one full quarter; demonstrate stability</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Roll out ML primary to top-3 categories; rule-based fallback retained</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Expand to top-10 categories</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Quarterly fairness audit</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 5:</strong> Communicate to pros via in-app feature card explaining the change</p>
+</li>
+</ul>
+<p><strong>Acceptance:</strong> ML Score primary in 10 categories, no fairness breach for 90 days, pro-NPS unchanged or improved
+<strong>Phase:</strong> Y3 Q1-Q2
+<strong>Dependencies:</strong> WS1.2, WS6.2</p>
+<hr>
+<h2 id="workstream-2-ws2--dispatch-ml-uplift">Workstream 2 (WS2) — Dispatch ML Uplift</h2>
+<p><strong>Goal:</strong> Learned ranker in shadow by end of Y1, production by end of Y2. Recommended Y1 priority pair member.</p>
+<h3 id="task-ws21-dispatch-decision-telemetry">Task WS2.1: Dispatch decision telemetry</h3>
+<p><strong>Owner:</strong> MLE + VPE
+<strong>Files:</strong></p>
+<ul>
+<li><p>Modify: <code>src/lib/dispatch-wiseman/dispatcher.ts</code> (emit full feature vector + decision per dispatch)</p>
+</li>
+<li><p>Create: <code>src/db/migrations/101_dispatch_decisions.sql</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Log full feature vector (license, skill, distance, score, response, activity, load) per candidate considered</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Log chosen pro + acceptance + eventual outcome (joined post-hoc from WS0.1)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Verify telemetry capture rate &gt;99% across all dispatches</p>
+</li>
+</ul>
+<p><strong>Acceptance:</strong> 30 days of &gt;99% capture; first counterfactual analysis demo possible
+<strong>Phase:</strong> Y1 Q2
+<strong>Dependencies:</strong> WS0.1</p>
+<hr>
+<h3 id="task-ws22-lambdamart-ranker-offline-evaluation">Task WS2.2: LambdaMART ranker offline evaluation</h3>
+<p><strong>Owner:</strong> MLE
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>src/lib/ml/dispatch/ranker.py</code> (NEW)</p>
+</li>
+<li><p>Create: <code>docs/ml/dispatch-offline-eval.md</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Build labeled training set from outcome-joined dispatches</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Train LambdaMART ranker against completion-success label</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Counterfactual evaluation: NDCG, completion lift at iso-acceptance</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Fairness evaluation across protected groups</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 5:</strong> Publish offline eval report</p>
+</li>
+</ul>
+<p><strong>Acceptance:</strong> 10%+ NDCG lift, fairness within +/- 10%, report signed off
+<strong>Phase:</strong> Y1 Q3-Q4
+<strong>Dependencies:</strong> WS2.1, WS0.2</p>
+<hr>
+<h3 id="task-ws23-dispatch-ml-shadow--production">Task WS2.3: Dispatch ML shadow + production</h3>
+<p><strong>Owner:</strong> MLE + VPE
+<strong>Files:</strong></p>
+<ul>
+<li><p>Modify: <code>src/lib/dispatch-wiseman/dispatcher.ts</code> (shadow mode → primary mode toggle)</p>
+</li>
+<li><p>Create: <code>docs/ml/dispatch-rollout-runbook.md</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Deploy ranker as SageMaker endpoint with p95 inference &lt;100ms</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Run shadow mode (rule-based decides, model logged) for one full quarter</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Promote ML primary in Portsmouth NH; observe 30 days</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Expand metro-by-metro; rule-based fallback retained</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 5:</strong> Quarterly fairness audit + outcome-lift report</p>
+</li>
+</ul>
+<p><strong>Acceptance:</strong> ML ranker primary in 5+ metros, completion-rate lift sustained 90 days
+<strong>Phase:</strong> Y2 Q1-Q4
+<strong>Dependencies:</strong> WS2.2, WS6.2</p>
+<hr>
+<h2 id="workstream-3-ws3--predictive-materials-demand">Workstream 3 (WS3) — Predictive Materials Demand</h2>
+<p><strong>Goal:</strong> Per-Hub demand forecast in production by end of Y2; closed-loop pre-stage by end of Y3. Recommended Y1 priority pair member.</p>
+<h3 id="task-ws31-materials-event-stream--warehouse">Task WS3.1: Materials event stream + warehouse</h3>
+<p><strong>Owner:</strong> DE (when hired) + MLE
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>src/lib/ml/materials/events.ts</code> (NEW)</p>
+</li>
+<li><p>Create: <code>src/db/migrations/102_materials_events.sql</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Define event schema for kit pulls, supplier inbounds, job-to-materials linkages</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Wire event emission across the Materials engine</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Build daily aggregation into per-Hub-per-SKU time series</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Backfill from existing Hub data</p>
+</li>
+</ul>
+<p><strong>Acceptance:</strong> 12 months of clean per-Hub-per-SKU time series available for backtest
+<strong>Phase:</strong> Y1 Q2-Q3
+<strong>Dependencies:</strong> WS0.2</p>
+<hr>
+<h3 id="task-ws32-prophet-baseline-forecast-for-two-pilot-hubs">Task WS3.2: Prophet-baseline forecast for two pilot Hubs</h3>
+<p><strong>Owner:</strong> MLE
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>src/lib/ml/materials/forecast.py</code> (NEW)</p>
+</li>
+<li><p>Create: <code>docs/ml/materials-forecast-pilot.md</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Train Prophet forecast for Portsmouth + Manchester Hubs at 30/60/90-day horizons</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Backtest against last 12 months; measure MAPE per SKU family</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Surface forecast in Hub Operations dashboard</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Hub Operations Manager review + feedback loop</p>
+</li>
+</ul>
+<p><strong>Acceptance:</strong> MAPE &lt;20% for top-100 SKUs, Hub OM uses forecast in weekly reorder decision
+<strong>Phase:</strong> Y1 Q4 / Y2 Q1
+<strong>Dependencies:</strong> WS3.1</p>
+<hr>
+<h3 id="task-ws33-forecast-rollout--closed-loop-pre-stage">Task WS3.3: Forecast rollout + closed-loop pre-stage</h3>
+<p><strong>Owner:</strong> MLE + Hub Operations
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>src/lib/ml/materials/reorder-rec.ts</code> (NEW)</p>
+</li>
+<li><p>Create: <code>docs/ml/materials-prestage-runbook.md</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Roll out forecast to all 6 Hubs</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Auto-generate reorder recommendations from forecast + safety-stock policy</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Closed-loop: rec → PO → inbound → stock measured against next-period demand</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Vendor-evaluation gate at Y3 (RELEX vs Blue Yonder vs continue in-house)</p>
+</li>
+</ul>
+<p><strong>Acceptance:</strong> OTIF rate &gt;97%, safety stock reduced 15%+ vs baseline
+<strong>Phase:</strong> Y2 Q3 / Y3 Q1
+<strong>Dependencies:</strong> WS3.2</p>
+<hr>
+<h2 id="workstream-4-ws4--codes-rag">Workstream 4 (WS4) — Codes RAG</h2>
+<p><strong>Goal:</strong> Internal codes RAG MVP by end of Y2; production with cite-back by end of Y3. Y2 priority.</p>
+<h3 id="task-ws41-codes-corpus-indexing">Task WS4.1: Codes corpus indexing</h3>
+<p><strong>Owner:</strong> MLE
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>src/lib/ml/codes/index.ts</code> (NEW — embedding index management)</p>
+</li>
+<li><p>Create: <code>docs/ml/codes-corpus.md</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Ingest IRC, IBC, NEC, IPC, IMC + top-200 jurisdiction amendments</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Build embedding index (Anthropic embeddings via Vercel AI Gateway)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Layer permit precedent + inspector notes (from existing Wiseman Codes data)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Quarterly amendment refresh cron</p>
+</li>
+</ul>
+<p><strong>Acceptance:</strong> Index covers 200+ jurisdictions, refresh runs without manual intervention for 90 days
+<strong>Phase:</strong> Y1 Q4 / Y2 Q1
+<strong>Dependencies:</strong> WS0.3</p>
+<hr>
+<h3 id="task-ws42-llm-rag-mvp-with-mandatory-cite-back">Task WS4.2: LLM-RAG MVP with mandatory cite-back</h3>
+<p><strong>Owner:</strong> MLE + applied research
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>src/lib/ml/codes/rag.ts</code> (NEW)</p>
+</li>
+<li><p>Create: <code>src/app/api/codes/ask/route.ts</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Build retrieval-grounded generation chain (Claude Sonnet via Vercel AI Gateway)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Enforce cite-back to specific code section + permit + inspector note</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Confidence scoring with floor below which answer is "consult AHJ"</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Internal-only access for pilot pros + Wiseman team</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 5:</strong> Inspector-validated benchmark set + accuracy measurement</p>
+</li>
+</ul>
+<p><strong>Acceptance:</strong> 90%+ relevance, 95%+ accuracy on benchmark set
+<strong>Phase:</strong> Y2 Q2-Q4
+<strong>Dependencies:</strong> WS4.1</p>
+<hr>
+<h3 id="task-ws43-codes-rag-production-rollout">Task WS4.3: Codes RAG production rollout</h3>
+<p><strong>Owner:</strong> MLE + VPE
+<strong>Files:</strong></p>
+<ul>
+<li><p>Modify: <code>src/app/api/codes/ask/route.ts</code> (production-grade rate limit + audit)</p>
+</li>
+<li><p>Create: <code>docs/ml/codes-rag-rollout-runbook.md</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Production rate limits + audit logging</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Roll out to all pros in pilot metro (Portsmouth NH)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Expand metro-by-metro</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Liability disclaimer reviewed by GC</p>
+</li>
+</ul>
+<p><strong>Acceptance:</strong> Codes RAG live in 5+ metros, no liability incident, pro NPS-positive
+<strong>Phase:</strong> Y3 Q1-Q4
+<strong>Dependencies:</strong> WS4.2</p>
+<hr>
+<h2 id="workstream-5-ws5--smart-scan-multimodal">Workstream 5 (WS5) — Smart Scan Multimodal</h2>
+<p><strong>Goal:</strong> Multimodal extraction in production for permits + blueprints by end of Y3. Y2 priority.</p>
+<h3 id="task-ws51-ocr-confidence-floor--labeled-corpus">Task WS5.1: OCR confidence floor + labeled corpus</h3>
+<p><strong>Owner:</strong> MLE
+<strong>Files:</strong></p>
+<ul>
+<li><p>Modify: <code>src/lib/smart-scan/extract.ts</code> (return confidence per field)</p>
+</li>
+<li><p>Create: <code>docs/ml/smart-scan-corpus.md</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Surface confidence per extracted field; route below-threshold to human review</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Build labeled corpus (1,000 receipts, 500 permits, 200 blueprints)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Validate label quality via inter-annotator agreement</p>
+</li>
+</ul>
+<p><strong>Acceptance:</strong> Corpus signed off, confidence floor enforced in production
+<strong>Phase:</strong> Y1 Q4 / Y2 Q1
+<strong>Dependencies:</strong> WS0.1</p>
+<hr>
+<h3 id="task-ws52-multimodal-model-fine-tune-for-permits--blueprints">Task WS5.2: Multimodal model fine-tune for permits + blueprints</h3>
+<p><strong>Owner:</strong> MLE
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>src/lib/ml/smart-scan/model.py</code> (NEW — fine-tune wrapper)</p>
+</li>
+<li><p>Create: <code>docs/ml/smart-scan-fine-tune.md</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Fine-tune commercial vision-language model on labeled corpus</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Hold-out evaluation: field-level accuracy</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Deploy SageMaker endpoint with tiered routing (cheap OCR for clean docs, multimodal only on low confidence)</p>
+</li>
+</ul>
+<p><strong>Acceptance:</strong> 95%+ permit accuracy, 90%+ blueprint accuracy
+<strong>Phase:</strong> Y2 Q3 / Y3 Q1
+<strong>Dependencies:</strong> WS5.1</p>
+<hr>
+<h3 id="task-ws53-closed-loop-with-pm-workflows">Task WS5.3: Closed-loop with PM workflows</h3>
+<p><strong>Owner:</strong> MLE + product
+<strong>Files:</strong></p>
+<ul>
+<li><p>Modify: <code>src/lib/smart-scan/extract.ts</code> (emit structured entities to PM module)</p>
+</li>
+<li><p>Create: <code>docs/ml/smart-scan-pm-integration.md</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Wire permit-to-takeoff round-trip</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Wire receipt-to-Schedule-C tagging at 95%+ accuracy</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Wire blueprint-to-estimate seed</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Pro retention measurement (does Smart Scan reduce time-to-bid?)</p>
+</li>
+</ul>
+<p><strong>Acceptance:</strong> Permit round-trip &lt;10 sec, time-to-bid down 20%+, retention positive
+<strong>Phase:</strong> Y3 Q2-Q4
+<strong>Dependencies:</strong> WS5.2</p>
+<hr>
+<h2 id="workstream-6-ws6--bias-audit--safety-infrastructure">Workstream 6 (WS6) — Bias Audit + Safety Infrastructure</h2>
+<p><strong>Goal:</strong> Quarterly internal + annual external audit cadence with model-rollback authority before any production deployment that affects pro outcomes.</p>
+<h3 id="task-ws61-bias-audit-framework--datadog-dashboard">Task WS6.1: Bias audit framework + Datadog dashboard</h3>
+<p><strong>Owner:</strong> VPE + GC + MLE
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>src/lib/ml/audit/fairness.ts</code> (NEW)</p>
+</li>
+<li><p>Create: <code>docs/ml/bias-audit-framework.md</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Define metrics: demographic parity, equal opportunity, calibration</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Implement audit job that runs against any production model</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Build Datadog dashboard with breach alerting</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Document rollback authority: VPE + GC, either-can-rollback</p>
+</li>
+</ul>
+<p><strong>Acceptance:</strong> Dashboard live, first quarterly audit run, breach simulation rolls back successfully
+<strong>Phase:</strong> Y2 Q1
+<strong>Dependencies:</strong> WS0.3</p>
+<hr>
+<h3 id="task-ws62-annual-external-audit--ethics-advisory-board">Task WS6.2: Annual external audit + ethics advisory board</h3>
+<p><strong>Owner:</strong> P + GC
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/ml/external-audit-engagement.md</code> (NEW)</p>
+</li>
+<li><p>Create: <code>docs/ml/ethics-advisory-board.md</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Engage external auditor (Parity AI or O'Neil Risk Consulting)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Run first annual audit, publish public transparency report</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Recruit 3-member ethics advisory board (Y2 commitment)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Quarterly board review meetings</p>
+</li>
+</ul>
+<p><strong>Acceptance:</strong> First public transparency report published, board seated
+<strong>Phase:</strong> Y2 Q4 / Y3 Q1
+<strong>Dependencies:</strong> WS6.1</p>
+<hr>
+<h2 id="workstream-7-ws7--hiring-ramp">Workstream 7 (WS7) — Hiring Ramp</h2>
+<p><strong>Goal:</strong> Y1 one MLE; Y2 add MLE + DE; Y3 add Head of ML + applied research + third MLE.</p>
+<h3 id="task-ws71-y1-senior-ml-engineer-hire">Task WS7.1: Y1 senior ML engineer hire</h3>
+<p><strong>Owner:</strong> P + VPE
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/hiring/ml-engineer-y1.md</code> (NEW — JD + scorecard)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Lock Y1 priority pair (per Spec §7) before opening req</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Open req, target 90-day fill</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Onboard against WS0 + WS2 + WS3 priorities (per recommended pair)</p>
+</li>
+</ul>
+<p><strong>Acceptance:</strong> Hired by Y1 Q1
+<strong>Phase:</strong> Y1 Q1
+<strong>Dependencies:</strong> Spec §7 lock</p>
+<hr>
+<h3 id="task-ws72-y2-second-mle--data-engineer">Task WS7.2: Y2 second MLE + Data Engineer</h3>
+<p><strong>Owner:</strong> P + VPE
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/hiring/ml-engineer-y2.md</code> (NEW)</p>
+</li>
+<li><p>Create: <code>docs/hiring/data-engineer.md</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Open both reqs Y2 Q1</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> MLE covers second priority pillar (Y2 priority)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> DE hardens data pipelines + warehouse</p>
+</li>
+</ul>
+<p><strong>Acceptance:</strong> Both filled by Y2 Q2
+<strong>Phase:</strong> Y2 Q1-Q2
+<strong>Dependencies:</strong> WS7.1 success</p>
+<hr>
+<h3 id="task-ws73-y3-head-of-ml--applied-research--third-mle">Task WS7.3: Y3 Head of ML + applied research + third MLE</h3>
+<p><strong>Owner:</strong> P + VPE
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/hiring/head-of-ml.md</code> (NEW)</p>
+</li>
+<li><p>Create: <code>docs/hiring/applied-research.md</code> (NEW)</p>
+</li>
+<li><p>Create: <code>docs/hiring/ml-engineer-y3.md</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Open Head of ML req Y3 Q1; target 120-day fill given seniority</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Applied research role focused on Codes RAG + multimodal Smart Scan</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Third MLE for ongoing pillar coverage</p>
+</li>
+</ul>
+<p><strong>Acceptance:</strong> Team of ~5-6 ML + 2 data by Y3 Q4
+<strong>Phase:</strong> Y3 Q1-Q3
+<strong>Dependencies:</strong> WS7.2 success</p>
+<hr>
+<h2 id="cross-workstream-dependencies-summary">Cross-Workstream Dependencies Summary</h2>
+<pre><code>WS0 (data infrastructure) ──&gt; every other WS
+
+WS6 (bias audit) ──&gt; WS1.3 (Score production)
+                ──&gt; WS2.3 (Dispatch production)
+
+WS7.1 (Y1 hire) ──&gt; WS0 + WS2 + WS3 (Y1 priorities)
+WS7.2 (Y2 hires) ──&gt; WS1 + WS4 + WS5 (Y2 priorities)
+WS7.3 (Y3 hires) ──&gt; all pillars production
+
+Spec §7 (priority lock) ──&gt; WS7.1 (req scope)
+                       ──&gt; Y1 pillar pair selection
+</code></pre>
+<h2 id="phasing-summary">Phasing Summary</h2>
+<table>
+<thead>
+<tr>
+<th>Quarter</th>
+<th>Milestones</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Y1 Q1</td>
+<td>WS0.1 outcome telemetry, WS7.1 first MLE hired</td>
+</tr>
+<tr>
+<td>Y1 Q2</td>
+<td>WS0.2 feature store, WS0.3 warehouse, WS2.1 dispatch telemetry, WS3.1 materials events</td>
+</tr>
+<tr>
+<td>Y1 Q3</td>
+<td>WS2.2 dispatch ranker offline eval</td>
+</tr>
+<tr>
+<td>Y1 Q4</td>
+<td>WS3.2 Prophet pilot, WS4.1 codes corpus, WS5.1 Smart Scan corpus</td>
+</tr>
+<tr>
+<td>Y2 Q1</td>
+<td>WS6.1 bias audit framework, WS7.2 hires, WS1.1 Score baseline</td>
+</tr>
+<tr>
+<td>Y2 Q2</td>
+<td>WS1.2 Score shadow, WS4.2 Codes RAG MVP</td>
+</tr>
+<tr>
+<td>Y2 Q3</td>
+<td>WS2.3 Dispatch primary rollout begins, WS5.2 multimodal fine-tune</td>
+</tr>
+<tr>
+<td>Y2 Q4</td>
+<td>WS6.2 first external audit, WS3.3 forecast rollout</td>
+</tr>
+<tr>
+<td>Y3 Q1</td>
+<td>WS1.3 Score production, WS4.3 Codes RAG production, WS7.3 Head of ML</td>
+</tr>
+<tr>
+<td>Y3 Q2-Q4</td>
+<td>WS5.3 Smart Scan PM closed-loop, WS3.3 closed-loop pre-stage, vendor evaluation gate</td>
+</tr>
+</tbody></table>
+<h2 id="success-metrics-per-workstream">Success Metrics Per Workstream</h2>
+<table>
+<thead>
+<tr>
+<th>WS</th>
+<th>Y1 success metric</th>
+<th>Y3 success metric</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>WS0</td>
+<td>Outcome capture &gt;99%, feature store p95 &lt;50ms</td>
+<td>Warehouse hosts 5 production models</td>
+</tr>
+<tr>
+<td>WS1</td>
+<td>Baseline calibration report published</td>
+<td>Score ML primary in 10 categories, fairness clean 90 days</td>
+</tr>
+<tr>
+<td>WS2</td>
+<td>NDCG +10% offline</td>
+<td>Dispatch ML primary in 5+ metros, completion lift sustained</td>
+</tr>
+<tr>
+<td>WS3</td>
+<td>MAPE &lt;20% top-100 SKUs in pilot</td>
+<td>OTIF &gt;97%, safety stock -15%</td>
+</tr>
+<tr>
+<td>WS4</td>
+<td>Codes corpus indexed 200+ jurisdictions</td>
+<td>RAG live in 5+ metros, no liability incident</td>
+</tr>
+<tr>
+<td>WS5</td>
+<td>Confidence floor enforced, corpus labeled</td>
+<td>95% permit / 90% blueprint accuracy</td>
+</tr>
+<tr>
+<td>WS6</td>
+<td>Dashboard live, first audit run</td>
+<td>Annual external audit + transparency report published</td>
+</tr>
+<tr>
+<td>WS7</td>
+<td>First MLE hired Y1 Q1</td>
+<td>5-6 ML + 2 data team</td>
+</tr>
+</tbody></table>
+<hr>
+<p><strong>End of plan — full strategic context: <code>docs/superpowers/specs/2026-04-26-ai-ml-roadmap-design.md</code></strong></p>
+
+	
+
+
+</body>
+</html>

@@ -1,0 +1,1630 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2026 04 25 sherpa hub integration design — Sherpa Pros</title>
+<link rel="icon" href="../../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="2026-04-25-sherpa-hub-integration-design.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="sherpa-hub-integration--platform-wide-design">Sherpa Hub Integration — Platform-Wide Design</h1>
+<p><strong>Date:</strong> 2026-04-25
+<strong>Status:</strong> Design Spec
+<strong>Owner:</strong> Phyrom (founder)
+<strong>Predecessor:</strong> <code>2026-04-15-sherpa-hub-model-design.md</code> (Hub model — physical layout, kit catalog, rental fleet, training calendar, inventory data model)
+<strong>Sister specs (parallel):</strong> International Expansion, Franchise Model, Platform Scale Architecture
+<strong>Abbreviations spelled out on first use:</strong> Point of Sale (POS), Internet of Things (IoT), Limited Liability Company (LLC), Letter of Intent (LOI), Net Promoter Score (NPS), Profit and Loss (P&amp;L), Stock Keeping Unit (SKU), Franchise Disclosure Document (FDD), Franchise Advisory Council (FAC), Headquarters (HQ), Capital Expenditure (capex), Operating Expenditure (opex), Application Programming Interface (API).</p>
+<hr>
+<h2 id="1-executive-summary">1. Executive Summary</h2>
+<p>The Sherpa Hub model — a 1,500-3,000 square foot physical pickup point reserved for verified pros — was designed in the April 15 spec as a community-and-amenity layer for Sherpa Pros: will-call kits, equipment rental, training events, lounge. As of that spec, the Hub was a pro-retention play and a moderate revenue line. <strong>The design is complete; nothing is built.</strong> Hub #1 (Atkinson, New Hampshire, colocated at HJD Builders LLC HQ) is slated as the Phase 1 proof point. Phase 2 adds Manchester NH and Portland ME. Phase 3 adds Boston MA and Providence RI. Phase 4 (M18+) opens 10-20 Hubs across the Northeast corridor via franchise.</p>
+<p>Between the April 15 spec and today, <strong>Sherpa Materials shipped</strong> (the Wiseman Materials engine plus Zinc API ordering plus Uber Direct delivery — see <code>src/db/migrations/010_dispatch_materials_orders_deliveries.sql</code>). That changes everything about why Hubs exist. Pre-Materials, Hubs were a value-add. Post-Materials, <strong>Hubs are the last-mile staging warehouses for a national materials orchestration stack</strong> — without a Hub network, Sherpa Materials runs on direct-to-job-site delivery only, which caps unit economics, kills time-to-job-site, and prevents return processing at scale. The Hub revenue line is no longer member fees plus rentals plus training; it now also includes a per-line gross margin share on every Sherpa Materials item that flows through. This integration spec is necessary now because every operational decision being made at Hub #1 today — staffing model, square-footage allocation, IT stack, pickup counter design, dock door count — must be made with materials throughput as a first-class workload, not an afterthought. It also resolves two open decisions that the original Hub spec deferred (FW Webb partnership path; bundle pricing path) and locks the Hub network rollout timeline against the new materials-throughput thesis.</p>
+<hr>
+<h2 id="2-hub-status-today-one-page-summary-of-the-existing-spec">2. Hub Status Today (One-Page Summary of the Existing Spec)</h2>
+<p>The April 15 Hub spec defined the following — all of it stands; this spec layers on top.</p>
+<ul>
+<li><strong>Physical pickup point</strong> for verified pros only. No clients. No public foot traffic. Badge or keypad access.</li>
+<li><strong>Footprint:</strong> 1,500-3,000 square feet baseline. April 15 spec used a 3,000 square foot reference layout: 60% warehouse (bulk rack, kit assembly, tool cage, staging), 20% showroom (POS counter, tool demo wall, digital kiosk, pickup window), 20% training (12-seat classroom, demo benches).</li>
+<li><strong>Staff:</strong> 1 Hub Manager (full-time) plus 1-2 Hub Associates (part-time). Staffing additions for materials throughput defined in §6 of this spec.</li>
+<li><strong>Services already designed:</strong><ul>
+<li>Will-call materials and pre-built kits (10 kit categories, retail-vs-Sherpa-pricing locked)</li>
+<li>Equipment rental (20-tool target catalog: Festool, Hilti, Makita, Milwaukee, SawStop, etc., 60% utilization target, $18K/month rental revenue baseline)</li>
+<li>Training events (12 events/year, manufacturer-sponsored, $2-5K per event sponsor fee, attendee certifications)</li>
+<li>Member lounge and informal community space</li>
+<li>Mini parts inventory (described abstractly in v1; locked to top-200 SKU mini-warehouse in this integration spec)</li>
+</ul>
+</li>
+<li><strong>Software modules already specified:</strong> <code>/api/hub/inventory</code>, <code>/api/hub/kits</code>, <code>/api/hub/rentals</code>, <code>/api/hub/training</code>, <code>/api/hub/delivery</code> plus seven Drizzle/PostgreSQL tables (<code>hub_kit_templates</code>, <code>hub_inventory</code>, <code>hub_equipment</code>, <code>hub_rentals</code>, <code>hub_training_events</code>, <code>hub_training_registrations</code>, <code>hub_kit_orders</code>).</li>
+<li><strong>Hub #1 plan:</strong> Atkinson NH, colocated at HJD Builders LLC HQ. Zero-cost real estate (occupies underutilized HQ warehouse bay). Phase 1 proof point.</li>
+<li><strong>Status:</strong> Designed. Not built. No real estate fit-out, no hire, no IT install, no inventory ordered. Open decisions noted in v1: FW Webb partnership scope, bundle pricing model, training cadence in mature state, franchise-vs-corporate split. This spec resolves the first three; the fourth defers to the parallel Franchise Model spec.</li>
+</ul>
+<hr>
+<h2 id="3-the-strategic-shift--hubs-as-sherpa-materials-warehouses">3. The Strategic Shift — Hubs as Sherpa Materials Warehouses</h2>
+<p>Pre-Sherpa-Materials, the Hub thesis was: pros want a place to grab parts, rent a tool they don't own, attend training, hang out, and feel part of a network. Membership fees plus rental margin plus training sponsorship would carry the Hub P&amp;L; the platform got pro-retention lift as the bonus.</p>
+<p>Post-Sherpa-Materials, the Hub thesis becomes operationally inseparable from the materials orchestration. Walking through what shipped:</p>
+<ol>
+<li>A pro accepts a job in the Sherpa Pros marketplace.</li>
+<li>Wiseman Materials engine (internal name; "Sherpa Materials engine" in customer-facing copy) parses the job scope and emits a materials list with quantities, SKUs, supplier preferences, and timing.</li>
+<li>The materials orchestration layer places the order via Zinc API to FW Webb / Grainger / supply houses.</li>
+<li>Until this spec, default delivery was direct-to-job-site via Uber Direct or supplier truck. That works for one-off, but it's expensive ($20-40 per Uber Direct trip, supplier minimums for direct delivery, no consolidation), it's slow (next-day at best), it offers no return path (returns get punted back to suppliers individually), and it scales linearly with cost.</li>
+</ol>
+<p>Hubs reorganize that flow. Post-integration, the default delivery path becomes:</p>
+<ol>
+<li>Wiseman Materials engine emits the list and routes by job geography.</li>
+<li>If a Hub exists within the job's catchment radius (45-minute drive, configurable), Zinc API ships <strong>to the Hub</strong> instead of to the job site.</li>
+<li>Hub Manager confirms receipt the night before, stages the materials by job number on a labeled rack.</li>
+<li>Morning of the job, Uber Direct dispatches <strong>from the Hub</strong> in batched waves (6:30am, 8:00am, 10:00am, 12:00pm) — multiple jobs per wave consolidated by route, dramatically lower per-trip cost.</li>
+<li><strong>Or</strong> the pro elects "pickup at Hub" en route to the job site (no Uber Direct trip at all — pure margin).</li>
+<li>Returns, warranty exchanges, restock — all flow back through the Hub, batched, processed weekly back to suppliers.</li>
+</ol>
+<p>The Hub becomes:</p>
+<ul>
+<li><strong>Last-mile staging warehouse</strong> for Zinc-ordered materials (delivery from FW Webb / Grainger / supply houses to Hub the night before, Uber Direct from Hub to job site morning-of).</li>
+<li><strong>Backup buffer inventory</strong> for high-frequency parts (a tightly curated mini-warehouse of the top 200 SKUs by network-wide volume, so common items ship same-hour instead of next-day).</li>
+<li><strong>Material-return processing point</strong> (returns, warranty, restock — batched and reconciled centrally, no per-job overhead).</li>
+<li><strong>Pro-pickup option</strong> (pro at Hub for any reason can grab their staged materials, eliminating the last-mile delivery cost entirely).</li>
+</ul>
+<p>This shift transforms Hub economics. The Hub revenue line is no longer membership fees plus rentals plus training. It's also <strong>materials gross margin per item moved through the Hub</strong> — a brand new revenue stream tied directly to platform job volume and Sherpa Materials adoption rate. §9 of this spec models that economics impact in detail.</p>
+<hr>
+<h2 id="4-fw-webb-partnership-decision-resolved--hybrid">4. FW Webb Partnership Decision (Resolved — Hybrid)</h2>
+<p>The April 15 Hub spec listed "FW Webb partnership scope" as an open decision. Resolving now.</p>
+<h3 id="options-considered">Options considered</h3>
+<ul>
+<li><strong>Option A — Own/lease standalone Hubs.</strong> Full control over real estate, brand, layout, hours, staffing. Full capex per Hub ($157K-$257K, see §9). Full opex per Hub ($17K-$21K/month). Hub #1 confirmed as zero-cost real estate via HJD HQ colocation, so Option A's capex burden does not bite at Hub #1 — but it absolutely bites at Hub #2 onward. Standalone is the slowest path to Hub network density.</li>
+<li><strong>Option B — Co-locate inside FW Webb branches.</strong> FW Webb is a 100-branch Northeast plumbing/HVAC/industrial supply chain (NH, MA, ME, RI, CT, VT, NY, PA, NJ heavily, with stretches into MD, OH, FL). A partnership LOI grants Sherpa a 1,500-2,000 square foot carve-out inside the back of an existing FW Webb branch. Capex drops to ~$80K per Hub (5x lower). Opex drops to ~$14K/month (also lower — sub-leased rent, shared utilities, security overlap). Tradeoff: less brand control (we live inside their building), FW Webb gets deep data flow access (they see what trades order what, when, where), and partnership performance is gated to FW Webb's renewal terms.</li>
+<li><strong>Option C — Hybrid.</strong> Hub #1 standalone at HJD HQ (Phase 1, proof point). Hubs #2-#10 inside FW Webb branches under partnership pilot (Phase 2-3, accelerated footprint at low capex). Hubs #11+ via franchise per Franchise spec (Phase 4+, Phyrom-doesn't-bear-capex scale).</li>
+</ul>
+<h3 id="recommendation-option-c">Recommendation: Option C</h3>
+<p>Why hybrid wins:</p>
+<ol>
+<li><strong>Hub #1 must prove the standalone model.</strong> If we never operate a standalone Hub, we never know the cost basis of standalone — which means we can never benchmark FW Webb's offer or justify franchise capex. Hub #1 at HJD HQ is the cheapest possible standalone (zero-cost real estate), so we get the operational data without the real-estate burn.</li>
+<li><strong>Hubs #2-#10 desperately need low capex.</strong> Hub #2 is the moment we leave the friendly confines of HQ. Standalone Hub #2 in Manchester at $157K capex plus $20K/month opex is a $400K all-in 12-month bet on a single new market. FW Webb co-location at $80K capex plus $14K/month opex is a $250K all-in 12-month bet on the same market. That's a 38% capex reduction at the most fragile moment in the rollout. Take it.</li>
+<li><strong>FW Webb wins too.</strong> They get foot-traffic uplift from Sherpa pro members coming into their branches (a real number — Hilti and similar industry references show 12-18% same-store revenue lift from in-store partnerships of this shape), they get anonymized usage data that informs their merchandising, they get a halo on their brand as the "platform of choice for the supply network." Their ask in return: the Sherpa pro discount card honors FW Webb in-branch pricing, and Sherpa Materials defaults FW Webb as the supplier for any SKU FW Webb stocks (a default, not a lock — pros and Wiseman Materials engine can override).</li>
+<li><strong>Franchise takes over at scale.</strong> §10 and the parallel Franchise spec cover Phase 4+. The hybrid model is not a multi-year commitment to FW Webb; it's a 5-Hub pilot LOI that we can extend, narrow, or unwind based on partnership performance review.</li>
+</ol>
+<h3 id="decision-deadline">Decision deadline</h3>
+<p><strong>Hard date:</strong> Phase 1, Month 4. By the end of Hub #1 month four, the FW Webb pilot LOI must be signed (initial 5-Hub pilot agreement). If the LOI is not signed by that date, default to standalone (Option A) for Hubs #2-#3 and revisit FW Webb partnership in Phase 3 from a position of operational strength.</p>
+<hr>
+<h2 id="5-bundle-pricing-decision-resolved--tiered-bundle">5. Bundle Pricing Decision (Resolved — Tiered Bundle)</h2>
+<p>The April 15 Hub spec also listed "bundle pricing" as open. Resolving now.</p>
+<h3 id="options-considered-1">Options considered</h3>
+<ul>
+<li><strong>Option A — Hub access included in pro subscription.</strong> Founding Pro $0/month, Gold $49/month, Silver $79/month — all include Hub access (member lounge, kit pickup, training events, mini-inventory will-call). Simpler to market, drives subscription value perception.</li>
+<li><strong>Option B — Standalone Hub access fee.</strong> A separate $39/month "Hub member" fee, on top of any subscription tier. More complex pricing surface, but isolates Hub revenue cleanly for franchisee P&amp;L purposes (per the Franchise spec's FDD Item 19 economics requirement).</li>
+<li><strong>Option C — Tiered bundle.</strong> Founding and Gold include Hub access. Silver and Bronze pay a $25/month Hub upgrade. Flex tier (low-bandwidth side-hustle pros) does not have Hub access by default.</li>
+</ul>
+<h3 id="recommendation-option-c-1">Recommendation: Option C</h3>
+<p>Why tiered wins:</p>
+<ol>
+<li><strong>Top-tier pros get Hub as a benefit.</strong> Founding Pros and Gold subscribers are our highest-value, highest-retention cohort. Including Hub access in their subscription makes the tier more valuable, which drives retention (per April 15 spec, Hub members churn 40% lower than non-members), which is the entire reason Hubs exist as a retention play.</li>
+<li><strong>Bottom-tier pros pay an incremental fee that isolates Hub revenue.</strong> Silver and Bronze pay $25/month for Hub upgrade. This number flows cleanly to a franchisee's P&amp;L (vs. Option A's "we'll allocate some fraction of subscription to Hub revenue" which is a finance-team headache). The Franchise spec's FDD Item 19 (per-Hub economics disclosure to prospective franchisees) needs a clean Hub revenue line, and Option C provides it.</li>
+<li><strong>Flex tier exclusion keeps Hub experience high quality.</strong> Flex pros are by design low-volume, side-bandwidth — they take 2-3 jobs/month for cash flow, not as a primary income. They are not the target Hub member persona. Excluding them by default keeps the Hub member community concentrated on full-time pros, which preserves the lounge/training community feel and prevents Hub crowding from members who barely use it. Flex pros can opt-in to Hub access for $39/month if they want it (higher than the $25 Silver/Bronze upgrade because we want to discourage casual conversion).</li>
+</ol>
+<h3 id="pricing-surface-final">Pricing surface (final)</h3>
+<table>
+<thead>
+<tr>
+<th>Pro Tier</th>
+<th>Monthly Subscription</th>
+<th>Hub Access</th>
+<th>Hub Upgrade Fee</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Founding Pro</td>
+<td>$0 (lifetime grandfather)</td>
+<td>Included</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>Gold</td>
+<td>$49</td>
+<td>Included</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>Silver</td>
+<td>$79</td>
+<td>Optional</td>
+<td>$25/month</td>
+</tr>
+<tr>
+<td>Bronze</td>
+<td>$29</td>
+<td>Optional</td>
+<td>$25/month</td>
+</tr>
+<tr>
+<td>Flex</td>
+<td>$0</td>
+<td>Optional</td>
+<td>$39/month</td>
+</tr>
+</tbody></table>
+<p>Pricing locks at Phase 2 onward (Hubs #2+). Hub #1 Phase 1 launches with all members free for the first 90 days as a soft-launch promotion.</p>
+<hr>
+<h2 id="6-operational-runbook">6. Operational Runbook</h2>
+<h3 id="daily-operations">Daily operations</h3>
+<ul>
+<li><strong>5:00am — Materials staging start.</strong> Hub Manager (or early Associate) opens the warehouse side (not the public-facing showroom). Pulls the night's inbound Zinc/FW Webb deliveries from the receiving dock, scans against the Sherpa Materials staging manifest, builds job-labeled racks for the morning's Uber Direct waves. This is the highest-leverage 90 minutes in the Hub day.</li>
+<li><strong>6:30am — First Uber Direct wave dispatches.</strong> Earliest job-site arrivals (early-start trades — framing, drywall, masonry).</li>
+<li><strong>7:00am — Hub opens.</strong> Showroom side opens. Pros can walk in for kit pickup, parts, rentals, casual member-lounge use.</li>
+<li><strong>8:00am — Second Uber Direct wave.</strong></li>
+<li><strong>10:00am — Third Uber Direct wave.</strong> Mid-morning catch-up jobs.</li>
+<li><strong>12:00pm — Fourth Uber Direct wave.</strong> Last morning-job materials push.</li>
+<li><strong>Throughout the day — walk-ins, rentals, member lounge, training-event prep.</strong></li>
+<li><strong>End of day (5:30pm) — parts inventory check.</strong> Spot count the top-50 highest-velocity SKUs against the system. Trigger reorder for anything below threshold.</li>
+<li><strong>6:00pm — Hub closes.</strong> No retail or member access after 6pm. Training events (Tuesdays + Thursdays, 6-8pm) get ad-hoc afterhours access via Hub Manager presence.</li>
+</ul>
+<h3 id="weekly-cadence">Weekly cadence</h3>
+<ul>
+<li><strong>Monday:</strong> Inventory audit (full warehouse cycle count, 1/4 of warehouse per week so full audit completes monthly), supplier reconciliation (match week's deliveries to Zinc invoices), week-ahead training-event prep.</li>
+<li><strong>Wednesday:</strong> Returns processing batch (week's returns sorted, photographed, RMA-tagged, batched for supplier pickup Friday).</li>
+<li><strong>Friday:</strong> Supplier pickup of returns, member newsletter draft sent to HQ for review, week's P&amp;L pulled from POS for HQ snapshot.</li>
+<li><strong>Saturday:</strong> Optional 8am-12pm member open hours (Hub Manager's choice based on member demand; default closed in Phase 1).</li>
+</ul>
+<h3 id="monthly-cadence">Monthly cadence</h3>
+<ul>
+<li><strong>First Tuesday:</strong> P&amp;L review with HQ Operations (Phyrom present in Phase 1, delegated to Operations Director by Phase 3). Reviews member count + churn, materials throughput + margin, rental utilization, training revenue, capex needs, staffing changes.</li>
+<li><strong>Mid-month:</strong> Member NPS survey (10 questions, 90-second target, sent via SMS — measured network-wide, with per-Hub breakdown).</li>
+<li><strong>Last Friday:</strong> Capex review (any equipment needing replacement, any inventory category needing rethink, any IT/security upgrade — Hub Manager submits, HQ approves up to $5K, anything above goes to monthly P&amp;L review).</li>
+</ul>
+<h3 id="quarterly-cadence">Quarterly cadence</h3>
+<ul>
+<li><strong>Quarterly Business Review (QBR):</strong> Corporate Hubs review with HQ Operations + Phyrom. Franchise Hubs review with the FAC plus regional Operations Director (per Franchise spec). Format: 90-minute structured review on Hub financial health, member health, ops health, growth plan for next quarter.</li>
+<li><strong>Quarterly all-Hub call:</strong> All Hub Managers + HQ Operations. Knowledge sharing, cross-Hub incident debriefs, Sherpa Materials throughput trends, training-event playbook refinements.</li>
+</ul>
+<h3 id="staffing-model">Staffing model</h3>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Phase 1 (Hub #1)</th>
+<th>Phase 2-3 (Hubs #2-#5)</th>
+<th>Phase 4 (mature)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Hub Manager</td>
+<td>1 FT, salaried + bonus on Hub revenue</td>
+<td>1 FT each</td>
+<td>1 FT each</td>
+</tr>
+<tr>
+<td>Hub Associate</td>
+<td>1 PT (~25 hr/wk)</td>
+<td>1-2 PT each</td>
+<td>2 PT each</td>
+</tr>
+<tr>
+<td>Materials Specialist</td>
+<td>n/a (Hub Manager covers)</td>
+<td>1 FT added at 800+ line items/month</td>
+<td>1 FT each</td>
+</tr>
+</tbody></table>
+<ul>
+<li><strong>Hub Manager</strong> owns the P&amp;L. Salary $58-72K/year (NH/ME) or $65-85K (MA/RI metro) plus quarterly bonus tied to Hub net revenue (target: 8% of net revenue paid quarterly, capped at 25% of base). Recruit from FW Webb branch managers, Lowe's Pro Desk managers, Home Depot Pro Desk managers, and trade-specific supply house counter managers — they have the exact operational profile.</li>
+<li><strong>Hub Associates</strong> cover counter, kit assembly, rental check-in/check-out, light receiving. $20-26/hr depending on metro.</li>
+<li><strong>Materials Specialist</strong> added when monthly Sherpa Materials throughput crosses 800 line items. Owns receiving, staging, Uber Direct dispatch coordination, supplier reconciliation, returns batch. $48-60K/year.</li>
+</ul>
+<h3 id="security-playbook">Security playbook</h3>
+<ul>
+<li><strong>Access:</strong> Keypad + member badge for pro entry (after-hours member lounge access tier optional in Phase 3+). All access events logged to <code>hub_access_log</code> (new table — see §7).</li>
+<li><strong>Surveillance:</strong> 8-camera IP setup covering receiving dock, warehouse aisles, tool cage, pickup counter, showroom, training room, building exterior. 30-day retention on cloud, 90-day retention on local NVR. Cameras streamed to Hub Manager mobile dashboard, alerts on after-hours motion.</li>
+<li><strong>High-value cage:</strong> Tool cage (Hilti, Festool, SawStop fleet) behind locked steel mesh. Key control via Hub Manager + 1 designated Associate. RFID chip on every rental tool, IoT location ping every 4 hours during rental period (catches "I forgot to return it" before it becomes "where is my $3,200 saw").</li>
+<li><strong>Cash:</strong> Recommend cashless. POS accepts card-only and member-account-charge. If cash is unavoidable (one-off walk-in), end-of-day cash drop into deposit safe, weekly bank pickup. Eliminates daily cash-handling risk.</li>
+<li><strong>Incident response:</strong> Documented escalation tree (Hub Manager → Operations Director → Phyrom → law enforcement). Quarterly drill on theft response, fire response, medical response.</li>
+</ul>
+<h3 id="insurance-per-hub">Insurance per Hub</h3>
+<table>
+<thead>
+<tr>
+<th>Coverage</th>
+<th>Annual Cost</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>General Liability ($2M aggregate / $1M per occurrence)</td>
+<td>$1,400</td>
+</tr>
+<tr>
+<td>Property (building improvements + inventory + equipment)</td>
+<td>$1,100</td>
+</tr>
+<tr>
+<td>Business Interruption (90-day)</td>
+<td>$400</td>
+</tr>
+<tr>
+<td>Crime / Employee Dishonesty</td>
+<td>$350</td>
+</tr>
+<tr>
+<td>Cyber (POS + member data)</td>
+<td>$300</td>
+</tr>
+<tr>
+<td><strong>Total per Hub</strong></td>
+<td><strong>~$3,550/year</strong></td>
+</tr>
+</tbody></table>
+<p>Broker engagement: Phase 1 Month 2. Carrier preference: The Hartford or Chubb (both have strong contractor-marketplace policy products). Master policy structure with per-Hub schedules so Hub additions in Phase 2+ are addendums not new policies.</p>
+<hr>
+<h2 id="7-hub---marketplace-data-flow">7. Hub &lt;-&gt; Marketplace Data Flow</h2>
+<p>Hub operations and the Sherpa Pros marketplace must be tightly coupled but cleanly separated in the data model. The flow:</p>
+<pre><code>+-------------------+     +-------------------+     +-------------------+
+|  Marketplace      | --&gt; | Wiseman Materials | --&gt; | Hub Routing       |
+|  Job creation     |     | engine            |     | (which Hub stages |
+|                   |     | (materials list)  |     |  this job?)       |
++-------------------+     +-------------------+     +-------------------+
+                                                              |
+                                                              v
+                          +-------------------+     +-------------------+
+                          | Uber Direct       | &lt;-- | Hub staging       |
+                          | dispatch from Hub |     | (rack by job ID)  |
+                          +-------------------+     +-------------------+
+                                    |                         ^
+                                    v                         |
+                          +-------------------+     +-------------------+
+                          | Job site          |     | Zinc API order    |
+                          | (pro receives)    |     | to FW Webb / etc. |
+                          +-------------------+     +-------------------+
+</code></pre>
+<h3 id="each-surfaces-view">Each surface's view</h3>
+<ul>
+<li><strong>Hub Manager dashboard</strong> shows: incoming material orders for next 48 hours (sortable by Uber Direct wave), today's dispatch schedule, member check-ins (current + scheduled training attendees), inventory levels (top-200 SKU heatmap), rental fleet status, returns queue, today's P&amp;L snapshot.</li>
+<li><strong>Pro mobile app</strong> shows: nearest Hub (with hours, drive time), parts in stock at that Hub (live inventory query), training event calendar, "pickup at Hub" option for any active job, member-perks visibility (lounge access, free coffee, etc.).</li>
+<li><strong>Marketplace (homeowner-facing)</strong> shows: estimated material delivery window aligned to job timeline. <strong>Zero Hub-side complexity exposed.</strong> The Hub is internal infrastructure — homeowners see "Materials arriving Tuesday morning" not "Materials staged at Hub #2 Manchester for 8am Uber Direct dispatch wave." Hub branding is pro-facing only.</li>
+</ul>
+<h3 id="data-sync-architecture">Data sync architecture</h3>
+<ul>
+<li><strong>Real-time bidirectional</strong> between Hub POS/inventory and Marketplace database (via Drizzle queries against the shared Postgres). No middleware layer; Hub POS is just another writer to the same database.</li>
+<li><strong>Audit-logged</strong> via Sherpa Guard (the existing audit-log infrastructure — see <code>src/db/migrations/008_audit_logs.sql</code>). Every inventory mutation, every member check-in, every materials staging event lands in <code>audit_logs</code> with actor, timestamp, before/after diff.</li>
+<li><strong>Eventual-consistent</strong> for analytics/reporting (per-Hub P&amp;L, NPS, throughput) — a daily denormalized snapshot job runs at 1am into <code>hub_metrics_daily</code> for HQ dashboard performance.</li>
+</ul>
+<h3 id="new-tables-additions-to-v1-hub-schema">New tables (additions to v1 Hub schema)</h3>
+<pre><code class="hljs sql"><span class="hljs-comment">-- Materials staging at the Hub level — links Sherpa Materials orders to Hub workflow</span>
+<span class="hljs-keyword">CREATE TABLE</span> hub_materials_staging (
+    id              UUID <span class="hljs-keyword">PRIMARY KEY</span> <span class="hljs-keyword">DEFAULT</span> gen_random_uuid(),
+    hub_id          UUID <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">REFERENCES</span> hubs(id),
+    materials_order_id UUID <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">REFERENCES</span> materials_orders(id),
+    job_id          UUID <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">REFERENCES</span> jobs(id),
+    pro_id          UUID <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">REFERENCES</span> pros(id),
+    expected_at     TIMESTAMPTZ <span class="hljs-keyword">NOT NULL</span>,        <span class="hljs-comment">-- when supplier delivers to Hub</span>
+    received_at     TIMESTAMPTZ,                  <span class="hljs-comment">-- actual receipt at Hub</span>
+    staged_at       TIMESTAMPTZ,                  <span class="hljs-comment">-- racked + labeled</span>
+    rack_location   <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">20</span>),                   <span class="hljs-comment">-- "STAGE-12-A" rack id</span>
+    dispatch_wave   <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">20</span>),                   <span class="hljs-comment">-- "0630" / "0800" / "1000" / "1200" / "PICKUP"</span>
+    dispatch_method <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">15</span>) <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-string">'uber_direct'</span>
+                    <span class="hljs-keyword">CHECK</span> (dispatch_method <span class="hljs-keyword">IN</span> (<span class="hljs-string">'uber_direct'</span>,<span class="hljs-string">'pro_pickup'</span>,<span class="hljs-string">'supplier_direct'</span>)),
+    dispatched_at   TIMESTAMPTZ,                   <span class="hljs-comment">-- left the Hub</span>
+    delivered_at    TIMESTAMPTZ,                   <span class="hljs-comment">-- pro confirmed receipt at job</span>
+    margin_to_hub_cents <span class="hljs-type">INTEGER</span> <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-number">0</span>,  <span class="hljs-comment">-- gross margin share to Hub for this line</span>
+    notes           TEXT,
+    created_at      TIMESTAMPTZ <span class="hljs-keyword">DEFAULT</span> now(),
+    updated_at      TIMESTAMPTZ <span class="hljs-keyword">DEFAULT</span> now()
+);
+<span class="hljs-keyword">CREATE</span> INDEX idx_hub_materials_staging_hub_dispatch <span class="hljs-keyword">ON</span> hub_materials_staging(hub_id, dispatch_wave, expected_at);
+
+<span class="hljs-comment">-- Hub access log — every badge-in / keypad event for security + member-engagement analytics</span>
+<span class="hljs-keyword">CREATE TABLE</span> hub_access_log (
+    id              UUID <span class="hljs-keyword">PRIMARY KEY</span> <span class="hljs-keyword">DEFAULT</span> gen_random_uuid(),
+    hub_id          UUID <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">REFERENCES</span> hubs(id),
+    pro_id          UUID <span class="hljs-keyword">REFERENCES</span> pros(id),    <span class="hljs-comment">-- nullable: staff also badge in</span>
+    actor_type      <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">15</span>) <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">CHECK</span> (actor_type <span class="hljs-keyword">IN</span> (<span class="hljs-string">'pro'</span>,<span class="hljs-string">'staff'</span>,<span class="hljs-string">'vendor'</span>,<span class="hljs-string">'unknown'</span>)),
+    access_method   <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">15</span>) <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">CHECK</span> (access_method <span class="hljs-keyword">IN</span> (<span class="hljs-string">'badge'</span>,<span class="hljs-string">'keypad'</span>,<span class="hljs-string">'manual'</span>,<span class="hljs-string">'escort'</span>)),
+    direction       <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">5</span>) <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">CHECK</span> (direction <span class="hljs-keyword">IN</span> (<span class="hljs-string">'in'</span>,<span class="hljs-string">'out'</span>)),
+    event_at        TIMESTAMPTZ <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> now(),
+    notes           TEXT
+);
+<span class="hljs-keyword">CREATE</span> INDEX idx_hub_access_log_hub_event <span class="hljs-keyword">ON</span> hub_access_log(hub_id, event_at <span class="hljs-keyword">DESC</span>);
+
+<span class="hljs-comment">-- Daily denormalized Hub metrics for HQ dashboard</span>
+<span class="hljs-keyword">CREATE TABLE</span> hub_metrics_daily (
+    id              UUID <span class="hljs-keyword">PRIMARY KEY</span> <span class="hljs-keyword">DEFAULT</span> gen_random_uuid(),
+    hub_id          UUID <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">REFERENCES</span> hubs(id),
+    metric_date     <span class="hljs-type">DATE</span> <span class="hljs-keyword">NOT NULL</span>,
+    member_count    <span class="hljs-type">INTEGER</span> <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-number">0</span>,
+    member_checkins <span class="hljs-type">INTEGER</span> <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-number">0</span>,
+    materials_lines <span class="hljs-type">INTEGER</span> <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-number">0</span>,
+    materials_dollar_volume_cents <span class="hljs-type">BIGINT</span> <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-number">0</span>,
+    materials_margin_cents <span class="hljs-type">INTEGER</span> <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-number">0</span>,
+    rentals_active  <span class="hljs-type">INTEGER</span> <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-number">0</span>,
+    rentals_revenue_cents <span class="hljs-type">INTEGER</span> <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-number">0</span>,
+    training_attendees <span class="hljs-type">INTEGER</span> <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-number">0</span>,
+    training_revenue_cents <span class="hljs-type">INTEGER</span> <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-number">0</span>,
+    pickup_by_pro_count <span class="hljs-type">INTEGER</span> <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-number">0</span>,
+    uber_direct_count <span class="hljs-type">INTEGER</span> <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-number">0</span>,
+    on_time_staging_pct <span class="hljs-type">DECIMAL</span>(<span class="hljs-number">5</span>,<span class="hljs-number">2</span>),
+    incidents_count <span class="hljs-type">INTEGER</span> <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-number">0</span>,
+    nps_responses   <span class="hljs-type">INTEGER</span> <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-number">0</span>,
+    nps_score       <span class="hljs-type">DECIMAL</span>(<span class="hljs-number">4</span>,<span class="hljs-number">1</span>),
+    created_at      TIMESTAMPTZ <span class="hljs-keyword">DEFAULT</span> now(),
+    <span class="hljs-keyword">UNIQUE</span> (hub_id, metric_date)
+);
+</code></pre>
+<h3 id="example-hub-manager-dashboard-query">Example Hub Manager dashboard query</h3>
+<pre><code class="hljs typescript"><span class="hljs-comment">// src/app/api/hub/dashboard/today/route.ts</span>
+<span class="hljs-keyword">import</span> { db } <span class="hljs-keyword">from</span> <span class="hljs-string">"@/db"</span>;
+<span class="hljs-keyword">import</span> { eq, and, gte, lt } <span class="hljs-keyword">from</span> <span class="hljs-string">"drizzle-orm"</span>;
+<span class="hljs-keyword">import</span> { hubMaterialsStaging, hubInventory, hubRentals } <span class="hljs-keyword">from</span> <span class="hljs-string">"@/db/drizzle-schema"</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">GET</span>(<span class="hljs-params"><span class="hljs-attr">request</span>: <span class="hljs-title class_">Request</span>, { params }: { params: { hubId: <span class="hljs-built_in">string</span> } }</span>) {
+  <span class="hljs-keyword">const</span> today = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>();
+  today.<span class="hljs-title function_">setHours</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>);
+  <span class="hljs-keyword">const</span> tomorrow = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>(today);
+  tomorrow.<span class="hljs-title function_">setDate</span>(tomorrow.<span class="hljs-title function_">getDate</span>() + <span class="hljs-number">1</span>);
+
+  <span class="hljs-keyword">const</span> [stagingToday, lowStock, activeRentals] = <span class="hljs-keyword">await</span> <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">all</span>([
+    db.<span class="hljs-title function_">select</span>().<span class="hljs-title function_">from</span>(hubMaterialsStaging)
+      .<span class="hljs-title function_">where</span>(<span class="hljs-title function_">and</span>(
+        <span class="hljs-title function_">eq</span>(hubMaterialsStaging.<span class="hljs-property">hubId</span>, params.<span class="hljs-property">hubId</span>),
+        <span class="hljs-title function_">gte</span>(hubMaterialsStaging.<span class="hljs-property">expectedAt</span>, today),
+        <span class="hljs-title function_">lt</span>(hubMaterialsStaging.<span class="hljs-property">expectedAt</span>, tomorrow)
+      ))
+      .<span class="hljs-title function_">orderBy</span>(hubMaterialsStaging.<span class="hljs-property">dispatchWave</span>),
+    db.<span class="hljs-title function_">select</span>().<span class="hljs-title function_">from</span>(hubInventory)
+      .<span class="hljs-title function_">where</span>(<span class="hljs-title function_">and</span>(
+        <span class="hljs-title function_">eq</span>(hubInventory.<span class="hljs-property">hubId</span>, params.<span class="hljs-property">hubId</span>),
+        <span class="hljs-comment">// qty_on_hand &lt;= reorder_point</span>
+      )),
+    db.<span class="hljs-title function_">select</span>().<span class="hljs-title function_">from</span>(hubRentals)
+      .<span class="hljs-title function_">where</span>(<span class="hljs-title function_">and</span>(
+        <span class="hljs-title function_">eq</span>(hubRentals.<span class="hljs-property">hubId</span>, params.<span class="hljs-property">hubId</span>),
+        <span class="hljs-comment">// returned_at IS NULL</span>
+      ))
+  ]);
+
+  <span class="hljs-keyword">return</span> <span class="hljs-title class_">Response</span>.<span class="hljs-title function_">json</span>({ stagingToday, lowStock, activeRentals });
+}
+</code></pre>
+<hr>
+<h2 id="8-hub---sherpa-materials-integration-core-integration">8. Hub &lt;-&gt; Sherpa Materials Integration (Core Integration)</h2>
+<p>This is the integration this spec exists to define.</p>
+<h3 id="routing-rules-wiseman-materials-engine---hub">Routing rules (Wiseman Materials engine -&gt; Hub)</h3>
+<pre><code>Order placement decision tree:
+
+  for each materials_line in materials_order:
+    if line.sku in TOP_200_HIGH_FREQUENCY_SKUS
+       and hub_within_radius(job.location, 45_minutes) exists
+       and hub.inventory[sku].qty_on_hand &gt;= line.qty:
+        # Pull from Hub buffer stock — same-hour fulfillment
+        route = "hub_buffer"
+        hub = nearest_hub
+    elif hub_within_radius(job.location, 45_minutes) exists
+         and line.delivery_window &gt; 18_hours_from_now:
+        # Stage at Hub the night before, dispatch morning-of
+        route = "hub_staged"
+        hub = nearest_hub
+        zinc_ship_to = hub.shipping_address
+    elif line.delivery_window &lt; 6_hours:
+        # No time for Hub staging — direct dispatch
+        route = "supplier_direct"
+        zinc_ship_to = job.location
+    else:
+        # Default: supplier direct (Hub doesn't make sense for this geography or SKU)
+        route = "supplier_direct"
+        zinc_ship_to = job.location
+</code></pre>
+<p>The Top-200 SKU list is locked quarterly by HQ Operations based on network-wide volume. Phase 1 (Hub #1 only) starts with the top 50 SKUs — buffer-stock ramp grows as throughput data emerges. By Phase 3, the top-200 list is stable and refreshed quarterly based on the prior 90 days of Sherpa Materials line-item demand.</p>
+<h3 id="hub-side-workflow">Hub-side workflow</h3>
+<ol>
+<li><strong>Inbound delivery (4pm-9pm prior day):</strong> Supplier truck or Zinc-coordinated freight arrives at Hub receiving dock. Hub Materials Specialist (or Hub Manager in Phase 1) scans pallet manifest into POS, reconciles against <code>hub_materials_staging.expected_at</code>. Discrepancies flagged immediately — Sherpa Guard logs the variance, HQ Operations notified for reconciliation.</li>
+<li><strong>Staging (5am-7am):</strong> Materials pulled from receiving dock to job-labeled racks. Each rack has a printed label with job ID, pro name, dispatch wave, dispatch method. Inventory system updates <code>hub_materials_staging.staged_at</code>.</li>
+<li><strong>Wave dispatch (6:30am / 8:00am / 10:00am / 12:00pm):</strong> Uber Direct API called from Hub system per wave. Each wave bundles all jobs in the same dispatch window. Hub Associate hands off to Uber Direct driver, scans the rack QR code, system writes <code>dispatched_at</code>.</li>
+<li><strong>Pro pickup option:</strong> Pro arrives at Hub between 6am-noon, scans member badge, system surfaces any staged materials assigned to them. Pro takes the materials (no Uber Direct trip), system writes <code>dispatched_at</code> with <code>dispatch_method = 'pro_pickup'</code>. Hub margin per line is <strong>higher</strong> in this case (no Uber Direct cost subtracted).</li>
+<li><strong>Returns processing (Wednesday):</strong> Pro returns materials. Hub Materials Specialist scans, photographs, tags RMA, batches with other returns. Friday supplier pickup or scheduled return freight clears the queue. Returns are credited back to Sherpa Materials gross margin pool.</li>
+</ol>
+<h3 id="hub-margin-economics-on-materials-throughput">Hub margin economics on materials throughput</h3>
+<p>Every line item that flows through a Hub generates a per-line margin share to the Hub.</p>
+<table>
+<thead>
+<tr>
+<th>Flow type</th>
+<th>Hub margin share of gross margin</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Hub buffer stock (Hub stocked it, Hub fulfilled it)</td>
+<td>40%</td>
+</tr>
+<tr>
+<td>Hub staged + Uber Direct (Hub received + staged + dispatched)</td>
+<td>25%</td>
+</tr>
+<tr>
+<td>Hub staged + pro pickup (Hub received + staged, pro picked up)</td>
+<td>35% (no Uber Direct cost)</td>
+</tr>
+<tr>
+<td>Supplier direct (Hub not involved)</td>
+<td>0%</td>
+</tr>
+</tbody></table>
+<p><strong>Phase 2 throughput target per Hub:</strong> 800 line items/month at average $20 gross margin per line = $16K monthly gross margin to the Sherpa Materials pool. Hub margin share at a blended <del>25% weighted across the flow types = <strong>$1.2K-$2.5K Hub revenue/month</strong> at Phase 2 maturity. That number triples by Phase 4 mature state (</del>$4-7K/month per Hub).</p>
+<p>This is small but meaningful. It does not by itself fund a Hub. It does, paired with member fees + rentals + training, get the Hub above the standalone breakeven line in Year 3. More importantly, it rises with platform-level Sherpa Materials adoption — meaning every Hub becomes more profitable as the rest of the platform grows. That's the right shape of a network-effects revenue line.</p>
+<hr>
+<h2 id="9-per-hub-capex--opex-model">9. Per-Hub Capex / Opex Model</h2>
+<h3 id="capex--one-time-per-hub">Capex — one-time per Hub</h3>
+<table>
+<thead>
+<tr>
+<th>Line</th>
+<th>Standalone (Option A)</th>
+<th>Co-located in FW Webb (Option B)</th>
+<th>Franchised (Option C, Phase 4)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Build-out (improvements, finishes, signage interior)</td>
+<td>$85K-$185K</td>
+<td>$25K</td>
+<td>franchisee bears</td>
+</tr>
+<tr>
+<td>Equipment + IT (POS, racks, security, network)</td>
+<td>$35K</td>
+<td>$35K</td>
+<td>franchisee bears</td>
+</tr>
+<tr>
+<td>Signage + branding (exterior, wayfinding)</td>
+<td>$12K</td>
+<td>$5K</td>
+<td>franchisee bears</td>
+</tr>
+<tr>
+<td>Opening inventory (top-200 SKU buffer + kit prebuild)</td>
+<td>$25K</td>
+<td>$15K</td>
+<td>franchisee bears</td>
+</tr>
+<tr>
+<td><strong>Total capex</strong></td>
+<td><strong>$157K-$257K</strong></td>
+<td><strong>$80K</strong></td>
+<td><strong>$185K-$420K</strong> (per FDD Item 7)</td>
+</tr>
+</tbody></table>
+<p>Hub #1 capex is dramatically lower because of HJD HQ colocation: ~$60K (build-out reduced to bay refit + flooring + lighting). Documented as the operational baseline for the FDD when franchise development begins.</p>
+<h3 id="opex--monthly-per-hub-corporate">Opex — monthly per Hub (corporate)</h3>
+<table>
+<thead>
+<tr>
+<th>Line</th>
+<th>Standalone</th>
+<th>Co-located (FW Webb)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Rent</td>
+<td>$4K-$8K</td>
+<td>$1.5K (sub-lease)</td>
+</tr>
+<tr>
+<td>Utilities</td>
+<td>$800</td>
+<td>$300</td>
+</tr>
+<tr>
+<td>Hub Manager (fully-loaded: salary + benefits + bonus accrual + payroll tax)</td>
+<td>$7,500</td>
+<td>$7,500</td>
+</tr>
+<tr>
+<td>1.5 Part-Time Associates (avg)</td>
+<td>$4,000</td>
+<td>$4,000</td>
+</tr>
+<tr>
+<td>Insurance</td>
+<td>$300 (~$3,550/year prorated)</td>
+<td>$250</td>
+</tr>
+<tr>
+<td>Supplies</td>
+<td>$400</td>
+<td>$300</td>
+</tr>
+<tr>
+<td>Tech (POS subscription, security cloud, internet, member-app fees)</td>
+<td>$200</td>
+<td>$200</td>
+</tr>
+<tr>
+<td><strong>Total opex</strong></td>
+<td><strong>$17,200-$21,200/month</strong></td>
+<td><strong>$13,750-$14,250/month</strong></td>
+</tr>
+</tbody></table>
+<p>Materials Specialist (added Phase 2+ once monthly throughput crosses 800 line items) adds ~$4,500/month fully-loaded.</p>
+<h3 id="revenue-per-hub--year-2-target">Revenue per Hub — Year 2 target</h3>
+<table>
+<thead>
+<tr>
+<th>Revenue line</th>
+<th>Monthly $</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Member fees (60 members at avg $30/month per §5 tiered bundle)</td>
+<td>$1,800</td>
+</tr>
+<tr>
+<td>Sherpa Materials margin share (Phase 2 throughput target)</td>
+<td>$2,000</td>
+</tr>
+<tr>
+<td>Equipment rental (60% utilization, blended rate from April 15 spec — pro-rated to a 1-Hub baseline)</td>
+<td>$4,500</td>
+</tr>
+<tr>
+<td>Training revenue (manufacturer sponsorship + attendee fees, ~2 events/month)</td>
+<td>$1,500</td>
+</tr>
+<tr>
+<td>Adjacent (lockers, workshop tool rental, member parking, sundries, branded merch)</td>
+<td>$800</td>
+</tr>
+<tr>
+<td><strong>Total Year 2 monthly revenue</strong></td>
+<td><strong>~$10,600/month</strong></td>
+</tr>
+</tbody></table>
+<p>Note: The April 15 spec's $18K/month rental revenue target assumed 20 tools at the full-fleet rental rate. That number is a Year 3+ mature-Hub target. Year 2 baseline is more conservative ($4,500), reflecting ramp.</p>
+<h3 id="breakeven-analysis">Breakeven analysis</h3>
+<ul>
+<li><strong>Standalone Hub</strong> at $17K-$21K opex, Year 2 revenue ~$10.6K, Year 2 burn $7-10K/month. To reach breakeven cash basis Year 3, need Sherpa Materials throughput uplift of ~$11K/month additional revenue (1,500+ line items/month at Year 3 maturity). Achievable on Phase 4 platform-level growth trajectory but <strong>tight</strong>.</li>
+<li><strong>Co-located Hub</strong> at $14K opex, Year 2 revenue ~$10.6K, Year 2 burn $3-4K/month. Breakeven Year 2 with modest materials throughput growth. <strong>Significantly better economics.</strong> This is the central reason for the §4 Option C hybrid recommendation.</li>
+<li><strong>Franchised Hub</strong> — franchisee bears the standalone economics (or better, depending on real estate). Franchisor (Sherpa Pros) earns initial franchise fee + ongoing royalty + tech platform fee + Sherpa Materials margin share at HQ level. Franchisor margin is high; franchisee margin is the franchisee's risk to manage. See Franchise spec for full unit economics modeling.</li>
+</ul>
+<h3 id="strategic-note">Strategic note</h3>
+<p>Hub economics standalone are tight. <strong>Hub strategic value is multi-dimensional</strong> and cannot be evaluated only on per-Hub P&amp;L:</p>
+<ol>
+<li><strong>Pro retention lift</strong> — Hub members churn 40% lower per the April 15 Hub spec. Network-wide retention impact dwarfs per-Hub margin.</li>
+<li><strong>Sherpa Materials infrastructure</strong> — the materials orchestration cannot scale without a Hub network. Direct-to-job-site only Sherpa Materials is a ceiling-bound business model. Hub network unlocks the model.</li>
+<li><strong>Franchise revenue stream</strong> — Phase 4+ franchise royalties + initial franchise fees become a meaningful HQ revenue line that doesn't appear in any single Hub's P&amp;L.</li>
+<li><strong>Brand/community moat</strong> — Hubs are the physical embodiment of "Sherpa Pros is for the trades." That brand moat is hard to replicate by app-only competitors.</li>
+</ol>
+<p><strong>Operating principle:</strong> do not optimize Hubs as standalone P&amp;L. Treat them as platform infrastructure investments that throw off measurable margin and unlock measurable platform-level value.</p>
+<hr>
+<h2 id="10-franchise-vs-corporate-hub-decision-matrix-per-metro">10. Franchise-vs-Corporate Hub Decision Matrix per Metro</h2>
+<table>
+<thead>
+<tr>
+<th>Metro tier</th>
+<th>Recommended ownership model</th>
+<th>Rationale</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Phase 1-2 launch metros</strong> (Atkinson NH, Manchester NH, Portland ME)</td>
+<td>Corporate (with FW Webb co-location for #2-#3)</td>
+<td>Need direct operational control to iterate the playbook</td>
+</tr>
+<tr>
+<td><strong>Strategic-control metros</strong> (Boston, NYC, Philadelphia, DC)</td>
+<td>Corporate or co-located</td>
+<td>Brand-flagship presence, regulatory complexity, premium real estate — keep direct control</td>
+</tr>
+<tr>
+<td><strong>Pilot-iteration metros</strong></td>
+<td>Corporate</td>
+<td>Whenever rolling out a new playbook variation (extended hours, new training format, expanded inventory class) — pilot in corporate Hub first, then push to franchise</td>
+</tr>
+<tr>
+<td><strong>Phase 4 outer-Northeast</strong> (Vermont, NY upstate, Western MA, NH/ME secondary cities)</td>
+<td>Franchise</td>
+<td>Capex risk shifts to franchisee, motivated local operator wins</td>
+</tr>
+<tr>
+<td><strong>Phase 4-5 national expansion</strong></td>
+<td>Franchise predominantly, with corporate flagships in top-3 metros</td>
+<td>Scale economics demand franchise; reserved corporate flagships for brand presence</td>
+</tr>
+<tr>
+<td><strong>FW Webb branch geographies</strong> (Phase 2-3)</td>
+<td>Co-located</td>
+<td>Lower capex, partnership leverage, faster footprint expansion</td>
+</tr>
+</tbody></table>
+<h3 id="per-metro-decision-flow">Per-metro decision flow</h3>
+<pre><code>Decision: which ownership model for Hub in Metro X?
+
+  if Metro X is Phase 1-3 priority and need operational control:
+    -&gt; Corporate
+  elif Metro X is Phase 4+ expansion and good franchise candidate identified:
+    -&gt; Franchise
+  elif Metro X is Phase 2-3 and FW Webb branch present and partnership terms acceptable:
+    -&gt; Co-locate inside FW Webb
+  else:
+    -&gt; Defer Hub for Metro X to next planning cycle
+</code></pre>
+<p>International expansion (Phase 5+) is out of scope here — defer to International Expansion spec.</p>
+<hr>
+<h2 id="11-hub-network-rollout-timeline">11. Hub Network Rollout Timeline</h2>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Months</th>
+<th>Hubs added</th>
+<th>Cumulative</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1 — Proof</td>
+<td>0-6</td>
+<td>Hub #1 Atkinson NH (standalone, corporate, HJD HQ colocation)</td>
+<td>1</td>
+<td>Locked. Real-estate cost zero. Proves the model.</td>
+</tr>
+<tr>
+<td>2 — Validate</td>
+<td>6-12</td>
+<td>Hub #2 Manchester NH (FW Webb co-location pilot), Hub #3 Portland ME (standalone, corporate)</td>
+<td>3</td>
+<td>Validates co-location model. Tests two market profiles.</td>
+</tr>
+<tr>
+<td>3 — Regional</td>
+<td>12-18</td>
+<td>Hub #4 Boston MA (standalone, corporate, flagship), Hub #5 Providence RI (FW Webb co-location)</td>
+<td>5</td>
+<td>Begins FDD development per Franchise spec.</td>
+</tr>
+<tr>
+<td>4 Year 1 — Scale</td>
+<td>18-24</td>
+<td>Hubs #6-#10 across NH/MA/ME/RI/CT (mix: corporate, co-located, first 2 franchised)</td>
+<td>10</td>
+<td>FDD live. First franchisees sign.</td>
+</tr>
+<tr>
+<td>4 Year 2 — Saturate</td>
+<td>24-30</td>
+<td>Hubs #11-#20 via franchise + co-location (Northeast corridor full coverage)</td>
+<td>20</td>
+<td>Franchise becomes primary expansion vehicle.</td>
+</tr>
+<tr>
+<td>5+ — National + International</td>
+<td>30+</td>
+<td>International master-franchise, national franchise expansion</td>
+<td>50+</td>
+<td>Defer specifics to International Expansion + Franchise specs.</td>
+</tr>
+</tbody></table>
+<p><strong>Critical-path dates:</strong></p>
+<ul>
+<li>Hub #1 grand-open: end of Phase 1 Month 6.</li>
+<li>FW Webb pilot LOI signature: end of Phase 1 Month 4.</li>
+<li>FDD draft v1: Phase 2 Month 8.</li>
+<li>FDD ready for first franchisee: end of Phase 3.</li>
+<li>First franchise Hub open: Phase 4 Year 1 Month 22.</li>
+</ul>
+<hr>
+<h2 id="12-hub-data-telemetry">12. Hub Data Telemetry</h2>
+<p>Every Hub reports weekly to HQ Operations on a fixed dashboard. Same dashboard views are exposed to franchisees for franchise Hubs (per Franchise spec FDD Item 19 disclosure obligations).</p>
+<h3 id="per-hub-weekly-dashboard">Per-Hub weekly dashboard</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Source</th>
+<th>Owner</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Member count + week-over-week churn</td>
+<td><code>members</code> join <code>hub_member_subscriptions</code></td>
+<td>Hub Manager</td>
+</tr>
+<tr>
+<td>Member-job count + revenue</td>
+<td><code>jobs</code> filtered by Hub catchment</td>
+<td>Hub Manager</td>
+</tr>
+<tr>
+<td>Materials throughput — line items</td>
+<td><code>hub_materials_staging</code> count</td>
+<td>Materials Specialist</td>
+</tr>
+<tr>
+<td>Materials throughput — dollar volume</td>
+<td><code>hub_materials_staging</code> sum</td>
+<td>Materials Specialist</td>
+</tr>
+<tr>
+<td>Materials margin to Hub</td>
+<td><code>hub_materials_staging.margin_to_hub_cents</code> sum</td>
+<td>Materials Specialist</td>
+</tr>
+<tr>
+<td>Pickup-by-pro / Uber-Direct-from-Hub split</td>
+<td><code>hub_materials_staging.dispatch_method</code> group</td>
+<td>Materials Specialist</td>
+</tr>
+<tr>
+<td>Training revenue + attendance</td>
+<td><code>hub_training_events</code> join <code>hub_training_registrations</code></td>
+<td>Hub Manager</td>
+</tr>
+<tr>
+<td>Member NPS (rolling 30-day)</td>
+<td><code>hub_nps_responses</code> (new table — see Plan WS5)</td>
+<td>Hub Manager</td>
+</tr>
+<tr>
+<td>Local community signal</td>
+<td>manual input: PR mentions, supply-house referrals, NHHBA-equivalent local engagement</td>
+<td>Hub Manager</td>
+</tr>
+<tr>
+<td>Operational health</td>
+<td><code>hub_metrics_daily</code> aggregations: inventory turnover, return rate, on-time staging rate, security incidents</td>
+<td>Materials Specialist + Hub Manager</td>
+</tr>
+<tr>
+<td>Per-Hub P&amp;L (live)</td>
+<td>accounting service join Hub revenue tables</td>
+<td>Hub Manager (read), HQ Finance (write)</td>
+</tr>
+</tbody></table>
+<h3 id="hq-network-wide-dashboard">HQ network-wide dashboard</h3>
+<p>Roll-up across all Hubs:</p>
+<ul>
+<li>Hubs operational vs. in-buildout vs. in-pipeline</li>
+<li>Network-wide member count + churn trend</li>
+<li>Network-wide materials throughput + margin (the integrated platform metric)</li>
+<li>Hub Manager performance ranking (NPS, P&amp;L, materials throughput)</li>
+<li>Capex deployment and remaining annual budget</li>
+<li>Franchise pipeline (FDD inquiries, applications, closings)</li>
+</ul>
+<h3 id="reporting-cadence">Reporting cadence</h3>
+<ul>
+<li><strong>Daily:</strong> automated denormalized snapshot into <code>hub_metrics_daily</code> at 1am.</li>
+<li><strong>Weekly:</strong> Hub Manager publishes the per-Hub dashboard view to HQ every Friday by 5pm.</li>
+<li><strong>Monthly:</strong> First Tuesday P&amp;L review (per §6).</li>
+<li><strong>Quarterly:</strong> QBR (per §6).</li>
+</ul>
+<hr>
+<h2 id="13-risks--mitigations">13. Risks + Mitigations</h2>
+<table>
+<thead>
+<tr>
+<th>Risk</th>
+<th>Impact</th>
+<th>Likelihood</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>(a) Hub standalone economics underperform</td>
+<td>High</td>
+<td>High</td>
+<td>Bundle pricing per §5 + Sherpa Materials margin share per §8. Standalone Hub Year 3 breakeven assumption depends on materials throughput growth.</td>
+</tr>
+<tr>
+<td>(b) FW Webb partnership doesn't materialize</td>
+<td>High</td>
+<td>Medium</td>
+<td>Option A standalone fallback. Hub #2 standalone in Manchester is feasible at $400K all-in 12-month bet — uncomfortable but not fatal.</td>
+</tr>
+<tr>
+<td>(c) Capex over-runs on Hub #1</td>
+<td>Medium</td>
+<td>Low</td>
+<td>HJD HQ colocation makes Hub #1 capex floor (~$60K). Actual real-estate risk is zero.</td>
+</tr>
+<tr>
+<td>(d) Hub Manager hiring failure (good ones are scarce)</td>
+<td>High</td>
+<td>Medium</td>
+<td>Recruit from FW Webb / Lowe's Pro Desk / Home Depot Pro Desk / supply house counter managers. Strong candidate pipeline before posting role.</td>
+</tr>
+<tr>
+<td>(e) Materials throughput slow to scale</td>
+<td>Medium</td>
+<td>Medium</td>
+<td>Phased breakeven assumptions reflect this. Hub #1 Year 1 Sherpa Materials margin share is a small revenue line — Hub does not depend on it. By Phase 3+ it materially contributes.</td>
+</tr>
+<tr>
+<td>(f) Franchisee misalignment on brand standards</td>
+<td>High</td>
+<td>Medium</td>
+<td>Strong FDD operational standards + FAC oversight (per Franchise spec). Mystery-shopper program quarterly.</td>
+</tr>
+<tr>
+<td>(g) Cross-Hub competition cannibalization</td>
+<td>Medium</td>
+<td>Low</td>
+<td>Territory protection in FDD. Catchment radius enforced in Wiseman Materials engine routing logic.</td>
+</tr>
+<tr>
+<td>(h) Inventory shrink + theft</td>
+<td>Medium</td>
+<td>Medium</td>
+<td>Standard retail loss-prevention practices: cycle counts, RFID on rentals, cage on high-value, camera coverage, end-of-day reconciliation. Insurance crime rider.</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="14-open-decisions-pending-after-this-spec">14. Open Decisions Pending After This Spec</h2>
+<ol>
+<li><strong>Hub #1 grand-open date.</strong> Target: Phase 1 Month 6. Lock specific calendar date by Phase 1 Month 2 (depends on real-estate fit-out timeline at HJD HQ).</li>
+<li><strong>FW Webb pilot LOI signature target date.</strong> Hard date Phase 1 Month 4. If LOI not signed by then, default Hub #2-#3 to standalone.</li>
+<li><strong>Hub Manager #1 hiring start.</strong> Begin sourcing Phase 1 Month 2. Target offer Phase 1 Month 4. On-floor by Phase 1 Month 5.</li>
+<li><strong>Sherpa Materials top-200 SKU list lock.</strong> Phase 1 starts with top 50. Top-200 list locked by HQ Operations end of Phase 2.</li>
+<li><strong>Member fee Phase 2 vs. Phase 1 lock.</strong> §5 tiered-bundle pricing applies Phase 2 onward. Hub #1 launches free for first 90 days as soft-launch promotion. Confirm or modify by Phase 1 Month 5.</li>
+<li><strong>POS / inventory system selection.</strong> Tradeoff: build on existing Drizzle/Postgres stack vs. integrate a retail POS (Square for Retail, Lightspeed Retail). Recommendation: build on existing stack for Phase 1-2 to control the data model; revisit at Phase 4 scale. Decision lock Phase 1 Month 2.</li>
+<li><strong>After-hours member lounge access tier.</strong> Phase 3+ feature — give Founding Pros + Gold the ability to badge into the Hub lounge during after-hours (10pm-6am). High community-value, modest security risk. Defer decision to Phase 3 Month 1.</li>
+</ol>
+<hr>
+<p><strong>End of Sherpa Hub Integration spec.</strong></p>
+
+	
+
+
+</body>
+</html>

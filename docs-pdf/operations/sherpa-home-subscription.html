@@ -1,0 +1,1422 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>sherpa home subscription — Sherpa Pros</title>
+<link rel="icon" href="../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="sherpa-home-subscription.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="sherpa-home--homeowner-subscription-product-brief">Sherpa Home — Homeowner Subscription Product Brief</h1>
+<p><strong>Date:</strong> 2026-04-22
+<strong>Status:</strong> Draft v1 — Phase 1 launch product, needs Phyrom + finance + attorney review before pricing locks
+<strong>Source spec:</strong> <code>docs/superpowers/specs/2026-04-22-gtm-marketing-design.md</code>
+<strong>Companion docs:</strong></p>
+<ul>
+<li><code>docs/operations/quick-job-lane.md</code> (members get accelerated Quick Job dispatch)</li>
+<li><code>docs/operations/embedded-protection-products.md</code> (Sherpa Home is the productized Product B — Annual Home Maintenance Membership)</li>
+<li><code>docs/operations/liability-insurance-framework.md</code> (Sherpa Home members get higher Layer 3 Work Guarantee caps)</li>
+</ul>
+<hr>
+<h2 id="1-executive-summary">1. Executive Summary</h2>
+<p><strong>Sherpa Home is the homeowner subscription tier of the Sherpa Pros platform — the home-warranty model done right.</strong> It converts one-time Marketplace customers into recurring relationships by stacking discounts, faster Service Level Agreements (SLAs), and member benefits on top of the existing transactional Marketplace. No claim-denial games, no six-week wait times, no "approved contractor" gotchas — just a better Sherpa Pros experience for the people who use it most. Two tiers: <strong>Sherpa Home Standard</strong> (the everyday membership) and <strong>Sherpa Home White Glove</strong> (adds a dedicated human Sherpa Account Manager — a productized concierge layer that scales the Phase 3 Manager white-glove vision into Phase 1 revenue today).</p>
+<hr>
+<h2 id="2-why-sherpa-home-exists">2. Why Sherpa Home Exists</h2>
+<p>The strategic rationale, in order of importance:</p>
+<ol>
+<li><p><strong>Recurring revenue → Lifetime Value (LTV) multiplier.</strong> Marketplace is transactional — each job is a stand-alone Gross Merchandise Volume (GMV) event. Subscriptions create a baseline revenue floor, smooth seasonality, and convert one-time customers into annuities. A homeowner who does $2,000/year of Marketplace work generates ~$200 of take rate; the same homeowner on Sherpa Home Standard generates <strong>$200 + $228 subscription = $428/year</strong> at minimum, before counting the higher job frequency that subscription members exhibit.</p>
+</li>
+<li><p><strong>Acquisition funnel for Marketplace.</strong> Subscribers post <strong>3-5x more jobs</strong> than non-subscribers (sunk-cost effect, member-discount triggers, member-only events surface jobs the homeowner was deferring). Sherpa Home is the highest-leverage way to expand wallet share per acquired homeowner.</p>
+</li>
+<li><p><strong>Defense vs. broken home-warranty incumbents.</strong> American Home Shield, 2-10 HomeBuyers Warranty, Choice Home Warranty, Super, and Old Republic Home Protection collectively own ~5M U.S. policy-holders, charge <strong>$50-80/month</strong>, and deny ~73% of claims (per consumer reporting). Their model — pay premiums, file claims, wait days for approval, get assigned a contractor you didn't pick — is structurally broken. Sherpa Home positions as "everything home warranty promised, nothing home warranty did."</p>
+</li>
+<li><p><strong>Pre-2030 "everything-as-a-service" market trend.</strong> Spotify, Netflix, Costco Executive, Amazon Prime, Peloton — consumers expect their high-frequency relationships to be subscriptions. Home services is the largest unsubscriptioned category in the consumer wallet ($600B+ annual U.S. residential repair/maintenance spend). First-mover advantage in this category compounds.</p>
+</li>
+<li><p><strong>Foundation for Phase 2 Property Manager (PM) tier upsell + Phase 3 Manager white-glove.</strong> Sherpa Home White Glove is the productized Manager service. Building it in Phase 1 generates the operational learning (how does a Manager actually serve a homeowner? what tasks are repeatable? what can be automated?) that unlocks the much larger PM-tier and Manager-as-a-service offerings in Phases 2-3.</p>
+</li>
+</ol>
+<hr>
+<h2 id="3-two-tiers-detailed">3. Two Tiers Detailed</h2>
+<h3 id="31-sherpa-home-standard">3.1 Sherpa Home Standard</h3>
+<p><strong>Price:</strong> $19/month or $199/year (16% annual discount, $29 saved per year prepaying).</p>
+<p><strong>Who it's for:</strong> Suburban homeowners with $300K-$1.5M home value who do 3-8 service jobs per year. Active homeowners, hands-on but time-constrained, value reliability over the lowest price.</p>
+<p><strong>What's included:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Benefit</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>5% discount on every Marketplace job</strong></td>
+<td>Paid by Sherpa Pros from the take rate (10% standard rate becomes effective 5% net for the pro on member jobs — pro is held harmless; <strong>see §10 Risks</strong>). Customer sees discount at checkout.</td>
+</tr>
+<tr>
+<td><strong>Priority dispatch</strong></td>
+<td>Member jobs match in <strong>&lt;30 minutes</strong> vs. &lt;2 hours for non-members. Dispatch Wiseman applies a member-priority multiplier in the 7-factor scoring.</td>
+</tr>
+<tr>
+<td><strong>One free Quick Job per quarter</strong></td>
+<td>Toilet swap, faucet replacement, drywall patch, ceiling fan install, smoke detector swap, etc. — any item from the Quick Job catalog up to $300 metro list price. Cap one per calendar quarter, no rollover.</td>
+</tr>
+<tr>
+<td><strong>Annual maintenance check-up</strong></td>
+<td>One free 1-hour pro visit per year — system inspection, problem-spotting, written report on what's coming due. The "your dentist's annual cleaning" of home maintenance.</td>
+</tr>
+<tr>
+<td><strong>Free standard Project Protection on every job</strong></td>
+<td>The embedded-insurance Plus tier ($89 list, $25K cap, 1 year, $250 deductible) is included free. Sherpa Pros pays the carrier premium from member-revenue pool.</td>
+</tr>
+<tr>
+<td><strong>Sherpa Home Member badge</strong></td>
+<td>In-app + on receipts + on email. Trust signal + subtle status.</td>
+</tr>
+<tr>
+<td><strong>Concierge chat support</strong></td>
+<td>Same Concierge layer that serves all homeowners, but member tickets are tagged for priority routing.</td>
+</tr>
+<tr>
+<td><strong>Cancel anytime</strong></td>
+<td>Cancel in-app, no questions asked. Pro-rated refund on monthly plan; no refund on annual plan after day 30.</td>
+</tr>
+<tr>
+<td><strong>30-day money-back guarantee</strong></td>
+<td>Full refund if you cancel in the first 30 days, no claw-back of benefits used.</td>
+</tr>
+</tbody></table>
+<p><strong>Engineering effort:</strong> Stripe Subscriptions (existing infra), member tier flag in <code>users</code> table, dispatcher priority hook (existing 7-factor algorithm — add member-tier weight), discount application at checkout (existing commission engine — add member-discount line), badge UI, quarterly maintenance scheduling job. <strong>Estimated 2-3 weeks for Tier 1 (T1) engineering.</strong></p>
+<h3 id="32-sherpa-home-white-glove">3.2 Sherpa Home White Glove</h3>
+<p><strong>Price:</strong> $149/month or $1,499/year (16% annual discount, $289 saved per year prepaying).</p>
+<p><strong>Who it's for:</strong> Multi-property owners + premium homeowners ($1M+ home value, second home or vacation property, busy professional who values time over money). Sub-niche: aging-in-place homeowners and remote-owner landlords who can't be on-site.</p>
+<p><strong>What's included — everything in Standard, PLUS:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Benefit</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Dedicated Sherpa Account Manager</strong></td>
+<td>A named human (photo + contact). Same Manager for the whole relationship. Manager carries 40-60 White Glove members at full saturation (per industry concierge ratios). <strong>See §10 — Manager naming open question.</strong></td>
+</tr>
+<tr>
+<td><strong>24/7 priority dispatch + named-pro preference</strong></td>
+<td>Same-day match guarantee during business hours; 4-hour match guarantee evenings/weekends. Manager learns the member's preferred pros and routes jobs to them first.</td>
+</tr>
+<tr>
+<td><strong>Quarterly home review</strong></td>
+<td>Manager visits the property OR runs a 30-minute video call to plan upcoming work. Reviews completed jobs, flags upcoming maintenance, builds the next quarter's roadmap.</td>
+</tr>
+<tr>
+<td><strong>One free emergency call per quarter</strong></td>
+<td>Plumbing leak at midnight, no power to half the house, broken garage door — Manager dispatches the right pro within 2 hours, member pays $0 platform-side (still pays pro for materials + parts at standard rate). Cap one per quarter.</td>
+</tr>
+<tr>
+<td><strong>Wheel-house contractor list</strong></td>
+<td>Manager handpicks 5-10 pros for the member's specific home (HVAC system type, electrical age, plumbing materials, roof material, landscape complexity). Member sees these pros first in every match.</td>
+</tr>
+<tr>
+<td><strong>Tax + insurance documentation organized</strong></td>
+<td>Manager keeps a year-end binder of all completed work with cost basis, depreciation categories, warranty registrations, insurance claim documentation. Provided as PDF + downloadable archive.</td>
+</tr>
+<tr>
+<td><strong>Project planning + phasing</strong></td>
+<td>Manager designs a 3-year maintenance + improvement roadmap (e.g., year 1: heat pump install + panel upgrade; year 2: bathroom remodel; year 3: roof replacement). Aligns to budget + lifecycle.</td>
+</tr>
+<tr>
+<td><strong>White-glove invoicing + finance</strong></td>
+<td>Single monthly statement for all jobs, easy expense categorization, direct ACH payment from one account, integration with Quicken/Mint/QuickBooks. Wisetack financing pre-approved for member's credit profile.</td>
+</tr>
+</tbody></table>
+<p><strong>Engineering effort:</strong> Manager Console (Phase 2 build — <strong>Phase 1 White Glove launches with manual ops in spreadsheets to validate the model before building the console</strong>), member-Manager pairing flag, video-call scheduling integration (Cal.com), document vault. <strong>Estimated 6-8 weeks for T1 once manual model is proven.</strong></p>
+<hr>
+<h2 id="4-pricing-decision-framework">4. Pricing Decision Framework</h2>
+<h3 id="41-comparison-set">4.1 Comparison set</h3>
+<table>
+<thead>
+<tr>
+<th>Service</th>
+<th>Price</th>
+<th>What you get</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>American Home Shield (basic)</strong></td>
+<td>$50-80/mo</td>
+<td>Repair coverage with $100-125 service fee per claim, ~73% claim denial rate, 2-7 day wait</td>
+<td>Industry leader, deeply unloved</td>
+</tr>
+<tr>
+<td><strong>2-10 HomeBuyers Warranty</strong></td>
+<td>$40-65/mo</td>
+<td>Similar to AHS, builder-channel-heavy</td>
+<td>Better claim rate but slow</td>
+</tr>
+<tr>
+<td><strong>Costco Executive Membership</strong></td>
+<td>$120/yr ($10/mo)</td>
+<td>2% rebate on Costco purchases, member-only services</td>
+<td>Low price + clear value math</td>
+</tr>
+<tr>
+<td><strong>Amazon Prime</strong></td>
+<td>$14.99/mo or $139/yr</td>
+<td>Shipping, Prime Video, Music, Photos, Pharmacy, Grocery delivery</td>
+<td>Bundle benchmark — multiple bundled benefits</td>
+</tr>
+<tr>
+<td><strong>AAA Plus</strong></td>
+<td>$89/yr ($7.42/mo)</td>
+<td>Roadside assistance + member benefits</td>
+<td>Closest "emergency + benefits" comp</td>
+</tr>
+<tr>
+<td><strong>Sherpa Home Standard (recommended)</strong></td>
+<td><strong>$19/mo or $199/yr</strong></td>
+<td>Discount + faster SLA + Quick Job + check-up + protection</td>
+<td>Half the price of home warranty, more usable than AAA</td>
+</tr>
+<tr>
+<td><strong>Sherpa Home White Glove (recommended)</strong></td>
+<td><strong>$149/mo or $1,499/yr</strong></td>
+<td>Above + dedicated Manager + 3-year roadmap + emergency lane</td>
+<td>Below traditional concierge ($300-500/mo), above AHS premium tier</td>
+</tr>
+</tbody></table>
+<h3 id="42-ltv-math-the-core-argument-for-the-recommended-price">4.2 LTV math (the core argument for the recommended price)</h3>
+<p><strong>Standard tier — base case:</strong></p>
+<p>A typical Sherpa Home Standard subscriber does $2,000/year of Marketplace work.</p>
+<ul>
+<li>Marketplace gross take: $2,000 × 10% = <strong>$200/year</strong></li>
+<li>Member discount (paid by Sherpa Pros, not pro): $2,000 × 5% = <strong>-$100/year</strong></li>
+<li>Net Marketplace take from this customer: <strong>$100/year</strong></li>
+<li>Subscription revenue: <strong>$199/year</strong></li>
+<li><strong>Total revenue per Standard member: $299/year</strong></li>
+<li>Less benefits cost: 1 free Quick Job/quarter ($400 list × 4 = $1,600 list, but pro gets paid Sherpa Pros' take rate — <strong>cost to Sherpa Pros: ~$240/year</strong> ($60 take rate per Quick Job × 4)) + annual check-up (<strong>~$80 cost</strong> = pro's hour at member-discount rate) + free Project Protection (<strong>~$25 cost</strong> = Sherpa Pros' wholesale carrier rate via Boost/Cover Genius MGA white-label deal) = <strong>$345/year cost</strong></li>
+<li><strong>Net contribution per Standard member: $299 - $345 = -$46/year</strong></li>
+</ul>
+<p>Wait — that's negative. Let's stress-test:</p>
+<p><strong>Standard tier — realistic case (subscribers post more jobs):</strong></p>
+<p>Industry data (Costco, Prime, Sam's Club) shows subscribers spend <strong>2-3x more</strong> than non-subscribers in the same category. Apply 2.5x to the Sherpa case:</p>
+<ul>
+<li>Subscriber does $5,000/year of Marketplace work (vs. $2,000 baseline)</li>
+<li>Marketplace gross take: $5,000 × 10% = <strong>$500/year</strong></li>
+<li>Member discount: $5,000 × 5% = <strong>-$250/year</strong></li>
+<li>Net Marketplace take: <strong>$250/year</strong></li>
+<li>Subscription revenue: <strong>$199/year</strong></li>
+<li><strong>Total revenue per Standard member: $449/year</strong></li>
+<li>Less benefits cost: <strong>$345/year</strong> (same as above)</li>
+<li><strong>Net contribution per Standard member: $449 - $345 = +$104/year</strong></li>
+</ul>
+<p>At Phase 2 (1,000 paying members): <strong>$104K/year recurring contribution margin.</strong> At Phase 3 (10,000 paying members): <strong>$1.04M/year.</strong> Scales cleanly.</p>
+<p><strong>Critical assumption to validate in Phase 1 pilot:</strong> the 2.5x job-frequency lift. If real lift is only 1.5x, contribution drops to ~$15/year/member — still positive but thin. If real lift is 3x, contribution jumps to ~$200/year/member.</p>
+<p><strong>White Glove tier — base case:</strong></p>
+<p>A typical White Glove subscriber does $20,000/year of work (multi-property or premium homeowner).</p>
+<ul>
+<li>Marketplace gross take: $20,000 × 10% = <strong>$2,000/year</strong></li>
+<li>Member discount (5% — same as Standard): $20,000 × 5% = <strong>-$1,000/year</strong></li>
+<li>Net Marketplace take: <strong>$1,000/year</strong></li>
+<li>Subscription revenue: <strong>$1,499/year</strong></li>
+<li><strong>Total revenue per White Glove member: $2,499/year</strong></li>
+<li>Less benefits cost: 1 Quick Job/quarter + annual check-up + Project Protection on every job (<del>10 jobs at $25 each = <strong>$250/year</strong>) + free emergency call/quarter (avg $300 cost × 2 actual uses = <strong>$600/year</strong>) + Manager time (avg 8 hours/year of Manager attention at $50/hr fully loaded = <strong>$400/year</strong>) = **</del>$1,570/year cost**</li>
+<li><strong>Net contribution per White Glove member: $2,499 - $1,570 = +$929/year</strong></li>
+</ul>
+<p>At Phase 2 (50 White Glove members): <strong>$46K/year recurring contribution margin</strong> at high LTV per customer.</p>
+<h3 id="43-why-19-not-29-for-standard">4.3 Why $19 not $29 for Standard</h3>
+<ul>
+<li>$19 is the Amazon Prime / Spotify Premium sweet spot — proven psychological floor for "monthly habit subscription."</li>
+<li>$29 implies a "premium" tier and creates room for a future "Sherpa Home Pro" middle tier between Standard and White Glove ($49-69/mo).</li>
+<li>Lower price drives higher attach rate from Marketplace customers (target: <strong>35%+ attach rate</strong> at $19, vs. ~20% at $29 per Lyft Pink-style benchmarks). At our scale, <strong>higher attach × lower price &gt;&gt; lower attach × higher price.</strong></li>
+</ul>
+<h3 id="44-why-149-not-99-or-199-for-white-glove">4.4 Why $149 not $99 or $199 for White Glove</h3>
+<ul>
+<li>$99 underprices the human-Manager labor (Manager carrying 40 members @ $99 = $4,000/mo revenue per Manager, can't cover Manager's $5-7K/mo fully-loaded cost without subsidy).</li>
+<li>$199 is the home-warranty premium-tier price and drags us into that comparison set (we want to be visibly differentiated, not just "better home warranty").</li>
+<li>$149 is the "premium-but-not-extravagant" anchor — same ballpark as Peloton All-Access ($44/mo) × 3, which is the "premium subscription" mental category for high-income consumers.</li>
+<li>$149 × 12 = $1,788/year — close enough to the round $1,500 annual that prepay (16% off → $1,499) is a clean round number.</li>
+</ul>
+<hr>
+<h2 id="5-target-customer-profiles">5. Target Customer Profiles</h2>
+<h3 id="51-sherpa-home-standard">5.1 Sherpa Home Standard</h3>
+<p><strong>Primary persona — "Active Suburban Homeowner":</strong></p>
+<ul>
+<li>$300K-$1.5M home value</li>
+<li>Owner-occupied, 5-25 years in home</li>
+<li>3-8 service jobs/year</li>
+<li>Household income $100K-$250K</li>
+<li>Knows enough to do small things themselves but hires for licensed work</li>
+<li>Annoyed by Angi/Thumbtack lead-gen experience</li>
+<li>Tried home warranty once, hated it</li>
+</ul>
+<p><strong>Secondary persona — "First-Time Homeowner":</strong></p>
+<ul>
+<li>$250K-$600K home value, recent purchase</li>
+<li>Don't know what they don't know</li>
+<li>Annual maintenance check-up is the killer hook</li>
+<li>Convert from "I should" to "I do" once they have a Manager in their corner</li>
+</ul>
+<h3 id="52-sherpa-home-white-glove">5.2 Sherpa Home White Glove</h3>
+<p><strong>Primary persona — "Time-Poor Premium Homeowner":</strong></p>
+<ul>
+<li>$1M+ primary residence</li>
+<li>Often a second home or vacation property</li>
+<li>Household income $400K+</li>
+<li>Busy professional (executive, physician, attorney, founder)</li>
+<li>Values time over money</li>
+<li>Currently uses ad-hoc concierge (handyman they've known for 20 years) and is realizing that handyman is retiring soon</li>
+</ul>
+<p><strong>Secondary persona — "Multi-Property Owner":</strong></p>
+<ul>
+<li>Owns 2-10 residential properties (not commercial — that's PM tier)</li>
+<li>Mix of primary, vacation, and small-rental</li>
+<li>Currently juggling 5-15 contractors across properties in spreadsheets</li>
+<li>Manager does the spreadsheet for them; that alone justifies the price</li>
+</ul>
+<p><strong>Tertiary persona — "Aging-in-Place Homeowner":</strong></p>
+<ul>
+<li>65+ years old, downsizing intent but staying in current home for now</li>
+<li>Adult children live elsewhere, want a trusted human in the loop</li>
+<li>Manager is the trust-anchor; the children pay the subscription</li>
+</ul>
+<hr>
+<h2 id="6-acquisition-funnel">6. Acquisition Funnel</h2>
+<h3 id="61-primary-acquisition-path--post-job-conversion">6.1 Primary acquisition path — post-job conversion</h3>
+<p><strong>The single most important conversion moment in the platform.</strong> After a Marketplace customer marks a job complete and rates the pro, the next screen offers Sherpa Home:</p>
+<pre><code>┌──────────────────────────────────────────────────────────────┐
+│  Job complete. Mike rated 5 stars.                           │
+│                                                              │
+│  Would you have wanted Mike here in 30 minutes               │
+│  instead of the 2-hour wait? And $25 off this job?           │
+│                                                              │
+│  Sherpa Home Members get:                                    │
+│  - 5% off every job (would have saved $35 on this one)       │
+│  - Priority match (under 30 min vs. 2 hrs)                   │
+│  - Free Quick Job each quarter (toilet, faucet, etc.)        │
+│  - Annual home check-up                                      │
+│                                                              │
+│  $19/mo or $199/yr. Cancel anytime. 30-day money-back.       │
+│                                                              │
+│  [Start free 30-day trial]    [Maybe later]                  │
+└──────────────────────────────────────────────────────────────┘
+</code></pre>
+<p><strong>Target attach rate: 35%+</strong> (industry benchmark for post-purchase subscription offers: Amazon Prime ~25-30%, AAA renewal ~40-50%, Costco Executive upgrade ~15-20%). Attach is highest immediately after a satisfied job — the customer is in "this worked" mindset.</p>
+<h3 id="62-secondary-acquisition-paths">6.2 Secondary acquisition paths</h3>
+<table>
+<thead>
+<tr>
+<th>Channel</th>
+<th>Mechanism</th>
+<th>Volume estimate</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Existing customer in-app campaign</strong></td>
+<td>Notification to all customers who've completed 2+ jobs in the past 12 months: "Your member benefits started today — try free for 30 days"</td>
+<td>~25-30% conversion of multi-job customers in Phase 1</td>
+</tr>
+<tr>
+<td><strong>Wefunder community-round investors</strong></td>
+<td>Subscription comes free for Wefunder investors who commit $1,000+ (loyalty + early-adopter signal — converts investors into power users)</td>
+<td>~150-300 free-tier members from Wefunder pool</td>
+</tr>
+<tr>
+<td><strong>HJD network warm conversion</strong></td>
+<td>Phyrom's existing HJD client base gets a free 90-day trial as a thank-you for their early support. Concierge personally onboards each.</td>
+<td>~80-120 trial conversions, ~50% retention to paid</td>
+</tr>
+<tr>
+<td><strong>Referral loop</strong></td>
+<td>Member refers a friend → both get 1 free month. Target Phase 2 ratio: 1 referral per 4 members per quarter.</td>
+<td>Compounds in Phase 2-3</td>
+</tr>
+<tr>
+<td><strong>Member-only events</strong></td>
+<td>NHHBA chapter spotlights, homeowner workshops (lead-paint safety, weatherization, EV-charger basics) — non-members can attend by joining</td>
+<td>~5-10% conversion at event</td>
+</tr>
+<tr>
+<td><strong>Mass Save partnership</strong></td>
+<td>Mass Save customers who use Sherpa Pros for heat-pump install get 90-day Sherpa Home trial bundled into the rebate paperwork</td>
+<td>Phase 2+ — depends on partnership</td>
+</tr>
+<tr>
+<td><strong>Property Manager handoff</strong></td>
+<td>When PM tier launches and a unit is sold to a homeowner, PM hands off Sherpa Home subscription to new owner (keeps the data + pro relationships intact)</td>
+<td>Phase 3+</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="7-retention-mechanics">7. Retention Mechanics</h2>
+<table>
+<thead>
+<tr>
+<th>Mechanic</th>
+<th>What it does</th>
+<th>Why it works</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Annual savings recap email</strong></td>
+<td>"You saved $487 this year as a Sherpa Home member" — itemized</td>
+<td>Concrete proof of value at renewal moment (per Costco/AAA renewal playbook)</td>
+</tr>
+<tr>
+<td><strong>Member-only events</strong></td>
+<td>NHHBA workshops, homeowner education, Phyrom AMA sessions, Old-House Verified meetups</td>
+<td>Community + identity (Costco / REI playbook)</td>
+</tr>
+<tr>
+<td><strong>Loyalty tier perks</strong></td>
+<td>3-year member = priority pro pool access (top-rated Founding Pros). 5-year member = lifetime grandfathered rate (renewal protected from price increases).</td>
+<td>Switching cost grows over time</td>
+</tr>
+<tr>
+<td><strong>Refer-a-friend</strong></td>
+<td>1 free month for both parties per successful referral, no cap</td>
+<td>Network effect — the highest-LTV members become the recruiters</td>
+</tr>
+<tr>
+<td><strong>Quarterly value drops</strong></td>
+<td>Each quarter Sherpa Home adds a small new perk (a partner discount, a new Quick Job category, an event invite) — keeps the membership feeling alive</td>
+<td>Avoids the "I forgot why I subscribed" cancellation trigger</td>
+</tr>
+<tr>
+<td><strong>Annual maintenance check-up auto-scheduled</strong></td>
+<td>Pre-scheduled at signup, auto-renewed each year — member doesn't have to remember</td>
+<td>Built-in retention touch — and the pro who shows up is a high-trust touchpoint</td>
+</tr>
+<tr>
+<td><strong>Manager check-ins (White Glove)</strong></td>
+<td>Quarterly relationship calls regardless of whether jobs were posted</td>
+<td>The human relationship IS the retention mechanic for White Glove</td>
+</tr>
+<tr>
+<td><strong>Win-back campaigns</strong></td>
+<td>Cancelled members get a 60-day silent period, then a "we built X new thing — come back at 50% off for 3 months" offer</td>
+<td>Industry standard ~15-25% win-back conversion</td>
+</tr>
+</tbody></table>
+<p><strong>Target retention metrics:</strong></p>
+<ul>
+<li>Standard: <strong>75% Year-1 retention, 60% Year-2 retention, 50% Year-3 retention</strong> (matches Amazon Prime / Spotify Premium / Costco)</li>
+<li>White Glove: <strong>85% Year-1 retention, 75% Year-2, 70% Year-3</strong> (matches AmEx Centurion / premium concierge — the human relationship is sticky)</li>
+</ul>
+<hr>
+<h2 id="8-comparison-vs-home-warranty-incumbents">8. Comparison vs. Home Warranty Incumbents</h2>
+<table>
+<thead>
+<tr>
+<th>Dimension</th>
+<th>Home Warranty (American Home Shield, 2-10, Choice, Old Republic, Super)</th>
+<th>Sherpa Home</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Price</strong></td>
+<td>$50-80/mo</td>
+<td>$19/mo Standard, $149/mo White Glove</td>
+</tr>
+<tr>
+<td><strong>Model</strong></td>
+<td>Pay premiums, file claim when something breaks</td>
+<td>Pay subscription, get ongoing benefits + discounts on planned + emergency work</td>
+</tr>
+<tr>
+<td><strong>Wait time</strong></td>
+<td>2-7 days from claim to contractor visit (industry average)</td>
+<td>&lt;30 min match for members (Standard), &lt;4 hr 24/7 (White Glove)</td>
+</tr>
+<tr>
+<td><strong>Claim denial rate</strong></td>
+<td>~73% (per consumer-protection data)</td>
+<td><strong>Not applicable — no claims to file.</strong> Member gets discounts + priority + included benefits, period.</td>
+</tr>
+<tr>
+<td><strong>Contractor selection</strong></td>
+<td>Insurer assigns "approved contractor" — homeowner has no say</td>
+<td>Homeowner picks from Sherpa Pros marketplace OR Manager handpicks (White Glove)</td>
+</tr>
+<tr>
+<td><strong>Service fee per claim</strong></td>
+<td>$75-125 per claim, often per trip</td>
+<td>$0 platform-side fee; pro gets paid Marketplace rate (member discount applied)</td>
+</tr>
+<tr>
+<td><strong>Coverage scope</strong></td>
+<td>Limited to listed appliances/systems, gotcha exclusions</td>
+<td>Open scope — any work the Marketplace can do</td>
+</tr>
+<tr>
+<td><strong>Renewal experience</strong></td>
+<td>Hard to cancel, automatic price increases, "loyalty" tier games</td>
+<td>Cancel anytime in-app, transparent pricing, 30-day money-back</td>
+</tr>
+<tr>
+<td><strong>Net Promoter Score (industry)</strong></td>
+<td>~ -15 to +5 (consistently below average)</td>
+<td>Target +50 (Marketplace baseline per Phase 1 metrics)</td>
+</tr>
+</tbody></table>
+<p><strong>Positioning headline:</strong> <em>"Home warranty done right. No claims. No denials. Just a better Sherpa Pros experience — and you get it for less than half the price."</em></p>
+<p><strong>Marketing proof points (assemble for landing page):</strong></p>
+<ul>
+<li>Side-by-side comparison table (above)</li>
+<li>"Things home warranty denies" list (HVAC pre-existing, code upgrade, "not covered failure mode")</li>
+<li>Customer testimonials specifically from former home-warranty members (recruit via post-cancellation survey of members who churned to us)</li>
+<li>Better Business Bureau (BBB) rating comparison</li>
+</ul>
+<hr>
+<h2 id="9-engineering-scope-t1-reference">9. Engineering Scope (T1 Reference)</h2>
+<p><strong>Phase 1 launch (Standard tier — 2-3 weeks of T1 effort):</strong></p>
+<ul>
+<li><strong>Stripe Subscription billing:</strong> Standard $19/mo + $199/yr SKUs (existing Stripe Connect infrastructure handles this — add Subscription product)</li>
+<li><strong>Member tier in user model:</strong> add <code>membership_tier</code> enum to <code>users</code> table (<code>none</code>, <code>standard</code>, <code>white_glove</code>, <code>wefunder_free</code>, <code>hjd_trial</code>)</li>
+<li><strong>Dispatcher logic:</strong> Dispatch Wiseman 7-factor scoring adds member-tier weight (members get +20 score boost → priority match)</li>
+<li><strong>Member badge UI:</strong> add badge to profile, receipts, in-app messaging</li>
+<li><strong>Discount application at checkout:</strong> commission engine reads member tier, applies 5% discount to customer-facing total, deducts from Sherpa Pros take (pro is held harmless)</li>
+<li><strong>Free Project Protection wiring:</strong> when MGA partnership lands, member-flag triggers auto-bind of Plus tier policy at $0 to customer</li>
+<li><strong>Quarterly Quick Job tracker:</strong> new table <code>member_quick_job_credits</code> (memberId, quarter, used, jobId, redeemedAt)</li>
+<li><strong>Annual maintenance check-up scheduling:</strong> background job creates a "check-up scheduled" task once per member-year; Concierge confirms slot</li>
+<li><strong>Cancellation flow:</strong> in-app cancel button, pro-rated refund logic, 30-day money-back tracking</li>
+</ul>
+<p><strong>Phase 2 launch (White Glove tier — 6-8 weeks once manual model proves out):</strong></p>
+<ul>
+<li><strong>Manager Console:</strong> internal admin tool — member roster, communication log, scheduling, document vault, escalation queue</li>
+<li><strong>Member-Manager pairing:</strong> assignment logic, hand-off mechanics, vacation/coverage routing</li>
+<li><strong>Video-call integration:</strong> Cal.com or Calendly embed for quarterly home review calls</li>
+<li><strong>Document vault:</strong> S3-backed per-member document store (jobs, warranties, COIs, tax binders)</li>
+<li><strong>Wheel-house pro list UI:</strong> member-facing "your pros" page, Manager-side curation</li>
+<li><strong>Annual tax/insurance binder generation:</strong> PDF report builder, year-end cron job</li>
+<li><strong>Manager analytics:</strong> Manager dashboard — member health scores, upcoming touchpoints, satisfaction trends</li>
+</ul>
+<p><strong>Phase 1 White Glove (manual / pilot):</strong></p>
+<ul>
+<li>Run with spreadsheets + Phyrom + 1 Concierge as Manager</li>
+<li>Cap at 10-15 White Glove pilots (HJD network + Wefunder top tier)</li>
+<li>Validate Manager-load (40-60 members per Manager) assumption before building console</li>
+</ul>
+<hr>
+<h2 id="10-risks--mitigations">10. Risks &amp; Mitigations</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Risk</th>
+<th>Severity</th>
+<th>Early signal</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>R1</strong></td>
+<td><strong>Acquisition cost vs LTV underwater.</strong> Customer Acquisition Cost (CAC) &gt; LTV at scale.</td>
+<td>Critical</td>
+<td>Phase 1 pilot CAC &gt; $30, retention &lt; 60% Year 1</td>
+<td>Phase 1 pilot is acquisition-cost-controlled — recruit only via post-job conversion + Wefunder + HJD warm. NO paid acquisition until LTV proves. Target: &lt;$30 CAC, &gt;$300 first-year LTV. Kill product if metrics don't pencil after 90-day pilot.</td>
+</tr>
+<tr>
+<td><strong>R2</strong></td>
+<td><strong>Cannibalization.</strong> Member discount erodes Marketplace take faster than subscription revenue replaces it.</td>
+<td>High</td>
+<td>Net contribution per member negative after 6 months</td>
+<td>LTV math (§4.2) assumes 2.5x job-frequency lift in members. Validate via cohort analysis early — non-member vs. member jobs/year. If lift is &lt;1.5x, raise discount cost-share with pro OR drop discount to 3%.</td>
+</tr>
+<tr>
+<td><strong>R3</strong></td>
+<td><strong>Pro-side resentment.</strong> Pros may feel "Sherpa pays me less for member jobs" even though Sherpa eats the discount.</td>
+<td>High</td>
+<td>Pro NPS drops on member jobs vs. non-member; pro opts out of member dispatch</td>
+<td><strong>Pro is ALWAYS held harmless.</strong> Member discount is paid by Sherpa Pros from take rate, not from pro's quote. Communicate this clearly in pro onboarding ("members = more jobs at the same rate to you, not less per job"). Show pros member-job volume in their dashboard.</td>
+</tr>
+<tr>
+<td><strong>R4</strong></td>
+<td><strong>Free Quick Job abuse.</strong> Members redeem the free Quick Job + annual check-up but post zero paid jobs (free-rider problem).</td>
+<td>Medium</td>
+<td>Member who's used both freebies posts zero paid jobs in their first year</td>
+<td>Free Quick Job cap at $300 list value (caps Sherpa Pros' free-job exposure to ~$240 cost). Annual check-up is 1 hour, not unlimited. If a member's sole behavior is freebie redemption, downgrade messaging at renewal.</td>
+</tr>
+<tr>
+<td><strong>R5</strong></td>
+<td><strong>Insurance expectation creep.</strong> Members expect higher Layer 3 Work Guarantee caps + faster claim processing.</td>
+<td>Medium</td>
+<td>Member dispute volume disproportionately high; member expectations exceed Standard guarantee</td>
+<td>Bundle higher Work Guarantee cap into pricing, not as surprise. Standard members get <strong>$10K cap / 60-day window</strong> (vs. $5K / 30-day for non-members). White Glove members get <strong>$25K cap / 90-day window</strong>. Document explicitly in member terms.</td>
+</tr>
+<tr>
+<td><strong>R6</strong></td>
+<td><strong>Manager ratio doesn't pencil.</strong> Real Manager workload per White Glove member exceeds the 40-60 ratio assumed in pricing.</td>
+<td>Medium</td>
+<td>Manager pilot shows 8+ hours/member/year (vs. 8 hours/member/year assumption)</td>
+<td>Phase 1 manual pilot is the test. If real ratio is closer to 25 members/Manager, raise White Glove price to $199/mo OR strip benefit (e.g., quarterly review becomes biannual).</td>
+</tr>
+<tr>
+<td><strong>R7</strong></td>
+<td><strong>Brand confusion with home warranty.</strong> Customers confuse Sherpa Home with home warranty and expect insurance-style coverage.</td>
+<td>Medium</td>
+<td>Customer service complaints framed as "you didn't cover my X"</td>
+<td>Clear marketing: "Sherpa Home is a membership, not insurance. We don't pay for repairs — we make the repair experience faster, cheaper, and better." Project Protection (paid embedded insurance) is the actual insurance product, separately positioned.</td>
+</tr>
+<tr>
+<td><strong>R8</strong></td>
+<td><strong>Cannibalization of pro-direct relationships.</strong> A homeowner who uses a Sherpa pro 5x in a year may hire that pro directly off-platform, ending Marketplace + subscription value.</td>
+<td>Medium</td>
+<td>Member churn correlates with high single-pro repeat rate</td>
+<td>Standard contractual: Sherpa Pros' Pro Service Agreement prohibits direct off-platform booking with introduced customers for 12 months post-job. Layer in member-only perks (Project Protection, dispute resolution) that don't transfer to off-platform work.</td>
+</tr>
+<tr>
+<td><strong>R9</strong></td>
+<td><strong>Wefunder free-tier dilution.</strong> Free Wefunder member tier doesn't convert to paid + costs Sherpa Pros to serve.</td>
+<td>Low</td>
+<td>Wefunder members consume benefits but never upgrade</td>
+<td>Free tier is time-limited (12 months), then auto-converts to Standard at $19/mo with cancel-out option. Wefunder commitment level ($1K+) sets the bar high enough that the free year is a true investor reward, not a bug.</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="11-open-questions-for-phyrom">11. Open Questions for Phyrom</h2>
+<ol>
+<li><p><strong>Standard pricing:</strong> $19/mo OR $29/mo? (Recommendation: <strong>$19</strong> for higher attach rate; revisit if attach &lt;25% in Phase 1 pilot.)</p>
+</li>
+<li><p><strong>White Glove pricing:</strong> $99 OR $149 OR $199/mo? (Recommendation: <strong>$149</strong> — see §4.4 reasoning.)</p>
+</li>
+<li><p><strong>Bundle Project Protection (paid embedded insurance) free with White Glove or extra?</strong> (Recommendation: <strong>bundle Plus tier free with both Standard and White Glove</strong>; bundle Premium tier ($249 list, $100K cap, 5-year) free with White Glove only. Predictability of expectations matters more than nickel-and-diming on the insurance line.)</p>
+</li>
+<li><p><strong>Can pros opt out of Sherpa Home discount on their jobs (and forgo member dispatches)?</strong> (Recommendation: <strong>No opt-out</strong>. Member jobs are 5%-discounted to customer but <strong>not</strong> discounted to pro — pro gets paid normal rate. If pro can opt out, the member experience fragments and dispatcher logic breaks. Communicate this clearly in pro onboarding: "All Sherpa Pros pros accept member jobs at standard pay; member discount comes out of platform take, not your earnings.")</p>
+</li>
+<li><p><strong>"Sherpa Account Manager" vs. "Sherpa Success Manager" — pick one</strong> (impacts White Glove product naming + future Manager-as-a-Service offering naming). (Recommendation: <strong>"Sherpa Account Manager"</strong> — "Account" implies an enduring relationship vs. "Success" which feels SaaS-y. Also leaves "Customer Success Manager" available as a different role for the platform.)</p>
+</li>
+<li><p><strong>HJD network warm conversion — full 90-day free trial or paid-from-day-1 with 50% lifetime discount?</strong> (Recommendation: <strong>90-day free trial + 50% off Year 1, then standard pricing</strong> — generous but converts to revenue eventually. HJD network = highest trust pool; don't waste them on a pure freemium offer.)</p>
+</li>
+<li><p><strong>Wefunder free tier — what investment level qualifies?</strong> (Recommendation: <strong>$1,000+ commitment</strong> = 12 months free Standard. <strong>$10,000+ commitment</strong> = 12 months free White Glove. Caps Sherpa Pros' freebie exposure while making the perk feel meaningful.)</p>
+</li>
+<li><p><strong>Annual maintenance check-up — who pays the pro?</strong> (Recommendation: <strong>Sherpa Pros pays the pro a flat $80 visit fee</strong> from member-revenue pool. Pro accepts because it's a predictable hour of work + a chance to surface upsell opportunities for paid follow-up jobs. Member experience is "free check-up by a real licensed pro.")</p>
+</li>
+<li><p><strong>Multi-property White Glove pricing — flat $149/mo or per-property?</strong> (Recommendation: <strong>$149/mo for first property + $49/mo per additional property</strong>, max 5 properties on a single membership. Above 5 properties = PM tier conversation.)</p>
+</li>
+<li><p><strong>Phase 1 pilot scope — how many members to validate?</strong> (Recommendation: <strong>150-200 Standard + 10-15 White Glove</strong> in Phase 1 (Months 3-6). Enough volume for cohort statistics on retention + LTV; small enough to manage with Phase 1 staffing (1 Pro Success Manager, 1 part-time Concierge).)</p>
+</li>
+</ol>
+<hr>
+<h2 id="12-implementation-sequencing">12. Implementation Sequencing</h2>
+<p><strong>Phase 0 (Months 0-3):</strong> No action. Build the underlying foundation (Stripe Connect, beta cohort, Marketplace base experience). Sherpa Home is a Phase 1 launch.</p>
+<p><strong>Phase 1 (Months 3-6):</strong></p>
+<ul>
+<li><strong>Month 4:</strong> Standard tier engineering build (T1, 2-3 weeks). Manual White Glove pilot ops setup.</li>
+<li><strong>Month 4-5:</strong> Soft-launch Standard to existing Marketplace customers (post-job conversion offer). 30-day money-back guarantee active.</li>
+<li><strong>Month 5:</strong> White Glove pilot opens — 10-15 members from HJD network + top Wefunder investors.</li>
+<li><strong>Month 5-6:</strong> A/B test pricing ($19 vs. $29 Standard, $99 vs. $149 White Glove) on small cohorts.</li>
+<li><strong>Month 6:</strong> Measure attach rate, retention, LTV cohort math, Manager workload reality. Decide go/kill.</li>
+</ul>
+<p><strong>Phase 2 (Months 6-12):</strong></p>
+<ul>
+<li>Standard tier: scale via paid + organic, target 1,000 paying members by Month 12.</li>
+<li>White Glove: scale to 50 paying members; build Manager Console (T1, 6-8 weeks).</li>
+<li>Add Phase 2 perks: partner discounts (Mass Save bundle, FW Webb discount, Lowe's Pro line), member events.</li>
+</ul>
+<p><strong>Phase 3 (Months 12-18):</strong></p>
+<ul>
+<li>Standard tier: 5,000+ paying members across Northeast launch markets.</li>
+<li>White Glove: 200+ paying members; Manager team scaled to 4-6 named Managers.</li>
+<li>Manager-as-a-Service launches as separate product line for Property Manager tier (Phase 3 vision realized).</li>
+</ul>
+<p><strong>Phase 4 (Months 18+):</strong></p>
+<ul>
+<li>National scale: Sherpa Home becomes the recurring-revenue floor that anchors Series B+ unit economics.</li>
+<li>White Glove tier becomes the trojan horse for ultra-high-net-worth concierge home services — separate brand consideration ("Sherpa Estate"?).</li>
+</ul>
+<hr>
+<h2 id="13-brand-bible-compliance-check">13. Brand Bible Compliance Check</h2>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> <strong>National brand</strong> — no New Hampshire/New England brand cap. Sherpa Home is the national homeowner subscription tier. Phase 1 launches in Phase 1 metros (Portsmouth, Manchester, Portland, Boston) operationally.</li>
+<li><input checked="" disabled="" type="checkbox"> <strong>Phyrom-as-NH-GC origin</strong> — referenced as biographical anchor in HJD warm-conversion path; not used as brand cap.</li>
+<li><input checked="" disabled="" type="checkbox"> <strong>No Wiseman externally</strong> — Dispatch Wiseman is referenced internally in §9 engineering scope; member-facing copy says "priority match" not "Dispatch Wiseman priority."</li>
+<li><input checked="" disabled="" type="checkbox"> <strong>No surname</strong> — Phyrom only.</li>
+<li><input checked="" disabled="" type="checkbox"> <strong>No "AI-powered" headline</strong> — Sherpa Home's pitch is "human concierge + better experience", not "AI-powered." (Manager White Glove is explicitly a human Manager, not an AI agent.)</li>
+<li><input checked="" disabled="" type="checkbox"> <strong>Abbreviations spelled out on first use:</strong><ul>
+<li>Service Level Agreement (SLA)</li>
+<li>Lifetime Value (LTV)</li>
+<li>Gross Merchandise Volume (GMV)</li>
+<li>Customer Acquisition Cost (CAC)</li>
+<li>Net Promoter Score (NPS)</li>
+<li>Property Manager (PM)</li>
+<li>Pro Success Manager (PSM)</li>
+<li>Tier 1 (T1)</li>
+<li>Better Business Bureau (BBB)</li>
+<li>Managing General Agent (MGA) — referenced via Boost / Cover Genius cross-doc</li>
+<li>Certificate of Insurance (COI) — cross-doc</li>
+</ul>
+</li>
+<li><input checked="" disabled="" type="checkbox"> <strong>Plainspoken tone</strong> — no marketing-speak, 8th-grade reading level on member-facing copy.</li>
+<li><input checked="" disabled="" type="checkbox"> <strong>"Jobs not leads"</strong> — preserved in Marketplace; Sherpa Home messaging extends with "Subscription not premium." (Tagline candidate: <em>"A membership, not insurance. A relationship, not a claim form."</em>)</li>
+</ul>
+<hr>
+<h2 id="14-last-updated">14. Last Updated</h2>
+<p><strong>2026-04-22</strong> — Draft v1 by Claude. Needs Phyrom + finance + attorney review before pricing locks. Phase 1 launch product — engineering scope is 2-3 weeks for Standard tier, manual pilot for White Glove. Coordinate with <code>embedded-protection-products.md</code> (Sherpa Home Standard auto-bundles Project Protection Plus tier; White Glove auto-bundles Premium tier — formalize the cost-share with chosen MGA partner).</p>
+
+	
+
+
+</body>
+</html>

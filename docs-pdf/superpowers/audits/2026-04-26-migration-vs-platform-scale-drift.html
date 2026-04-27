@@ -1,0 +1,968 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2026 04 26 migration vs platform scale drift — Sherpa Pros</title>
+<link rel="icon" href="../../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="2026-04-26-migration-vs-platform-scale-drift.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="drift-audit--migration-spec-vs-platform-scale">Drift Audit — Migration Spec vs Platform Scale</h1>
+<p>This audit cross-checks Phyrom's production-launch / Hub-beta / migration architecture spec (<code>docs/superpowers/specs/2026-04-25-production-launch-hub-architecture-design.md</code>, shipped in commit <code>6045f43</code>) against the orchestrator's Phase 4 Platform Scale Architecture spec + plan (shipped in commit <code>65c70cd</code>). The goal is to surface drift before either thread advances further so reconciliation happens proactively, not after a P0 lands in production.</p>
+<p>This is a <strong>read-only audit</strong>. No source spec is edited. Reconciliation actions require a joint Phyrom + orchestrator decision and should be tracked as their own follow-on commits.</p>
+<hr>
+<h2 id="executive-summary">Executive summary</h2>
+<p>Two <strong>P0 contradictions</strong> that need a joint architectural decision before either spec can be acted on further:</p>
+<ol>
+<li><strong>Migration target architecture is incompatible.</strong> Phyrom commits to extracting <code>src/lib/services/*</code> to standalone Node.js containers with Vercel demoted to a thin proxy and BullMQ as the queue. Phase 4 commits to Vercel Fluid Compute through 5M MAU and explicitly defers any container move. These are mutually exclusive end-states.</li>
+<li><strong>Object storage vendor split.</strong> Phyrom selects Cloudflare R2 (zero egress). Phase 4 writes AWS S3 + Glacier Deep Archive into cold-tier and DR. Two clouds, two billing relationships, two operational surfaces.</li>
+</ol>
+<p>One <strong>P1 cheap-now-expensive-later</strong>: Hub tables in migration 011 lack <code>metro_id</code> columns, which the Phase 4 sharding plan assumes. Adding the column today is trivial. Retrofitting after Citus rollout is expensive.</p>
+<p>Five additional <strong>P1-P3 items</strong> detailed below. Most are reconcilable with wording changes; a handful require small spec patches.</p>
+<hr>
+<h2 id="source-files-reviewed">Source files reviewed</h2>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Owner</th>
+<th>Lines</th>
+<th>Commit</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>docs/superpowers/specs/2026-04-25-production-launch-hub-architecture-design.md</code></td>
+<td>Phyrom</td>
+<td>564</td>
+<td><code>6045f43</code></td>
+</tr>
+<tr>
+<td><code>docs/superpowers/specs/2026-04-25-platform-scale-architecture-design.md</code></td>
+<td>orchestrator</td>
+<td>798</td>
+<td><code>65c70cd</code></td>
+</tr>
+<tr>
+<td><code>docs/superpowers/plans/2026-04-25-platform-scale-architecture-plan.md</code></td>
+<td>orchestrator</td>
+<td>801</td>
+<td><code>65c70cd</code></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="section-by-section-drift-table">Section-by-section drift table</h2>
+<table>
+<thead>
+<tr>
+<th>Topic</th>
+<th>Phyrom (6045f43)</th>
+<th>Phase 4 (65c70cd)</th>
+<th>Drift type</th>
+<th>Severity</th>
+<th>Recommended reconciliation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Compute platform</td>
+<td>Extract <code>src/lib/services/*</code> to standalone Node.js containers, Vercel becomes thin proxy (§9)</td>
+<td>Vercel Fluid Compute through 5M MAU, defer container move (§13, Open Decision #5)</td>
+<td><strong>Contradiction</strong></td>
+<td><strong>P0</strong></td>
+<td>Vercel-native wins through 5M MAU. Reframe Phyrom §9 as "optionality preserved — service abstraction allows future container extraction if scale demands it" rather than a committed end-state.</td>
+</tr>
+<tr>
+<td>Object storage</td>
+<td>Cloudflare R2 (zero egress)</td>
+<td>AWS S3 + Glacier Deep Archive (cold-tier, DR sections)</td>
+<td><strong>Contradiction</strong></td>
+<td><strong>P0</strong></td>
+<td>Rewrite Phase 4 cold-tier + DR sections as "S3-compatible (R2 or AWS S3, decision pending — see Open Decision #X)". Preserves Phyrom's vendor choice without forcing dual-cloud.</td>
+</tr>
+<tr>
+<td>Hub table sharding readiness</td>
+<td>New 9 Hub tables in migration 011 (<code>hub_inventory</code>, <code>hub_access_log</code>, <code>hub_inventory_transactions</code>, et al.) lack <code>metro_id</code> columns</td>
+<td>Phase 4 partitioning table assumes <code>metro_id</code> shard key on all tenant-scoped tables (§7.2)</td>
+<td><strong>Silent (Phyrom side)</strong></td>
+<td><strong>P1</strong></td>
+<td>Add <code>metro_id</code> column to migration 011 NOW, default-populated for Atkinson Hub via single-row UPDATE. Cheap pre-Citus, expensive post-Citus.</td>
+</tr>
+<tr>
+<td>Queue technology</td>
+<td>BullMQ (requires long-running container — coupled to compute-platform decision above)</td>
+<td>Silent on queue technology</td>
+<td><strong>Silent (Phase 4 side) + sequencing-conflict</strong></td>
+<td><strong>P1</strong></td>
+<td>If Vercel-native wins (P0 #1): pick QStash or Workflow DevKit, retire BullMQ commitment. If containers win: Phase 4 must add a queue section. Either way, decide queue tech downstream of the compute-platform decision.</td>
+</tr>
+<tr>
+<td>Edge protection / WAF</td>
+<td>Silent</td>
+<td>Cloudflare Pro WAF + Vercel BotID + Upstash rate limiting at edge (WS4 of plan)</td>
+<td><strong>Silent (Phyrom side)</strong></td>
+<td><strong>P1</strong></td>
+<td>Beta is invite-only so deferring WAF is fine. Public launch must follow WS4 — add an explicit gate to Phyrom's launch checklist: "WAF + BotID live before public-facing routes ship."</td>
+</tr>
+<tr>
+<td>Region rollout / data residency</td>
+<td>NH-only (Atkinson Hub physical, no multi-region modeling)</td>
+<td>US-East primary → US-West Q3 2026 → Canada Q3 2027 → EU Q4 2027 → UK/AU 2028 (5-region phased)</td>
+<td><strong>Silent (Phyrom side), no contradiction</strong></td>
+<td><strong>P2</strong></td>
+<td>No reconciliation needed today. WS3.1 (replica-aware Drizzle client) must NOT bypass Phyrom's service abstraction layer when implemented — this is a Phase 4 implementation note, not a Phyrom-spec change.</td>
+</tr>
+<tr>
+<td>Uptime / RPO / RTO targets</td>
+<td>Silent (no SLA committed)</td>
+<td>99.95% uptime / P95 dispatch &lt;500ms / RPO 15-min / RTO 4-hr regional / 24-hr full DR</td>
+<td><strong>Silent (Phyrom side)</strong></td>
+<td><strong>P2</strong></td>
+<td>During beta, externally commit to "best-effort 99.5%" with no contractual SLA. Phase 4 targets activate at Phase 1 launch. Add a beta SLA disclosure clause to Phyrom's launch comms.</td>
+</tr>
+<tr>
+<td>Physical Hub data residency</td>
+<td>Atkinson NH Hub modeled as physical site</td>
+<td>Phase 4 doesn't model physical Hub locations as data-residency entities</td>
+<td><strong>Silent (Phase 4 side)</strong></td>
+<td><strong>P2</strong></td>
+<td>Phase 4 needs an addendum: "Physical Hub locations remain US-only through Phase 1; Toronto Hub at Phase 4B is the first international-physical and triggers Canadian data-region routing."</td>
+</tr>
+<tr>
+<td>Stripe Connect account type</td>
+<td><strong>Standard</strong></td>
+<td><strong>Express</strong></td>
+<td><strong>Contradiction</strong></td>
+<td><strong>P3</strong></td>
+<td>Recommend Express (lower platform liability, controller properties cleaner, faster onboarding). Update Phyrom spec to align.</td>
+</tr>
+<tr>
+<td><code>/api/health</code> endpoint</td>
+<td>Defined as required for launch</td>
+<td>Silent</td>
+<td><strong>Silent (Phase 4 side)</strong></td>
+<td><strong>P3</strong></td>
+<td>Keep Phyrom's spec — <code>/api/health</code> becomes the Datadog synthetic source-of-truth in WS2 of Phase 4 plan. Add explicit reference in Phase 4 §8 (observability).</td>
+</tr>
+<tr>
+<td>Database current state</td>
+<td>Neon Postgres (dev + prod)</td>
+<td>Neon Postgres + Citus extension target</td>
+<td><strong>Agreement</strong></td>
+<td>—</td>
+<td>No drift.</td>
+</tr>
+<tr>
+<td>Twilio messaging</td>
+<td>Per-region masked-number pattern</td>
+<td>Inherits Twilio per-region as Phase 4 multi-region routes traffic</td>
+<td><strong>Agreement</strong></td>
+<td>—</td>
+<td>No drift.</td>
+</tr>
+<tr>
+<td><code>audit_logs</code> table</td>
+<td>Sherpa Guard output (RBAC + audit logging shipped)</td>
+<td>Phase 4 SOC 2 spec requires audit logging — assumes Sherpa Guard satisfies</td>
+<td><strong>Agreement</strong></td>
+<td>—</td>
+<td>No drift. Worth confirming in joint review that Sherpa Guard schema matches SOC 2 audit retention requirements (7yr default, 10yr opt-in).</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="reconciliation-actions--prioritized">Reconciliation actions — prioritized</h2>
+<h3 id="p0-joint-decision-required-before-either-spec-advances">P0 (joint decision required before either spec advances)</h3>
+<p><strong>P0.1 — Lock the compute platform.</strong> Joint Phyrom + orchestrator decision. Recommendation: Vercel Fluid Compute through 5M MAU. Action: edit Phyrom spec §9 to reframe container extraction as "optionality, not commitment." Write follow-on ADR at <code>docs/architecture/adr/2026-04-XX-vercel-fluid-through-5m-mau.md</code>.</p>
+<p><strong>P0.2 — Lock object storage vendor.</strong> Joint decision. Recommendation: Cloudflare R2 if Phyrom's cost model holds at scale, with S3-compatible interface to preserve flexibility. Action: rewrite Phase 4 cold-tier + DR sections as vendor-agnostic ("S3-compatible") and pin the vendor choice in a separate ADR.</p>
+<h3 id="p1-must-reconcile-within-phase-1">P1 (must reconcile within Phase 1)</h3>
+<p><strong>P1.1 — Add <code>metro_id</code> to migration 011.</strong> Single migration patch. Cheap today.</p>
+<p><strong>P1.2 — Pick queue technology</strong> (downstream of P0.1). If Vercel-native: QStash + Workflow DevKit. If containers: BullMQ. Update both specs.</p>
+<p><strong>P1.3 — WAF + BotID gate on public launch.</strong> Add explicit checklist item to Phyrom's launch readiness. No spec change needed; just a launch-blocker entry.</p>
+<h3 id="p2-reconcile-within-phase-1">P2 (reconcile within Phase 1)</h3>
+<p><strong>P2.1 — Beta SLA disclosure.</strong> Add "best-effort 99.5%, no contractual commitment during beta" clause to Phyrom's launch comms. Phase 4 targets activate at Phase 1 launch.</p>
+<p><strong>P2.2 — Physical Hub data-residency addendum.</strong> Phase 4 spec needs a half-page addendum modeling physical Hubs as residency entities. Trigger date = Toronto Hub Phase 4B.</p>
+<p><strong>P2.3 — Replica-aware Drizzle client must respect service abstraction.</strong> Implementation note for WS3.1, no spec change.</p>
+<h3 id="p3-cosmetic--wording">P3 (cosmetic / wording)</h3>
+<p><strong>P3.1 — Stripe Connect type.</strong> Pick Express, update Phyrom spec.</p>
+<p><strong>P3.2 — <code>/api/health</code> reference in Phase 4 §8.</strong> One-line addition.</p>
+<hr>
+<h2 id="open-questions-for-joint-phyrom--orchestrator-review">Open questions for joint Phyrom + orchestrator review</h2>
+<ol>
+<li><strong>Compute platform commitment:</strong> Vercel Fluid Compute through 5M MAU? Or eventually containers?</li>
+<li><strong>Object storage:</strong> R2 or S3 — single-vendor decision?</li>
+<li><strong>Toronto Hub timing:</strong> Phase 4B (per Phase 4 spec)? Or franchise-only (no orchestrator-direct international physical Hub)?</li>
+<li><strong>Beta SLA disclosure:</strong> 99.5% best-effort with disclosure, or no commitment at all?</li>
+<li><strong>SOC 2 / Vanta kickoff timing:</strong> Day 1 of live payments, or after Y1 first revenue cohort closes?</li>
+<li><strong>Hub sharding key:</strong> <code>metro_id</code> (recommended — aligns with Phase 4 sharding plan) or <code>hub_id</code> (more granular but mismatches the spec)?</li>
+<li><strong>Service abstraction enforcement:</strong> Add a lint rule to mechanically enforce that no <code>@/db</code> imports occur outside <code>src/lib/services/</code> and <code>src/db/queries/</code>? Cheap insurance against future drift.</li>
+</ol>
+<hr>
+<h2 id="recommended-next-step">Recommended next step</h2>
+<p>Schedule a 30-minute joint Phyrom + orchestrator architectural review specifically on P0.1 and P0.2. These two decisions cascade into queue tech, observability instrumentation, SOC 2 vendor scope, multi-region routing, and the entire Phase 4 plan execution sequence. Defer P1-P3 reconciliation until the P0s are locked.</p>
+<hr>
+<h2 id="last-updated">Last updated</h2>
+<p>2026-04-26 — Wave 12, parallel-agent dispatch (audit thread).</p>
+
+	
+
+
+</body>
+</html>

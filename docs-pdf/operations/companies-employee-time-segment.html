@@ -1,0 +1,1299 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>companies employee time segment — Sherpa Pros</title>
+<link rel="icon" href="../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="companies-employee-time-segment.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="companies-with-employees-with-available-time--segment-brief">Companies with Employees with Available Time — Segment Brief</h1>
+<p><strong>Date:</strong> 2026-04-22 (v1) · <strong>Updated 2026-04-25</strong>
+<strong>Author:</strong> Claude (drafted for Phyrom review)
+<strong>Status:</strong> v1 was draft — <strong>as of 2026-04-25, both interpretations (A + B) are LIVE simultaneously</strong> (see banner below)
+<strong>Owner:</strong> Phyrom (founder)
+<strong>Companion docs:</strong></p>
+<ul>
+<li><code>docs/superpowers/specs/2026-04-22-gtm-marketing-design.md</code> (current GTM spec — Interpretation B now wired in via Sherpa Flex §3.5 + §5)</li>
+<li><code>docs/operations/sherpa-home-subscription.md</code> (Wave 6.3 — Sherpa Home product spec; Interpretation A vehicle)</li>
+<li><code>docs/operations/sherpa-product-portfolio.md</code> (Wave 6.2 — six-product brand context, including Sherpa Flex §2.6 — Interpretation B vehicle)</li>
+<li><code>docs/operations/attorney-engagement-package.md</code> (Phase 0 attorney scope; previously did not cover employer-of-record questions raised by Interpretation B — Sherpa Flex's structural design now sidesteps the highest-risk classification scenarios, see banner)</li>
+</ul>
+<hr>
+<blockquote>
+<p><strong>UPDATE 2026-04-25 — Interpretation B (Workforce Utilization) is now LIVE via Sherpa Flex.</strong></p>
+<p>See <code>/pro/flex</code> on production (commit <code>08b1a5f</code>). The previously-deferred <strong>Interpretation B</strong> path no longer requires Phase 2 attorney work. <strong>Sherpa Flex's per-project platform liability insurance + sub-$5K job ceiling + explicit independent-contractor framing</strong> structurally addresses the prior worker-classification risk that gated this interpretation:</p>
+<ul>
+<li>The <strong>platform</strong> (Sherpa Pros), not the day-job employer, owns the per-project insurance — there is no joint-employer relationship with the construction company.</li>
+<li>The pro picks their own jobs, sets their own schedule, and gets paid on a 1099 — same independent-contractor status as every other Sherpa Pros pro.</li>
+<li>The <strong>&lt;$5K job ceiling</strong> keeps individual job size below the threshold where IRS / state-AG wage-redirection scrutiny historically engages.</li>
+<li>The construction-company employer is <strong>not in the transaction</strong> — the employee transacts directly with Sherpa Pros, the same way they would with any other 1099 side-hustle platform.</li>
+</ul>
+<p>Net effect: Both interpretations of the "Companies with employees with available time" segment are now LIVE products simultaneously. <strong>Interpretation A</strong> (employee benefit / B2B2C demand-side) ships through <strong>Sherpa Home Enterprise / Sherpa for Companies</strong> (Wave 6.3 retail launch). <strong>Interpretation B</strong> (workforce utilization / B2B supply-side) ships through <strong>Sherpa Flex</strong>. Phase 1 sales motion now includes outreach to construction company HR + facilities operators whose tradesperson employees want side income — this is a Phase 1 unlock, not a Phase 2 deferral.</p>
+<p>The risk register entry <strong>R5 (1099 vs W-2 worker classification)</strong> in the GTM spec §10 has been downgraded from High to Medium severity to reflect this structural mitigation.</p>
+</blockquote>
+<hr>
+<h2 id="open-questions-for-phyrom-top-of-doc--please-answer-before-we-build">Open Questions for Phyrom (Top of Doc — Please Answer Before We Build)</h2>
+<ol>
+<li><strong>Which interpretation did you mean — A (employee benefit / B2B2C demand-side), B (workforce utilization / B2B supply-side), or C (both)?</strong></li>
+<li><strong>If A: target Phase 1 launch month?</strong> (Today implies Phase 1 starts Months 3–6 per the GTM spec — does the benefits motion ride that wave or wait until Phase 2 when Sherpa Home itself is mature?)</li>
+<li><strong>If B: are you OK with deferring to Phase 2 because of the worker-classification legal complexity?</strong> (See Section 6 risk assessment.)</li>
+<li><strong>Pricing for A: $12 / employee / month flat? Or tiered (50–500 = $14, 500–2,000 = $12, 2,000+ = $10)?</strong></li>
+<li><strong>Naming: "Sherpa for Companies", "Sherpa Pros Benefits", or "Sherpa Home Enterprise"?</strong> (My pick: <strong>Sherpa for Companies</strong> — plainspoken, founder-voiced, and works for both A and B if we ever combine.)</li>
+<li><strong>Sales lead: founder-led (Phyrom) for first 10 logos, then a B2B AE in Phase 2 — or hire BD on day one?</strong></li>
+</ol>
+<hr>
+<h2 id="1-the-ambiguity-and-why-it-matters">1. The Ambiguity (and Why It Matters)</h2>
+<p>Phyrom flagged "Companies with employees with available time" as a new audience segment on 2026-04-24. The phrase admits at least three readings, and they imply very different products, sales motions, and legal exposure. <strong>We need to lock the interpretation before building anything</strong>, because the wrong commitment burns Phase 0 oxygen on legal scope or sales channels we cannot yet support.</p>
+<table>
+<thead>
+<tr>
+<th>Interpretation</th>
+<th>Side of marketplace</th>
+<th>Buyer</th>
+<th>Product</th>
+<th>Legal risk</th>
+<th>Time to revenue</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>A — Employee Benefit</strong></td>
+<td>Demand-side (B2B2C)</td>
+<td>HR / Total Rewards</td>
+<td>Bulk Sherpa Home subscription</td>
+<td>Low</td>
+<td>60–90 days</td>
+</tr>
+<tr>
+<td><strong>B — Workforce Utilization</strong></td>
+<td>Supply-side (B2B)</td>
+<td>Operations / Facilities</td>
+<td>Employer-managed pro fleet</td>
+<td><strong>High</strong></td>
+<td>90–180 days</td>
+</tr>
+<tr>
+<td><strong>C — Both</strong></td>
+<td>Both sides</td>
+<td>HR + Operations</td>
+<td>Combined offering</td>
+<td>Highest</td>
+<td>12+ months</td>
+</tr>
+</tbody></table>
+<p><strong>Recommendation up front:</strong> lead with <strong>Interpretation A in Phase 1</strong>, defer <strong>Interpretation B to Phase 2</strong> (or later) until the Sherpa Marketplace is stable and the attorney has scoped the deeper employer-of-record questions. Full reasoning in Section 5.</p>
+<hr>
+<h2 id="2-interpretation-a--employee-benefit-b2b2c-demand-side">2. Interpretation A — Employee Benefit (B2B2C Demand-Side)</h2>
+<h3 id="21-what-it-is">2.1 What it is</h3>
+<p>Companies offer Sherpa Pros memberships as a benefit or perk to their employees. Think ClassPass for home services, or the way some employers offer pet insurance, identity theft protection, legal services, or a stipend for fitness apps. The employee uses Sherpa Pros on the homeowner side — booking a plumber, an electrician, a handyman — and the employer pays the Sherpa Home subscription as part of the total rewards package.</p>
+<h3 id="22-audience">2.2 Audience</h3>
+<p>HR leaders, Total Rewards directors, and Benefits Managers at companies with <strong>50–5,000 employees</strong> in the <strong>white-collar Northeast</strong> where home ownership is high (suburbs of Boston, Portsmouth, Portland, southern NH, MetroWest). Vertical fit: technology, financial services, life sciences, healthcare administration, professional services, insurance.</p>
+<p>Buyer titles to target on LinkedIn:</p>
+<ul>
+<li>VP People / Chief People Officer</li>
+<li>Director, Total Rewards</li>
+<li>Director, Benefits</li>
+<li>Benefits Manager</li>
+<li>HR Business Partner (warm-intro path, not closer)</li>
+</ul>
+<h3 id="23-product">2.3 Product</h3>
+<p><strong>"Sherpa for Companies — Home Edition"</strong> <em>(working name; Phyrom to confirm naming)</em></p>
+<p>A bulk Sherpa Home subscription billed to the employer, delivered to the employee's personal account. Employee gets the same homeowner experience as a retail Sherpa Home subscriber (license-verified pros, code-aware quotes, capped work guarantee, in-app messaging, emergency dispatch lane). Employer gets a clean monthly invoice and an opt-in usage dashboard (anonymized — never per-employee detail).</p>
+<p>Required platform changes (Wave 6.3 dependency, plus this segment):</p>
+<ul>
+<li>Employer-billed account model (one invoice, many seats)</li>
+<li>Seat provisioning (HRIS integration via Workday / BambooHR / Rippling — Phase 2; CSV upload — Phase 1)</li>
+<li>Anonymized usage reporting dashboard</li>
+<li>White-glove onboarding for the first 10 enterprise logos</li>
+</ul>
+<h3 id="24-pricing">2.4 Pricing</h3>
+<table>
+<thead>
+<tr>
+<th>Tier</th>
+<th>Headcount</th>
+<th>Per-employee / month</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Pilot</td>
+<td>50–249</td>
+<td>$14</td>
+<td>Annual contract, founder-led close</td>
+</tr>
+<tr>
+<td>Growth</td>
+<td>250–999</td>
+<td>$12</td>
+<td>Annual or 2-year</td>
+</tr>
+<tr>
+<td>Enterprise</td>
+<td>1,000–4,999</td>
+<td>$10</td>
+<td>Multi-year, executive sponsor required</td>
+</tr>
+</tbody></table>
+<p>Retail Sherpa Home is assumed at $19/month (pending Wave 6.3 confirmation). The 50%-off-at-scale framing is the same playbook ClassPass, Headspace for Work, and One Medical use.</p>
+<p><strong>Annual Contract Value (ACV) examples:</strong></p>
+<ul>
+<li>250-employee pilot: 250 × $144 = <strong>$36,000 ACV</strong></li>
+<li>1,000-employee Growth: 1,000 × $144 = <strong>$144,000 ACV</strong></li>
+<li>4,000-employee Enterprise: 4,000 × $120 = <strong>$480,000 ACV</strong></li>
+</ul>
+<p>10 Pilot/Growth logos in Phase 1 = roughly <strong>$500K–$1.5M ARR</strong>, which is meaningful Seed-stage traction in addition to the consumer Sherpa Home book.</p>
+<h3 id="25-sales-motion">2.5 Sales motion</h3>
+<p>Classic B2B SaaS sale, founder-led for the first 10 logos:</p>
+<ol>
+<li><strong>Outbound LinkedIn</strong> (Phyrom voice) — "I built this because I'm a working contractor and I watched Angi and Thumbtack waste my clients' time. We're a licensed-trade marketplace. I'd love to give your employees a benefit they'll actually use." 60–90 second voice-note follow-up.</li>
+<li><strong>Benefits broker channel</strong> — Mercer, Aon, Marsh McLennan Agency, Lockton, Gallagher, NFP. These firms control most mid-market benefits decisions. One broker relationship can unlock 10+ logos.</li>
+<li><strong>Inbound from PR</strong> — when Sherpa Home press lands, HR teams will see it and ask. Capture demand with a <code>/companies</code> landing page.</li>
+<li><strong>HR conferences</strong> — SHRM Annual, NEHRA (Northeast HR Association), Total Rewards regional events.</li>
+</ol>
+<p><strong>Sales cycle:</strong> 60–90 days typical for a benefits add-on (not a core medical / 401k decision; lower internal scrutiny).</p>
+<h3 id="26-why-this-works">2.6 Why this works</h3>
+<ul>
+<li><strong>Leverages existing Sherpa Home product.</strong> No new platform surface; just billing and seat management.</li>
+<li><strong>Buyer is well-mapped.</strong> HR has a known purchasing process and a known channel (benefits brokers).</li>
+<li><strong>Legal exposure is low.</strong> This is a benefits product, not a labor product. The employee uses Sherpa Pros as a homeowner; classification questions don't apply.</li>
+<li><strong>Compounding LTV.</strong> Once a company subscribes, retention is high (benefits churn is low — typically 95%+ annual retention) and seat counts grow with hiring.</li>
+<li><strong>Free distribution.</strong> Every employee at a customer becomes a homeowner-side warm lead; many will tell friends and family.</li>
+</ul>
+<h3 id="27-channels-for-interpretation-a">2.7 Channels for Interpretation A</h3>
+<ul>
+<li>LinkedIn outbound (founder voice, sequenced)</li>
+<li>Benefits broker direct outreach (Mercer, Aon, Marsh McLennan Agency, Lockton, NFP, Gallagher, Hub International)</li>
+<li>HR-focused PR (Boston Globe Workplace, Boston Business Journal, SHRM publications)</li>
+<li>NEHRA membership + sponsorship</li>
+<li>Total Rewards Association (WorldatWork) sponsorship in Phase 2</li>
+<li>Co-marketing with adjacent benefits products (One Medical, Carrot Fertility, Headspace for Work)</li>
+</ul>
+<hr>
+<h2 id="3-interpretation-b--workforce-utilization-b2b-supply-side">3. Interpretation B — Workforce Utilization (B2B Supply-Side)</h2>
+<blockquote>
+<p><strong>STATUS UPDATE 2026-04-25:</strong> Interpretation B is <strong>NOT deferred anymore — it is LIVE</strong> via the <strong>Sherpa Flex</strong> pro tier (commit <code>08b1a5f</code>, page at <code>/pro/flex</code>). The structural redesign described in §3.7 below has been <strong>resolved</strong>: the employer is no longer a party to the transaction. The construction-company tradesperson signs up directly with Sherpa Pros as a 1099 independent contractor on the Sherpa Flex tier (18% take rate, per-project platform liability insurance included, no LLC required, jobs &lt;$5K only). The construction-company HR motion becomes a <strong>referral / awareness</strong> play, not an employer-of-record contractual play — which dissolves the worker-classification risk that originally pushed B to Phase 2.</p>
+</blockquote>
+<h3 id="31-what-it-is">3.1 What it is</h3>
+<p>Companies whose employees have downtime, underutilized capacity, or scheduled gaps — facilities maintenance staff at large institutions, in-house tradespeople at multi-family operators, or construction company tradespeople between projects — can take Sherpa Pros jobs as additional revenue. <strong>As of 2026-04-25</strong>, those employees join Sherpa Pros directly via the <strong>Sherpa Flex</strong> tier (no LLC required, no personal insurance required, platform-provided per-project liability coverage). The employer is <strong>not in the transaction</strong> — they are an awareness / referral channel. This is the structural change that makes Interpretation B safe to ship in Phase 1.</p>
+<h3 id="32-audience">3.2 Audience</h3>
+<p>Two sub-segments:</p>
+<p><strong>B1 — Facilities operators with in-house maintenance staff:</strong></p>
+<ul>
+<li>Large universities (facilities departments often run 200–800+ trades)</li>
+<li>Hospital systems (facilities + biomedical maintenance crews)</li>
+<li>Multi-family operators (in-house maintenance technicians per portfolio)</li>
+<li>Manufacturing plants (skilled-trade maintenance teams)</li>
+<li>Class-A office REITs (Boston Properties tier — though their counts are leaner than expected; see [VERIFY] note below)</li>
+</ul>
+<p><strong>B2 — Construction companies with trade workforce:</strong></p>
+<ul>
+<li>Mid-size GC firms with crews between projects</li>
+<li>Specialty trade contractors (electrical, HVAC, plumbing) with capacity gaps</li>
+<li>Subcontractor businesses looking to diversify revenue</li>
+</ul>
+<h3 id="33-product">3.3 Product</h3>
+<p><strong>"Sherpa for Companies — Workforce Edition"</strong> <em>(working name)</em></p>
+<p>A managed pro account for the employer. The company onboards its tradespeople under one umbrella — the company is the pro of record (or a clearly defined relationship is structured), and the company takes a cut of the per-job revenue. Employees clock Sherpa Pros work as approved side income (or, in some configurations, as a covered employer-paid hour).</p>
+<p>Required platform changes (much heavier than A):</p>
+<ul>
+<li>Multi-pro account hierarchy (one company, many seats)</li>
+<li>Employer-employee revenue split engine</li>
+<li>Tax withholding handling — the hardest piece, see legal risk below</li>
+<li>Job-eligibility filters (no compete-with-employer rules; geography fences)</li>
+<li>Insurance reconciliation (whose policy covers what)</li>
+</ul>
+<h3 id="34-pricing">3.4 Pricing</h3>
+<p>Two-part:</p>
+<ul>
+<li><strong>Platform fee:</strong> $50–$150 / employee / month (covers the SaaS + dispatch)</li>
+<li><strong>Take rate:</strong> Sherpa Pros standard 5–10% of GMV per job + employer share (typically 10–30% of pro earnings)</li>
+</ul>
+<p>Per-employee economics will vary wildly by role (facilities maintenance vs. licensed electrician vs. handyman). Estimate: <strong>$2,000–$8,000 GMV per active worker per year</strong>, of which Sherpa Pros captures ~10% and employer captures ~15–25%.</p>
+<h3 id="35-sales-motion">3.5 Sales motion</h3>
+<p>Long-cycle B2B operational sale. Buyer is <strong>VP Facilities / Director of Operations / Chief Operating Officer</strong>, with <strong>HR + Legal sign-off required</strong>. Sales cycle: <strong>90–180 days minimum</strong> — and that assumes the legal questions in Section 6 are already answered.</p>
+<h3 id="36-channels-for-interpretation-b">3.6 Channels for Interpretation B</h3>
+<ul>
+<li>IFMA (International Facility Management Association) regional chapters — Boston, NE chapter</li>
+<li>BOMA (Building Owners and Managers Association)</li>
+<li>AGC (Associated General Contractors of America) chapters — NH, ME, MA</li>
+<li>Direct outreach to named accounts (university facilities, hospital systems)</li>
+<li>Supply-house referrals (FW Webb, Lowe's Pro, Home Depot Pro)</li>
+</ul>
+<h3 id="37-why-this-is-harder-historical--see-2026-04-25-banner-above-for-the-resolved-version">3.7 Why this is harder <em>(historical — see 2026-04-25 banner above for the resolved version)</em></h3>
+<blockquote>
+<p><strong>Resolved 2026-04-25 via Sherpa Flex.</strong> The four blockers below were the original framing for an <em>employer-managed</em> product where the construction company would broker its tradespeople onto Sherpa Pros under a multi-pro account hierarchy. Sherpa Flex sidesteps every one of them by making the <strong>individual tradesperson</strong> the direct platform participant — the employer is removed from the contractual relationship. Sales motion shifts from "long-cycle B2B operational sale" to "construction-company HR awareness channel for an individual side-hustle product." Below preserved as historical record of why we deferred the prior structure.</p>
+</blockquote>
+<ul>
+<li>New platform surface (multi-pro accounts, splits, withholding) competes with core Phase 1 platform-stability work. <em>(Resolved: Sherpa Flex uses standard single-pro accounts; no employer split engine needed.)</em></li>
+<li>Buyer is operations + HR + legal — three stakeholders, three sales cycles in parallel. <em>(Resolved: the "buyer" is now the individual tradesperson; HR is a referral channel, not a contracting party.)</em></li>
+<li>Legal exposure is high (Section 6). <em>(Resolved: Sherpa Flex tradesperson is a 1099 independent contractor, same as every other Sherpa Pros pro.)</em></li>
+<li>Even after legal greenlights, <strong>employee buy-in is its own gate</strong> — employees may not want their employer involved in their side income. Pilots that look great on paper can stall on enrollment. <em>(Resolved: employer is not involved — the tradesperson signs up independently.)</em></li>
+</ul>
+<hr>
+<h2 id="4-interpretation-c--both">4. Interpretation C — Both</h2>
+<p>A combined offering: the company that buys Sherpa Home for its employees can also opt in to the workforce-utilization product for its tradespeople workforce. Same logo, two products.</p>
+<p>This is the right end-state vision but the wrong starting point. The two motions have different buyers (HR vs. Operations), different sales cycles, different legal scopes, and different platform requirements. Bundling them at launch dilutes the message and slows both.</p>
+<p><strong>Phased approach (recommended):</strong></p>
+<ul>
+<li><strong>Phase 1 (Months 3–6):</strong> Launch A only. Sign 10 logos. Prove the model.</li>
+<li><strong>Phase 2 (Months 6–12):</strong> Add B as an upsell to existing A customers that have in-house tradespeople — once attorney has scoped the legal envelope. Most A customers (white-collar tech, finance, healthcare admin) won't want B anyway. The overlap is real but narrow: hospitals, universities, large multi-family operators.</li>
+<li><strong>Phase 3+ (12+ months):</strong> Cross-sell becomes part of standard enterprise motion.</li>
+</ul>
+<hr>
+<h2 id="5-recommendation-updated-2026-04-25-run-a-and-b-in-parallel--both-live">5. Recommendation (UPDATED 2026-04-25): Run A AND B in Parallel — Both LIVE</h2>
+<p><strong>Phase 1 priority remains Interpretation A</strong> for the <strong>enterprise sales motion + LTV</strong> (10 logos = $500K–$1.5M ARR per Section 2.4). This has not changed. <strong>Interpretation B is now also LIVE</strong> via Sherpa Flex and opens an entirely <strong>new Phase 1 outreach motion</strong> that did not previously exist: direct-to-tradesperson recruitment with construction-company HR as a referral / awareness channel.</p>
+<h3 id="51-interpretation-a--employee-benefit-still-the-lead-enterprise-motion">5.1 Interpretation A — Employee Benefit (still the lead enterprise motion)</h3>
+<p>Reasoning unchanged:</p>
+<ol>
+<li><strong>Faster sales cycle.</strong> 60–90 days vs B's individual-tradesperson recruitment cycle.</li>
+<li><strong>Leverages existing product.</strong> Sherpa Home (Wave 6.3) is the vehicle. We add billing + seat management, not a whole new product surface.</li>
+<li><strong>Known buyer pattern.</strong> HR / Total Rewards / Benefits Managers are a well-mapped sales motion with a clean broker channel.</li>
+<li><strong>Low legal exposure.</strong> A is a benefits product.</li>
+<li><strong>Compounding distribution.</strong> Every covered employee is a homeowner-side warm lead. The benefits motion seeds the consumer marketplace.</li>
+<li><strong>Fits founder bandwidth.</strong> Phyrom can credibly close the first 10 logos himself in Phase 1.</li>
+</ol>
+<h3 id="52-interpretation-b--workforce-utilization-via-sherpa-flex-new-phase-1-motion-opened-2026-04-25">5.2 Interpretation B — Workforce Utilization via Sherpa Flex (NEW Phase 1 motion, opened 2026-04-25)</h3>
+<p>Reasoning for shipping B in Phase 1 alongside A:</p>
+<ol>
+<li><strong>Sherpa Flex resolved the legal blocker structurally.</strong> Per-project platform insurance + sub-$5K ceiling + direct-to-tradesperson sign-up sidesteps the employer-of-record / joint-employer questions that gated B. No new attorney scope required.</li>
+<li><strong>Outreach motion is acquisition, not contracting.</strong> Construction-company HR + facilities operators become a <em>referral / awareness channel</em> — they tell their tradesperson employees "Sherpa Flex exists, no LLC required, take side jobs when you want." The company doesn't sign anything.</li>
+<li><strong>Sherpa Flex pros are immediate Sherpa Marketplace supply.</strong> Every Sherpa Flex sign-up is a direct supply-side liquidity addition for Phase 1 metros. This is faster supply-build than waiting for licensed contractors to set up LLCs.</li>
+<li><strong>Same founder bandwidth investment.</strong> Phyrom's existing trade-association relationships (NHHBA, MEHBA, AGC chapters) become the awareness channel for Sherpa Flex. No new sales hire required for Phase 1.</li>
+<li><strong>Sherpa Score climb path creates the upgrade economic.</strong> Sherpa Flex pro completes 25+ jobs → Sherpa Score climbs → pro decides to acquire own insurance + LLC → drops to 12% Standard → keeps climbing to 8% Gold. The platform captures lifetime supply-side value across the climb.</li>
+</ol>
+<p><strong>The two motions are complementary, not competing.</strong> A targets HR at white-collar tech / finance / healthcare-admin firms (where employees are <em>homeowners</em>, the buyer is HR). B targets HR + operations at construction / facilities / multi-family-operator firms (where employees are <em>tradespeople</em>, the awareness channel is HR but the sign-up is direct-to-pro). Different verticals, different conversion paths, both LIVE in Phase 1.</p>
+<h3 id="53-why-the-new-platform-capability-layer-sherpa-smart-scan--sherpa-threads-reduces-the-operational-lift-of-interpretation-b">5.3 Why the new platform capability layer (Sherpa Smart Scan + Sherpa Threads) reduces the operational lift of Interpretation B</h3>
+<p>The two platform capabilities shipped 2026-04-25 alongside Sherpa Flex (commits <code>67ccfc8</code>, <code>8933f67</code>, <code>60781c1</code>, <code>2f1eec4</code>) <strong>directly de-risk the "employees with side bandwidth" path</strong> in two specific ways: (a) <strong>Sherpa Smart Scan</strong> — Optical Character Recognition (OCR) for receipts, invoices, permits, and job-site photos — lets the construction-company employee scan side-gig receipts on their phone <em>while they are on the side gig</em>, and the receipts auto-route to the employee's <strong>personal Schedule C</strong> (their own 1099 books) rather than getting commingled with the day-job employer's expense system. That dissolves the most common operational friction point of moonlighting (lost receipts, blurred-line tax exposure, the day-job bookkeeper accidentally seeing side-gig spend). (b) <strong>Sherpa Threads</strong> — in-app chat with Short Message Service (SMS) sync — keeps every client conversation in-app, so <strong>the employee's personal phone number never leaks to the side-gig client</strong>. That removes the worst privacy / boundary risk of moonlighting (client texts the personal number at 11 p.m., on weekends, during day-job hours, or after the relationship ends). Together these capabilities take the two highest-friction moments in the moonlighter workflow (expense capture and client communication) and move them onto the platform — making it materially easier for a construction-company tradesperson to take side jobs through Sherpa Flex without spillover into their day-job employer's systems or their personal life. This is a <strong>Phase 1 unlock</strong>, not a Phase 2 nice-to-have, because both capabilities are LIVE today.</p>
+<hr>
+<h2 id="6-risk--complexity-assessment">6. Risk + Complexity Assessment</h2>
+<h3 id="61-interpretation-a-risks-low">6.1 Interpretation A risks (LOW)</h3>
+<table>
+<thead>
+<tr>
+<th>Risk</th>
+<th>Severity</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Slow HR sales cycles</td>
+<td>Medium</td>
+<td>Founder-led close for first 10 logos; broker channel for scale</td>
+</tr>
+<tr>
+<td>Employees don't activate</td>
+<td>Medium</td>
+<td>White-glove employer onboarding kit; in-app activation flow; first-job credit</td>
+</tr>
+<tr>
+<td>Benefits broker friction (they want a cut)</td>
+<td>Low</td>
+<td>Standard 10–15% broker commission baked into pricing model</td>
+</tr>
+<tr>
+<td>Sherpa Home product not ready</td>
+<td>High</td>
+<td><strong>This is a Wave 6.3 dependency.</strong> Cannot sell A before Sherpa Home consumer launch.</td>
+</tr>
+</tbody></table>
+<h3 id="62-interpretation-b-risks-high">6.2 Interpretation B risks (HIGH)</h3>
+<table>
+<thead>
+<tr>
+<th>Risk</th>
+<th>Severity</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Worker classification ambiguity</strong></td>
+<td><strong>Critical</strong></td>
+<td>Requires net-new attorney scope. Is the worker still 1099? Does the employer's involvement convert them to W-2 of Sherpa Pros? Of the company? Joint employer liability?</td>
+</tr>
+<tr>
+<td>State-by-state employment law variance</td>
+<td>Critical</td>
+<td>MA ABC test, NH employment law, ME employment law, plus every state we expand to. Each state requires a separate legal opinion.</td>
+</tr>
+<tr>
+<td>Federal IRS scrutiny on employer take</td>
+<td>Critical</td>
+<td>Employer taking a cut of employee 1099 earnings is a structure the IRS may treat as wage redirection — unpaid payroll tax exposure.</td>
+</tr>
+<tr>
+<td>Employee push-back on employer involvement in side income</td>
+<td>High</td>
+<td>Pilot enrollment can stall. Conservative employees may opt out, which kills unit economics.</td>
+</tr>
+<tr>
+<td>Insurance gap (whose policy covers the job)</td>
+<td>High</td>
+<td>Each employer engagement requires bespoke insurance reconciliation. The Layer 1–4 stack in <code>liability-insurance-framework.md</code> does not currently anticipate this.</td>
+</tr>
+<tr>
+<td>Conflict with employer's existing labor agreements</td>
+<td>Medium</td>
+<td>Union shops, collective bargaining agreements, FLSA overtime calculations all complicate B materially.</td>
+</tr>
+</tbody></table>
+<p><strong>The single biggest blocker on B is worker classification.</strong> The current Phase 0 attorney scope (<code>docs/operations/attorney-engagement-package.md</code>) covers 1099 vs. W-2 for the standard marketplace pro — independently licensed, own insurance, sets own bid prices, can use other platforms. Interpretation B introduces the <strong>employer of record</strong> as a third party in the relationship. That changes the legal analysis materially. We would need a new legal scope item, likely a separate engagement and likely $15K–$40K of incremental legal fees, before we could even pilot.</p>
+<h3 id="63-interpretation-c-risks">6.3 Interpretation C risks</h3>
+<p>All of A's risks plus all of B's risks plus the integration complexity of running both motions concurrently. Phase 1 burn rate ($25–35K/month) cannot absorb the legal scope, the engineering work, and a second sales motion. This is a Phase 3 conversation at earliest.</p>
+<hr>
+<h2 id="7-first-10-named-target-companies-phase-1-ne-anchored">7. First 10 Named Target Companies (Phase 1, NE-Anchored)</h2>
+<p>All companies are real and headquartered or anchored in the NE (Phase 1 launch geography). Brand stays national; targeting NE-anchored companies just reflects launch sequencing. <strong><code>[VERIFY]</code></strong> flags facts I could not fully confirm in this draft and that need confirmation before outreach.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Company</th>
+<th>HQ / NE Office</th>
+<th>Approx. Employees</th>
+<th>Why They Fit</th>
+<th>A or B?</th>
+<th>Recommended Contact Path</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td><strong>HubSpot</strong></td>
+<td>Cambridge, MA</td>
+<td>~8,200–8,700 globally <code>[VERIFY exact 2026]</code></td>
+<td>Tech, suburban Boston commuters, high homeownership; perks-forward culture</td>
+<td><strong>A</strong></td>
+<td>LinkedIn → VP People; warm intro via Boston tech network</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>Wayfair</strong></td>
+<td>Boston, MA (Boylston St.)</td>
+<td>~2,500 in Boston</td>
+<td>E-commerce, white-collar, home-adjacent product fit (the obvious narrative)</td>
+<td><strong>A</strong></td>
+<td>Direct CEO route via founder-to-founder; CHRO via LinkedIn</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>DraftKings</strong></td>
+<td>Boston, MA (moving to 225 Franklin in 2027)</td>
+<td>~5,500 globally</td>
+<td>Tech, urban + suburban Boston homeowners</td>
+<td><strong>A</strong></td>
+<td>LinkedIn → Director, Total Rewards</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>Liberty Mutual Insurance</strong></td>
+<td>Boston, MA</td>
+<td>~45,000 globally <code>[VERIFY 2026]</code></td>
+<td>Insurance, large NE workforce, generous benefits philosophy ($6,480/employee benefits value), 8% 401k match starting 2026 → committed to expanding total rewards</td>
+<td><strong>A</strong></td>
+<td>Benefits broker (likely Marsh or Mercer); LinkedIn to VP Benefits</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>Fidelity Investments</strong></td>
+<td>Boston, MA (Commonwealth Pier 2026)</td>
+<td>~79,000 globally</td>
+<td>Financial services, hybrid workforce (2 weeks/month in office) → strong homeowner profile in suburbs</td>
+<td><strong>A</strong></td>
+<td>LinkedIn → Director, Workplace Benefits; broker via Mercer</td>
+</tr>
+<tr>
+<td>6</td>
+<td><strong>Vertex Pharmaceuticals</strong></td>
+<td>Boston, MA</td>
+<td>~6,100 globally</td>
+<td>Biotech, high-comp white-collar, Boston/Cambridge homeowners</td>
+<td><strong>A</strong></td>
+<td>LinkedIn → CHRO or VP People</td>
+</tr>
+<tr>
+<td>7</td>
+<td><strong>Mass General Brigham</strong></td>
+<td>Boston, MA</td>
+<td>~70,000+ in MA</td>
+<td>Healthcare; massive workforce; admin staff = A fit; <strong>also has 800+ facilities tradespeople</strong> = B candidate when ready</td>
+<td><strong>A first, B Phase 2</strong></td>
+<td>HR contact via NEHRA network; facilities contact via IFMA</td>
+</tr>
+<tr>
+<td>8</td>
+<td><strong>Eversource</strong></td>
+<td>Hartford CT / Westwood MA / Manchester NH</td>
+<td>~9,500 in NE <code>[VERIFY]</code></td>
+<td>Utility — natural co-marketing fit (Mass Save); employees are NE homeowners; existing CVC interest noted in GTM spec</td>
+<td><strong>A</strong> (with strategic angle)</td>
+<td>Existing GTM spec lists Eversource Ventures (CVC) as Tier 3 strategic — same relationship, different door</td>
+</tr>
+<tr>
+<td>9</td>
+<td><strong>Dartmouth Health (Dartmouth-Hitchcock)</strong></td>
+<td>Lebanon, NH</td>
+<td>~13,000 in NH/VT</td>
+<td>Largest NH-based employer outside Walmart; healthcare admin = A; <strong>has facilities trades</strong> = B candidate</td>
+<td><strong>A first, B Phase 2</strong></td>
+<td>Direct via NHHBA contacts; CHRO via LinkedIn</td>
+</tr>
+<tr>
+<td>10</td>
+<td><strong>Boston Properties (BXP)</strong></td>
+<td>Boston, MA</td>
+<td>~519 globally <code>[VERIFY]</code></td>
+<td>Smaller than expected — REIT staff is lean. <strong>Better as a B2B PM-tier customer than a B2B2C benefits customer.</strong> Listed here as a flag: research said Boston-anchored REITs run leaner than the original brief assumed. Replace with <strong>Akamai</strong> (<del>10,800 globally, Cambridge HQ) or <strong>Wellington Management</strong> (</del>3,000 in Boston) for Phase 1 outreach</td>
+<td><strong>A</strong> (replace BXP with Akamai or Wellington)</td>
+<td>LinkedIn → VP People</td>
+</tr>
+</tbody></table>
+<p><strong>Companies intentionally not in the top 10 but worth noting:</strong></p>
+<ul>
+<li><strong>Bose</strong> (Framingham, MA) — strong NE brand, ~7,000 globally <code>[VERIFY]</code>. Worth adding once we have one tech logo closed.</li>
+<li><strong>Raytheon (RTX)</strong> — 195,000 globally; defense procurement and security clearances make benefits onboarding slow; Phase 2.</li>
+<li><strong>MIT</strong> — ~17,000 employees including facilities trades; institutional buying cycle is glacial; Phase 2 minimum.</li>
+<li><strong>Harvard University</strong> — same as MIT.</li>
+<li><strong>MFS Investment Management</strong> — listed in original brief; ~3,000 globally, conservative culture, plausible Phase 2.</li>
+</ul>
+<hr>
+<h2 id="8-sample-outreach-email--interpretation-a">8. Sample Outreach Email — Interpretation A</h2>
+<p><strong>To:</strong> VP People / CHRO
+<strong>From:</strong> Phyrom (Founder, Sherpa Pros)
+<strong>Subject line options:</strong></p>
+<ul>
+<li><em>I built this because Angi was wasting my clients' time</em></li>
+<li><em>A new home-services benefit, built by a working contractor</em></li>
+<li><em>Quick question on your home-services benefits coverage</em></li>
+</ul>
+<p><strong>Body:</strong></p>
+<blockquote>
+<p>Hi [First name],</p>
+<p>I'm Phyrom — a working general contractor in New Hampshire. I built Sherpa Pros because I watched too many of my clients waste hours on Angi and Thumbtack getting bad quotes from pros who were never going to call back.</p>
+<p>Sherpa Pros is the licensed-trade marketplace that thinks like a contractor. Every pro is license-verified, insurance-verified, and code-aware. Homeowners get real quotes, fast matches, and a capped work guarantee.</p>
+<p>I'm reaching out because we're rolling out a benefits version — Sherpa for Companies — and I think [Company] would be a great fit. Your employees are homeowners. They're going to call a plumber or an electrician this year. We can make sure that experience doesn't suck, for $12 per employee per month.</p>
+<p>15-minute call this week or next? I'm happy to walk you through it founder-to-leader.</p>
+<p>Phyrom
+Founder · Sherpa Pros
+NH General Contractor · HJD Builders LLC
+<a href="mailto:poum@hjd.builders">poum@hjd.builders</a> · <a href="http://www.thesherpapros.com">www.thesherpapros.com</a></p>
+</blockquote>
+<p><strong>CTA:</strong> "15-minute call this week or next?" + Calendly link in signature.</p>
+<hr>
+<h2 id="9-brand-bible-compliance-check">9. Brand Bible Compliance Check</h2>
+<ul>
+<li><strong>Plainspoken, founder-voiced</strong> — yes ("I built this because Angi was wasting my clients' time")</li>
+<li><strong>National brand framing</strong> — yes (companies are positioned by HQ, not as a regional play; the launch geography is operational)</li>
+<li><strong>Phyrom-as-NH-GC origin</strong> — leads, doesn't cap (origin story in line one of every email)</li>
+<li><strong>No "Wiseman" externally</strong> — confirmed (this doc uses "code-aware", "license-verified" externally)</li>
+<li><strong>No surname</strong> — confirmed (Phyrom, Founder · Sherpa Pros)</li>
+<li><strong>No jargon abbreviations on first use</strong> — spelled out: Annual Contract Value (ACV), Total Rewards, Chief Human Resources Officer (CHRO), International Facility Management Association (IFMA), Building Owners and Managers Association (BOMA), Associated General Contractors (AGC), Northeast HR Association (NEHRA)</li>
+<li><strong>No "New England-only" framing in sales material</strong> — the company is national; we're targeting NE-headquartered companies because that's where the platform launches first (operational), not because the offering is regional</li>
+</ul>
+<hr>
+<h2 id="10-next-steps-if-phyrom-approves-interpretation-a-as-phase-1-priority">10. Next Steps (If Phyrom Approves Interpretation A as Phase 1 Priority)</h2>
+<ol>
+<li><strong>Phyrom decision:</strong> answer the six questions in Section 0</li>
+<li><strong>Sherpa Home (Wave 6.3) confirmation:</strong> confirm Wave 6.3 retail product spec ($19/month, feature set) before pricing the bulk version. <strong>Sherpa for Companies cannot sell before Sherpa Home is live.</strong></li>
+<li><strong>Naming decision:</strong> "Sherpa for Companies" (recommended) vs "Sherpa Home Enterprise" vs "Sherpa Pros Benefits"</li>
+<li><strong>Landing page:</strong> add <code>/companies</code> route with the pitch above</li>
+<li><strong>Outreach kit:</strong> finalize this email + a 1-page PDF leave-behind + a 5-slide sales deck (extract from <code>docs/pitch/sherpa-pros-deck-v1.md</code>, with HR-focused framing)</li>
+<li><strong>Sales target:</strong> 3 logos signed by end of Phase 1 (Month 6); 10 logos by end of Phase 2 (Month 12)</li>
+<li><strong>Add to GTM spec:</strong> at next spec revision, integrate the "Companies with Employees" segment into Section 3 (audience-specific sub-positioning) and Section 4 (phased GTM execution)</li>
+<li><strong>Attorney scope:</strong> <strong>NO new legal scope required for Interpretation A.</strong> (If Phyrom decides to also pursue B, add to attorney engagement explicitly — this is where the cost lives.)</li>
+<li><strong>Broker channel:</strong> Phyrom warm intro to one mid-market benefits broker by Month 4 (Mercer regional, Marsh McLennan Agency, Lockton, or NFP); broker-introduced logos count toward Phase 1 traction</li>
+</ol>
+<hr>
+<h2 id="appendix-a--unanswered-questions-for-wave-63-sherpa-home">Appendix A — Unanswered Questions for Wave 6.3 (Sherpa Home)</h2>
+<p>This brief assumes Sherpa Home retail exists at $19/month. If Wave 6.3 lands at a different price point, the bulk pricing in Section 2.4 needs to be re-modeled. Open questions for Wave 6.3 spec:</p>
+<ul>
+<li>Sherpa Home retail price (assumed $19/month)</li>
+<li>Feature set (assumed: license-verified pros, code-aware quotes, capped work guarantee, in-app messaging, emergency dispatch lane)</li>
+<li>Geographic coverage (assumed: 4 Phase 1 metros at launch, expanding with marketplace footprint)</li>
+<li>Cancellation / pause mechanics</li>
+<li>Family plan vs individual</li>
+</ul>
+<hr>
+<h2 id="appendix-b--sources">Appendix B — Sources</h2>
+<ul>
+<li><a href="https://www.zippia.com/advice/largest-companies-in-massachusetts/">Largest Companies in Massachusetts 2026 — Zippia</a></li>
+<li><a href="https://www.zippia.com/advice/largest-companies-in-new-hampshire/">Largest Companies in New Hampshire 2026 — Zippia</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Mass_General_Brigham">Mass General Brigham — Wikipedia</a></li>
+<li><a href="https://mpiresolutions.com/blog/how-many-employees-does-hubspot-have/">HubSpot Employee Count 2026 — MPI Resolutions</a></li>
+<li><a href="https://www.bostonglobe.com/2025/12/11/business/draftkings-wayfair-office-headquarters-lease/">DraftKings &amp; Wayfair Boston HQ Plans — Boston Globe</a></li>
+<li><a href="https://nationaltoday.com/us/ma/boston/news/2026/04/08/liberty-mutual-launches-600m-endowment-for-nonprofit-partners/">Liberty Mutual Foundation $600M Endowment — Boston Today</a></li>
+<li><a href="https://www.builtinboston.com/company/liberty-mutual-insurance/benefits">Liberty Mutual Employee Benefits — Built In Boston</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Fidelity_Investments">Fidelity Investments — Wikipedia</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Vertex_Pharmaceuticals">Vertex Pharmaceuticals — Wikipedia</a></li>
+<li><a href="https://www.macrotrends.net/stocks/charts/BXP/boston-properties/number-of-employees">Boston Properties (BXP) Employee Count — MacroTrends</a></li>
+<li><a href="https://classpass.com/corporate-wellness">ClassPass Corporate Wellness Program</a></li>
+<li><a href="https://www.adp.com/spark/articles/2021/05/1099-vs-w2-what-you-dont-know-could-cost-you.aspx">1099 vs W-2 Employees Guide — ADP</a></li>
+<li><a href="https://rooney.law/blog/misclassification-of-independent-contractors-a-risk-not-worth-taking/">Misclassification of Independent Contractors — Rooney Law</a></li>
+<li><a href="https://www.irs.gov/businesses/small-businesses-self-employed/independent-contractor-self-employed-or-employee">Independent Contractor vs. Employee — IRS</a></li>
+</ul>
+<hr>
+<p><em>Draft prepared for Phyrom review 2026-04-22. Do not act on Section 7 outreach list until Sherpa Home (Wave 6.3) product spec is locked.</em></p>
+
+	
+
+
+</body>
+</html>

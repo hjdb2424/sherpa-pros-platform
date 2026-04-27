@@ -1,0 +1,1260 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>06 brand bible — Sherpa Pros</title>
+<link rel="icon" href="../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="06-brand-bible.pdf">Download PDF →</a>
+</nav>
+
+		<!-- _class: lead -->
+
+<h1 id="brand-bible">Brand Bible</h1>
+<h2 id="how-we-sound-how-we-look-how-we-dont">How we sound. How we look. How we don't.</h2>
+<br>
+
+<p><strong>Sherpa Pros</strong>
+Internal teaching deck for every PSM, Concierge, BD rep, and AI agent</p>
+<br>
+
+<p><span class="small">v1 · 2026-04-24 · Read this before you write a single sentence on our behalf</span></p>
+<hr>
+<h1 id="who-sherpa-pros-is">Who Sherpa Pros is</h1>
+<blockquote>
+<p><em>The licensed-trade marketplace that thinks like a contractor.</em>
+<em>Built by a working GC. Code-aware. Permit-aware. Rebate-aware.</em></p>
+</blockquote>
+<p>We are the <strong>national</strong> licensed-trade marketplace (international roadmap) — built by a working New Hampshire general contractor for the contractors he hires every week. Launching in NH/ME/MA Phase 1, expanding nationally through Phase 4.</p>
+<p>We solve the two things lead-gen platforms structurally cannot: <strong>verified licensed work</strong> and <strong>code-aware matching</strong>.</p>
+<p>We are not selling leads. We are sending jobs.</p>
+<br>
+
+<p><span class="small">Read this paragraph before you write any external copy. Every line of marketing flows from it.</span></p>
+<hr>
+<h1 id="who-we-are-not">Who we are NOT</h1>
+<p>Saying who we are not is how we say who we are.</p>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>What they do</th>
+<th>Why we are different</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Angi</strong></td>
+<td>Sells leads to contractors</td>
+<td>We send jobs, not leads. Pros pay only when work happens.</td>
+</tr>
+<tr>
+<td><strong>Thumbtack</strong></td>
+<td>Sells leads + collects deposits</td>
+<td>We hold money in escrow. Documented deposit-theft losses $300–$1,600 are not our model.</td>
+</tr>
+<tr>
+<td><strong>TaskRabbit</strong></td>
+<td>Unskilled task / assembly</td>
+<td>We are licensed trade work. Toilet installs, panels, heat pumps.</td>
+</tr>
+<tr>
+<td><strong>Houzz</strong></td>
+<td>Designer portfolio + magazine</td>
+<td>We move money and dispatch crews. Not a magazine.</td>
+</tr>
+<tr>
+<td><strong>Handy</strong></td>
+<td>Subscription cleanings + assembly</td>
+<td>We are jobs by the job. No subscription bundle.</td>
+</tr>
+</tbody></table>
+<br>
+
+<p><span class="small">The licensed + code-aware + true-marketplace quadrant was empty. We planted the flag there.</span></p>
+<hr>
+<h1 id="four-audiences-one-dna">Four audiences. One DNA.</h1>
+<p>Same brand, different headline per audience. Each line is approved copy from the bible (§3.2).</p>
+<table>
+<thead>
+<tr>
+<th>Audience</th>
+<th>Headline</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Residential homeowners</strong></td>
+<td>Trusted neighbor pros. Real people, verified work, no leads-for-sale.</td>
+</tr>
+<tr>
+<td><strong>Specialty / older-home owners</strong></td>
+<td>Licensed specialty work. Code-aware. Permit-aware. Rebate-aware. National platforms can't filter for this.</td>
+</tr>
+<tr>
+<td><strong>Contractors (national)</strong></td>
+<td>Jobs. Not leads. Get paid for work, not for paying to bid.</td>
+</tr>
+<tr>
+<td><strong>Property Managers (national)</strong></td>
+<td>Work orders, preferred vendors, unit-level finance in one platform. Stop juggling 40 contractors in spreadsheets.</td>
+</tr>
+</tbody></table>
+<br>
+
+<p><span class="small">Audience messages reference <em>use cases</em> (residential, specialty, older-home, multi-family), not <em>regions</em>. Every market has homeowners, specialty work, and property managers. The launch sequence is operational; the audience is national. When you write for an audience, pull their headline. Do not invent a new one. Do not blend two.</span></p>
+<hr>
+<!-- _class: lead -->
+
+<h1 id="the-hero-message">The hero message</h1>
+<br>
+
+<div class="huge">
+
+<p><em>The licensed-trade marketplace that thinks like a contractor.</em></p>
+<p><em>Built by a working GC.</em>
+<em>Code-aware. Permit-aware. Rebate-aware.</em></p>
+</div>
+
+<br>
+
+<p><span class="small" style="color:rgba(255,255,255,0.85)">This is the anchor. It appears on every external surface. Memorize it.</span></p>
+<hr>
+<h1 id="voice-principles">Voice principles</h1>
+<p><strong>Plainspoken. Direct. Tradesperson-friendly. Dry. Zero marketing-speak. 8th-grade reading level.</strong></p>
+<p>He talks like a guy who actually swung a hammer this morning — because he did.</p>
+<div class="good">
+
+<p><strong>ON-VOICE</strong> — <em>"I just paid $87 for a lead that ghosted me. The plumber I called paid $112 for the same lead. The 'homeowner' was never real."</em></p>
+</div>
+
+<div class="bad">
+
+<p><strong>OFF-VOICE</strong> — <em>"Sherpa Pros leverages an AI-powered, next-generation marketplace solution to disrupt the legacy lead-generation paradigm and unlock unprecedented value for the construction ecosystem."</em></p>
+</div>
+
+<div class="good">
+
+<p><strong>ON-VOICE</strong> — <em>"A homeowner called me yesterday. She'd had 3 contractors no-show in 2 weeks."</em></p>
+</div>
+
+<div class="bad">
+
+<p><strong>OFF-VOICE</strong> — <em>"Customer churn driven by supply-side reliability friction is a key vertical opportunity."</em></p>
+</div>
+
+<hr>
+<h1 id="always-say">ALWAYS say</h1>
+<div class="rule">
+
+<p><strong>Licensed</strong> — every pro on the platform has a current state license we verified.</p>
+</div>
+
+<div class="rule">
+
+<p><strong>Verified</strong> — license, insurance, and certificate of insurance with the homeowner named as additional insured.</p>
+</div>
+
+<div class="rule">
+
+<p><strong>Code-aware</strong> — quotes get checked against NEC, IRC, MA Electrical, NH RSA, and 284 NH municipal codes.</p>
+</div>
+
+<div class="rule">
+
+<p><strong>Built by a contractor</strong> — Phyrom runs HJD Builders. He uses the platform himself.</p>
+</div>
+
+<div class="rule">
+
+<p><strong>Local / Neighbor</strong> — these are the pros down the street. Treat homeowners as neighbors.</p>
+</div>
+
+<div class="rule">
+
+<p><strong>Jobs, not leads</strong> — pros pay only when work happens. The whole model in three words.</p>
+</div>
+
+<div class="rule">
+
+<p><strong>Founding Pro · Half-price forever</strong> — beta cohort grandfathered at 5% take rate forever. Permanent recruiting hook.</p>
+</div>
+
+<hr>
+<h1 id="never-say">NEVER say</h1>
+<p>The bright lines. Each one is banned for a reason.</p>
+<div class="bad">
+
+<p><strong>"Wiseman"</strong> — internal product name. If it leaks externally we look like an AI gimmick instead of a contractor's tool. Externally call it: <em>the platform · code validation · permit assist · rebate lookup · the matching engine.</em></p>
+</div>
+
+<div class="bad">
+
+<p><strong>"Gig" / "Task"</strong> — frames our pros as TaskRabbit-style unskilled labor. They are licensed trade.</p>
+</div>
+
+<div class="bad">
+
+<p><strong>"Uber for X" externally</strong> — internal shorthand only. Externally it cheapens the licensed-trade positioning.</p>
+</div>
+
+<div class="bad">
+
+<p><strong>"AI-powered" as headline</strong> — investors and pros tune out. AI is supporting cast. The contractor is the lead.</p>
+</div>
+
+<div class="bad">
+
+<p><strong>"Disrupt" / "Revolutionize"</strong> — buzzword tax. We do not pay it.</p>
+</div>
+
+<div class="bad">
+
+<p><strong>Jargon abbreviations on first use</strong> — CO, SOV, AR, RFI, ARR, NPS, CAC, GMV. Spell out on first use, then the abbreviation is fine.</p>
+</div>
+
+<div class="bad">
+
+<p><strong>Region-anchored brand language</strong> — "the New England licensed-trade marketplace," "Sherpa Pros for NH/ME/MA," "the NE marketplace." The brand is <strong>national</strong> (international roadmap). Launch geography is a Phase 1/2/3 sequence, not the brand identity. Spec §3.4 is canonical.</p>
+</div>
+
+<hr>
+<h1 id="geographic-brand-rules">Geographic brand rules</h1>
+<p>This is the rule that took the longest to learn. Read it twice.</p>
+<table>
+<thead>
+<tr>
+<th>Rule</th>
+<th>Brand line</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Brand identity</strong></td>
+<td>Always <strong>national</strong> (international roadmap). Sherpa Pros is THE national licensed-trade marketplace.</td>
+</tr>
+<tr>
+<td><strong>Launch geography</strong></td>
+<td>Named operationally where relevant (e.g., "Phase 1 launches in Portsmouth, Manchester, Portland, and Boston"), never as a brand cap.</td>
+</tr>
+<tr>
+<td><strong>Founder origin</strong></td>
+<td>"Working New Hampshire general contractor" — true, specific, builds trust. Reference Phyrom's NH-GC identity freely; this is biography, not brand cap.</td>
+</tr>
+<tr>
+<td><strong>Pricing bands</strong></td>
+<td>Keep per-metro operational pricing (NH/ME band, MA band, NYC band as we add them). These are real cost-of-labor differences, not brand statements.</td>
+</tr>
+<tr>
+<td><strong>State-specific operational notes</strong></td>
+<td>Keep grant programs (MassCEC), trade associations (NHHBA, MEHBA), supply houses (FW Webb), licensing (MA Office of Consumer Affairs) — these are how the work gets done in our launch markets, not brand identity.</td>
+</tr>
+</tbody></table>
+<br>
+
+<div class="good">
+
+<p><strong>RIGHT</strong> — <em>"Sherpa Pros is the national licensed-trade marketplace, launching in NH, ME, and MA — expanding nationally."</em></p>
+</div>
+
+<div class="good">
+
+<p><strong>RIGHT</strong> — <em>"Phyrom is a working New Hampshire general contractor running HJD Builders LLC."</em> (founder biography — true and specific)</p>
+</div>
+
+<div class="bad">
+
+<p><strong>WRONG</strong> — <em>"the New England licensed-trade marketplace"</em> / <em>"Sherpa Pros for NH/ME/MA"</em> / <em>"the Northern Triangle marketplace"</em></p>
+</div>
+
+<br>
+
+<p><span class="small"><strong>The test:</strong> if you removed the region word, would the sentence still make sense in five years when we're operating in Texas? If yes, the word is operational and stays. If no, it's brand-capping and goes.</span></p>
+<hr>
+<h1 id="the-founder-story-is-the-lead-hook">The founder story is the lead hook</h1>
+<p>Always. Slide 1 of every deck. Line 1 of every pro recruit. Paragraph 1 of every PR placement.</p>
+<br>
+
+<blockquote>
+<p><em>"Hi, I'm Phyrom. I run HJD Builders — a licensed general contractor in New Hampshire."</em></p>
+<p><em>"I built Sherpa Pros because the platforms my crew gets pitched every week — Angi, Thumbtack, TaskRabbit, Handy — sell us leads we can't afford and send homeowners to people who shouldn't be touching their wiring."</em></p>
+</blockquote>
+<br>
+
+<p><strong>Why this works:</strong> people follow people. Logo posts underperform Phyrom's face by 3–5×. Investors back founders, not decks. Pros trust other pros, not platforms.</p>
+<br>
+
+<p><span class="small">If your copy does not have Phyrom's voice in the first paragraph, rewrite it.</span></p>
+<hr>
+<h1 id="phyrom-specific-rules">Phyrom-specific rules</h1>
+<p>His surname is <strong>UNKNOWN</strong> until he confirms it. Until then, never write a surname. Do not guess.</p>
+<div class="good">
+
+<p><strong>RIGHT</strong> — <em>Phyrom · Founder · NH General Contractor · HJD Builders LLC</em></p>
+</div>
+
+<div class="good">
+
+<p><strong>RIGHT</strong> — Founder card initials display: <strong>P</strong> (single letter)</p>
+</div>
+
+<div class="bad">
+
+<p><strong>WRONG</strong> — <em>Phyrom Doung, founder of Sherpa Pros</em> (surname guessed — caught in audit P0-1)</p>
+</div>
+
+<div class="bad">
+
+<p><strong>WRONG</strong> — Founder card initials: <strong>PD</strong> (encodes a guessed surname — caught in audit P0-2)</p>
+</div>
+
+<br>
+
+<p><strong>Run this grep before any external send:</strong>
+<code>git grep -i "Phyrom [A-Z][a-z]"</code> — must return zero hits.</p>
+<hr>
+<h1 id="internal-vs-external-naming">Internal vs external naming</h1>
+<p>Two product names live inside the company. Neither one ships externally. Substitution table:</p>
+<table>
+<thead>
+<tr>
+<th>Internal name (don't ship)</th>
+<th>External phrase (always ship)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Wiseman</td>
+<td>the platform · code validation · permit assist · rebate lookup · the matching engine</td>
+</tr>
+<tr>
+<td>Wiseman code-intelligence</td>
+<td>code-aware quote validation</td>
+</tr>
+<tr>
+<td>Wiseman-checked</td>
+<td>Code-checked</td>
+</tr>
+<tr>
+<td>BldSync</td>
+<td>the underlying code-intelligence layer</td>
+</tr>
+<tr>
+<td>Dispatch Wiseman</td>
+<td>the matching engine · 7-factor dispatch</td>
+</tr>
+</tbody></table>
+<div class="bad">
+
+<p><strong>LEAKED</strong> (audit P1-1) — <em>"Founder of Sherpa Pros and the broader BldSync platform that powers the code-aware layer."</em></p>
+</div>
+
+<div class="good">
+
+<p><strong>FIXED</strong> — <em>"Founder of Sherpa Pros and the underlying code-intelligence layer that powers code-aware quote validation across the platform."</em></p>
+</div>
+
+<hr>
+<h1 id="visual-identity">Visual identity</h1>
+<p><strong>Brand colors</strong></p>
+<p><span class="swatch" style="background:#00a9e0"></span> <strong>Sky Blue · #00a9e0</strong> — primary. Logo, links, headlines.
+<span class="swatch" style="background:#1a1a2e"></span> <strong>Dark Navy · #1a1a2e</strong> — secondary. Body text, headers.
+<span class="swatch" style="background:#f59e0b"></span> <strong>Amber · #f59e0b</strong> — accent. CTAs, "PROS" wordmark, highlights.
+<span class="swatch" style="background:#10b981"></span> <strong>Emerald · #10b981</strong> — success. Verified badges, code-checked, completed jobs.</p>
+<br>
+
+<p><strong>Typography</strong>
+<code>-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif</code>
+System font stack. Mobile-first. Renders fast on every device. No custom font fees.</p>
+<br>
+
+<p><strong>Logo lockup</strong>
+Sky-blue <strong>SHERPA</strong> + amber <strong>PROS</strong> with a diagonal cut between the words. Wordmark only — no icon needed.</p>
+<hr>
+<h1 id="pricing-comparison-framing">Pricing comparison framing</h1>
+<p>Brand Guardian audit recommended this be standardized. Pricing is a value comparison, not a price-shopping comparison.</p>
+<div class="good">
+
+<p><strong>ALWAYS</strong> — <em>"5% take rate vs Angi's effective $400–$800 per closed job."</em></p>
+</div>
+
+<div class="good">
+
+<p><strong>ALWAYS</strong> — <em>"Roughly half the all-in cost a contractor pays Angi today."</em></p>
+</div>
+
+<div class="good">
+
+<p><strong>ALWAYS</strong> — <em>"Pros pay only when work happens. Angi sells the same lead 4 times."</em></p>
+</div>
+
+<div class="bad">
+
+<p><strong>NEVER</strong> — <em>"Cheaper than Angi"</em></p>
+</div>
+
+<div class="bad">
+
+<p><strong>NEVER</strong> — <em>"Lower fees"</em></p>
+</div>
+
+<div class="bad">
+
+<p><strong>NEVER</strong> — <em>"Better deal forever"</em> · <em>"5 cents on the dollar"</em></p>
+</div>
+
+<br>
+
+<p><span class="small">Why: "cheaper / lower / better deal" invites price-shopping. We invite value comparison. The numbers tell the story; we don't editorialize them.</span></p>
+<hr>
+<h1 id="quick-job-lane-brand-consistency">Quick Job lane brand consistency</h1>
+<p>The hardest brand call we made. Quick Jobs ($200–$1,500 toilet installs, paint, ceiling fans) are ON-BRAND because the pros are still licensed where state requires.</p>
+<p><strong>Headline for Quick Job tab:</strong></p>
+<blockquote>
+<p><em>"Real licensed pros. Pre-priced. Confirmed in 30 minutes. The handyman lane Angi can't deliver."</em></p>
+</blockquote>
+<div class="good">
+
+<p><strong>WE CAN CLAIM</strong> — <em>"Licensed plumber for $325 toilet install — confirmed in 30 minutes."</em></p>
+</div>
+
+<div class="good">
+
+<p><strong>WE CAN CLAIM</strong> — <em>"Licensed electricians for ceiling fans and GFCIs at handyman prices."</em></p>
+</div>
+
+<div class="bad">
+
+<p><strong>WE CANNOT CLAIM</strong> — <em>"Sherpa Pros = licensed-only"</em> — true for Project mode, mostly true for Quick Job, but handyman general work is unlicensed in many states.</p>
+</div>
+
+<div class="bad">
+
+<p><strong>WE CANNOT CLAIM</strong> — <em>"Code-validated"</em> on every Quick Job — light validation only, not full code engine.</p>
+</div>
+
+<hr>
+<h1 id="common-mistakes-the-brand-guardian-caught">Common mistakes the Brand Guardian caught</h1>
+<p>Real P0 + P1 violations from the audit. Each one is a pattern to learn.</p>
+<div class="bad">
+
+<p><strong>Surname leak</strong> — <em>"Phyrom Doung, founder of Sherpa Pros."</em>
+<strong>Right</strong> — <em>"Phyrom, founder of Sherpa Pros."</em>
+<strong>Why it matters:</strong> the surname is unknown. Guessing it forever puts a wrong name in print.</p>
+</div>
+
+<div class="bad">
+
+<p><strong>Internal name in deck</strong> — <em>"the broader BldSync platform that powers the code-aware layer."</em>
+<strong>Right</strong> — <em>"the underlying code-intelligence layer that powers code-aware quote validation."</em>
+<strong>Why it matters:</strong> investors think we shipped a different product than the one they bought.</p>
+</div>
+
+<div class="bad">
+
+<p><strong>Stat contradiction</strong> — <em>Mass Save heat-pump rebate $8,500 max in 2026.</em>
+<strong>Right</strong> — <em>$10,000+ in 2026</em> (matches deck, one-pager, for-pros, LinkedIn).
+<strong>Why it matters:</strong> one wrong number in front of an investor reads as "founder doesn't know his own numbers."</p>
+</div>
+
+<div class="bad">
+
+<p><strong>Unhyphenated</strong> — <em>"Old House Verified"</em>
+<strong>Right</strong> — <em>"Old-House Verified"</em> (hyphenated everywhere).
+<strong>Why it matters:</strong> trademark filing depends on a single canonical spelling.</p>
+</div>
+
+<div class="bad">
+
+<p><strong>AI as headline</strong> — <em>"AI-powered marketplace for contractors."</em>
+<strong>Right</strong> — <em>"The licensed-trade marketplace that thinks like a contractor."</em>
+<strong>Why it matters:</strong> "AI-powered" is supporting cast. The contractor is the lead.</p>
+</div>
+
+<hr>
+<h1 id="the-brand-owner">The brand owner</h1>
+<p><strong>Phyrom personally owns brand calls.</strong> When in doubt, ask him.</p>
+<br>
+
+<p><strong>The Brand Guardian agent runs final audit before any external send.</strong>
+Spec at <code>docs/pitch/brand-audit.md</code>. Run before press, investor pitches, paid ads, and any landing page change.</p>
+<br>
+
+<p><strong>This deck is the source of truth.</strong>
+Canonical bible: <code>docs/superpowers/specs/2026-04-22-gtm-marketing-design.md</code> §3.
+Audit reference: <code>docs/pitch/brand-audit.md</code>.</p>
+<br>
+
+<p><strong>Refresh cadence:</strong> quarterly + after every Brand Guardian audit. Anything that changes here changes downstream — brief the team in the next standup.</p>
+<br>
+
+<div class="rule">
+
+<p><strong>Three-question gut check before you hit send:</strong></p>
+<ol>
+<li>Does the founder voice lead?</li>
+<li>Did I use any banned word? (Wiseman, BldSync, gig, task, AI-powered, disrupt, revolutionize, cheaper)</li>
+<li>Does Phyrom appear with no surname?</li>
+</ol>
+</div>
+
+	
+
+
+</body>
+</html>

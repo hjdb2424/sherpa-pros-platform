@@ -1,0 +1,1037 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>08 recruiting playbook hub manager — Sherpa Pros</title>
+<link rel="icon" href="../../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="08-recruiting-playbook-hub-manager.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="hub-1-atkinson-nh---hub-manager-recruiting-playbook">Hub #1 Atkinson NH - Hub Manager Recruiting Playbook</h1>
+<h2 id="purpose">Purpose</h2>
+<p>Operational playbook for sourcing, screening, and closing the Hub Manager #1 hire. Companion to <code>07-hub-manager-job-spec.md</code>.</p>
+<p><strong>Critical-path target:</strong> Signed offer by Phase 1 Month 4. On-floor by Phase 1 Month 5.</p>
+<hr>
+<h2 id="1-target-source-list-12-specific-sources">1. Target Source List (12+ Specific Sources)</h2>
+<h3 id="a-fw-webb-branch-managers-nhma-primary-me-secondary">A. FW Webb branch managers (NH/MA primary, ME secondary)</h3>
+<p>The single best source. FW Webb is the partnership target for Hubs #2-#10 (per integration spec section 4); a Hub Manager who already knows the FW Webb operational model is uniquely valuable.</p>
+<p><strong>Specific NH branches to target:</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> FW Webb Manchester NH</li>
+<li><input disabled="" type="checkbox"> FW Webb Salem NH</li>
+<li><input disabled="" type="checkbox"> FW Webb Concord NH</li>
+<li><input disabled="" type="checkbox"> FW Webb Portsmouth NH</li>
+<li><input disabled="" type="checkbox"> FW Webb Nashua NH (border)</li>
+</ul>
+<p><strong>Specific MA branches (commute-feasible to Atkinson):</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> FW Webb Lawrence MA</li>
+<li><input disabled="" type="checkbox"> FW Webb Methuen MA</li>
+<li><input disabled="" type="checkbox"> FW Webb Tewksbury MA</li>
+<li><input disabled="" type="checkbox"> FW Webb Haverhill MA</li>
+<li><input disabled="" type="checkbox"> FW Webb North Andover MA</li>
+</ul>
+<p><strong>Targets within each branch:</strong> Branch Manager + Assistant Branch Manager + Counter Manager. LinkedIn search "FW Webb" + "branch manager" + "New Hampshire" / "Massachusetts."</p>
+<h3 id="b-lowes-pro-desk-leads-ne-region">B. Lowe's Pro Desk leads (NE region)</h3>
+<p>Lowe's Pro Desk is structurally similar to Hub will-call counter. Pro Desk leads are accustomed to professional contractor customers (vs. consumer DIY).</p>
+<ul>
+<li><input disabled="" type="checkbox"> Lowe's Salem NH Pro Desk</li>
+<li><input disabled="" type="checkbox"> Lowe's Plaistow NH Pro Desk</li>
+<li><input disabled="" type="checkbox"> Lowe's Nashua NH Pro Desk</li>
+<li><input disabled="" type="checkbox"> Lowe's Methuen MA Pro Desk</li>
+<li><input disabled="" type="checkbox"> Lowe's Haverhill MA Pro Desk</li>
+</ul>
+<p><strong>LinkedIn search:</strong> "Lowe's" + "Pro Desk" + "New Hampshire" / "Massachusetts."</p>
+<h3 id="c-home-depot-pro-leads-ne-region">C. Home Depot Pro leads (NE region)</h3>
+<p>Same logic as Lowe's. Home Depot Pro is the larger of the two and has more experienced leads in the NH/MA market.</p>
+<ul>
+<li><input disabled="" type="checkbox"> Home Depot Salem NH</li>
+<li><input disabled="" type="checkbox"> Home Depot Plaistow NH (closest to Atkinson)</li>
+<li><input disabled="" type="checkbox"> Home Depot Methuen MA</li>
+<li><input disabled="" type="checkbox"> Home Depot Lawrence MA</li>
+<li><input disabled="" type="checkbox"> Home Depot Haverhill MA</li>
+<li><input disabled="" type="checkbox"> Home Depot Tewksbury MA</li>
+</ul>
+<p><strong>LinkedIn search:</strong> "Home Depot" + "Pro" + "New Hampshire" / "Massachusetts."</p>
+<h3 id="d-independent-supply-house-counter-managers">D. Independent supply-house counter managers</h3>
+<p>Plumbing supply (besides FW Webb): Davis &amp; Warshow, Granite Group, Aubuchon Hardware Pro Plumbing departments.
+Electrical supply: Granite City Electric, Northeast Electrical Distributors, North Coast Electric.
+HVAC supply: RE Michel, Johnstone Supply.</p>
+<ul>
+<li><input disabled="" type="checkbox"> Granite Group plumbing branches in NH/MA (5 branches)</li>
+<li><input disabled="" type="checkbox"> Granite City Electric branches in NH (3 branches)</li>
+<li><input disabled="" type="checkbox"> RE Michel HVAC branches in NH/MA</li>
+<li><input disabled="" type="checkbox"> Local independent supply houses (Atkinson Lumber, Plaistow Plumbing &amp; Electric, etc.)</li>
+</ul>
+<h3 id="e-nhhba-member-companies-nh-home-builders-association">E. NHHBA member companies (NH Home Builders Association)</h3>
+<p>Some NHHBA member companies (mid-size GCs and trade subs) have branch / division managers who may be open to a stable salaried operations role outside field work. These candidates often have construction-trade fluency that supply-house candidates lack.</p>
+<ul>
+<li><input disabled="" type="checkbox"> Pull NHHBA member directory</li>
+<li><input disabled="" type="checkbox"> Identify 8-12 mid-size NH GC and trade-sub companies</li>
+<li><input disabled="" type="checkbox"> Reach out via NHHBA networking events + Phyrom's existing NHHBA relationships</li>
+</ul>
+<h3 id="f-manchester-nh-chamber-of-commerce--abc-nh">F. Manchester NH Chamber of Commerce + ABC NH</h3>
+<p>Manchester Chamber + Associated Builders &amp; Contractors (ABC) NH chapter both have membership rosters that overlap with construction-adjacent operational professionals.</p>
+<ul>
+<li><input disabled="" type="checkbox"> Manchester Chamber of Commerce member directory</li>
+<li><input disabled="" type="checkbox"> ABC NH member directory + chapter event attendance</li>
+</ul>
+<hr>
+<h2 id="2-outreach-script-template">2. Outreach Script Template</h2>
+<h3 id="a-linkedin-cold-outreach-fw-webb--lowes--hd--supply-house-targets">A. LinkedIn cold outreach (FW Webb / Lowe's / HD / supply house targets)</h3>
+<pre><code>Subject: NH Trade Operations Role - Sherpa Hub
+
+Hi [First Name],
+
+I'm Phyrom, founder of Sherpa Pros - a construction marketplace platform we're launching with our first physical hub at our HQ in Atkinson NH. I'm looking for a Hub Manager who knows trade-supply ops and the NH professional contractor community.
+
+Your background at [Company / Branch] caught my attention - the operational profile (managing inventory, staging, pro counter, branch P&amp;L) is exactly what we need.
+
+Compensation: $65-85K base + 10-15% bonus on Hub revenue + benefits + 401(k) match. Reports directly to me as founder.
+
+Open to a quick call this week to walk through the role?
+
+Phyrom
+[contact]
+</code></pre>
+<h3 id="b-warm-intro-request-nhhba--manchester-chamber--abc-nh-paths">B. Warm intro request (NHHBA / Manchester Chamber / ABC NH paths)</h3>
+<pre><code>Subject: Intro request - looking for Hub Manager candidate
+
+[Mutual contact],
+
+Hope you're doing well. Quick ask - I'm hiring a Hub Manager for our Sherpa Pros launch in Atkinson. The ideal candidate is someone with FW Webb / Lowe's Pro Desk / Home Depot Pro / supply house counter management experience. Salary $65-85K + bonus.
+
+Anyone in your network you'd recommend I reach out to?
+
+Phyrom
+</code></pre>
+<h3 id="c-cold-email-follow-up-after-no-linkedin-response-in-7-days">C. Cold email follow-up (after no LinkedIn response in 7 days)</h3>
+<pre><code>Subject: Following up - Sherpa Hub Atkinson NH
+
+Hi [First Name],
+
+Following up on my LinkedIn note last week. Quick recap: I'm hiring for a Hub Manager role at our Atkinson NH location - building out the first Sherpa Hub which is a pro-only members-and-staging facility serving the NH trade community.
+
+Salary $65-85K + bonus + benefits. Direct report to founder.
+
+If now's not the right time, no worries - and if you know someone strong in your network who might be looking, I'd appreciate the introduction.
+
+Phyrom
+</code></pre>
+<hr>
+<h2 id="3-sourcing-cadence-weekly-targets">3. Sourcing Cadence (Weekly Targets)</h2>
+<h3 id="phase-1-month-2---source-build">Phase 1 Month 2 - Source build</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Week 1: Build LinkedIn target list (50+ named candidates across categories A-F)</li>
+<li><input disabled="" type="checkbox"> Week 2: Send first wave of 25 outreach messages</li>
+<li><input disabled="" type="checkbox"> Week 3: Send second wave of 25 outreach messages</li>
+<li><input disabled="" type="checkbox"> Week 4: Follow up with non-responders + post job on LinkedIn / Indeed / NHHBA board</li>
+</ul>
+<h3 id="phase-1-month-3---phone-screens">Phase 1 Month 3 - Phone screens</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Week 1: Phone screen all responding candidates (target: 8-12 phone screens completed)</li>
+<li><input disabled="" type="checkbox"> Week 2: Continue phone screens + advance top 3-5 to on-site</li>
+<li><input disabled="" type="checkbox"> Week 3: On-site interviews top 3 candidates</li>
+<li><input disabled="" type="checkbox"> Week 4: Reference checks on finalist</li>
+</ul>
+<h3 id="phase-1-month-4---offer--close">Phase 1 Month 4 - Offer + close</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Week 1: Offer extended to finalist</li>
+<li><input disabled="" type="checkbox"> Week 2-4: Negotiate + close + signed offer</li>
+<li><input disabled="" type="checkbox"> If finalist declines: pivot to second-choice candidate immediately, offer Week 3</li>
+</ul>
+<hr>
+<h2 id="4-phone-screen-question-bank-30-min">4. Phone Screen Question Bank (30 min)</h2>
+<h3 id="opening-5-min">Opening (5 min)</h3>
+<ol>
+<li>Walk me through your current role - what does a typical day look like?</li>
+<li>What drew you to consider this Sherpa Hub role?</li>
+</ol>
+<h3 id="operational-depth-10-min">Operational depth (10 min)</h3>
+<ol start="3">
+<li>Tell me about a time you made a P&amp;L decision that had a measurable impact - what was the lever and what was the result?</li>
+<li>How do you manage inventory shrink in a counter-and-warehouse environment?</li>
+<li>Walk me through how you handle a short-shipment from a key supplier on a customer-promised delivery date.</li>
+<li>How do you train a new associate on a counter / warehouse role - what's your day-1, day-5, day-30 framework?</li>
+</ol>
+<h3 id="customer--community-5-min">Customer + community (5 min)</h3>
+<ol start="7">
+<li>Tell me about your strongest professional contractor customer relationship and what makes it work.</li>
+<li>What would you do if a key member is upset about an inventory stockout that was your fault?</li>
+</ol>
+<h3 id="compensation--fit-5-min">Compensation + fit (5 min)</h3>
+<ol start="9">
+<li>What's the salary range you're targeting?</li>
+<li>What's your earliest available start date?</li>
+</ol>
+<h3 id="wrap-5-min">Wrap (5 min)</h3>
+<ol start="11">
+<li>What questions do you have for me?</li>
+</ol>
+<hr>
+<h2 id="5-on-site-interview-question-bank-3-hr">5. On-Site Interview Question Bank (3 hr)</h2>
+<h3 id="tour--observation-45-min">Tour + observation (45 min)</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Walk through Hub buildout site - watch what candidate notices</li>
+<li><input disabled="" type="checkbox"> Ask: "If you were running this Hub day 1, what would you change about this layout?"</li>
+</ul>
+<h3 id="operational-scenario-interviews-90-min-3-scenarios-at-30-min-each">Operational scenario interviews (90 min, 3 scenarios at 30 min each)</h3>
+<p><strong>Scenario 1: Materials dispatch failure</strong>
+"It's 5:45am. Your 6:30am Uber Direct wave is supposed to leave with materials for 4 jobs. Your dock-staged inventory shows you're short 1 critical item for the highest-revenue job of the day. Your supplier (FW Webb) doesn't open until 7:00am. Walk me through the next 90 minutes."</p>
+<p>Looking for: triage, communication (pro on the affected job), backup-supplier thinking, escalation, recovery action, documentation for post-mortem.</p>
+<p><strong>Scenario 2: Member-conflict resolution</strong>
+"A long-time Founding Pro just walked into the Hub at 11am, visibly upset. He paid for a kit that was supposed to be ready at 8am, and his crew has been sitting at the job site for 3 hours. Walk me through how you handle the next 5 minutes."</p>
+<p>Looking for: emotional regulation, customer focus, accountability, recovery action (refund, credit, expedite), and follow-up plan.</p>
+<p><strong>Scenario 3: P&amp;L pressure</strong>
+"Three months in, your Hub is running 30% under revenue target and 15% over opex target. Phyrom asks you to identify $2,000/month in opex cuts without breaking member NPS. Walk me through your first 5 candidate cuts and how you'd evaluate each."</p>
+<p>Looking for: structured thinking, business-case construction, member-impact awareness, willingness to make hard calls.</p>
+<h3 id="pl--strategy-30-min">P&amp;L + strategy (30 min)</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Show candidate the integration spec section 9 Hub P&amp;L model</li>
+<li><input disabled="" type="checkbox"> Ask: "Where do you see the biggest revenue lever and the biggest cost risk?"</li>
+</ul>
+<h3 id="founder--culture-fit-15-min">Founder + culture fit (15 min)</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Phyrom personal-fit conversation</li>
+<li><input disabled="" type="checkbox"> Long-term arc: "Where do you want to be in 3 years?" - listen for whether candidate sees themselves growing into Operations Director / multi-Hub role</li>
+</ul>
+<hr>
+<h2 id="6-reference-check-template-3-references-30-min-each">6. Reference Check Template (3 references, 30 min each)</h2>
+<pre><code>Hi [Reference], I'm checking references for [Candidate] who's interviewing for a Hub Manager role with us at Sherpa Pros. Do you have ~30 minutes to chat?
+
+1. How long did you work with [Candidate] and what was your reporting relationship?
+2. What were [Candidate]'s top 2 strengths?
+3. What were 1-2 areas where [Candidate] had room to grow?
+4. Walk me through a specific situation where [Candidate] demonstrated P&amp;L ownership.
+5. How did [Candidate] handle a difficult conversation - either with a customer, a supplier, or a direct report?
+6. Did [Candidate] ever miss a critical commitment? How did they handle it?
+7. Inventory accuracy + shrink - how did [Candidate] manage that?
+8. Would you hire [Candidate] again? In what role?
+9. Is there anything I should know that I haven't asked?
+
+Thanks - this is very helpful. Confidential of course.
+</code></pre>
+<hr>
+<h2 id="7-decision-framework">7. Decision Framework</h2>
+<p><strong>Green flags:</strong></p>
+<ul>
+<li>5+ years branch / department management with demonstrable P&amp;L</li>
+<li>Specific shrink-control + inventory-accuracy anecdotes</li>
+<li>Self-aware hard-conversation handling</li>
+<li>Energized by founding-team responsibility</li>
+<li>NH-rooted (commute is sustainable, community ties)</li>
+</ul>
+<p><strong>Yellow flags:</strong></p>
+<ul>
+<li>Long tenure but no clear P&amp;L ownership</li>
+<li>Excellent counter / customer skills but no team management</li>
+<li>Salary expectations 20%+ above range (probe for negotiability)</li>
+</ul>
+<p><strong>Red flags (pass):</strong></p>
+<ul>
+<li>No P&amp;L responsibility</li>
+<li>Career trajectory shows pattern of 1-2 year jumps</li>
+<li>Reference checks reveal accountability avoidance</li>
+<li>Compensation expectations 30%+ above range with no flexibility</li>
+<li>Cannot articulate why this role vs. their current role</li>
+</ul>
+<hr>
+<h2 id="8-backup-plan-if-search-stalls">8. Backup Plan if Search Stalls</h2>
+<p>If by Phase 1 Month 4 no offer is signed:</p>
+<h3 id="option-1-extend-search-30-days">Option 1: Extend search 30 days</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Phyrom personally takes Hub Manager interim role for first 60 days of operations</li>
+<li><input disabled="" type="checkbox"> Continue search with broader geographic range (open to relocation candidates from MA, ME, VT)</li>
+<li><input disabled="" type="checkbox"> Increase salary range to $85-95K to widen pipeline</li>
+</ul>
+<h3 id="option-2-hire-interim-hub-manager-contractor">Option 2: Hire interim Hub Manager (contractor)</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Engage a contractor / interim manager from Robert Half or a construction-ops-specific recruiting firm for 90 days</li>
+<li><input disabled="" type="checkbox"> Use the 90 days to continue full-time hire search at the right level</li>
+<li><input disabled="" type="checkbox"> Soft-open proceeds on schedule</li>
+</ul>
+<h3 id="option-3-phyrom-runs-the-hub-for-90-days">Option 3: Phyrom runs the Hub for 90 days</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Acceptable Phase 1 contingency given Phyrom is on-site at HJD HQ</li>
+<li><input disabled="" type="checkbox"> Adds load to Phyrom but keeps soft-open + grand-open on schedule</li>
+<li><input disabled="" type="checkbox"> Continue hire search in parallel</li>
+<li><input disabled="" type="checkbox"> Hub Manager hired by end of Phase 1 Month 6 / start of Phase 2</li>
+</ul>
+<hr>
+<h2 id="9-sign-off">9. Sign-off</h2>
+<ul>
+<li><input disabled="" type="checkbox"> Target list built (50+ named candidates)</li>
+<li><input disabled="" type="checkbox"> First wave of outreach sent</li>
+<li><input disabled="" type="checkbox"> Phone screens completed</li>
+<li><input disabled="" type="checkbox"> On-site interviews completed</li>
+<li><input disabled="" type="checkbox"> Reference checks complete</li>
+<li><input disabled="" type="checkbox"> Offer extended + accepted</li>
+<li><input disabled="" type="checkbox"> Start date confirmed</li>
+<li><input disabled="" type="checkbox"> Onboarding plan in place (per <code>07-hub-manager-job-spec.md</code> section 9)</li>
+</ul>
+
+	
+
+
+</body>
+</html>

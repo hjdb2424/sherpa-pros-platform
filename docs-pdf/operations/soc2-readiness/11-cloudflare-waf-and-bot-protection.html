@@ -1,0 +1,1194 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>11 cloudflare waf and bot protection — Sherpa Pros</title>
+<link rel="icon" href="../../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="11-cloudflare-waf-and-bot-protection.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="cloudflare-waf--vercel-botid--upstash-rate-limiting">Cloudflare WAF + Vercel BotID + Upstash Rate Limiting</h1>
+<h2 id="1-purpose">1. Purpose</h2>
+<p>Defines the layered edge-protection stack for Sherpa Pros: Cloudflare Pro WAF for L7 attacks, Vercel BotID (GA Jun 2025) for managed bot challenges, and Upstash Redis for sliding-window rate limiting integrated into the Sherpa Guard middleware. Satisfies SOC 2 CC6.6 (network access), CC6.7 (transmission integrity), CC7.1/CC7.2 (anomaly detection).</p>
+<h2 id="2-stack-architecture">2. Stack Architecture</h2>
+<pre><code>[User / bot]
+     │
+     ▼
+[Cloudflare edge — WAF managed rules + custom rules + bot management]
+     │
+     ▼
+[Vercel edge — BotID managed challenge + Sherpa Guard middleware]
+     │
+     ├─── [Upstash Redis — sliding-window rate limit check]
+     │
+     ▼
+[Route handler]
+</code></pre>
+<h2 id="3-cloudflare-pro-plan-configuration">3. Cloudflare Pro Plan Configuration</h2>
+<h3 id="31-account--plan">3.1 Account + plan</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Cloudflare account: <code>sherpa-pros</code></li>
+<li><input disabled="" type="checkbox"> Plan: <strong>Pro</strong> ($25/mo) Phase 1; <strong>Business</strong> ($250/mo) at &gt;100K MAU</li>
+<li><input disabled="" type="checkbox"> Domains: <code>thesherpapros.com</code>, <code>app.thesherpapros.com</code>, <code>api.thesherpapros.com</code>, <code>status.thesherpapros.com</code>, <code>trust.thesherpapros.com</code></li>
+<li><input disabled="" type="checkbox"> DNS proxy (orange cloud) enabled on all subdomains</li>
+</ul>
+<h3 id="32-managed-rule-sets">3.2 Managed rule sets</h3>
+<p>Enabled at Pro plan level:</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Cloudflare Managed Ruleset</strong> (default sensitivity: Medium)</li>
+<li><input disabled="" type="checkbox"> <strong>OWASP Core Rule Set</strong> (paranoia level 2; score threshold 30)</li>
+<li><input disabled="" type="checkbox"> <strong>Cloudflare Specials</strong> (Cloudflare-curated zero-day rules)</li>
+<li><input disabled="" type="checkbox"> <strong>Cloudflare WordPress</strong> (disabled — not WordPress)</li>
+</ul>
+<p>Override actions:</p>
+<ul>
+<li>Default: <strong>Log mode</strong> for first 24 hours after enabling new rule</li>
+<li>Promote to <strong>Block</strong> after Phyrom + on-call review of false positives</li>
+<li>Document each promotion in change-management log per <code>05-change-management-policy.md</code></li>
+</ul>
+<h3 id="33-custom-waf-rules">3.3 Custom WAF rules</h3>
+<pre><code># Rule 1: SQL injection extended patterns (defense-in-depth on top of OWASP CRS)
+Expression: (http.request.uri.query contains "UNION SELECT")
+            or (http.request.uri.query contains "INFORMATION_SCHEMA")
+            or (http.request.body.raw matches "(?i)(or|and)\s+\d+\s*=\s*\d+")
+Action: Block
+Log: Yes
+
+# Rule 2: XSS pattern enforcement
+Expression: (http.request.uri.query contains "&lt;script")
+            or (http.request.body.raw matches "(?i)javascript:")
+            or (http.request.body.raw matches "(?i)onerror\s*=")
+Action: Managed Challenge
+Log: Yes
+
+# Rule 3: Request smuggling
+Expression: (http.request.headers["transfer-encoding"][0] eq "chunked"
+             and http.request.headers["content-length"][0] ne "")
+Action: Block
+
+# Rule 4: API abuse — high-volume POST without auth
+Expression: (http.request.method eq "POST"
+             and not http.cookie contains "__session"
+             and not http.request.uri.path matches "^/api/(public|webhooks)/")
+Action: Managed Challenge
+Log: Yes
+
+# Rule 5: Geographic restriction (optional, off by default)
+Expression: (ip.geoip.country in {"KP" "IR" "SY"})
+Action: Block
+Notes: Tune per business need; disable if expanding internationally
+
+# Rule 6: Known abuse-source ASNs
+Expression: (ip.geoip.asnum in {known_abuse_asns_list})
+Action: Managed Challenge
+
+# Rule 7: User-agent fingerprint anomalies
+Expression: (http.user_agent eq ""
+             or http.user_agent contains "curl/"
+             or http.user_agent contains "python-requests/")
+            and not http.request.uri.path matches "^/api/(integrations|webhooks)/"
+Action: Managed Challenge
+
+# Rule 8: Path traversal
+Expression: (http.request.uri.path contains "../"
+             or http.request.uri.path contains "%2e%2e")
+Action: Block
+
+# Rule 9: Auth endpoint brute force
+Expression: (http.request.uri.path eq "/api/auth/sign-in"
+             and http.request.method eq "POST")
+Action: Managed Challenge if rate &gt;5 per IP per minute
+Notes: Cloudflare Rate Limiting product OR Upstash check (preferred at Sherpa Guard layer)
+
+# Rule 10: Webhook endpoint protection (verify Stripe/Twilio source IPs OR signature only)
+Expression: (http.request.uri.path matches "^/api/webhooks/"
+             and not ip.src in {stripe_ip_ranges} {twilio_ip_ranges})
+Action: Block
+Notes: Combined with HMAC signature verification at app layer
+</code></pre>
+<h3 id="34-bot-management">3.4 Bot management</h3>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Cloudflare Bot Fight Mode</strong>: enabled</li>
+<li><input disabled="" type="checkbox"> <strong>Bot Management Score</strong> (Pro+): exposed via header <code>cf-bot-score</code> (1-99); used by Sherpa Guard middleware</li>
+<li><input disabled="" type="checkbox"> Bot scores ≥30 (likely automated): Managed Challenge on POST endpoints</li>
+<li><input disabled="" type="checkbox"> Bot scores ≥50 (very likely automated): Block on POST endpoints</li>
+<li><input disabled="" type="checkbox"> <strong>Verified bots</strong> (Googlebot, Bingbot) allowlisted</li>
+</ul>
+<h3 id="35-cloudflare-rate-limiting-account-level">3.5 Cloudflare Rate Limiting (account-level)</h3>
+<table>
+<thead>
+<tr>
+<th>Endpoint pattern</th>
+<th>Limit</th>
+<th>Window</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>/api/auth/sign-in</code></td>
+<td>5</td>
+<td>per minute per IP</td>
+<td>Managed Challenge</td>
+</tr>
+<tr>
+<td><code>/api/auth/sign-up</code></td>
+<td>3</td>
+<td>per minute per IP</td>
+<td>Managed Challenge</td>
+</tr>
+<tr>
+<td><code>/api/auth/reset-password</code></td>
+<td>3</td>
+<td>per 5 minutes per IP</td>
+<td>Managed Challenge</td>
+</tr>
+<tr>
+<td><code>/api/jobs</code> POST</td>
+<td>10</td>
+<td>per minute per session</td>
+<td>Block</td>
+</tr>
+<tr>
+<td><code>/api/bids</code> POST</td>
+<td>30</td>
+<td>per minute per session</td>
+<td>Block</td>
+</tr>
+<tr>
+<td><code>/api/*</code> aggregate</td>
+<td>1000</td>
+<td>per minute per IP</td>
+<td>Managed Challenge</td>
+</tr>
+</tbody></table>
+<p>These complement Upstash sliding-window limits at the application layer (Section 5).</p>
+<h2 id="4-vercel-botid-configuration">4. Vercel BotID Configuration</h2>
+<p>Per Vercel platform reminder: BotID is GA as of Jun 2025; provides managed challenge + behavior analysis at edge.</p>
+<h3 id="41-setup">4.1 Setup</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Enable BotID in Vercel project settings</li>
+<li><input disabled="" type="checkbox"> Default action: <strong>Managed Challenge</strong> for suspicious traffic</li>
+<li><input disabled="" type="checkbox"> Whitelist: known good user-agents + verified bots</li>
+<li><input disabled="" type="checkbox"> Integration: BotID verdict available to Vercel middleware via <code>request.headers.get('x-vercel-bot-id-verdict')</code></li>
+</ul>
+<h3 id="42-sherpa-guard-middleware-integration">4.2 Sherpa Guard middleware integration</h3>
+<pre><code class="hljs typescript"><span class="hljs-comment">// src/middleware.ts (extension - illustrative)</span>
+<span class="hljs-keyword">import</span> { rateLimit } <span class="hljs-keyword">from</span> <span class="hljs-string">'./lib/edge/rate-limit'</span>;
+<span class="hljs-keyword">import</span> { auditEdge } <span class="hljs-keyword">from</span> <span class="hljs-string">'./lib/edge/audit'</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">middleware</span>(<span class="hljs-params"><span class="hljs-attr">request</span>: <span class="hljs-title class_">NextRequest</span></span>) {
+  <span class="hljs-comment">// 1. Vercel BotID verdict check</span>
+  <span class="hljs-keyword">const</span> botVerdict = request.<span class="hljs-property">headers</span>.<span class="hljs-title function_">get</span>(<span class="hljs-string">'x-vercel-bot-id-verdict'</span>); <span class="hljs-comment">// e.g., "human", "bot", "uncertain"</span>
+  <span class="hljs-keyword">if</span> (botVerdict === <span class="hljs-string">'bot'</span> &amp;&amp; <span class="hljs-title function_">isMutatingMethod</span>(request.<span class="hljs-property">method</span>)) {
+    <span class="hljs-keyword">await</span> <span class="hljs-title function_">auditEdge</span>(<span class="hljs-string">'edge.blocked.botid'</span>, { <span class="hljs-attr">ip</span>: <span class="hljs-title function_">clientIp</span>(request), <span class="hljs-attr">path</span>: request.<span class="hljs-property">nextUrl</span>.<span class="hljs-property">pathname</span> });
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Response</span>(<span class="hljs-string">'Forbidden'</span>, { <span class="hljs-attr">status</span>: <span class="hljs-number">403</span> });
+  }
+
+  <span class="hljs-comment">// 2. Cloudflare bot score additional check</span>
+  <span class="hljs-keyword">const</span> cfBotScore = <span class="hljs-built_in">parseInt</span>(request.<span class="hljs-property">headers</span>.<span class="hljs-title function_">get</span>(<span class="hljs-string">'cf-bot-score'</span>) ?? <span class="hljs-string">'99'</span>, <span class="hljs-number">10</span>);
+  <span class="hljs-keyword">if</span> (cfBotScore &lt;= <span class="hljs-number">30</span> &amp;&amp; <span class="hljs-title function_">isMutatingMethod</span>(request.<span class="hljs-property">method</span>)) {
+    <span class="hljs-keyword">await</span> <span class="hljs-title function_">auditEdge</span>(<span class="hljs-string">'edge.blocked.cf_bot'</span>, { <span class="hljs-attr">ip</span>: <span class="hljs-title function_">clientIp</span>(request), <span class="hljs-attr">score</span>: cfBotScore });
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Response</span>(<span class="hljs-string">'Forbidden'</span>, { <span class="hljs-attr">status</span>: <span class="hljs-number">403</span> });
+  }
+
+  <span class="hljs-comment">// 3. Upstash rate limit (per Section 5)</span>
+  <span class="hljs-keyword">const</span> rl = <span class="hljs-keyword">await</span> <span class="hljs-title function_">rateLimit</span>(request);
+  <span class="hljs-keyword">if</span> (!rl.<span class="hljs-property">allowed</span>) {
+    <span class="hljs-keyword">await</span> <span class="hljs-title function_">auditEdge</span>(<span class="hljs-string">'edge.rate_limited'</span>, { <span class="hljs-attr">ip</span>: <span class="hljs-title function_">clientIp</span>(request), <span class="hljs-attr">tier</span>: rl.<span class="hljs-property">tier</span>, <span class="hljs-attr">path</span>: request.<span class="hljs-property">nextUrl</span>.<span class="hljs-property">pathname</span> });
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Response</span>(<span class="hljs-string">'Too Many Requests'</span>, {
+      <span class="hljs-attr">status</span>: <span class="hljs-number">429</span>,
+      <span class="hljs-attr">headers</span>: {
+        <span class="hljs-string">'retry-after'</span>: <span class="hljs-title class_">String</span>(rl.<span class="hljs-property">retryAfterSec</span>),
+        <span class="hljs-string">'x-ratelimit-limit'</span>: <span class="hljs-title class_">String</span>(rl.<span class="hljs-property">limit</span>),
+        <span class="hljs-string">'x-ratelimit-remaining'</span>: <span class="hljs-title class_">String</span>(rl.<span class="hljs-property">remaining</span>),
+        <span class="hljs-string">'x-ratelimit-reset'</span>: <span class="hljs-title class_">String</span>(rl.<span class="hljs-property">resetAt</span>),
+      },
+    });
+  }
+
+  <span class="hljs-comment">// 4. Sherpa Guard role-tier check (existing)</span>
+  <span class="hljs-comment">// ... existing tier enforcement</span>
+}
+</code></pre>
+<h3 id="43-fraud-detection">4.3 Fraud detection</h3>
+<ul>
+<li>BotID + behavior analysis surfaces session anomalies (rapid form submissions, headless-browser patterns)</li>
+<li>High-risk scores feed Datadog <code>D6: Error Rate per Route</code> and trigger #alerts-security Slack channel</li>
+</ul>
+<h2 id="5-upstash-redis-rate-limiting">5. Upstash Redis Rate Limiting</h2>
+<h3 id="51-per-tier-limits-sliding-window">5.1 Per-tier limits (sliding window)</h3>
+<table>
+<thead>
+<tr>
+<th>Tier</th>
+<th>Limit</th>
+<th>Window</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>anonymous</strong> (no session)</td>
+<td><strong>60 req/min</strong></td>
+<td>per IP</td>
+<td>Pre-auth / public pages</td>
+</tr>
+<tr>
+<td><strong>homeowner</strong> (authenticated client)</td>
+<td><strong>300 req/min</strong></td>
+<td>per user</td>
+<td>Standard customer usage</td>
+</tr>
+<tr>
+<td><strong>pro</strong></td>
+<td><strong>1000 req/min</strong></td>
+<td>per user</td>
+<td>Higher because dispatch-loop activity</td>
+</tr>
+<tr>
+<td><strong>pm_admin</strong></td>
+<td><strong>3000 req/min</strong></td>
+<td>per user + per org</td>
+<td>Bulk operations expected</td>
+</tr>
+<tr>
+<td><strong>internal_eng</strong> / <code>sherpa_admin</code></td>
+<td><strong>10000 req/min</strong></td>
+<td>per user</td>
+<td>Operational</td>
+</tr>
+<tr>
+<td><strong>api_integration</strong> (B2B per-contract)</td>
+<td><strong>per-contract custom</strong></td>
+<td>per API key</td>
+<td>Set per MSA, default 600 req/min</td>
+</tr>
+</tbody></table>
+<h3 id="52-endpoint-class-overrides">5.2 Endpoint-class overrides</h3>
+<table>
+<thead>
+<tr>
+<th>Endpoint class</th>
+<th>Limit (overrides tier)</th>
+<th>Window</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>POST /api/auth/*</code></td>
+<td>10 req/min</td>
+<td>per IP (regardless of tier — pre-auth)</td>
+</tr>
+<tr>
+<td><code>POST /api/jobs</code></td>
+<td>30 req/min</td>
+<td>per user</td>
+</tr>
+<tr>
+<td><code>POST /api/bids</code></td>
+<td>100 req/min</td>
+<td>per user</td>
+</tr>
+<tr>
+<td><code>POST /api/payments/*</code></td>
+<td>60 req/min</td>
+<td>per user</td>
+</tr>
+<tr>
+<td>Webhooks <code>POST /api/webhooks/*</code></td>
+<td>per source: 10000/min</td>
+<td>bypass user tier</td>
+</tr>
+</tbody></table>
+<h3 id="53-implementation">5.3 Implementation</h3>
+<pre><code class="hljs typescript"><span class="hljs-comment">// src/lib/edge/rate-limit.ts</span>
+<span class="hljs-keyword">import</span> { <span class="hljs-title class_">Ratelimit</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">'@upstash/ratelimit'</span>;
+<span class="hljs-keyword">import</span> { <span class="hljs-title class_">Redis</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">'@upstash/redis'</span>;
+
+<span class="hljs-keyword">const</span> redis = <span class="hljs-title class_">Redis</span>.<span class="hljs-title function_">fromEnv</span>();
+
+<span class="hljs-keyword">const</span> limiters = {
+  <span class="hljs-attr">anonymous</span>: <span class="hljs-keyword">new</span> <span class="hljs-title class_">Ratelimit</span>({ redis, <span class="hljs-attr">limiter</span>: <span class="hljs-title class_">Ratelimit</span>.<span class="hljs-title function_">slidingWindow</span>(<span class="hljs-number">60</span>, <span class="hljs-string">'1 m'</span>), <span class="hljs-attr">prefix</span>: <span class="hljs-string">'rl:anon'</span> }),
+  <span class="hljs-attr">homeowner</span>: <span class="hljs-keyword">new</span> <span class="hljs-title class_">Ratelimit</span>({ redis, <span class="hljs-attr">limiter</span>: <span class="hljs-title class_">Ratelimit</span>.<span class="hljs-title function_">slidingWindow</span>(<span class="hljs-number">300</span>, <span class="hljs-string">'1 m'</span>), <span class="hljs-attr">prefix</span>: <span class="hljs-string">'rl:home'</span> }),
+  <span class="hljs-attr">pro</span>: <span class="hljs-keyword">new</span> <span class="hljs-title class_">Ratelimit</span>({ redis, <span class="hljs-attr">limiter</span>: <span class="hljs-title class_">Ratelimit</span>.<span class="hljs-title function_">slidingWindow</span>(<span class="hljs-number">1000</span>, <span class="hljs-string">'1 m'</span>), <span class="hljs-attr">prefix</span>: <span class="hljs-string">'rl:pro'</span> }),
+  <span class="hljs-attr">pm_admin</span>: <span class="hljs-keyword">new</span> <span class="hljs-title class_">Ratelimit</span>({ redis, <span class="hljs-attr">limiter</span>: <span class="hljs-title class_">Ratelimit</span>.<span class="hljs-title function_">slidingWindow</span>(<span class="hljs-number">3000</span>, <span class="hljs-string">'1 m'</span>), <span class="hljs-attr">prefix</span>: <span class="hljs-string">'rl:pm'</span> }),
+  <span class="hljs-attr">internal_eng</span>: <span class="hljs-keyword">new</span> <span class="hljs-title class_">Ratelimit</span>({ redis, <span class="hljs-attr">limiter</span>: <span class="hljs-title class_">Ratelimit</span>.<span class="hljs-title function_">slidingWindow</span>(<span class="hljs-number">10000</span>, <span class="hljs-string">'1 m'</span>), <span class="hljs-attr">prefix</span>: <span class="hljs-string">'rl:eng'</span> }),
+  <span class="hljs-attr">authPost</span>: <span class="hljs-keyword">new</span> <span class="hljs-title class_">Ratelimit</span>({ redis, <span class="hljs-attr">limiter</span>: <span class="hljs-title class_">Ratelimit</span>.<span class="hljs-title function_">slidingWindow</span>(<span class="hljs-number">10</span>, <span class="hljs-string">'1 m'</span>), <span class="hljs-attr">prefix</span>: <span class="hljs-string">'rl:auth'</span> }),
+};
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">rateLimit</span>(<span class="hljs-params"><span class="hljs-attr">request</span>: <span class="hljs-title class_">NextRequest</span></span>): <span class="hljs-title class_">Promise</span>&lt;{
+  <span class="hljs-attr">allowed</span>: <span class="hljs-built_in">boolean</span>;
+  <span class="hljs-attr">tier</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">limit</span>: <span class="hljs-built_in">number</span>;
+  <span class="hljs-attr">remaining</span>: <span class="hljs-built_in">number</span>;
+  <span class="hljs-attr">resetAt</span>: <span class="hljs-built_in">number</span>;
+  <span class="hljs-attr">retryAfterSec</span>: <span class="hljs-built_in">number</span>;
+}&gt; {
+  <span class="hljs-keyword">const</span> path = request.<span class="hljs-property">nextUrl</span>.<span class="hljs-property">pathname</span>;
+  <span class="hljs-keyword">const</span> tier = <span class="hljs-title function_">getUserTier</span>(request); <span class="hljs-comment">// homeowner | pro | pm_admin | internal_eng | anonymous</span>
+  <span class="hljs-keyword">const</span> userOrIp = <span class="hljs-title function_">getUserId</span>(request) ?? <span class="hljs-title function_">clientIp</span>(request);
+
+  <span class="hljs-comment">// Endpoint-class override</span>
+  <span class="hljs-keyword">if</span> (path.<span class="hljs-title function_">startsWith</span>(<span class="hljs-string">'/api/auth/'</span>)) {
+    <span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> limiters.<span class="hljs-property">authPost</span>.<span class="hljs-title function_">limit</span>(<span class="hljs-title function_">clientIp</span>(request));
+    <span class="hljs-keyword">return</span> <span class="hljs-title function_">mapResult</span>(result, <span class="hljs-string">'auth'</span>);
+  }
+
+  <span class="hljs-comment">// Tier-based</span>
+  <span class="hljs-keyword">const</span> limiter = limiters[tier <span class="hljs-keyword">as</span> keyof <span class="hljs-keyword">typeof</span> limiters] ?? limiters.<span class="hljs-property">anonymous</span>;
+  <span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> limiter.<span class="hljs-title function_">limit</span>(userOrIp);
+  <span class="hljs-keyword">return</span> <span class="hljs-title function_">mapResult</span>(result, tier);
+}
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">mapResult</span>(<span class="hljs-params"><span class="hljs-attr">r</span>: <span class="hljs-built_in">any</span>, <span class="hljs-attr">tier</span>: <span class="hljs-built_in">string</span></span>) {
+  <span class="hljs-keyword">return</span> {
+    <span class="hljs-attr">allowed</span>: r.<span class="hljs-property">success</span>,
+    tier,
+    <span class="hljs-attr">limit</span>: r.<span class="hljs-property">limit</span>,
+    <span class="hljs-attr">remaining</span>: r.<span class="hljs-property">remaining</span>,
+    <span class="hljs-attr">resetAt</span>: r.<span class="hljs-property">reset</span>,
+    <span class="hljs-attr">retryAfterSec</span>: <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">max</span>(<span class="hljs-number">0</span>, <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">ceil</span>((r.<span class="hljs-property">reset</span> - <span class="hljs-title class_">Date</span>.<span class="hljs-title function_">now</span>()) / <span class="hljs-number">1000</span>)),
+  };
+}
+</code></pre>
+<h3 id="54-fail-open-vs-fail-closed">5.4 Fail-open vs fail-closed</h3>
+<ul>
+<li><strong>Phase 1</strong>: Fail-open if Upstash unreachable (log to Datadog, do not block users) — Cloudflare provides redundant rate limiting</li>
+<li><strong>Phase 4</strong>: Fail-closed for write endpoints; fail-open for read endpoints</li>
+<li>Datadog alert on Upstash failure rate &gt;1%</li>
+</ul>
+<h2 id="6-implementation-order">6. Implementation Order</h2>
+<pre><code>[Phase 1.A — Q2 2026]
+□ Cloudflare Pro plan + DNS proxy
+□ Managed rule sets enabled in Log mode
+□ Cloudflare Bot Fight Mode + bot scores exposed
+□ Upstash Redis provisioned (us-east-1 + us-west-2 multi-region)
+□ Sherpa Guard middleware extended with rate-limit + bot-verdict checks
+□ Audit log entries for edge.blocked.* and edge.rate_limited
+□ Datadog dashboard pulls metrics from rate-limit emit
+
+[Phase 1.B — Q3 2026]
+□ Promote managed WAF rules from Log → Block after FP review
+□ Custom WAF rules 1-10 deployed in Log mode
+□ Vercel BotID enabled with Managed Challenge
+□ Cloudflare Rate Limiting layer activated for auth endpoints
+
+[Phase 2 — Q4 2026]
+□ Promote custom WAF rules to Block after FP review
+□ Tune bot-score thresholds based on 90 days of telemetry
+□ API integration rate limits negotiated per B2B contract
+□ Geographic restrictions enabled if business case
+
+[Phase 4 — 2027]
+□ Cloudflare Business plan upgrade
+□ Cloudflare Bot Management (paid tier) for advanced ML scoring
+□ Fail-closed rate limiting on write endpoints
+</code></pre>
+<h2 id="7-monitoring--telemetry">7. Monitoring + Telemetry</h2>
+<ul>
+<li>All edge actions emit Datadog metrics:<ul>
+<li><code>sherpa.edge.cloudflare.block</code></li>
+<li><code>sherpa.edge.cloudflare.challenge</code></li>
+<li><code>sherpa.edge.botid.verdict</code> (tags: verdict, action_taken)</li>
+<li><code>sherpa.edge.rate_limit.exceeded</code> (tags: tier, endpoint_class)</li>
+</ul>
+</li>
+<li>All edge actions emit Sherpa Guard audit log entries</li>
+<li><code>D6: Error Rate per Route</code> shows 429 trends</li>
+<li>Dedicated <code>Edge Protection</code> dashboard tracks rule efficacy</li>
+</ul>
+<h2 id="8-cost">8. Cost</h2>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Phase 1 monthly</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Cloudflare Pro</td>
+<td>$25</td>
+</tr>
+<tr>
+<td>Upstash Redis (Pay-as-you-go)</td>
+<td>$20-$80 (depending on req volume)</td>
+</tr>
+<tr>
+<td>Vercel BotID</td>
+<td>included with Vercel Pro/Enterprise</td>
+</tr>
+<tr>
+<td><strong>Total Phase 1</strong></td>
+<td><strong>&lt;$150/mo</strong></td>
+</tr>
+</tbody></table>
+<h2 id="9-maintenance">9. Maintenance</h2>
+<ul>
+<li><strong>Owner</strong>: SRE / Compliance lead (Phyrom interim)</li>
+<li><strong>Review cadence</strong>: Monthly rule efficacy review; quarterly threshold tuning</li>
+<li><strong>Effective date</strong>: 2026-06-15</li>
+</ul>
+
+	
+
+
+</body>
+</html>

@@ -1,0 +1,1297 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>insurance broker outreach — Sherpa Pros</title>
+<link rel="icon" href="../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="insurance-broker-outreach.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="sherpa-pros--insurance-broker-outreach-package">Sherpa Pros — Insurance Broker Outreach Package</h1>
+<p><strong>Date:</strong> 2026-04-22
+<strong>Owner:</strong> Phyrom (Founder)
+<strong>Purpose:</strong> Engage 3 tech/marketplace-specialist brokers Monday morning to bind Phase 0 platform liability coverage by Week 3.
+<strong>Companion docs:</strong></p>
+<ul>
+<li><code>docs/operations/liability-insurance-framework.md</code> (4-layer liability model)</li>
+<li><code>docs/operations/embedded-protection-products.md</code> (Phase 1 white-label protection — broker may underwrite future)</li>
+<li><code>docs/superpowers/specs/2026-04-22-gtm-marketing-design.md</code> §10 R6 risk + §5.4 tech gates</li>
+</ul>
+<hr>
+<h2 id="1-three-broker-outreach-emails-ready-to-send">1. Three Broker Outreach Emails (Ready to Send)</h2>
+<h3 id="email-1--vouch-insurance">Email 1 — Vouch Insurance</h3>
+<p><strong>To:</strong> <a href="mailto:travis.hedge@vouch.us">travis.hedge@vouch.us</a>
+<strong>Cc:</strong> <a href="mailto:hello@vouch.us">hello@vouch.us</a>
+<strong>Subject:</strong> Licensed-trade marketplace seeking Tech Errors &amp; Omissions + Marketplace endorsement — NH/ME/MA</p>
+<p>Travis,</p>
+<p>I'm Phyrom, founder of Sherpa Pros — a New England licensed-trade marketplace that just put its first 10-pro beta cohort live across NH, ME, and MA. Vouch came up in every conversation I had with founders in Y Combinator's portfolio about marketplace-specific coverage, and I want to see if we're a fit before we start scaling jobs.</p>
+<p>Quick sketch of who we are:</p>
+<ul>
+<li>Marketplace for <strong>licensed</strong> contractors only (electricians, plumbers, HVAC, GCs, trade specialists). Every pro carries their own primary General Liability, Workers' Comp, Commercial Auto, and state surety bond — verified at onboarding via Certificate of Insurance.</li>
+<li>Our platform-level exposure is structurally different from a TaskRabbit or Handy: pros are pre-insured, so our risk concentrates in <strong>matching errors, scope errors, and code-validation errors</strong> — i.e., classic Tech Errors &amp; Omissions (E&amp;O) territory.</li>
+<li>Built by a working New Hampshire General Contractor (HJD Builders LLC). Code-aware quote validation runs against National Electrical Code, International Residential Code, Massachusetts Electrical, and New Hampshire RSA before any bid is accepted — that should be a meaningful claims-frequency reducer for an underwriter.</li>
+</ul>
+<p>What we're looking to bind in the next 21 days:</p>
+<ol>
+<li><strong>Commercial General Liability</strong> — $1M per occurrence / $2M aggregate</li>
+<li><strong>Tech Errors &amp; Omissions / Professional Liability</strong> — $1M / $2M (this is the critical one)</li>
+<li><strong>Cyber Liability</strong> — $500K to $1M</li>
+<li><strong>Marketplace endorsement</strong> carving out third-party-contractor exposure</li>
+</ol>
+<p>Phase 0 footprint: NH, ME, MA. Phase 1 (next 6 months): all of New England. Phase 3+: nationwide. Year-1 take captured projected ~$200K. Premium budget $4K to $9K annually.</p>
+<p>We're skipping Directors &amp; Officers (no board yet) and Employment Practices Liability (no full-time employees yet) until those triggers fire.</p>
+<p>Worth a 30-minute intro call this week or next? Mornings Eastern work best. I can share our liability framework, beta-cohort traction, and the code-validation evidence chain that we'd want underwriters to weigh.</p>
+<p>Thanks for your time,</p>
+<p><strong>Phyrom</strong>
+Founder · Sherpa Pros
+NH General Contractor · HJD Builders LLC
+<a href="mailto:poum@hjd.builders">poum@hjd.builders</a></p>
+<hr>
+<h3 id="email-2--embroker">Email 2 — Embroker</h3>
+<p><strong>To:</strong> <a href="mailto:brokers@embroker.com">brokers@embroker.com</a>
+<strong>Cc:</strong> <a href="mailto:ben.jennings@embroker.com">ben.jennings@embroker.com</a> <code>[VERIFY — CEO, may not be inbound channel]</code>
+<strong>Subject:</strong> New England construction marketplace — Tech Errors &amp; Omissions + General Liability quote request</p>
+<p>Hello Embroker team,</p>
+<p>I'm Phyrom, founder of Sherpa Pros, a New England licensed-trade marketplace launching its beta cohort this quarter. I've read through your Startup Package materials and want to flag upfront that we're <strong>pre-Series A</strong> — the standard Embroker Startup Package looks like it's gated to Series A/B-funded companies, so I'd appreciate a quick read on whether you have an early-stage / pre-revenue track that fits us, or whether I should circle back after our first close.</p>
+<p>What we're underwriting:</p>
+<ul>
+<li>Marketplace connecting homeowners and property managers with <strong>licensed</strong> trade contractors (electricians, plumbers, HVAC, GCs) across NH, ME, and MA.</li>
+<li>Every contractor carries primary Commercial General Liability, Workers' Comp, Commercial Auto, and state surety bonds — verified at onboarding via Certificate of Insurance.</li>
+<li>Platform exposure is matching, scope generation, and code-validation accuracy — i.e., Tech Errors &amp; Omissions.</li>
+<li>Built by a working General Contractor (HJD Builders LLC, NH). Code-aware quote validation against National Electrical Code, International Residential Code, Massachusetts Electrical, and New Hampshire RSA before any bid is accepted.</li>
+</ul>
+<p>Coverage requested for Phase 0 (next 21 days):</p>
+<ol>
+<li>Commercial General Liability — $1M / $2M</li>
+<li>Tech Errors &amp; Omissions / Professional Liability — $1M / $2M (priority)</li>
+<li>Cyber Liability — $500K to $1M</li>
+<li>Marketplace endorsement (third-party-contractor exposure carve-out)</li>
+</ol>
+<p>Skipping Directors &amp; Officers and Employment Practices Liability until Series A and first full-time hire respectively.</p>
+<p>Phase 0 footprint NH/ME/MA, Phase 1 all New England (next 6 months), Phase 3+ nationwide. Year-1 take captured projected ~$200K. Premium budget $4K to $9K annually.</p>
+<p>If your standard package doesn't fit pre-Series A, do you have a "pre-funded" or beta program — or a recommendation for a partner broker we should approach instead? Either answer is useful.</p>
+<p>Happy to jump on a 30-minute intro call this week. Mornings Eastern work best.</p>
+<p>Thanks,</p>
+<p><strong>Phyrom</strong>
+Founder · Sherpa Pros
+NH General Contractor · HJD Builders LLC
+<a href="mailto:poum@hjd.builders">poum@hjd.builders</a></p>
+<hr>
+<h3 id="email-3--newfront">Email 3 — Newfront</h3>
+<p><strong>To:</strong> <a href="mailto:michael.talmanson@newfront.com">michael.talmanson@newfront.com</a>
+<strong>Cc:</strong> <a href="mailto:boston@newfront.com">boston@newfront.com</a> <code>[VERIFY — Boston office general inbox]</code>
+<strong>Subject:</strong> Boston-area construction marketplace seeking Tech Errors &amp; Omissions + Marketplace endorsement</p>
+<p>Michael,</p>
+<p>I came across your work leading the Boston Property &amp; Casualty practice at Newfront — your background bridging the Technology / Cyber Risk practice at William Gallagher and the broader builder client base looks like the exact intersection I need. (Now that Newfront is part of WTW, I assume the carrier panel got even deeper, which is why I'm reaching out before I lock in a quote elsewhere.)</p>
+<p>I'm Phyrom, founder of Sherpa Pros — a New England licensed-trade marketplace that went live with its first 10-pro beta cohort this quarter, with a Boston specialty focus on Mass Save heat-pump installers, Electric Vehicle (EV) charger electricians, electrical panel upgrades, old-house plaster/slate specialists, and triple-decker exteriors. Built by a working New Hampshire General Contractor (HJD Builders LLC) — I am the contractor who's also writing the code.</p>
+<p>Why I think this fits Newfront:</p>
+<ul>
+<li>We sit at the <strong>construction + technology</strong> intersection that your Boston office appears to be uniquely staffed for.</li>
+<li>Every pro on our platform carries primary Commercial General Liability, Workers' Comp, Commercial Auto, and state surety bond — verified by Certificate of Insurance at onboarding. Sherpa Pros' platform-level risk is matching errors, scope generation errors, and <strong>code-validation errors</strong> (we run quote validation against National Electrical Code, International Residential Code, Massachusetts Electrical, and New Hampshire RSA before any bid is accepted — this is a moat AND a claims-frequency reducer).</li>
+<li>Boston specialty lanes give us per-job stakes ($10K to $50K) that need a thoughtful underwriter, not a checkbox quote.</li>
+</ul>
+<p>Phase 0 coverage requested (next 21 days):</p>
+<ol>
+<li>Commercial General Liability — $1M / $2M</li>
+<li>Tech Errors &amp; Omissions / Professional Liability — $1M / $2M (the priority line)</li>
+<li>Cyber Liability — $500K to $1M</li>
+<li>Marketplace endorsement (third-party-contractor exposure carve-out)</li>
+</ol>
+<p>Phase 0 footprint NH/ME/MA, Phase 1 all New England (next 6 months), Phase 3+ nationwide. Year-1 take captured projected ~$200K. Premium budget $4K to $9K annually. Skipping Directors &amp; Officers and Employment Practices Liability until Series A and first full-time hire.</p>
+<p>Bonus: we have a Phase 1 white-label embedded-insurance product (consumer-paid Project Protection at checkout) on the roadmap — if there's appetite at WTW/Newfront to sit on the carrier side of that, I'd love to talk about that too once the platform coverage is bound.</p>
+<p>Worth a 30-minute intro call this week or next? Mornings Eastern work best — I can come into Boston if it helps.</p>
+<p>Thanks,</p>
+<p><strong>Phyrom</strong>
+Founder · Sherpa Pros
+NH General Contractor · HJD Builders LLC
+<a href="mailto:poum@hjd.builders">poum@hjd.builders</a></p>
+<hr>
+<h2 id="2-coverage-spec-sheet-broker-readable-format">2. Coverage Spec Sheet (Broker-Readable Format)</h2>
+<h3 id="21-business-description">2.1 Business Description</h3>
+<p><strong>Sherpa Pros LLC</strong> is a New Hampshire-domiciled, technology-enabled marketplace connecting residential homeowners and property managers with <strong>licensed</strong> trade contractors for on-demand and project-based work. Our service categories include electrical, plumbing, Heating Ventilation and Air Conditioning (HVAC), general contracting, painting, landscaping, roofing, and specialty trades (Mass Save heat-pump installers, Electric Vehicle (EV) charger electricians, plaster, slate, masonry). Every contractor on the platform must hold an active state license in their trade and must upload a current Certificate of Insurance naming Sherpa Pros LLC as Additional Insured before accepting any work.</p>
+<p>The platform was built by a working New Hampshire General Contractor (HJD Builders LLC) and differentiates from existing lead-generation platforms (Angi, Thumbtack, TaskRabbit, Handy) on three structural dimensions: (1) <strong>licensed-only</strong> contractor pool, (2) <strong>code-aware quote validation</strong> that runs every customer scope against the National Electrical Code, International Residential Code, Massachusetts Electrical Code, and New Hampshire RSA before any bid is accepted, and (3) a <strong>marketplace</strong> transaction model (pros get matched and paid for jobs) rather than a lead-gen model (pros pay to bid).</p>
+<h3 id="22-jurisdictions">2.2 Jurisdictions</h3>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Months</th>
+<th>States</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Phase 0</strong></td>
+<td>0–3 (now)</td>
+<td>NH, ME, MA</td>
+<td>Beta cohort: 10 pros, ~30 jobs in 60 days</td>
+</tr>
+<tr>
+<td><strong>Phase 1</strong></td>
+<td>3–6</td>
+<td>All New England (NH, ME, MA, RI, CT, VT)</td>
+<td>50+ pros, 200+ jobs</td>
+</tr>
+<tr>
+<td><strong>Phase 2</strong></td>
+<td>6–12</td>
+<td>New England + NYC specialty beachhead</td>
+<td>200+ pros, 1,000+ jobs</td>
+</tr>
+<tr>
+<td><strong>Phase 3+</strong></td>
+<td>12+</td>
+<td>National (Philadelphia, Washington DC, San Francisco Bay, Chicago first)</td>
+<td>1,000+ pros</td>
+</tr>
+</tbody></table>
+<p>Coverage must scale with footprint — confirm whether each state addition triggers premium recalculation, separate filing, or automatic inclusion under a multi-state policy form.</p>
+<h3 id="23-coverage-requested-phase-0--bind-in-21-days">2.3 Coverage Requested (Phase 0 — Bind in 21 Days)</h3>
+<table>
+<thead>
+<tr>
+<th>Coverage Line</th>
+<th>Limit</th>
+<th>Priority</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Commercial General Liability</strong></td>
+<td>$1M per occurrence / $2M aggregate</td>
+<td>Standard</td>
+<td>Slip-and-fall, advertising injury, basic business liability</td>
+</tr>
+<tr>
+<td><strong>Tech Errors &amp; Omissions / Professional Liability</strong></td>
+<td>$1M per claim / $2M aggregate</td>
+<td><strong>CRITICAL — primary exposure</strong></td>
+<td>Covers claims that platform's matching, scope generation, or code-validation was wrong and caused harm. Largest-severity line for us.</td>
+</tr>
+<tr>
+<td><strong>Cyber Liability</strong></td>
+<td>$500K to $1M</td>
+<td>Standard</td>
+<td>Data breach (pro and customer Personally Identifiable Information), ransomware, regulatory notification costs</td>
+</tr>
+<tr>
+<td><strong>Marketplace Endorsement</strong></td>
+<td>Embedded carve-out</td>
+<td><strong>CRITICAL</strong></td>
+<td>Carves out third-party-contractor exposure — affirms Sherpa Pros is platform/marketplace, not the contractor performing the work. Vouch, Embroker, Newfront all sell variants of this for marketplace startups.</td>
+</tr>
+</tbody></table>
+<p><strong>Premium budget:</strong> $4,000 to $9,000 annually for the full Phase 0 stack.</p>
+<h3 id="24-coverage-not-needed-in-phase-0-will-trigger-in-phase-1">2.4 Coverage NOT Needed in Phase 0 (Will Trigger in Phase 1+)</h3>
+<table>
+<thead>
+<tr>
+<th>Coverage Line</th>
+<th>Phase 0 Status</th>
+<th>Trigger</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Directors &amp; Officers</strong></td>
+<td>Skip</td>
+<td>Series A close (Phase 2, ~Month 10–12)</td>
+</tr>
+<tr>
+<td><strong>Employment Practices Liability</strong></td>
+<td>Skip</td>
+<td>First full-time hire (Phase 1, ~Month 4)</td>
+</tr>
+<tr>
+<td><strong>Workers' Compensation (Sherpa Pros LLC)</strong></td>
+<td>Skip</td>
+<td>First W-2 employee (Phase 1, ~Month 4) — currently zero employees, founder + Upwork contractors only</td>
+</tr>
+<tr>
+<td><strong>Commercial Property</strong></td>
+<td>Skip</td>
+<td>First leased office space (no current physical footprint)</td>
+</tr>
+</tbody></table>
+<h3 id="25-risk-profile-why-sherpa-pros-is-not-taskrabbit">2.5 Risk Profile (Why Sherpa Pros Is NOT TaskRabbit)</h3>
+<table>
+<thead>
+<tr>
+<th>Dimension</th>
+<th>TaskRabbit / Handy / Angi</th>
+<th>Sherpa Pros</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Contractor licensing</strong></td>
+<td>Not required</td>
+<td><strong>Required</strong> — state license in trade, verified at onboarding + quarterly</td>
+</tr>
+<tr>
+<td><strong>Contractor primary insurance</strong></td>
+<td>Not required</td>
+<td><strong>Required</strong> — General Liability $1M, Workers' Comp, Commercial Auto, state surety bond, all verified by Certificate of Insurance naming Sherpa Pros LLC as Additional Insured</td>
+</tr>
+<tr>
+<td><strong>Pre-job risk reduction</strong></td>
+<td>None</td>
+<td><strong>Code-aware quote validation</strong> runs every scope against National Electrical Code, International Residential Code, Massachusetts Electrical, and New Hampshire RSA before bid acceptance</td>
+</tr>
+<tr>
+<td><strong>Evidence chain per job</strong></td>
+<td>Photos only</td>
+<td>Code-validation log (timestamped, signed) + scope + photos pre/during/post + permit numbers + inspector approvals + communication log (Twilio, encrypted) + Stripe payment record + contractor Certificate of Insurance on file at time of job + license verification on file at time of job</td>
+</tr>
+<tr>
+<td><strong>Stripe Connect 7-day hold</strong></td>
+<td>Not standard</td>
+<td>Standard — funds held 7 days post-completion, dispute window, then auto-release</td>
+</tr>
+<tr>
+<td><strong>Concierge dispute triage</strong></td>
+<td>None or weak</td>
+<td>24-hour Service Level Agreement, 4-tier resolution workflow (refund / re-match / work guarantee invocation / direct claim against pro Commercial General Liability)</td>
+</tr>
+</tbody></table>
+<p><strong>Implication for underwriting:</strong> Sherpa Pros' platform-level claim frequency should be materially lower than a generic services marketplace because (a) every pro carries primary insurance that absorbs the first dollar, (b) code-validation reduces the most common defect class before it happens, and (c) the evidence chain we preserve gives any defending attorney the documentation needed to argue platform isn't liable. Premium credit conversation welcome.</p>
+<h3 id="26-year-1-financial-snapshot">2.6 Year-1 Financial Snapshot</h3>
+<ul>
+<li><strong>Projected take captured Year 1:</strong> ~$200,000 (per <code>/admin/investor-metrics</code> dashboard projection)</li>
+<li><strong>Projected jobs Year 1:</strong> ~2,000 to 2,500 (Phase 1 baseline 200/month at maturity, ramping)</li>
+<li><strong>Average job size:</strong> $1,000 to $5,000 (residential trade work); specialty Boston lanes $10K to $50K</li>
+<li><strong>Founder count:</strong> 1 (Phyrom)</li>
+<li><strong>Full-time employees:</strong> 0 (Phase 0); ramping to 4–6 in Phase 1</li>
+<li><strong>Funding stage:</strong> Pre-revenue / pre-Series A; running parallel non-dilutive grant + Wefunder Reg CF + accelerator + pre-seed Venture Capital tracks (see GTM spec)</li>
+<li><strong>Banking + payments:</strong> Stripe Connect (Sherpa Pros LLC merchant of record); Mercury operating account</li>
+<li><strong>Domicile:</strong> New Hampshire LLC</li>
+</ul>
+<hr>
+<h2 id="3-discovery-questions-for-each-broker-intro-call">3. Discovery Questions for Each Broker Intro Call</h2>
+<p>Specific, vendor-knowledgeable questions — not generic small-business intake. Ask each broker the same eight, score the answers, fill the decision framework table.</p>
+<ol>
+<li><p><strong>Minimum-volume requirement for marketplace Tech Errors &amp; Omissions coverage</strong> — what's the smallest book you'll write a marketplace endorsement for? Pre-revenue OK, or do you need a trailing-twelve-month gross merchandise volume floor before underwriters engage? (For Embroker specifically: is your Startup Package gated to Series A + funding only, or is there an early-stage track?)</p>
+</li>
+<li><p><strong>Other construction-services marketplace clients</strong> — do you currently broker for any home-services, contractor, or construction-marketplace platforms (e.g., Houzz Pro, BuildZoom, Sweeten, Steady, Jobber, ServiceTitan-distributed marketplaces)? May we reference 1–2 named clients of similar scale to ours? Without that, we're paying you to learn our risk on someone else's claim history.</p>
+</li>
+<li><p><strong>Marketplace endorsement structure</strong> — is the marketplace carve-out a separate Marketplace Liability policy, a rider on the Tech Errors &amp; Omissions policy, or a Commercial General Liability endorsement? What carrier underwrites it (Hiscox, Travelers, Beazley, Tokio Marine HCC, others)? What exclusions does the standard endorsement carry that we should negotiate out?</p>
+</li>
+<li><p><strong>Premium credit for code-validation-driven claims-frequency reduction</strong> — our platform validates every customer scope against National Electrical Code, International Residential Code, Massachusetts Electrical, and New Hampshire RSA before any bid is accepted. We can produce timestamped validation logs as part of the evidence chain on every job. Is there a credit available for that, or is the underwriter going to treat us as a generic marketplace? What evidence do they want to see to grant the credit?</p>
+</li>
+<li><p><strong>Multi-state expansion handling</strong> — Phase 0 is NH/ME/MA, Phase 1 is all New England, Phase 3 is national. Does our policy form scale automatically as we add states, or does each new state require an endorsement, separate filing, or premium recalculation? Worst-case: are there states (e.g., New York, California) where the marketplace endorsement won't be admitted and we need a separate non-admitted policy?</p>
+</li>
+<li><p><strong>Claims management when both Sherpa Pros and the contractor are named</strong> — when a homeowner sues both the contractor (primary Commercial General Liability target) and Sherpa Pros (deep-pocket secondary target), how does your claims team coordinate defense between the two carriers? Do you have a tender-and-defend protocol that pushes back on Sherpa Pros being kept on the caption when our marketplace endorsement should kick us off it? Who pays the defense cost during the coordination period?</p>
+</li>
+<li><p><strong>Premium financing options if Phase 0 bind happens before first close</strong> — we're running parallel non-dilutive grant + Wefunder + accelerator + Venture Capital tracks. First close is 60–90 days out. Can we monthly-pay the premium, premium-finance through a platform like Imperial PFS or Gateway, or quarterly-pay with a deposit? Or do we have to pay annually upfront?</p>
+</li>
+<li><p><strong>Year-2 and Year-3 renewal pricing trajectory</strong> — if we hit our Phase 1 plan (50 pros, 200 jobs/month, $200K gross merchandise volume) by Month 6 and Phase 2 (200 pros, 1,000 jobs/month, $1M gross merchandise volume) by Month 12, what's the rough premium at renewal? What's the worst-case multiple if we have one Tech Errors &amp; Omissions claim in Year 1? What's the best-case if we have zero claims and the validation log proves our claims-frequency theory?</p>
+</li>
+</ol>
+<p><strong>Bonus question (only ask if call is going well):</strong> <em>We're also designing a Phase 1 consumer-paid embedded-insurance product (Project Protection at checkout — Standard free / Plus $89 / Premium $249, with $25K to $100K caps). Would your firm have appetite to either underwrite that directly or partner us with a Managing General Agent that does (Cover Genius, Boost Insurance, Sure)?</em></p>
+<hr>
+<h2 id="4-decision-framework-fill-after-intro-calls">4. Decision Framework (Fill After Intro Calls)</h2>
+<table>
+<thead>
+<tr>
+<th>Criterion</th>
+<th>Vouch</th>
+<th>Embroker</th>
+<th>Newfront / WTW</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Minimum-volume requirement</strong></td>
+<td>TBD</td>
+<td>TBD (likely Series A-gated for Startup Package)</td>
+<td>TBD</td>
+</tr>
+<tr>
+<td><strong>Marketplace experience (named clients)</strong></td>
+<td>TBD</td>
+<td>TBD</td>
+<td>TBD</td>
+</tr>
+<tr>
+<td><strong>Tech Errors &amp; Omissions quote (premium $/yr)</strong></td>
+<td>$X</td>
+<td>$X</td>
+<td>$X</td>
+</tr>
+<tr>
+<td><strong>Marketplace endorsement structure</strong></td>
+<td>TBD (rider / standalone / endorsement?)</td>
+<td>TBD</td>
+<td>TBD</td>
+</tr>
+<tr>
+<td><strong>Premium credit for code-validation evidence</strong></td>
+<td>TBD</td>
+<td>TBD</td>
+<td>TBD</td>
+</tr>
+<tr>
+<td><strong>Claims-management approach (joint defense)</strong></td>
+<td>TBD</td>
+<td>TBD</td>
+<td>TBD</td>
+</tr>
+<tr>
+<td><strong>Multi-state coverage scaling</strong></td>
+<td>TBD</td>
+<td>TBD</td>
+<td>TBD</td>
+</tr>
+<tr>
+<td><strong>Premium financing / monthly-pay available</strong></td>
+<td>TBD</td>
+<td>TBD</td>
+<td>TBD</td>
+</tr>
+<tr>
+<td><strong>Year-2 renewal trajectory (best/worst)</strong></td>
+<td>TBD</td>
+<td>TBD</td>
+<td>TBD</td>
+</tr>
+<tr>
+<td><strong>Total Year-1 premium (full Phase 0 stack)</strong></td>
+<td>$X</td>
+<td>$X</td>
+<td>$X</td>
+</tr>
+<tr>
+<td><strong>Phyrom's gut on responsiveness + fit</strong></td>
+<td>TBD</td>
+<td>TBD</td>
+<td>TBD</td>
+</tr>
+<tr>
+<td><strong>Recommendation (bind / pass / hold)</strong></td>
+<td>TBD</td>
+<td>TBD</td>
+<td>TBD</td>
+</tr>
+</tbody></table>
+<p><strong>Decision rule:</strong> Bind with the broker that scores best on (1) marketplace experience with named references, (2) explicit credit for code-validation evidence, and (3) multi-state automatic-scaling policy form. Premium is a tiebreaker, not the lead criterion — the cheapest broker who can't defend a joint-named claim is the most expensive broker we'll ever hire.</p>
+<hr>
+<h2 id="5-bind-timeline-4-weeks">5. Bind Timeline (4 Weeks)</h2>
+<table>
+<thead>
+<tr>
+<th>Week</th>
+<th>Day</th>
+<th>Action</th>
+<th>Owner</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Week 1</strong></td>
+<td>Monday (today)</td>
+<td>Send all 3 outreach emails before 9am Eastern</td>
+<td>Phyrom</td>
+</tr>
+<tr>
+<td>Week 1</td>
+<td>Wednesday</td>
+<td>Follow up on any non-responses with a 2-line nudge ("just making sure this didn't get buried — happy to schedule directly via Calendly link")</td>
+<td>Phyrom</td>
+</tr>
+<tr>
+<td>Week 1</td>
+<td>Friday</td>
+<td>Calendly slots open for following week, confirm any intro calls already booked</td>
+<td>Phyrom</td>
+</tr>
+<tr>
+<td><strong>Week 2</strong></td>
+<td>Mon–Fri</td>
+<td>Run 30-min intro calls with all responsive brokers, ask the 8 discovery questions, fill decision framework</td>
+<td>Phyrom</td>
+</tr>
+<tr>
+<td>Week 2</td>
+<td>Friday</td>
+<td>Provide each broker the supplementary docs (liability framework, evidence-chain spec, beta-cohort metrics) for formal underwriting</td>
+<td>Phyrom</td>
+</tr>
+<tr>
+<td><strong>Week 3</strong></td>
+<td>Mon–Wed</td>
+<td>Receive and review formal quotes, clarification calls as needed</td>
+<td>Phyrom</td>
+</tr>
+<tr>
+<td>Week 3</td>
+<td>Thursday</td>
+<td>Decision call — pick winner</td>
+<td>Phyrom + 1 advisor</td>
+</tr>
+<tr>
+<td>Week 3</td>
+<td>Friday</td>
+<td>Sign binder, pay first premium installment</td>
+<td>Phyrom</td>
+</tr>
+<tr>
+<td><strong>Week 4</strong></td>
+<td>Mon</td>
+<td>Receive Certificates of Insurance for Sherpa Pros LLC (primary, plus any additional-insured COIs requested by anchor partners)</td>
+<td>Broker</td>
+</tr>
+<tr>
+<td>Week 4</td>
+<td>Tue–Fri</td>
+<td>Add coverage proof to data room (<code>docs/data-room/insurance-coverage.pdf</code>); update R6 mitigation in GTM spec; pitch deck slide updated with bound coverage as derisking proof</td>
+<td>Phyrom</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="6-backup-plan-if-no-broker-responds-in-5-business-days">6. Backup Plan (If No Broker Responds in 5 Business Days)</h2>
+<p>If by end of day Friday Week 1 we have zero responses or only generic auto-replies, escalate to the next-tier broker pool below. Send same coverage spec sheet, same discovery questions, same timeline.</p>
+<table>
+<thead>
+<tr>
+<th>Backup Broker</th>
+<th>Why</th>
+<th>Contact</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Founder Shield (Acrisure)</strong></td>
+<td>Specialty in venture-backed and pre-Venture Capital startups; strong on Tech Errors &amp; Omissions and marketplace endorsements; smaller minimum-volume threshold than Vouch</td>
+<td><a href="https://www.foundershield.com">https://www.foundershield.com</a> — request quote form + LinkedIn outreach to a Senior Broker</td>
+</tr>
+<tr>
+<td><strong>Hiscox Direct</strong></td>
+<td>Less marketplace-specialized but solid baseline Commercial General Liability and Tech Errors &amp; Omissions pricing; instant online quote available; useful as a price-anchor benchmark even if we don't ultimately bind there</td>
+<td><a href="https://www.hiscox.com/small-business-insurance">https://www.hiscox.com/small-business-insurance</a> — direct online quote</td>
+</tr>
+<tr>
+<td><strong>Coalition</strong></td>
+<td>Cyber-first broker with Tech Errors &amp; Omissions add-on; strongest cyber pricing in the market; could be a hybrid (Coalition for Cyber + Vouch/Newfront for Commercial General Liability + Tech Errors &amp; Omissions + Marketplace)</td>
+<td><a href="https://www.coalitioninc.com">https://www.coalitioninc.com</a> — request quote</td>
+</tr>
+<tr>
+<td><strong>Insureon</strong></td>
+<td>Online-quote model, fast turnaround, useful for benchmark Commercial General Liability + Tech Errors &amp; Omissions pricing on small business; less ideal for marketplace endorsement complexity</td>
+<td><a href="https://www.insureon.com">https://www.insureon.com</a> — direct online quote</td>
+</tr>
+</tbody></table>
+<p><strong>Escalation rule:</strong> Don't wait past Friday Week 1 in silence. If only 1 of the original 3 responds, send to the top 2 backups Monday Week 2 and run them in parallel — better to over-paddle than miss the bind window.</p>
+<hr>
+<h2 id="7-supporting-documents-to-have-ready">7. Supporting Documents to Have Ready</h2>
+<p>Before the first intro call, have these accessible (Notion or Google Drive link, sharable):</p>
+<ul>
+<li>This document (<code>docs/operations/insurance-broker-outreach.md</code>)</li>
+<li>Liability framework (<code>docs/operations/liability-insurance-framework.md</code>)</li>
+<li>Embedded protection products (<code>docs/operations/embedded-protection-products.md</code>)</li>
+<li>GTM spec (<code>docs/superpowers/specs/2026-04-22-gtm-marketing-design.md</code>) — for company context, esp §10 R6 risk + §5.4 tech gates</li>
+<li>Beta-cohort traction snapshot (whatever's live as of the call — pros onboarded, jobs flowing, gross merchandise volume, Net Promoter Score)</li>
+<li>HJD Builders LLC General Contractor license proof (Phyrom's domain credibility — the "we get it because we live it" angle)</li>
+<li>Sample code-validation evidence chain — one redacted real job's audit log</li>
+</ul>
+<hr>
+<h2 id="8-open-items--verification-needed-before-sending">8. Open Items / Verification Needed Before Sending</h2>
+<ul>
+<li><code>[VERIFY]</code> Travis Hedge is the right primary contact at Vouch for inbound founder outreach (Co-Founder + Chief Revenue Officer; high signal but may route through team) — fallback <code>hello@vouch.us</code></li>
+<li><code>[VERIFY]</code> <code>brokers@embroker.com</code> is the inbound channel for new prospect quotes (vs. partnership channel for outside brokers) — confirm via embroker.com contact form before sending</li>
+<li><code>[VERIFY]</code> Newfront's Boston general inbox format (<code>boston@newfront.com</code> is a guess — replace with actual after web confirmation)</li>
+<li><code>[VERIFY]</code> Embroker Startup Package funding-stage gate — their docs reference "seed or Stage A funding minimum" which would disqualify us at Phase 0; the email above flags this upfront</li>
+<li><code>[VERIFY]</code> Vouch minimum-volume floor — their published case studies skew to Series A+ tech companies; if they decline at Phase 0, ask for warm intro to a partner broker who handles pre-revenue</li>
+</ul>
+<hr>
+<h2 id="9-phyrom-notes-section-edit-as-you-go">9. Phyrom Notes Section (Edit as You Go)</h2>
+<p><em>(Use this space to capture call notes, broker responses, follow-up actions, and decision rationale as the bind process unfolds. Keep it tight — bullets, not prose.)</em></p>
+<ul>
+<li><strong>Mon AM:</strong> ____</li>
+<li><strong>Mon PM:</strong> ____</li>
+<li><strong>Tue:</strong> ____</li>
+<li><strong>Wed follow-ups sent to:</strong> ____</li>
+<li><strong>Intro calls booked:</strong> ____</li>
+<li><strong>First quotes received from:</strong> ____</li>
+<li><strong>Final binder signed with:</strong> ____</li>
+<li><strong>Certificate of Insurance received date:</strong> ____</li>
+</ul>
+<hr>
+<h2 id="10-references">10. References</h2>
+<ul>
+<li><a href="https://www.vouch.us/about">Vouch — Insurance Broker for Ambitious Leaders</a></li>
+<li><a href="https://www.vouch.us/insurance101/tech-errors-and-omissions-insurance">Vouch — Tech Errors &amp; Omissions Insurance explainer</a></li>
+<li><a href="https://www.linkedin.com/in/travishedge/">Travis Hedge LinkedIn — Co-Founder + Chief Revenue Officer, Vouch</a></li>
+<li><a href="https://www.embroker.com/coverage/startup-insurance/">Embroker — Startup Business Insurance Package</a></li>
+<li><a href="https://embrokerforbrokers.com/">Embroker for Brokers (partner channel)</a></li>
+<li><a href="https://www.newfront.com/boston">Newfront — Boston Office</a></li>
+<li><a href="https://www.newfront.com/technology">Newfront — Technology Insurance Solutions</a></li>
+<li><a href="https://www.insurancejournal.com/news/east/2022/11/03/692972.htm">Michael Talmanson — Boston Market Leader at Newfront, Insurance Journal</a></li>
+<li><a href="https://www.newfront.com/">Newfront acquired by WTW — Dec 10, 2025</a></li>
+<li><a href="https://www.foundershield.com">Founder Shield (Acrisure) — venture-backed startup specialty</a></li>
+<li><a href="https://www.coalitioninc.com">Coalition — Cyber-first insurance</a></li>
+<li><a href="https://www.hiscox.com/small-business-insurance">Hiscox Small Business</a></li>
+<li><a href="https://www.insureon.com">Insureon — online quote</a></li>
+</ul>
+<hr>
+<p><strong>Last updated:</strong> 2026-04-22 by Claude (Wave 4 broker outreach package). Phyrom: review, lightly edit voice/tone, then send Monday before 9am Eastern.</p>
+
+	
+
+
+</body>
+</html>

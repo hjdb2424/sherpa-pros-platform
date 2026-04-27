@@ -1,0 +1,1550 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>linkedin editorial — Sherpa Pros</title>
+<link rel="icon" href="../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="linkedin-editorial.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="phyrom--sherpa-pros-linkedin-editorial-calendar">Phyrom — Sherpa Pros LinkedIn Editorial Calendar</h1>
+<p><strong>Window:</strong> 2026-04-22 → 2026-11-25 (~217 days, 31 weeks, 60 posts — Weeks 14–18 added 2026-04-22 for Sherpa Score launch sweep · Weeks 19–21 added 2026-04-22 for Sherpa Rewards + Sherpa Flex launch sweep · Weeks 22–24 added 2026-04-25 for Sherpa Threads + Smart Scan + Mobile launch sweep · Weeks 25–28 added 2026-04-25 for Sherpa Dispatch + Sherpa Materials + Sherpa Guard + /flex launch sweep · Weeks 29–31 added 2026-04-25 for the four-phase growth-arc storytelling sweep)
+<strong>Cadence:</strong> Mon / Wed / Fri, 3 posts/week
+<strong>Voice:</strong> Phyrom — working NH GC, founder of Sherpa Pros, fundraising mode
+<strong>Status:</strong> Ready to paste. No placeholders.</p>
+<hr>
+<h2 id="phyrom--founder-persona-paste-this-into-your-linkedin-bio-context">Phyrom — Founder Persona (paste this into your LinkedIn bio context)</h2>
+<ul>
+<li><strong>Who:</strong> Phyrom, owner-operator of HJD Builders LLC. New Hampshire-based residential GC. Founder of Sherpa Pros.</li>
+<li><strong>Mode:</strong> 60-hr/wk fundraising cap. Phase 0 (90 days) of the Sherpa Pros launch. Beta cohort of 10+ pros recruiting in parallel with VC + Wefunder + grants + accelerators.</li>
+<li><strong>Gospel:</strong> <em>Jobs. Not leads.</em> The contractor pays-to-bid model is broken. Sherpa Pros is the licensed-trade marketplace that thinks like a contractor.</li>
+<li><strong>Identity anchors:</strong> Licensed · Verified · Code-aware · Built by a contractor · Local · "Jobs, not leads"</li>
+<li><strong>Thesis under-the-hood:</strong> 1099 classification holds because pros are independently licensed, insured, and bring their own tools. Sherpa Pros is the rails, not the employer.</li>
+<li><strong>Tone:</strong> Plainspoken. 8th-grade reading level. Dry humor. No hype. No buzzwords. He talks like a guy who actually swung a hammer this morning — because he did.</li>
+</ul>
+<hr>
+<h2 id="linkedin-algorithm-playbook-for-founder-accounts-2026">LinkedIn Algorithm Playbook for Founder Accounts (2026)</h2>
+<p><strong>What the algorithm rewards in 2026:</strong></p>
+<ol>
+<li><strong>Hooks that earn the click.</strong> First 2 lines (~200 chars) decide everything. LinkedIn truncates after that. Lead with a number, a contradiction, a confession, or a fight.</li>
+<li><strong>Native &gt; linked.</strong> Native video &gt; photo &gt; document carousel &gt; text &gt; link post. If you must include a link, drop it in the first comment.</li>
+<li><strong>Dwell time beats likes.</strong> Algorithm tracks how long readers stay on your post. Carousels and threads that force scrolling = boost.</li>
+<li><strong>Comment-bait CTAs work.</strong> "Comment 'PRO' and I'll DM you the deck" outperforms "click the link" by 4–6×.</li>
+<li><strong>Reply within 1 hour.</strong> Every reply you make in the first 60 minutes after posting boosts distribution. Set a 1-hour block on your calendar after every post.</li>
+<li><strong>No edits in the first hour.</strong> Editing a post within 60 min of publishing kills reach. Proof it before you hit post.</li>
+<li><strong>Don't post outbound links in the body.</strong> Drops reach by 30–50%. Use the first comment.</li>
+<li><strong>Tag sparingly.</strong> Tag only people who will engage. Tagging unengaged people downranks the post.</li>
+<li><strong>Post Mon/Wed/Fri 7:30am ET.</strong> Tradesperson + investor audience overlap is highest at the start of the workday.</li>
+<li><strong>Carousel = highest dwell.</strong> PDF carousels (8–12 slides) get 1.5–3× the reach of single-image posts.</li>
+<li><strong>Founder voice &gt; brand voice.</strong> People follow people. Sherpa Pros logo posts will underperform Phyrom's face by 3–5×.</li>
+<li><strong>Storytelling &gt; advice.</strong> "Here's what happened on a job today" beats "5 tips for contractors" 9 times out of 10.</li>
+</ol>
+<hr>
+<h2 id="do-not-post--hard-rules">Do NOT Post — Hard Rules</h2>
+<ul>
+<li><strong>Never reveal proprietary metrics</strong> (specific GMV, take-rate dollars, beta-pro names without written permission, runway, burn rate).</li>
+<li><strong>Never trash a specific named pro</strong> — punch up at platforms (Angi, Thumbtack, TaskRabbit, Handy), never down at individual contractors.</li>
+<li><strong>Never name investors, VCs, or accelerator partners by name</strong> until a check has cleared and the partner has approved a co-announcement.</li>
+<li><strong>Never use the word "Wiseman" externally.</strong> Internal-only term. Externally call it: "the platform," "code validation," "permit assist," "rebate lookup," "the matching engine."</li>
+<li><strong>Never use:</strong> Gig · Task · "Uber for X" externally · "AI-powered" as a headline · Disrupt · Revolutionize · CO/SOV/AR/RFI without spelling out.</li>
+<li><strong>Never post on weekends until Phyrom hits 5,000 followers.</strong> Weekend reach is half. Save the bullets for weekdays. (Re-evaluate at the 90-day mark.)</li>
+<li><strong>Never post about live disputes, refunds, or pro-client conflicts</strong> — even anonymized. Legal risk + chills supply-side recruiting.</li>
+<li><strong>Never speculate on pending grant decisions</strong> (MassCEC, NSF SBIR). Wait until awarded.</li>
+<li><strong>Never reference active VC term-sheet conversations.</strong> Wait for first close.</li>
+<li><strong>Never use the word "homeowner" without "neighbor" energy.</strong> Homeowners are people. Talk like it.</li>
+<li><strong>Never post about the 1099 classification thesis publicly</strong> — that's a legal-defense doc, not a marketing post. Will antagonize state AGs.</li>
+</ul>
+<hr>
+<h2 id="weekly-cadence-template-paste-into-buffer--hypefury--scheduler">Weekly Cadence Template (paste into Buffer / Hypefury / scheduler)</h2>
+<pre><code>MONDAY 7:30am ET — "Jobs, not leads" or industry-pain post
+  → Hook: confession, number, or fight
+  → Body: 3-5 short paragraphs with line breaks
+  → CTA: comment-bait or DM trigger
+  → Block 7:30–8:30am ET to reply to every comment
+  → Block 4:30–5:00pm ET to reply to second wave
+
+WEDNESDAY 7:30am ET — Build-in-public, beta progress, or code-aware story
+  → Hook: behind-the-scenes specific
+  → Body: numbers, screenshots, or short video
+  → CTA: comment to be added to beta waitlist OR Wefunder signup
+  → Same reply blocks
+
+FRIDAY 7:30am ET — Founder story, HJD job, or thought-leadership
+  → Hook: personal, gritty, or counter-positioned
+  → Body: 1 story, 1 lesson, 1 ask
+  → CTA: tag a pro / forward to a friend
+  → Same reply blocks
+
+SATURDAY/SUNDAY: NO POSTS in Phase 0. Use weekends for content capture (job-site photos, screen recordings, beta pro interviews).
+</code></pre>
+<hr>
+<h1 id="the-217-day-calendar--60-posts-39-original--5-sherpa-score-posts-in-wks-1415--6-sherpa-rewards--sherpa-flex-posts-in-wks-1921--3-sherpa-threadssmart-scanmobile-posts-in-wks-2224--4-sherpa-dispatchmaterialsguardflex-landing-posts-in-wks-2528--3-four-phase-growth-arc-posts-in-wks-2931">The 217-Day Calendar — 60 Posts (39 original + 5 Sherpa Score posts in Wks 14–15 + 6 Sherpa Rewards + Sherpa Flex posts in Wks 19–21 + 3 Sherpa Threads/Smart Scan/Mobile posts in Wks 22–24 + 4 Sherpa Dispatch/Materials/Guard/Flex landing posts in Wks 25–28 + 3 four-phase growth-arc posts in Wks 29–31)</h1>
+<table>
+<thead>
+<tr>
+<th>Wk</th>
+<th>Day</th>
+<th>Theme</th>
+<th>Type</th>
+<th>Hook (first 2 lines)</th>
+<th>Body Outline</th>
+<th>CTA</th>
+<th>Asset</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>Mon</td>
+<td>Jobs, not leads</td>
+<td>Text</td>
+<td>I just paid $87 for a lead that ghosted me. The plumber I called paid $112 for the same lead. The "homeowner" was never real.</td>
+<td>• Angi sold the same dead lead 4x to 4 different pros • Math: $87 × 4 = $348 of contractor money on a fake job • This is the model. It's not a bug, it's the business • I built Sherpa Pros because I'm done • Jobs. Not leads.</td>
+<td>Comment "PRO" — I'll DM you how the beta works.</td>
+<td>Photo of Angi receipt or text screenshot</td>
+</tr>
+<tr>
+<td>1</td>
+<td>Wed</td>
+<td>Founder build-in-public</td>
+<td>Photo</td>
+<td>Day 1 of the 90-day fundraise. Stripe Connect went live this morning. Coffee #3.</td>
+<td>• Sherpa Pros LLC bank account → check • 5% take rate on beta pros, half of what Angi effectively charges • 10 founding pros = the goal by week 6 • Building it the way I wish someone had built it for me 12 years ago • I'll post every Mon/Wed/Fri until we close</td>
+<td>Follow along — comment "FOUNDING" if you're a NH/ME/MA pro.</td>
+<td>Photo of Phyrom + laptop + jobsite</td>
+</tr>
+<tr>
+<td>1</td>
+<td>Fri</td>
+<td>HJD job story</td>
+<td>Photo</td>
+<td>A homeowner called me yesterday. She'd had 3 contractors no-show in 2 weeks.</td>
+<td>• All 3 came from a lead-gen site • Each one was "matched" but never actually committed • She paid the platform nothing — but those 3 contractors paid ~$80 each for her contact info • That's $240 of contractor money for zero work • The platform won. Nobody else did.</td>
+<td>DM me if you've had this happen — I'm collecting stories for a piece.</td>
+<td>Photo of jobsite or front porch</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Mon</td>
+<td>MA labor shortage</td>
+<td>Text</td>
+<td>Massachusetts has the largest construction labor shortage in the country. 2.5% unemployment. 30% of workers are over 55.</td>
+<td>• Source: WBJournal — go read it • Project completion times went from 7 months to 11 • Carpenters, electricians, roofers most acute • The fix isn't more lead-gen ads. The fix is better matching of the pros we have • That's what I'm building</td>
+<td>Comment "REPORT" — I'll DM you the WBJournal piece.</td>
+<td>Stat graphic (text overlay on dark photo)</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Wed</td>
+<td>Code-aware moment</td>
+<td>Video (screen recording)</td>
+<td>Watched the platform catch a permit miss in real time today. 18 seconds.</td>
+<td>• Homeowner asked for a panel upgrade in Boston • Code validation flagged: ISD permit required + AFCI on bedroom circuits per MA Amendments • Pro got the right scope before bidding • This is what "thinks like a contractor" actually means • Angi can't filter for this. Thumbtack can't either.</td>
+<td>Want a demo? Comment "DEMO."</td>
+<td>Loom screen recording, 30-60 sec</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Fri</td>
+<td>Counter-positioning</td>
+<td>Text</td>
+<td>Houzz is a magazine. TaskRabbit is for furniture assembly. Handy is for cleanings.</td>
+<td>• None of them are licensed-trade marketplaces • None of them are code-aware • None of them are built by a contractor • That gap is the entire reason Sherpa Pros exists • Stop calling these "competitors." They're different categories.</td>
+<td>Tag a contractor who needs to see this.</td>
+<td>Quadrant graphic (4-box)</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Mon</td>
+<td>Jobs, not leads</td>
+<td>Carousel (8 slides)</td>
+<td>The math on contractor lead-gen is brutal. Here's what the average GC actually pays per closed job.</td>
+<td>• Slide 1: Hook (above) • S2: Avg lead cost $40-100 • S3: Close rate 15-25% • S4: True cost per closed job $200-650 • S5: Annual contractor lead-spend per shop $8K-30K • S6: What that buys = ~30 ghosted leads/yr • S7: 5% take rate vs $300 cost-per-job math • S8: Sherpa Pros logo + comment CTA</td>
+<td>Comment "MATH" — I'll send you the spreadsheet.</td>
+<td>8-slide PDF carousel</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Wed</td>
+<td>Founder build-in-public</td>
+<td>Photo</td>
+<td>Beta pro #1 is an HVAC tech in Dover NH. Signed the agreement yesterday.</td>
+<td>• 23 years on the tools • Mass Save heat-pump certified • Now a Founding Pro — 5% take rate forever • He's the first. I want 9 more by week 6 • This is what the cohort looks like up close</td>
+<td>NH/ME/MA pros — DM me. We have 9 spots left.</td>
+<td>Photo of pro on jobsite (with permission)</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Fri</td>
+<td>Mass Save education</td>
+<td>Text</td>
+<td>Mass Save will pay $10,000+ toward a heat pump install in 2026. Most homeowners don't know. Most contractors don't bother filing.</td>
+<td>• Whole-home heat pump rebate up to $10K • Income-eligible bonus up to $16K • Panel upgrade rebate often required to support HP load • Average install cost $14-22K — rebate cuts that by half • If your contractor doesn't file, you leave $10K on the table</td>
+<td>Comment "MASSSAVE" — I'll DM you the eligibility checklist.</td>
+<td>Infographic with rebate breakdown</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Mon</td>
+<td>Jobs, not leads</td>
+<td>Text</td>
+<td>A handyman I know quit Thumbtack last month. He showed me his invoices: $1,840 in 90 days on lead credits. He closed 6 jobs.</td>
+<td>• 6 closed jobs × ~$420 avg ticket = $2,520 revenue • $1,840 in lead spend = 73% of revenue • He was working for the platform • This is why nobody can find good help — the good ones are bleeding to platforms • There's a better model</td>
+<td>DM me if you're a pro stuck in this loop.</td>
+<td>Photo of invoices/receipts (redacted)</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Wed</td>
+<td>Code-aware moment</td>
+<td>Photo</td>
+<td>Boston triple-decker porch repair. The platform flagged ISD permit + lead-paint disclosure before the pro even bid.</td>
+<td>• Triple-deckers built pre-1978 = lead paint required disclosure • ISD permit triggered by structural exterior work • Most lead-gen platforms send the lead and walk away • Sherpa Pros sends the lead AND the code requirements AND the paperwork checklist • This is the difference</td>
+<td>Want to see a live walkthrough? Comment "BOSTON."</td>
+<td>Photo of triple-decker exterior</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Fri</td>
+<td>Founder story</td>
+<td>Video (selfie)</td>
+<td>Quick founder update: Wefunder page went live today. 30-second story.</td>
+<td>• What Sherpa Pros is, in 1 sentence • Why I'm raising from the community • $1,000 minimum, $10K max recommended • Beta cohort transacting by week 8 • Link in first comment</td>
+<td>Comment "WEFUNDER" — I'll send you the page.</td>
+<td>30-60 sec selfie video on jobsite</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Mon</td>
+<td>Jobs, not leads</td>
+<td>Text</td>
+<td>Lead-gen platforms have a structural problem: they make money when contractors lose.</td>
+<td>• The platform makes money on lead sales — not on completed jobs • So every "match" is a sale, whether work happens or not • Marketplace incentives invert this: nobody pays unless work happens • That's why our take rate is 5% (beta) or 10% (standard) — not $87 per ghost • Aligned incentives. That's the whole game.</td>
+<td>Comment "ALIGN" — I'll send you our 1-pager.</td>
+<td>Text post with line breaks</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Wed</td>
+<td>Beta pro spotlight</td>
+<td>Photo</td>
+<td>Founding Pro #3: licensed electrician in Cambridge MA. Mass Save certified. EV charger specialist.</td>
+<td>• 14 years in the trade • Specializes in panel upgrades + heat-pump electrical + Level 2 EV chargers • Now on Sherpa Pros at 5% take rate forever • If you're in Cambridge / Somerville / Boston metro and need an electrician — comment and I'll connect you direct • This is what licensed-trade matching looks like</td>
+<td>Comment "ELECTRICIAN" if you need one. I'll connect you.</td>
+<td>Photo of pro at panel/EV install</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Fri</td>
+<td>HJD job story</td>
+<td>Photo</td>
+<td>I had to turn down a $48K kitchen remodel this week. Here's why.</td>
+<td>• Homeowner had unrealistic timeline (4 weeks for cabinets that have a 12-week lead time) • She'd been told otherwise by 2 other contractors • Both of those contractors knew it wasn't true • They were chasing the deposit • Saying no is part of being honest. The platform is built around contractors who say no when they should.</td>
+<td>What's the worst lie you've been told by a contractor? Reply below.</td>
+<td>Photo of kitchen blueprint or cabinets</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Mon</td>
+<td>Investor thought leadership</td>
+<td>Carousel (10 slides)</td>
+<td>Two-sided marketplaces have one job: liquidity. Here's how Sherpa Pros is solving the chicken-and-egg problem in 90 days.</td>
+<td>• S1: Hook • S2: Marketplace liquidity definition • S3: Why supply-side first (pros) • S4: The 10-pro beta as a liquidity seed • S5: Demand-side: HJD's existing client list as warm demand • S6: NE-first geographic concentration • S7: Why density beats coverage • S8: Comparable: Uber Seattle 2010 • S9: Comparable: DoorDash Palo Alto 2013 • S10: Comment CTA</td>
+<td>Comment "MARKETPLACE" — I'll DM you the strategy doc.</td>
+<td>10-slide PDF carousel</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Wed</td>
+<td>Code-aware moment</td>
+<td>Video</td>
+<td>Watch the platform check 4 things in 11 seconds: license, insurance, permit, and rebate.</td>
+<td>• Loom screen recording: pro accepts a Boston EV install job • Code validation runs: MA Electrical 2023 ✓ • License verifier: pulls live MA Board of State Examiners ✓ • Insurance: certificate on file ✓ • Mass Save rebate: pre-qualified $1,500 ✓ • All before the homeowner sees the bid</td>
+<td>Comment "VALIDATE" — I'll send you a live link.</td>
+<td>30-60 sec Loom</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Fri</td>
+<td>Founder story</td>
+<td>Photo</td>
+<td>I worked Saturday because Phase 0 doesn't take weekends off. Here's what got built this week.</td>
+<td>• 3 founding pros signed (now 5 of 10 target) • Stripe Connect first test transaction cleared • Wefunder soft-commits passed $40K • 2 VC intros taken • One grant application submitted • The model: keep showing the receipts, every Friday</td>
+<td>What did you ship this week? Comment below.</td>
+<td>Photo of laptop on truck dashboard</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Mon</td>
+<td>Jobs, not leads</td>
+<td>Text</td>
+<td>Angi was sued for $7.65M in 2024 for lead practices. Thumbtack has 1,800+ BBB complaints about deposit theft.</td>
+<td>• This isn't a side issue. It's the model. • Lead-gen platforms have to oversell leads to hit revenue • Marketplace platforms only make money when work happens • The two incentives are opposite. Pick one. • Comment if you've had a $200+ loss to a lead-gen platform — I'm building a list.</td>
+<td>Comment "LOSS" — I'm aggregating contractor losses for a piece.</td>
+<td>Headline screenshot of lawsuit news</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Wed</td>
+<td>MA labor shortage</td>
+<td>Text</td>
+<td>30% of Massachusetts residential construction workers are over 55. The pipeline behind them is thin.</td>
+<td>• Bisnow + WBJournal both sounding alarms • Apprenticeship enrollment is up but completion is flat • The trade isn't dying — the on-ramp is broken • Tech can't replace tradespeople. But it can stop wasting their time. • A pro who saves 4 hours a week on lead-chasing is a pro who works 200 more billable hours a year.</td>
+<td>Comment "PIPELINE" — I'll DM you a piece I'm writing on this.</td>
+<td>Text post with line breaks</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Fri</td>
+<td>Old-House Verified preview</td>
+<td>Photo</td>
+<td>Boston brownstones and pre-1950 triple-deckers need specialists. Slate roofs. Plaster + lath. Brownstone repointing.</td>
+<td>• 50%+ of Boston housing stock is pre-1950 • National platforms can't filter for old-house skill • We're launching "Old-House Verified" — a pro badge for restoration specialists • Filing the trademark this month • If you specialize in pre-1950 work, you're going to like this</td>
+<td>Comment "OLDHOUSE" if you specialize in this work.</td>
+<td>Photo of brownstone or triple-decker</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Mon</td>
+<td>Wefunder/community</td>
+<td>Photo</td>
+<td>Wefunder is at $112K committed. Average check size $480. 230+ neighbors and contractors.</td>
+<td>• This is what community ownership looks like • $1K minimum — most checks are $500-2K • The pros on the platform can own a piece of the platform • The homeowners using the platform can too • This isn't VC dilution. This is alignment.</td>
+<td>Comment "WEFUNDER" — I'll send you the page.</td>
+<td>Screenshot of Wefunder traction (no investor names)</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Wed</td>
+<td>Beta pro spotlight</td>
+<td>Video (interview)</td>
+<td>Founding Pro #5: plaster + lath restoration specialist. 19 years on Boston pre-1950 homes.</td>
+<td>• 60-90 sec interview clip with the pro • Why he joined Sherpa Pros: "I'm tired of paying $90 for a lead and never hearing back" • What Old-House Verified means to him • What he wants homeowners to know • Phyrom does the voice-over intro</td>
+<td>Comment "BOSTON" — I'll connect you direct.</td>
+<td>60-90 sec interview video</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Fri</td>
+<td>Counter-positioning</td>
+<td>Text</td>
+<td>TaskRabbit takes 35% in fees. Handy bundles a subscription you forget to cancel. Angi sells your lead 4 times.</td>
+<td>• Sherpa Pros: 5% (beta) / 10% (standard). One-way payment. No subscription bundle. No lead resale. • You'd think that math would be obvious. • The reason it isn't: most contractors haven't seen an alternative. • So I'm showing them. One pro at a time. • If you're a contractor reading this, do the math on what you paid Angi/Thumbtack last year. Then DM me.</td>
+<td>DM me — let's compare your last 90 days.</td>
+<td>Cost-comparison graphic</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Mon</td>
+<td>Jobs, not leads</td>
+<td>Photo</td>
+<td>Showed a contractor friend his Angi spend last night. He thought he was paying $400/mo. He was paying $1,180/mo.</td>
+<td>• Most contractors don't track lead-gen spend in QBO properly • It hides in "marketing" or "advertising" • Average actual spend across the GCs I've audited: $900-1,400/mo • That's $11K-17K a year • For ghosted leads. • Sherpa Pros take on $50K of GMV at 5% = $2,500. Same money, 4-7× more closed work.</td>
+<td>Comment "AUDIT" — I'll walk you through your real numbers.</td>
+<td>Photo of QBO export or invoice stack</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Wed</td>
+<td>Code-aware moment</td>
+<td>Carousel (6 slides)</td>
+<td>One job. Four code checks. Zero pro time spent on lookups. Here's what code-aware matching actually does.</td>
+<td>• S1: Hook • S2: Job: panel upgrade + EV charger, Newton MA • S3: Check 1: MA Electrical 2023 (NEC 2023 with MA amendments) • S4: Check 2: Town of Newton permit fee + inspection slot • S5: Check 3: Mass Save rebate eligibility ($1,500) • S6: Check 4: Eversource service upgrade timeline • CTA</td>
+<td>Comment "NEWTON" — I'll send you the live job link.</td>
+<td>6-slide PDF carousel</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Fri</td>
+<td>Founder story</td>
+<td>Photo</td>
+<td>I haven't taken a day off in 47 days. That's not a flex. That's a function of what Phase 0 takes.</td>
+<td>• This is the unglamorous part of fundraising • What's working: Wefunder soft-commits, beta pro pipeline • What's not: VC cycle is slow, 6 weeks per "no" • What I'm learning: keep showing the receipts publicly • You earn investor trust by being legible, not by being polished.</td>
+<td>What's the longest you've gone without a day off building? Reply below.</td>
+<td>Selfie at jobsite or coffee shop</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Mon</td>
+<td>Jobs, not leads</td>
+<td>Text</td>
+<td>The contractor who responded fastest to a homeowner inquiry won the job 76% of the time in 2024. (Source: Angi internal report)</td>
+<td>• That's not because faster pros are better. • It's because the platform sells the same lead to 4-6 contractors and the slowest ones eat the loss. • A real marketplace doesn't pit pros against each other for a single lead. • It matches the right pro to the job. Once. • That's what 7-factor dispatch matching does on Sherpa Pros.</td>
+<td>Comment "MATCH" — I'll DM you how the matching works.</td>
+<td>Text post</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Wed</td>
+<td>Beta pro spotlight</td>
+<td>Photo</td>
+<td>Founding Pro #7: licensed plumber in Manchester NH. Whole-house repipe specialist.</td>
+<td>• 11 years in the trade • Owns a 2-truck shop • Joined Sherpa Pros 3 weeks ago, already 4 jobs in • "First platform that doesn't make me feel like a ticket" — direct quote • If you're in southern NH and need a plumber, comment</td>
+<td>Comment "PLUMBER" — I'll connect you direct.</td>
+<td>Photo of pro at jobsite</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Fri</td>
+<td>HJD job story</td>
+<td>Photo</td>
+<td>A client asked me what makes a good contractor. I gave her 4 things. Saving you the meeting.</td>
+<td>• 1. License current and verifiable (state board lookup) • 2. Insurance with the homeowner named as additional insured • 3. Written scope before deposit, not after • 4. Pulls permits in their own name, not yours • If a contractor pushes back on any of these, walk. • This is the bar Sherpa Pros enforces by default.</td>
+<td>Tag a homeowner who's about to hire a contractor.</td>
+<td>Photo of contract paperwork</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Mon</td>
+<td>Investor thought leadership</td>
+<td>Carousel (10 slides)</td>
+<td>Why launch in New England first? (Sherpa Pros is national — but every national platform starts somewhere.) Here's the unsexy answer.</td>
+<td>• S1: Hook — Sherpa Pros is the national licensed-trade marketplace, but national doesn't mean we open everywhere on day one • S2: NE has the worst construction labor shortage in the US (MA #1, NH/ME top 5) — most acute demand pull • S3: NE has the oldest housing stock — code complexity is highest, where our code-aware moat matters most • S4: NE has the deepest utility-rebate ecosystem (Mass Save, Eversource, National Grid) — wedge built in • S5: I live here. Founder-market fit matters. • S6: Density beats coverage in marketplace launches • S7: Comparable: Uber Seattle, DoorDash Palo Alto • S8: Phase 1 = 4 metros. Phase 4 = national + international. • S9: Launch metros → NYC specialty → national → international • S10: CTA</td>
+<td>Comment "STRATEGY" — I'll send you the GTM doc.</td>
+<td>10-slide PDF carousel</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Wed</td>
+<td>Mass Save / EV education</td>
+<td>Text</td>
+<td>Boston wants every resident within a 5-minute walk of an EV charger. National Grid will pay $13,000 toward installation.</td>
+<td>• National Grid Turnkey EV program: covers up to $13K of make-ready electrical work • Most installs need a panel upgrade — that's where licensed electricians come in • Average homeowner doesn't know this exists • Average electrician doesn't bother filing the paperwork • The platform that makes both sides aware wins this category</td>
+<td>Comment "EV" — I'll DM you the program eligibility doc.</td>
+<td>Infographic or photo of EV charger install</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Fri</td>
+<td>Founder story</td>
+<td>Video</td>
+<td>60-day update: 8 founding pros signed. $186K Wefunder soft-commits. 11 VC conversations. 2 grants in.</td>
+<td>• Selfie video, 60-90 sec • Specific numbers (the ones I can share) • What's next: close 2 more pros, public Wefunder push, first close target end of week 12 • Thanks to the people who DMed and showed up • The ask: forward this to one contractor in NH/ME/MA</td>
+<td>Comment "JOIN" if you want to be on the wait list.</td>
+<td>Selfie video on jobsite</td>
+</tr>
+<tr>
+<td>12</td>
+<td>Mon</td>
+<td>Jobs, not leads</td>
+<td>Photo</td>
+<td>Posted on Reddit yesterday: "Why do contractors ghost?" 340 comments. Same answer over and over.</td>
+<td>• Top reasons: bad leads, deposit-chasers, scope creep, low margins • Nobody said "the contractor was a bad person" • The system is designed to push pros toward bad behavior • Fix the incentive, fix the behavior • That's the entire Sherpa Pros thesis in 1 sentence</td>
+<td>Comment "REDDIT" — I'll DM you the thread.</td>
+<td>Screenshot of Reddit thread (anonymized)</td>
+</tr>
+<tr>
+<td>12</td>
+<td>Wed</td>
+<td>Code-aware moment</td>
+<td>Video</td>
+<td>Permit-assist in 22 seconds. Pro doesn't have to leave the app.</td>
+<td>• Loom: pro accepts a deck-build job in Portsmouth NH • Permit-assist auto-fills the city of Portsmouth permit form • Pulls dimensions from job scope • Pro reviews and submits in-app • Inspector tracking starts automatically • Saved time per job: 45-90 minutes of admin</td>
+<td>Comment "PERMIT" — I'll send you the live demo.</td>
+<td>30-60 sec Loom</td>
+</tr>
+<tr>
+<td>12</td>
+<td>Fri</td>
+<td>Beta pro spotlight</td>
+<td>Photo</td>
+<td>Founding Pro #9: roofer in Portland ME. Slate + standing-seam specialist.</td>
+<td>• 22 years in the trade • Slate roofs (Boston brownstones + Portland Victorians) • Standing-seam metal • "The only platform that hasn't tried to send me a $300 powerwashing job" — direct quote • If you have an old roof in coastal NE, comment</td>
+<td>Comment "ROOFER" — I'll connect you direct.</td>
+<td>Photo of slate roof project</td>
+</tr>
+<tr>
+<td>13</td>
+<td>Mon</td>
+<td>Jobs, not leads</td>
+<td>Text</td>
+<td>I've been told 4 times in the last month that "lead-gen is just how the industry works." That's how I know the opportunity is real.</td>
+<td>• Every category that's been "rebuilt around the worker" started with that exact line • Uber heard it about taxi medallions • Airbnb heard it about hotel dominance • DoorDash heard it about restaurant POS systems • Sherpa Pros is hearing it about lead-gen • The line means: nobody's tried hard enough to fix it. Yet.</td>
+<td>Comment "FIGHT" if you're a contractor done with this model.</td>
+<td>Text post</td>
+</tr>
+<tr>
+<td>13</td>
+<td>Wed</td>
+<td>Investor thought leadership</td>
+<td>Carousel (8 slides)</td>
+<td>90 days ago I started this fundraise with $0. Here's the receipts. (Numbers I can share publicly.)</td>
+<td>• S1: Hook • S2: 10 founding pros signed (target hit) • S3: $X Wefunder soft-commits (use approved number) • S4: 2 grants submitted, 1 awarded • S5: 14 VC conversations, 3 active term discussions • S6: 1 accelerator decision pending • S7: First-close target: 30 days • S8: What's next + Wefunder CTA</td>
+<td>Comment "DECK" — I'll send you the investor 1-pager.</td>
+<td>8-slide PDF carousel</td>
+</tr>
+<tr>
+<td>13</td>
+<td>Fri</td>
+<td>Founder story</td>
+<td>Video</td>
+<td>90 days. 39 posts. 10 founding pros. Let me tell you what I learned.</td>
+<td>• Selfie video, 60-90 sec • Top 3 lessons: (1) Build in public works, (2) Pros are starving for an alternative, (3) Investors want receipts not slides • Thank-you to everyone who DMed, commented, or showed up • The work isn't done. Phase 1 starts Monday. • If you're a NH/ME/MA pro reading this — the door is still open.</td>
+<td>Comment "PHASE1" — I'll add you to the next cohort.</td>
+<td>Selfie video, jobsite background</td>
+</tr>
+<tr>
+<td>14</td>
+<td>Mon</td>
+<td>Introducing Sherpa Score</td>
+<td>Carousel (6 slides)</td>
+<td>Today we shipped Sherpa Score. A 0–100 quality score for every pro on the platform. Gold pros pay 8%. Everyone else pays 12%.</td>
+<td>• S1: Hook (above) • S2: What it is — 12 metrics across 3 pillars (Quality 50% · Communication 25% · Reviews 25%) • S3: Tiers — Gold 80+, Silver 60–79, Bronze under 60 • S4: Gold perks — 8% take rate + 4-hour early access to job postings • S5: Why now — quality is the moat lead-gen platforms can't build • S6: Comment "SCORE" for the breakdown</td>
+<td>Comment "SCORE" — I'll DM you the full metric breakdown.</td>
+<td>6-slide PDF carousel — 3-pillar visual + tier ladder</td>
+</tr>
+<tr>
+<td>14</td>
+<td>Wed</td>
+<td>Why we built Sherpa Score</td>
+<td>Text</td>
+<td>Angi has a 41% service-quality complaint rate. Thumbtack has 1,800+ BBB complaints. The reason is simple: nobody's been graded on the work.</td>
+<td>• Lead-gen platforms charge by the lead, not the outcome • A pro who does great work and a pro who ghosts pay the same lead price • So the platform doesn't care which one shows up • Sherpa Score grades 12 things: on-time arrival, scope completion, code-pass rate, dispute-free rate, response time, message frequency, professional tone, star average, review volume, review response, recency, and one more I'll explain Friday • The pros who do the work right pay less and get matched first • That's the whole game</td>
+<td>Comment "WHY" — I'll send you the metric list.</td>
+<td>Text post — Phyrom voice, no graphic</td>
+</tr>
+<tr>
+<td>14</td>
+<td>Fri</td>
+<td>The math of Sherpa Score</td>
+<td>Photo</td>
+<td>Gold pros pay 8% on the platform. Silver and Bronze pros pay 12%. On a $50K kitchen, that's a $2,000 difference.</td>
+<td>• Gold (80+) = 8% take • Silver (60–79) = 12% • Bronze (under 60) = 12% + improvement coaching • A Founding Pro who hits Gold during beta locks 5% forever — permanent rate, no re-negotiation • A Founding Pro who finishes beta at Silver/Bronze converts to standard 12% • Translation: do the work right during beta, lock in 5% for life • This is the first marketplace where being a better contractor mathematically pays better</td>
+<td>Comment "MATH" — I'll DM you the per-tier rate sheet.</td>
+<td>Cost-comparison graphic — Gold vs Silver tier math on a $50K job</td>
+</tr>
+<tr>
+<td>15</td>
+<td>Mon</td>
+<td>How to earn Gold</td>
+<td>Carousel (8 slides)</td>
+<td>Here are the 12 metrics that decide whether you pay 8% or 12% on Sherpa Pros. The path to Gold isn't a mystery. It's a checklist.</td>
+<td>• S1: Hook • S2: Pillar 1 — Quality (50% of your score). On-time arrival, scope completion, code-pass rate, dispute-free rate. • S3: Pillar 2 — Communication (25%). Response time, message frequency, professional tone. • S4: Pillar 3 — Reviews (25%). Star average, review volume, review response rate, recency. • S5: How to read your score — visit /pro/score for the full breakdown • S6: Sample improvement tip — "Reply to messages 30 minutes faster on average → +6 points" • S7: Gold (80+) unlocks 8% take + 4-hour early access to jobs • S8: Comment "GOLD" — I'll send you the climb-to-Gold playbook</td>
+<td>Comment "GOLD" — I'll DM you the climb-to-Gold playbook.</td>
+<td>8-slide PDF carousel — pillar diagram + metric checklist</td>
+</tr>
+<tr>
+<td>15</td>
+<td>Wed</td>
+<td>Sherpa Score is the quality moat</td>
+<td>Text</td>
+<td>The hardest problem in marketplaces is not supply. It is not demand. It is quality control at scale. Every lead-gen platform has dodged it. We built it.</td>
+<td>• Investors keep asking what stops a competitor from copying us. The answer is the same answer Uber gave: rating systems compound. • Sherpa Score is 12 metrics across 3 pillars — Quality (50%) · Communication (25%) · Reviews (25%). Pros who deliver pay 8%. Pros who don't pay 12%. • The longer the platform runs, the more score data we have, the better the matching gets, the further ahead the Gold pros pull. • Angi has a 41% service-quality complaint rate. Their model can't fix it — they make money on the lead, not the outcome. • Marketplace flywheels run on quality data. We just turned ours on. • This is the moat.</td>
+<td>DM "MOAT" if you want the investor 1-pager on the quality flywheel.</td>
+<td>Text post — investor-credibility framing</td>
+</tr>
+<tr>
+<td>19</td>
+<td>Mon</td>
+<td>Introducing Sherpa Flex</td>
+<td>Text</td>
+<td>Today we shipped Sherpa Flex. The side-hustle tier for tradespeople who want side income without forming an LLC. 18% take rate, $1M per-project liability insurance included, jobs under $5K.</td>
+<td>• Who it's for: moonlighters, weekend warriors, employees of GC companies, anyone testing the platform before forming an LLC • What's included: every job covered by $1M per-project liability insurance, fronted by the platform • Eligibility: background check passes, jobs under $5K, no LLC required • Upgrade path: form your LLC + get your own insurance, drop to Standard 12% • Climb to Sherpa Score Gold (80+) and you're at 8% • Most platforms force you to look like a small business before they let you in. Sherpa Flex flips that. Earn first. Form the LLC when the income justifies it.</td>
+<td>Comment "FLEX" — I'll DM you the eligibility checklist.</td>
+<td>[ASSET REQUIRED: Sherpa Flex tier badge — orange-red shield + "FLEX · 18% · INSURANCE INCLUDED" in white. Generate via <code>docs/operations/social-media-prompt-library.md</code> §10A before publishing.]</td>
+</tr>
+<tr>
+<td>19</td>
+<td>Wed</td>
+<td>Why we built Sherpa Flex</td>
+<td>Text</td>
+<td>Walk into any framing crew in NH or MA and ask who has the side bandwidth to take a Saturday handyman job. Half the hands go up. Ask who has an LLC. Two hands. That gap is why we built Sherpa Flex.</td>
+<td>• There's a whole class of skilled tradespeople — employees of GC companies, moonlighters, weekend warriors — who can't or won't form LLCs • Some are testing whether self-employment is for them. Some have a day job they like and just want extra income. Some are 22 years old and an LLC isn't on the radar yet. • The lead-gen platforms ignore them or pretend they're 1099 contractors and pass the liability • We're not pretending. Sherpa Flex pros are platform-insured ($1M per-project) on every job. The 18% covers it. • The whole bet: don't lose a skilled tradesperson because the on-ramp is broken. Build the on-ramp.</td>
+<td>Comment "ONRAMP" — I'll send you the Sherpa Flex thinking.</td>
+<td>Photo — Phyrom + jobsite framing crew (with permission)</td>
+</tr>
+<tr>
+<td>19</td>
+<td>Fri</td>
+<td>The math of Sherpa Flex</td>
+<td>Photo</td>
+<td>18% take rate sounds high. Until you factor in the $1M per-project liability insurance that's included. If you bought that yourself it'd run you $800-$1,500 a year. So the real Sherpa Flex take rate is more like 12%.</td>
+<td>• Sherpa Flex = 18% take rate, $1M per-project liability included, jobs under $5K, no LLC required • An independent handyman insurance policy: $800-$1,500/year typical, before you book a single job • Net the insurance value out of the take rate and you're at roughly 12% — same math as Sherpa Score Silver/Bronze without the LLC paperwork • The cleanest path: take side jobs through Sherpa Flex while you decide whether self-employment is for you. Form the LLC when the income justifies it. Drop to Standard 12%. Climb Sherpa Score to Gold and you're at 8%. • Same platform, three doors. Pick yours.</td>
+<td>Comment "MATH" — I'll send you the Sherpa Flex rate sheet.</td>
+<td>[ASSET REQUIRED: Sherpa Flex insurance-included math chart — cost-comparison graphic showing 18% take vs 12% net after insurance value. Generate via <code>docs/operations/social-media-prompt-library.md</code> §10B before publishing.]</td>
+</tr>
+<tr>
+<td>20</td>
+<td>Mon</td>
+<td>Introducing Sherpa Rewards</td>
+<td>Carousel (5 slides)</td>
+<td>Today we shipped Sherpa Rewards. Pros earn points on every job. Redeem for tools, gift cards, branded apparel. 21-item catalog live now. Gold-tier pros get exclusive items.</td>
+<td>• S1: Hook (above) • S2: How you earn — 100 pts/job · 50 pts/review · 25 pts/photo · 25 pts/on-time · 50–200 pts monthly Sherpa Score tier bonus · 500 pts/referral • S3: What's in the catalog — branded apparel, Milwaukee + DeWalt + Festool tools, Visa gift cards, prepaid debit, charity donations, experiences • S4: Gold Exclusive items — locked behind Sherpa Score Gold (80+). Festool drill at 12,000 points is one of them. • S5: Live at /pro/rewards — fulfillment runs through Tremendous (gift cards, prepaid debit, charity donations are real-world redemptions, not platform credits)</td>
+<td>Comment "REWARDS" — I'll DM you the catalog.</td>
+<td>[ASSET REQUIRED: Sherpa Rewards catalog teaser — 4-up grid showing Festool drill, Milwaukee impact driver, Visa gift card, Sherpa branded hoodie. Generate via <code>docs/operations/social-media-prompt-library.md</code> §10C before publishing.]</td>
+</tr>
+<tr>
+<td>20</td>
+<td>Wed</td>
+<td>Why we built Sherpa Rewards</td>
+<td>Text</td>
+<td>Quality + retention. Those are the two things every marketplace eventually has to figure out. Sherpa Rewards is half the answer. (Sherpa Score is the other half.)</td>
+<td>• Most marketplaces treat their supply side as interchangeable • Pros walk away because nobody noticed they were doing the work right • Sherpa Rewards is how the platform notices • Every job, every review, every on-time arrival, every clean photo earns points • Hit Gold-tier on Sherpa Score and you unlock exclusive items the rest of the catalog can't reach • Loyalty is built one redemption at a time. We're stocking the catalog with stuff a working contractor actually wants — Milwaukee impact drivers, Festool drills, Visa gift cards, branded apparel — not a coffee mug with a logo on it.</td>
+<td>DM "LOYALTY" — I'll send you the catalog and the earning rules.</td>
+<td>Photo — Phyrom holding a Milwaukee impact driver next to a /pro/rewards screen recording</td>
+</tr>
+<tr>
+<td>21</td>
+<td>Mon</td>
+<td>The Sherpa Pros 5-tier ladder, in one chart</td>
+<td>Carousel (8 slides)</td>
+<td>Sherpa Pros has five pro tiers. Founding Pro 5% forever, Gold 8%, Silver 12%, Bronze 12%, Sherpa Flex 18% with insurance included. Here's where you fit.</td>
+<td>• S1: Hook + 5-tier table teaser • S2: Founding Pro — 5% forever. Beta cohort, requires Sherpa Score Gold to lock the rate at the end of beta. Spots almost full. • S3: Sherpa Score Gold — 8% take + 4-hour early access to job postings. Score 80+. Earn it through quality + communication + reviews. • S4: Sherpa Score Silver — 12% take. Score 60-79. The "doing fine" tier. Improvement coaching available. • S5: Sherpa Score Bronze — 12% take + structured improvement coaching. Score under 60. The path back up is a checklist. • S6: Sherpa Flex — 18% take, $1M insurance included, jobs under $5K, no LLC required. The side-hustle door. • S7: How tiers move — Flex → form LLC → Standard 12% → climb Sherpa Score → Gold 8%. One ladder. • S8: CTA — comment "TIER" and I'll tell you which one fits you today</td>
+<td>Comment "TIER" — I'll tell you which tier fits you today and how to climb.</td>
+<td>[ASSET REQUIRED: Sherpa Pros 5-tier ladder infographic — Founding Pro → Gold → Silver → Bronze → Flex with fee + perks per tier. Generate via <code>docs/operations/social-media-prompt-library.md</code> §10D before publishing. <strong>This is the single most-referenced visual in the Rewards + Flex sweep — generate FIRST.</strong>]</td>
+</tr>
+<tr>
+<td>22</td>
+<td>Mon</td>
+<td>Sherpa Threads — kill the "I'll just text you" leak</td>
+<td>Text</td>
+<td>Every contractor has had this happen. Job in the platform on Monday. Client texts your cell on Wednesday. By Friday the platform doesn't know what was promised, what was changed, or who said yes. The job goes sideways. Nobody can prove what was agreed.</td>
+<td>• That texting habit is the single biggest data leak in residential trades • It's also why marketplaces fail — if conversation walks off-platform, dispute resolution is impossible and the platform is just a billing tool • So we shipped Sherpa Threads. In-app chat between pro, client, and project manager. With a Twilio bridge — the client can keep texting from their normal phone, replies land back in-app on your end. They don't install anything. • Read receipts. File attachments. Threads attached to the work order so the conversation lives next to the scope, the photos, and the payment. • For the pro: stop losing context. For the client: text like normal. For the platform: an audit trail when something goes wrong. • Built by a contractor who has lost too many arguments to "but you said in the text."</td>
+<td>Comment "THREADS" — I'll DM you the in-app demo.</td>
+<td>Screen recording — pro side in-app, client side text bubble, message landing in both</td>
+</tr>
+<tr>
+<td>23</td>
+<td>Wed</td>
+<td>Sherpa Smart Scan — your bookkeeper stops hand-coding</td>
+<td>Text</td>
+<td>Property managers, this one's for you. The number-one most-praised feature in our PM demos isn't dispatch and isn't the vendor scorecard. It's the receipt scanner.</td>
+<td>• Sherpa Smart Scan is optical character recognition built three ways: a document scanner for permits, blueprints, and contracts; a photo analyzer for jobsite conditions; a receipt scanner for invoices and material spend • The receipt-scanner version is where PM demos light up • Snap a vendor receipt in the field. Smart Scan reads it, attaches it to the work order, and auto-tags every line as Capital Expenditure or Operating Expense • Your bookkeeper stops hand-coding 200 receipts a month. Your auditor stops asking questions. Your unit-level Net Operating Income reporting gets faster • For pros, the same scanner auto-categorizes receipts for Schedule C (the IRS form for self-employed business income). Most pros lose 15 to 25 percent of their deductions to lost receipts. Smart Scan eliminates that. Snap and forget. • Audit-friendly on both sides of the platform. Built by a contractor who has hand-coded too many shoeboxes of receipts.</td>
+<td>Comment "SCAN" — I'll DM you the demo Loom.</td>
+<td>Screen recording — receipt photo → parsed line items → auto-tagged CapEx/OpEx</td>
+</tr>
+<tr>
+<td>24</td>
+<td>Fri</td>
+<td>Sherpa Mobile is in TestFlight</td>
+<td>Photo</td>
+<td>Sherpa Mobile is in TestFlight. iOS today, Android via Expo right behind it. First 50 founding pros get TestFlight invites.</td>
+<td>• Most pros don't sit at a desk. Most site managers don't either. So the platform has to live in your pocket or it doesn't live • Sherpa Mobile lets you bid jobs, message clients through Sherpa Threads, scan receipts with Smart Scan, and get paid through Stripe — all from your phone • For founding pros: TestFlight beta is open now. First 50 spots. Comment "MOBILE" and I'll send you the invite link • For investors reading this: TestFlight isn't slide-ware. It's real product progress. Lower customer acquisition cost too — pros sign up from a phone in the field, not from a laptop after dinner • For property managers: site managers run their day from the truck. Mobile-first work-order intake means faster response times and fewer voicemails • Run your business from your phone. Built by a contractor who has answered too many emails standing on a ladder.</td>
+<td>Comment "MOBILE" for the TestFlight link. First 50 founding pros only.</td>
+<td>Photo of Phyrom holding a phone with the Sherpa Mobile app open on a jobsite</td>
+</tr>
+<tr>
+<td>25</td>
+<td>Mon</td>
+<td>Sherpa Dispatch + Sherpa Materials — the multi-trade kitchen reno fix</td>
+<td>Text</td>
+<td>Six contractors. Four delivery trucks. Three reschedules. And a half-finished kitchen for 11 weeks. That's the average kitchen renovation in 2026. We just made it 5 weeks.</td>
+<td>• A normal kitchen reno needs 6 to 8 trades in sequence — demo, plumbing, electric, drywall, cabinet, counter, trim, paint • A homeowner currently coordinates all six. Calls every supply house. Re-stages the dumpster three times. Eats the cost when the trim guy shows up before the cabinet guy finishes. • Sherpa Dispatch sequences the trade handoffs automatically. Each pro gets pulled in at the right moment, not the wrong one. The platform owns the timeline. • Sherpa Materials pairs with it. The Sherpa Materials engine builds the order list, Zinc places the order with the right supplier, Uber Direct delivers same-day to the job site. Cabinets land the morning the cabinet guy shows up. Tile lands the morning the tile guy shows up. • Pro and homeowner approve the materials list inside the app before anything ships. No surprise charges. No supply-house runs. • Built by a contractor who has eaten too many "the cabinets aren't here yet" days.</td>
+<td>Comment "RENO" — I'll DM you the multi-trade flow demo.</td>
+<td>Photo of Phyrom on a kitchen jobsite + Capcut overlay of the 8-trade Dispatch timeline</td>
+</tr>
+<tr>
+<td>26</td>
+<td>Wed</td>
+<td>Sherpa Guard — audit logs for property managers</td>
+<td>Text</td>
+<td>A property manager I know has $11,000 in limbo right now. The vendor says the invoice was approved by the site manager. The site manager says it wasn't. Nobody can prove either side. The check is sitting in escrow while the legal team figures it out. That's the world we're trying to end.</td>
+<td>• Sherpa Guard is role-based access control plus a full audit log. Every action on the platform — every approval, every status change, every dollar moved — is logged with the user, the timestamp, the IP, and the original payload. • Filterable by user, date, work order, dollar amount. Exportable. Auditor-friendly. • Property managers, this matters because the invoice-dispute fight goes away. The audit log is the receipt. • Asset managers, this matters because Sherpa Guard is a SOC 2 readiness signal — the same control surface enterprise vendors charge $200K a year for, baked into the $4-per-unit pricing. • Built by a contractor who lost a $7,800 fight in 2019 because the only "paper trail" was a forwarded text message.</td>
+<td>Comment "GUARD" — I'll DM you the audit-log walkthrough.</td>
+<td>Loom screen recording of the Sherpa Guard audit log dashboard, filtered by user + date</td>
+</tr>
+<tr>
+<td>27</td>
+<td>Mon</td>
+<td>The vertical-integration shift — labor + materials + delivery + coordination</td>
+<td>Text</td>
+<td>We started as a labor marketplace. We're now a labor + materials + delivery + coordination layer. The competitive set just changed.</td>
+<td>• For 18 months the comp set was Angi, Thumbtack, and TaskRabbit. Lead-gen and small-task platforms. • That's not the comp set anymore. • Sherpa Materials = supplier integration (Zinc API, 50+ supply houses) plus same-day delivery (Uber Direct) plus pro-and-client approval before order. So the comp set added FW Webb, HD Supply, and the legacy ordering desk. • Sherpa Dispatch = multi-trade scheduling. So the comp set added Procore and the spreadsheet-based GC project plan. • Sherpa Guard = audit logs and role-based access control. So the comp set added the SOC 2-readiness vendors at the enterprise property-management end. • This isn't a labor marketplace plus some features. It's a vertical-integration layer for residential trades — the orchestration nobody else is building because nobody else has been a contractor on a jobsite at 6 a.m. wondering why the cabinets aren't there. • The moat compounds. Every job on the platform makes the materials engine smarter, the dispatch sequencing tighter, and the audit log richer.</td>
+<td>Comment "MOAT" — I'll DM you the layered competitive map.</td>
+<td>Carousel slide image — Angi vs FW Webb vs Uber Direct vs Procore + Sherpa Pros at the center wrapping all four (see <code>social-media-prompt-library.md</code> §12F)</td>
+</tr>
+<tr>
+<td>28</td>
+<td>Mon</td>
+<td>/flex is live — the side-bandwidth on-ramp</td>
+<td>Text</td>
+<td>Walked into a framing crew last week. Half the hands have weekend bandwidth. None of them have an LLC. We just opened the door for them — thesherpapros.com/flex.</td>
+<td>• The /flex landing page is live. Public. Indexed. "Do work on the side? We've got you covered." • Who it's for: tradesperson employees with weekend bandwidth, day-job framers who want a Saturday handyman job, every skilled hand who isn't ready to form an LLC yet. • What's included: $1M per-project liability insurance fronted by the platform on every job, no LLC required, jobs under $5,000, background-check gate. • What it costs: 18% take rate. The insurance value alone is $800–$1,500 a year if you bought it yourself, so the real take rate is closer to 12% net. • Why we built it: don't lose a skilled tradesperson because the on-ramp is broken. Earn first. Form the LLC when the income justifies it. Then drop to standard 12%. Climb Sherpa Score to Gold and you're at 8%. • If you're a full-time pro reading this and you know someone with a day-job-plus-side-bandwidth life — send them the link. /flex referrals earn 500 Sherpa Rewards points (≈$50) when the new pro completes their first 3 jobs.</td>
+<td>Tag a tradesperson who works full time but has weekend bandwidth — or comment "FLEX" and I'll DM the link.</td>
+<td>/flex hero illustration (see <code>social-media-prompt-library.md</code> §12E)</td>
+</tr>
+<tr>
+<td>29</td>
+<td>Mon</td>
+<td>Where Sherpa Pros is going — our four-phase plan</td>
+<td>Text</td>
+<td>People keep asking what's next. Here it is, in four phases. No marketing speak. No "we'll see what happens." This is the plan.</td>
+<td>• Phase 1 (Months 3 to 6 from first close): Lean Launch. Take the live beta public across four New England metros — Portsmouth NH, Manchester NH, Portland ME, plus Boston specialty. 50+ working pros, 1 commercial property-management anchor, 500+ homeowners. The founding pros lock 5% take rate forever. • Phase 2 (Months 6 to 12): Scaled Launch. Seed round closes. We deepen the same four metros — 200+ pros, 1,000+ jobs, $1M+ in transacted job value, 3+ property-management anchors, 5,000+ homeowners. First Sherpa Hub opens (Portsmouth or Boston). Take rate stable at 10%. • Phase 3 (Months 12 to 18): Regional Expansion. Series A closes. We add Providence, then Hartford. We open a New York City specialty beachhead (Brooklyn brownstones + Manhattan pre-war). First utility white-label goes live (Eversource Massachusetts/Connecticut or National Grid New York). 6 metros, $5M+ annualized job value. • Phase 4 (Month 18+): National + International + Franchise. Series B closes. National United States — Philadelphia, Washington DC, San Francisco, Chicago specialty. International on a one-country-per-year staircase: Canada Year 1, United Kingdom Year 2, Australia Year 3, European Union pilot Years 4 to 5. Franchise model live for Hubs #11+. Service Organization Control 2 Type 2 certified by Month 30. • One brand. Four phases. Expanding footprint. The brand identity does not change as we expand — the wordmark stays the same, the founder origin story stays the same, the voice stays the same. What expands is where we operate, the cohorts we serve, and the product surfaces that go live. • This is the road. We are not promising it lands on schedule. We are showing you what we are driving toward.</td>
+<td>Comment "ARC" — I'll DM you the deck slide that shows this visually.</td>
+<td>Carousel slide image — 4-column phase arc with month range, headline metric, and Gross Merchandise Value per phase (see <code>social-media-prompt-library.md</code> §12)</td>
+</tr>
+<tr>
+<td>30</td>
+<td>Wed</td>
+<td>Why we're starting in NH/ME/MA but the brand is national from Day 1</td>
+<td>Text</td>
+<td>Investors keep asking why we don't just call it "Northeast Sherpa Pros" if we are launching in 4 New England metros. Because we are not building a regional brand. We are launching a national brand in a region. There is a difference.</td>
+<td>• Every national platform you can name started somewhere. Uber started in San Francisco. DoorDash started in Palo Alto. Stripe started serving Y Combinator companies. None of them rebranded when they expanded. • Sherpa Pros is the same. The brand is national from Day 1 — wordmark, voice, founder origin story, color palette, all set up to scale across 6 metros (Phase 3) and 4 international countries (Phase 4) without changing. • What scales is the operational footprint. Phase 1 lead hook says "Launching in Portsmouth, Manchester, Portland." Phase 4 lead hook says "Now serving 6+ United States metros, plus Canada, United Kingdom, and Australia." Same brand. Different footprint mention. • The most common mistake premium B2B marketplaces make is rebranding when they expand — adding "Sherpa Pros National" at Phase 3, "Sherpa Pros Global" at Phase 4. That fragmentation kills the equity built in Phase 1. We are not going to do that. • If you are a New England pro signing up today — you are signing up to a platform that will be national by Phase 3 and international by Phase 4. Same brand. Same Phyrom. Same code-aware quote validation that thinks like a contractor. Just operating in more places. • Built by a working New Hampshire general contractor. Launching in Portsmouth, Manchester, and Portland. Brand is national from Day 1.</td>
+<td>Comment "NATIONAL" — I'll DM you the brand-arc thinking.</td>
+<td>Photo — Phyrom on a New Hampshire jobsite with a USA-shaped overlay graphic showing the 4 metros today + Phase 3 + Phase 4 expansion dots</td>
+</tr>
+<tr>
+<td>31</td>
+<td>Fri</td>
+<td>From Atkinson NH to Toronto — our path to international expansion</td>
+<td>Text</td>
+<td>Wefunder investors keep asking when international expansion starts. Phase 4. Month 18 and beyond, after the Series B closes. Here is the staircase.</td>
+<td>• One country per year. We picked the order based on regulatory fit, language, and how comparable the trade-licensing regime is to the United States. • Year 1 of Phase 4 — Canada. Closest regulatory and cultural fit. Same shortage dynamics — aging workforce, lead-gen platforms underserve, code complexity is high. We expect Toronto, Vancouver, and Calgary as the first three Canadian metros, mirroring the New England Northern Triangle pattern. • Year 2 of Phase 4 — United Kingdom. Mature trade-licensing regime (Gas Safe Register, National Inspection Council for Electrical Installation Contracting), comparable home-services market structure. London, Manchester, Edinburgh likely first. • Year 3 of Phase 4 — Australia. Mature trade-licensing regime, market historically underserved by United States home-services platforms. Sydney, Melbourne, Brisbane likely. • Years 4 to 5 of Phase 4 — European Union pilot. One country first, likely Germany or the Netherlands. Multi-language and General Data Protection Regulation complexity, so we wait until the international playbook is proven in Canada / United Kingdom / Australia. • What does not change as we expand: the brand, the founder origin story, the wordmark, the voice. A homeowner in Toronto in Phase 4 will see the same brand a homeowner in Atkinson New Hampshire saw in Phase 1. • What does change: the metros mentioned in the lead hook, the regulatory mappings inside the platform (Gas Safe Register replaces Mass Save), the partner integrations per market. • International is a Phase 4 commitment, not a Phase 1 promise. We are sharing the staircase so you understand the long-term opportunity, not so anyone treats it as a near-term milestone.</td>
+<td>Comment "INTERNATIONAL" — I'll DM you the international-expansion staircase.</td>
+<td>Photo of a map — Atkinson NH + Toronto + London + Sydney pinned, with the staircase years labeled</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="wave-12-appendix--sherpa-materials-engine-launch-wk-32-prose-drafts">Wave 12 Appendix — Sherpa Materials Engine launch (Wk 32+, prose drafts)</h2>
+<p><em>The seven posts below are written as ready-to-publish prose, sequenced for Wk 32 / Wk 33 / Wk 34. Convert to the table format above when slotting into Metricool. Posts are designed to land alongside the Sherpa Materials engine launch announcement.</em></p>
+<hr>
+<p><strong>Wk 32 — Mon · "Sherpa Materials engine is live"</strong></p>
+<p>Sherpa Materials engine is live.</p>
+<p>For the last six months we've been quiet about a thing we knew would change the unit economics of every job we touch. As of [VERIFY-DATE], it's shipped.</p>
+<p>Here's what it does, in one sentence: when a Sherpa accepts a dispatch, the platform checks the materials list against retail inventory across 40+ suppliers, places the order through Zinc, and routes same-day delivery via Uber Direct — before the Sherpa rolls onto the jobsite.</p>
+<p>No more "I have to run to Home Depot" eating an hour of billable time. No more "the part isn't in stock at the local branch." The materials get to the job before the human does.</p>
+<p>This is what vertical integration looks like in skilled trades. Not a marketplace. A coordinated supply chain.</p>
+<p>CTA: Comment "MATERIALS" — I'll DM you the launch announcement.</p>
+<hr>
+<p><strong>Wk 32 — Wed · "Technical deep-dive: how the lookup works"</strong></p>
+<p>Quick technical deep-dive on the Sherpa Materials engine for the builders in my feed.</p>
+<p>The hard problem isn't the order — it's the lookup. Most material requests come in as natural-language fragments ("standard 3/4 ply, BCX, half sheet OK") from a Sherpa typing on a phone with one hand. The platform has to map that to a real SKU, at a real supplier, at a real price, with real availability, in under 800ms.</p>
+<p>We do it with a structured materials catalog (~28K SKUs across the categories that matter for residential remodel) plus a fuzzy-match resolver that scores against historical accepted matches. Confidence below 0.85, the platform escalates to the GC for one-tap confirmation. Above 0.85, it just orders.</p>
+<p>Zinc handles the cross-retailer order placement. Uber Direct handles the last-mile. We keep the margin between supplier price and what the GC pays as a coordination fee — currently 8-12% blended.</p>
+<p>Built it because we needed it on our own jobs. Shipping it because every GC we've talked to has the same bleeding problem.</p>
+<p>CTA: Comment "LOOKUP" — I'll send you the technical breakdown.</p>
+<hr>
+<p><strong>Wk 32 — Fri · "$540 billion"</strong></p>
+<p>$540 billion.</p>
+<p>That's the U.S. construction materials TAM that flows through residential and small-commercial GCs every year. Most of it routes through 3-4 big-box chains plus a long tail of regional suppliers (FW Webb, Grainger, local lumberyards).</p>
+<p>The dirty secret: GCs don't make money on materials. Markup got compressed by Home Depot Pro and Lowe's Pro accounts a decade ago. Today, the average GC nets 0-3% on the materials line of a job — and that's before factoring in the windshield time their crews spend running for parts.</p>
+<p>Sherpa Materials engine flips that. Because we coordinate the order + delivery as a service to the Sherpa workforce, the take rate sits at 8-12%, not 0-3%. And it doesn't come out of the GC's margin — it comes out of the time + fuel + missed-cut-list waste the platform eliminates.</p>
+<p>This is how skilled trades get vertically integrated. One coordinated layer between the worker, the supplier, and the jobsite — running the same play 50,000 times a day.</p>
+<p>CTA: DM "TAM" — I'll send you the unit economics one-pager.</p>
+<hr>
+<p><strong>Wk 33 — Mon · "Customer story from last week"</strong></p>
+<p>Customer story from last week.</p>
+<p>A GC in Manchester accepted a Sherpa dispatch for a bath rough-in. Sherpa hit "accept," typed the rough materials list (PEX, fittings, escutcheons, a vanity supply kit), and drove to the job. Twenty-three minutes later — before he'd even finished demoing the existing fixtures — Uber Direct dropped the materials at the curb.</p>
+<p>The GC texted me a photo of the box on his porch with the caption: "I've never had this happen before in 18 years."</p>
+<p>That's the moment the Sherpa Materials engine pays for itself. Not the price savings (though those are real). The hour-and-a-half he didn't lose driving to the supply house and back.</p>
+<p>Multiply that by the 200+ Sherpa dispatches running through the platform each week and the math gets interesting fast.</p>
+<p>CTA: Comment "STORY" — I'll DM you the demo Loom of the Sherpa-side flow.</p>
+<hr>
+<p><strong>Wk 33 — Wed · "Counter-positioning, since people keep asking"</strong></p>
+<p>Counter-positioning, since people keep asking.</p>
+<p>We are not Grainger. Grainger sells you parts. We coordinate parts + labor + delivery as one transaction.</p>
+<p>We are not Home Depot Pro. HD Pro is a discounted account at a retail chain. We're a software layer that orders across 40+ suppliers, including HD when it's the right answer.</p>
+<p>We are not Angi or Thumbtack. Those are lead-gen marketplaces — they sell a contact, then disappear. We dispatch a vetted Sherpa, coordinate the materials, and stay on the transaction through completion.</p>
+<p>We are not Procore. Procore is a system of record for commercial GCs running $50M+ in volume. We're an operating system for residential and small-commercial GCs running $500K-$15M.</p>
+<p>The right comp set is FW Webb + Grainger + Uber Direct + Procore — but stitched together as one platform, for a market segment none of them serve well alone.</p>
+<p>CTA: Comment "COMP" — I'll send you the comp-set deep-dive.</p>
+<hr>
+<p><strong>Wk 33 — Fri · "The bottleneck isn't labor cost. It's labor coordination cost."</strong></p>
+<p>A thing I wish I'd understood five years ago: the bottleneck in residential construction isn't labor cost. It's labor coordination cost.</p>
+<p>A skilled tradesperson in New Hampshire bills $85-$140/hour. They cost their employer $55-$85 fully loaded. The gap should be margin — but most of it gets eaten by:</p>
+<ul>
+<li>Drive time between jobs (30-90 min/day)</li>
+<li>Material runs (45-90 min/day)</li>
+<li>Punch-list returns (1-3 hrs/week)</li>
+<li>Inspection coordination (variable, painful)</li>
+<li>Rework from mis-spec'd parts (5-15% of jobs)</li>
+</ul>
+<p>Sherpa Materials engine kills the second one outright. The Sherpa dispatch system kills the first one. The Code Wiseman bridge kills the fourth. The materials confidence model kills the fifth.</p>
+<p>We're not chasing one big software win. We're chasing five medium ones, stacked. That's the thesis.</p>
+<p>CTA: DM "STACK" — I'll send you the five-loss-prevention map.</p>
+<hr>
+<p><strong>Wk 34 — Mon · "How the engine handles supplier failure modes"</strong></p>
+<p>For the technical folks who asked how the Sherpa Materials engine handles supplier failure modes:</p>
+<p>Three layers of fallback.</p>
+<p>Layer 1: primary supplier in stock + same-day delivery window available. Order placed, ETA returned to Sherpa, done.</p>
+<p>Layer 2: primary out of stock. Engine queries the next 4 suppliers in the cost-weighted preference graph. If any has stock + delivery window, swaps SKU (or near-equivalent SKU above the 0.85 confidence threshold), notifies Sherpa with one-tap confirm.</p>
+<p>Layer 3: no supplier has stock + same-day. Engine routes to scheduled delivery (next business day) and pings the GC to flag schedule risk. Sherpa sees this on their phone before they leave the truck.</p>
+<p>The point isn't perfect fulfillment. The point is the GC and the Sherpa always know what's happening, in real time, on the surface they already use. No phone calls. No "let me check on that and get back to you."</p>
+<p>CTA: Comment "FALLBACK" — I'll send you the supplier-routing flow diagram.</p>
+<hr>
+<h2 id="notes-for-phyrom--how-to-use-this-calendar">Notes for Phyrom — How to Use This Calendar</h2>
+<ol>
+<li><strong>Pre-write the week on Sunday night.</strong> Open this file, copy Mon/Wed/Fri into the scheduler, attach assets.</li>
+<li><strong>Asset capture is the bottleneck.</strong> Block 30 min every Sunday to take 5-10 jobsite photos. Block 30 min every Friday to record any Loom screen recordings or selfie videos for the following week.</li>
+<li><strong>Reply within 60 minutes.</strong> Block 7:30-8:30am ET every Mon/Wed/Fri. This is non-negotiable for algorithm reach.</li>
+<li><strong>Ask permission before featuring a Founding Pro.</strong> Get a one-line written OK in writing (DM is fine). Save the screenshots.</li>
+<li><strong>Numbers in posts:</strong> Use real numbers wherever possible, but only ones already public or pre-cleared. When in doubt, use ranges ("$8K-30K/yr") not specifics.</li>
+<li><strong>Link strategy:</strong> Never put links in the post body. Always drop in the first comment, 30 seconds after posting.</li>
+<li><strong>Hashtags:</strong> Skip them. Founder voice in 2026 doesn't need hashtags. They downrank organic reach.</li>
+<li><strong>Tagging:</strong> Only tag people who will engage in the first hour. Otherwise skip.</li>
+</ol>
+<hr>
+<h2 id="content-capture-checklist-do-this-every-sunday-night">Content Capture Checklist (do this every Sunday night)</h2>
+<ul>
+<li><input disabled="" type="checkbox"> 5-10 jobsite photos from the week (HJD work, beta pros with permission)</li>
+<li><input disabled="" type="checkbox"> 1 short video clip (15-60 sec, selfie or screen recording)</li>
+<li><input disabled="" type="checkbox"> 1 stat or news article from WBJournal / Bisnow / Banker &amp; Tradesman to react to</li>
+<li><input disabled="" type="checkbox"> 1 Wefunder traction screenshot (numbers only, no investor names)</li>
+<li><input disabled="" type="checkbox"> 1 platform screen recording (a code check, a permit, a rebate lookup)</li>
+<li><input disabled="" type="checkbox"> Pull the Mon/Wed/Fri rows for the upcoming week into your scheduler</li>
+</ul>
+
+	
+
+
+</body>
+</html>

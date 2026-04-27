@@ -1,0 +1,995 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>04 embedded fintech roadmap — Sherpa Pros</title>
+<link rel="icon" href="../../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="04-embedded-fintech-roadmap.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="embedded-fintech-roadmap--phase-4">Embedded Fintech Roadmap — Phase 4</h1>
+<h2 id="purpose">Purpose</h2>
+<p>Phase 0-3 stood up the foundational fintech rails: Stripe Connect for marketplace splits and escrow, Tremendous for Sherpa Rewards real-money fulfillment, and per-project liability insurance bundled into Sherpa Flex tier. Phase 4 expands from "fintech that supports the marketplace" to "fintech as a category of revenue." Five new product surfaces, phased over Years 1-3 of Phase 4, that together turn Sherpa Pros into an embedded financial-services platform for the licensed-trade economy.</p>
+<p><strong>The thesis.</strong> Pros and trade-professional clients move through Sherpa Pros workflows that already touch the most expensive moments in their financial lives: paying for materials before invoicing the client (working capital), warranting work quality (insurance), receiving job payouts (banking), and large client purchases (consumer financing). Each moment is a fintech revenue opportunity that Sherpa Pros is uniquely positioned to capture because we already own the workflow, the trust signal (Sherpa Score), and the customer relationship.</p>
+<p><strong>Vendor strategy default.</strong> Partner-bank model first; own state licenses only when scale demands it. Reduces regulatory burden and time-to-market by 18-24 months per product. Trades partner-margin for speed.</p>
+<hr>
+<h2 id="1-sherpa-lending--working-capital-line-of-credit-for-pros">1. Sherpa Lending — working-capital line of credit for pros</h2>
+<h3 id="the-problem">The problem</h3>
+<p>Pros front materials, labor, and overhead before they invoice the client. On a $30K kitchen remodel, a pro might have $12K in materials and $4K in payroll out the door before the client's first deposit clears. For Founding/Gold tier pros, this working-capital gap is the #1 reason jobs slow down or get declined.</p>
+<h3 id="the-product">The product</h3>
+<p>A working-capital line of credit, available exclusively to Founding/Gold tier pros (Sherpa Score &gt;= 75), underwritten on:</p>
+<ul>
+<li>Sherpa Score (proprietary trust signal — top 5 features by predictive importance per the Phase 4 Machine Learning model).</li>
+<li>Trailing 6-month revenue through Sherpa Marketplace.</li>
+<li>Job pipeline (signed bids waiting to start).</li>
+<li>Repayment behavior on prior Sherpa Lending draws.</li>
+<li>Standard FICO / business credit pull (with pro consent).</li>
+</ul>
+<p><strong>Tenor.</strong> 90-day max per draw, tied to a specific job invoice. Auto-collected from Stripe Connect payouts when the client pays.</p>
+<p><strong>Pricing.</strong> Annual Percentage Rate 6%-12% based on Sherpa Score tier + draw size + tenor. Origination fee 2%-4% per draw. Comparable: Pipe (2%-4% origination, 0% interest on short-tenor), Capchase (1%-2% origination + 6%-12% Annual Percentage Rate), Brex Buy Now Pay Later for materials (~1.5% per transaction).</p>
+<p><strong>Use of proceeds.</strong> Restricted to Sherpa Materials engine purchases initially (proves the loop: pro draws against a Sherpa-routed materials order, the materials show up at the Sherpa Hub, the client pays, the loan auto-repays). Phase 5 Year 1 expands to general working-capital use.</p>
+<h3 id="vendor-and-partner-strategy">Vendor and partner strategy</h3>
+<p><strong>Year 1 pilot: partner with regional bank or specialty lender for white-label loan origination.</strong> Candidates: First Republic Bank successor (now JPMorgan Chase), Live Oak Bank (small-business lending specialist), Cross River Bank (fintech-partner specialist). Sherpa originates the application, the partner-bank holds the receivable on their balance sheet, Sherpa earns origination fee + servicing fee + revenue-share on interest.</p>
+<p><strong>Year 2-3 expansion: evaluate own state lending licenses.</strong> Once loan volume exceeds $25M originated annually, evaluate licensing Sherpa Lending as a regulated lender in priority states (NH, MA, ME, NY, NJ, CA). Decision criteria: total partner-bank margin given up vs cost of compliance + loss reserves.</p>
+<h3 id="risk-model">Risk model</h3>
+<p><strong>Short-tenor, job-invoice-collateralized.</strong> Default risk is bounded because every loan repays from a specific Stripe Connect payout that Sherpa controls. Sherpa is in payment-flow position (not just a lender chasing a receivable). Loss-given-default expected &lt;2% on portfolio basis.</p>
+<p><strong>Loss reserve target.</strong> 4%-6% of outstanding portfolio. Funded from origination fee revenue + Series C balance-sheet allocation ($2M-$4M earmarked).</p>
+<h3 id="revenue-model">Revenue model</h3>
+<ul>
+<li>Origination fee: 2%-4% of draw amount (paid by pro at draw).</li>
+<li>Annual Percentage Rate: 6%-12% (revenue-shared with partner-bank ~50/50 in Year 1).</li>
+<li>Servicing fee: $5-$15/month per active draw.</li>
+<li>Cross-sell uplift: pros with active Sherpa Lending lines pull 30%+ more Sherpa Materials engine orders (estimated based on industry benchmarks; validate in pilot).</li>
+</ul>
+<h3 id="phasing">Phasing</h3>
+<ul>
+<li>Phase 4 Year 1 (Month 18-30): Pilot in Portsmouth NH + Manchester NH + Portland ME with 25-50 Founding/Gold pros, $500K-$1M originated.</li>
+<li>Phase 4 Year 2 (Month 30-36): Roll out to all metros, $5M-$10M originated.</li>
+<li>Phase 5 Year 1: $25M+ originated, evaluate own-license expansion.</li>
+</ul>
+<hr>
+<h2 id="2-sherpa-insurance--embedded-service-warranty--completion-guarantee-for-clients">2. Sherpa Insurance — embedded service-warranty + completion-guarantee for clients</h2>
+<h3 id="the-problem-1">The problem</h3>
+<p>Homeowners hiring a contractor through any platform — Sherpa included — face two anxieties: (a) what if the pro disappears mid-job, and (b) what if the work fails after completion. These anxieties drive bid-comparison paralysis and reduce job-conversion rates.</p>
+<h3 id="the-product-1">The product</h3>
+<p>An embedded insurance product available at job checkout. Client adds 5%-8% to job total for coverage. Coverage scope:</p>
+<ul>
+<li><strong>Completion guarantee.</strong> If the assigned pro fails to complete the job to spec, Sherpa Insurance underwrites the cost of routing a replacement pro and finishing the work.</li>
+<li><strong>Quality remediation.</strong> Within 12 months of completion, if the work fails (leak, electrical fault, code-violation discovered post-permit-close), Sherpa Insurance underwrites the remediation cost up to the original job value.</li>
+<li><strong>Property damage during job.</strong> Limited property-damage coverage during job execution (excess to pro's commercial general liability policy).</li>
+</ul>
+<p><strong>Underwriting partner.</strong> Travelers, Chubb, or Hippo. Sherpa originates the policy at checkout, the partner-carrier underwrites the risk, Sherpa earns insurance commission + cross-sell into other carrier products. Partner-carrier preference: Travelers (largest commercial-lines carrier, history of working with marketplace embedded distribution).</p>
+<h3 id="why-a-carrier-wants-to-partner">Why a carrier wants to partner</h3>
+<ul>
+<li><strong>Distribution.</strong> Sherpa puts insurance products in front of buyers at the moment of buying a job, when buying-mode is at peak. No carrier has access to that distribution surface organically.</li>
+<li><strong>Underwriting data.</strong> Sherpa Score and historical job-outcome data feed back into the carrier's underwriting model. Better underwriting reduces loss ratio over time.</li>
+<li><strong>Cross-sell.</strong> Once a client buys Sherpa Insurance on a job, the carrier can cross-sell homeowners insurance, umbrella policies, etc.</li>
+</ul>
+<h3 id="risk-model-1">Risk model</h3>
+<p><strong>Underwriting risk sits with the partner-carrier.</strong> Sherpa is the distribution layer, not the risk-bearing entity. This is a critical structural decision — Sherpa does not want to become a regulated insurance underwriter (different state-by-state licensing regime, different capital requirements).</p>
+<p><strong>Loss ratio expectation.</strong> Industry-comparable for service-warranty products: 30%-50%. Carrier earns the spread; Sherpa earns commission.</p>
+<h3 id="revenue-model-1">Revenue model</h3>
+<ul>
+<li>Insurance commission: 15%-25% of premium (industry-standard).</li>
+<li>Claims-data feedback loop: revenue-share on improved underwriting precision year-over-year.</li>
+<li>Cross-sell affiliate revenue from carrier on adjacent-product conversions.</li>
+</ul>
+<p><strong>Estimated unit economics.</strong> On a $20K average job with 6% insurance attach ($1,200 premium), Sherpa earns 20% commission = $240 per attached policy. At 30% attach rate across 10K jobs/year by Phase 4 Year 3 = 3,000 policies × $240 = $720K commission revenue, growing with job volume.</p>
+<h3 id="phasing-1">Phasing</h3>
+<ul>
+<li>Phase 4 Year 2 (Month 24-30): Negotiate partner-carrier Master Services Agreement (12-18 months legal + product-fit lead time).</li>
+<li>Phase 4 Year 2 end (Month 30-36): Pilot at Marketplace checkout in Portsmouth NH + Manchester NH.</li>
+<li>Phase 5 Year 1: Roll out across all US metros + Canada (Canada requires separate carrier partnership; recommend Intact Insurance).</li>
+</ul>
+<hr>
+<h2 id="3-sherpa-banking--pro-focused-business-banking">3. Sherpa Banking — pro-focused business banking</h2>
+<h3 id="the-problem-2">The problem</h3>
+<p>Pros who run their work as Limited Liability Companies struggle to get good business banking: traditional banks treat trade businesses as high-risk, neobanks (Mercury, Brex) cater to technology-startup customers, and the pro's banking flow doesn't connect to job payouts, expense management, or the Sherpa Pros ecosystem.</p>
+<h3 id="the-product-2">The product</h3>
+<p>A Sherpa-branded business banking account, white-labeled via Mercury or Brex partnership. Features:</p>
+<ul>
+<li><strong>Account opens at Sherpa pro onboarding.</strong> New pros optionally open a Sherpa Banking account as part of the onboarding flow. Single Know Your Customer pass.</li>
+<li><strong>Instant access to Stripe Connect payouts.</strong> Job payments hit the Sherpa Banking account same-day instead of the standard 2-day Stripe payout window. Payment timing is a top pro-pain-point and a clear value prop.</li>
+<li><strong>Expense management integration.</strong> Sherpa Smart Scan auto-categorizes receipts and reconciles them against the Sherpa Banking account transactions. Pros get a one-click Schedule C-ready expense report at year end.</li>
+<li><strong>Cross-sell to Sherpa Lending.</strong> Pros with Sherpa Banking accounts get pre-qualified for Sherpa Lending lines (no separate application) and lower Annual Percentage Rate (banking relationship reduces credit risk).</li>
+</ul>
+<h3 id="vendor-and-partner-strategy-1">Vendor and partner strategy</h3>
+<p><strong>Mercury or Brex partnership.</strong> Both offer white-label business banking via their Banking-as-a-Service Application Programming Interfaces. Mercury preferred for trade-business fit (less startup-coded brand voice). Brex preferred if Sherpa wants integrated corporate cards. Decision deferred to Phase 4 Year 2.</p>
+<p><strong>Banking-as-a-Service partner under the hood.</strong> Mercury and Brex use their own bank-partners (Choice Financial Group, Column NA, Evolve Bank). Sherpa Pros is two layers from the Federal Deposit Insurance Corporation-insured bank but does not need to be a bank itself.</p>
+<h3 id="revenue-model-2">Revenue model</h3>
+<ul>
+<li><strong>Interchange fees.</strong> Each card transaction pays Sherpa ~1.5%-2.5% of swipe volume (industry-standard interchange revenue-share with Banking-as-a-Service partner).</li>
+<li><strong>Interest on float.</strong> Cash held in Sherpa Banking accounts earns interest; revenue-shared with Banking-as-a-Service partner.</li>
+<li><strong>Cross-sell to Sherpa Lending.</strong> Banking accounts as a Sherpa Lending acquisition channel — lower Customer Acquisition Cost, higher conversion.</li>
+<li><strong>Subscription tier (optional Phase 5).</strong> Premium Sherpa Banking tier with higher Federal Deposit Insurance Corporation-sweep limits, dedicated banker, integrated tax services. $25-$50/month.</li>
+</ul>
+<h3 id="phasing-2">Phasing</h3>
+<ul>
+<li>Phase 4 Year 2 (Month 24-30): Partner selection (Mercury vs Brex) + Master Services Agreement.</li>
+<li>Phase 4 Year 2 end (Month 30-36): Pilot launch with 100-200 Founding pros.</li>
+<li>Phase 5 Year 1: Roll out to all pros nationally.</li>
+</ul>
+<hr>
+<h2 id="4-sherpa-pay-later--buy-now-pay-later-on-jobs-2k">4. Sherpa Pay-Later — Buy Now Pay Later on jobs &gt;$2K</h2>
+<h3 id="the-problem-3">The problem</h3>
+<p>Large jobs (kitchen remodel $30K, full bath remodel $18K, exterior siding $25K) get held back by client cash-flow constraints. Clients want the work done; clients can't write a $30K check today. Today the workaround is the pro accepting payment in installments — which means the pro absorbs the financing risk.</p>
+<h3 id="the-product-3">The product</h3>
+<p>Buy Now Pay Later option at Marketplace job checkout for jobs &gt;$2K. Client splits payment 4 months (interest-free, lender absorbs cost) or 12 months (interest-bearing, client pays). Pro receives full payment upfront from the lender.</p>
+<p><strong>Vendor partner.</strong> Affirm or Klarna. Both have established Buy Now Pay Later infrastructure for high-ticket purchases. Affirm preferred for North American focus + transparent-finance brand alignment. Klarna preferred if Sherpa expands internationally where Klarna has stronger presence (United Kingdom, European Union).</p>
+<h3 id="revenue-model-3">Revenue model</h3>
+<ul>
+<li><strong>No transaction fee to client (4-month interest-free).</strong> Lender absorbs cost; lender is paid by Sherpa via Sherpa-Pay-Later partner kickback.</li>
+<li><strong>Standard Buy Now Pay Later kickback to Sherpa.</strong> Industry-standard 2%-4% of transaction value paid by Affirm/Klarna to merchant for Buy Now Pay Later origination.</li>
+<li><strong>Pro paid in full upfront.</strong> Pro experience improves; conversion lifts on larger jobs (industry benchmark: 20%-40% conversion lift on &gt;$2K transactions when Buy Now Pay Later is offered).</li>
+</ul>
+<h3 id="phasing-3">Phasing</h3>
+<ul>
+<li>Phase 4 Year 3 (Month 30-36): Partner selection + integration (3-6 months work).</li>
+<li>Phase 5 Year 1: Pilot in 3 metros, measure conversion lift on &gt;$2K jobs.</li>
+<li>Phase 5 Year 2: Roll out nationally + Canada (Canada via Affirm Canada).</li>
+</ul>
+<hr>
+<h2 id="5-hub-side-payment-processing">5. Hub-side payment processing</h2>
+<h3 id="the-problem-4">The problem</h3>
+<p>Sherpa Hubs accept multiple payment streams: per-transaction kit sales, equipment rental fees, training-event registration fees, materials pickup payments, manufacturer-sponsored event ticketing. Phase 0-3 used a patchwork of Stripe Checkout links, manual invoicing, and Square card readers.</p>
+<h3 id="the-product-4">The product</h3>
+<p>Unified Hub-side payment processing using Stripe Terminal (preferred — same Stripe Connect infrastructure already in place for Marketplace) or Square (if Stripe Terminal hardware availability is constrained in international markets).</p>
+<p>Each Hub gets a Stripe Terminal hardware kit, integrated with Sherpa Hub's existing inventory + training + rental software modules. Single payment pipeline, single reconciliation surface, single chargeback workflow.</p>
+<h3 id="revenue-model-4">Revenue model</h3>
+<ul>
+<li><strong>Standard payment processing margin.</strong> Sherpa nets 20-50 basis points on Hub transaction volume (above the Stripe processing cost of 2.6% + $0.10).</li>
+<li><strong>Membership tier.</strong> Hub franchisees pay Sherpa for the integrated payment + Point-of-Sale solution as part of the franchise package; bundled into franchise royalty.</li>
+</ul>
+<h3 id="phasing-4">Phasing</h3>
+<ul>
+<li>Phase 4 Year 1 (Month 18-21): Stripe Terminal deployed at Hub #1 (Portsmouth NH).</li>
+<li>Phase 4 Year 1 end (Month 21-30): Roll out across all 6 hubs.</li>
+<li>Phase 4 Year 2: Standard for all new franchisee hubs.</li>
+</ul>
+<hr>
+<h2 id="6-phasing-summary-table">6. Phasing summary table</h2>
+<table>
+<thead>
+<tr>
+<th>Product</th>
+<th>Pilot launch</th>
+<th>Production launch</th>
+<th>Estimated Year-2 revenue contribution</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Sherpa Lending</td>
+<td>Phase 4 Year 1 (M18-30)</td>
+<td>Phase 4 Year 2 (M30-36)</td>
+<td>$1.5M-$3.5M (origination fees + interest share)</td>
+</tr>
+<tr>
+<td>Sherpa Insurance</td>
+<td>Phase 4 Year 2 (M30-36)</td>
+<td>Phase 5 Year 1</td>
+<td>$0.5M-$1M Year 1, $2M-$5M at Phase 5 Year 2</td>
+</tr>
+<tr>
+<td>Sherpa Banking</td>
+<td>Phase 4 Year 2 (M30-36)</td>
+<td>Phase 5 Year 1</td>
+<td>$0.3M-$0.7M Year 1, $1.5M-$3M at Phase 5 Year 2</td>
+</tr>
+<tr>
+<td>Sherpa Pay-Later</td>
+<td>Phase 4 Year 3 (M30-36) integration</td>
+<td>Phase 5 Year 1 pilot</td>
+<td>$0.4M-$1M Year 1, $2M-$4M at Phase 5 Year 2</td>
+</tr>
+<tr>
+<td>Hub-side payment processing</td>
+<td>Phase 4 Year 1 (M18-21)</td>
+<td>Phase 4 Year 1 end (M21-30)</td>
+<td>$0.2M-$0.5M (low-margin, high-strategic-value)</td>
+</tr>
+<tr>
+<td><strong>Embedded fintech total</strong></td>
+<td>---</td>
+<td>---</td>
+<td><strong>~$3M-$7M Year 1, ~$8M-$15M Year 2</strong></td>
+</tr>
+</tbody></table>
+<p>Embedded fintech becomes ~10% of Phase 4 Year 2 revenue, ~15% of Phase 5 Year 1 revenue (per Series C deck Slide 6 take-rate cluster mix).</p>
+<hr>
+<h2 id="7-compliance-and-risk">7. Compliance and risk</h2>
+<h3 id="regulatory-map">Regulatory map</h3>
+<ul>
+<li><strong>Sherpa Lending.</strong> State-by-state lending licenses (Department of Banking and Insurance per state). Truth in Lending Act disclosures. Equal Credit Opportunity Act fair-lending compliance. Phase 4 Year 1 partner-bank model defers Sherpa's own licensing burden; Phase 5 Year 2+ may require Sherpa to license in priority states.</li>
+<li><strong>Sherpa Insurance.</strong> Insurance producer license per state (where Sherpa earns commission). Partner-carrier holds underwriting risk; Sherpa is the distribution layer.</li>
+<li><strong>Sherpa Banking.</strong> Money Transmitter License analysis per state (depends on whether Sherpa "holds" customer funds — partner-bank model designed to avoid this). Bank Secrecy Act / Anti-Money-Laundering compliance falls to partner-bank.</li>
+<li><strong>Sherpa Pay-Later.</strong> Lender (Affirm/Klarna) holds the loan; Sherpa is merchant-of-record, not lender. Compliance burden falls primarily to the Buy Now Pay Later partner.</li>
+</ul>
+<h3 id="general-counsel-hire">General Counsel hire</h3>
+<p>General Counsel (Phase 4 Month 12 hire) leads regulatory map maintenance + outside counsel coordination + state-by-state licensing matrix. Embedded fintech is the #1 reason General Counsel hire is essential by Phase 4 Year 1.</p>
+<h3 id="director-of-compliance-hire">Director of Compliance hire</h3>
+<p>Director of Compliance (Phase 4 Year 2 hire, estimated M30) reports to General Counsel. Owns ongoing compliance operations: state license renewals, Anti-Money-Laundering monitoring, bias-audit coordination with Artificial Intelligence team, Sarbanes-Oxley Section 404 readiness for Initial Public Offering pathway.</p>
+<hr>
+<h2 id="8-out-of-scope-deferred-to-phase-5">8. Out of scope (deferred to Phase 5+)</h2>
+<ul>
+<li><strong>Cryptocurrency payment rails.</strong> Deferred — regulatory and brand-trust risks outweigh demand from pro and client base.</li>
+<li><strong>Sherpa Wealth (pro retirement / SEP IRA / Solo 401k).</strong> Deferred to Phase 5 Year 2; logical extension of Sherpa Banking.</li>
+<li><strong>Sherpa Tax (integrated tax filing for pros).</strong> Deferred to Phase 5 Year 2; partnership candidate: Keeper Tax or Collective.</li>
+<li><strong>Sherpa-branded payment cards (Sherpa Card).</strong> Deferred to Phase 5 Year 1 if Sherpa Banking adoption supports it; physical card cost + fraud risk currently exceed projected revenue.</li>
+<li><strong>International embedded fintech.</strong> Each country requires separate fintech partnerships and regulatory analysis. Phase 4 Year 2 Canada-only embedded fintech evaluation; Phase 5 Year 1+ for other countries.</li>
+</ul>
+<hr>
+<h2 id="owner-sign-off">Owner sign-off</h2>
+<p>This roadmap is owned by:</p>
+<ul>
+<li>Phyrom (founder)</li>
+<li>Chief Financial Officer (Phase 4 Month 6 hire)</li>
+<li>General Counsel (Phase 4 Month 12 hire)</li>
+<li>Head of Embedded Fintech (Phase 4 Year 2 hire, reports to Chief Financial Officer)</li>
+</ul>
+<p>Reviewed quarterly at executive team meeting. Compliance component reviewed monthly with outside counsel.</p>
+
+	
+
+
+</body>
+</html>

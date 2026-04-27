@@ -1,0 +1,1384 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2026 04 13 sherpa pros platform design — Sherpa Pros</title>
+<link rel="icon" href="../../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="2026-04-13-sherpa-pros-platform-design.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="sherpa-pros-platform--full-design-spec">Sherpa Pros Platform — Full Design Spec</h1>
+<blockquote>
+<p>"Every Pro verified. Every project validated. The only marketplace that actually understands construction."</p>
+</blockquote>
+<p><strong>Repo:</strong> <code>hjdb2424/sherpa-pros-platform</code>
+<strong>Date:</strong> 2026-04-13
+<strong>Status:</strong> Approved — ready for implementation</p>
+<hr>
+<h2 id="1-platform-identity--users">1. Platform Identity &amp; Users</h2>
+<h3 id="mission">Mission</h3>
+<p>Uber for construction. An online marketplace connecting vetted contractors, handymen, and clients — with AI-powered construction intelligence that no competitor can replicate.</p>
+<h3 id="user-types">User Types</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Pro (Contractor / Handyman)</th>
+<th>Client</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Who</strong></td>
+<td>Licensed contractors, handymen, specialty trades</td>
+<td>Homeowners, property managers, businesses</td>
+</tr>
+<tr>
+<td><strong>Vetting</strong></td>
+<td>License + insurance + background check (Checkr) + hybrid human/auto review</td>
+<td>Valid payment method + AI project validation (Wiseman-powered)</td>
+</tr>
+<tr>
+<td><strong>Onboarding</strong></td>
+<td>Application → auto-checks → human approval → profile build → go live</td>
+<td>Sign up → add payment → post first job (vetted by Dispatch Wiseman)</td>
+</tr>
+<tr>
+<td><strong>Distinction</strong></td>
+<td>Contractors and handymen are the SAME role — they bid on different project types/scale</td>
+<td>N/A</td>
+</tr>
+</tbody></table>
+<h3 id="hub--spoke-geography">Hub &amp; Spoke Geography</h3>
+<pre><code>New England Regional Office
+├── NH Hubs
+│   ├── Portsmouth/Seacoast
+│   ├── Manchester/Nashua
+│   └── Concord/Lakes Region
+├── ME Hubs
+│   ├── Portland/South Coast
+│   ├── Lewiston/Auburn
+│   └── Bangor
+└── MA Hubs
+    ├── Boston Metro
+    ├── Worcester
+    ├── Lowell/Lawrence
+    └── Springfield
+</code></pre>
+<ul>
+<li>Pro has a <strong>home hub</strong> + <strong>travel radius</strong> — sees home hub jobs first, then adjacent</li>
+<li>Hub boundaries are invisible to clients — seamless experience</li>
+<li>Regional office handles overlap via Dispatch Wiseman</li>
+<li>Hub threshold (dispatch vs bid cutoff) is configurable per hub</li>
+</ul>
+<hr>
+<h2 id="2-core-loop--hybrid-marketplace">2. Core Loop — Hybrid Marketplace</h2>
+<h3 id="two-flows-based-on-hub-configurable-threshold-default-500">Two Flows Based on Hub-Configurable Threshold (Default $500)</h3>
+<h4 id="small-jobs-below-threshold--auto-dispatch">Small Jobs (Below Threshold) — Auto-Dispatch</h4>
+<pre><code>Client posts job → Selects urgency (Emergency/Standard/Flexible)
+→ Guided wizard: category → scope → photos → Wiseman validates + fills gaps
+→ Dispatch Wiseman scores Pros
+
+Emergency: Top 3 Pros notified simultaneously, first accept wins, premium rate
+Standard:  Top Pro gets 15 min → decline → next Pro → decline → next Pro
+Flexible:  Top 3 notified, 2hr window to accept, best match wins
+
+Fallback: 6 declines OR 2 hours with no accept → converts to open bid
+
+→ Pro accepts → Light onboarding checklist → Work done
+→ Photos uploaded → Client approves → Payment released → Both rate
+</code></pre>
+<h4 id="large-jobs-above-threshold--competitive-bidding">Large Jobs (Above Threshold) — Competitive Bidding</h4>
+<pre><code>Client posts job → Guided wizard (detailed: scope, timeline, budget range)
+→ Wiseman validates (budget reality, permits, scope feasibility)
+→ Dispatch Wiseman selects top 5-8 qualified Pros to see the job
+→ &lt;3 bids after 48hrs? Open to next tier of Pros automatically
+
+→ Pros submit bids (Pricing Wiseman validates: &lt;15% deviation = green)
+→ Client reviews bids (platform recommendation highlighted)
+→ Client selects Pro → Milestone schedule created → Full onboarding checklist
+→ Work by milestone → Photos + inspection per milestone → Payment released
+→ Final walkthrough → Offboarding checklist → Both rate
+</code></pre>
+<h3 id="urgency-tiers">Urgency Tiers</h3>
+<table>
+<thead>
+<tr>
+<th>Tier</th>
+<th>Response Target</th>
+<th>Rate Impact</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Emergency</td>
+<td>Hours</td>
+<td>Premium (1.5x platform suggested)</td>
+<td>Burst pipe, no heat in winter</td>
+</tr>
+<tr>
+<td>Standard</td>
+<td>1-3 days</td>
+<td>Market rate</td>
+<td>Broken fence, appliance install</td>
+</tr>
+<tr>
+<td>Flexible</td>
+<td>1-2 weeks</td>
+<td>May see lower bids</td>
+<td>Paint bedroom, landscaping</td>
+</tr>
+</tbody></table>
+<h3 id="wiseman-intelligence-at-every-step">Wiseman Intelligence at Every Step</h3>
+<table>
+<thead>
+<tr>
+<th>Checkpoint</th>
+<th>Wiseman</th>
+<th>What It Does</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Job posted</td>
+<td>Pricing</td>
+<td>Flags unrealistic budgets, suggests ranges</td>
+</tr>
+<tr>
+<td>Job posted</td>
+<td>Code</td>
+<td>Auto-identifies permits by jurisdiction</td>
+</tr>
+<tr>
+<td>Job input</td>
+<td>AI Wizard</td>
+<td>Parses description, fills gaps, asks smart follow-ups</td>
+</tr>
+<tr>
+<td>Pro matching</td>
+<td>Dispatch</td>
+<td>Scores on rating, distance, skills, availability, history, hub load</td>
+</tr>
+<tr>
+<td>Dispatch fallback</td>
+<td>Dispatch</td>
+<td>After 6 declines, converts to open bid with expanded Pro pool</td>
+</tr>
+<tr>
+<td>Bid submitted</td>
+<td>Pricing</td>
+<td>Validates quote against market rate</td>
+</tr>
+<tr>
+<td>Job starts</td>
+<td>Checklist</td>
+<td>Tiered: required gates for large, guided for small</td>
+</tr>
+<tr>
+<td>Job completes</td>
+<td>Checklist</td>
+<td>Offboarding, inspection verification</td>
+</tr>
+</tbody></table>
+<h3 id="trust--safety">Trust &amp; Safety</h3>
+<ul>
+<li>Masked communication via Twilio — neither side sees real contact info</li>
+<li>Dispute resolution: auto-mediation → regional office → human review</li>
+<li>Bilateral ratings — Pros rate Clients too. Bad clients lose visibility.</li>
+<li>Strike system — graduated: warning → visibility reduction → pause → deactivation</li>
+<li>Hub-configurable thresholds — Boston vs rural NH can have different dispatch/bid cutoffs</li>
+</ul>
+<hr>
+<h2 id="3-dispatch-wiseman--the-matching-brain">3. Dispatch Wiseman — The Matching Brain</h2>
+<p>First Wiseman that lives in Sherpa Pros, not BldSync. Consumes data from other Wisemen but owns all marketplace matching logic.</p>
+<h3 id="scoring-algorithm">Scoring Algorithm</h3>
+<pre><code>Dispatch Score = Σ (weight × normalized_factor)
+
+├── Pro Rating (0.25)         — visibility score from rating algorithm
+│                               Time-decay weighted, 90-day half-life
+├── Distance (0.20)           — PostGIS ST_DWithin from job site
+│                               0-15min = 1.0, 15-30 = 0.8, 30-60 = 0.5, 60+ = 0.2
+├── Skills Match (0.20)       — trade/specialty alignment to job category
+│                               Exact match = 1.0, adjacent trade = 0.6, general = 0.3
+├── Availability (0.15)       — calendar says free on requested dates
+│                               Available = 1.0, partial conflict = 0.5, booked = 0.0
+├── Response History (0.10)   — accept rate + speed of response
+│                               &gt;80% accept + &lt;5min avg = 1.0, decays from there
+├── Hub Load Balance (0.05)   — prevent one Pro from hogging all jobs
+│                               Active jobs &lt; 3 = 1.0, 3-5 = 0.7, 5+ = 0.3
+└── Client Preference (0.05)  — repeat hire boost, saved/favorited Pros
+                                Previously hired = 1.5x boost
+</code></pre>
+<h3 id="hub-overlap-resolution">Hub Overlap Resolution</h3>
+<pre><code>Job in overlap zone (e.g., Nashua — between Manchester + Lowell hubs)
+
+1. Dispatch Wiseman scores ALL qualified Pros across overlapping hubs
+2. Hub affiliation is NOT a factor — pure merit + proximity
+3. Regional office gets visibility into cross-hub assignments
+4. If Pro consistently works outside home hub → platform suggests hub transfer
+</code></pre>
+<h3 id="new-user-boost">New User Boost</h3>
+<ul>
+<li>First 60 days: 1.3x score multiplier, linear taper to 1.0x</li>
+<li>Ensures new Pros get early visibility to build ratings</li>
+</ul>
+<h3 id="anti-gaming">Anti-Gaming</h3>
+<ul>
+<li>Score recalculated nightly (2 AM batch) + real-time on key events</li>
+<li>Cherry-picking detection: declining &gt;50% of dispatches in 30 days → warning</li>
+<li>Bid-and-ghost detection: winning bid but not starting work → strike</li>
+</ul>
+<h3 id="geo-stack">Geo Stack</h3>
+<pre><code>├── PostGIS: ST_DWithin for radius matching, ST_Distance for scoring
+├── Mapbox GL JS + react-map-gl: map display (Uber's own library)
+├── Google Places Autocomplete: address input (rural NH accuracy)
+├── deck.gl: hub boundary visualization, service area overlays
+└── Mapbox Geocoding API: address → coordinates
+</code></pre>
+<hr>
+<h2 id="4-payments-escrow--money-flow">4. Payments, Escrow &amp; Money Flow</h2>
+<h3 id="payment-architecture">Payment Architecture</h3>
+<pre><code>Client pays → Stripe Connect → Mercury Treasury (~4% APY)
+                                    │
+                Job completes       │
+                    ↓               │
+            Stripe Connect splits:  │
+            ├── Pro payout         ←─┘
+            ├── Sherpa Pros commission
+            └── Stripe fees (~2.9% + $0.30)
+</code></pre>
+<h3 id="flow-by-job-type">Flow by Job Type</h3>
+<p><strong>Small Jobs (&lt;$500):</strong>
+Client card authorized at booking → held in Mercury Treasury → Pro completes → photos → client approves (or 48hr auto-approve) → Stripe Connect releases payment minus commission.</p>
+<p><strong>Large Jobs ($500+, milestone-based):</strong>
+Each milestone funded separately → Mercury Treasury holds → Pro completes milestone → photos + inspection → payment released → repeat until final walkthrough → offboarding checklist → done.</p>
+<h3 id="fee-structure">Fee Structure</h3>
+<table>
+<thead>
+<tr>
+<th>Fee</th>
+<th>Amount</th>
+<th>Who Pays</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Pro Commission (&lt;$500)</td>
+<td>15%</td>
+<td>Pro</td>
+<td>Deducted from payout</td>
+</tr>
+<tr>
+<td>Pro Commission ($500-$5K)</td>
+<td>12%</td>
+<td>Pro</td>
+<td>Sliding scale</td>
+</tr>
+<tr>
+<td>Pro Commission ($5K-$25K)</td>
+<td>10%</td>
+<td>Pro</td>
+<td>Attracts bigger projects</td>
+</tr>
+<tr>
+<td>Pro Commission ($25K+)</td>
+<td>8%</td>
+<td>Pro</td>
+<td>Enterprise tier</td>
+</tr>
+<tr>
+<td>Client Service Fee</td>
+<td>5%</td>
+<td>Client</td>
+<td>Added to job total</td>
+</tr>
+<tr>
+<td>Emergency Premium</td>
+<td>Platform keeps 20% of surge markup</td>
+<td>Client</td>
+<td>1.5x-2x premium rate</td>
+</tr>
+<tr>
+<td>Instant Payout</td>
+<td>1% per transfer</td>
+<td>Pro</td>
+<td>Optional, Stripe built-in</td>
+</tr>
+<tr>
+<td>Cancellation Fee</td>
+<td>$25 flat</td>
+<td>Either side</td>
+<td>&lt;24hr notice</td>
+</tr>
+<tr>
+<td>Insurance/Restoration Commission</td>
+<td>6-8%</td>
+<td>Pro</td>
+<td>Lower because volume + payment guaranteed</td>
+</tr>
+<tr>
+<td>Background Check</td>
+<td>Absorbed</td>
+<td>Platform</td>
+<td>CAC — differentiator vs charging Pros</td>
+</tr>
+</tbody></table>
+<p><strong>NOT charging:</strong> Featured/boosted listings (breaks "vetted not paid" brand), lead fees, subscription fees.</p>
+<h3 id="revenue-example-5k-job">Revenue Example ($5K Job)</h3>
+<pre><code>Client pays:         $5,000 + $250 service fee = $5,250
+Pro receives:        $5,000 - $500 commission = $4,500
+Sherpa Pros earns:   $500 + $250 = $750
+Stripe fees:         ~$153
+Net to Sherpa Pros:  ~$597 (11.4% effective take rate)
+Plus: Mercury interest on float
+</code></pre>
+<h3 id="checklists-tiered">Checklists (Tiered)</h3>
+<p><strong>Large Jobs ($500+) — Required Gates:</strong></p>
+<p>Onboarding: Pro confirms scope, client confirms start date, milestone schedule agreed + funded, permits identified (Code Wiseman), insurance current, site access details, pre-work photos.</p>
+<p>Offboarding: Pro marks complete, finished photos, client walkthrough, punch list resolved, final inspection passed (if permits), client signs off, payment released, both sides rate.</p>
+<p><strong>Small Jobs (&lt;$500) — Guided, Skippable:</strong></p>
+<p>Onboarding: confirm scope + timeline, pre-work photo optional.
+Offboarding: completion photo optional (boosts Pro rating), client confirms (or 48hr auto-approve), both sides rate.</p>
+<hr>
+<h2 id="5-emergency-restoration--insurance--premium-tier">5. Emergency, Restoration &amp; Insurance — Premium Tier</h2>
+<h3 id="market-opportunity">Market Opportunity</h3>
+<ul>
+<li>$60-80B/year residential restoration (water, fire, mold, storm)</li>
+<li>70% is insurance-funded — guaranteed payment</li>
+<li>No marketplace has cracked insurance MRN integration — whitespace</li>
+</ul>
+<h3 id="pro-tiers">Pro Tiers</h3>
+<table>
+<thead>
+<tr>
+<th>Tier</th>
+<th>Requirements</th>
+<th>Retainer</th>
+<th>Access</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Standard Pro</td>
+<td>Licensed, insured, vetted</td>
+<td>None</td>
+<td>Normal marketplace jobs</td>
+</tr>
+<tr>
+<td>Emergency Ready</td>
+<td>Standard + IICRC certified + 4hr SLA</td>
+<td>$200-$500/mo</td>
+<td>Emergency dispatch, premium rates</td>
+</tr>
+<tr>
+<td>Restoration Certified</td>
+<td>Emergency Ready + WRT/ASD/FSRT + Xactimate</td>
+<td>$500-$1,000/mo</td>
+<td>Insurance network jobs, guaranteed volume, 6-8% commission</td>
+</tr>
+</tbody></table>
+<h3 id="insurance-integration-path">Insurance Integration Path</h3>
+<pre><code>Phase 1 (Launch):    Direct referral — homeowner hires Sherpa Pro after filing claim
+Phase 2 (6 months):  TPA relationships — pitch Contractor Connection, Alacrity, Sedgwick
+Phase 3 (12 months): Managed Repair Network — insurers dispatch through Sherpa Pros
+</code></pre>
+<h3 id="platform-requirements-for-insurance">Platform Requirements for Insurance</h3>
+<ul>
+<li>IICRC certification tracking in Pro profiles</li>
+<li>Xactimate .esc file ingestion → auto-bid generation (Pricing Wiseman validates)</li>
+<li>SLA enforcement: 2hr contact, 4hr on-site for emergency tier</li>
+<li>Mandatory before/during/after photo documentation</li>
+<li>Insurance-grade per-job reporting for claim approval</li>
+</ul>
+<h3 id="bilateral-vetting">Bilateral Vetting</h3>
+<p>Projects are vetted too — Wiseman AI validates budget, scope, permit requirements before Pros see them. Protects Pros from lowball scams, impossible scope, and ghost clients.</p>
+<hr>
+<h2 id="6-tech-stack">6. Tech Stack</h2>
+<pre><code>Frontend:       Next.js 16 App Router + Tailwind 4 + PWA manifest
+Backend:        Next.js Server Actions + API Routes (Vercel Functions)
+Database:       Neon PostgreSQL + PostGIS (Vercel Marketplace)
+Auth:           Clerk (Vercel Marketplace — Pro vs Client roles)
+Maps:           Mapbox GL JS + react-map-gl + deck.gl
+Geocoding:      Mapbox Geocoding API + Google Places Autocomplete
+Real-time:      Vercel Functions + Pusher/Ably for live bids/chat
+Payments:       Stripe Connect (marketplace splits + instant payouts)
+Escrow:         Mercury Treasury (~4% APY on held funds)
+SMS:            Twilio (masked communication)
+Background:     Checkr API ($30/Pro)
+AI:             Vercel AI SDK + BldSync Wiseman APIs
+Deploy:         Vercel (one push = live)
+Monitoring:     Vercel Analytics + custom dashboards
+</code></pre>
+<h3 id="wiseman-integration">Wiseman Integration</h3>
+<p>Sherpa Pros calls BldSync Wiseman APIs over HTTP:</p>
+<pre><code>POST bldsync-api/wiseman/pricing/validate-budget
+POST bldsync-api/wiseman/code/permit-check
+POST bldsync-api/wiseman/checklist/generate
+</code></pre>
+<p>Dispatch Wiseman lives IN Sherpa Pros (first Wiseman outside BldSync).</p>
+<hr>
+<h2 id="7-competitive-moats">7. Competitive Moats</h2>
+<table>
+<thead>
+<tr>
+<th>Moat</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Vetted Not Paid</td>
+<td>Prove quality to get listed. No pay-to-play.</td>
+</tr>
+<tr>
+<td>Wiseman Intelligence</td>
+<td>AI validates budgets, bids, permits. No competitor has construction-specific pricing/code data.</td>
+</tr>
+<tr>
+<td>Exclusive Leads</td>
+<td>Dispatch Wiseman picks the RIGHT Pros. Not shared leads.</td>
+</tr>
+<tr>
+<td>Career Platform</td>
+<td>Pro's license, insurance, portfolio, reviews, ratings, earnings, schedule all live on platform. High switching cost.</td>
+</tr>
+<tr>
+<td>Insurance Network</td>
+<td>MRN integration is $60-80B whitespace no marketplace has cracked.</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="8-go-to-market">8. Go-To-Market</h2>
+<h3 id="phase-0-seed-supply-weeks-1-8">Phase 0: Seed Supply (Weeks 1-8)</h3>
+<ul>
+<li>8-12 vetted Pros per hub across 4+ trades</li>
+<li>Tactics: permit pull lists, supply house partnerships, trade associations, job site recruiting, HJD network</li>
+<li>Referral: $50 signup + $75 first job + $100 fifth job = $225 max per referred Pro</li>
+<li>Launch hubs: Portsmouth NH, Manchester NH, Portland ME</li>
+</ul>
+<h3 id="phase-1-soft-launch-weeks-8-16">Phase 1: Soft Launch (Weeks 8-16)</h3>
+<ul>
+<li>First 50-100 completed jobs, documented with photos + testimonials</li>
+<li>Channels: property manager partnerships, realtor referrals, Nextdoor, HJD client overflow</li>
+<li>Build proof portfolio for Phase 2 marketing + Phase 3 insurance pitch</li>
+</ul>
+<h3 id="phase-2-paid-growth-months-4-8">Phase 2: Paid Growth (Months 4-8)</h3>
+<ul>
+<li>Google Local Services Ads ($25-$50 CPA), SEO, Facebook/Instagram (before/after content)</li>
+<li>Expand to 6 hubs (add Concord NH, Lewiston ME, Lowell MA)</li>
+<li>Target: 500+ completed jobs, unit economics proven</li>
+</ul>
+<h3 id="phase-3-insurance--emergency-months-6-18">Phase 3: Insurance &amp; Emergency (Months 6-18)</h3>
+<ul>
+<li>Launch Emergency Ready tier with retainers</li>
+<li>Build 50+ emergency job portfolio</li>
+<li>Target regional TPAs (Crawford, Sedgwick, Pilot Catastrophe)</li>
+<li>Pilot: 10 claims in one hub → prove model → first MRN contract</li>
+</ul>
+<h3 id="phase-4-scale-month-12">Phase 4: Scale (Month 12+)</h3>
+<ul>
+<li>All 10+ hubs active, 500+ Pros, 1-2 TPA relationships</li>
+<li>Expansion: RI, VT, CT</li>
+</ul>
+<h3 id="key-metrics">Key Metrics</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Phase 1</th>
+<th>Phase 2</th>
+<th>Phase 3</th>
+<th>Phase 4</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Active Pros</td>
+<td>30-50</td>
+<td>100-200</td>
+<td>200-350</td>
+<td>500+</td>
+</tr>
+<tr>
+<td>Completed jobs/mo</td>
+<td>20-50</td>
+<td>100-300</td>
+<td>300-500</td>
+<td>1,000+</td>
+</tr>
+<tr>
+<td>Active hubs</td>
+<td>3</td>
+<td>6</td>
+<td>8</td>
+<td>10+</td>
+</tr>
+<tr>
+<td>Monthly revenue</td>
+<td>$2-5K</td>
+<td>$15-40K</td>
+<td>$50-100K</td>
+<td>$200K+</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="9-investor-strategy">9. Investor Strategy</h2>
+<h3 id="timeline">Timeline</h3>
+<pre><code>Month 0-4:   Bootstrap ($25-40K) — build platform, recruit 50 Pros, first 100 jobs
+Month 4-6:   Pre-seed ($250-500K SAFE) — proof: $50K+/mo GMV, NPS &gt;40
+Month 8-12:  Seed ($1.5-3M at $10-15M post) — proof: $150K+/mo GMV, insurance pilot
+</code></pre>
+<h3 id="investor-metrics-targets">Investor Metrics Targets</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Seed Target</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>GMV/month</td>
+<td>$100-200K</td>
+</tr>
+<tr>
+<td>Blended take rate</td>
+<td>12-15%</td>
+</tr>
+<tr>
+<td>Liquidity (3+ bids in 24hr)</td>
+<td>&gt;60%</td>
+</tr>
+<tr>
+<td>Client NPS</td>
+<td>&gt;50</td>
+</tr>
+<tr>
+<td>Pro NPS</td>
+<td>&gt;40</td>
+</tr>
+<tr>
+<td>Client repeat (12mo)</td>
+<td>&gt;30%</td>
+</tr>
+<tr>
+<td>Pro retention (6mo)</td>
+<td>&gt;70%</td>
+</tr>
+</tbody></table>
+<h3 id="the-pitch">The Pitch</h3>
+<p>"Every competitor sells leads. We sell verified project completion. Contractors build careers on our platform. We're the only marketplace that actually understands construction — powered by AI that validates every budget, bid, and permit requirement. And we're building the first tech-native Managed Repair Network for insurers — a $60-80B market no startup has cracked."</p>
+<hr>
+<h2 id="10-revenue-streams">10. Revenue Streams</h2>
+<pre><code>1. Marketplace commissions (8-15% sliding scale)
+2. Client service fee (5%)
+3. Emergency premium (20% of surge markup)
+4. Pro retainers ($200-$1,000/mo for emergency/insurance tiers)
+5. Instant payout fees (1%)
+6. Cancellation fees ($25)
+7. Mercury Treasury interest on escrow float
+8. Future: Insurance MRN dispatch fees
+</code></pre>
+<hr>
+<h2 id="appendix-reference-repos">Appendix: Reference Repos</h2>
+<table>
+<thead>
+<tr>
+<th>Repo</th>
+<th>Stars</th>
+<th>Use</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>visgl/react-map-gl</td>
+<td>~8K</td>
+<td>Uber-built React wrapper for Mapbox</td>
+</tr>
+<tr>
+<td>visgl/deck.gl</td>
+<td>~12K</td>
+<td>Hub boundary polygons, heatmaps</td>
+</tr>
+<tr>
+<td>ManjiCoder/Uber-Next-App</td>
+<td>—</td>
+<td>Dispatch UI reference</td>
+</tr>
+<tr>
+<td>achris-alonzo30/uber-clone</td>
+<td>—</td>
+<td>Full booking flow reference</td>
+</tr>
+</tbody></table>
+<h2 id="appendix-bldsync-sherpa-pros-module">Appendix: BldSync Sherpa Pros Module</h2>
+<p>Existing module at <code>~/BldSync/sherpa-pros/</code> with 500+ tests. Key components to port/reference:</p>
+<ul>
+<li>Rating algorithm (7-factor, time-decay, strike system)</li>
+<li>Matching engine (PostGIS, composite scoring)</li>
+<li>Job state machine (8 states)</li>
+<li>Notification system (BullMQ, 11 event types)</li>
+<li>Twilio masked communication</li>
+<li>Availability calendar</li>
+<li>Review/response system</li>
+<li>Leaderboard</li>
+</ul>
+
+	
+
+
+</body>
+</html>

@@ -1,0 +1,1121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>competitive analysis — Sherpa Pros</title>
+<link rel="icon" href="../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="competitive-analysis.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="sherpa-pros--competitive-analysis-matrix">Sherpa Pros — Competitive Analysis Matrix</h1>
+<p><strong>Date:</strong> 2026-04-22
+<strong>Audience:</strong> Investor data room (Wave 1 pitch artifacts)
+<strong>Author:</strong> product-trend-researcher (research compiled from public 2024–2026 sources)</p>
+<hr>
+<h2 id="1-executive-summary">1. Executive Summary</h2>
+<p>The home-services platform market is dominated by lead-gen pay-to-play models (Angi, Thumbtack), task-based gig models (TaskRabbit, Handy), and designer/inspiration marketplaces (Houzz). All have well-documented structural weaknesses around licensed-trade verification, code/permit awareness, and contractor economics. State-run installer-finders (Mass Save) cover only a narrow segment of trades (energy efficiency) and offer no marketplace mechanics — no dispatch, no escrow, no review system, no scheduling.</p>
+<p><strong>The "licensed + code-aware + true marketplace" quadrant is empty.</strong> Sherpa Pros plants the flag there with built-in code-aware quote validation (NEC, IRC, MA Electrical, NH RSA), permit-awareness, rebate-awareness, and a 5–10% take-rate model that is roughly half the effective cost of Angi/Thumbtack lead-gen.</p>
+<p><strong>Update 2026-04-25 — vertical integration shipped.</strong> With the materials orchestration layer (Wiseman Materials + Zinc Application Programming Interface (API) + Uber Direct same-day delivery) and the multi-trade dispatch + timeline shipped on 2026-04-25, the comparison frame changes. Sherpa Pros is no longer just a labor marketplace competing with Angi/Thumbtack/TaskRabbit. It is a <strong>vertically-integrated labor + materials + delivery + coordination layer</strong> competing across four formerly-separate categories. See §1.5 below for the new comp-set framing — the per-competitor matrix in §2 still applies inside the labor-marketplace layer, but it is now one of four layers Sherpa Pros covers.</p>
+<hr>
+<h2 id="15-vertical-integration--labor--materials--delivery--coordination">1.5 Vertical Integration — Labor + Materials + Delivery + Coordination</h2>
+<p><strong>The category-defining shift.</strong> Until 2026-04-25, Sherpa Pros was best understood as the next-generation labor marketplace — better than Angi on take-rate, better than Thumbtack on lead-blast economics, better than TaskRabbit on licensed-trade depth. After 2026-04-25, the shorthand for what Sherpa Pros is changes from <em>labor marketplace</em> to <em>labor + materials + delivery + coordination layer under one orchestration plane</em>. The new competitive set splits into <strong>four layers</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>What it does</th>
+<th>Incumbent leaders</th>
+<th>What Sherpa Pros ships</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>1. Labor marketplace</strong></td>
+<td>Match a homeowner / Property Manager to a licensed pro</td>
+<td>Angi, Thumbtack, TaskRabbit, Houzz Pro</td>
+<td><strong>Sherpa Marketplace</strong> — single-pro dispatch, code-aware quote validation, 5–10% take rate, Stripe Connect escrow</td>
+</tr>
+<tr>
+<td><strong>2. Materials supply</strong></td>
+<td>Source the parts the job needs and get them to the job site</td>
+<td>FW Webb, Grainger, Home Depot Pro, Lowe's ProDesk, Build.com, supplyhouse.com</td>
+<td><strong>Sherpa Materials</strong> — Wiseman Materials auto-derives the parts list from job spec + code + assembly catalog; Zinc API procures from Amazon Business + supplier catalogs; transparent supplier invoice + 8-12% coordination fee (lower than dealer markup)</td>
+</tr>
+<tr>
+<td><strong>3. Last-mile delivery</strong></td>
+<td>Same-day delivery of materials to the job site</td>
+<td>Uber Direct, DoorDash Drive, Roadie</td>
+<td><strong>Uber Direct</strong> integrated as the delivery rail inside Sherpa Materials — pro doesn't burn 90 minutes on a supply-house run</td>
+</tr>
+<tr>
+<td><strong>4. Project coordination</strong></td>
+<td>Sequence multi-trade work, manage handoffs, track blockers</td>
+<td>BuildBook, BuilderTrend, JobNimbus, Procore (light commercial)</td>
+<td><strong>Sherpa Dispatch</strong> — multi-trade timeline auto-schedules handoffs (e.g., kitchen renovation: demo → plumbing rough-in → electrical rough-in → drywall → cabinet → counter → trim → paint), surfaces blocked work, re-sequences when a trade slips</td>
+</tr>
+</tbody></table>
+<p><strong>Sherpa Pros is the only player vertically integrating all four layers under one orchestration plane.</strong> Each incumbent in the table above is single-layer by design — they do their layer well, they do not own the customer relationship across the other three layers. The coordination cost the homeowner / Property Manager pays today is exactly the cost Sherpa Pros eliminates by integrating across the four.</p>
+<h3 id="151-per-layer-moat-comparison">1.5.1 Per-Layer Moat Comparison</h3>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Incumbent's moat</th>
+<th>Why Sherpa Pros' integrated offering wins inside this layer</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Labor</strong></td>
+<td>Angi/Thumbtack: paid acquisition + brand recognition. TaskRabbit: IKEA partnership. Houzz Pro: SaaS contractor lock-in.</td>
+<td>All four incumbents are single-trade-job platforms — a homeowner asks for a plumber, gets a plumber. None of them coordinate the <em>other six trades</em> on a kitchen renovation. Sherpa Dispatch wins on multi-trade because the incumbents structurally can't ship it without the materials + coordination layers.</td>
+</tr>
+<tr>
+<td><strong>Materials</strong></td>
+<td>FW Webb / Grainger: warehouse footprint + supplier relationships. Home Depot Pro / Lowe's ProDesk: retail footprint + Pro account credit lines. Build.com / supplyhouse.com: e-commerce convenience.</td>
+<td>All five materials incumbents require the contractor or homeowner to <strong>already know what to order</strong> — they sell catalogs, not derived parts lists. Wiseman Materials auto-derives the list from job spec + code + assembly catalog. The contractor-facing value is "we figured out what you need" instead of "search our catalog." That derivation requires owning the labor + dispatch layers, which the incumbents do not.</td>
+</tr>
+<tr>
+<td><strong>Last-mile delivery</strong></td>
+<td>Uber Direct / DoorDash Drive / Roadie: driver network + delivery technology.</td>
+<td>These are infrastructure providers, not consumer brands in this category. Sherpa Pros uses Uber Direct as the rail (no need to compete with it) and wraps it in the job context — the homeowner sees "your cabinets arrive Wednesday at 10 AM" inside the same app where they approved the parts list. The integration is the moat; the rail is commodity.</td>
+</tr>
+<tr>
+<td><strong>Project coordination</strong></td>
+<td>BuildBook / BuilderTrend / JobNimbus: SaaS contractor stack. Procore: large-commercial scale + real-time collaboration.</td>
+<td>All four coordination tools assume the contractor <strong>already has the labor + materials secured</strong> — they are management overlays, not sourcing platforms. Sherpa Dispatch is sourcing + sequencing in one surface. Procore would have to acquire a labor marketplace and a materials catalog to ship the equivalent; the SaaS challengers would have to build supply across both to ship the equivalent.</td>
+</tr>
+</tbody></table>
+<p><strong>Combined moat:</strong> the four-layer integration is itself a moat. An incumbent in any single layer would need to build or acquire across the other three, which is structurally hard (different business models, different customer bases, different unit economics). Vertical integration in two-sided marketplaces is famously hard to copy because each layer's economics depend on the others.</p>
+<h3 id="152-take-rate-implication-of-vertical-integration">1.5.2 Take-Rate Implication of Vertical Integration</h3>
+<p>Single-layer labor marketplaces cap out at a <strong>10–15% take rate on labor only.</strong> Sherpa Pros stacks revenue lines across the four layers:</p>
+<ul>
+<li><strong>5–12% labor commission</strong> (Sherpa Flex 18%, Standard 12%, Gold 8%) on the labor side</li>
+<li><strong>8–12% materials coordination fee</strong> on the materials side (transparent supplier invoice + coordination fee broken out, lower than traditional dealer markup, working assumption per GTM spec §10.1 R7)</li>
+<li><strong>Sherpa Home subscription</strong> revenue from homeowners</li>
+<li><strong>Sherpa Success Manager retainer</strong> revenue from Property Manager / Multi-Property Owner / White-Glove customers</li>
+</ul>
+<p><strong>Blended take rate per job: 18–25%</strong> with the materials line being the durability play (recurring per-job revenue, not per-pro subscription). Per-job materials-to-labor ratio runs ~60/40 materials-to-labor for trade work, so each $10K labor job has roughly $15K of materials passing through Sherpa Materials. See <code>docs/pitch/tam-sam-som.md</code> Vertical Integration Multiplier callout.</p>
+<hr>
+<h2 id="16-compliance--audit-posture-as-a-competitive-moat">1.6 Compliance + Audit Posture as a Competitive Moat</h2>
+<p><strong>The data-handling gap.</strong> Angi, Thumbtack, TaskRabbit, Houzz Pro, and Handy were built as pre-Service Organization Control 2 (SOC 2), pre-General Data Protection Regulation (GDPR) consumer marketplaces — the data flow was "blast lead to many pros, hand off to phone / email, no further visibility." None of them ship a per-action audit log against the work order. None of them ship Role-Based Access Control (RBAC) middleware that enforces tier-appropriate dashboard routing across roles like <em>pro · client · Property Manager · admin</em>. The contractor reviews of all five platforms are full of "I never know what happened to that lead" / "they sold my information to my competitor" / "I can't get the call recording back" — all symptoms of weak data-handling architecture.</p>
+<p><strong>Sherpa Guard is the answer Sherpa Pros ships out of the box.</strong> Per <code>docs/operations/sherpa-product-portfolio.md</code> §2.7.4, Sherpa Guard combines RBAC middleware (session-aware route enforcement on <code>/pro/*</code>, <code>/client/*</code>, <code>/pm/*</code>, <code>/admin/*</code> with admin as a permission flag, not a role) with an <code>audit_logs</code> table that records every load-bearing action — sign-in, role change, access granted, access revoked, reward redeemed, pro verified, pro rejected, job created, material approved, dispatch triggered — with user identifier, target type and identifier, JavaScript Object Notation (JSON) metadata, IP address, and timestamp. Admin view at <code>/admin/logs</code> is filterable by action, user, and date range.</p>
+<p><strong>Why this is a moat (not just a feature).</strong> Three reasons:</p>
+<ol>
+<li><strong>Property Manager (PM) cohort gating.</strong> The 5,000+ unit PM cohort — the highest-Annual Recurring Revenue (ARR) target on the Sherpa Pros customer map — runs internal compliance reviews before they sign any vendor contract. Sherpa Guard satisfies the audit-trail control out of the box; lead-gen incumbents fail it on day one. Without Sherpa Guard, the PM cohort cannot be sold to enterprise-style buyers — they would have to take Sherpa Pros through a 9-12 month custom-compliance build first. With Sherpa Guard, the cohort is addressable from day one.</li>
+<li><strong>Institutional-capital Limited Partner (LP) diligence.</strong> Any institutional-capital fund (Insight, Bessemer, Andreessen, the family offices behind a Series A) runs Service Organization Control 2 (SOC 2) audit-trail-control checks on portfolio investments. Sherpa Guard makes the diligence answer "yes, here is the table and here is the admin view" instead of "we are working on it." Saves 3-6 months of go-to-market on the institutional-tier cohort.</li>
+<li><strong>Dispute defensibility per job.</strong> When a $14K kitchen job goes sideways and the homeowner disputes the materials approval or the dispatch decision, Sherpa Pros has the per-event audit log to settle the dispute. Lead-gen incumbents do not — which is why their dispute-resolution function relies on subjective phone-call-based mediation and runs a several-percent loss rate per disputed transaction.</li>
+</ol>
+<p><strong>Defensibility against incumbent retrofit.</strong> Could Angi or Thumbtack ship Sherpa Guard? Technically, yes — RBAC middleware and an audit log table are standard patterns. <strong>Practically, no</strong>, because the audit log is only useful if the platform owns the work order, the thread, the materials approval, and the dispatch event in one data model. Lead-gen incumbents fragment those events across the pro's personal phone (the call), the pro's personal email (the lead), the homeowner's bank (the payment), and the pro's accounting tool (the invoice) — there is no single data model to log against. Retrofitting would require re-architecting around the work order as the spine, which is a multi-year build that doesn't improve the lead-fee economics that pay the bills today. So the moat holds.</p>
+<hr>
+<h2 id="2-comparison-matrix">2. Comparison Matrix</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Competitor</th>
+<th>Founded / Status</th>
+<th>Latest Revenue or Valuation</th>
+<th>Business Model</th>
+<th>Trade Coverage</th>
+<th>Code / Permit / Rebate Awareness</th>
+<th>Documented Weaknesses</th>
+<th>Sherpa Pros Structural Advantage</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td><strong>Angi (NASDAQ: ANGI)</strong></td>
+<td>1995 (as Angie's List); merged with HomeAdvisor 2017; spun off from IAC Q2 2025 [^1]</td>
+<td><strong>FY2025 revenue $1.03B</strong> (down 13% YoY from $1.19B FY2024) [^2]</td>
+<td>Lead-gen (pay-per-lead, $30–$100/lead, often shared with up to 40 competitors); Angi Pro subscription starts $200/mo [^3]; consumer "Angi Key" membership discontinued Aug 14, 2025</td>
+<td>Broad / unskilled-leaning; weak licensed-trade verification</td>
+<td>None. No code intelligence, no permit assist, no rebate matching</td>
+<td>BBB: not accredited; ~1,800+ complaints 2023–2026 [^4]; Trustpilot 2.1/5 with thousands of 1-star pro reviews; Vermont AG settlement Oct 2025 ($100K over misleading "Certified Pro" terminology) [^4]; ~30% cancellation penalty on remaining contract balance</td>
+<td>(a) 5% take-rate (10% post-beta) vs. effective Angi cost often $400–$800 per closed job; (b) code-aware quote validation with permit and rebate matching; (c) "Jobs not leads" — exclusive matching, not shared lead-blast</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>Thumbtack</strong></td>
+<td>2008; private</td>
+<td><strong>~$400M revenue FY2024</strong> [^5]; <strong>$3.2B valuation</strong> (June 2021 round, $275M); $75M debt financing July 2024 from SVB; total raised ~$699M [^6]</td>
+<td>Lead-gen: pros pay variable per-quote price; consumers post job; pros buy contact</td>
+<td>Broad services (handyman → pet sitting → tutoring); some licensed trades but no verification depth</td>
+<td>None. No code/permit/rebate intelligence</td>
+<td>Documented contractor-deposit-theft cases ($300–$6,500 per BBB/Sitejabber/PissedConsumer) [^7]; widely-reported fake leads (invalid phone, non-existent customers); BBB pattern-of-complaints review completed Nov 2025; Thumbtack does not mediate "price disagreements" with deposit-keeping contractors [^7]</td>
+<td>(a) Stripe Connect escrow with 7-day hold reduces deposit-theft risk; (b) license + insurance verified before listing; (c) no shared/blasted leads — single matched dispatch</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>TaskRabbit</strong></td>
+<td>2008; <strong>acquired by IKEA 2017</strong></td>
+<td><strong>~$75M revenue 2025</strong> [^8] (private subsidiary; not separately disclosed in IKEA financials). Effective fee load ~22.5% of tasker pay (15% service fee + 7.5% trust &amp; support fee) [^8]</td>
+<td>Hybrid: hourly tasker rates + 15% service fee + 7.5% trust/support fee + peak pricing; IKEA assembly on flat per-item pricing</td>
+<td>Unskilled tasks (assembly, moving, errands, cleaning, handyman). <strong>Does not cover licensed trades</strong> (electrical, plumbing, HVAC, roofing)</td>
+<td>None. Not relevant — not a licensed-trade platform</td>
+<td>High effective fee (~22.5%); last-minute cancellations widely reported; IKEA-flat-rate roll-out cut tasker earnings on assembly tasks; not built for code-bound or permitted work</td>
+<td>(a) Different category — Sherpa Pros doesn't compete with IKEA assembly. (b) When TaskRabbit users need licensed work (electrical for ceiling fan, plumbing for dishwasher), they have nowhere to go inside the platform — Sherpa Pros captures that referral.</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>Handy</strong></td>
+<td>2012; <strong>acquired by ANGI Homeservices 2018 for $165.5M</strong> [^9]</td>
+<td>Not separately disclosed since acquisition (rolled into ANGI consolidated revenue)</td>
+<td>Subscription + per-task; pre-priced cleaning, handyman, basic installs</td>
+<td>Narrow: cleaning, handyman, basic furniture/TV installs. Limited licensed-trade coverage</td>
+<td>None</td>
+<td>Limited trade coverage means most homeowner-significant projects (heat pump, panel upgrade, roof, plumbing rough-in) cannot be booked; ANGI parent absorbs strategic priority away from Handy</td>
+<td>(a) Sherpa Pros covers the licensed-trade depth Handy explicitly avoids; (b) we own the high-ticket workflow ($5K–$50K jobs) where Handy stops at ~$300 tasks</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>Houzz</strong></td>
+<td>2009; private</td>
+<td><strong>~$4B valuation</strong> (per CB Insights / PitchBook synthesis); $614M total raised from Sequoia / NEA / GGV [^10]; reports of valuation soft markdowns in recent secondary filings [^11]; 2024 industry-wide design-firm revenue decline [^12]</td>
+<td>Two products: (a) Houzz consumer marketplace (free directory + lead-gen); (b) <strong>Houzz Pro SaaS</strong> at $59–$999/mo per seat [^13]</td>
+<td>Designers, architects, design-build firms; weaker on standalone trades</td>
+<td>None at the matching layer</td>
+<td>Houzz Pro has 1.03★ BBB average across 500+ complaints in 3 years [^14]; Sitejabber 2.5★ over 159 reviews; contractors report $5K+ spend with zero leads [^14]; lead-blast model (customers contact many pros from one listing); platform is built for inspiration discovery, not execution dispatch</td>
+<td>(a) Houzz competes on aspirational visuals and project software; Sherpa Pros competes on <strong>completing the job today</strong>; (b) code-aware quote validation is execution-grade (code/permit), not portfolio-grade; (c) Sherpa Pros' contractor economics are radically better</td>
+</tr>
+<tr>
+<td>6</td>
+<td><strong>Mass Save Find-an-Installer</strong></td>
+<td>Utility-funded program-administered tool (Eversource, National Grid, Unitil, Cape Light Compact, Berkshire Gas, Liberty Utilities, NSTAR Gas)</td>
+<td>N/A — non-commercial program tool</td>
+<td><strong>Basic listing only.</strong> Zip-code search returns EPA-certified Heat Pump Installer Network (HPIN), Home Performance Contractors (HPC), Independent Installation Contractors (IIC) [^15]</td>
+<td><strong>Energy efficiency only:</strong> heat pumps, HPC contractors, insulation/air-sealing IICs</td>
+<td>Yes — but only for Mass Save program scope. EPA cert verified.</td>
+<td>No marketplace mechanics: no dispatch, no escrow, no scheduling, no quotes, no reviews, no in-app messaging, no payment, no permit assist, no rebate calculator, no matching algorithm. It is a static listing.</td>
+<td>(a) Sherpa Pros becomes the <strong>execution layer</strong> Mass Save's listing is missing — apply for the Mass Save Network to inherit its funnel, then provide the dispatch/escrow/review layer the program does not; (b) Old-House Verified, EV charger, panel upgrade, triple-decker exterior categories Mass Save does not cover at all</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="3-capability-heatmap-rapid-scan-version">3. Capability Heatmap (rapid-scan version)</h2>
+<table>
+<thead>
+<tr>
+<th>Capability</th>
+<th>Angi</th>
+<th>Thumbtack</th>
+<th>TaskRabbit</th>
+<th>Handy</th>
+<th>Houzz</th>
+<th>Mass Save</th>
+<th><strong>Sherpa Pros</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Licensed-trade verification</td>
+<td>weak</td>
+<td>weak</td>
+<td>n/a</td>
+<td>weak</td>
+<td>weak</td>
+<td>yes (energy only)</td>
+<td><strong>yes (full)</strong></td>
+</tr>
+<tr>
+<td>Code intelligence (NEC/IRC/state)</td>
+<td>no</td>
+<td>no</td>
+<td>no</td>
+<td>no</td>
+<td>no</td>
+<td>partial</td>
+<td><strong>yes (code-aware quote validation)</strong></td>
+</tr>
+<tr>
+<td>Permit-aware quoting</td>
+<td>no</td>
+<td>no</td>
+<td>no</td>
+<td>no</td>
+<td>no</td>
+<td>no</td>
+<td><strong>yes</strong></td>
+</tr>
+<tr>
+<td>Rebate-aware (Mass Save / NEEP)</td>
+<td>no</td>
+<td>no</td>
+<td>no</td>
+<td>no</td>
+<td>no</td>
+<td>yes</td>
+<td><strong>yes</strong></td>
+</tr>
+<tr>
+<td>Escrow / payment protection</td>
+<td>no</td>
+<td>no</td>
+<td>yes (limited)</td>
+<td>yes</td>
+<td>no</td>
+<td>no</td>
+<td><strong>yes (Stripe Connect 7-day hold)</strong></td>
+</tr>
+<tr>
+<td>Single-pro dispatch (vs. lead-blast)</td>
+<td>no</td>
+<td>no</td>
+<td>yes</td>
+<td>yes</td>
+<td>no</td>
+<td>no</td>
+<td><strong>yes (single-match dispatch engine)</strong></td>
+</tr>
+<tr>
+<td>Take-rate vs. lead-fee</td>
+<td>lead-fee</td>
+<td>lead-fee</td>
+<td>22.5% effective</td>
+<td>15–20%</td>
+<td>lead-fee + SaaS</td>
+<td>n/a</td>
+<td><strong>5–10% take</strong></td>
+</tr>
+<tr>
+<td>Trade-show / GC-network credibility</td>
+<td>corporate</td>
+<td>corporate</td>
+<td>corporate</td>
+<td>corporate</td>
+<td>corporate</td>
+<td>utility</td>
+<td><strong>founder-built by working GC</strong></td>
+</tr>
+<tr>
+<td>Mobile-first dispatch UX</td>
+<td>partial</td>
+<td>partial</td>
+<td>yes</td>
+<td>yes</td>
+<td>no</td>
+<td>no</td>
+<td><strong>yes (Uber-style map)</strong></td>
+</tr>
+<tr>
+<td>Property Manager (PM) tier</td>
+<td>no</td>
+<td>no</td>
+<td>no</td>
+<td>no</td>
+<td>no</td>
+<td>no</td>
+<td><strong>yes (CapEx/OpEx, NOI)</strong></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="4-documented-weaknesses--citations-bank">4. Documented Weaknesses — Citations Bank</h2>
+<ul>
+<li><strong>Angi BBB un-accredited / 1,800+ complaints / 2.1★ Trustpilot / VT AG settlement Oct 2025</strong>: see [^4]</li>
+<li><strong>Thumbtack deposit-theft pattern, fake leads, BBB pattern-of-complaints review Nov 2025</strong>: see [^7]</li>
+<li><strong>TaskRabbit effective fee load 22.5%</strong>: see [^8]</li>
+<li><strong>Houzz Pro 1.03★ BBB / 500+ complaints / contractors paying $5K+ with zero leads</strong>: see [^14]</li>
+<li><strong>Handy strategic deprioritization post-ANGI acquisition</strong>: see [^9]</li>
+<li><strong>Mass Save Find-an-Installer is a static listing, not a marketplace</strong>: see [^15]</li>
+</ul>
+<hr>
+<h2 id="5-what-we-dont-compete-on">5. What We Don't Compete On</h2>
+<p>We deliberately do not compete in the following adjacencies. Stating this clearly de-risks the pitch ("they understand their lane"):</p>
+<ol>
+<li><strong>TaskRabbit-style assembly and errands.</strong> IKEA assembly, furniture moves, dog-walking, errands, virtual tasks. This is gig-economy unskilled labor. We will not build this category. When a Sherpa Pros homeowner needs IKEA-style assembly, we link out to TaskRabbit.</li>
+<li><strong>Houzz-style designer portfolios and aspirational mood-boarding.</strong> Designer-led discovery, project galleries, "save to ideabook." Houzz owns this. Belle Vie (sister property under HJD) handles the design-concierge layer — Sherpa Pros is purely execution.</li>
+<li><strong>Home Depot / Lowe's "Pro Services" installation programs.</strong> Big-box-driven installs (carpet, water heater, dishwasher) are tied to retail purchase channels. Different acquisition motion. Potential <strong>partnership</strong> (materials integration via Zinc), not competition.</li>
+<li><strong>Pure SaaS for contractors (Houzz Pro, Buildertrend, JobNimbus).</strong> We do not sell a contractor CRM. Pros use Sherpa Pros to <strong>get jobs</strong>, not to manage their non-Sherpa book.</li>
+<li><strong>National handyman chains (Mr. Handyman, Ace Handyman, Neighborly).</strong> Franchise plays with W-2 tradespeople. Different supply-side model. Sherpa Pros aggregates <strong>independent licensed pros</strong>.</li>
+<li><strong>Insurance-tied repair networks (Servpro, Belfor, Travelers Home Repair Network).</strong> Catastrophe restoration is its own world with carrier referral lock-in. <strong>Future partnership opportunity</strong> (Phase 4) — not Phase 1–3 competition.</li>
+<li><strong>Lead-gen for new home construction (BuildZoom for permits, NewHomeSource for builders).</strong> New-construction GC selection is a months-long, six-figure relationship sale. We focus on remodel + repair + installation jobs $500–$50K.</li>
+</ol>
+<p><strong>The discipline:</strong> Sherpa Pros is the national licensed-trade execution layer for <strong>post-purchase, in-place residential and small-commercial work</strong> — launching first in NH, ME, and MA, expanding nationally. Anything outside that frame is partnership territory or out-of-scope.</p>
+<hr>
+<h2 id="6-defensibility-summary-one-sentence-per-moat">6. Defensibility Summary (one sentence per moat)</h2>
+<ol>
+<li><strong>Code-aware quote validation (NEC, IRC, MA Electrical, NH RSA, 192 codes, 480K entries, 284 NH municipalities)</strong> is a multi-year build no national lead-gen incumbent has incentive to replicate — it does not improve their lead-fee economics.</li>
+<li><strong>Founder-as-GC narrative</strong> (Phyrom of HJD Builders — actively building in NH) is unforgeable trust signal vs. corporate platforms.</li>
+<li><strong>Mass Save Network application + Eversource/National Grid Turnkey relationships</strong> create utility-funnel lock-in that competitors cannot enter without state-level certification.</li>
+<li><strong>5% take rate (Founding Pros forever)</strong> vs. Angi's effective $400–$800/closed-job lead spend creates a permanent supply-side cost advantage.</li>
+<li><strong>Old-House Verified USPTO trademark</strong> (filing W4 of Phase 0) creates defensible branded category for pre-1950 Boston/triple-decker work that no platform currently owns.</li>
+</ol>
+<hr>
+<h2 id="footnotes--sources">Footnotes / Sources</h2>
+<p>[^1]: <a href="https://ir.angi.com/quarterly-earnings">Angi Inc. Investor Relations — Quarterly Earnings</a> | <a href="https://en.wikipedia.org/wiki/Angi_Inc.">Angi Inc. Wikipedia entry — IAC spin-off</a></p>
+<p>[^2]: <a href="https://quartr.com/companies/angi-inc_3895">Angi Inc. Q4/FY 2025 results synthesis from Quartr</a> and <a href="https://ir.angi.com/static-files/f756dfd9-c9eb-4e66-9753-b8e170977ea9">Angi IR Q3 2025 release</a>. FY2025 revenue $1,030.5M, down 13% from $1,185.1M FY2024.</p>
+<p>[^3]: <a href="https://fitsmallbusiness.com/what-is-angis-list/">Angi Pro pricing — fitsmallbusiness.com</a> and <a href="https://savullc.com/angi-pro-reviews/">Angi Pro Reviews — savullc.com</a></p>
+<p>[^4]: <a href="https://www.bbb.org/us/in/indianapolis/profile/contractor-referral/angi-0382-3041007/complaints">Angi BBB Complaints page</a> | <a href="https://www.trustpilot.com/review/homeadvisorpros.com">Angi Leads Trustpilot (2.3/5, "Poor")</a> | <a href="https://hookagency.com/blog/angi-leads-reviews/">Angi Leads Reviews From Contractors 2025 — Hook Agency</a> | Vermont AG October 2025 settlement summary referenced in <a href="https://adaptdigitalsolutions.com/articles/homeadvisor-vs-angieslist-vs-houzz-vs-porch-vs-thumbtack-vs-yelp-vs-bark/">Adapt Digital 2026 platform comparison</a></p>
+<p>[^5]: <a href="https://getlatka.com/companies/thumbtack.com">Thumbtack revenue $400M FY2024 — Latka / Fast Company synthesis</a></p>
+<p>[^6]: <a href="https://pitchbook.com/profiles/company/53601-76">Thumbtack PitchBook profile</a> | <a href="https://press.thumbtack.com/announcements/thumbtack-secures-275-million-investment-at-3-2-billion-valuation/">$275M / $3.2B valuation announcement — Thumbtack Press</a> | <a href="https://en.wikipedia.org/wiki/Thumbtack_(company)">Thumbtack Wikipedia</a> | <a href="https://tracxn.com/d/companies/thumbtack/__YyXUgoRyyiejQpXK9d0b-8n_AD3aqN6ZhrwDIHLemP8/funding-and-investors">Tracxn Thumbtack funding rounds</a></p>
+<p>[^7]: <a href="https://www.bbb.org/us/ca/san-francisco/profile/internet-service/thumbtack-inc-1116-367066/complaints">Thumbtack BBB Complaints page</a> | <a href="https://www.sitejabber.com/reviews/thumbtack.com">Thumbtack Sitejabber reviews (1,534)</a> | <a href="https://thumbtack.pissedconsumer.com/review.html">PissedConsumer 4.1K Thumbtack complaints</a> | <a href="https://www.consumeraffairs.com/homeowners/thumbtack.html?page=4">Consumer Affairs page 4</a></p>
+<p>[^8]: <a href="https://oyelabs.com/taskrabbit-business-model/">TaskRabbit business model + revenue breakdown — Oyelabs</a> | <a href="https://support.taskrabbit.com/hc/en-us/articles/24513108035085-Task-Based-Pricing-Model-for-Clients-at-IKEA-Stores-and-Online">TaskRabbit IKEA flat-rate pricing — TaskRabbit Support</a> | <a href="https://en.wikipedia.org/wiki/Taskrabbit">TaskRabbit Wikipedia</a> | TaskRabbit ~$75M 2025 revenue figure: <a href="https://infostride.com/taskrabbit-business-model/">InfoStride business-model breakdown</a> [NEEDS VERIFICATION — IKEA does not separately disclose; cross-reference via Statista/PitchBook before final IC presentation]</p>
+<p>[^9]: <a href="https://www.ibj.com/articles/70878-angi-homeservices-buying-handy-in-effort-to-dominate-home-renovations">ANGI acquires Handy for $165.5M — IBJ</a> | <a href="https://www.handy.com/blog/handylife/handy-homeadvisor-angies-list">Handy + HomeAdvisor + Angie's List blog</a></p>
+<p>[^10]: <a href="https://www.cbinsights.com/company/houzz/financials">Houzz CB Insights profile</a> | <a href="https://pitchbook.com/profiles/company/51270-13">Houzz PitchBook profile</a></p>
+<p>[^11]: <a href="https://www.primeunicornindex.com/houzz-inc-valuation-to-fall-after-latest-filing/">Houzz, Inc. valuation markdown filing — Prime Unicorn Index</a></p>
+<p>[^12]: <a href="https://www.furninfo.com/furniture-industry-news/24531">Houzz 2024 industry decline — Furniture World</a> | <a href="https://www.houzz.com/magazine/2025-u-s-houzz-state-of-the-industry-stsetivw-vs~180175249">2025 U.S. Houzz State of the Industry</a></p>
+<p>[^13]: <a href="https://www.houzz.com/houzz-pro/pricing">Houzz Pro pricing</a> | <a href="https://www.capterra.com/p/199689/Houzz-Pro/pricing/">Capterra Houzz Pro pricing breakdown</a></p>
+<p>[^14]: <a href="https://www.sitejabber.com/reviews/pro.houzz.com">Houzz Pro Sitejabber reviews (159)</a> | <a href="https://www.bbb.org/us/ca/palo-alto/profile/bulletin-board/houzz-1216-263825/complaints">Houzz BBB Complaints page (1.03★, 500+ complaints)</a> | <a href="https://buildbook.co/blog/houzz-of-cards-the-unfortunate-truth-about-marketplaces-for-small-contractors">Houzz of Cards — BuildBook critique</a> | <a href="https://hookagency.com/blog/houzz-pro-reviews/">HookAgency Houzz Pro contractor reviews</a></p>
+<p>[^15]: <a href="https://www.masssave.com/residential/find-a-contractor">Mass Save Find a Contractor</a> | <a href="https://www.masssave.com/residential/find-a-contractor/find-a-heat-pump-installer">Mass Save Heat Pump Installer Search</a> | <a href="https://www.masssave.com/trade-partners/contractors/heat-pump-installers">Mass Save Trade Partners — Heat Pump Installers</a></p>
+
+	
+
+
+</body>
+</html>

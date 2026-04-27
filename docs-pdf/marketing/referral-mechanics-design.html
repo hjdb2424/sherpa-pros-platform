@@ -1,0 +1,1489 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>referral mechanics design — Sherpa Pros</title>
+<link rel="icon" href="../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="referral-mechanics-design.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="sherpa-pros--two-sided-referral-mechanics-design">Sherpa Pros — Two-Sided Referral Mechanics Design</h1>
+<p><strong>Date:</strong> 2026-04-22
+<strong>Author:</strong> marketing-growth-hacker (for Phyrom)
+<strong>Status:</strong> Design — pending engineering review + attorney review on Section 4
+<strong>Companion spec:</strong> <code>docs/superpowers/specs/2026-04-22-gtm-marketing-design.md</code> (§4 phased GTM, §5 finance model)
+<strong>Implementation target:</strong> Phase 1 (Months 3–6) layered on top of Founding Pro program</p>
+<hr>
+<h2 id="1-summary-table--the-four-loops">1. Summary Table — The Four Loops</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Loop</th>
+<th>Virality (k-factor potential)</th>
+<th>LTV uplift per successful referral</th>
+<th>Build complexity</th>
+<th>Fraud risk</th>
+<th>Phase to launch</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>Pro → Pro</td>
+<td>High (0.6–1.2) — contractors talk constantly</td>
+<td>Medium ($1.5–4K GMV/yr per pro × 5% take = $75–200/yr commission, plus $49/mo subscription = $588 ARR)</td>
+<td>Medium</td>
+<td>High (incentive to fake-account)</td>
+<td><strong>Phase 1 — first</strong></td>
+</tr>
+<tr>
+<td>2</td>
+<td>Client → Client</td>
+<td>Low (0.1–0.25) — homeowners refer rarely</td>
+<td>Low–Medium ($800–3K avg job × 10% take = $80–300 one-shot, plus repeat factor 1.4×)</td>
+<td>Low</td>
+<td>Low</td>
+<td>Phase 1 — second</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Pro → Client</td>
+<td>Medium (0.3–0.5) — pro converts existing book</td>
+<td>High (pro's existing client trusts them, near-zero CAC, high job-completion rate ~90%+)</td>
+<td>Low</td>
+<td>Low (pro's reputation is collateral)</td>
+<td><strong>Phase 1 — first (tied)</strong></td>
+</tr>
+<tr>
+<td>4</td>
+<td>Client → PM</td>
+<td>Very Low frequency (0.05–0.1) — but each conversion is huge</td>
+<td>Very High (PM = $4/unit × 200+ units × 12 mo = $9,600 ARR floor, plus dispatched job GMV)</td>
+<td>High (different onboarding, contract, vetting)</td>
+<td>Medium</td>
+<td><strong>Phase 2</strong> (PM tier must be live)</td>
+</tr>
+</tbody></table>
+<p><strong>Read this as:</strong> Loops 1 and 3 are the Phase 1 launch pair. They share the Pro Dashboard surface, share most of the schema, and reinforce each other (pro who refers another pro is more likely to also bring their existing clients). Loop 2 is the long tail that compounds slowly. Loop 4 is the asymmetric bet — low frequency but a single conversion can pay for the entire referral program for a year.</p>
+<hr>
+<h2 id="2-kill-criteria--when-to-turn-a-loop-off">2. Kill Criteria — When To Turn A Loop Off</h2>
+<p>Each loop has explicit shutoff thresholds. These get monitored weekly by data-analytics-reporter and reviewed by Phyrom. A loop hitting any of these conditions is paused within 7 days, investigated, then either patched or killed.</p>
+<table>
+<thead>
+<tr>
+<th>Loop</th>
+<th>Kill condition</th>
+<th>Threshold</th>
+<th>Reason</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Pro → Pro</td>
+<td>Fake-account rate</td>
+<td>&gt;8% of redemptions flagged as fraud over a 30-day rolling window</td>
+<td>MLM dynamics emerging; supply-house arbitrage</td>
+</tr>
+<tr>
+<td>Pro → Pro</td>
+<td>Cohort retention</td>
+<td>&lt;40% of referred pros complete a 2nd job within 90 days</td>
+<td>We're paying to acquire dead supply</td>
+</tr>
+<tr>
+<td>Client → Client</td>
+<td>Cost per acquisition</td>
+<td>Implied CAC &gt; $80 with redemption rate &lt;5%</td>
+<td>Cheaper to buy the same client on Meta</td>
+</tr>
+<tr>
+<td>Pro → Client</td>
+<td>Self-deal rate</td>
+<td>&gt;15% of referred clients are flagged as same-household / same-business as the referring pro</td>
+<td>Pro is just running their existing book through the platform with no real referral</td>
+</tr>
+<tr>
+<td>Client → PM</td>
+<td>Conversion ratio</td>
+<td>&lt;1 PM signed per 50 referrals submitted after 6 months</td>
+<td>Channel doesn't work; redirect to direct BD</td>
+</tr>
+<tr>
+<td>ANY loop</td>
+<td>Reward redemption cost</td>
+<td>Total credits issued &gt; 3% of monthly GMV</td>
+<td>Unit economics broken; review reward structure</td>
+</tr>
+<tr>
+<td>ANY loop</td>
+<td>Disputes attributed to referral</td>
+<td>&gt;5% of disputes involve a referred pair</td>
+<td>Suggests collusion or low-quality matching</td>
+</tr>
+</tbody></table>
+<p>A killed loop is documented (root cause + lessons), not silently retired.</p>
+<hr>
+<h2 id="3-brand-voice-guardrails-apply-to-all-copy">3. Brand Voice Guardrails (Apply To All Copy)</h2>
+<p>Plainspoken, 8th-grade reading level. Sounds like a contractor wrote it.</p>
+<p><strong>Always say:</strong> Jobs (not leads), Founding Pro, Half-price forever, Verified, Local, Built by a contractor</p>
+<p><strong>Never say:</strong> Wiseman (internal only), Gig, Task, Refer-and-earn, Earn unlimited rewards, Disrupt, Revolutionize, "MLM," "passive income"</p>
+<p><strong>Default verbs:</strong> <em>bring, send, hand off, vouch for, introduce</em> — never <em>refer-and-earn, monetize your network</em></p>
+<hr>
+<h2 id="4-regulatory-compliance--reg-cf-window-requires-attorney-review">4. Regulatory Compliance — Reg CF Window (REQUIRES ATTORNEY REVIEW)</h2>
+<blockquote>
+<p><strong>ATTORNEY-REVIEW-RECOMMENDED FLAG</strong> — this section is the growth team's read of SEC rules and Wefunder's terms. Phyrom must have securities counsel sign off before launching any referral mechanic during the active Reg CF raise.</p>
+</blockquote>
+<h3 id="41-the-concern">4.1 The concern</h3>
+<p>While a Sherpa Pros Wefunder Reg CF round is open (per GTM spec §6.4, W7–W12 of Phase 0), the SEC restricts (a) general solicitation framing that ties platform participation to investment, and (b) any "transfer of value" to investors that could be construed as compensating them for promoting the offering. The risk surface for our referral program is:</p>
+<ol>
+<li>A user who is <em>also</em> a Wefunder investor refers another user. The credit they receive could be argued as compensation tied to their investor status.</li>
+<li>Referral copy that uses words like "earn" or "bonus" near any Wefunder mention can be argued as commissioned promotion.</li>
+<li>Cash-equivalent rewards (Visa cards, Venmo, direct wire) carry far more risk than platform-internal rewards.</li>
+</ol>
+<h3 id="42-design-response">4.2 Design response</h3>
+<p>The program is built so the same rules apply to investors and non-investors identically. Specifically:</p>
+<ul>
+<li><strong>No cash, no cash equivalents.</strong> Rewards are platform credits, fee waivers, badge upgrades, priority dispatch — all consumable only inside Sherpa Pros.</li>
+<li><strong>No tie to investor status.</strong> The <code>referrals</code> table does not read <code>wefunder_investor</code> status. The reward function is a pure function of (loop_type, completed_first_job, anti-fraud_passed). This is auditable.</li>
+<li><strong>Reg CF window pause switch.</strong> A feature flag <code>REFERRAL_PROGRAM_REG_CF_PAUSE</code> exists in the admin panel. If counsel advises, all new referral attribution stops within 1 hour. Already-earned credits remain valid.</li>
+<li><strong>No referral copy in Wefunder pitch materials.</strong> The Wefunder page does not mention referral rewards. The in-app referral surface does not mention Wefunder.</li>
+<li><strong>Disclosure language.</strong> When the Reg CF window is open, the in-app referral surface carries a footer line: <em>"Sherpa Pros is currently raising investment via Wefunder. Referral rewards are platform credits and are unrelated to any investment offering. Learn more."</em> Counsel reviews this exact wording.</li>
+</ul>
+<h3 id="43-open-questions-for-counsel">4.3 Open questions for counsel</h3>
+<ol>
+<li>Does a "$50 platform credit" for referring a pro qualify as "transfer of value" under Rule 506 / Reg CF if the referrer is also a Wefunder investor in Sherpa Pros?</li>
+<li>Is the disclosure footer in §4.2 sufficient, or do we need an active separator (e.g., investors cannot redeem credits during the Reg CF window)?</li>
+<li>Can Founding Pros who hold both a 5%-take grandfathering and a Wefunder investment freely participate in pro-to-pro referrals during the open window?</li>
+<li>Does the Pro → Client loop (where a pro converts an <em>existing</em> client they already have a business relationship with) trigger any additional disclosures because the pro now has dual relationships (vendor + referrer)?</li>
+</ol>
+<p><strong>Recommended action:</strong> 30-minute call with the same securities counsel doing the SAFE legal work for Wefunder (estimated ~$5K legal per GTM spec §6.4). Get a memo before launch. Cost is in the noise relative to the risk of an SEC inquiry derailing the raise.</p>
+<hr>
+<h2 id="5-the-four-loops--detailed-design">5. The Four Loops — Detailed Design</h2>
+<h3 id="loop-1--pro-→-pro-founding-pro-refers-another-contractor">LOOP 1 — Pro → Pro (Founding Pro refers another contractor)</h3>
+<p><strong>Why it matters:</strong> Contractors talk constantly. Supply-house counters, jobsite lunches, NHHBA meetings, Facebook trade groups. A Founding Pro saying "this platform actually pays me, switch" carries 10× the weight of any ad.</p>
+<h4 id="51-trigger-event">5.1 Trigger event</h4>
+<p>Attribution fires when the referred pro <strong>completes their first paid job and Stripe Connect releases funds to them.</strong> Not at signup. Not at onboarding. Not at first bid. Completed first job = real supply.</p>
+<h4 id="52-reward-structure">5.2 Reward structure</h4>
+<p><strong>Referrer (the Founding Pro):</strong></p>
+<ul>
+<li>1 month subscription waived ($49 value) — applied next billing cycle</li>
+<li>"Bring a Pro" tally on profile (public counter, social proof, badge at 5 / 10 / 25 brought)</li>
+<li>At 3 successfully referred pros: keeps 5% take rate forever (locked even if they would have rolled to 10%); for Founding Pros who already have 5%, this becomes 4.5% on the 4th and beyond — capped at 4% floor</li>
+<li>At 10 successfully referred pros: invitation to the Founding Pro Council (quarterly product feedback call with Phyrom — this is a relationship asset, not a discount)</li>
+</ul>
+<p><strong>Referee (the new pro):</strong></p>
+<ul>
+<li>Onboarding fast-track (background check expedited, license verification within 48hr)</li>
+<li>"Founding Cohort 2" badge if joined within Phase 1 (transparent — they are not Founding Pros, but they are early)</li>
+<li>First 3 jobs at 5% take (matches Founding Pro for limited window)</li>
+<li>$0 subscription for first 60 days</li>
+</ul>
+<p><strong>Math check (no dollar figures invented out of thin air):</strong></p>
+<ul>
+<li>Cost to platform per successful referral: 1 mo subscription waived to referrer ($49) + 60 days subscription waiver to referee ($98) + 5% commission give-back on referee's first 3 jobs (avg job $1,200, so 5% × $3,600 = $180) = <strong>$327 total platform cost per successful referral</strong></li>
+<li>Average pro at steady state generates ~$2K/yr in subscription + take-rate revenue (10% × ~$1,500/mo GMV × 12 = $1,800 take + $588 sub = ~$2,388/yr per pro)</li>
+<li><strong>Payback period:</strong> $327 / ($2,388 / 12) = <strong>1.6 months.</strong> Below the 6-month CAC-payback threshold from the agent success metrics. Approved.</li>
+<li>Compare to estimated paid-acquisition CAC for a licensed pro on Meta/LinkedIn: $400–$900 based on Phase 1 channel test budget. Referral wins on cost AND quality.</li>
+</ul>
+<h4 id="53-anti-fraud-controls">5.3 Anti-fraud controls</h4>
+<ul>
+<li><strong>One referrer per signup.</strong> Hard FK constraint. First valid attribution wins; later claims rejected with logged collision.</li>
+<li><strong>Stripe identity collision check.</strong> If the new pro's Stripe Connect account shares legal name OR EIN OR bank account OR SSN-last-4 with the referrer's Stripe account → flagged for manual review, reward held.</li>
+<li><strong>IP / device fingerprint dedup.</strong> If signup device fingerprint matches the referrer's last-30-days fingerprint → flagged. Uses existing FingerprintJS or simple hash of (user-agent + screen + timezone + IP /24).</li>
+<li><strong>License-board cross-check.</strong> Run new pro's license number against the referrer's license number in the same state; if either is on the other's "responsible party" list → reject.</li>
+<li><strong>Velocity throttle.</strong> A single referrer can attribute at most 3 successful referrals per 30 days during Phase 1, 5 per 30 days during Phase 2. Hard cap. Caps reset; they don't compound.</li>
+<li><strong>Geographic plausibility.</strong> New pro within 25 miles of referrer → normal. New pro &gt;500 miles from referrer with no plausible relationship → flag for review.</li>
+<li><strong>Manual review queue</strong> for any flagged attribution; Phyrom or Pro Success Manager clears within 5 business days.</li>
+</ul>
+<h4 id="54-attribution-method">5.4 Attribution method</h4>
+<p><strong>Both code AND link, but code is canonical.</strong></p>
+<ul>
+<li>Each Founding Pro gets a 6-character alphanumeric code: <code>JOSE-NH</code>, <code>MIKE-12</code>, <code>ANNA-PT</code> (custom-letterable in admin if a pro wants something memorable; uniqueness enforced).</li>
+<li>Shareable deep link wraps the code: <code>https://sherpa.pros/p/JOSE-NH</code> → opens app or web with code pre-applied.</li>
+<li>Mobile attribution uses Branch.io-style deferred deep linking (or a self-rolled equivalent against the existing PWA). On iOS / Android web → app handoff, the code persists via signed cookie + fallback paste.</li>
+<li>30-day attribution window from first click to signup. After 30 days, code expires for that visitor; they can re-enter manually if they remember.</li>
+<li>At signup, the code field is pre-filled if a link was used. User can also paste/type. User can clear it (with friction — confirmation modal: <em>"You're signing up without a referral. Sure?"</em>).</li>
+</ul>
+<h4 id="55-copy-variants-3-each-for-ab-testing">5.5 Copy variants (3 each for A/B testing)</h4>
+<p><strong>In-app banner (Pro Dashboard, top, dismissible):</strong></p>
+<ol>
+<li><em>"Know another good pro? Bring them on. Both of you save."</em></li>
+<li><em>"Half-price forever — and the pros you bring keep that price too. Your code: JOSE-NH"</em></li>
+<li><em>"Tired of seeing good pros stuck on Angi? Send them your code: JOSE-NH"</em></li>
+</ol>
+<p><strong>Email subject lines (sent to existing Founding Pros at Phase 1 launch):</strong></p>
+<ol>
+<li><em>"Bring a pro you trust — both of you save"</em></li>
+<li><em>"Your code is ready. Half-price for them, free month for you."</em></li>
+<li><em>"The pros you'd hire yourself — bring them on Sherpa"</em></li>
+</ol>
+<p><strong>Share-button text (when pro taps "Share my code" in app):</strong></p>
+<ol>
+<li><em>"I'm on Sherpa Pros — jobs, not leads. Use JOSE-NH and we both save: [link]"</em></li>
+<li><em>"Switched to Sherpa Pros. 5% take, no pay-to-bid. Code JOSE-NH if you sign up: [link]"</em></li>
+<li><em>"Sherpa Pros is the marketplace built by a working GC. Use JOSE-NH: [link]"</em></li>
+</ol>
+<h4 id="56-success-metrics">5.6 Success metrics</h4>
+<ul>
+<li><strong>k-factor for this loop:</strong> target 0.4 by month 3 of Phase 1, 0.7 by month 6</li>
+<li><strong>Referral-to-active conversion</strong> (signup → completed first job): target 35%+</li>
+<li><strong>Time to first referred action</strong> (signup → first bid placed): target &lt;14 days, alert at &gt;30</li>
+<li><strong>Referral share of total new pro signups:</strong> target 30% by end of Phase 1, 50%+ by end of Phase 2</li>
+<li><strong>Cost per acquired pro via referral vs. paid:</strong> ratio target ≤ 0.5 (i.e., referrals at most half the cost of paid)</li>
+</ul>
+<h4 id="57-implementation-sketch">5.7 Implementation sketch</h4>
+<p><strong>DB schema additions (Drizzle):</strong></p>
+<pre><code>referral_codes
+  id, user_id (FK users), code (unique), created_at, active (bool),
+  custom (bool — true if pro chose the suffix)
+
+referrals
+  id, code (FK referral_codes.code), referrer_user_id (FK users),
+  referee_user_id (FK users, nullable until signup),
+  loop_type (enum: pro_to_pro, client_to_client, pro_to_client, client_to_pm),
+  status (enum: clicked, signed_up, first_action, completed, fraud_flagged, rewarded, killed),
+  click_at, signup_at, first_action_at, completed_at, rewarded_at,
+  ip_hash, device_fingerprint, attribution_metadata (jsonb),
+  fraud_flags (jsonb — array of flag types triggered)
+
+referral_rewards
+  id, referral_id (FK referrals), recipient_user_id (FK users),
+  reward_type (enum: subscription_waiver_months, take_rate_reduction_pct,
+               platform_credit_cents, badge_upgrade, priority_dispatch_days,
+               fast_track_onboarding),
+  reward_value (numeric — interpretation depends on reward_type),
+  granted_at, consumed_at, expires_at, status (enum: pending, active, consumed, expired, revoked)
+
+referral_fraud_events
+  id, referral_id, event_type, evidence (jsonb), reviewed_by (nullable FK users),
+  decision (enum: clear, fraud, inconclusive), decided_at, notes
+</code></pre>
+<p><strong>API endpoints needed:</strong></p>
+<ul>
+<li><code>POST /api/referrals/code</code> — generate or fetch the user's code</li>
+<li><code>PATCH /api/referrals/code</code> — request custom suffix (admin-approved during Phase 1)</li>
+<li><code>POST /api/referrals/attribute</code> — register a click (sets ip_hash, device_fingerprint)</li>
+<li><code>POST /api/referrals/redeem</code> — at signup, attach code to new user (validates window, fraud flags)</li>
+<li><code>POST /api/referrals/trigger-completion</code> — internal, called from Stripe webhook on first paid release; advances status to <code>completed</code> and queues reward grant</li>
+<li><code>GET /api/referrals/me</code> — referrer dashboard data (count, status pipeline, rewards earned)</li>
+<li><code>GET /api/admin/referrals/fraud-queue</code> — manual review surface</li>
+</ul>
+<p><strong>UI surfaces touched:</strong></p>
+<ul>
+<li><code>(dashboard)/pro/profile</code> — "Your Code" card with copy-and-share</li>
+<li><code>(dashboard)/pro/referrals</code> — new route — pipeline view (clicked / signed up / completed / rewarded)</li>
+<li><code>(marketing)</code> landing page — referral link recognition + pre-fill on <code>/sign-up</code></li>
+<li>Email template — "First successful referral" celebration email</li>
+<li>Admin — fraud review queue at <code>/admin/referrals</code></li>
+</ul>
+<p><strong>Integration with Stripe Connect Express:</strong> zero changes to the existing payout flow. The referral reward is applied at the <em>commission-engine</em> level (<code>src/lib/payments/</code>) — when a referee's first job pays out, the engine writes a 0% commission line for that pro's first 3 jobs instead of 5/10%. Stripe Connect itself doesn't know the referral exists. Subscription waivers apply at the Stripe subscription product level (existing $49/mo SKU gets a coupon attached for N months).</p>
+<h4 id="58-phase-1-vs-phase-2-rollout">5.8 Phase 1 vs Phase 2 rollout</h4>
+<ul>
+<li><strong>Phase 1 launch:</strong> Full mechanics, capped at 50 active codes (only Founding Pros for the first 6 weeks, then opens to all pros at 60+ days tenure). Velocity throttle at 3/30-days.</li>
+<li><strong>Phase 2 expansion:</strong> Open to all pros from month 1 of tenure. Velocity bumps to 5/30-days. "Bring 25" badge unlocks. Founding Pro Council meets quarterly.</li>
+</ul>
+<hr>
+<h3 id="loop-2--client-→-client-homeowner-refers-neighbor">LOOP 2 — Client → Client (homeowner refers neighbor)</h3>
+<p><strong>Why it matters:</strong> Lower frequency than pro-to-pro, but the trust transfer is huge. A neighbor saying "I used Sherpa for my deck rebuild, the pro showed up on time, here's their code" beats every form of paid acquisition.</p>
+<h4 id="59-trigger-event">5.9 Trigger event</h4>
+<p>Attribution fires when the <strong>referred client posts their first job AND it gets matched (not just signs up).</strong> Posting = real demand intent. Matching = the platform delivered.</p>
+<p>Reward unlocks when the referred client's <strong>first job completes and is rated</strong> (5-day rating window after job close).</p>
+<h4 id="510-reward-structure">5.10 Reward structure</h4>
+<p><strong>Referrer (existing client):</strong></p>
+<ul>
+<li>$25 platform credit applied to next job (auto-applied at checkout, max 1 credit per job, stackable up to 4 = $100)</li>
+<li>"Trusted Neighbor" badge on profile (visible to pros — small trust signal in the marketplace)</li>
+</ul>
+<p><strong>Referee (new client):</strong></p>
+<ul>
+<li>$25 off first job (applied at job posting, requires the job to actually go to a pro and complete; refunded if job is canceled before pro acceptance)</li>
+<li>Skip-the-line dispatch on first job (priority queue for matching)</li>
+</ul>
+<p><strong>Math check:</strong></p>
+<ul>
+<li>Total platform cost per successful referral: $25 referrer credit + $25 referee credit = <strong>$50 total</strong></li>
+<li>Average completed job at Phase 1 maturity: estimated $1,200 GMV × 10% take = $120 commission</li>
+<li><strong>Payback per single referred job: ~2.4× covered</strong> ($120 commission / $50 cost). And the referred client's lifetime value is 1.4× the referral cost in repeat jobs.</li>
+<li>Far cheaper than estimated $80–$150 client CAC on paid Google/Meta in Phase 1.</li>
+</ul>
+<h4 id="511-anti-fraud-controls">5.11 Anti-fraud controls</h4>
+<ul>
+<li>One referrer per signup, FK enforced.</li>
+<li>New client's billing address geocoded; if literal same address as referrer → flag (could be legit — roommates — but review).</li>
+<li>Phone-number dedup (Twilio Lookup verifies).</li>
+<li>Job posted by referred client must reach <strong>bid acceptance + completion</strong>, not just be posted. Prevents "post-and-cancel" arbitrage.</li>
+<li>Velocity cap: 5 referrals per client per 90 days. Above that triggers manual review.</li>
+<li>IP hash + device fingerprint dedup (same as Loop 1).</li>
+</ul>
+<h4 id="512-attribution-method">5.12 Attribution method</h4>
+<p>Same shared infrastructure as Loop 1 — clients also get a 6-char code, shareable link, 30-day click window. Code prefix differentiates: pros get something like <code>JOSE-NH</code>, clients get <code>H-RACHEL</code> (the H prefix flags client-origin in the referral table for analytics, and prevents pros and clients from being able to claim the wrong reward type via code-collision).</p>
+<h4 id="513-copy-variants">5.13 Copy variants</h4>
+<p><strong>In-app banner (Client Dashboard, after first job completes):</strong></p>
+<ol>
+<li><em>"Know a neighbor with a project? Send them $25 off — and get $25 too."</em></li>
+<li><em>"Job done. If a friend needs a pro, your code is H-RACHEL."</em></li>
+<li><em>"Refer a neighbor, both get $25 off. Code: H-RACHEL"</em></li>
+</ol>
+<p><strong>Email (sent 7 days after first job completes, if rating ≥4):</strong></p>
+<ol>
+<li>Subject: <em>"Your $25 credit — share it with a neighbor"</em></li>
+<li>Subject: <em>"Know someone who needs a good electrician?"</em></li>
+<li>Subject: <em>"$25 for you, $25 for a friend — your Sherpa code is ready"</em></li>
+</ol>
+<p><strong>Share-button text:</strong></p>
+<ol>
+<li><em>"Used Sherpa Pros for [job type] — recommend it. Use H-RACHEL and we both save $25: [link]"</em></li>
+<li><em>"My pro showed up on time and did good work. Sherpa Pros: [link] — code H-RACHEL"</em></li>
+<li><em>"Verified pros, no Angi nonsense. H-RACHEL gets you $25 off: [link]"</em></li>
+</ol>
+<h4 id="514-success-metrics">5.14 Success metrics</h4>
+<ul>
+<li><strong>k-factor:</strong> target 0.15 by Phase 1 end, 0.25 by Phase 2 end</li>
+<li><strong>Referral-to-active conversion</strong> (signup → posts a job): target 40%</li>
+<li><strong>Repeat factor on referred clients:</strong> target 1.4× (referred clients post more repeat jobs than cold-acquired clients — early signal of trust quality)</li>
+<li><strong>Credit redemption rate:</strong> target 60%+ of issued credits actually consumed within 12 months</li>
+</ul>
+<h4 id="515-implementation-sketch">5.15 Implementation sketch</h4>
+<p>Reuses the entire schema and infrastructure from Loop 1. The <code>loop_type</code> column distinguishes. Reward type for clients adds <code>platform_credit_cents</code> (already in the enum). UI surface is <code>(dashboard)/client/refer</code> (new route, mirrors pro version). Stripe Connect untouched — credits apply at the job-posting checkout, reducing the client's payment intent amount; the pro is still paid the full agreed amount, with the credit offset against platform commission.</p>
+<h4 id="516-phase-1-vs-phase-2">5.16 Phase 1 vs Phase 2</h4>
+<ul>
+<li><strong>Phase 1:</strong> Launch in month 4 (after first 200+ jobs completed, so credit redemptions have a real job pipeline).</li>
+<li><strong>Phase 2:</strong> Add referrer-tier escalation (5 successful referrals = "Trusted Neighbor Gold" badge + early access to new pros + free post-bump).</li>
+</ul>
+<hr>
+<h3 id="loop-3--pro-→-client-pro-brings-their-existing-client-onto-the-platform">LOOP 3 — Pro → Client (pro brings their existing client onto the platform)</h3>
+<p><strong>Why it matters:</strong> This is the quiet killer. The pro is doing the de-risking <em>for the platform</em> by vouching to a client they already trust. The pro converts a customer relationship into a platform-mediated one. From the platform's POV: nearly free CAC, very high job-completion rate, embedded trust on day one.</p>
+<h4 id="517-trigger-event">5.17 Trigger event</h4>
+<p>Attribution fires when the <strong>referred client posts their first job AND that job is awarded to the referring pro.</strong> This is the unique constraint of this loop — the pro must be the one who fulfills the job.</p>
+<p>(Why this constraint? Without it, this loop is gameable: pros bring clients but the client gets matched to a different pro, defeating the "convert your existing book" purpose. With this constraint, the pro is incentivized to bring real clients and get real jobs.)</p>
+<p>Reward unlocks when the <strong>first job between this pro+client pair completes and is paid out via Stripe.</strong></p>
+<h4 id="518-reward-structure">5.18 Reward structure</h4>
+<p><strong>Referring pro:</strong></p>
+<ul>
+<li>0% commission (full pass-through) on the first job with this referred client</li>
+<li>Standard 5% (Founding) or 10% commission resumes on jobs 2+</li>
+</ul>
+<p><strong>Referred client:</strong></p>
+<ul>
+<li>$0 platform fee on first job (vs. standard fee structure if any)</li>
+<li>Concierge onboarding (a Pro Success Manager personally walks them through their first job posting — this is a free white-glove signal)</li>
+</ul>
+<p><strong>Math check:</strong></p>
+<ul>
+<li>Cost per successful conversion: $0–$120 (one job's worth of commission foregone, capped at first job)</li>
+<li>Lifetime value of a client converted via existing relationship: estimated 4–6 jobs over 24 months × $1,500 avg × 10% = $600–$900 take-rate revenue</li>
+<li><strong>Payback: covered on the 2nd job.</strong> Effectively free CAC for the highest-LTV client segment.</li>
+<li>Compared to Loops 1 and 2: this is the highest ROI loop on a per-conversion basis. The reason it's not ranked #1 by k-factor is frequency — pros only have so many existing clients.</li>
+</ul>
+<h4 id="519-anti-fraud-controls">5.19 Anti-fraud controls</h4>
+<ul>
+<li>The biggest risk: pro routes their <em>current</em> paid book through the platform purely for the commission waiver, with no real net-new value. Mitigation:<ul>
+<li>Stripe + bank-account check: if the referred client's verified payment method has previously paid the pro <strong>outside the platform</strong> (cross-referenced via QBO sync if pro has linked it), flag — these are "existing relationships routed through platform," which we <em>want</em>, but only on the first job. The 0% only applies once. After that, full commission. So gaming this is naturally capped.</li>
+<li>Phone + email dedup against the pro's account.</li>
+<li>Self-deal check: the referred client cannot be the same legal entity (LLC, sole prop) as the pro. Cross-check legal names + EINs.</li>
+<li>Manual sample audit: 10% random review of Pro→Client redemptions in Phase 1 (Phyrom or PSM listens to a 5-min recorded "how did you find out about Sherpa?" call with the new client).</li>
+</ul>
+</li>
+<li>Velocity cap: 8 client referrals per pro per 90 days. Above triggers review (legitimately a pro could bring more, but at that volume we want to verify).</li>
+</ul>
+<h4 id="520-attribution-method">5.20 Attribution method</h4>
+<p>The pro generates a <strong>client-onboarding link</strong> specific to a single referral (one-time-use): <code>https://sherpa.pros/c/JOSE-NH/[client-token]</code>. The token is a 12-char nonce tied to that specific intended client. This eliminates the "code spread on social" attack surface — the pro is pointing at a specific person, not running a public coupon.</p>
+<p>The pro fills in a one-line "who are you bringing?" (name + phone) <em>before</em> the link is generated — this populates the client onboarding so when the client opens the link they see their name pre-filled, which is a trust signal AND a fraud check (if the new account name materially differs from what the pro entered, flag).</p>
+<h4 id="521-copy-variants">5.21 Copy variants</h4>
+<p><strong>In-app surface (Pro Dashboard, "Bring a Client" card):</strong></p>
+<ol>
+<li><em>"Bring a client you already work with. Their first job: zero commission to you."</em></li>
+<li><em>"Move your good clients onto Sherpa. First job is on the house — no commission, full payout."</em></li>
+<li><em>"Send your existing client a Sherpa link. First job, you keep 100%."</em></li>
+</ol>
+<p><strong>Email to pro (during onboarding, day 7):</strong></p>
+<ol>
+<li>Subject: <em>"Got an existing client? First job is commission-free."</em></li>
+<li>Subject: <em>"Bring your book. We don't take a cut on the first job."</em></li>
+<li>Subject: <em>"Move a client over. Zero fee on the first job, then half-price forever."</em></li>
+</ol>
+<p><strong>Pro-shares-with-client text (the pro pastes this into a text to their client):</strong></p>
+<ol>
+<li><em>"Hey — I started using Sherpa Pros, it handles invoicing and payments for me. Mind if I send the next job through it? Here's your link: [link]"</em></li>
+<li><em>"I'm using Sherpa Pros for paperwork now — verified, secure payment, all in one place. Your link to set up: [link]"</em></li>
+<li><em>"Switched to Sherpa Pros for jobs. Easier on both ends. Sign up here and we'll do the next one through it: [link]"</em></li>
+</ol>
+<h4 id="522-success-metrics">5.22 Success metrics</h4>
+<ul>
+<li><strong>k-factor:</strong> target 0.3 by Phase 1 end (each pro brings ~1 existing client on average in their first 90 days)</li>
+<li><strong>Conversion:</strong> signup → first-job-completed: target 70% (high because the relationship pre-exists)</li>
+<li><strong>LTV ratio of Pro→Client referrals vs cold clients:</strong> target ≥ 2.0×</li>
+<li><strong>% of pros who bring at least 1 client in first 90 days:</strong> target 50%+</li>
+</ul>
+<h4 id="523-implementation-sketch">5.23 Implementation sketch</h4>
+<p>Same <code>referrals</code> table. Adds a <code>referee_target_metadata</code> jsonb (stores the pro's intended client name + phone for verification). The "first job awarded to referring pro" trigger requires a new internal hook in the bid-acceptance flow:</p>
+<pre><code>On bid acceptance:
+  IF job's client has a pending referral with referrer_user_id = winning_bid.pro_user_id
+  AND referral.loop_type = 'pro_to_client'
+  AND referral.status = 'signed_up'
+  THEN advance to 'first_action'
+  AND when payment releases → grant 0% commission reward to that specific payment row
+</code></pre>
+<p>Commission engine reads the active-rewards table at payment-release time — this is a clean integration point with the existing <code>src/lib/payments/</code> commission engine.</p>
+<h4 id="524-phase-1-vs-phase-2">5.24 Phase 1 vs Phase 2</h4>
+<ul>
+<li><strong>Phase 1:</strong> Launch with Loop 1 simultaneously. These two reinforce each other and share most code.</li>
+<li><strong>Phase 2:</strong> Add tier — at 5 successful Pro→Client conversions, the pro unlocks "Verified Repeat Builder" badge (publicly visible signal of healthy book + platform trust).</li>
+</ul>
+<hr>
+<h3 id="loop-4--client-→-pm-homeowner-refers-their-buildings-property-manager">LOOP 4 — Client → PM (homeowner refers their building's property manager)</h3>
+<p><strong>Why it matters:</strong> The asymmetric upside loop. A homeowner in a triple-decker mentions Sherpa to their PM. The PM signs up with a 200-unit portfolio. That's worth more than 200 individual client referrals. We don't need many of these — we need the right ones.</p>
+<h4 id="525-trigger-event">5.25 Trigger event</h4>
+<p>Attribution fires when <strong>the referred PM signs a paid PM-tier contract</strong> (not at signup, not at first work order — actual paid contract). This protects against spammy PM referrals and aligns the reward with real revenue.</p>
+<h4 id="526-reward-structure">5.26 Reward structure</h4>
+<p><strong>Referrer (homeowner):</strong></p>
+<ul>
+<li>$250 platform credit (largest single referral reward — justified by the LTV asymmetry; PM contracts at $4/unit floor are minimum $9,600 ARR)</li>
+<li>Lifetime "Trusted Connector" badge</li>
+<li>Optional: 12 months $0 platform fees on their own jobs (cap at 12 jobs)</li>
+</ul>
+<p><strong>Referee (PM):</strong></p>
+<ul>
+<li>50% off first 3 months of PM tier</li>
+<li>Free onboarding setup (vendor-list import, work-order template configuration — handled by the BD team, not self-serve)</li>
+<li>Direct line to Phyrom for first 90 days</li>
+</ul>
+<p><strong>Math check:</strong></p>
+<ul>
+<li>Cost: $250 credit + ~3 mo @ 50% off PM tier (assume $4/unit × 200 units = $800/mo, 50% off × 3 mo = $1,200) = <strong>$1,450 total platform investment per converted PM</strong></li>
+<li>Revenue: 200 units × $4/unit × 12 months × 80% retention = $7,680/yr ARR floor, plus dispatched-job GMV (estimated 100 work orders/yr × $400 avg × 10% take = $4,000/yr) = <strong>~$11,680 ARR per converted PM</strong></li>
+<li><strong>Payback: ~1.5 months.</strong> Stupidly favorable. The hard part is conversion frequency, not unit economics.</li>
+</ul>
+<h4 id="527-anti-fraud-controls">5.27 Anti-fraud controls</h4>
+<ul>
+<li>Verified business contact required: PM must be reachable at a domain email that resolves to a real property management entity (cross-referenced against state corporate filings — a manual step in Phase 1, automatable later via OpenCorporates API).</li>
+<li>Minimum portfolio size: 50+ units to qualify for the referral reward (otherwise we're paying $250 for a single-property landlord, which doesn't pencil).</li>
+<li>BD team verifies the PM-homeowner relationship (does the PM actually manage the homeowner's building?) before the contract is signed and the reward is paid.</li>
+<li>One-shot reward — the homeowner can't refer multiple PMs in 90 days. Hard cap of 2 PM referrals per homeowner per year.</li>
+</ul>
+<h4 id="528-attribution-method">5.28 Attribution method</h4>
+<p>Different from Loops 1–3 because of the conversion path. A homeowner taps "Refer my PM" in their dashboard, fills out a form (PM name + email + phone + building address + estimated unit count), and submits. This generates an internal lead in the BD pipeline AND a unique attribution token. The PM is then contacted by BD (white-glove sale) within 48hr, and the homeowner is the credited referrer if a contract closes within 90 days.</p>
+<p>This loop intentionally uses a high-touch sales motion. PMs don't sign up via consumer-grade signup flows; they sign contracts.</p>
+<h4 id="529-copy-variants">5.29 Copy variants</h4>
+<p><strong>In-app surface (Client Dashboard, surfaces only if the client has rated 2+ jobs ≥4 stars AND posted address is in a multi-unit building):</strong></p>
+<ol>
+<li><em>"Live in a managed building? Your property manager could put their whole building on Sherpa. $250 credit if they sign on."</em></li>
+<li><em>"Refer your building's manager. They get an easier vendor system. You get $250 in credits."</em></li>
+<li><em>"Know your PM? Hand them off. Big buildings, fast pros, $250 to you when they sign."</em></li>
+</ol>
+<p><strong>Email to qualified clients (triggered at job-2 completion):</strong></p>
+<ol>
+<li>Subject: <em>"Does your building have a property manager?"</em></li>
+<li>Subject: <em>"Hand off your PM — $250 credit if they sign"</em></li>
+<li>Subject: <em>"Your building manager spends hours on vendors. Let us help."</em></li>
+</ol>
+<p><strong>Share-button text (text the homeowner sends to their PM):</strong></p>
+<ol>
+<li><em>"My PM should look at this — work orders + verified pros + unit-level finance in one platform: [link]. Tell them I sent you."</em></li>
+<li><em>"You're always chasing vendors. Sherpa Pros has a property-manager tier that handles all of it. [link]"</em></li>
+<li><em>"Sherpa Pros built a PM-specific tool. I think it'd save you serious time. Here: [link]"</em></li>
+</ol>
+<h4 id="530-success-metrics">5.30 Success metrics</h4>
+<ul>
+<li><strong>Conversion frequency:</strong> 1 signed PM contract per ~50 referrals (target). At Phase 2 maturity with 5,000 homeowners, even a 2% submission rate = 100 PM referrals = ~2 PM contracts. Each PM contract = ~$11K ARR.</li>
+<li><strong>PM contract LTV / referral cost ratio:</strong> target ≥ 8.0×</li>
+<li><strong>Referral-to-paid-contract time:</strong> target &lt;90 days</li>
+</ul>
+<h4 id="531-implementation-sketch">5.31 Implementation sketch</h4>
+<p><strong>DB additions:</strong></p>
+<pre><code>pm_referral_leads
+  id, referral_id (FK referrals), pm_name, pm_email, pm_phone,
+  building_address, estimated_units, building_type (multifamily/commercial/mixed),
+  bd_owner (FK users), bd_status (enum: new, contacted, demo_booked, negotiating,
+            signed, lost, no_show), bd_notes, contract_value_cents (nullable),
+  contract_signed_at
+</code></pre>
+<p><strong>API endpoints:</strong></p>
+<ul>
+<li><code>POST /api/referrals/pm-lead</code> — submit a PM referral (validates client tenure, building type, etc.)</li>
+<li><code>GET /api/admin/pm-leads</code> — BD queue</li>
+<li><code>PATCH /api/admin/pm-leads/:id</code> — BD updates lead status</li>
+</ul>
+<p><strong>UI surfaces:</strong></p>
+<ul>
+<li>Client dashboard — "Refer your PM" card (gated by qualification rules)</li>
+<li>BD admin — PM lead pipeline (Kanban: New → Contacted → Demo → Negotiating → Signed/Lost)</li>
+<li>Email to homeowner when PM contract signs — "Your PM signed. Your $250 credit is live."</li>
+</ul>
+<p><strong>Phase 1 vs Phase 2:</strong></p>
+<ul>
+<li><strong>Phase 1:</strong> <strong>DO NOT LAUNCH.</strong> Phase 1 PM strategy is direct BD with 1 anchor customer (per GTM spec §4.3). Adding a referral loop before there's product-market fit on the PM tier creates noise without signal.</li>
+<li><strong>Phase 2:</strong> Launch in month 7 — once the PM tier has 1+ paying anchor and the BD pipeline is real. Soft-launch to top 100 most-engaged clients first, then to all clients meeting qualification rules in month 9.</li>
+<li><strong>Phase 3:</strong> Add tiered escalation (referring 2 PMs = "Connector" perk; referring 5 = lifetime free service tier).</li>
+</ul>
+<hr>
+<h2 id="55-sherpa-rewards-integration-with-referral-loops">5.5 Sherpa Rewards integration with referral loops</h2>
+<p><strong>Date added:</strong> 2026-04-22 (Sherpa Rewards launch sweep — commits <code>08b1a5f</code>, <code>a4b455a</code>)</p>
+<p>Sherpa Rewards (live at <code>/pro/rewards</code>) is the points-redemption store for pros. The earning rules already include a <strong>500 pts per successful referral</strong> line item — this section documents how that integrates with the loop mechanics in §5.</p>
+<h3 id="what-stacks-loop-1--pro-→-pro">What stacks (Loop 1 — Pro → Pro)</h3>
+<p>A successful Pro→Pro referral earns the referrer <strong>all of the following</strong>, in addition to the Loop 1 reward structure in §5.2:</p>
+<ul>
+<li><strong>500 Sherpa Rewards points</strong> (≈$25 of redemption value at typical catalog price points — Visa gift card, Milwaukee accessories, Sherpa branded apparel)</li>
+<li>The 1-month subscription waiver ($49 value) per §5.2</li>
+<li>The "Bring a Pro" tally + badge progression per §5.2</li>
+<li>The take-rate reduction tier-up at 3 successful referrals per §5.2</li>
+</ul>
+<p>This stacks intentionally. The Sherpa Rewards 500 pts is not a substitute for the existing Loop 1 incentive — it's an <strong>additional immediate-gratification layer</strong> that converts the abstract "fee waiver next billing cycle" into a tangible "I'm 1,500 points away from a free Festool drill" loop. Loyalty + retention research consistently shows that points-based loyalty programs lift referral conversion by 15–30% even when the absolute dollar value of the points is small, because the catalog browsing itself creates desire.</p>
+<h3 id="math-check-updates-§52-cost-basis">Math check (updates §5.2 cost basis)</h3>
+<ul>
+<li>Original Loop 1 cost per successful referral: <strong>$327</strong> (sub waiver + referee waiver + first-3-jobs commission give-back)</li>
+<li><ul>
+<li>Sherpa Rewards points cost (500 pts at platform redemption cost ≈ $25): <strong>+$25</strong></li>
+</ul>
+</li>
+<li><strong>New total platform cost per successful Pro→Pro referral: $352</strong></li>
+<li>Original payback: 1.6 months. New payback: <strong>1.7 months</strong> (still well below the 6-month CAC-payback threshold)</li>
+<li>The +$25 is marginal. The conversion lift is the leverage.</li>
+</ul>
+<h3 id="what-does-not-stack-loops-2-3-4">What does NOT stack (Loops 2, 3, 4)</h3>
+<p>The 500-pt referral bonus applies <strong>only to the Pro→Pro loop</strong> in Phase 1. Rationale:</p>
+<ul>
+<li><strong>Loop 2 (Client→Client):</strong> Clients don't have Sherpa Rewards accounts (Rewards is a pro-side surface). Their reward stays the $25 platform credit per §5.10.</li>
+<li><strong>Loop 3 (Pro→Client):</strong> The reward to the pro is a 0% commission on the first job — already richer than 500 pts. Adding pts here would create a "double-dip" optic that anti-fraud surfaces would have to mediate. Hold for Phase 2 review.</li>
+<li><strong>Loop 4 (Client→PM):</strong> Client referrer; same as Loop 2 — $250 platform credit, no Rewards points (clients don't have a Rewards account).</li>
+</ul>
+<h3 id="implementation-note">Implementation note</h3>
+<p>The Sherpa Rewards points grant fires on the same trigger as the Loop 1 sub-waiver — referee's first paid job clears Stripe and <code>referrals.status</code> advances to <code>completed</code>. The commission engine writes a single <code>referral_rewards</code> row per reward type, and the Sherpa Rewards point ledger is an additional <code>pro_rewards_ledger</code> insert (separate table, separate audit trail).</p>
+<h3 id="anti-fraud-overlap">Anti-fraud overlap</h3>
+<p>The 500 pts inherits the same anti-fraud surface as the Loop 1 reward — no separate fraud queue. If a referral gets flagged and held under §5.3, the Sherpa Rewards points are held in escrow alongside the sub-waiver until manual review clears.</p>
+<h3 id="copy-update--loop-1-in-app-banner-variants-§55">Copy update — Loop 1 in-app banner variants (§5.5)</h3>
+<p>Replace the Loop 1 in-app banner copy with these updated variants that surface the Rewards stack:</p>
+<ol>
+<li><em>"Bring another good pro. Both of you save — and you earn 500 Sherpa Rewards points per successful referral."</em></li>
+<li><em>"Half-price forever for the pros you bring on, plus 500 Sherpa Rewards points for you. That's a Festool drill in 24 referrals — or a Visa gift card in 1. Your code: JOSE-NH"</em></li>
+<li><em>"Tired of seeing good pros stuck on Angi? Send them your code: JOSE-NH. You both save. You also earn Sherpa Rewards points."</em></li>
+</ol>
+<hr>
+<h2 id="56-multi-trade-project-referral-bonus">5.6 Multi-Trade Project Referral Bonus</h2>
+<p><strong>Date added:</strong> 2026-04-25 (Wave 9 — Sherpa Dispatch + Sherpa Materials launch sweep)</p>
+<p>Sherpa Dispatch made multi-trade projects (kitchens, baths, additions) a first-class platform primitive. The supply-side referral loop has to follow — pros who bring in another trade for a multi-trade job should be rewarded for completing the orchestration loop.</p>
+<h3 id="what-it-is">What it is</h3>
+<p>When a pro on the platform brings in another trade for a multi-trade Sherpa Dispatch job — for example, a trim carpenter brings in a finisher for a kitchen renovation, or a plumber brings in an electrician for a heat-pump panel-upgrade combo — <strong>both pros earn a Sherpa Rewards bonus</strong> when the job completes.</p>
+<ul>
+<li><strong>Reward magnitude:</strong> 200 Sherpa Rewards points per cross-trade referral (≈$20 of redemption value)</li>
+<li><strong>Trigger:</strong> the referred pro completes a job on a Sherpa Dispatch multi-trade work order, AND the work order's <code>project_status</code> advances to <code>completed</code></li>
+<li><strong>Both sides earn:</strong> the referring pro earns 200 pts, the referred pro earns 200 pts. Symmetric reward, asymmetric origin.</li>
+</ul>
+<h3 id="why-both-sides-earn">Why both sides earn</h3>
+<p>Cross-trade referrals are the platform's organic supply-side densifier. The referring pro is donating their relationship capital; the referred pro is putting their reputation behind the project sequencing. Symmetric rewards make the loop self-sustaining without creating a "spammer pro" failure mode.</p>
+<h3 id="what-stacks-and-what-does-not">What stacks (and what does not)</h3>
+<ul>
+<li><strong>Stacks with Loop 1.</strong> A cross-trade referral that also brings a NEW pro to the platform (one who didn't have an account before) earns BOTH the 500-pt Loop 1 onboarding bonus AND the 200-pt Multi-Trade bonus when the multi-trade job completes. Total: 700 pts for the referring pro, plus standard Loop 1 fee waivers.</li>
+<li><strong>Stacks with Sherpa Score.</strong> Cross-trade referrals that complete cleanly count toward the referring pro's "Communication" pillar (the cross-trade hand-off is a communication signal). Climbing Sherpa Score is the long-game compound.</li>
+<li><strong>Does not stack with itself.</strong> Multi-Trade bonus fires once per (referring_pro, referred_pro, work_order) tuple. A pro can refer the same finisher to 50 different multi-trade jobs and earn 200 pts each time, but cannot earn multiple 200-pt bonuses on the same work order for the same referral.</li>
+</ul>
+<h3 id="anti-fraud-surface">Anti-fraud surface</h3>
+<p>Multi-Trade referrals share the Loop 1 fraud queue — same <code>referral_fraud_events</code> table, same review surface, same kill-criteria. Specific signals to monitor:</p>
+<ul>
+<li>Two pros co-referring each other in a tight loop (mutual-reward farming)</li>
+<li>A single pro being referred into &gt;5 multi-trade jobs by the same referring pro within 30 days (relationship laundering)</li>
+<li>Cross-trade referrals that complete the work order in &lt;24 hours from creation (the orchestration is fake)</li>
+</ul>
+<h3 id="implementation-note-1">Implementation note</h3>
+<p>The cross-trade referral grant fires on the same trigger as the Loop 1 sub-waiver — work order's <code>project_status</code> advances to <code>completed</code>. Because Sherpa Dispatch already tags every work order with the <code>is_multi_trade</code> boolean and the <code>participant_pros[]</code> array, the trigger reads existing fields. New fields needed: <code>referrals.multi_trade_origin_pro_id</code> (FK to the referring pro) and <code>referrals.multi_trade_work_order_id</code> (FK to the work order).</p>
+<h3 id="math-check">Math check</h3>
+<ul>
+<li>Cost per successful cross-trade referral: 200 pts × 2 sides = 400 pts × $0.05/pt platform redemption cost = <strong>$20 platform cost per referral</strong></li>
+<li>Expected lift: cross-trade referrals close 35-50% faster than cold-pro acquisition (the trust transfer is real); platform GMV per multi-trade job averages 2.4× a single-trade job (per Sherpa Dispatch v1 telemetry); payback under 1 month at any reasonable conversion rate</li>
+<li>Recommended Phase 1 launch month: Month 4 (one month after Loop 1 has been running and the analytics pipeline can isolate the cross-trade signal)</li>
+</ul>
+<hr>
+<h2 id="57-flex-acquisition-loop">5.7 /flex Acquisition Loop</h2>
+<p><strong>Date added:</strong> 2026-04-25 (Wave 9 — /flex landing page launch sweep)</p>
+<p>The /flex landing page (<code>thesherpapros.com/flex</code>) is the public acquisition funnel for the side-bandwidth tradesperson cohort — day-job framers, electricians, and plumbers with weekend bandwidth who aren't ready to form an LLC. This loop is how full-time pros bring side-bandwidth peers onto the platform.</p>
+<h3 id="what-it-is-1">What it is</h3>
+<p>When a full-time pro on the platform refers a side-bandwidth peer to /flex, <strong>the referring pro earns a Sherpa Rewards bonus when the peer completes their first 3 jobs on Sherpa Flex.</strong></p>
+<ul>
+<li><strong>Reward magnitude:</strong> 500 Sherpa Rewards points per /flex referral (≈$50 of redemption value)</li>
+<li><strong>Trigger:</strong> the referred peer signs up via /flex with the referring pro's code, completes the background-check gate, and clears 3 jobs on the platform with <code>referrals.status = completed</code></li>
+<li><strong>One side earns:</strong> the referring pro earns 500 pts. The referred /flex pro earns nothing additional from this loop (they earn their normal job revenue + their normal Sherpa Rewards points-per-job, which is the standard onboarding incentive).</li>
+</ul>
+<h3 id="why-only-one-side-earns">Why only one side earns</h3>
+<p>/flex is itself the on-ramp incentive — $1M per-project liability insurance included in the 18% take rate is a strong intrinsic offer. Adding a referee bonus on top would risk gaming the loop (people referring themselves under different identities). The asymmetric reward keeps the loop honest.</p>
+<h3 id="what-stacks">What stacks</h3>
+<ul>
+<li><strong>Stacks with Multi-Trade (§5.6).</strong> A /flex pro who later participates in a multi-trade Sherpa Dispatch work order earns both bonuses for the originating referrer.</li>
+<li><strong>Stacks with Sherpa Score.</strong> The 3 completed jobs on /flex count toward the referred pro's own Sherpa Score — which is how they eventually upgrade out of /flex into Standard 12% (form an LLC) and then climb to Gold 8%.</li>
+<li><strong>Does not stack with Loop 1.</strong> /flex referrals are exclusive to this loop. A pro who refers a /flex peer cannot also claim the Loop 1 onboarding 500-pt bonus on the same referral — the same dollar of platform spend cannot fund two bonuses.</li>
+</ul>
+<h3 id="anti-fraud-surface-1">Anti-fraud surface</h3>
+<p>/flex referrals inherit the Loop 1 fraud queue. Specific signals to monitor:</p>
+<ul>
+<li>Repeated referrals from the same full-time pro to /flex peers who all share a single residence address or phone-number prefix (household-laundering)</li>
+<li>/flex referees whose 3-job completion velocity is implausibly fast (&lt;14 days from sign-up to 3rd completed job) — manual review required</li>
+<li>/flex referees whose first 3 jobs are all under $200 (gaming the threshold) — auto-flag for review</li>
+</ul>
+<h3 id="implementation-note-2">Implementation note</h3>
+<p>The /flex referral grant fires on a different trigger than other loops — the third completed job. New fields: <code>referrals.is_flex_referral</code> boolean, <code>referrals.flex_referee_completed_jobs</code> integer counter that increments per completed job and locks the bonus when it hits 3. The existing <code>pro_rewards_ledger</code> insert pattern handles the 500-pt grant.</p>
+<h3 id="math-check-1">Math check</h3>
+<ul>
+<li>Cost per successful /flex referral: 500 pts × $0.05/pt platform redemption cost = <strong>$25 platform cost per referral</strong></li>
+<li>Expected per-/flex-pro lifetime GMV (Phase 1 estimate): 18 jobs/year × $1,800 avg = $32,400/year × 18% take = $5,832/year platform revenue</li>
+<li>Payback on the $25 incentive: under 1 month at any conversion rate above 1%</li>
+<li>The leverage isn't the math — it's the supply-side densification. /flex pros form a feeder pool for Standard 12% (the LLC upgrade path), which is the platform's long-game retention loop.</li>
+<li>Recommended Phase 1 launch month: Month 3 (same month /flex landing goes public — the loop is dependent on /flex traffic to seed referees)</li>
+</ul>
+<h3 id="copy--flex-referral-in-app-banner-variants">Copy — /flex referral in-app banner variants</h3>
+<p>For pros who have completed 5+ jobs (eligible to refer), surface this banner on the dashboard:</p>
+<ol>
+<li><em>"Know a tradesperson with weekend bandwidth? Send them your /flex code: JOSE-NH. They earn on the side, you earn 500 Sherpa Rewards points when they finish 3 jobs."</em></li>
+<li><em>"The framer on your crew has a side hustle but no LLC. /flex is the door — and you earn 500 Sherpa Rewards points (≈$50) when they complete their first 3 jobs."</em></li>
+<li><em>"Bring a side-bandwidth peer to thesherpapros.com/flex. Your code: JOSE-NH. 500 Sherpa Rewards points after their 3rd job clears."</em></li>
+</ol>
+<hr>
+<h2 id="6-cross-loop-implementation-notes">6. Cross-Loop Implementation Notes</h2>
+<h3 id="61-shared-infrastructure">6.1 Shared infrastructure</h3>
+<p>All four loops share:</p>
+<ul>
+<li>The <code>referrals</code>, <code>referral_codes</code>, <code>referral_rewards</code>, <code>referral_fraud_events</code> tables</li>
+<li>Attribution attribution endpoints</li>
+<li>Fraud queue + admin review surface</li>
+<li>Analytics dashboard (k-factor by loop, payback period, fraud rate)</li>
+<li>The kill-criteria monitoring job (runs daily, alerts in Slack if any threshold breached)</li>
+</ul>
+<h3 id="62-stripe-connect-express-integration">6.2 Stripe Connect Express integration</h3>
+<p><strong>The existing payout flow does not change.</strong> Referral rewards integrate at three precise points:</p>
+<ol>
+<li><strong>Subscription waivers:</strong> Apply Stripe coupons to the existing $49/mo Sherpa Pros subscription product. Coupon SKUs: <code>REF-WAIVE-1MO</code>, <code>REF-WAIVE-2MO</code>, <code>REF-WAIVE-12MO</code>.</li>
+<li><strong>Commission-rate adjustments:</strong> Read from <code>referral_rewards</code> at payment-release time inside <code>src/lib/payments/commission-engine</code>. If an active reward applies, override the pro's standard rate for that specific payment row.</li>
+<li><strong>Client credits:</strong> Apply at PaymentIntent creation; reduce the amount the client is charged. Pro still receives full agreed amount; the credit offsets platform commission.</li>
+</ol>
+<p>Stripe Connect Express itself is not aware referrals exist. This isolates the program from payout-flow regressions.</p>
+<h3 id="63-clerk--user-model-integration">6.3 Clerk + user model integration</h3>
+<ul>
+<li>New referral fields live in <em>new</em> tables, not on <code>users</code> directly. The <code>users</code> table stays clean.</li>
+<li>A user may have at most one active <code>referral_codes</code> row per role (one as a pro, one as a client if they switch roles). Code lookup is <code>(user_id, role)</code> not just <code>user_id</code>.</li>
+<li>Clerk metadata stores only the user's primary referral code (for fast read on the dashboard); source of truth is the DB.</li>
+</ul>
+<h3 id="64-observability">6.4 Observability</h3>
+<p>Every referral state transition emits an event to the analytics pipeline:</p>
+<ul>
+<li><code>referral.clicked</code></li>
+<li><code>referral.signed_up</code></li>
+<li><code>referral.first_action</code></li>
+<li><code>referral.completed</code></li>
+<li><code>referral.fraud_flagged</code></li>
+<li><code>referral.rewarded</code></li>
+<li><code>referral.killed</code></li>
+</ul>
+<p>This feeds the live k-factor dashboard the data-analytics-reporter agent will build.</p>
+<hr>
+<h2 id="7-phase-1-vs-phase-2-rollout-summary">7. Phase 1 vs Phase 2 Rollout Summary</h2>
+<table>
+<thead>
+<tr>
+<th>Loop</th>
+<th>Phase 1 month</th>
+<th>Phase 2 expansion</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Loop 1 — Pro→Pro</td>
+<td>Month 3 (launch with first close)</td>
+<td>Month 7: open to all pros at month 1 of tenure, raise velocity cap, add badges</td>
+</tr>
+<tr>
+<td>Loop 3 — Pro→Client</td>
+<td>Month 3 (launch alongside Loop 1)</td>
+<td>Month 7: add "Verified Repeat Builder" badge tier</td>
+</tr>
+<tr>
+<td>Loop 2 — Client→Client</td>
+<td>Month 4 (after job pipeline real)</td>
+<td>Month 7: add "Trusted Neighbor Gold" tier</td>
+</tr>
+<tr>
+<td>Loop 4 — Client→PM</td>
+<td><strong>DO NOT LAUNCH IN PHASE 1</strong></td>
+<td>Month 7 launch (after PM tier has 1+ anchor); Month 9 broad-open</td>
+</tr>
+</tbody></table>
+<p><strong>Sequencing rationale:</strong> Loops 1 and 3 are the supply-side accelerants. Phase 1 is supply-constrained (50 pros target by month 6) — so the Phase 1 referral focus is bringing more pros and converting their existing books. Loop 2 (demand-side) launches once there's enough pro supply to absorb the referred demand without creating frustration. Loop 4 launches only when the PM product has been proven with at least one paying anchor — referring people to a half-baked product burns trust.</p>
+<hr>
+<h2 id="8-open-questions-for-phyrom">8. Open Questions for Phyrom</h2>
+<ol>
+<li><strong>Reward magnitudes — confirm or push back.</strong> The math checks above use estimates ($1,200 avg job, 10% take, $49/mo sub). If actual Phase 1 averages diverge &gt;25%, reward levels need re-tuning before launch.</li>
+<li><strong>Custom referral codes.</strong> Should pros be able to choose their own suffix (<code>JOSE-NH</code>) or get auto-assigned? Custom is more shareable; auto is faster to ship. Recommend custom, admin-approved during Phase 1.</li>
+<li><strong>Public referral leaderboard?</strong> The Founding Pro Council mention in Loop 1 (10+ referrals) could be coupled with a public leaderboard. Pro: motivates competition. Con: starts to feel MLM-y. Recommend keeping it private and invitation-only.</li>
+<li><strong>Should the Loop 4 reward be cash for the homeowner instead of credit?</strong> Given homeowners may not have $250 of platform jobs to redeem against, a $250 Visa GC could be more compelling. <strong>But this is precisely the reward type that triggers the attorney-review flag in §4.</strong> Recommend: stay in credits during the Reg CF window; revisit post-window.</li>
+</ol>
+<hr>
+<h2 id="9-references">9. References</h2>
+<ul>
+<li>GTM spec §4 (phased GTM): <code>docs/superpowers/specs/2026-04-22-gtm-marketing-design.md</code></li>
+<li>GTM spec §5 (finance model — 5%→10% take rate, Founding Pro grandfathering)</li>
+<li>GTM spec §6.4 (Wefunder Reg CF — referral compliance dependency)</li>
+<li>Drizzle schema: <code>src/db/drizzle-schema.ts</code></li>
+<li>Commission engine: <code>src/lib/payments/</code></li>
+<li>Brand voice: <code>CLAUDE.md</code> + GTM spec §3.3</li>
+</ul>
+
+	
+
+
+</body>
+</html>

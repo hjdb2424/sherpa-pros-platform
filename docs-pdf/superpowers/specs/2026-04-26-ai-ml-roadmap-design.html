@@ -1,0 +1,898 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2026 04 26 ai ml roadmap design — Sherpa Pros</title>
+<link rel="icon" href="../../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="2026-04-26-ai-ml-roadmap-design.pdf">Download PDF →</a>
+</nav>
+
+		<blockquote>
+<p><strong>Investor pitch summary.</strong> Once Sherpa's flywheel turns, three proprietary data assets compound into a moat no marketplace incumbent can replicate: real job-outcome data tied to licensed pros, materials-demand telemetry from every Hub-fulfilled order, and codes-and-permit history surfaced by Wiseman lookups. Together they unlock three durable capabilities Angi, Thumbtack, and Procore structurally cannot match — better dispatch (probability of completion, not just acceptance), predictive supply (pre-staged inventory at the Hub), and codes-aware estimation (cite-back to jurisdiction-specific precedent). AI/ML is not the wedge. It is the moat that compounds after the wedge wins.</p>
+</blockquote>
+<h1 id="aiml-roadmap--sherpa-pros-platform">AI/ML Roadmap — Sherpa Pros Platform</h1>
+<h2 id="§1-strategic-context--why-aiml-is-the-moat-layer-not-the-wedge-layer">§1 Strategic context — why AI/ML is the moat layer, not the wedge layer</h2>
+<p>Sherpa Pros wins customers with three things — verified licensed pros, an Uber-style dispatch experience, and a Hub fulfillment model that gets materials to the job before the truck pulls up. None of those wedges require machine learning to ship. The deterministic Sherpa Score, the rule-based Dispatch Wiseman, and the Hub kit-pull workflow already deliver a measurably better experience than Angi or Thumbtack. That is the wedge.</p>
+<p>AI/ML is the moat that turns the wedge into a category-defining business. The reason is structural. A marketplace incumbent can copy a UI in a quarter, copy a pricing page in a week, and copy an integration in a month. What they cannot copy is the data exhaust generated by a vertically integrated workflow they do not own. Angi has homeowner intent data but no licensed-pro outcome data. Thumbtack has lead data but no completion data. Procore has project data but no marketplace transaction data. Sherpa Pros sits in the seam — every job we dispatch produces a labeled outcome, every Hub fulfillment produces a SKU-level demand signal, every code lookup produces a precedent that can train a retrieval model.</p>
+<p>That is why this roadmap leads with outcomes and ends with models, not the other way around. Externally, we never sell "AI." We sell faster dispatch, fewer back-charges, less truck-rolls, fewer code-violation rework cycles. Internally, the ML investment is what makes those outcome promises sustainable as we scale from one metro to many. The five-pillar plan in §2 is sequenced so each pillar compounds against a flywheel that is already turning — not a flywheel we hope to start with the model itself. We will not deploy a model that requires data we do not yet have. We will not promise capabilities that require infrastructure we have not yet built. And we will not over-invest in research before the marketplace volume justifies it.</p>
+<h2 id="§2-five-pillar-aiml-roadmap">§2 Five-pillar AI/ML roadmap</h2>
+<h3 id="21-sherpa-score-evolution-deterministic-12-metric-→-ml-adaptive">2.1 Sherpa Score evolution (deterministic 12-metric → ML adaptive)</h3>
+<p><strong>Current state.</strong> Sherpa Score is a rules-based composite of 12 metrics across three pillars — technical (license valid, certifications current, code-pass rate, callback rate), business (response time, quote-to-close, on-time arrival, payment cleanliness), and behavioral (review sentiment, photo quality, communication clarity, dispute frequency). Weights are hand-tuned, uniform across all 37 service categories. Already in production. Already cited in marketing.</p>
+<p><strong>Target state.</strong> A learned per-category weighting model that updates monthly as new outcome data lands, with confidence bands surfaced to pros so they can see exactly which behavior moves their score. Score becomes a calibrated probability of job-outcome success, not a vanity number.</p>
+<p><strong>Three-year phase plan.</strong> Y1 — instrument outcome capture: every dispatched job emits a structured outcome record (5-star rating, on-time flag, rework flag, callback within 30 days, code-pass on first inspection). No model yet; just clean labels. Y2 — train v1 gradient-boosted model (XGBoost or LightGBM) per top-10 service categories, shadow-test against the rule-based baseline for one full quarter. Y3 — production replacement with rule-based fallback retained for explainability and dispute resolution.</p>
+<p><strong>Success metric.</strong> Score-vs-outcome calibration: a Score of 80 should mean a measurable 80th-percentile outcome quality, +/- 5 percentage points, across all protected demographic groups.</p>
+<p><strong>Key risks.</strong> Gameability (pros optimizing for the metric rather than the outcome — mitigated by rotating which 12 of ~30 candidate features are weighted heaviest each quarter). Cold start for new pros (mitigated by rule-based fallback for first 10 jobs). Bias drift (mitigated by quarterly fairness audits — see §3).</p>
+<h3 id="22-dispatch-wiseman-ml-uplift-7-factor-→-learned-ranking">2.2 Dispatch Wiseman ML uplift (7-factor → learned ranking)</h3>
+<p><strong>Current state.</strong> Dispatch Wiseman ranks candidate pros for a job using a 7-factor weighted sum: license/cert match, skill match, geographic distance, Sherpa Score, responsiveness window, recent activity, and load balance. Hand-tuned weights. Uniform across job types and metros.</p>
+<p><strong>Target state.</strong> A learned ranking model (LambdaMART or a small neural ranker) trained on the joint distribution of pro-job pairings and the resulting outcome, optimizing for probability-of-completion-success rather than probability-of-acceptance. Multi-objective: completion success, GMV contribution, fairness constraint.</p>
+<p><strong>Three-year phase plan.</strong> Y1 — telemetry: log every dispatch decision with full feature vector, the chosen pro, and the eventual outcome. No model change. Y2 — offline evaluation: train candidate rankers, run them against held-out historical dispatches, measure NDCG and counterfactual completion lift. Y3 — shadow deploy (model recommends, rules decide), then replace with ML primary and rule fallback. Roll out one metro at a time (Portsmouth NH, Manchester NH, Boston, then everywhere).</p>
+<p><strong>Success metric.</strong> 10%+ lift in 30-day completion rate vs the rule-based baseline at iso-acceptance-rate, holding fairness constraints within +/- 10% across protected groups.</p>
+<p><strong>Key risks.</strong> Insufficient training volume in early metros (mitigated by transfer learning from data-dense metros). Reward hacking — model maximizes a proxy metric that diverges from real value (mitigated by counterfactual evaluation and quarterly outcome audits). Dispatch latency budget — model inference must stay under 100ms (mitigated by feature-store pre-computation).</p>
+<h3 id="23-predictive-materials-demand-reactive-→-306090-day-forecast">2.3 Predictive Materials demand (reactive → 30/60/90-day forecast)</h3>
+<p><strong>Current state.</strong> Sherpa Materials engine fulfills kit orders reactively. Pro selects kit, engine routes to closest Hub with stock. No forecasting layer. Stock-out risk is managed by safety inventory and supplier expediting.</p>
+<p><strong>Target state.</strong> A per-Hub-per-SKU-per-pro-segment demand forecast at 30/60/90-day horizons, feeding closed-loop pre-stage decisions. Hub Operations Managers see "expected demand next 30 days" alongside current stock and act on auto-generated reorder recommendations. The platform pre-positions inventory before pros order it.</p>
+<p><strong>Three-year phase plan.</strong> Y1 — data pipeline: every kit pull, every job-to-materials linkage, and every supplier inbound is captured in a normalized event stream. Build the warehouse, not the model. Y2 — v1 forecast using Prophet or a Temporal Fusion Transformer, calibrated against the first two Hubs (Portsmouth, Manchester). Backtest against the prior 12 months. Y3 — closed-loop pre-stage: forecast feeds reorder rec, rec feeds PO, PO feeds Hub stock, stock measured against next-period demand. Forecast accuracy gates how aggressively we pre-stage.</p>
+<p><strong>Success metric.</strong> Per-Hub kit on-time-and-in-full rate above 97% with 15%+ reduction in safety stock vs the reactive baseline.</p>
+<p><strong>Key risks.</strong> Sparse demand for long-tail SKUs (mitigated by hierarchical forecasting — pool across SKU families). Seasonality misfit in early years (mitigated by exogenous regressors: weather, permit filings, heating-season indicators). Vendor lead-time variance (mitigated by forecast intervals, not point estimates).</p>
+<h3 id="24-codes-engine-semantic-search-keywordregex-→-embedding-based-retrieval">2.4 Codes engine semantic search (keyword/regex → embedding-based retrieval)</h3>
+<p><strong>Current state.</strong> Wiseman Codes lookups use keyword and regex retrieval over a structured codes corpus. Works for exact matches; fails on conceptual queries ("can I run this circuit through that joist bay") that require synthesizing across multiple sections of the IRC, IBC, or NEC plus jurisdiction amendments.</p>
+<p><strong>Target state.</strong> An LLM-powered RAG (retrieval-augmented generation) system over the codes corpus + permit precedent + inspector-note history. Queries return a synthesized answer with cite-back to specific code sections, prior permits, and inspector notes from the same jurisdiction. Used inside estimation, inside dispatch eligibility checks, and inside the pro mobile app at the job site.</p>
+<p><strong>Three-year phase plan.</strong> Y1 — corpus indexed: ingest IRC, IBC, NEC, IPC, IMC, and the top 200 jurisdiction amendment sets. Build the embedding index. No LLM yet. Y2 — LLM-RAG MVP: Claude Sonnet (via Vercel AI Gateway) over the indexed corpus, with strict cite-back required. Internal use only — Wiseman team and select pilot pros. Y3 — production with structured cite-back, confidence scoring, and human-review escalation for conflicting precedent.</p>
+<p><strong>Success metric.</strong> 90%+ of code questions answered with a cite-back the asker rates "directly relevant," 95%+ accuracy on a held-out set of inspector-validated questions.</p>
+<p><strong>Key risks.</strong> LLM hallucination on safety-critical content (mitigated by retrieval-grounded generation, mandatory cite-back, and a confidence floor below which the system says "consult AHJ"). Jurisdiction drift (mitigated by quarterly amendment refresh cadence). Liability exposure (mitigated by clear UX: "AI-assisted reference, not a substitute for AHJ ruling").</p>
+<h3 id="25-smart-scan-enhancement-ocr-→-multimodal-extract">2.5 Smart Scan enhancement (OCR → multimodal extract)</h3>
+<p><strong>Current state.</strong> Smart Scan uses Amazon Textract for OCR over receipts, invoices, permits, blueprints, and job-site photos. Already wired into auto-tax-categorization for Schedule C codes. Confidence is uneven for blueprint dimensions and permit fields.</p>
+<p><strong>Target state.</strong> A multimodal extraction model (image + text input) that extracts structured fields with confidence scoring — permit number, jurisdiction, expiration, work-type code from permits; square footage, ceiling height, room count from blueprints; SKU, qty, vendor, total from receipts; defect and progress flags from job-site photos. Closed-loop with PM workflows: extracted entities feed estimates, schedules, and inspections automatically.</p>
+<p><strong>Three-year phase plan.</strong> Y1 — OCR confidence floor: every extracted field gets a confidence score; below threshold routes to human review. Build the labeled corpus (1,000 receipts, 500 permits, 200 blueprints). Y2 — multimodal model: fine-tune a commercial vision-language model on the corpus, deploy for permit and blueprint classes first. Y3 — closed-loop integration with PM workflows; receipt-to-Schedule-C accuracy above 95%, permit-to-takeoff round-trip in under 10 seconds.</p>
+<p><strong>Success metric.</strong> 95%+ field-level extraction accuracy on permits, 90%+ on blueprints, 95%+ Schedule C tag accuracy on receipts.</p>
+<p><strong>Key risks.</strong> Document variability across jurisdictions (mitigated by per-jurisdiction templates layered on top of the general model). PII handling (mitigated by on-platform processing only, no third-party document upload). Cost-per-document at scale (mitigated by tiered model selection — cheap OCR for clean docs, multimodal model only when confidence is low).</p>
+<h2 id="§3-data-assets--three-proprietary-moats">§3 Data assets — three proprietary moats</h2>
+<p>Sherpa Pros generates three data assets that no marketplace incumbent owns. Each is captured natively by the workflow itself, not by a separate logging effort, which means the data quality scales with the business rather than degrading with it.</p>
+<p><strong>Asset 1 — Job-outcome data.</strong> Every dispatched job produces a structured outcome record: 5-star rating, on-time flag, rework flag, callback-within-30-days flag, code-pass-on-first-inspection flag, payment-cleanliness flag, communication score. The pro is licensed and verified. The job is geo-located and trade-classified. The outcome is observed, not self-reported. This is the training corpus for Sherpa Score (§2.1) and Dispatch ML (§2.2). Why unique: Angi captures lead-stage data; Thumbtack captures quote-stage data; neither captures licensed-pro completion outcomes at scale because their pro pool is largely unlicensed and their workflow ends at introduction. Regulatory considerations: outcome data may include PII (homeowner address, pro identity) — anonymized at the feature-store layer; protected-class fairness audits run quarterly with model-rollback authority.</p>
+<p><strong>Asset 2 — Materials demand data.</strong> Every Hub fulfillment produces a SKU-level demand signal tied to a job, a pro, a metro, and a date. Over time this is a per-SKU-per-Hub time series with rich exogenous features (weather, permit filings, season). This is the training corpus for Predictive Materials (§2.3). Why unique: Procore knows what spec'd; Home Depot knows what sold; only Sherpa Pros knows what was actually consumed on the job because the Hub fulfillment closes the loop between order and use. Regulatory considerations: pricing data is competitively sensitive — supplier-level pricing is not exposed externally; aggregate metro-level demand may be published as transparency reports.</p>
+<p><strong>Asset 3 — Codes/permit telemetry.</strong> Every Wiseman Codes lookup, every permit application, every inspector note tied to a Sherpa job becomes an entry in a jurisdiction-aware corpus. Over time this builds the densest known dataset of "what code section was cited for what work type in what jurisdiction with what inspector outcome." This is the training corpus for Codes RAG (§2.4) and a long-term moat for codes-aware estimation. Why unique: codes data itself is public; codes-applied-to-real-permits-with-real-outcomes is not. Regulatory considerations: inspector notes may contain PII — redacted before training; jurisdiction-specific publication policies vary and are honored at the corpus level.</p>
+<p>The three assets compound. Job outcomes train dispatch, dispatch routes more jobs, more jobs produce more outcomes — flywheel one. Hub fulfillment generates demand signals, demand signals improve forecasting, better forecasting drives more Hub fulfillment — flywheel two. Codes lookups produce permit telemetry, permit telemetry improves RAG retrieval, better retrieval drives more codes lookups — flywheel three. None requires hand-labeling. None requires a separate data collection effort. Each is the natural exhaust of a transaction the platform is already running for revenue.</p>
+<h2 id="§4-build-vs-buy--per-pillar-disposition">§4 Build vs buy — per-pillar disposition</h2>
+<table>
+<thead>
+<tr>
+<th>Pillar</th>
+<th>Disposition</th>
+<th>Rationale</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>2.1 Sherpa Score</td>
+<td>Build internal</td>
+<td>Score is the brand. Outsourcing the scoring engine is an unacceptable strategic risk. Gradient-boosted-tree libraries (XGBoost, LightGBM) are commodity; the moat is the labeled outcome corpus, which we own.</td>
+</tr>
+<tr>
+<td>2.2 Dispatch ML</td>
+<td>Build internal, fine-tune open ranker</td>
+<td>Dispatch is the marketplace. Use an open LambdaMART or small Transformer ranker as the substrate; fine-tune on proprietary outcome data. No commercial vendor matches construction-marketplace specificity.</td>
+</tr>
+<tr>
+<td>2.3 Predictive Materials</td>
+<td>Hybrid — build core, evaluate vendor at scale</td>
+<td>In-house Prophet or Temporal Fusion Transformer baseline through Y2. At Y3 with 12+ Hubs, evaluate RELEX Solutions or Blue Yonder for retail demand forecasting at scale; cost-benefit at the time.</td>
+</tr>
+<tr>
+<td>2.4 Codes RAG</td>
+<td>Hybrid — commercial LLM, proprietary retrieval</td>
+<td>Use Anthropic Claude Sonnet via Vercel AI Gateway for generation. Build the retrieval index, the cite-back layer, and the corpus internally. The corpus is the moat, not the model.</td>
+</tr>
+<tr>
+<td>2.5 Smart Scan</td>
+<td>Buy + customize</td>
+<td>AWS Textract for OCR (already integrated). Fine-tune a commercial vision-language model on our labeled corpus for entity extraction. Building a vision model from scratch is wasteful given commodity quality.</td>
+</tr>
+</tbody></table>
+<p>The pattern is consistent. Where the moat is the data, we own the data and use commodity models on top. Where the moat is the model itself (Score, Dispatch), we build internally. Where there is no moat (general OCR, general LLM generation), we buy. This keeps the ML team focused on the two pillars (Score, Dispatch) where in-house work compounds and lets vendors carry the rest.</p>
+<h2 id="§5-hiring--cost-ramp">§5 Hiring + cost ramp</h2>
+<p>Phase 4 ML investment is sequenced with the Series A use-of-funds schedule (see Slide 19 of v2 deck). The ramp is intentionally modest in Y1 — we are instrumenting and capturing data, not training production models — and accelerates in Y2 and Y3 as the data corpus reaches a size where ML investment pays back.</p>
+<p><strong>Year 1 (~$300-400K loaded).</strong> One senior ML engineer hired against the Y1 priority pillar pair selected in §7. Scope: outcome-capture telemetry, feature store, offline evaluation harness, v1 model on top-3 highest-volume service categories. Plus modest data-engineering plumbing (ETL into a feature store, basic warehouse). No Head of ML yet — the engineer reports into the VP Engineering hire.</p>
+<p><strong>Year 2 (+~$700-900K loaded → ~$1.0-1.3M cumulative).</strong> Add a second ML engineer covering the second priority pillar plus a dedicated data engineer to harden the pipeline. By end of Y2, two production models in shadow mode, third pillar in offline evaluation. This is the year ML becomes a measurable revenue lever, not a research project.</p>
+<p><strong>Year 3 (+~$1.4-1.8M loaded → ~$2.4-3.1M cumulative).</strong> Hire Head of ML, plus an applied research role (codes RAG and multimodal Smart Scan), plus a third ML engineer. By end of Y3, all five pillars have ML in production or shadow, the team is ~5-6 ML and ~2 data, infrastructure spend is ~$300-450K/yr against $40-80K AI Gateway, $120-200K SageMaker training/inference, $30K Datadog ML monitoring, $80-150K external bias audit.</p>
+<p>The total Phase 4 ML cumulative spend (~$2.4-3.1M loaded over 36 months) is a small fraction of Series A use-of-funds and is justifiable to investors as the line item that funds the durable moat — versus marketing or sales spend, which funds the wedge but does not compound.</p>
+<h2 id="§6-defensibility--why-angithumbtackprocore-structurally-cannot-replicate">§6 Defensibility — why Angi/Thumbtack/Procore structurally cannot replicate</h2>
+<p>Defensibility against the two consumer marketplaces (Angi, Thumbtack) and the one enterprise tool (Procore) is the central investor question, and the answer is structural, not aspirational. Five reasons compound.</p>
+<p><strong>1. Data moat from licensed-pro outcome capture.</strong> Angi and Thumbtack are largely lead-generation businesses. Their pros are mostly unlicensed, their workflow ends at introduction, and they capture neither completion outcomes nor code-pass data. Procore captures project data inside the GC's workflow but never sees marketplace transactions. Sherpa Pros sits in the seam — every job produces a labeled outcome from a verified-licensed pro, which is the exact training data needed for dispatch and score ML. Replicating this corpus requires re-architecting the entire workflow, not just adding an ML team.</p>
+<p><strong>2. Distribution lock-in via the Hub.</strong> The Sherpa Hub fulfillment model creates a per-metro physical presence that competitors do not have. Once a pro is integrated into Hub kit pulls, switching to a competitor means losing the materials-on-the-truck advantage. The Hub also produces the demand-forecasting data corpus (§2.3) which compounds with scale — every additional Hub adds training data that strengthens forecasting, which improves on-time rates, which attracts more pros, which produces more demand data.</p>
+<p><strong>3. Codes-vertical depth.</strong> Sherpa Pros has built the Wiseman Codes corpus and the integration with permits and inspector notes. This is a multi-year ingestion effort across 200+ jurisdictions. Even if a competitor licensed the same public codes data, they would not have the proprietary permit-and-inspector-outcome layer that turns retrieval into useful answers. This is the asset that makes codes-aware estimation possible (§2.4) and that no incumbent has built.</p>
+<p><strong>4. Multi-trade scope.</strong> Thumbtack has breadth without trade-specific depth; Procore has trade depth only inside the GC project context. Sherpa Pros has 37 verified-license trade categories, each with category-specific Sherpa Score weights and category-specific Dispatch ML models. Multi-trade scope creates cross-trade flywheel effects — a homeowner who hires an electrician through Sherpa is more likely to find their next plumber here, which extends LTV in a way single-trade or breadth-without-depth competitors cannot match.</p>
+<p><strong>5. Founder-led GC fluency.</strong> Phyrom is a working GC. The product roadmap is grounded in real workflow exposure, not consumer-marketplace pattern matching. This shows up in details competitors miss — the way Dispatch handles license-class filtering, the way Smart Scan handles permit field extraction, the way the Hub model handles after-hours emergency stock. None of these details are visible from outside. All of them compound into a product that pros pick over alternatives.</p>
+<p>These five do not stand independently — they reinforce each other. The Hub produces materials data that improves dispatch that produces outcome data that strengthens the score that pulls more pros that fill more Hubs. ML is the layer that turns each of those reinforcing loops from "good enough" into "structurally durable."</p>
+<h2 id="§7-open-questions">§7 Open questions</h2>
+<blockquote>
+<p><strong><code>[USER-DECIDE: Y1 ML pillar priority]</code></strong> — Which 2 of the 5 pillars get Y1 ML headcount, given $300-400K loaded for one ML engineer? Trade-offs: (a) Sherpa Score = highest defensibility but slowest to ROI; (b) Dispatch ML = fastest to revenue impact but requires sufficient transaction volume to train; (c) Predictive Materials = unlocks Hub margin but needs SKU+demand data depth; (d) Codes semantic search = sharpest investor moat-narrative but lowest near-term revenue lift; (e) Smart Scan multimodal = highest user-facing delight + retention play.
+Recommendation: <strong>(b) + (c)</strong> — Dispatch ML compounds with the marketplace flywheel, Predictive Materials compounds with the Hub flywheel. Together they cover both revenue surfaces. Sherpa Score, Codes, Smart Scan defer to Y2.</p>
+</blockquote>
+<p>Beyond the priority decision, the following decisions must be locked before the spec can be promoted to plan execution:</p>
+<ol>
+<li><p><strong>Build-vs-buy lock per pillar.</strong> §4 proposes a disposition. Phyrom must confirm or override each — particularly the Predictive Materials hybrid (do we commit to in-house through Y2 even if RELEX or Blue Yonder shorten time-to-value?) and the Codes RAG choice of Claude Sonnet vs an open-weights model (Llama, Mistral) for cost control.</p>
+</li>
+<li><p><strong>Vendor-specific picks.</strong> Anthropic Claude Sonnet via Vercel AI Gateway is the assumed default for LLM workloads. SageMaker is assumed for training and inference. Datadog is assumed for ML monitoring. Each is defensible but each carries lock-in. Phyrom decides whether to negotiate multi-year commits for pricing leverage or stay flexible at higher per-unit cost.</p>
+</li>
+<li><p><strong>Data residency for training data.</strong> Job-outcome data, materials data, and codes telemetry will be used to train models. As Sherpa expands to Canada, the EU, and the UK (per platform-scale plan), training data must respect data-residency constraints. Decision: train regional models on regional data, train one global model on anonymized aggregates only, or hybrid? Recommendation: regional models for protected-class-sensitive applications (Score, Dispatch), global models for protected-class-neutral applications (Materials, Codes).</p>
+</li>
+<li><p><strong>Bias audit cadence and authority.</strong> Quarterly internal + annual external is the proposed cadence (mirrors the platform-scale plan). Who has rollback authority? Recommendation: VP Engineering plus General Counsel jointly; either can rollback unilaterally.</p>
+</li>
+<li><p><strong>External research partnership.</strong> Should Sherpa Pros engage an academic research partner (MIT CSAIL, CMU Robotics, Northeastern) for the codes-RAG and multimodal-Smart-Scan work? Pro: subsidized research, hiring pipeline, publication credibility. Con: IP complications, distraction. Recommendation: defer to Y3 unless a marquee opportunity surfaces earlier.</p>
+</li>
+<li><p><strong>Open-source posture.</strong> Will Sherpa publish any models, datasets, or libraries? Pro: developer brand, recruiting. Con: gives away the moat. Recommendation: publish nothing dataset-derived; publish small infra libraries (feature-store helpers, cite-back patterns) as developer goodwill.</p>
+</li>
+<li><p><strong>Ethics review board.</strong> Should an external advisory board oversee high-stakes ML decisions (Score-based suspensions, Dispatch fairness, Lending denials)? Recommendation: yes by Y2, three external members (one ML ethics, one labor economics, one trades-industry).</p>
+</li>
+<li><p><strong>Customer-facing transparency.</strong> Will pros and clients see model explanations and confidence scores? Recommendation: yes for Score (always), yes for Dispatch (explanation only, not confidence), no for Materials (internal optimization). Codes RAG: always show cite-back, never show confidence.</p>
+</li>
+</ol>
+<h2 id="§8-last-updated">§8 Last updated</h2>
+<p>2026-04-26 — initial Wave 12 draft. Status: design — pending priority-order decision (§7). Next review: after Phyrom locks Y1 pillar pair. Owner: VP Engineering (when hired, otherwise Phyrom). Related specs: <code>docs/strategy/phase-4-extensions/03-ai-ml-roadmap.md</code> (Wave 11 antecedent), <code>docs/strategy/phase-4-extensions/06-phase-4-okrs-and-measurement-framework.md</code>, <code>docs/superpowers/specs/2026-04-13-sherpa-pros-platform-design.md</code>.</p>
+<hr>
+<p><em>End of spec.</em></p>
+
+	
+
+
+</body>
+</html>

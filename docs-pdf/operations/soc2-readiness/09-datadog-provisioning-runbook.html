@@ -1,0 +1,1159 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>09 datadog provisioning runbook — Sherpa Pros</title>
+<link rel="icon" href="../../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="09-datadog-provisioning-runbook.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="datadog-provisioning-runbook">Datadog Provisioning Runbook</h1>
+<h2 id="1-purpose">1. Purpose</h2>
+<p>Step-by-step setup of Datadog as Sherpa Pros' primary observability platform — APM, logs, metrics, RUM, synthetics, and alerts. Crossover to OpenTelemetry self-hosted at 1M MAU is documented in the platform-scale spec.</p>
+<h2 id="2-account--plan-setup">2. Account + Plan Setup</h2>
+<h3 id="21-account-creation">2.1 Account creation</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Create Datadog organization <code>sherpa-pros</code> at <code>app.datadoghq.com</code> (US1 region)</li>
+<li><input disabled="" type="checkbox"> <strong>Plan</strong>: Pro ($23/host/mo) for Phase 1; upgrade to Enterprise at &gt;25 hosts or when audit trail required</li>
+<li><input disabled="" type="checkbox"> <strong>Contracted spend cap</strong>: $1K/mo Phase 1, $5K/mo Phase 2, $20K/mo Phase 4</li>
+<li><input disabled="" type="checkbox"> Billing tied to corporate AmEx with PagerDuty alert on threshold (per Section 8)</li>
+</ul>
+<h3 id="22-rbac-setup-cc61-alignment">2.2 RBAC setup (CC6.1 alignment)</h3>
+<table>
+<thead>
+<tr>
+<th>Datadog role</th>
+<th>Mapped to Sherpa Guard tier</th>
+<th>Permissions</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Admin</strong></td>
+<td>Phyrom + future SRE</td>
+<td>All</td>
+</tr>
+<tr>
+<td><strong>Standard (Engineering)</strong></td>
+<td><code>internal_eng</code></td>
+<td>Read all, write to non-prod monitors, write to dashboards</td>
+</tr>
+<tr>
+<td><strong>Read-Only (Operations)</strong></td>
+<td><code>internal_ops</code></td>
+<td>Read all dashboards + logs</td>
+</tr>
+<tr>
+<td><strong>Read-Only (Leadership)</strong></td>
+<td>Founder + future exec</td>
+<td>Read curated executive dashboards only (no raw logs)</td>
+</tr>
+<tr>
+<td><strong>Read-Only (Compliance)</strong></td>
+<td><code>internal_compliance</code></td>
+<td>Read all (for audit evidence)</td>
+</tr>
+</tbody></table>
+<p>Provisioned via Datadog SAML SSO bound to Okta or Google Workspace (per <code>03-access-management-policy.md</code>). Direct Datadog logins disabled.</p>
+<h2 id="3-agent-installation">3. Agent Installation</h2>
+<h3 id="31-vercel-native-integration-phase-1">3.1 Vercel native integration (Phase 1)</h3>
+<p>Vercel + Datadog have a native integration via the Vercel Marketplace.</p>
+<ul>
+<li><input disabled="" type="checkbox"> Install Datadog integration from Vercel Marketplace</li>
+<li><input disabled="" type="checkbox"> OAuth approve at Vercel team level</li>
+<li><input disabled="" type="checkbox"> Set DD_SITE=<code>datadoghq.com</code> and DD_ENV per Vercel environment (<code>production</code>, <code>preview</code>)</li>
+<li><input disabled="" type="checkbox"> Verify logs flowing within 10 min in Datadog Logs Explorer</li>
+<li><input disabled="" type="checkbox"> Test trace generation by hitting <code>/api/healthz</code> and confirming span in APM</li>
+</ul>
+<h3 id="32-phase-4-self-hosted-considerations">3.2 Phase 4 self-hosted considerations</h3>
+<p>When MAU &gt; 1M, evaluate switching to:</p>
+<ul>
+<li><strong>OpenTelemetry Collector</strong> (self-hosted) feeding either Datadog (continued vendor) OR Prometheus + Grafana + Tempo + Loki (open source)</li>
+<li><strong>Crossover decision criteria</strong>: Datadog spend &gt;$15K/mo OR data sovereignty requirements emerge</li>
+<li><strong>Crossover plan</strong>: documented separately in platform-scale spec WS6</li>
+</ul>
+<h2 id="4-apm-instrumentation">4. APM Instrumentation</h2>
+<h3 id="41-auto-instrumentation-nextjs">4.1 Auto-instrumentation (Next.js)</h3>
+<ul>
+<li><input disabled="" type="checkbox"> <code>dd-trace</code> auto-injected via Vercel integration on Node runtime functions</li>
+<li><input disabled="" type="checkbox"> Edge runtime functions (middleware, edge routes) instrumented via lightweight Datadog Edge SDK</li>
+<li><input disabled="" type="checkbox"> Custom service name: <code>sherpa-pros-app</code> for Next.js app, <code>sherpa-pros-edge</code> for edge middleware</li>
+</ul>
+<h3 id="42-custom-spans-for-critical-paths">4.2 Custom spans for critical paths</h3>
+<pre><code class="hljs typescript"><span class="hljs-comment">// lib/telemetry/trace.ts (illustrative)</span>
+<span class="hljs-keyword">import</span> tracer <span class="hljs-keyword">from</span> <span class="hljs-string">'dd-trace'</span>;
+
+tracer.<span class="hljs-title function_">init</span>({
+  <span class="hljs-attr">service</span>: <span class="hljs-string">'sherpa-pros-app'</span>,
+  <span class="hljs-attr">env</span>: process.<span class="hljs-property">env</span>.<span class="hljs-property">VERCEL_ENV</span>,
+  <span class="hljs-attr">version</span>: process.<span class="hljs-property">env</span>.<span class="hljs-property">VERCEL_GIT_COMMIT_SHA</span>,
+  <span class="hljs-attr">logInjection</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">runtimeMetrics</span>: <span class="hljs-literal">true</span>,
+});
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> withSpan&lt;T&gt;(<span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>, <span class="hljs-attr">op</span>: <span class="hljs-function">() =&gt;</span> <span class="hljs-title class_">Promise</span>&lt;T&gt;, <span class="hljs-attr">tags</span>?: <span class="hljs-title class_">Record</span>&lt;<span class="hljs-built_in">string</span>, <span class="hljs-built_in">string</span>&gt;): <span class="hljs-title class_">Promise</span>&lt;T&gt; {
+  <span class="hljs-keyword">return</span> tracer.<span class="hljs-title function_">trace</span>(name, { tags }, op);
+}
+</code></pre>
+<p>Critical paths to wrap:</p>
+<ul>
+<li><code>dispatch.match_pros</code> — sherpa-score-driven matching</li>
+<li><code>payment.create_intent</code> — Stripe intent creation</li>
+<li><code>payment.escrow_release</code> — release on job completion</li>
+<li><code>audit.write</code> — every write to <code>audit_logs</code></li>
+<li><code>materials.order_zinc</code> — Zinc API call</li>
+<li><code>delivery.uber_direct</code> — Uber Direct call</li>
+<li><code>auth.session_check</code> — Sherpa Guard middleware tier check</li>
+</ul>
+<h3 id="43-distributed-tracing-context-propagation">4.3 Distributed tracing context propagation</h3>
+<ul>
+<li>All outbound HTTP calls inject Datadog trace headers</li>
+<li>Webhook receivers extract trace context where possible</li>
+<li>Stripe / Twilio / Tremendous / Zinc / Uber Direct call correlation via trace ID + idempotency key</li>
+</ul>
+<h2 id="5-logs">5. Logs</h2>
+<h3 id="51-sources">5.1 Sources</h3>
+<ul>
+<li>Vercel function logs (auto via integration)</li>
+<li>Vercel Edge middleware logs (auto)</li>
+<li>Sherpa Guard audit log writes — <strong>dual-written</strong> to <code>audit_logs</code> table AND to Datadog with tag <code>audit:true</code></li>
+<li>Stripe webhook receipt + processing logs</li>
+<li>Twilio dispatch logs</li>
+<li>Materials orders + deliveries logs</li>
+<li>Datadog Agent logs from any future containerized services</li>
+</ul>
+<h3 id="52-pii-scrubbing-rules">5.2 PII scrubbing rules</h3>
+<p>Per <code>07-encryption-policy.md</code> Section 7.1 — applied at the Datadog agent + processor level. Verified quarterly via sample log audit.</p>
+<h3 id="53-log-retention">5.3 Log retention</h3>
+<ul>
+<li><strong>Standard logs</strong>: 15 days hot, 30 days indexed (Pro plan default)</li>
+<li><strong>Audit logs (<code>audit:true</code> tag)</strong>: 90 days indexed in Datadog + permanent archive in S3 per <code>08-backup-restore-runbook.md</code></li>
+<li><strong>Security logs (auth failures, WAF blocks)</strong>: 180 days indexed</li>
+</ul>
+<h2 id="6-metrics">6. Metrics</h2>
+<h3 id="61-auto-collected">6.1 Auto-collected</h3>
+<ul>
+<li>Next.js runtime metrics (heap, event loop lag, GC)</li>
+<li>HTTP request metrics per route (count, latency, status code)</li>
+<li>DB query metrics (via dd-trace Drizzle/PG instrumentation)</li>
+</ul>
+<h3 id="62-custom-business-metrics">6.2 Custom business metrics</h3>
+<pre><code class="hljs typescript"><span class="hljs-comment">// lib/telemetry/metrics.ts</span>
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">StatsD</span> <span class="hljs-keyword">from</span> <span class="hljs-string">'hot-shots'</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> metrics = <span class="hljs-keyword">new</span> <span class="hljs-title class_">StatsD</span>({ <span class="hljs-attr">prefix</span>: <span class="hljs-string">'sherpa.'</span> });
+
+<span class="hljs-comment">// Examples:</span>
+metrics.<span class="hljs-title function_">timing</span>(<span class="hljs-string">'dispatch.match_latency_ms'</span>, durationMs, [<span class="hljs-string">`metro:<span class="hljs-subst">${metro}</span>`</span>, <span class="hljs-string">`trade:<span class="hljs-subst">${trade}</span>`</span>]);
+metrics.<span class="hljs-title function_">increment</span>(<span class="hljs-string">'payment.success'</span>, <span class="hljs-number">1</span>, [<span class="hljs-string">`tier:<span class="hljs-subst">${tier}</span>`</span>]);
+metrics.<span class="hljs-title function_">increment</span>(<span class="hljs-string">'payment.failure'</span>, <span class="hljs-number">1</span>, [<span class="hljs-string">`reason:<span class="hljs-subst">${stripeErrorCode}</span>`</span>]);
+metrics.<span class="hljs-title function_">gauge</span>(<span class="hljs-string">'escrow.balance_cents'</span>, currentBalance);
+metrics.<span class="hljs-title function_">histogram</span>(<span class="hljs-string">'bid.response_time_seconds'</span>, responseSec, [<span class="hljs-string">`pro_tier:<span class="hljs-subst">${proTier}</span>`</span>]);
+metrics.<span class="hljs-title function_">increment</span>(<span class="hljs-string">'job_funnel.posted'</span>, <span class="hljs-number">1</span>, [<span class="hljs-string">`metro:<span class="hljs-subst">${metro}</span>`</span>]);
+metrics.<span class="hljs-title function_">increment</span>(<span class="hljs-string">'job_funnel.bid_received'</span>, <span class="hljs-number">1</span>);
+metrics.<span class="hljs-title function_">increment</span>(<span class="hljs-string">'job_funnel.accepted'</span>, <span class="hljs-number">1</span>);
+metrics.<span class="hljs-title function_">increment</span>(<span class="hljs-string">'job_funnel.completed'</span>, <span class="hljs-number">1</span>);
+metrics.<span class="hljs-title function_">increment</span>(<span class="hljs-string">'audit_log.write'</span>, <span class="hljs-number">1</span>, [<span class="hljs-string">`action:<span class="hljs-subst">${action}</span>`</span>]);
+</code></pre>
+<h2 id="7-rum-real-user-monitoring">7. RUM (Real User Monitoring)</h2>
+<ul>
+<li><input disabled="" type="checkbox"> Datadog RUM SDK installed in Next.js root layout</li>
+<li><input disabled="" type="checkbox"> <code>defaultPrivacyLevel: 'mask-user-input'</code> (per encryption policy)</li>
+<li><input disabled="" type="checkbox"> Session sample rate: 100% Phase 1 (low traffic), reduce to 20% at &gt;100K sessions/mo</li>
+<li><input disabled="" type="checkbox"> Replay sample rate: 10% of sessions, 0% on payment/KYC routes</li>
+<li><input disabled="" type="checkbox"> Error tracking enabled</li>
+</ul>
+<h2 id="8-synthetics">8. Synthetics</h2>
+<h3 id="81-key-user-journey-monitors">8.1 Key user journey monitors</h3>
+<table>
+<thead>
+<tr>
+<th>Journey</th>
+<th>Cadence</th>
+<th>Locations</th>
+<th>Alerts</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Sign-in (homeowner)</td>
+<td>Every 5 min</td>
+<td>us-east-1, us-west-2</td>
+<td>Page on 3 consecutive failures</td>
+</tr>
+<tr>
+<td>Sign-in (pro)</td>
+<td>Every 5 min</td>
+<td>us-east-1</td>
+<td>Same</td>
+</tr>
+<tr>
+<td>Sign-in (pm_admin)</td>
+<td>Every 5 min</td>
+<td>us-east-1</td>
+<td>Same</td>
+</tr>
+<tr>
+<td>Post a job (homeowner end-to-end)</td>
+<td>Every 15 min</td>
+<td>us-east-1</td>
+<td>Page on 2 consecutive failures</td>
+</tr>
+<tr>
+<td>Pro accepts a bid</td>
+<td>Every 15 min</td>
+<td>us-east-1</td>
+<td>Same</td>
+</tr>
+<tr>
+<td>Stripe escrow + release flow</td>
+<td>Every 15 min</td>
+<td>us-east-1</td>
+<td>Page on any failure</td>
+</tr>
+<tr>
+<td>Sherpa Guard middleware tier check (synthetic unauthorized request)</td>
+<td>Every 5 min</td>
+<td>us-east-1, us-west-2</td>
+<td>Page if middleware allows when it should block</td>
+</tr>
+<tr>
+<td>Static page (<code>/</code>, <code>/pricing</code>, <code>/trust</code>)</td>
+<td>Every 1 min</td>
+<td>5 global locations</td>
+<td>Warn on &gt;2s LCP, page on 5xx</td>
+</tr>
+</tbody></table>
+<h2 id="9-alerts-configuration">9. Alerts Configuration</h2>
+<h3 id="91-slo-aligned-alerts-per-incident-response-sec-8">9.1 SLO-aligned alerts (per Incident Response Sec 8)</h3>
+<table>
+<thead>
+<tr>
+<th>Monitor</th>
+<th>Threshold</th>
+<th>Severity</th>
+<th>Notify</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>P95 dispatch latency</td>
+<td>&gt;500ms 5min</td>
+<td>SEV3 (warn)</td>
+<td>#eng Slack</td>
+</tr>
+<tr>
+<td>P95 dispatch latency</td>
+<td>&gt;1s 5min</td>
+<td>SEV2 (page)</td>
+<td>PagerDuty primary on-call</td>
+</tr>
+<tr>
+<td>Payment success rate</td>
+<td>&lt;95% 10min</td>
+<td>SEV1 (page)</td>
+<td>PagerDuty primary + Phyrom</td>
+</tr>
+<tr>
+<td>Error rate per route</td>
+<td>&gt;5% 5min</td>
+<td>SEV2 (page)</td>
+<td>PagerDuty</td>
+</tr>
+<tr>
+<td>DB connection pool saturation</td>
+<td>&gt;80% 10min</td>
+<td>SEV3 (warn)</td>
+<td>#eng Slack</td>
+</tr>
+<tr>
+<td>DB connection pool saturation</td>
+<td>&gt;95% 5min</td>
+<td>SEV2 (page)</td>
+<td>PagerDuty</td>
+</tr>
+<tr>
+<td>Audit log write rate</td>
+<td>=0 for 60s</td>
+<td>SEV2 (page)</td>
+<td>PagerDuty + compliance lead</td>
+</tr>
+<tr>
+<td>Stripe webhook signature failure</td>
+<td>&gt;1% 10min</td>
+<td>SEV2 (page)</td>
+<td>PagerDuty + Phyrom</td>
+</tr>
+<tr>
+<td>Auth failure rate</td>
+<td>&gt;5× baseline 5min</td>
+<td>SEV2 (page)</td>
+<td>PagerDuty + compliance lead</td>
+</tr>
+<tr>
+<td>Cloudflare WAF block spike</td>
+<td>&gt;10× baseline 10min</td>
+<td>SEV3 (warn)</td>
+<td>#security Slack</td>
+</tr>
+<tr>
+<td>Synthetic key journey failure</td>
+<td>&gt;2 consecutive failures</td>
+<td>SEV2 (page)</td>
+<td>PagerDuty</td>
+</tr>
+<tr>
+<td>Synthetic sign-in failure</td>
+<td>&gt;3 consecutive failures</td>
+<td>SEV2 (page)</td>
+<td>PagerDuty</td>
+</tr>
+</tbody></table>
+<h3 id="92-cost-monitoring-alerts">9.2 Cost monitoring alerts</h3>
+<table>
+<thead>
+<tr>
+<th>Threshold</th>
+<th>Severity</th>
+<th>Notify</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Monthly Datadog spend &gt; $1K</td>
+<td>Warn</td>
+<td>Phyrom email</td>
+</tr>
+<tr>
+<td>Monthly Datadog spend &gt; $2K</td>
+<td>Warn + #ops Slack</td>
+<td>Phyrom + ops</td>
+</tr>
+<tr>
+<td>Monthly Datadog spend &gt; $5K</td>
+<td>Page</td>
+<td>Phyrom + ops; trigger usage review</td>
+</tr>
+<tr>
+<td>Single-day spend spike &gt; $200</td>
+<td>Page</td>
+<td>Phyrom; cardinality investigation</td>
+</tr>
+<tr>
+<td>Log ingest &gt; 100GB/day</td>
+<td>Warn</td>
+<td>Investigate noisy source</td>
+</tr>
+</tbody></table>
+<h3 id="93-notification-routing">9.3 Notification routing</h3>
+<ul>
+<li><strong>PagerDuty integration</strong>: Datadog → PagerDuty webhook; service mapping per severity</li>
+<li><strong>Slack channels</strong>:<ul>
+<li><code>#alerts-prod</code> — all SEV2/3 alerts</li>
+<li><code>#alerts-cost</code> — cost alerts</li>
+<li><code>#alerts-security</code> — auth + WAF alerts</li>
+</ul>
+</li>
+<li><strong>Email</strong>: Phyrom for all SEV1 + cost alerts</li>
+</ul>
+<h2 id="10-initial-provisioning-checklist">10. Initial Provisioning Checklist</h2>
+<pre><code>□ Datadog org created (sherpa-pros, US1 region)
+□ Pro plan selected with $1K/mo cap
+□ SAML SSO configured (Okta or Google Workspace)
+□ RBAC roles per Section 2.2
+□ Vercel integration installed + verified
+□ dd-trace auto-instrumentation confirmed
+□ Critical-path custom spans deployed
+□ PII scrubbing rules deployed at agent + processor
+□ Audit log dual-write configured (DB + Datadog)
+□ Custom business metrics emitted from app
+□ RUM SDK in production
+□ Synthetics for 8 key journeys
+□ All alerts from Section 9.1 + 9.2 configured
+□ PagerDuty integration verified (test page)
+□ Slack channels created + integration verified
+□ Cost cap enforcement confirmed
+□ Day-1 dashboards (D1-D8) created per 10-day-1-dashboards-spec.md
+□ Vanta integration with Datadog enabled (read-only API key)
+</code></pre>
+<h2 id="11-opentelemetry-crossover-plan-phase-4-trigger">11. OpenTelemetry Crossover Plan (Phase 4 trigger)</h2>
+<p>When MAU &gt; 1M OR Datadog spend &gt; $15K/mo:</p>
+<ul>
+<li><input disabled="" type="checkbox"> Stand up OpenTelemetry Collector in parallel with Datadog</li>
+<li><input disabled="" type="checkbox"> Dual-emit traces + metrics for 30 days</li>
+<li><input disabled="" type="checkbox"> Validate parity between Datadog and OTel pipelines</li>
+<li><input disabled="" type="checkbox"> Build Grafana + Tempo + Loki + Prometheus stack on AWS or Grafana Cloud</li>
+<li><input disabled="" type="checkbox"> Migrate dashboards from Datadog → Grafana</li>
+<li><input disabled="" type="checkbox"> Migrate alerts from Datadog → Grafana Alerting + PagerDuty</li>
+<li><input disabled="" type="checkbox"> 30-day soak; Datadog stays as backup</li>
+<li><input disabled="" type="checkbox"> Decommission Datadog after Phyrom + SRE sign-off</li>
+</ul>
+<p>Detailed in platform-scale spec WS6.</p>
+<h2 id="12-maintenance">12. Maintenance</h2>
+<ul>
+<li><strong>Owner</strong>: SRE / Compliance lead (Phyrom interim)</li>
+<li><strong>Review cadence</strong>: Quarterly cost + monitor tuning</li>
+<li><strong>Effective date</strong>: 2026-06-01</li>
+</ul>
+
+	
+
+
+</body>
+</html>

@@ -1,0 +1,1254 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>embedded protection products — Sherpa Pros</title>
+<link rel="icon" href="../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="embedded-protection-products.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="sherpa-pros--embedded-protection-products-white-label-insurance-at-checkout">Sherpa Pros — Embedded Protection Products (White-Label Insurance at Checkout)</h1>
+<p><strong>Date:</strong> 2026-04-24
+<strong>Status:</strong> Draft v1 — needs broker + attorney review before launch
+<strong>Companion doc:</strong> <code>docs/operations/liability-insurance-framework.md</code> (4-layer liability model)
+<strong>Source spec:</strong> <code>docs/superpowers/specs/2026-04-22-gtm-marketing-design.md</code></p>
+<hr>
+<h2 id="1-the-opportunity">1. The Opportunity</h2>
+<p>Phyrom's question: <em>"Can we offer optional protection at checkout — like rental car insurance or tool rental damage waiver — using a white-label provider?"</em></p>
+<p><strong>Yes.</strong> This is called <strong>embedded insurance</strong> and it's a $722B+ market by 2030. It would create:</p>
+<ol>
+<li><strong>A new revenue line</strong> — typical platform commission is <strong>20–30% of premium</strong></li>
+<li><strong>Higher customer satisfaction</strong> — buyer feels protected, walks in confident</li>
+<li><strong>Dispute deflection</strong> — when something goes wrong, the insurer pays (not Sherpa Pros' reserve)</li>
+<li><strong>Higher take rate without raising the take rate</strong> — protection fee is on top of platform commission, not a substitute</li>
+</ol>
+<p><strong>Important distinction from the free Work Guarantee</strong> (Layer 3 of liability framework):</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>Free Work Guarantee</strong> (built-in)</th>
+<th><strong>Optional Project Protection</strong> (purchased at checkout)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Cost to customer</strong></td>
+<td>$0</td>
+<td>3–5% of job value (or flat fee)</td>
+</tr>
+<tr>
+<td><strong>Coverage cap</strong></td>
+<td>$5K/job, $25K/customer/year</td>
+<td>$25K–$100K+ depending on tier</td>
+</tr>
+<tr>
+<td><strong>Window</strong></td>
+<td>30 days post-completion</td>
+<td>1–5 years (depending on tier)</td>
+</tr>
+<tr>
+<td><strong>Funded by</strong></td>
+<td>Sherpa Pros reserve fund</td>
+<td>Real insurance carrier (white-label backend)</td>
+</tr>
+<tr>
+<td><strong>What it covers</strong></td>
+<td>Code defect, workmanship, scope mismatch</td>
+<td>Above + materials + structural + consequential damage</td>
+</tr>
+<tr>
+<td><strong>Regulated as insurance?</strong></td>
+<td>No (contractual guarantee)</td>
+<td>Yes (real insurance — needs MGA/carrier backend)</td>
+</tr>
+<tr>
+<td><strong>Closest analogy</strong></td>
+<td>Etsy Purchase Protection, Airbnb AirCover</td>
+<td>Booking.com travel insurance, Avis LDW, Best Buy Geek Squad</td>
+</tr>
+</tbody></table>
+<p>Both can coexist. Free guarantee = baseline trust. Paid protection = revenue + premium customer tier.</p>
+<hr>
+<h2 id="2-how-peers-actually-do-it-2026-reference">2. How Peers Actually Do It (2026 Reference)</h2>
+<h3 id="built-in--free-analogous-to-our-work-guarantee">Built-in / FREE (analogous to our Work Guarantee)</h3>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>Product</th>
+<th>What it covers</th>
+<th>Funding</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Airbnb AirCover (host)</strong></td>
+<td>$3M damage protection + $1M liability + $1M experiences/services liability + 24hr safety line + identity verification</td>
+<td>Property damage, host liability</td>
+<td>Funded by Airbnb fees. <strong>Explicitly NOT insurance</strong> — contractual program.</td>
+</tr>
+<tr>
+<td><strong>Airbnb AirCover (guest)</strong></td>
+<td>Re-booking protection if listing has issues, refund if host cancels</td>
+<td>Guest experience failures</td>
+<td>Same — built into commission</td>
+</tr>
+<tr>
+<td><strong>Etsy Purchase Protection</strong></td>
+<td>Up to $250 per order coverage (since 2022 update — was $250 cap on whole order, now $250 per order regardless of order size)</td>
+<td>Lost/damaged shipments, items not as described</td>
+<td>Funded by Etsy fees. <strong>Explicitly NOT insurance</strong></td>
+</tr>
+<tr>
+<td><strong>Thumbtack Damage Guarantee</strong></td>
+<td>$100K property damage</td>
+<td>Pro-caused damage</td>
+<td>Self-insured by Thumbtack</td>
+</tr>
+<tr>
+<td><strong>TaskRabbit Happiness Pledge</strong></td>
+<td>$10K</td>
+<td>Customer dissatisfaction</td>
+<td>Self-insured by TaskRabbit</td>
+</tr>
+</tbody></table>
+<h3 id="optional--paid-analogous-to-what-were-designing">Optional / PAID (analogous to what we're designing)</h3>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>Product</th>
+<th>Premium</th>
+<th>What it covers</th>
+<th>Backend</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Booking.com Travel Insurance</strong></td>
+<td>Optional at checkout</td>
+<td>~5–8% of trip cost</td>
+<td>Cancellation, medical, lost luggage</td>
+<td><strong>Cover Genius (XCover)</strong> white-label</td>
+</tr>
+<tr>
+<td><strong>Wayfair Purchase Protection</strong></td>
+<td>Optional at checkout</td>
+<td>$30–$200 per item</td>
+<td>Damage, accidental, normal wear</td>
+<td><strong>Allstate</strong> white-label</td>
+</tr>
+<tr>
+<td><strong>eBay Protection Plus</strong></td>
+<td>Optional at checkout</td>
+<td>3–10% of item price</td>
+<td>Extended warranty</td>
+<td><strong>Allstate / SquareTrade</strong> white-label</td>
+</tr>
+<tr>
+<td><strong>Avis LDW (Loss Damage Waiver)</strong></td>
+<td>Optional at counter</td>
+<td>$30–$50 per day</td>
+<td>Vehicle damage waiver</td>
+<td>Self-insured by Avis (not technically insurance — contractual waiver)</td>
+</tr>
+<tr>
+<td><strong>Home Depot Tool Rental Damage Waiver</strong></td>
+<td>Optional at checkout</td>
+<td>10% of rental cost</td>
+<td>Tool damage during rental</td>
+<td>Self-insured by Home Depot</td>
+</tr>
+<tr>
+<td><strong>Best Buy Geek Squad Protection</strong></td>
+<td>Optional at checkout</td>
+<td>8–25% of product price</td>
+<td>Extended warranty + accidental</td>
+<td><strong>AIG / Asurion</strong> white-label</td>
+</tr>
+<tr>
+<td><strong>Lyft Driver Protection</strong></td>
+<td>Optional driver subscription</td>
+<td>$9.95/mo</td>
+<td>Sick days, accident protection</td>
+<td>Driver-side benefit (different audience)</td>
+</tr>
+</tbody></table>
+<p><strong>Pattern:</strong> Big platforms either self-insure (Avis, Home Depot — when they have huge balance sheets) OR partner with a white-label MGA (Cover Genius, Allstate, AIG). Pre-Series A startups go MGA route — no need to build insurance regulatory infrastructure.</p>
+<hr>
+<h2 id="3-three-product-structures-for-sherpa-pros">3. Three Product Structures for Sherpa Pros</h2>
+<h3 id="product-a--sherpa-pros-project-protection-per-job-optional-at-checkout-⭐-start-here">Product A — <strong>Sherpa Pros Project Protection</strong> (per-job, optional, at checkout) ⭐ START HERE</h3>
+<p><strong>The recommended Phase 1 launch.</strong> Lowest complexity, fastest revenue.</p>
+<p><strong>How it works:</strong></p>
+<ul>
+<li>After client accepts pro's bid, but before payment, customer sees:</li>
+</ul>
+<pre><code>┌────────────────────────────────────────────────────────────┐
+│  Add Project Protection?                                   │
+│                                                            │
+│  ☐  Standard ($0) — Free Work Guarantee                    │
+│      Up to $5,000 if work fails inspection or has          │
+│      a code defect within 30 days                          │
+│                                                            │
+│  ☑  Plus ($89) — Project Protection                        │
+│      Up to $25,000 covered for 1 year                      │
+│      Includes materials + structural + consequential       │
+│      Deductible: $250                                      │
+│      Backed by [Carrier Name] (A.M. Best A-rated)          │
+│                                                            │
+│  ☐  Premium ($249) — Project Protection Plus               │
+│      Up to $100,000 covered for 5 years                    │
+│      Includes everything above + appliance failure         │
+│      Deductible: $0                                        │
+│                                                            │
+│  [Continue to Pay]                                         │
+└────────────────────────────────────────────────────────────┘
+</code></pre>
+<p><strong>Pricing model:</strong> flat tiers OR percentage-of-job-value (e.g., 3% / 5% / 8%). A/B test to find conversion sweet spot.</p>
+<p><strong>Backend:</strong> White-label via Cover Genius (XCover) or Boost Insurance — they hold the carrier relationship + state licenses + claims processing. Sherpa Pros is the distribution channel.</p>
+<p><strong>Revenue:</strong> Sherpa Pros earns 20–30% commission on each policy sold. At $89 premium × 25% commission = $22 per protected job. At Phase 1 200-job/month volume × 50% attach rate × $22 = <strong>~$2,200/mo additional revenue</strong>. At Phase 2 1,000-job/month volume = <strong>~$11K/mo</strong>.</p>
+<p><strong>Customer angle:</strong> <em>"For the price of a tank of gas, you're protected up to $25,000 for a full year. Most claims paid in 5 days."</em></p>
+<h3 id="product-b--sherpa-pros-home-maintenance-membership-annual-recurring--phase-2">Product B — <strong>Sherpa Pros Home Maintenance Membership</strong> (annual, recurring) — Phase 2</h3>
+<p><strong>Recurring revenue, higher LTV.</strong> Adapts the home-warranty model (2-10 HomeBuyers Warranty, American Home Shield) to a marketplace.</p>
+<p><strong>How it works:</strong></p>
+<ul>
+<li>Annual membership (e.g., $199/yr or $19/mo)</li>
+<li>Includes:<ul>
+<li>Priority dispatch (Founding Pros respond first to members)</li>
+<li>Free standard Project Protection on every job</li>
+<li>1 free emergency call per year ($300 value)</li>
+<li>Annual maintenance check-up (free pro visit)</li>
+<li>5% off all completed jobs</li>
+</ul>
+</li>
+<li>Backed by partnership with existing home warranty company (white-label)</li>
+</ul>
+<p><strong>Backend options:</strong></p>
+<ul>
+<li><strong>2-10 HomeBuyers Warranty</strong> — partner program, they handle warranty mechanics, Sherpa Pros earns 15–25% revenue share</li>
+<li><strong>Super (Best Overall Home Warranty 2026 per USA Today)</strong> — newer, tech-forward, possible co-brand</li>
+<li><strong>Old Republic Home Protection</strong> — established, partner-friendly</li>
+<li><strong>HomeServe</strong> — utility-channel-focused, possible synergy with Mass Save</li>
+</ul>
+<p><strong>Revenue:</strong> $199/yr × 25% commission = $50/yr per member. At 500 members = <strong>$25K/yr recurring</strong>. Cleanest revenue line because it's a subscription.</p>
+<p><strong>Why Phase 2 not Phase 1:</strong> requires real volume to justify partnership negotiations, AND only valuable to high-frequency users (homeowners with 3+ jobs/yr).</p>
+<h3 id="product-c--pm-portfolio-protection-b2b-recurring-multi-unit--phase-23">Product C — <strong>PM Portfolio Protection</strong> (B2B, recurring, multi-unit) — Phase 2/3</h3>
+<p><strong>Highest-LTV product line.</strong> Targets the PM tier.</p>
+<p><strong>How it works:</strong></p>
+<ul>
+<li>Property Manager pays per unit per year (e.g., $24/unit/year on top of $4/unit platform tier)</li>
+<li>Covers ALL Sherpa Pros work performed at PM's units in that year</li>
+<li>Higher caps ($50K–$250K per claim) because volume + B2B contract</li>
+<li>Includes: all Project Protection above + vendor-failure coverage + tenant-caused-damage carve-out</li>
+<li>Optional: commercial general liability rider for the PM (replaces their per-vendor COI tracking)</li>
+</ul>
+<p><strong>Backend:</strong> Specialty commercial insurance partner (NEXT Insurance, Hiscox, Vouch — different vendor than Product A; needs commercial expertise).</p>
+<p><strong>Revenue:</strong> $24/unit/yr × 25% commission = $6/unit/yr. At 5,000 units (Phase 3 target) = <strong>$30K/yr recurring</strong>.</p>
+<p><strong>Strategic value:</strong> locks PM into Sherpa Pros (switching cost), generates differentiation in the $4/unit competitive battle, supports the Series A "PM tier as enterprise upside" narrative.</p>
+<hr>
+<h2 id="4-white-label-vendor-analysis-for-product-a">4. White-Label Vendor Analysis (for Product A)</h2>
+<table>
+<thead>
+<tr>
+<th>Vendor</th>
+<th>Strengths</th>
+<th>Weaknesses</th>
+<th>Fit for Sherpa Pros</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>⭐ Cover Genius (XCover)</strong></td>
+<td>All 50 US states + 60 countries; 120M+ policies sold; AI/ML dynamic pricing; powers Booking.com, Skyscanner, Wayfair, eBay; single API</td>
+<td>Larger client preferred; may have minimum-volume requirements</td>
+<td><strong>Top pick for scale</strong> — best track record with marketplaces. Direct API integration.</td>
+</tr>
+<tr>
+<td><strong>Boost Insurance</strong></td>
+<td>API-first, fully white-labeled, MGA model (they hold licenses), startup-friendly, smaller min commitments</td>
+<td>Smaller policy catalog than Cover Genius; newer (2017)</td>
+<td><strong>Top pick for early-stage</strong> — built for startups distributing insurance.</td>
+</tr>
+<tr>
+<td><strong>Sure</strong></td>
+<td>Strong API, services carriers + brands + marketplaces + SaaS, claims processing built-in</td>
+<td>Less marketplace-specific examples; broader product mix means less specialized</td>
+<td><strong>Solid alternative</strong> — good if Boost or Cover Genius don't engage</td>
+</tr>
+<tr>
+<td><strong>Bolttech</strong></td>
+<td>Asia-Pacific origin, expanding US, embedded insurance focus</td>
+<td>Less US presence than Cover Genius/Boost</td>
+<td>Skip for US-only Phase 1</td>
+</tr>
+<tr>
+<td><strong>REIN</strong></td>
+<td>Brands, media, carriers focus</td>
+<td>Less marketplace focus</td>
+<td>Skip</td>
+</tr>
+</tbody></table>
+<p><strong>Recommendation:</strong> Reach out to Boost Insurance + Cover Genius in parallel. Cover Genius probably won't engage at our Phase 1 scale, but worth the email; Boost is the more realistic Phase 1 partner.</p>
+<p><strong>Outreach:</strong></p>
+<ul>
+<li>Boost: <a href="https://boostinsurance.com/platform/">boostinsurance.com/platform</a> — request demo, mention "marketplace use case, Phase 1 ~200 jobs/month, scaling to 1,000/month in 12 months"</li>
+<li>Cover Genius: <a href="https://covergenius.com/">covergenius.com</a> — same pitch, emphasize multi-state (NH/ME/MA → all 50 by Phase 4)</li>
+</ul>
+<hr>
+<h2 id="5-regulatory-considerations">5. Regulatory Considerations</h2>
+<p><strong>The single biggest reason to use a white-label MGA: insurance is heavily regulated state-by-state.</strong> Sherpa Pros does NOT want to:</p>
+<ul>
+<li>Get licensed as an insurance carrier (impossible at startup scale)</li>
+<li>Get licensed as an MGA (months of paperwork per state, costly)</li>
+<li>Get licensed as an Insurance Producer (lighter, but still per-state, per-line — NH/ME/MA initially is doable but tedious)</li>
+</ul>
+<p><strong>With white-label MGA backend (Boost / Cover Genius / Sure):</strong></p>
+<ul>
+<li>The MGA holds all state licenses</li>
+<li>Sherpa Pros is the <strong>distribution channel</strong> — needs only a "limited lines license" or equivalent (depending on state and product type)</li>
+<li>Some states require Sherpa Pros to have a licensed Insurance Producer on staff (or contracted) to sell certain products — flag for attorney</li>
+<li>Disclosures in checkout flow (state-mandated) handled by MGA's compliance copy</li>
+<li>Claims handled by MGA, not Sherpa Pros (huge ops burden lifted)</li>
+</ul>
+<p><strong>Attorney scope (add to Plan §A7 expanded engagement):</strong></p>
+<ul>
+<li>Confirm state licensing requirements for Sherpa Pros LLC to distribute MGA products in NH/ME/MA</li>
+<li>Review distribution agreement with chosen MGA</li>
+<li>Review checkout flow disclosure language for state compliance</li>
+</ul>
+<p><strong>Important: do NOT confuse "Project Protection" with the free Work Guarantee</strong> in marketing copy or legal docs. Mixing them creates regulatory risk (UDAP — Unfair and Deceptive Acts and Practices). The free guarantee is a contractual program; the paid product is real insurance. Two different products, two different sets of disclosures.</p>
+<hr>
+<h2 id="6-revenue-model-detailed">6. Revenue Model (Detailed)</h2>
+<h3 id="product-a--project-protection-per-job">Product A — Project Protection (per-job)</h3>
+<p><strong>Conservative attach rate assumptions:</strong></p>
+<ul>
+<li>30% attach at checkout (industry baseline for embedded insurance)</li>
+<li>60% choose "Plus" tier ($89), 30% "Premium" ($249), 10% none of the above</li>
+<li>Avg premium: 0.6 × $89 + 0.3 × $249 = $128</li>
+<li>Sherpa Pros commission: 25% = <strong>$32 per protected job</strong></li>
+</ul>
+<p><strong>Phase 0/1 revenue projection (200 jobs/mo):</strong></p>
+<ul>
+<li>200 × 30% attach × $32 = <strong>$1,920/mo</strong> (~$23K/yr) at Phase 1 baseline</li>
+<li>At Phase 2 1,000 jobs/mo: <strong>$9,600/mo</strong> (~$115K/yr)</li>
+<li>At Phase 3 5,000 jobs/mo: <strong>$48K/mo</strong> (~$576K/yr)</li>
+</ul>
+<p><strong>Note:</strong> This is REVENUE not gross merchandise volume — it adds to take rate without raising it.</p>
+<h3 id="product-b--annual-membership-phase-2">Product B — Annual Membership (Phase 2+)</h3>
+<ul>
+<li>500 members × $199/yr × 25% = <strong>$25K/yr</strong></li>
+<li>5,000 members × $199/yr × 25% = <strong>$249K/yr</strong> (Phase 4 target)</li>
+</ul>
+<h3 id="product-c--pm-portfolio-phase-23">Product C — PM Portfolio (Phase 2/3+)</h3>
+<ul>
+<li>5,000 units × $24/yr × 25% = <strong>$30K/yr</strong></li>
+<li>50,000 units (Phase 4) × $24/yr × 25% = <strong>$300K/yr</strong></li>
+</ul>
+<p><strong>Combined embedded-protection revenue line at Phase 4:</strong> ~$1.1M/yr — meaningful contribution to Series B+ unit economics.</p>
+<hr>
+<h2 id="7-product--ux-surface">7. Product / UX Surface</h2>
+<h3 id="where-it-appears-in-the-flow">Where it appears in the flow</h3>
+<p><strong>Existing flow:</strong></p>
+<pre><code>Client posts job → Pro bids → Client accepts bid → Stripe payment → Pro starts work
+</code></pre>
+<p><strong>With Project Protection added:</strong></p>
+<pre><code>Client posts job → Pro bids → Client accepts bid →
+  ┌─────────────────────────┐
+  │ Add Project Protection? │  ← NEW SCREEN
+  │ Standard / Plus / Premium│
+  └─────────────────────────┘
+→ Stripe payment (with optional protection charge bundled) →
+  Stripe Connect splits: pro gets job amount – take rate,
+  Sherpa Pros gets take rate, MGA gets premium minus commission →
+Pro starts work
+</code></pre>
+<h3 id="components-needed-engineering-scope-for-t1">Components needed (engineering scope for T1)</h3>
+<ul>
+<li>New page: <code>src/app/(client)/jobs/[jobId]/protection/page.tsx</code></li>
+<li>New component: <code>src/components/protection/ProtectionTierCard.tsx</code></li>
+<li>New API route: <code>src/app/api/protection/quote/route.ts</code> (calls MGA API for real-time quote)</li>
+<li>New API route: <code>src/app/api/protection/purchase/route.ts</code> (binds policy + appends to Stripe charge)</li>
+<li>New table: <code>protection_policies</code> (jobId, customerId, mgaPolicyNumber, tier, premiumCents, commissionCents, status, purchasedAt, claimUrl)</li>
+<li>Webhook listener: MGA notifies Sherpa Pros of policy status changes (issued, claim-filed, claim-paid, lapsed)</li>
+<li>Profile page: customer's "My Protection" view showing all active policies + claim button</li>
+</ul>
+<h3 id="marketing-surface">Marketing surface</h3>
+<ul>
+<li>Homeowner landing: add "Optional Project Protection" callout in trust signals row</li>
+<li>Job-acceptance email: mention protection availability</li>
+<li>Post-job email: nudge customers who declined protection ("most customers add protection for jobs over $5K — here's why")</li>
+</ul>
+<hr>
+<h2 id="8-what-this-changes-in-the-phase-01-plan">8. What This Changes in the Phase 0/1 Plan</h2>
+<p><strong>Phase 0 — no change.</strong> Embedded protection requires:</p>
+<ul>
+<li>Live transactions flowing (need Stripe Connect live)</li>
+<li>Beta cohort generating real claims data (informs MGA pricing model)</li>
+<li>Attorney engaged (already in plan §A7, expanded scope already flagged in liability framework)</li>
+<li>Real volume (~30+ jobs/mo) to make MGA partnership worthwhile</li>
+</ul>
+<p><strong>Suggested Phase 1 additions (add to next plan revision):</strong></p>
+<ul>
+<li><strong>Task K1 (NEW):</strong> Engage Boost Insurance + Cover Genius for embedded protection partnership — Phase 1 Month 4</li>
+<li><strong>Task K2 (NEW):</strong> State licensing review with attorney — confirm Sherpa Pros LLC needs limited-lines license OR licensed Insurance Producer in NH/ME/MA — Phase 1 Month 4</li>
+<li><strong>Task K3 (NEW):</strong> Build Project Protection checkout flow (T1 engineering, ~2 weeks) — Phase 1 Month 5</li>
+<li><strong>Task K4 (NEW):</strong> A/B test 3-tier pricing model (Standard $0 / Plus $89 / Premium $249) — Phase 1 Month 5</li>
+<li><strong>Task K5 (NEW):</strong> First protected jobs go live — Phase 1 Month 6</li>
+<li><strong>Task K6 (NEW):</strong> Measure attach rate, claims rate, customer satisfaction lift — Phase 2 Month 6+</li>
+</ul>
+<p><strong>Phase 2 additions:</strong></p>
+<ul>
+<li>Product B (Annual Membership) — partner with home warranty co (Super, 2-10, Old Republic)</li>
+<li>Product C (PM Portfolio Protection) — specialty commercial insurance partner</li>
+</ul>
+<hr>
+<h2 id="9-open-questions-for-phyrom--attorney--mga">9. Open Questions for Phyrom + Attorney + MGA</h2>
+<ol>
+<li><p><strong>Free Guarantee vs Paid Protection differentiation in marketing</strong> — how to NOT confuse customers? Recommended: free guarantee is "Work Guarantee" (built-in), paid is "Project Protection" (purchased). Different naming, different visual treatment.</p>
+</li>
+<li><p><strong>State licensing</strong> — does Sherpa Pros LLC need a Producer license in NH/ME/MA to distribute Boost/Cover Genius products? Some MGAs handle this via "appointed agent" structure — confirm.</p>
+</li>
+<li><p><strong>Claims handling</strong> — does the MGA handle claims directly with customers, or does Sherpa Pros Concierge stay in the loop? Customer experience question. Recommended: MGA handles claims, but Concierge gets notified and can intervene if customer is frustrated (don't let MGA black-box the customer).</p>
+</li>
+<li><p><strong>Pricing — flat tier vs % of job value</strong> — flat tier is simpler (better attach rate) but % aligns better with risk. A/B test in Phase 1.</p>
+</li>
+<li><p><strong>PM tier pricing</strong> — Product C ($24/unit/yr) is on top of base PM tier ($4/unit/yr drops to $1.50/unit at scale). Does the bundle pricing make sense, or should it be wrapped into a single "Sherpa Pros PM Pro" tier?</p>
+</li>
+<li><p><strong>Specialty lane risk</strong> — heat pump, electrical panel, EV charger jobs have higher loss frequency. MGA may price them higher OR exclude them. Confirm coverage scope before committing.</p>
+</li>
+<li><p><strong>Founding Pro perks</strong> — does Project Protection get cheaper for jobs done by Founding Pros (since they have higher quality)? Could be a differentiator: "Founding Pros = lower protection premiums."</p>
+</li>
+<li><p><strong>Tax treatment</strong> — embedded insurance commission is typically reported as commission revenue (not insurance revenue), simpler tax treatment. Confirm with CPA.</p>
+</li>
+</ol>
+<hr>
+<h2 id="10-implementation-sequencing">10. Implementation Sequencing</h2>
+<p><strong>Phase 0 (Months 0–3):</strong> No action. Build the underlying foundation (Stripe Connect, beta cohort, dispute workflow per liability framework).</p>
+<p><strong>Phase 1 (Months 3–6):</strong></p>
+<ul>
+<li>Month 4: Engage Boost + Cover Genius, attorney review state licensing</li>
+<li>Month 5: Build Project Protection checkout flow, integrate MGA API</li>
+<li>Month 6: Launch with first 100 protected jobs, measure attach rate</li>
+</ul>
+<p><strong>Phase 2 (Months 6–12):</strong></p>
+<ul>
+<li>Month 7–9: Optimize attach rate (A/B pricing tiers, copy variants, placement)</li>
+<li>Month 9–12: Pilot Product B (Annual Membership) — partner with home warranty co</li>
+<li>Month 9–12: Pilot Product C (PM Portfolio Protection) — partner with commercial insurance vendor</li>
+</ul>
+<p><strong>Phase 3 (Months 12–18):</strong></p>
+<ul>
+<li>Scale all 3 products across 4-metro footprint + Phase 3 expansion markets (Providence, Hartford, NYC specialty)</li>
+<li>Renegotiate MGA commission tiers as volume grows</li>
+</ul>
+<hr>
+<h2 id="11-recommended-first-step">11. Recommended First Step</h2>
+<p><strong>Action item for Phase 1 kickoff (after first close):</strong></p>
+<p>Email Boost Insurance with this:</p>
+<blockquote>
+<p>Subject: Embedded protection partnership — construction marketplace</p>
+<p>Hi [name],</p>
+<p>I'm Phyrom, founder of Sherpa Pros — the national licensed-trade marketplace for residential and small-commercial home services (international roadmap), launching first in NH, ME, and MA. We launched our beta cohort in [month] and are running ~200 jobs/month across the Phase 1 launch metros, scaling to 1,000+/month over the next 12 months.</p>
+<p>We want to add an optional Project Protection product at checkout — embedded insurance that gives customers a higher coverage cap and longer window than our built-in Work Guarantee. Tier structure tentatively: Standard (free, our guarantee) / Plus ($89, $25K cap, 1 year) / Premium ($249, $100K cap, 5 years).</p>
+<p>Looking for a white-label MGA partner that:</p>
+<ul>
+<li>Handles the carrier relationship + state licensing in NH/ME/MA (then all 50 by 2027)</li>
+<li>Offers a single API for real-time quote + bind + claims</li>
+<li>Works with marketplaces at our scale (early-stage but growing)</li>
+</ul>
+<p>Worth a 30-min intro call this week?</p>
+<p>Thanks,
+Phyrom · Founder · Sherpa Pros · NH General Contractor · HJD Builders LLC</p>
+</blockquote>
+<p>Same message to Cover Genius. See which engages more substantively.</p>
+<hr>
+<h2 id="12-references">12. References</h2>
+<p><strong>Embedded insurance vendors:</strong></p>
+<ul>
+<li><a href="https://covergenius.com/">Cover Genius (XCover) — embedded insurance platform</a></li>
+<li><a href="https://boostinsurance.com/platform/">Boost Insurance — white-label MGA platform</a></li>
+<li><a href="https://www.sureapp.com/">Sure — insurance API for marketplaces</a></li>
+<li><a href="https://bolttech.io/sales/embedded-insurance-api/">Bolttech — embedded insurance API</a></li>
+<li><a href="https://www.openbankingtracker.com/embedded-finance/cover-genius">Cover Genius 2026 review — Open Banking Tracker</a></li>
+<li><a href="https://iireporter.com/embedded-insurance-approaches-tipping-point/">Embedded Insurance Approaches Tipping Point — Insurance Innovation Reporter</a></li>
+</ul>
+<p><strong>Marketplace protection examples:</strong></p>
+<ul>
+<li><a href="https://www.airbnb.com/help/article/3733">Airbnb AirCover for hosts (free, contractual)</a></li>
+<li><a href="https://help.etsy.com/hc/en-us/articles/7471925990807-Etsy-s-Purchase-Protection-Program">Etsy Purchase Protection program</a></li>
+<li><a href="https://help.thimble.com/hc/en-us/articles/4401805596307">Wayfair / eBay protection plans (paid, white-label)</a></li>
+</ul>
+<p><strong>Home warranty partners (Product B):</strong></p>
+<ul>
+<li><a href="https://www.ahs.com/">American Home Shield</a></li>
+<li><a href="https://www.2-10.com/">2-10 HomeBuyers Warranty</a></li>
+<li><a href="https://hellosuper.com/news/best-overall-home-warranty-2026">Super (Best Overall Home Warranty 2026 per USA Today)</a></li>
+<li><a href="https://www.orhp.com">Old Republic Home Protection</a></li>
+<li><a href="https://realestate.usnews.com/home-services/home-warranty/homeserve">HomeServe</a></li>
+</ul>
+<hr>
+<h2 id="13-last-updated">13. Last Updated</h2>
+<p><strong>2026-04-24</strong> — Draft v1 by Claude. Needs broker + attorney review before launch. Add this as <strong>Workstream K (Embedded Protection Products)</strong> to the Phase 0/1 handoff doc — but DON'T spin up a parallel terminal for it yet. K is a Phase 1 workstream, not Phase 0. Phyrom should bookmark this and revisit after first close.</p>
+
+	
+
+
+</body>
+</html>

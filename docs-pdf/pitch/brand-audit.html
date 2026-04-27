@@ -1,0 +1,1493 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>brand audit — Sherpa Pros</title>
+<link rel="icon" href="../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="brand-audit.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="sherpa-pros--brand-consistency-audit-waves-12">Sherpa Pros — Brand Consistency Audit (Waves 1+2)</h1>
+<p><strong>Date:</strong> 2026-04-22
+<strong>Auditor:</strong> Brand Guardian agent (Claude)
+<strong>Scope:</strong> 15 customer- and investor-facing artifacts produced in Waves 1 + 2 of the GTM build
+<strong>Brand bible:</strong> <code>/Users/poum/sherpa-pros-platform/docs/superpowers/specs/2026-04-22-gtm-marketing-design.md</code> §3
+<strong>Output mandate:</strong> Phyrom can review-and-apply all P0+P1 fixes in under 90 minutes. Audit-only — no source files modified.</p>
+<hr>
+<h2 id="1-executive-summary">1. Executive Summary</h2>
+<p><strong>Overall brand-health letter grade: B+</strong> (90% bible-aligned; one Critical surname violation, two factual inconsistencies, several dilution-of-voice and unspelled-jargon misses).</p>
+<p><strong>Top 3 systemic patterns to fix:</strong></p>
+<ol>
+<li><strong>Surname leakage</strong> — one file (<code>pm-outbound.md</code> line 22) uses an unverified surname for Phyrom ("Doung"). Brand bible says surname is UNKNOWN. This is a Critical, single-line, copy-paste fix.</li>
+<li><strong>Pricing-comparison framing drift</strong> — multiple files reach for "cheaper" / "half-price" / "lower fee" framing without consistent phrasing. The bible's frame is "5% take rate vs ~30% effective lead-gen cost" (outcome-tied vs pay-to-bid), not "cheap vs expensive." Brand bible should be amended to make this explicit.</li>
+<li><strong>Founder pronoun inconsistency</strong> — Phyrom alternates between first-person ("I built…") and third-person ("the founder commits…"). First-person is the brand voice; third-person flattens it.</li>
+</ol>
+<p><strong>Update 2026-04-24 — NEW systemic brand rule:</strong></p>
+<ol start="4">
+<li><p><strong>Region-anchored brand language must be removed.</strong> Sherpa Pros is <strong>a national licensed-trade marketplace</strong> with international roadmap. The launch geography (NH/ME/MA + Boston specialty) is a Phase 1/2/3 operational sequence, NOT the brand identity. Common violations to fix in every customer-facing artifact:</p>
+<ul>
+<li>❌ "the New England licensed-trade marketplace" → ✅ "the national licensed-trade marketplace, launching in New England Phase 1"</li>
+<li>❌ "Sherpa Pros for NH/ME/MA" → ✅ "Sherpa Pros (launching in NH, ME, MA — expanding nationally)"</li>
+<li>❌ "NH/ME homeowners" / "Boston homeowners" as audience labels → ✅ "Residential homeowners" / "Specialty / older-home owners" (use-case based, not region-based)</li>
+<li>❌ "Northern Triangle" as brand language → ✅ "Phase 1 launch metros" or name them explicitly</li>
+<li>✅ KEEP: founder story ("working New Hampshire general contractor" — Phyrom's real biography, not brand cap), state-specific operational notes (NHHBA, FW Webb, MassCEC, MA licensing), per-metro pricing bands (real cost-of-labor differences)</li>
+</ul>
+<p>See spec §3.4 (Geographic brand rules) for the canonical guidance.</p>
+</li>
+</ol>
+<p><strong>Estimated apply-time for all P0 + P1 fixes:</strong> 40–60 minutes of Phyrom's time. P2 polish adds another ~30 min if desired.</p>
+<hr>
+<h2 id="2-p0-issues--block-launch-external-public-facing">2. P0 Issues — Block Launch (External, Public-Facing)</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>File</th>
+<th>Line(s)</th>
+<th>Violation</th>
+<th>Exact replacement text</th>
+<th>Severity</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>P0-1</td>
+<td><code>docs/marketing/email-sequences/pm-outbound.md</code></td>
+<td>22</td>
+<td><strong>Surname violation.</strong> Uses "Phyrom Doung" — surname is UNKNOWN per brand bible (was stripped from for-pros page in commit fc2a87c).</td>
+<td><code>Phyrom, founder of Sherpa Pros. I am also a working New Hampshire general contractor, so I have spent ten years on the other side of property manager work orders.</code> (drop the surname; rest of sentence is fine)</td>
+<td><strong>Critical</strong></td>
+</tr>
+<tr>
+<td>P0-2</td>
+<td><code>src/app/(marketing)/page.tsx</code></td>
+<td>240–244</td>
+<td><strong>Founder card</strong> uses initials "PD" (line 240) — encodes a surname that doesn't exist. Bible says display name is just "Phyrom."</td>
+<td>Replace <code>PD</code> with <code>P</code> on line 240. (For-pros page already does this correctly at line 288.) Keep lines 243–244 as written — they correctly show "Phyrom" + "Founder · NH General Contractor" without surname.</td>
+<td><strong>Critical</strong></td>
+</tr>
+<tr>
+<td>P0-3</td>
+<td><code>src/app/(marketing)/page.tsx</code></td>
+<td>244</td>
+<td><strong>Founder line missing HJD attribution.</strong> For-pros page correctly says <code>Founder · NH General Contractor · HJD Builders LLC</code> (line 292). Homeowner landing page weaker line says only <code>Founder · NH General Contractor</code>. Inconsistent founder display across two flagship landing pages.</td>
+<td><code>Founder · NH General Contractor · HJD Builders LLC</code></td>
+<td>High</td>
+</tr>
+<tr>
+<td>P0-4</td>
+<td><code>docs/marketing/email-sequences/pro-recruiting.md</code></td>
+<td>7, 39</td>
+<td><strong>Email mismatch.</strong> Header says <code>phyrom@thesherpapros.com</code>. CLAUDE.md and the rest of the artifacts use <code>poum@hjd.builders</code> for Phyrom. Two senders, one founder, undermines the personal-feel pitch. Confirm with Phyrom which alias is canonical and use it everywhere.</td>
+<td><strong>If <code>phyrom@thesherpapros.com</code> is the production alias</strong> → leave as-is and update Wefunder page-content.md line 189 + linkedin-editorial.md context box accordingly. <strong>If <code>poum@hjd.builders</code> is canonical</strong> → change to <code>poum@hjd.builders</code> here. (Phyrom's call — pick one.)</td>
+<td>High</td>
+</tr>
+<tr>
+<td>P0-5</td>
+<td><code>docs/fundraising/wefunder/page-content.md</code></td>
+<td>65</td>
+<td><strong>Stat contradiction.</strong> "Thumbtack has documented deposit-theft cases" — page-content.md elsewhere (line 81) says losses "$300–$6,500"; the deck (slide 2) and one-pager say "$300–$1,600"; for-pros page mentions no specific number. Pick one range and use it everywhere. The bible (§2.2) says "$300–$1,600."</td>
+<td>Standardize on <code>$300–$1,600</code> per bible §2.2 across all artifacts. Specifically in page-content.md line 81, change "$300–$6,500" → <code>$300–$1,600</code>.</td>
+<td>High</td>
+</tr>
+<tr>
+<td>P0-6</td>
+<td><code>src/app/(marketing)/for-pros/page.tsx</code></td>
+<td>78</td>
+<td><strong>"Old House Verified" missing hyphen.</strong> Bible standardizes "Old-House Verified" (hyphenated) — used consistently in deck, one-pager, page-content, PR plan. For-pros page drops the hyphen.</td>
+<td><code>Your photo runs in the Mass Save and Old-House Verified press push.</code></td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>P0-7</td>
+<td><code>docs/fundraising/wefunder/page-content.md</code></td>
+<td>105</td>
+<td><strong>Stat drift.</strong> Says Mass Save heat-pump rebate is "$8,500 max in 2026." LinkedIn editorial post W3 Friday (line 95) says "$10,000+." Brand bible §2.3 says "$10K+." For-pros page line 80 says "$10K+." Pick one.</td>
+<td>Standardize on <code>$10,000+</code> (per bible §2.3 + 4 other artifacts). Change "$8,500 max in 2026" → <code>$10,000+ in 2026</code>. (Verify the actual current Mass Save rebate cap before publishing — Phyrom should confirm; this is a sources question, not just a brand question.)</td>
+<td>High</td>
+</tr>
+<tr>
+<td>P0-8</td>
+<td><code>docs/marketing/linkedin-editorial.md</code></td>
+<td>51</td>
+<td><strong>Self-imposed brand rule that is not in the bible.</strong> Says: <em>"Never use the word 'homeowner' without 'neighbor' energy."</em> Bible §3.3 says "always say Local / Neighbor" but doesn't ban "homeowner." Multiple artifacts (page.tsx hero, faq, for-pros) use "homeowner" liberally and correctly. Either propagate this rule into the bible or strike it here.</td>
+<td>Strike line 51 — this rule contradicts ~30 instances of "homeowner" already shipped across approved artifacts. The bible's intent is "treat homeowners as neighbors," not "never write the word 'homeowner.'"</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>P0-9</td>
+<td><code>src/app/(marketing)/page.tsx</code></td>
+<td>144</td>
+<td><strong>Pricing-comparison framing.</strong> "Three things you will not find on Angi" is a competitor-name-in-headline. Bible voice is plainspoken, dry; this is fine. <strong>But</strong> the value props underneath frame Sherpa Pros as the absence-of-Angi rather than the affirmative thing it is. Recommend adding the affirmative line right after.</td>
+<td>Add a single sentence after line 148 paragraph: <code>&lt;p&gt;Built by a working contractor, for the contractors he works with every day.&lt;/p&gt;</code> — restates the bible's positioning line. (Optional polish; consistency-improving.)</td>
+<td>Low</td>
+</tr>
+<tr>
+<td>P0-10</td>
+<td><code>docs/fundraising/wefunder/pr-launch-plan.md</code></td>
+<td>38</td>
+<td><strong>Spell-out compliance miss in press release body.</strong> First mention of "AG" appears at line 365 ("MA AG / NH DOL") — needs spell-out. <strong>However, in the press release itself (line 40) "Vermont Attorney General" is correctly spelled out.</strong> Cross-check that internal docs don't leak abbreviations to external reporters.</td>
+<td>In line 365 (Open Items appendix), change <code>MA AG / NH DOL</code> → <code>Massachusetts Attorney General / New Hampshire Department of Labor</code>. (Lower priority because this is internal Phyrom-facing operating notes, not press-facing copy. Flag for hygiene.)</td>
+<td>Low</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="3-p1-issues--fix-before-send-to-investors">3. P1 Issues — Fix Before Send-to-Investors</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>File</th>
+<th>Line(s)</th>
+<th>Violation</th>
+<th>Exact replacement text</th>
+<th>Severity</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>P1-1</td>
+<td><code>docs/pitch/sherpa-pros-deck-v1.md</code></td>
+<td>197</td>
+<td><strong>Founder voice slip — third person.</strong> Slide 9 reads <code>Founder of Sherpa Pros and the broader BldSync platform that powers the code-aware layer.</code> Internal name "BldSync" exposed externally. Bible says BldSync is internal.</td>
+<td>Rewrite: <code>Founder of Sherpa Pros and the underlying code-intelligence layer that powers code-aware quote validation across the platform.</code> (Drops "BldSync"; restates in bible-aligned plainspoken terms.)</td>
+<td><strong>Critical</strong></td>
+</tr>
+<tr>
+<td>P1-2</td>
+<td><code>docs/pitch/sherpa-pros-deck-v1.md</code></td>
+<td>254</td>
+<td><strong>Internal name "Wiseman" in appendix.</strong> Appendix A1: <code>A1. Wiseman code-intelligence architecture (technical deep-dive — "code-aware layer" externally)</code> — <strong>even with the parenthetical, the word "Wiseman" is on the slide and a screenshot of the appendix could leak.</strong> Bible: never say externally.</td>
+<td>Replace: <code>A1. Code-intelligence architecture (technical deep-dive of the code-aware quote validation layer) — for technical due diligence rooms</code></td>
+<td>High</td>
+</tr>
+<tr>
+<td>P1-3</td>
+<td><code>docs/pitch/sherpa-pros-deck-v1.md</code></td>
+<td>87</td>
+<td><strong>Internal name "Wiseman" in presenter notes.</strong> <code>The internal name for the code engine is "Wiseman" — never say that word externally.</code> Presenter notes get pasted into speaker decks, exported to PDFs, screenshotted in coaching reviews. Even in presenter notes this leaks.</td>
+<td>Move this rule out of the deck entirely — it belongs in the Brand Guardian Pre-Send Checklist (already at line 267) which already covers it. Delete sentence at line 87 entirely; keep the rest of the presenter note.</td>
+<td>High</td>
+</tr>
+<tr>
+<td>P1-4</td>
+<td><code>docs/fundraising/accelerators/suffolk-technologies-app.md</code></td>
+<td>137</td>
+<td><strong>Internal name "Wiseman" in reviewer-bias notes.</strong> <code>Mention Wiseman/code-aware engine only after the operator narrative is established.</code> Same risk as P1-3 — these notes get screenshotted into slack threads, AI agent inputs, and coaching reviews.</td>
+<td><code>Mention the code-aware quote validation engine only after the operator narrative is established.</code></td>
+<td>High</td>
+</tr>
+<tr>
+<td>P1-5</td>
+<td><code>docs/fundraising/vc/building-ventures-warm-intro.md</code></td>
+<td>42</td>
+<td><strong>Internal name "Wiseman" in research brief.</strong> <code>Code-compliance / permit-validation engines (the Wiseman lane — externally "code-aware quote validation")</code> — same screenshot-leak risk.</td>
+<td><code>Code-compliance / permit-validation engines (Sherpa Pros' code-aware quote validation lane)</code></td>
+<td>High</td>
+</tr>
+<tr>
+<td>P1-6</td>
+<td><code>docs/fundraising/wefunder/page-content.md</code></td>
+<td>393</td>
+<td><strong>Self-reference to Brand Guardian as a process step in a public-facing page appendix.</strong> Line 393 says: <code>Have the Brand Guardian agent review the page for forbidden phrases…</code> This is an INTERNAL operating note. If the page is exported as a PDF and shared with an investor, "Brand Guardian agent" reads as an unfunded internal process. Move to a separate ops-only file.</td>
+<td>Strike line 393 from page-content.md (or move to a sibling <code>_internal-checklist.md</code> not linked from the public page). The page itself should end at line 380 (the disclaimer block) for public consumption.</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>P1-7</td>
+<td><code>docs/pitch/sherpa-pros-deck-v1.md</code></td>
+<td>218</td>
+<td><strong>Slide 10 title contains a jargon abbreviation on first use.</strong> <code>Title: Phase 0 exit gate. We trigger Phase 1 the moment any one of three doors opens.</code> "Phase 0" / "Phase 1" used without spell-out across the deck. Investors who haven't read the GTM spec don't know what "Phase 0" means.</td>
+<td>Either spell out at slide-level: <code>Phase 0 — Fundraise &amp; Prove. We trigger Phase 1 — Lean Launch — the moment any one of three doors opens.</code> OR add a small footer chip: <code>Phase 0 = first 90 days, fundraising + 10-pro beta. Phase 1 = Months 3–6, lean launch.</code></td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>P1-8</td>
+<td><code>docs/pitch/sherpa-pros-onepager-v1.md</code></td>
+<td>54</td>
+<td><strong>LinkedIn placeholder unresolved.</strong> <code>linkedin.com/in/phyrom (placeholder — confirm before send)</code> — flagged as placeholder but ships in the live one-pager.</td>
+<td>If Phyrom has a public LinkedIn URL, paste it. If not, <strong>strike the LinkedIn line entirely</strong> rather than ship a placeholder to investors. (<code>mailto:</code> is enough at this stage.)</td>
+<td>High</td>
+</tr>
+<tr>
+<td>P1-9</td>
+<td><code>docs/pitch/sherpa-pros-onepager-v1.md</code></td>
+<td>28</td>
+<td><strong>CAC/MRR/ARR/etc. — none used. ✓</strong> Verified one-pager is bible-clean on jargon. <strong>But</strong> Slide 7 of deck (line 151) uses <code>$2.0M ARR</code> without spelling out. Spell out on first use.</td>
+<td><code>$2.0M Annual Recurring Revenue (ARR) before the PM tier turns on.</code> (Then "ARR" alone is fine subsequently.)</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>P1-10</td>
+<td><code>docs/fundraising/accelerators/yc-app.md</code></td>
+<td>53</td>
+<td><strong>284-municipal-codes claim</strong> appears here but not in deck or one-pager. Either this stat is real and should be everywhere (it's a strong moat signal) or it's aspirational and shouldn't be in the YC app. Bible doesn't reference it.</td>
+<td>If real (per CodeWiseman MEMORY entry: "284 municipal" codes confirmed in CodeWiseman scope) — propagate to deck Slide 4 and one-pager Pillar 2 as: <code>validates against NEC, IRC, MA Electrical, NH state code (RSA), and 284 NH municipal codes.</code> If not yet shipping in production — strike from yc-app.md line 53 + faq.md if anywhere.</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>P1-11</td>
+<td><code>docs/fundraising/accelerators/yc-app.md</code></td>
+<td>53</td>
+<td><strong>One-pager / deck / YC app inconsistency.</strong> YC app mentions PM tier as "$1.50/unit/month for the PM tier" — deck slide 7 shows "$4 → $1.50 per unit per month" with the higher anchor. Suffolk app line 47 shows "$1.50/unit/month" alone. Inconsistent: half the artifacts anchor at $4, half don't.</td>
+<td>Standardize: always anchor at the higher number when introducing PM pricing — <code>$4/unit/month entry pricing, dropping to $1.50/unit/month at scale (5,000+ units)</code>. Then "$1.50" alone is fine in subsequent mentions.</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>P1-12</td>
+<td><code>docs/fundraising/wefunder/faq.md</code></td>
+<td>143</td>
+<td><strong>LinkedIn search instruction.</strong> <code>Search "Phyrom Sherpa Pros" on LinkedIn.</code> If Phyrom's LinkedIn URL is set (P1-8), put the URL here directly. Search instructions are friction that loses readers.</td>
+<td><code>Phyrom's public LinkedIn: [link]</code> (use real URL once confirmed). If LinkedIn is not yet set up, strike this entire item and lean on the email + portal channels.</td>
+<td>Low</td>
+</tr>
+<tr>
+<td>P1-13</td>
+<td><code>docs/pitch/sherpa-pros-deck-v1.md</code></td>
+<td>14</td>
+<td><strong>Founder hook is strong but verbose for slide 1.</strong> Bible says slide 1 line 1 = founder story. Current line 1: <code>Hi, I'm Phyrom. I run HJD Builders, a licensed general contractor in New Hampshire.</code> — good. But the next sentence is 60 words and breaks the 8th-grade reading flow on a single slide.</td>
+<td>Break into two short lines for slide projection: <code>Hi, I'm Phyrom. I run HJD Builders — a licensed general contractor in New Hampshire.</code> [break] <code>I built Sherpa Pros because the platforms my crew gets pitched every week — Angi, Thumbtack, TaskRabbit, Handy — sell us leads we can't afford and send homeowners to people who shouldn't be touching their wiring.</code> (Drops "or their gas line" to fit slide; gas-line phrase belongs in the Wefunder long-form, not the deck.)</td>
+<td>Low</td>
+</tr>
+<tr>
+<td>P1-14</td>
+<td><code>docs/pitch/sherpa-pros-deck-v1.md</code></td>
+<td>99</td>
+<td><strong>Slide 5 product demo references "Wiseman-checked" in negation.</strong> <code>the on-screen badge says "Code-checked" — never "Wiseman-checked."</code> Same exposure risk as P1-2/3.</td>
+<td>Rewrite presenter note: <code>The on-screen badge says "Code-checked." Verify before every screenshot capture that the production UI matches.</code> Drop the "never X" framing entirely.</td>
+<td>High</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="4-p2-issues--polish">4. P2 Issues — Polish</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>File</th>
+<th>Line(s)</th>
+<th>Violation</th>
+<th>Exact replacement text</th>
+<th>Severity</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>P2-1</td>
+<td><code>docs/marketing/email-sequences/pro-recruiting.md</code></td>
+<td>122</td>
+<td><strong>Cohort composition list contradiction.</strong> Email 4 (Day 9) says cohort is <code>2 GCs (NH), 1 electrician (Mass Save certified, MA), 1 plumber (NH), 1 HVAC (NH), 1 roofer (MA, old houses), 1 painter (ME), 1 handyman (NH)</code> = 8 pros. Wefunder page-content.md line 160 says cohort = <code>2 GCs (HJD network), 2 handymen, 1 plumber, 1 HVAC/heat-pump specialist</code> for NH (= 6 NH alone) plus ME (2) plus MA (3) = 11 pros. Two different "official" cohort compositions. Pick one and use it everywhere.</td>
+<td>Standardize on the spec §5.1 composition (10–12 pros total): <code>2 GCs (HJD network), 2 handymen, 1 plumber, 1 HVAC / heat-pump specialist (NH); 1 painter, 1 landscaper (ME); 1 licensed electrician, 1 old-house specialist, 1 roofer (MA Boston specialty)</code> = 11 pros. Update pro-recruiting.md Email 4 to match.</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>P2-2</td>
+<td><code>docs/marketing/email-sequences/client-recruiting.md</code></td>
+<td>98</td>
+<td><strong>Service claim that exceeds product spec.</strong> <code>Twenty-four-seven dispatch. Licensed pros on call for water, fire, mold, and storm damage.</code> Brand bible §3.2 doesn't promise 24/7 emergency dispatch. The product spec (per CLAUDE.md schema) shows 7-factor dispatch but no 24/7 emergency-services SLA. Setting an emergency-response expectation that the platform may not meet is a churn / dispute risk.</td>
+<td>Soften: <code>Fast dispatch when something breaks. Licensed pros for plumbing leaks, roof failures, electrical faults — usually matched within hours.</code> (Honest about typical match-time, drops the 24/7 promise.)</td>
+<td>High</td>
+</tr>
+<tr>
+<td>P2-3</td>
+<td><code>docs/marketing/email-sequences/client-recruiting.md</code></td>
+<td>91</td>
+<td><strong>Domain mismatch.</strong> <code>Bookmark this: [thesherpapros.com]({{home_url}})</code> — the brand bible and platform reference <code>www.thesherpapros.com</code>. CLAUDE.md confirms vercel as the live URL. <code>thesherpapros.com</code> is in the email alias (<code>phyrom@thesherpapros.com</code>) but unconfirmed as the public web URL.</td>
+<td>If <code>thesherpapros.com</code> is the canonical public domain → confirm and update CLAUDE.md to reference it. If <code>www.thesherpapros.com</code> is canonical → change client-recruiting.md to <code>Bookmark this: [www.thesherpapros.com]({{home_url}})</code>. (Phyrom's call.)</td>
+<td>High</td>
+</tr>
+<tr>
+<td>P2-4</td>
+<td><code>docs/marketing/linkedin-editorial.md</code></td>
+<td>47</td>
+<td><strong>Restriction on weekend posting "until Phyrom hits 5,000 followers."</strong> This is operational-platform policy mixed into a brand-voice doc. Belongs in a separate <code>linkedin-ops.md</code> if anywhere. Bible doesn't restrict weekends.</td>
+<td>Move to a sibling ops doc, or strike. Keeping the rule weakens the doc's brand-voice authority by introducing tactical noise.</td>
+<td>Low</td>
+</tr>
+<tr>
+<td>P2-5</td>
+<td><code>docs/marketing/linkedin-editorial.md</code></td>
+<td>87</td>
+<td><strong>Post 1 hook contains "Angi receipt or text screenshot" as suggested asset</strong> — flagging that Angi receipts may include trademarked terms or pro PII. Audit risk.</td>
+<td>Add a checklist item before this asset is shipped: <code>[ ] Redact pro names, lead-IDs, and any pricing tied to identifiable accounts before screenshot publication.</code></td>
+<td>Low</td>
+</tr>
+<tr>
+<td>P2-6</td>
+<td><code>docs/fundraising/vc/cvc-outreach.md</code></td>
+<td>22</td>
+<td><strong>Phyrom-as-founder-letter signature in cold-CVC email line 22 reads "Phyrom" alone but earlier <code>pm-outbound.md</code> (P0-1) used "Phyrom Doung."</strong> Inconsistent surname handling within the same author's outreach pack. (Already covered by P0-1 fix.)</td>
+<td>Verify post-P0-1: every Phyrom signature across all outreach reads exactly <code>Phyrom</code> (no surname). Grep: <code>git grep -i "Phyrom [A-Z][a-z]"</code> after P0-1 lands.</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>P2-7</td>
+<td><code>docs/marketing/linkedin-editorial.md</code></td>
+<td>100</td>
+<td><strong>Wk 4 Wed post hook: "lead-paint disclosure"</strong> — minor: this should be hyphenated as "lead-paint" consistently (the post uses both). Brand voice consistency.</td>
+<td><code>Triple-deckers built pre-1978 = lead-paint disclosure required</code> (hyphenate "lead-paint").</td>
+<td>Low</td>
+</tr>
+<tr>
+<td>P2-8</td>
+<td><code>docs/fundraising/wefunder/pr-launch-plan.md</code></td>
+<td>235</td>
+<td><strong>Launch-day LinkedIn post script</strong> opens with a self-reflective "I'm Phyrom, I run HJD Builders, I built Sherpa Pros." All three clauses good — but bible voice rule: founder story is the LEAD HOOK. The current opening reads as introduction, not as story.</td>
+<td>Sharper hook: <code>Today is the day. Twelve years ago I started HJD Builders to build houses. Today the platform I built for the contractors I hired — Sherpa Pros — is open to community ownership. [link]</code> (Ties HJD origin to today's action; founder story leads.)</td>
+<td>Low</td>
+</tr>
+<tr>
+<td>P2-9</td>
+<td><code>docs/fundraising/accelerators/yc-app.md</code></td>
+<td>80</td>
+<td><strong>"Houzz Pro is 1.03★ on the BBB across 500+ complaints"</strong> — strong stat, but only appears in YC app and Suffolk app, not in deck or one-pager. If true, propagate. If unverifiable, strike.</td>
+<td>Verify the stat (Houzz Pro BBB rating + complaint count current to Q1 2026) and propagate to deck Slide 2 + one-pager Pillar 1 as a fifth bullet. Or strike.</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>P2-10</td>
+<td><code>src/app/(marketing)/page.tsx</code></td>
+<td>363</td>
+<td><strong>Email body parameter passes a question mark in a mailto subject</strong> — minor escape edge case but works. Email subject "Request Service in My Area" is a fine homeowner-side trigger. ✓ No fix needed.</td>
+<td>(Pass — no action.)</td>
+<td>—</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="5-bright-line-never-say-violation-tally">5. Bright-Line "Never Say" Violation Tally</h2>
+<p>Across all 15 audited files:</p>
+<table>
+<thead>
+<tr>
+<th>Banned term</th>
+<th>Count</th>
+<th>Files (ranked by exposure risk)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>"Wiseman" externally</strong></td>
+<td><strong>5 critical instances + 1 explicit don't-say sentence</strong></td>
+<td><code>sherpa-pros-deck-v1.md</code> ×3 (lines 87, 99, 254) — all P1; <code>suffolk-technologies-app.md</code> ×1 (line 137) — P1; <code>building-ventures-warm-intro.md</code> ×1 (line 42) — P1; <code>linkedin-editorial.md</code> line 45 (rule statement, OK)</td>
+</tr>
+<tr>
+<td><strong>"Gig" / "Task"</strong></td>
+<td><strong>0 violations</strong> ✓</td>
+<td>None found in any artifact. Bible respected. (Some operational notes use "task force" or similar non-banned compound nouns.)</td>
+</tr>
+<tr>
+<td><strong>"Uber for X" externally</strong></td>
+<td><strong>0 violations</strong> ✓</td>
+<td>None found. CLAUDE.md uses "Uber for contractors" internally only — correctly excluded from external artifacts. (Note: <code>landing-page.tsx</code> does NOT use this phrase.)</td>
+</tr>
+<tr>
+<td><strong>"AI-powered" as headline</strong></td>
+<td><strong>0 violations</strong> ✓</td>
+<td>"AI" mentioned in 3 places (deck slide 3 line 59, yc-app.md, suffolk-app.md) — all as supporting points or in capability descriptions, never as headline. Bible respected.</td>
+</tr>
+<tr>
+<td><strong>"Disrupt"</strong></td>
+<td><strong>0 violations</strong> ✓</td>
+<td>Not used anywhere.</td>
+</tr>
+<tr>
+<td><strong>"Revolutionize"</strong></td>
+<td><strong>0 violations</strong> ✓</td>
+<td>Not used anywhere.</td>
+</tr>
+<tr>
+<td><strong>Jargon abbreviations on first use</strong></td>
+<td><strong>6 instances</strong></td>
+<td>Detail below</td>
+</tr>
+</tbody></table>
+<p><strong>Jargon-spell-out misses (first-use violations):</strong></p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Line</th>
+<th>Abbreviation</th>
+<th>Required spell-out</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>sherpa-pros-deck-v1.md</code></td>
+<td>151</td>
+<td>ARR</td>
+<td>Annual Recurring Revenue (ARR)</td>
+</tr>
+<tr>
+<td><code>sherpa-pros-deck-v1.md</code></td>
+<td>218</td>
+<td>Phase 0/1</td>
+<td>Phase 0 (first 90 days) / Phase 1 (Months 3–6) — see P1-7</td>
+</tr>
+<tr>
+<td><code>pr-launch-plan.md</code></td>
+<td>365</td>
+<td>MA AG / NH DOL</td>
+<td>Massachusetts Attorney General / New Hampshire Department of Labor</td>
+</tr>
+<tr>
+<td><code>cvc-outreach.md</code></td>
+<td>12</td>
+<td>PUC</td>
+<td>Public Utilities Commission ✓ (already spelled out — good catch on first use)</td>
+</tr>
+<tr>
+<td><code>cvc-outreach.md</code></td>
+<td>268</td>
+<td>DPU</td>
+<td>Department of Public Utilities (spell out on first use in this section)</td>
+</tr>
+<tr>
+<td><code>pm-outbound.md</code></td>
+<td>8</td>
+<td>Operating notes mention NOI / CapEx but spell out on first use ✓</td>
+<td>(No fix needed — bible respected.)</td>
+</tr>
+</tbody></table>
+<p><strong>Surname (Doung) violations:</strong> <strong>1 instance</strong> — <code>pm-outbound.md</code> line 22. See P0-1.</p>
+<hr>
+<h2 id="6-founder-story-handling-assessment">6. Founder-Story Handling Assessment</h2>
+<p>Bible rule (§3.3): <em>"Founder story is the lead hook. A working NH GC built the platform he wished existed. This goes on slide 1 of every deck, line 1 of every pro recruit, paragraph 1 of every PR placement."</em></p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Founder story leads?</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>src/app/(marketing)/page.tsx</code> (homeowner landing)</td>
+<td><strong>Partial</strong></td>
+<td>Hero is a separate component (<code>&lt;Hero /&gt;</code>). Founder card appears at section 4 (lines 236–251), not at hero. Acceptable for SEO/conversion structure, but verify <code>&lt;Hero /&gt;</code> component itself opens with a founder reference. <strong>Action:</strong> spot-check <code>components/marketing/Hero.tsx</code>.</td>
+</tr>
+<tr>
+<td><code>src/app/(marketing)/for-pros/page.tsx</code></td>
+<td><strong>Yes</strong></td>
+<td>Hero subhead line 123: <code>Built by a working New Hampshire general contractor.</code> Strong placement. ✓</td>
+</tr>
+<tr>
+<td><code>docs/fundraising/wefunder/page-content.md</code></td>
+<td><strong>Yes</strong></td>
+<td>Section 1 hero subhead + Section 2 paragraph 1: <code>I'm Phyrom. I'm a working general contractor in New Hampshire.</code> ✓</td>
+</tr>
+<tr>
+<td><code>docs/fundraising/wefunder/pr-launch-plan.md</code></td>
+<td><strong>Yes</strong></td>
+<td>Press-release dateline + lede put Phyrom and HJD Builders in the first sentence. ✓</td>
+</tr>
+<tr>
+<td><code>docs/marketing/linkedin-editorial.md</code></td>
+<td><strong>Yes</strong></td>
+<td>Persona doc opens with Phyrom + HJD framing. Each post template puts founder voice first. ✓</td>
+</tr>
+<tr>
+<td><code>docs/pitch/sherpa-pros-deck-v1.md</code></td>
+<td><strong>Yes</strong></td>
+<td>Slide 1 line 1: <code>Hi, I'm Phyrom. I run HJD Builders…</code> ✓ Strongest of the bunch.</td>
+</tr>
+<tr>
+<td><code>docs/pitch/sherpa-pros-onepager-v1.md</code></td>
+<td><strong>Partial</strong></td>
+<td>"The Answer" opens with positioning, not founder. Founder appears in subline + author block. <strong>Action:</strong> Add a single sentence at the start of "The Answer" — <code>Built by Phyrom, a working New Hampshire general contractor (HJD Builders LLC).</code></td>
+</tr>
+<tr>
+<td><code>docs/fundraising/wefunder/faq.md</code></td>
+<td><strong>No (acceptable)</strong></td>
+<td>FAQ is a Q&amp;A, not a narrative — founder voice appears at Q9, Q21, Q22. Acceptable for the format. ✓</td>
+</tr>
+<tr>
+<td><code>docs/fundraising/accelerators/yc-app.md</code></td>
+<td><strong>Yes</strong></td>
+<td>Q5/Q14 lead with "I'm a working general contractor in New Hampshire." ✓</td>
+</tr>
+<tr>
+<td><code>docs/fundraising/accelerators/suffolk-technologies-app.md</code></td>
+<td><strong>Yes</strong></td>
+<td>Q-bio + closing "anything else" both lead with the GC angle. ✓</td>
+</tr>
+<tr>
+<td><code>docs/marketing/email-sequences/pro-recruiting.md</code></td>
+<td><strong>Yes</strong></td>
+<td>Email 1 line 1: <code>Phyrom here. I run HJD Builders out of New Hampshire. I am a working general contractor, same as you.</code> ✓ Best founder-voice line in the entire pack.</td>
+</tr>
+<tr>
+<td><code>docs/marketing/email-sequences/client-recruiting.md</code></td>
+<td><strong>Yes</strong></td>
+<td>Email 1 opens with <code>You know me from HJD Builders.</code> ✓</td>
+</tr>
+<tr>
+<td><code>docs/marketing/email-sequences/pm-outbound.md</code></td>
+<td><strong>Partial</strong></td>
+<td>Opens with <code>Phyrom Doung, founder of Sherpa Pros. I am also a working New Hampshire general contractor.</code> Founder voice is there but <strong>the surname violation (P0-1)</strong> is the bigger issue.</td>
+</tr>
+<tr>
+<td><code>docs/fundraising/vc/building-ventures-warm-intro.md</code></td>
+<td><strong>Yes</strong></td>
+<td>Both intro-request templates and the cold-email backup put HJD Builders + working GC in line 1. ✓</td>
+</tr>
+<tr>
+<td><code>docs/fundraising/vc/cvc-outreach.md</code></td>
+<td><strong>Yes</strong></td>
+<td>NGP cold email line 1: <code>I'm Phyrom, founder of Sherpa Pros. I'm a working general contractor in New Hampshire.</code> ✓</td>
+</tr>
+</tbody></table>
+<p><strong>Pass rate:</strong> 12 of 15 strong + 3 partial → <strong>excellent founder-story discipline overall.</strong></p>
+<hr>
+<h2 id="7-voice-consistency-rubric-score-15">7. Voice Consistency Rubric (Score 1–5)</h2>
+<p>Rubric: 5 = bible-perfect, 4 = strong with minor slips, 3 = mixed, 2 = significant drift, 1 = off-brand.</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Plainspoken</th>
+<th>Jargon-discipline</th>
+<th>Founder-voice authenticity</th>
+<th>CTA clarity</th>
+<th>Total /20</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>page.tsx</code> (homeowner)</td>
+<td>5</td>
+<td>5</td>
+<td>4</td>
+<td>5</td>
+<td><strong>19</strong></td>
+</tr>
+<tr>
+<td><code>for-pros/page.tsx</code></td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td><strong>20</strong></td>
+</tr>
+<tr>
+<td><code>wefunder/page-content.md</code></td>
+<td>5</td>
+<td>4</td>
+<td>5</td>
+<td>4</td>
+<td><strong>18</strong></td>
+</tr>
+<tr>
+<td><code>wefunder/pr-launch-plan.md</code></td>
+<td>4</td>
+<td>4</td>
+<td>5</td>
+<td>4</td>
+<td><strong>17</strong></td>
+</tr>
+<tr>
+<td><code>linkedin-editorial.md</code></td>
+<td>5</td>
+<td>4</td>
+<td>5</td>
+<td>5</td>
+<td><strong>19</strong></td>
+</tr>
+<tr>
+<td><code>pitch/sherpa-pros-deck-v1.md</code></td>
+<td>4</td>
+<td>3</td>
+<td>5</td>
+<td>4</td>
+<td><strong>16</strong> (Wiseman leaks drag this down)</td>
+</tr>
+<tr>
+<td><code>pitch/sherpa-pros-onepager-v1.md</code></td>
+<td>5</td>
+<td>5</td>
+<td>4</td>
+<td>4</td>
+<td><strong>18</strong></td>
+</tr>
+<tr>
+<td><code>wefunder/faq.md</code></td>
+<td>5</td>
+<td>5</td>
+<td>4</td>
+<td>4</td>
+<td><strong>18</strong></td>
+</tr>
+<tr>
+<td><code>accelerators/yc-app.md</code></td>
+<td>5</td>
+<td>4</td>
+<td>5</td>
+<td>5</td>
+<td><strong>19</strong></td>
+</tr>
+<tr>
+<td><code>accelerators/suffolk-technologies-app.md</code></td>
+<td>4</td>
+<td>3</td>
+<td>5</td>
+<td>5</td>
+<td><strong>17</strong> (Wiseman leak in reviewer notes)</td>
+</tr>
+<tr>
+<td><code>email-sequences/pro-recruiting.md</code></td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td><strong>20</strong></td>
+</tr>
+<tr>
+<td><code>email-sequences/client-recruiting.md</code></td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td><strong>20</strong> (Best in the pack — exemplar)</td>
+</tr>
+<tr>
+<td><code>email-sequences/pm-outbound.md</code></td>
+<td>4</td>
+<td>5</td>
+<td>4</td>
+<td>5</td>
+<td><strong>18</strong> (surname drag)</td>
+</tr>
+<tr>
+<td><code>vc/building-ventures-warm-intro.md</code></td>
+<td>5</td>
+<td>3</td>
+<td>5</td>
+<td>5</td>
+<td><strong>18</strong> (Wiseman in research brief)</td>
+</tr>
+<tr>
+<td><code>vc/cvc-outreach.md</code></td>
+<td>4</td>
+<td>4</td>
+<td>5</td>
+<td>5</td>
+<td><strong>18</strong></td>
+</tr>
+</tbody></table>
+<p><strong>Average:</strong> 18.3/20 = <strong>91.5%</strong> = <strong>A-</strong> at the per-file level.</p>
+<p><strong>Aggregate brand-health letter (factoring in Critical surname violation + cross-file consistency drift): B+.</strong></p>
+<hr>
+<h2 id="8-recommended-fix-order--pareto-pass-top-5--80-of-improvement">8. Recommended Fix Order — Pareto Pass (Top 5 = 80% of Improvement)</h2>
+<p>Apply in this order to maximize brand-health gain per minute of Phyrom's time:</p>
+<ol>
+<li><strong>P0-1</strong> — Strip "Doung" from <code>pm-outbound.md</code> line 22. <strong>2 minutes.</strong> Single Critical violation.</li>
+<li><strong>P1-1, P1-2, P1-3, P1-4, P1-5, P1-14</strong> — Strip every "Wiseman" reference from external/external-adjacent artifacts (5 file edits, 6 lines total). <strong>15 minutes.</strong> Eliminates the bible's #1 bright-line risk across the entire pack.</li>
+<li><strong>P0-5, P0-7, P1-11</strong> — Standardize every cross-artifact stat (Thumbtack range, Mass Save rebate, PM tier pricing). <strong>20 minutes.</strong> A single inconsistent stat in front of an investor reads as "founder doesn't know his own numbers." This is the single biggest credibility lift.</li>
+<li><strong>P2-2, P2-3</strong> — Soften the 24/7 emergency promise + resolve the domain question (<code>thesherpapros.com</code> vs <code>vercel.app</code>). <strong>10 minutes.</strong> The 24/7 promise is a churn risk; the domain question is a trust signal.</li>
+<li><strong>P0-2 + P0-3</strong> — Fix the homeowner landing-page founder card (initials "PD" → "P"; add "HJD Builders LLC"). <strong>3 minutes.</strong> Brings the homeowner landing page to parity with the for-pros page (which already does this correctly).</li>
+</ol>
+<p><strong>Total apply time for top-5 fixes:</strong> ~50 minutes. <strong>Brand-health letter post-fix: A-.</strong></p>
+<p>The remaining ~12 P1/P2 items add the final ~10% of polish in another ~30–40 minutes.</p>
+<hr>
+<h2 id="9-off-bible-findings-outside-the-brand-audit-scope-but-worth-flagging">9. Off-Bible Findings (Outside the Brand Audit Scope, But Worth Flagging)</h2>
+<h3 id="factual--link--dated-stat-issues">Factual / link / dated-stat issues</h3>
+<ol>
+<li><strong>Wefunder URL is a guess.</strong> <code>wefunder.com/sherpapros</code> appears in 4 files (page-content, pr-launch-plan, linkedin-editorial pre-launch posts) without confirmation. Phyrom needs to register/confirm with Wefunder rep before any of these go live.</li>
+<li><strong>"Mass Save 2026 heat pump rebate $8,500 vs $10K+"</strong> — see P0-7. This is also a factual discrepancy with external Mass Save program documentation. Confirm the actual current cap from masssave.com before publishing.</li>
+<li><strong><code>docs/pitch/sherpa-pros-onepager-v1.md</code> line 54</strong> has an unresolved LinkedIn placeholder — flagged in P1-8.</li>
+<li><strong><code>docs/pitch/sherpa-pros-deck-v1.md</code> slide 8</strong> has unresolved <code>[X / Y / Z]</code> traction placeholders (lines 168–173) — bible-acknowledged ("drop in real numbers from the live Stripe Connect dashboard") but worth flagging that <strong>this deck is not investor-ready until those numbers are filled</strong>.</li>
+<li><strong><code>docs/fundraising/wefunder/page-content.md</code> Section 6</strong> has 11 placeholder fields (<code>[X]</code>, <code>[Y]</code>, <code>[Z]</code>, <code>[N]%</code>, <code>[score]</code>, <code>[count]</code>, <code>[STATUS PLACEHOLDER]</code> ×3). Same constraint — page is not Wefunder-ready until populated.</li>
+</ol>
+<h3 id="cross-artifact-contradictions">Cross-artifact contradictions</h3>
+<ol start="6">
+<li><strong>CLAUDE.md says</strong> Sherpa Pros = "Construction marketplace (<strong>Uber for contractors</strong>) connecting clients with verified pros." Bible §3.3 says <strong>never</strong> say "Uber for X" externally. CLAUDE.md is internal but — if it's being read by AI agents that generate external copy — the framing leaks. <strong>Recommendation:</strong> edit CLAUDE.md to reframe as "construction marketplace connecting clients with verified, licensed pros for on-demand trade work" (drop the "Uber for X" shorthand even internally, since it shapes downstream AI output).</li>
+<li><strong>Two senders / two emails for Phyrom</strong> — see P0-4. <code>phyrom@thesherpapros.com</code> (pro-recruiting, pm-outbound) vs <code>poum@hjd.builders</code> (Wefunder page, deck, one-pager). Pick one canonical investor-facing alias and propagate.</li>
+<li><strong>HJD founding year</strong> — Wefunder page-content.md line 63 says "12 years ago"; deck slide 1 line 16 says "12+ years"; faq.md Q9 line 93 says "two years" (referring to <em>platform</em> self-funding, not HJD itself — but a reader could conflate). <strong>Recommendation:</strong> standardize on <code>12+ years as a working NH general contractor</code> for HJD, and <code>2 years self-funding the Sherpa Pros platform build</code> for the platform timeline. Don't say "[YEAR]" placeholder in page-content.md line 187 — replace with actual year.</li>
+<li><strong><code>docs/fundraising/wefunder/page-content.md</code> line 187</strong> has literal placeholder <code>[YEAR]</code> for HJD founding year. Flag for Phyrom: state it.</li>
+</ol>
+<h3 id="brand-bible-amendment-recommendations">Brand-bible amendment recommendations</h3>
+<ol start="10">
+<li><p><strong>The brand bible should explicitly address pricing-comparison language.</strong> Across the 15 files I see:</p>
+<ul>
+<li>"half of what Angi effectively charges" (deck, one-pager, for-pros)</li>
+<li>"roughly half a contractor's all-in Angi cost" (one-pager, faq, suffolk-app, yc-app)</li>
+<li>"half-price forever" (for-pros founding-pro section)</li>
+<li>"lower fee" / "cheaper" don't appear, but <strong>"better deal forever"</strong> (for-pros line 249) and <strong>"5 cents on the dollar"</strong> (for-pros founder quote) do.
+The variance is OK voice-wise but a single canonical phrasing would tighten the pack. <strong>Recommendation:</strong> add to bible §3.3 — <em>"Pricing comparison standard phrase: 'roughly half the all-in cost a contractor pays Angi today.' Avoid 'cheaper,' 'lower,' 'better deal' — they invite price comparison, not value comparison."</em></li>
+</ul>
+</li>
+<li><p><strong>The brand bible should clarify the surname rule.</strong> Right now the rule lives only in commit fc2a87c context + the auditor's job to remember. Codify in §3.3: <em>"Founder display name is 'Phyrom' — surname is unknown / not confirmed and must not be guessed in any external artifact. Display pattern: <code>Phyrom · Founder · NH General Contractor · HJD Builders LLC</code>. Initials display: <code>P</code> (single letter). Never <code>PD</code> or any letter pair encoding a guessed surname."</em></p>
+</li>
+<li><p><strong>The brand bible should standardize the canonical product URL.</strong> Right now the bible doesn't pick between <code>www.thesherpapros.com</code>, <code>thesherpapros.com</code>, and the email-domain <code>@thesherpapros.com</code>. Pick one for each (web, email) and lock it.</p>
+</li>
+</ol>
+<hr>
+<h2 id="audit-complete">Audit complete.</h2>
+<p><strong>Files audited:</strong> 15
+<strong>Total violations flagged:</strong> 10 P0 + 14 P1 + 10 P2 = 34
+<strong>Critical (block-launch) violations:</strong> 2 (P0-1 surname, P1-1 BldSync exposure on deck slide 9)
+<strong>Estimated fix time for Phyrom (P0 + P1):</strong> 40–60 minutes
+<strong>Brand-health letter grade pre-fix:</strong> <strong>B+</strong>
+<strong>Brand-health letter grade post-top-5 fixes:</strong> <strong>A-</strong>
+<strong>Brand-health letter grade post-all-fixes + bible amendments:</strong> <strong>A</strong></p>
+<p>— Brand Guardian</p>
+
+	
+
+
+</body>
+</html>

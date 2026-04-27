@@ -1,0 +1,2087 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2026 04 25 franchise model design — Sherpa Pros</title>
+<link rel="icon" href="../../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="2026-04-25-franchise-model-design.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="sherpa-pros--franchise-model-design-spec">Sherpa Pros — Franchise Model Design Spec</h1>
+<p><strong>Date:</strong> 2026-04-25
+<strong>Author:</strong> Phyrom (via brainstorming with Claude)
+<strong>Status:</strong> Approved — ready for implementation planning
+<strong>Phase:</strong> 4+ infrastructure layer (Phase 3 = "franchise design begins"; Phase 4 = "10-20 Hubs via franchise model — Northeast corridor")
+<strong>Companion specs (parallel work):</strong></p>
+<ul>
+<li>International Expansion: <code>docs/superpowers/specs/2026-04-25-international-expansion-design.md</code></li>
+<li>Platform Scale Architecture: <code>docs/superpowers/specs/2026-04-25-platform-scale-architecture-design.md</code></li>
+<li>Sherpa Hub Integration: <code>docs/superpowers/specs/2026-04-25-sherpa-hub-integration-design.md</code>
+<strong>Source dependencies:</strong></li>
+<li><code>docs/superpowers/specs/2026-04-22-gtm-marketing-design.md</code> (§4.5 Phase 3, §4.6 Phase 4)</li>
+<li><code>docs/superpowers/specs/2026-04-15-sherpa-hub-model-design.md</code> (the franchise unit's underlying physical + digital model)</li>
+<li><code>docs/operations/sherpa-product-portfolio.md</code> (Phase 3 + Phase 4 entries reference franchise)
+<strong>Next:</strong> <code>superpowers:writing-plans</code> companion plan at <code>docs/superpowers/plans/2026-04-25-franchise-model-plan.md</code></li>
+</ul>
+<hr>
+<h2 id="1-executive-summary">1. Executive Summary</h2>
+<p>Sherpa Pros is a national licensed-trade marketplace with an international roadmap. Owning every physical pickup point — every Sherpa Hub — under one corporate balance sheet is capital-intensive: each Hub is a $185,000–$420,000 build-out (real estate, fit-out, equipment, opening inventory, licensing, soft costs). At the Phase 4 target of 10–20 Hubs along the Northeast corridor, that is $1.85–$8.4 million of capital tied up in real estate and fit-out before a single corporate dollar is spent on software, marketing, or pro recruiting at the network level. <strong>Franchising solves the capital constraint, and it solves it well.</strong> A franchisee writes a $45,000 initial check, qualifies for $140,000–$375,000 of personal-balance-sheet bank or Small Business Administration (SBA) financing, signs a ten-year operating commitment, brings deep local-market knowledge (the kind a corporate operator parachuting into Vermont or upstate New York cannot replicate cold), and pays Sherpa Pros 6–8 percent of gross revenue forever. Franchising converts a capital-intensive corporate Hub rollout into a <strong>capital-light, royalty-stream rollout</strong> — and the cash flywheel (initial fees fund the next round of Franchise Disclosure Document (FDD) work and master-franchisee acquisition; ongoing royalties fund corporate operations and software development) is the same cash flywheel McDonald's, Marriott, Anytime Fitness, and Servpro have all used to scale faster than any corporate-owned competitor in their categories.</p>
+<p><strong>The franchise-able Sherpa unit is the Sherpa Hub</strong> — the physical pickup point for licensed pros, originally designed in <code>docs/superpowers/specs/2026-04-15-sherpa-hub-model-design.md</code>. The Hub has a defined footprint (3,000 square feet baseline), a defined product mix (job kits, equipment rentals, training, branded gear), a defined revenue model (kit margin + rental utilization + training fees + Sherpa Materials orchestration commissions), a defined customer (the licensed pro within a 5–30 mile radius), and a defined operating playbook. <strong>The pure-digital pieces of Sherpa Pros — Sherpa Marketplace, Sherpa Home, Sherpa Success Manager, Sherpa Rewards, Sherpa Flex — are NOT franchised.</strong> Those remain corporate-owned national products; the Hub franchisee gets a protected territory in which to operate the Hub and earn the per-job pro-engagement bonus the platform pays Hubs for keeping their local pro network active. This split (digital national, physical local) keeps the two-sided marketplace economics intact (a franchisee cannot fragment the marketplace by going rogue on take-rate or matching) while giving local operators the unit they can profitably own.</p>
+<hr>
+<h2 id="2-franchise-unit-definition">2. Franchise Unit Definition</h2>
+<p>Three candidate franchise units were evaluated. The recommendation is <strong>Option A (Sherpa Hub franchise) as the primary unit</strong>, with Options B and C available as secondary entry paths.</p>
+<h3 id="21-option-a--sherpa-hub-franchise-recommended-primary">2.1 Option A — Sherpa Hub Franchise (RECOMMENDED PRIMARY)</h3>
+<p><strong>What the franchisee owns:</strong> one Sherpa Hub physical location (3,000 square feet baseline; 1,800 square feet warehouse + 600 square feet showroom + 600 square feet training facility) plus the protected pro-recruiting territory around it (5-mile radius in metro markets, 15-mile in suburban, 30-mile in rural — see §8 Territory Model).</p>
+<p><strong>What the franchisee runs:</strong> the Hub physical operations — kit assembly, equipment rentals, training events, branded gear retail, walk-in pro support, local pro recruiting and onboarding, local pro-engagement programming, local marketing co-op spend.</p>
+<p><strong>What the franchisee does NOT run:</strong> the Sherpa Marketplace platform (corporate), pricing decisions on platform take-rate (corporate), the Sherpa Score algorithm (corporate), the codes intelligence layer (corporate, internally referred to as the Sherpa codes engine), the Sherpa Materials orchestration (corporate), the Dispatch matching algorithm (corporate), the customer support escalation tier (corporate), the brand creative (corporate, with regional co-op), or the financial flow (corporate Stripe Connect — the franchisee receives a per-job pro-engagement royalty plus all Hub-direct revenue).</p>
+<p><strong>Why this is the right primary unit:</strong> the Hub is a self-contained physical-business unit with a defined footprint, a defined product mix, defined economics, and a defined operating playbook (already designed in the 2026-04-15 Hub model spec). It is the only Sherpa Pros component that has a physical premises a local operator can profitably own and run. It is also the only component where local-market knowledge (which landlord to negotiate with, which trade school to partner with, which supply house already sells to local pros, which town-hall politics affect zoning, which trade associations matter) creates real economic advantage over a corporate operator.</p>
+<p><strong>Initial investment range:</strong> $185,000–$420,000 (see §5 Item 7).</p>
+<h3 id="22-option-b--sherpa-pro-network-franchise-secondary">2.2 Option B — Sherpa Pro Network Franchise (SECONDARY)</h3>
+<p><strong>What the franchisee owns:</strong> an exclusive metro license to recruit, onboard, and manage the Sherpa Pros pro roster within a defined territory — but <strong>no physical Hub</strong>. Digital-only franchise.</p>
+<p><strong>What the franchisee runs:</strong> local pro recruiting events, local trade-show presence, local pro retention activities, local pro-side customer support escalation, local marketing co-op spend.</p>
+<p><strong>Why offer it as secondary:</strong> lower-cost entry for an operator who has the local-recruiting connections (former trade-association executive, former big-box pro-desk manager, former trade-supply-house owner) but does not have the capital or appetite for a $185,000+ physical buildout. Useful in Phase 4 cities where the local market does not yet support the Hub volume but the pro density is real.</p>
+<p><strong>Initial investment range:</strong> $45,000–$95,000 (no real estate, no inventory, no fit-out — just the territory rights, the training, the technology access fee, and 12–24 months of operating capital).</p>
+<p><strong>Initial franchise fee:</strong> $25,000.</p>
+<p><strong>Royalty:</strong> 4 percent of gross marketplace revenue generated within the territory (lower than Hub franchise because the franchisee captures less of the value chain).</p>
+<p><strong>Risk:</strong> without a physical Hub, the franchisee has fewer levers to differentiate locally — they cannot host training events that attract pros, they cannot stage materials for same-day pickup, they cannot provide a physical place for a pro to walk in and ask a question. The retention rate of franchise-recruited pros is empirically lower in digital-only territories (industry comparable: ServiceMaster ServiceMaster Restore digital-only franchisees retain technicians at roughly 60 percent the rate of franchisees who run a physical depot). Useful as a stepping stone — a Pro Network franchisee who hits revenue targets gets right-of-first-refusal to convert to a Hub franchise within 24 months by paying the difference in initial fees.</p>
+<h3 id="23-option-c--sherpa-metro-master-tertiary">2.3 Option C — Sherpa Metro Master (TERTIARY)</h3>
+<p><strong>What the franchisee owns:</strong> an entire Metropolitan Statistical Area (MSA) — for example, the Greater Boston Combined Statistical Area, the Greater New York City Metro, Greater Philadelphia. The Master Franchisee operates a flagship Hub themselves and sub-franchises additional Hubs to qualified sub-franchisees within their MSA.</p>
+<p><strong>What the Master Franchisee runs:</strong> the flagship Hub (full Hub franchise responsibilities), sub-franchisee recruiting and screening within the MSA, sub-franchisee onboarding and training, sub-franchisee performance management, MSA-level marketing strategy, MSA-level pro-recruiting programs.</p>
+<p><strong>What the Master Franchisee does NOT run:</strong> any of the corporate-owned digital pieces, FDD compliance (Sherpa Pros corporate retains all FDD obligations to sub-franchisees), Sherpa Score, codes engine, etc.</p>
+<p><strong>Why offer it as tertiary:</strong> for very-high-capital operators (typically a former multi-unit franchise operator from another category — Anytime Fitness, Servpro, RestorePro, FastFrame multi-unit owners, or a private-equity-backed franchise consolidator) who want to own an entire metro and accept the operational complexity of running a flagship + recruiting and managing sub-franchisees.</p>
+<p><strong>Initial investment range:</strong> $750,000–$2,400,000 depending on metro size, sub-franchise count target, and flagship Hub buildout cost.</p>
+<p><strong>Initial Master Franchise Fee:</strong> $300,000 (covers MSA exclusivity, Master Franchisee training, sub-franchisee recruiting playbook, dedicated Sherpa Pros corporate liaison).</p>
+<p><strong>Master Franchisee revenue share:</strong> the Master Franchisee splits the 6–8 percent Hub royalty with corporate (recommended split: Master Franchisee 30 percent / corporate 70 percent on sub-franchise royalties) plus collects the full flagship Hub revenue.</p>
+<h3 id="24-international-master-franchisee-overlay">2.4 International Master Franchisee Overlay</h3>
+<p>For international rollout (deferred to the international-expansion spec for full detail), the model is <strong>one Master Franchisee per country</strong> — the international equivalent of Option C above, with country-wide rather than metro-wide exclusivity. Master Franchisee assumes country-level FDD-equivalent compliance (Canada provincial Franchise Acts, United Kingdom British Franchise Association (BFA) voluntary code, Australian Franchising Code of Conduct mandatory, European Union member-state-level franchise law). See §13 below for the international franchising overlay summary; see the international-expansion spec for full country-by-country regulatory mapping.</p>
+<h3 id="25-recommended-phase-4-unit-mix">2.5 Recommended Phase 4 Unit Mix</h3>
+<ul>
+<li><strong>Years 1–2 of Phase 4:</strong> Sherpa Hub franchise only (Option A). Five to seven Hubs sold in Northeast non-registration states (New Hampshire, Maine, Massachusetts, Vermont). Goal: prove the Hub franchise economics with five to seven units before opening Pro Network or Metro Master tracks.</li>
+<li><strong>Year 3 of Phase 4:</strong> add Pro Network franchise (Option B) for outer-Northeast cities that do not yet support Hub economics but have pro density (Burlington Vermont, Bangor Maine, Western Massachusetts, Albany New York).</li>
+<li><strong>Years 4+ of Phase 4 / entering Phase 5:</strong> offer Metro Master (Option C) for Greater Boston, Greater New York City, Greater Philadelphia, Greater Washington DC.</li>
+<li><strong>Phase 5+:</strong> International Master Franchisee for Canada, then UK, then Australia (defer to international-expansion spec).</li>
+</ul>
+<hr>
+<h2 id="3-federal-trade-commission-ftc-franchise-rule--state-registration-mapping">3. Federal Trade Commission (FTC) Franchise Rule + State Registration Mapping</h2>
+<h3 id="31-federal-layer-the-ftc-franchise-rule">3.1 Federal layer (the FTC Franchise Rule)</h3>
+<p>The FTC Franchise Rule (16 Code of Federal Regulations Part 436) governs every franchise sale in the United States. The rule requires the franchisor to deliver a Franchise Disclosure Document (FDD) to every prospective franchisee at least <strong>fourteen calendar days</strong> before the prospect signs any binding agreement or pays any money. The FDD is a 23-Item disclosure document (see §4 below). The FTC does not register or pre-approve FDDs — the FTC enforces the disclosure requirement.</p>
+<h3 id="32-state-registration-layer-the-14-registration-states--4-business-opportunity-states">3.2 State registration layer (the 14 registration states + 4 business-opportunity states)</h3>
+<p>Fourteen states require pre-sale registration of the FDD with the state regulator before any franchise may be sold to a resident of that state. An additional four states require business-opportunity registration (a lighter-touch filing that may apply depending on whether the offering meets the state's business-opportunity definition). One state (Florida) requires only a notice filing (called "Annual Business Opportunity Filing"), and one (Indiana) is a registration state but with a streamlined process.</p>
+<p><strong>Fourteen FDD-registration states:</strong></p>
+<table>
+<thead>
+<tr>
+<th>State</th>
+<th>Filing Fee (initial)</th>
+<th>Renewal Fee</th>
+<th>Renewal Cadence</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>California</td>
+<td>$675</td>
+<td>$450</td>
+<td>Annual</td>
+<td>California Department of Financial Protection and Innovation; reviewer comments common</td>
+</tr>
+<tr>
+<td>Hawaii</td>
+<td>$250</td>
+<td>$250</td>
+<td>Annual</td>
+<td>Hawaii Department of Commerce and Consumer Affairs</td>
+</tr>
+<tr>
+<td>Illinois</td>
+<td>$500</td>
+<td>$100</td>
+<td>Annual</td>
+<td>Illinois Attorney General</td>
+</tr>
+<tr>
+<td>Indiana</td>
+<td>$500</td>
+<td>$250</td>
+<td>Annual</td>
+<td>Indiana Securities Division; streamlined review</td>
+</tr>
+<tr>
+<td>Maryland</td>
+<td>$500</td>
+<td>$100</td>
+<td>Annual</td>
+<td>Maryland Securities Division</td>
+</tr>
+<tr>
+<td>Michigan</td>
+<td>$250 (notice)</td>
+<td>$250</td>
+<td>Annual</td>
+<td>Notice filing — lighter than full registration</td>
+</tr>
+<tr>
+<td>Minnesota</td>
+<td>$400</td>
+<td>$200</td>
+<td>Annual</td>
+<td>Minnesota Department of Commerce</td>
+</tr>
+<tr>
+<td>New York</td>
+<td>$750</td>
+<td>$150</td>
+<td>Annual</td>
+<td>New York Attorney General; reviewer comments common</td>
+</tr>
+<tr>
+<td>North Dakota</td>
+<td>$250</td>
+<td>$100</td>
+<td>Annual</td>
+<td>North Dakota Securities Department</td>
+</tr>
+<tr>
+<td>Rhode Island</td>
+<td>$500</td>
+<td>$250</td>
+<td>Annual</td>
+<td>Rhode Island Department of Business Regulation</td>
+</tr>
+<tr>
+<td>South Dakota</td>
+<td>$250</td>
+<td>$250</td>
+<td>Annual</td>
+<td>South Dakota Division of Insurance</td>
+</tr>
+<tr>
+<td>Virginia</td>
+<td>$500</td>
+<td>$250</td>
+<td>Annual</td>
+<td>Virginia State Corporation Commission</td>
+</tr>
+<tr>
+<td>Washington</td>
+<td>$600</td>
+<td>$100</td>
+<td>Annual</td>
+<td>Washington Department of Financial Institutions</td>
+</tr>
+<tr>
+<td>Wisconsin</td>
+<td>$400</td>
+<td>$400</td>
+<td>Annual</td>
+<td>Wisconsin Department of Financial Institutions</td>
+</tr>
+</tbody></table>
+<p><strong>Four business-opportunity states (may apply depending on offering structure):</strong></p>
+<table>
+<thead>
+<tr>
+<th>State</th>
+<th>Filing Fee (initial)</th>
+<th>Renewal</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Connecticut</td>
+<td>$400</td>
+<td>Annual</td>
+<td>Business-opportunity statute — Sherpa Hub franchise likely qualifies for franchise exemption</td>
+</tr>
+<tr>
+<td>Florida</td>
+<td>$100 (notice)</td>
+<td>Annual</td>
+<td>Business-opportunity notice filing only</td>
+</tr>
+<tr>
+<td>Kentucky</td>
+<td>$0</td>
+<td>N/A</td>
+<td>One-time notice</td>
+</tr>
+<tr>
+<td>Nebraska</td>
+<td>$100</td>
+<td>Annual</td>
+<td>Business-opportunity statute</td>
+</tr>
+<tr>
+<td>Texas</td>
+<td>$0</td>
+<td>One-time</td>
+<td>Texas Business Opportunity Act notice</td>
+</tr>
+<tr>
+<td>Utah</td>
+<td>$100</td>
+<td>Annual</td>
+<td>Utah Business Opportunity Disclosure Act</td>
+</tr>
+</tbody></table>
+<p>(The user-provided list mixed registration and business-opportunity states; the breakdown above reflects current 2026 regulatory state.)</p>
+<p><strong>Recommended phasing:</strong></p>
+<ol>
+<li><strong>Phase 4 Year 1 launch:</strong> sell franchises only in non-registration states — New Hampshire (corporate Hub #1 home state), Maine, Massachusetts, Vermont, New Jersey, Pennsylvania, Ohio, Tennessee, North Carolina, Georgia, Florida (notice-only), Texas (notice-only). This avoids the $20,000–$45,000 of state-by-state registration costs and 90-day-plus state review delays during the franchise program's earliest stage.</li>
+<li><strong>Phase 4 Year 2:</strong> file in the four most-strategic registration states — New York (essential — Northeast metro density), Rhode Island (essential — Northeast contiguity), Maryland (Mid-Atlantic gateway), Virginia (Mid-Atlantic gateway).</li>
+<li><strong>Phase 4 Year 3:</strong> file in the remaining ten registration states for full national coverage. Total estimated registration cost across all 14 registration states: $5,825 in initial filing fees + $20,000–$30,000 in attorney fees per state for the first filing + $2,800 in annual renewal fees.</li>
+</ol>
+<h3 id="33-state-level-franchise-relationship-laws-separate-from-registration">3.3 State-level franchise relationship laws (separate from registration)</h3>
+<p>Twenty-three states have franchise relationship laws governing termination, non-renewal, and transfer of franchises (different from registration laws). These apply whether or not the state requires FDD registration. The FDD's Item 17 (Renewal, Termination, Transfer, Dispute Resolution) must comply with each state's relationship law for franchisees domiciled in that state. Franchise attorney engagement (see WS1 in the companion plan) covers state-by-state compliance review.</p>
+<hr>
+<h2 id="4-franchise-disclosure-document-fdd-design--all-23-required-items">4. Franchise Disclosure Document (FDD) Design — All 23 Required Items</h2>
+<p>The FDD is the single most important regulatory document the franchisor produces. Federal law requires all 23 Items in the FTC-defined order; each Item has prescribed content. The summary below specifies the Sherpa Pros approach Item by Item. Full FDD drafting is a 90-to-180-day project led by a qualified franchise attorney (see WS1 in the companion plan); this section is the strategic content brief the attorney is given.</p>
+<h3 id="item-1--the-franchisor-and-any-parents-predecessors-and-affiliates">Item 1 — The Franchisor and any Parents, Predecessors, and Affiliates</h3>
+<p>Sherpa Pros LLC (the franchisor entity), incorporated in Delaware, principal office at HJD Builders headquarters in Atkinson NH (until Phase 4 corporate office relocation). Affiliates: HJD Builders LLC (predecessor in interest — Phyrom's working general contracting business that originated the marketplace need). No parent company. Disclose that the franchisor and its affiliates engage in licensed-trade contracting; explain why this is a competitive advantage (founder-built, contractor-empathetic) rather than a competitive conflict (corporate-owned Hubs serve the franchise system, not the contracting business).</p>
+<h3 id="item-2--business-experience">Item 2 — Business Experience</h3>
+<p>Lead biography: Phyrom (founder, Chief Executive Officer; surname omitted in this internal spec — to be completed by Phyrom for the actual FDD). Founded HJD Builders LLC in New Hampshire; built Sherpa Pros as a working general contractor. List every executive officer, director, and franchise broker with five-year work history. Each Phase 4 executive hire (Chief Operating Officer, Chief Financial Officer, Vice President of Franchise Development, Vice President of Operations) gets a full five-year biography. Anyone with a franchise-industry violation in the past ten years must be disclosed.</p>
+<h3 id="item-3--litigation">Item 3 — Litigation</h3>
+<p>Disclose every pending or concluded litigation matter involving the franchisor, its affiliates, or its executives in the past ten years. Material categories: franchise litigation, securities violations, fraud, racketeering, intellectual property infringement. Sherpa Pros target state at FDD launch: zero disclosable litigation. Hub #1 corporate operations must be litigation-free; HJD Builders contracting-business litigation must be reviewed for materiality — if any single matter exceeds $50,000 in claimed damages or involves alleged fraud, it likely requires disclosure even though it predates the franchise system.</p>
+<h3 id="item-4--bankruptcy">Item 4 — Bankruptcy</h3>
+<p>Ten-year lookback on the franchisor, its affiliates, and any executive officer or director. Sherpa Pros target: zero disclosable bankruptcies.</p>
+<h3 id="item-5--initial-fees">Item 5 — Initial Fees</h3>
+<p>Initial Franchise Fee: <strong>$45,000</strong> for a single Sherpa Hub franchise; <strong>$125,000</strong> for an Area Development Agreement covering three Hubs to open over five years; <strong>$300,000</strong> for a Metro Master franchise. Recommended Pro Network franchise initial fee: <strong>$25,000</strong>. International Master Franchise: <strong>$500,000–$2,000,000</strong> (country-size dependent — see international-expansion spec).</p>
+<h3 id="item-6--other-fees">Item 6 — Other Fees</h3>
+<table>
+<thead>
+<tr>
+<th>Fee</th>
+<th>Amount</th>
+<th>Frequency</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Royalty</td>
+<td>6 percent of gross revenue (Years 1) / 8 percent (Year 2+)</td>
+<td>Monthly</td>
+<td>Lower Year 1 as ramp incentive</td>
+</tr>
+<tr>
+<td>Marketing Fund Contribution</td>
+<td>2 percent of gross revenue</td>
+<td>Monthly</td>
+<td>National + regional brand campaigns; some used for franchise-system lead generation</td>
+</tr>
+<tr>
+<td>Technology Fee</td>
+<td>$200</td>
+<td>Monthly</td>
+<td>Platform access, Sherpa codes engine, Sherpa Materials engine, Dispatch, Sherpa Smart Scan, Sherpa Threads, Sherpa Mobile</td>
+</tr>
+<tr>
+<td>Franchise Renewal Fee</td>
+<td>$15,000</td>
+<td>Per renewal</td>
+<td>10-year initial term, 10-year renewal</td>
+</tr>
+<tr>
+<td>Transfer Fee</td>
+<td>$7,500</td>
+<td>Per transfer</td>
+<td>When franchisee sells</td>
+</tr>
+<tr>
+<td>Audit Fee</td>
+<td>Cost of audit</td>
+<td>If audit reveals underreporting &gt;2 percent</td>
+<td>Standard franchise term</td>
+</tr>
+<tr>
+<td>Training Fee (additional staff)</td>
+<td>$2,500 per attendee</td>
+<td>As incurred</td>
+<td>Initial training of franchisee + manager included; additional staff fee</td>
+</tr>
+<tr>
+<td>Annual Convention Fee</td>
+<td>$1,500</td>
+<td>Annual</td>
+<td>Mandatory franchisee summit</td>
+</tr>
+<tr>
+<td>Local Marketing Minimum</td>
+<td>1.5 percent of gross revenue</td>
+<td>Monthly</td>
+<td>Spend at franchisee's discretion in approved channels; verified via reporting</td>
+</tr>
+</tbody></table>
+<h3 id="item-7--estimated-initial-investment">Item 7 — Estimated Initial Investment</h3>
+<p>Total range: <strong>$185,000 (low) to $420,000 (high)</strong> depending on Hub size, market real estate cost, and existing franchisee resources.</p>
+<table>
+<thead>
+<tr>
+<th>Line Item</th>
+<th>Low</th>
+<th>High</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Initial Franchise Fee</td>
+<td>$45,000</td>
+<td>$45,000</td>
+<td>Fixed</td>
+</tr>
+<tr>
+<td>Real Estate (security deposit + first 3 months rent)</td>
+<td>$18,000</td>
+<td>$72,000</td>
+<td>$6 per square foot rural to $24 per square foot major metro</td>
+</tr>
+<tr>
+<td>Leasehold Improvements / Fit-out</td>
+<td>$45,000</td>
+<td>$135,000</td>
+<td>Warehouse racking, showroom, training facility, office</td>
+</tr>
+<tr>
+<td>Equipment (Point of Sale, computers, security)</td>
+<td>$12,000</td>
+<td>$24,000</td>
+<td>Standard Hub kit</td>
+</tr>
+<tr>
+<td>Initial Inventory (kits + retail gear)</td>
+<td>$35,000</td>
+<td>$65,000</td>
+<td>Standard kit catalog + branded apparel + consumables</td>
+</tr>
+<tr>
+<td>Equipment Rental Inventory (initial fleet)</td>
+<td>$0</td>
+<td>$40,000</td>
+<td>Optional — can defer to Year 2</td>
+</tr>
+<tr>
+<td>Branded Signage</td>
+<td>$4,500</td>
+<td>$12,000</td>
+<td>Exterior + interior</td>
+</tr>
+<tr>
+<td>Insurance (3 months prepaid)</td>
+<td>$2,500</td>
+<td>$4,500</td>
+<td>General liability, property, workers' comp</td>
+</tr>
+<tr>
+<td>Permits + Licenses</td>
+<td>$1,500</td>
+<td>$4,500</td>
+<td>Local zoning, business license, sales tax</td>
+</tr>
+<tr>
+<td>Initial Marketing (grand opening)</td>
+<td>$7,500</td>
+<td>$15,000</td>
+<td>Launch campaign required by franchise standards</td>
+</tr>
+<tr>
+<td>Training Travel + Lodging</td>
+<td>$3,500</td>
+<td>$5,500</td>
+<td>Travel to Hub #1 in Atkinson NH for initial training</td>
+</tr>
+<tr>
+<td>Working Capital (3 months operating expenses)</td>
+<td>$10,000</td>
+<td>$20,000</td>
+<td>Conservative cushion</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>$185,000</strong></td>
+<td><strong>$442,500</strong></td>
+<td>Round up to $185,000–$420,000 disclosed range</td>
+</tr>
+</tbody></table>
+<h3 id="item-8--restrictions-on-sources-of-products-and-services">Item 8 — Restrictions on Sources of Products and Services</h3>
+<p>The franchisee is required to source materials through Sherpa Materials orchestration (the platform's materials engine) for all kit assembly inventory. Approved supplier list includes the Sherpa Pros corporate national accounts (FW Webb partnership for plumbing supply, Wurth Louis and Company for hardware, Best Tile for tile, others). Branded gear must be sourced through the corporate-approved vendor. Franchisees may source non-branded ancillary inventory (snacks, coffee, branded-water) from any vendor. <strong>Disclosure required:</strong> Sherpa Pros LLC may receive a rebate, override commission, or other payment from approved suppliers; estimated material rebate income to franchisor: approximately 2–4 percent of franchisee inventory purchases through approved suppliers, which the franchisor uses to subsidize technology development that benefits all franchisees.</p>
+<h3 id="item-9--franchisees-obligations">Item 9 — Franchisee's Obligations</h3>
+<p>Cross-reference table summarizing every obligation of the franchisee throughout the FDD. Major obligation categories:</p>
+<ul>
+<li>Site selection and approval</li>
+<li>Lease execution</li>
+<li>Hub buildout to corporate specifications</li>
+<li>Initial training completion (80-hour Hub HQ training plus 40-hour on-site Hub-opening support)</li>
+<li>Ongoing operations standards compliance (Sherpa Brand Standards Manual)</li>
+<li>Brand compliance (signage, uniforms, customer touchpoints)</li>
+<li>Software adoption (Sherpa codes engine, Sherpa Materials, Dispatch, Sherpa Threads, Sherpa Smart Scan, Sherpa Mobile)</li>
+<li>Franchisee or designated manager full-time on-site (Item 15)</li>
+<li>Royalty + Marketing Fund + Technology Fee timely payment</li>
+<li>Local marketing minimum spend</li>
+<li>Insurance maintenance</li>
+<li>Annual convention attendance</li>
+<li>Records and reporting (monthly Profit and Loss statement to corporate within 15 days of month-end)</li>
+</ul>
+<h3 id="item-10--financing">Item 10 — Financing</h3>
+<p>Sherpa Pros LLC does <strong>not</strong> offer direct financing in Phase 4 Year 1. Disclose the franchisor's plan to pursue Small Business Administration (SBA) Approved Franchisor status by Phase 4 Year 2 (which streamlines SBA 7(a) loans to qualified franchisees). Disclose third-party financing introductions to franchise-friendly lenders (BoeFly, ApplePie Capital, Live Oak Bank); explicitly disclose any referral fee Sherpa Pros receives (initially zero — no referral arrangements to start).</p>
+<h3 id="item-11--franchisors-assistance-advertising-computer-systems-and-training">Item 11 — Franchisor's Assistance, Advertising, Computer Systems, and Training</h3>
+<p><strong>Pre-opening assistance:</strong></p>
+<ul>
+<li>Site selection criteria + market data + landlord negotiation guidance</li>
+<li>Hub layout architectural plans (3,000 square foot template + 4,500 square foot expansion template)</li>
+<li>Equipment manifest + vendor list</li>
+<li>Initial inventory order through Sherpa Materials</li>
+<li>Initial pro recruiting playbook</li>
+</ul>
+<p><strong>Opening assistance:</strong></p>
+<ul>
+<li>80-hour initial training at Hub #1 in Atkinson NH (Phase 4 Year 1; later moves to dedicated Sherpa University facility)</li>
+<li>40-hour on-site Hub-opening support (corporate trainer on-site for the first 2 weeks of operations)</li>
+<li>Grand-opening marketing co-funding (50 percent corporate / 50 percent franchisee, capped at $7,500 corporate contribution)</li>
+</ul>
+<p><strong>Ongoing assistance:</strong></p>
+<ul>
+<li>Monthly Performance Review with regional Vice President of Operations</li>
+<li>Quarterly Business Review (in-person or video; revenue, profitability, pro-recruiting metrics, customer-satisfaction metrics)</li>
+<li>Annual Franchisee Summit (3 days at corporate office or rotating franchise market)</li>
+<li>24/7 platform support</li>
+<li>Brand Standards Manual updates</li>
+<li>Marketing campaign templates (regional + national)</li>
+<li>Pro recruiting playbook updates</li>
+<li>Compliance monitoring (Item 17 violations addressed within written cure-period framework)</li>
+</ul>
+<p><strong>Computer systems / technology:</strong></p>
+<ul>
+<li>Sherpa codes engine access (the codes intelligence layer — internally referred to as the codes engine; never exposed externally as "Wiseman")</li>
+<li>Sherpa Materials engine access (materials orchestration; internally Wiseman Materials, externally Sherpa Materials or Smart Materials)</li>
+<li>Dispatch matching system access</li>
+<li>Sherpa Threads (in-app + Short Message Service messaging)</li>
+<li>Sherpa Smart Scan (Optical Character Recognition for documents, photos, receipts)</li>
+<li>Sherpa Mobile (native iOS + Android)</li>
+<li>Sherpa Guard (Role-Based Access Control + audit logs)</li>
+<li>Hub-specific Point of Sale system (corporate-licensed, integrated with Sherpa Materials)</li>
+<li>Required hardware: 2 desktop computers, 1 tablet, 2 barcode scanners, 1 receipt printer, security camera system</li>
+</ul>
+<p><strong>Training:</strong></p>
+<ul>
+<li>Initial: 80 hours at Hub #1 / Sherpa University; topics include platform operations, Hub operations, pro recruiting and onboarding, codes literacy, materials orchestration, customer service, compliance, marketing, financial management</li>
+<li>Ongoing: 8 quarterly online courses (2 hours each), annual summit (24 contact hours), regional ride-alongs (4 per year)</li>
+</ul>
+<h3 id="item-12--territory">Item 12 — Territory</h3>
+<p>Each Sherpa Hub franchise gets a <strong>protected territory</strong> within which Sherpa Pros LLC will not open another corporate-owned or franchise-owned Hub. Territory radius:</p>
+<ul>
+<li><strong>Major metro</strong> (population density &gt; 5,000 per square mile, e.g., New York City, Boston): 5-mile protected radius</li>
+<li><strong>Suburban</strong> (1,500–5,000 per square mile, e.g., suburbs of Boston, Manchester NH metro): 15-mile protected radius</li>
+<li><strong>Rural</strong> (&lt; 1,500 per square mile, e.g., Vermont, rural Maine): 30-mile protected radius</li>
+</ul>
+<p><strong>Non-exclusive overlap zones</strong> beyond the protected radius — Sherpa Pros corporate retains the right to operate the digital Marketplace, Home, Manager, Rewards, and Flex products in any geography (no franchisee can claim exclusivity over digital products). Pros and clients in overlap zones may freely transact on the platform regardless of which franchisee's territory they fall into.</p>
+<p><strong>Right of First Refusal (ROFR)</strong> on adjacent territories — when Sherpa Pros is preparing to award an adjacent territory, the existing franchisee gets 30 days to match any qualified prospect's offer. Encourages franchisee growth into Area Development Agreements over time.</p>
+<p><strong>International Master Franchisee</strong> gets country-wide exclusivity (see §13).</p>
+<h3 id="item-13--trademarks">Item 13 — Trademarks</h3>
+<p>Disclose registered trademarks and pending applications:</p>
+<ul>
+<li>"Sherpa Pros" (wordmark) — U.S. Patent and Trademark Office (USPTO) application pending</li>
+<li>"Sherpa Hub" (wordmark) — USPTO application pending</li>
+<li>Sherpa Pros logo — USPTO application pending</li>
+<li>"Old-House Verified" certification mark — USPTO application pending</li>
+<li>"Sherpa Marketplace," "Sherpa Home," "Sherpa Success Manager," "Sherpa Rewards," "Sherpa Flex," "Sherpa Threads," "Sherpa Smart Scan," "Sherpa Mobile," "Sherpa Guard," "Sherpa Dispatch," "Sherpa Materials" — USPTO applications pending or planned</li>
+<li>Disclose any opposition or cancellation proceedings (target: zero)</li>
+<li>Disclose insurance coverage for trademark infringement claims defense</li>
+</ul>
+<h3 id="item-14--patents-copyrights-and-proprietary-information">Item 14 — Patents, Copyrights, and Proprietary Information</h3>
+<p>Disclose:</p>
+<ul>
+<li>The codes intelligence layer (internally referred to as the Sherpa codes engine) — proprietary trade secret; the engine ingests national, state, and municipal building codes and produces code-aware quotes and dispatch matches. Source code, training data, and matching logic are confidential.</li>
+<li>The Sherpa Materials engine — proprietary materials orchestration; Application Programming Interface (API) integrations with Zinc, Uber Direct, supplier catalogs.</li>
+<li>Dispatch matching algorithm — proprietary trade secret; 7-factor scoring (license, certification, geography, availability, Sherpa Score tier, specialty match, customer history).</li>
+<li>Sherpa Score algorithm — proprietary trade secret; multi-factor pro reputation score (job completion rate, on-time arrival, customer rating, code-compliance violation rate, photo upload completion, dispute rate).</li>
+<li>Sherpa Brand Standards Manual — copyrighted; franchisee receives license to use in operating the Hub.</li>
+<li>Sherpa Operations Manual — copyrighted; franchisee receives license.</li>
+<li>Pending patent applications: matching algorithm patent (filed Phase 3); materials orchestration patent (planned Phase 4 Year 1).</li>
+</ul>
+<h3 id="item-15--obligation-to-participate-in-the-actual-operation-of-the-franchise-business">Item 15 — Obligation to Participate in the Actual Operation of the Franchise Business</h3>
+<p>The franchisee or a designated full-time manager must be on-site at the Hub during operating hours. Sherpa Pros does <strong>not</strong> permit absentee ownership in Phase 4 Years 1–3 — every Hub franchisee is an operator. Master Franchisees (Option C) may delegate the flagship Hub day-to-day operation to a full-time manager but must devote full-time effort to the MSA Master Franchisee responsibilities. Disclose: "lifestyle franchisees" who intend to delegate operations to a hired manager from day one are not approved.</p>
+<h3 id="item-16--restrictions-on-what-the-franchisee-may-sell">Item 16 — Restrictions on What the Franchisee May Sell</h3>
+<p>Franchisee may sell only Sherpa-branded services, Sherpa-approved kit catalog inventory, Sherpa-approved equipment rentals, Sherpa-approved branded gear, and Sherpa-approved training programs. Franchisee may not operate any competing licensed-trade marketplace, competing job-kit assembly business, competing equipment rental, or competing trade-training facility within the protected territory or for two years after termination within the same territory.</p>
+<h3 id="item-17--renewal-termination-transfer-and-dispute-resolution">Item 17 — Renewal, Termination, Transfer, and Dispute Resolution</h3>
+<p><strong>Initial term:</strong> 10 years from Hub opening date.
+<strong>Renewal:</strong> one 10-year renewal term, conditional on (a) good standing, (b) Brand Standards compliance, (c) facility upgrade to then-current corporate specifications, (d) payment of $15,000 renewal fee.
+<strong>Termination by franchisor for cause:</strong> insolvency, material default not cured within 30 days written notice, repeated minor defaults, fraud, criminal conviction, abandonment.
+<strong>Termination by franchisee:</strong> 90 days written notice; transfer fee waived if assigning to qualified buyer.
+<strong>Transfer:</strong> franchisor approval required; franchisor right of first refusal; $7,500 transfer fee; new franchisee must meet then-current qualification standards.
+<strong>Dispute Resolution:</strong> mandatory mediation in Boston MA; if mediation fails, binding arbitration under American Arbitration Association (AAA) Commercial Arbitration Rules; venue Boston MA. State-specific franchise relationship laws may override (e.g., New Jersey, California, Minnesota mandate state-court venue for franchisees domiciled in those states).</p>
+<h3 id="item-18--public-figures">Item 18 — Public Figures</h3>
+<p>None initially. If Sherpa Pros engages a celebrity contractor endorser in Phase 4+ (e.g., a national HGTV-personality partnership), disclosure is required.</p>
+<h3 id="item-19--financial-performance-representations">Item 19 — Financial Performance Representations</h3>
+<p>See §5 below. This is the single most important Item for prospective franchisee decision-making.</p>
+<h3 id="item-20--outlets-and-franchisee-information">Item 20 — Outlets and Franchisee Information</h3>
+<p>Tables disclosing: (a) number of franchised outlets at year-end for each of the last three years, (b) projected openings, (c) franchisee transfers, terminations, non-renewals, reacquisitions, ceased-operations. List every current franchisee with contact information (the prospect's right to contact existing franchisees is core to FTC due-diligence intent). For Year 1, this table will be sparse — Hub #1 (Atkinson NH, corporate-owned) and the first 1–3 sold franchises.</p>
+<h3 id="item-21--financial-statements">Item 21 — Financial Statements</h3>
+<p>Audited financial statements of Sherpa Pros LLC for the most recent three fiscal years (or fewer if franchisor has been in business &lt; 3 years; Sherpa Pros LLC will likely have 1–2 audited years at FDD launch). Audited by an independent Certified Public Accountant (CPA) firm. <strong>Cost: $35,000–$60,000 per year for first 3 years of audited financials.</strong></p>
+<h3 id="item-22--contracts">Item 22 — Contracts</h3>
+<p>Sample contracts attached as exhibits:</p>
+<ul>
+<li>Sherpa Hub Franchise Agreement (10-year initial term)</li>
+<li>Area Development Agreement (3 Hubs over 5 years)</li>
+<li>Sherpa Pro Network Franchise Agreement</li>
+<li>Metro Master Franchise Agreement</li>
+<li>Sherpa Hub Site Selection Addendum</li>
+<li>Sherpa Hub Lease Rider (corporate-required lease language for landlord)</li>
+<li>Sherpa Brand License Agreement</li>
+<li>Sherpa Software License Agreement</li>
+<li>Confidentiality Agreement</li>
+<li>Personal Guaranty Agreement (franchisee principal personally guarantees franchise obligations)</li>
+</ul>
+<h3 id="item-23--receipts">Item 23 — Receipts</h3>
+<p>Two tear-out receipt pages: (a) prospective franchisee acknowledges receipt of FDD on a specific date (triggers the 14-day waiting period), (b) prospective franchisee acknowledges receipt of any state-required addenda. Franchisor must retain executed receipts for at least three years.</p>
+<hr>
+<h2 id="5-item-19-financial-performance-representations-per-hub-economics">5. Item 19 Financial Performance Representations (Per-Hub Economics)</h2>
+<p>Item 19 is <strong>optional</strong> under the FTC Franchise Rule — but franchisors that omit it from their FDD are at a major sales disadvantage because prospective franchisees cannot make any earnings claim due-diligence. Sherpa Pros will include Item 19 from FDD Version 1.0. The Item 19 disclosure must be substantiated by historical financial data; Hub #1 (Atkinson NH, corporate-owned, opening Phase 1) will provide the substantiation base for Year 1 of Item 19. Subsequent Hubs add to the data set.</p>
+<h3 id="51-per-hub-annual-gross-revenue-target-ranges">5.1 Per-Hub Annual Gross Revenue (target ranges)</h3>
+<table>
+<thead>
+<tr>
+<th>Year</th>
+<th>Low</th>
+<th>Mid</th>
+<th>High</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Year 1 (ramp)</td>
+<td>$385,000</td>
+<td>$580,000</td>
+<td>$740,000</td>
+<td>Hub #1 actual + comparable industry data</td>
+</tr>
+<tr>
+<td>Year 2</td>
+<td>$720,000</td>
+<td>$1,050,000</td>
+<td>$1,400,000</td>
+<td>Comparable franchisee build-up curve</td>
+</tr>
+<tr>
+<td>Year 3 (mature)</td>
+<td>$850,000</td>
+<td>$1,250,000</td>
+<td>$1,650,000</td>
+<td>Comparable mature-Hub franchise data</td>
+</tr>
+</tbody></table>
+<p>Revenue mix at maturity (Year 3 target):</p>
+<ul>
+<li>Job kit sales: 38 percent</li>
+<li>Equipment rentals: 12 percent</li>
+<li>Training fees: 6 percent</li>
+<li>Branded gear retail: 4 percent</li>
+<li>Per-pro engagement royalty (paid by Sherpa Pros corporate to the Hub for active local pros): 24 percent</li>
+<li>Sherpa Materials orchestration commission (paid by corporate to the Hub for materials orders dispatched through the Hub): 16 percent</li>
+</ul>
+<h3 id="52-cost-of-goods-sold-cogs-breakdown">5.2 Cost of Goods Sold (COGS) Breakdown</h3>
+<table>
+<thead>
+<tr>
+<th>Line</th>
+<th>Percent of Revenue</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Kit inventory</td>
+<td>28 percent</td>
+<td>Sherpa Materials + corporate accounts get 18–24 percent below retail wholesale</td>
+</tr>
+<tr>
+<td>Equipment rental depreciation + maintenance</td>
+<td>4 percent</td>
+<td>60 percent target utilization</td>
+</tr>
+<tr>
+<td>Training program direct costs (instructor, materials)</td>
+<td>2 percent</td>
+<td>Most training co-sponsored with vendors (free or low-fee)</td>
+</tr>
+<tr>
+<td>Branded gear COGS</td>
+<td>2 percent</td>
+<td>High-margin retail</td>
+</tr>
+<tr>
+<td><strong>Total COGS</strong></td>
+<td><strong>36 percent</strong></td>
+<td></td>
+</tr>
+</tbody></table>
+<h3 id="53-operating-expense-breakdown">5.3 Operating Expense Breakdown</h3>
+<table>
+<thead>
+<tr>
+<th>Line</th>
+<th>Percent of Revenue</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Rent</td>
+<td>8 percent</td>
+<td>Real estate + Common Area Maintenance</td>
+</tr>
+<tr>
+<td>Wages (1 manager + 2 part-time staff)</td>
+<td>18 percent</td>
+<td>Manager $52,000 base + commission; PT staff $18 per hour</td>
+</tr>
+<tr>
+<td>Utilities</td>
+<td>1.5 percent</td>
+<td>Electric, gas, water, internet</td>
+</tr>
+<tr>
+<td>Insurance</td>
+<td>1.2 percent</td>
+<td>General liability, property, workers' comp</td>
+</tr>
+<tr>
+<td>Royalty (corporate)</td>
+<td>8 percent</td>
+<td>At Year 2+ rate</td>
+</tr>
+<tr>
+<td>Marketing Fund (corporate)</td>
+<td>2 percent</td>
+<td></td>
+</tr>
+<tr>
+<td>Local Marketing</td>
+<td>1.5 percent</td>
+<td>Required minimum</td>
+</tr>
+<tr>
+<td>Technology Fee</td>
+<td>0.3 percent</td>
+<td>$200/month flat</td>
+</tr>
+<tr>
+<td>Repairs + Maintenance</td>
+<td>0.8 percent</td>
+<td></td>
+</tr>
+<tr>
+<td>Professional Fees (accounting, legal)</td>
+<td>0.5 percent</td>
+<td></td>
+</tr>
+<tr>
+<td>Other (office, supplies, training travel, etc.)</td>
+<td>1.0 percent</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Total Operating Expenses</strong></td>
+<td><strong>42.8 percent</strong></td>
+<td></td>
+</tr>
+</tbody></table>
+<h3 id="54-earnings-before-interest-taxes-depreciation-amortization-ebitda-per-hub">5.4 Earnings Before Interest, Taxes, Depreciation, Amortization (EBITDA) Per Hub</h3>
+<table>
+<thead>
+<tr>
+<th>Year</th>
+<th>Revenue (Mid)</th>
+<th>COGS (36%)</th>
+<th>OpEx (42.8%)</th>
+<th>EBITDA</th>
+<th>EBITDA Margin</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Year 1</td>
+<td>$580,000</td>
+<td>$208,800</td>
+<td>$248,240</td>
+<td>$122,960</td>
+<td>21.2 percent</td>
+</tr>
+<tr>
+<td>Year 2</td>
+<td>$1,050,000</td>
+<td>$378,000</td>
+<td>$449,400</td>
+<td>$222,600</td>
+<td>21.2 percent</td>
+</tr>
+<tr>
+<td>Year 3</td>
+<td>$1,250,000</td>
+<td>$450,000</td>
+<td>$535,000</td>
+<td>$265,000</td>
+<td>21.2 percent</td>
+</tr>
+</tbody></table>
+<p><strong>EBITDA target band for Item 19 disclosure:</strong> 18–25 percent at maturity.</p>
+<h3 id="55-time-to-breakeven">5.5 Time to Breakeven</h3>
+<p><strong>Target: 14–22 months</strong> from Hub opening to monthly cash-flow positive operations. Driven primarily by pro-recruiting velocity (the per-pro engagement royalty becomes the most consistent revenue line by Month 9–12) and ramp of equipment rental utilization (slowest line to mature; typically not at 60 percent utilization until Month 12–18).</p>
+<h3 id="56-net-profit-to-franchisee-at-maturity">5.6 Net Profit to Franchisee at Maturity</h3>
+<p>After EBITDA, the franchisee owes:</p>
+<ul>
+<li>Debt service on initial-investment loan (estimated $185,000 SBA 7(a) loan at 9 percent for 10 years = $28,200/year)</li>
+<li>Personal income tax (varies)</li>
+</ul>
+<p><strong>Franchisee's pre-personal-tax annual cash flow at maturity (Year 3+):</strong></p>
+<ul>
+<li>Mid-case: $265,000 EBITDA − $28,200 debt service = $236,800</li>
+<li>Low-case: $185,000 EBITDA − $28,200 debt service = $156,800</li>
+<li>High-case: $345,000 EBITDA − $28,200 debt service = $316,800</li>
+</ul>
+<p>This compares favorably to the comparable home-services franchise category (Servpro, Mr. Handyman, Five Star Painting all average $135,000–$245,000 franchisee cash flow at maturity), because the Sherpa Hub captures both retail Hub revenue AND a per-pro-and-per-job royalty share from the corporate-owned digital marketplace.</p>
+<h3 id="57-royalty--marketing-fund--technology-fee-burden">5.7 Royalty + Marketing Fund + Technology Fee Burden</h3>
+<p>At Year 2+ rates: 8 percent royalty + 2 percent marketing fund + $200/month technology fee = approximately <strong>10.3 percent of gross revenue</strong> to corporate. This is on the low end of the home-services franchise category (Servpro 10 percent, Five Star Painting 6 percent, Mr. Handyman 7 percent + 2 percent marketing). Sherpa Pros' justification for the rate: the franchisee receives the entire technology stack (codes engine, materials engine, Dispatch, Threads, Smart Scan, Mobile, Guard) plus the platform's national pro-recruiting funnel plus the platform's national customer-acquisition funnel — substantially more software value per royalty dollar than competing home-services franchises.</p>
+<h3 id="58-hub-1-atkinson-nh-as-the-substantiation-reference">5.8 Hub #1 Atkinson NH as the Substantiation Reference</h3>
+<p>Hub #1 is corporate-owned (Phase 1). It opens approximately mid-Phase 1 (target Quarter 3 of 2026). By Phase 3 (when franchise design begins), Hub #1 will have 12–18 months of operating data; by Phase 4 Year 1 (when franchise sales begin), 18–30 months. This is the empirical foundation for every Item 19 number above. Subsequent Hubs (corporate-owned in launch markets, franchised in Phase 4 outer markets) add to the data set; by Phase 4 Year 3, Item 19 should be substantiated by 5–7 Hubs of operating data and the disclosure can move from "single-Hub reference + industry comparable" to "multi-Hub blended average."</p>
+<hr>
+<h2 id="6-franchisee-profile--qualification-matrix--screening-process">6. Franchisee Profile + Qualification Matrix + Screening Process</h2>
+<h3 id="61-ideal-franchisee-profile">6.1 Ideal Franchisee Profile</h3>
+<ul>
+<li><strong>Industry experience:</strong> 5–15 years in construction-adjacent industries. Strongest profiles: licensed General Contractor with 10+ years of business operating experience; ex-trade-supply-house owner (Carrier, FW Webb, Ferguson, ABC Supply branch managers); ex-Big-Box pro-desk manager (Home Depot Pro, Lowe's Pro Services); ex-property-manager with multi-property portfolio operations experience; ex-trade-association executive director.</li>
+<li><strong>Net worth:</strong> $200,000+ liquid (cash + marketable securities not encumbered by other obligations); $400,000+ total net worth.</li>
+<li><strong>Cash to invest:</strong> $185,000+ available for the franchise investment (covers Year 1 low-case Initial Investment if no debt financing; covers SBA 7(a) down payment requirement if leveraged).</li>
+<li><strong>Community connections:</strong> active in local trade associations, local chambers of commerce, local building-industry circles. Reference checks include a minimum of three local-market professional references.</li>
+<li><strong>Operator mindset:</strong> prepared to be on-site at the Hub full-time for at least the first 24 months (Item 15 obligation).</li>
+<li><strong>Brand alignment:</strong> values verified-licensed-trade quality over scale-at-any-cost growth; understands the contractor-centered positioning; will not undermine national brand standards for short-term local gain.</li>
+<li><strong>Financial sophistication:</strong> can read a Profit and Loss statement, can manage to a cash-flow forecast, can interact constructively with a corporate compliance team.</li>
+</ul>
+<h3 id="62-disqualification-criteria-reject">6.2 Disqualification Criteria (Reject)</h3>
+<ul>
+<li>Any franchise litigation history (plaintiff or defendant).</li>
+<li>Personal bankruptcy in the last 7 years.</li>
+<li>No construction-adjacent experience (the platform is specialized; an Anytime-Fitness multi-unit operator with zero construction context is reject).</li>
+<li>Lifestyle franchisee intent (must be operator, not absentee owner — see Item 15).</li>
+<li>Currently operating a competing licensed-trade marketplace, equipment rental business, or job-kit business (conflict of interest).</li>
+<li>Felony conviction in the last 10 years (case-by-case; certain non-violent financial crimes outside 10-year window may be reviewed).</li>
+<li>Failed credit check or undisclosed material liabilities.</li>
+<li>Negative reference from any of three required professional references.</li>
+</ul>
+<h3 id="63-seven-stage-screening-process">6.3 Seven-Stage Screening Process</h3>
+<ol>
+<li><strong>Inquiry</strong> — prospect submits Franchise Inquiry Form on <code>franchise.thesherpapros.com</code>. Auto-response with FDD Frequently Asked Questions (FAQ) and Discovery Day calendar.</li>
+<li><strong>Discovery Call</strong> (45 minutes, video) — Vice President of Franchise Development qualifies prospect on industry experience, net worth, cash to invest, market interest. Prospect signs Franchise Development Mutual Confidentiality Agreement before next stage.</li>
+<li><strong>Mutual Non-Disclosure Agreement (NDA)</strong> — both parties sign before any non-public information is exchanged.</li>
+<li><strong>FDD Delivery</strong> (mandatory 14-calendar-day FTC waiting period begins) — prospect receives full FDD with all 23 Items + sample franchise agreement + receipt page. Prospect signs receipt acknowledging delivery date.</li>
+<li><strong>Discovery Day On-Site</strong> at Hub #1 (Atkinson NH) — full-day in-person visit. Phyrom hosts; prospect meets Vice President of Franchise Development, Vice President of Operations, Hub #1 manager, at least one founding pro. Prospect tours the Hub, observes operations, gets to ask any question. Prospect cannot sign any binding agreement at Discovery Day per FTC waiting period.</li>
+<li><strong>References + Background Check + Credit Check</strong> — three professional references contacted by Sherpa Pros corporate; credit check via standard franchise-industry vendor (FranchiseGrade, BoeFly); background check via standard third party (HireRight or similar). Cost reimbursed by prospect ($550 application processing fee).</li>
+<li><strong>Final Approval + Signing</strong> — Sherpa Pros Franchise Approval Committee (Phyrom + Vice President of Franchise Development + Vice President of Operations + Chief Financial Officer) reviews complete file and votes. Approval requires unanimous vote. If approved, signing scheduled at Hub #1; franchisee delivers Initial Franchise Fee at signing.</li>
+</ol>
+<p><strong>Estimated cycle time:</strong> 60–120 days from inquiry to signed Franchise Agreement.</p>
+<hr>
+<h2 id="7-initial-franchise-fee--ongoing-royalty--marketing-fund--technology-fee-structure">7. Initial Franchise Fee + Ongoing Royalty + Marketing Fund + Technology Fee Structure</h2>
+<p>Already specified in Item 5 and Item 6 (§4 above). Summary table for executive reference:</p>
+<table>
+<thead>
+<tr>
+<th>Fee</th>
+<th>Amount</th>
+<th>Cadence</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Initial Franchise Fee — single Hub</td>
+<td>$45,000</td>
+<td>One-time at signing</td>
+</tr>
+<tr>
+<td>Initial Franchise Fee — Area Development (3 Hubs / 5 yr)</td>
+<td>$125,000</td>
+<td>One-time at signing</td>
+</tr>
+<tr>
+<td>Initial Franchise Fee — Metro Master</td>
+<td>$300,000</td>
+<td>One-time at signing</td>
+</tr>
+<tr>
+<td>Initial Franchise Fee — Pro Network</td>
+<td>$25,000</td>
+<td>One-time at signing</td>
+</tr>
+<tr>
+<td>Initial Franchise Fee — International Master</td>
+<td>$500K–$2M</td>
+<td>One-time at signing</td>
+</tr>
+<tr>
+<td>Royalty</td>
+<td>6% Year 1 / 8% Year 2+ of gross revenue</td>
+<td>Monthly</td>
+</tr>
+<tr>
+<td>Marketing Fund</td>
+<td>2% of gross revenue</td>
+<td>Monthly</td>
+</tr>
+<tr>
+<td>Local Marketing Minimum</td>
+<td>1.5% of gross revenue</td>
+<td>Monthly (verified)</td>
+</tr>
+<tr>
+<td>Technology Fee</td>
+<td>$200 flat</td>
+<td>Monthly</td>
+</tr>
+<tr>
+<td>Renewal Fee (10-year renewal)</td>
+<td>$15,000</td>
+<td>Per renewal</td>
+</tr>
+<tr>
+<td>Transfer Fee</td>
+<td>$7,500</td>
+<td>Per transfer</td>
+</tr>
+<tr>
+<td>Annual Convention Fee</td>
+<td>$1,500</td>
+<td>Annual</td>
+</tr>
+<tr>
+<td>Audit Fee</td>
+<td>Cost of audit</td>
+<td>If underreporting &gt;2%</td>
+</tr>
+<tr>
+<td>International Master royalty</td>
+<td>4–6% of gross revenue</td>
+<td>Monthly</td>
+</tr>
+<tr>
+<td>International Master marketing fund</td>
+<td>1% of gross revenue</td>
+<td>Monthly</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="8-territory-model">8. Territory Model</h2>
+<p>Already specified in Item 12 (§4 above). Additional operational notes:</p>
+<p><strong>Protected Radius (no other corporate-owned or franchise-owned Hub may be opened):</strong></p>
+<ul>
+<li>Major metro: 5-mile radius</li>
+<li>Suburban: 15-mile radius</li>
+<li>Rural: 30-mile radius</li>
+</ul>
+<p><strong>Population-density tier triggers:</strong> Sherpa Pros Vice President of Franchise Development determines the tier at Discovery Day based on United States Census Bureau population density data for the proposed Hub location's census tract. Reclassification (e.g., a suburban tier later densifies to metro) does not retroactively shrink an existing franchisee's territory.</p>
+<p><strong>Right of First Refusal (ROFR)</strong> on adjacent territories — see Item 12.</p>
+<p><strong>Overlap zones</strong> beyond the protected radius — Sherpa Pros corporate retains all digital-product rights; pros and clients may transact on the platform regardless of which franchisee's territory they fall into. Overlap-zone pros and clients are tracked to the nearest Hub for the per-pro-engagement royalty (so no two Hubs receive duplicate engagement royalties on the same pro).</p>
+<p><strong>Area Development Agreements</strong> — a franchisee may commit to opening 3 Hubs over 5 years for the discounted $125,000 Initial Franchise Fee (versus $135,000 if purchased one-by-one). Area development territory is a multi-Hub region (e.g., "Greater Manchester NH metro") rather than a single 15-mile radius.</p>
+<p><strong>International master-franchisee territory</strong> — country-wide exclusivity (defer to international-expansion spec).</p>
+<hr>
+<h2 id="9-support-package">9. Support Package</h2>
+<h3 id="91-training">9.1 Training</h3>
+<ul>
+<li><strong>Initial:</strong> 80 hours at Hub #1 (Atkinson NH) — operations, pro recruiting, codes literacy, materials orchestration, customer service, compliance, marketing, financial management. Scheduled across 10 business days. Corporate covers training delivery; franchisee covers travel and lodging.</li>
+<li><strong>Hub-Opening Support:</strong> 40 hours on-site at the new Hub during Weeks 1–2 of operations. Corporate trainer travels to franchisee's Hub.</li>
+<li><strong>Quarterly Online Courses:</strong> 8 courses per year, 2 hours each (32 hours annual continuing education). Topics rotate (advanced pro retention, code-update bulletins, materials-supplier negotiation, marketing campaign templates, financial benchmarking).</li>
+<li><strong>Annual Franchisee Summit:</strong> 3 days per year, rotating between Sherpa University and franchisee-host markets. 24 contact hours.</li>
+<li><strong>Regional Ride-Alongs:</strong> 4 per year — Vice President of Operations or designated corporate trainer visits the Hub for a half-day operational review.</li>
+</ul>
+<h3 id="92-operations-support">9.2 Operations Support</h3>
+<ul>
+<li><strong>Monthly Performance Review:</strong> 60-minute video call with regional Vice President of Operations. Reviews Profit and Loss, pro-recruiting metrics, customer-satisfaction metrics, compliance status. Documented in shared performance dashboard.</li>
+<li><strong>Quarterly Business Review:</strong> in-person at the Hub or at Sherpa University. 4-hour deep dive on Hub strategy, market opportunities, operational issues. Includes regional Vice President of Operations + Vice President of Franchise Development.</li>
+<li><strong>Annual Strategic Plan:</strong> franchisee submits annual operating plan by November 15 for the following calendar year; corporate reviews and approves by December 31. Plan covers revenue goals, pro-recruiting goals, capital investments, marketing spend.</li>
+</ul>
+<h3 id="93-marketing-support">9.3 Marketing Support</h3>
+<ul>
+<li><strong>National Brand Fund</strong> (funded by 2 percent Marketing Fund contributions across all Hubs): runs national brand campaigns (television, podcast, paid social, public relations, search engine marketing) that benefit every Hub.</li>
+<li><strong>Regional Co-op:</strong> matching funds from Marketing Fund for regional campaigns when 3+ adjacent Hubs co-fund a regional marketing initiative.</li>
+<li><strong>Per-Franchisee Playbook:</strong> Sherpa Brand Standards Manual + Marketing Asset Library + monthly campaign templates.</li>
+<li><strong>Lead Generation:</strong> Sherpa Pros corporate-generated marketplace leads in the franchisee's territory are routed into the franchisee's pro recruiting pipeline. Corporate does not charge per-lead for in-territory leads.</li>
+</ul>
+<h3 id="94-technology-support">9.4 Technology Support</h3>
+<ul>
+<li>24/7 platform support (chat + phone + email).</li>
+<li>Sherpa codes engine access — every code change pushed to franchisee dashboards in near-real-time.</li>
+<li>Sherpa Materials engine access — full materials orchestration with corporate-negotiated supplier rates.</li>
+<li>Dispatch, Sherpa Threads, Sherpa Smart Scan, Sherpa Mobile, Sherpa Guard — all included in the $200 monthly Technology Fee.</li>
+<li>Hub-specific Point of Sale + Inventory Management system — corporate-licensed and integrated.</li>
+</ul>
+<h3 id="95-legal-support">9.5 Legal Support</h3>
+<ul>
+<li>Sample contracts: lease, employment, contractor, vendor — provided in Brand Standards Manual.</li>
+<li>Employment law guidance — quarterly bulletins on federal + applicable state employment law changes.</li>
+<li>Franchisee-customer dispute escalation path — corporate Legal team backstops franchisees on disputes that exceed the franchisee's standard resolution authority.</li>
+<li>Compliance-with-FDD support — corporate Legal team reviews any franchisee question on FDD interpretation.</li>
+<li>(NOT included: representation of franchisee in litigation against the franchisor — franchisees retain their own counsel for such matters.)</li>
+</ul>
+<hr>
+<h2 id="10-franchise-vs-corporate-hub-decision-matrix">10. Franchise-vs-Corporate Hub Decision Matrix</h2>
+<p>The decision of whether a given metro should be served by a corporate-owned Hub or a franchised Hub follows a per-metro decision matrix.</p>
+<table>
+<thead>
+<tr>
+<th>Metro Tier</th>
+<th>Recommended Model</th>
+<th>Rationale</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Phase 1 launch markets (Portsmouth NH, Manchester NH, Portland ME, Boston MA)</td>
+<td>Corporate-owned</td>
+<td>Brand-building markets; need full corporate operational control while the platform is still maturing</td>
+</tr>
+<tr>
+<td>Phase 2 markets (Worcester MA, Springfield MA, Lowell MA, Lawrence MA)</td>
+<td>Corporate-owned</td>
+<td>Adjacent to Phase 1; corporate operational learnings still being captured</td>
+</tr>
+<tr>
+<td>Phase 3 markets (Providence RI, Hartford CT)</td>
+<td>Corporate-owned</td>
+<td>Northeast-corridor expansion under corporate control</td>
+</tr>
+<tr>
+<td>Phase 4 markets — outer-Northeast (Burlington VT, Bangor ME, Albany NY upstate, Western MA)</td>
+<td><strong>Franchised</strong></td>
+<td>Capital-light expansion; local-operator advantage in smaller markets</td>
+</tr>
+<tr>
+<td>Phase 4 markets — Mid-Atlantic (Hartford CT secondary, Long Island NY, Northern NJ secondary)</td>
+<td>Franchised</td>
+<td>Capital-light expansion; the unit economics are proven by Phase 4 Year 1 data</td>
+</tr>
+<tr>
+<td>Phase 5 markets — Mid-Atlantic + Southeast</td>
+<td>Franchised (mostly) + Metro Master in major metros</td>
+<td>Metro Master for NYC, Philadelphia, DC, Atlanta — corporate keeps a flagship Hub in each</td>
+</tr>
+<tr>
+<td>International</td>
+<td>International Master Franchisee</td>
+<td>See international-expansion spec</td>
+</tr>
+</tbody></table>
+<p><strong>Default rule:</strong> when in doubt, default to franchised in any Phase 4 outer market and beyond. Corporate operates the brand-building flagship Hubs; franchisees operate everything else.</p>
+<p><strong>Conversion rule:</strong> a corporate-owned Hub may be sold to a qualified franchisee at any time if a strategically-fit operator becomes available. Conversion sale price = book value of fixed assets + 8x trailing twelve months EBITDA + Initial Franchise Fee. Conversion is a discretionary corporate decision — not a franchisee right.</p>
+<hr>
+<h2 id="11-franchisee-onboarding-playbook">11. Franchisee Onboarding Playbook</h2>
+<p>90-day ramp from signed Franchise Agreement to Hub Grand Opening.</p>
+<h3 id="days-114-real-estate-selection">Days 1–14: Real Estate Selection</h3>
+<ul>
+<li>Vice President of Franchise Development sends Site Selection Criteria document.</li>
+<li>Franchisee identifies 3–5 candidate locations within approved territory.</li>
+<li>Corporate Real Estate consultant reviews candidates, ranks by foot traffic, parking, signage visibility, loading-dock access, lease terms, landlord quality.</li>
+<li>Top candidate selected.</li>
+</ul>
+<h3 id="days-1530-lease-negotiation--permits">Days 15–30: Lease Negotiation + Permits</h3>
+<ul>
+<li>Franchisee negotiates lease (Sherpa Pros corporate Lease Rider must be included).</li>
+<li>Corporate Legal reviews lease before signing.</li>
+<li>Lease executed.</li>
+<li>Local zoning + business license + sales tax registration.</li>
+<li>Insurance (general liability, property, workers' comp) bound effective lease commencement date.</li>
+</ul>
+<h3 id="days-3160-buildout--equipment--hiring">Days 31–60: Buildout + Equipment + Hiring</h3>
+<ul>
+<li>Architectural plans (corporate template adapted to space) finalized with franchisee.</li>
+<li>General contractor (franchisee's choice from Sherpa Pros pre-vetted national list, or franchisee's own selection subject to corporate approval) executes buildout.</li>
+<li>Equipment ordered (Point of Sale, computers, security, signage).</li>
+<li>Initial Inventory ordered through Sherpa Materials.</li>
+<li>Manager hired (corporate provides job description template + interview guide).</li>
+<li>2 part-time staff hired.</li>
+<li>Initial training begins (franchisee + manager travel to Hub #1 for 80-hour training).</li>
+</ul>
+<h3 id="days-6180-pre-launch-marketing--soft-open">Days 61–80: Pre-Launch Marketing + Soft Open</h3>
+<ul>
+<li>Local marketing campaign launches (corporate provides templates).</li>
+<li>Pro recruiting begins — franchisee starts attending local trade association meetings, hosting "Sherpa Hub coming soon" coffee mornings.</li>
+<li>Soft open (invite-only) for first cohort of 5–10 founding pros — they preview the Hub, give feedback, get founding-pro discount on first kit purchase.</li>
+</ul>
+<h3 id="days-8190-grand-open">Days 81–90: Grand Open</h3>
+<ul>
+<li>Public Grand Opening event.</li>
+<li>Corporate Vice President of Operations + Vice President of Franchise Development on-site.</li>
+<li>Press release + local media outreach.</li>
+<li>30-day Grand Opening promotion (kit discounts, free training enrollment, equipment-rental free trial day).</li>
+<li>40-hour on-site corporate trainer support across the Grand Opening + first 2 weeks.</li>
+</ul>
+<hr>
+<h2 id="12-franchise-advisory-council-fac-structure">12. Franchise Advisory Council (FAC) Structure</h2>
+<p>Once the franchise system reaches <strong>5 active franchisees</strong>, Sherpa Pros LLC will charter a Franchise Advisory Council (FAC).</p>
+<p><strong>Composition:</strong></p>
+<ul>
+<li>5 elected franchisee representatives (one per region as the system grows; initially 5 at-large)</li>
+<li>Phyrom (Chief Executive Officer) — non-voting Chair</li>
+<li>Vice President of Operations — non-voting</li>
+<li>Vice President of Franchise Development — non-voting</li>
+<li>Chief Marketing Officer — non-voting</li>
+</ul>
+<p><strong>Voting structure:</strong></p>
+<ul>
+<li>Franchisee representatives vote on FAC recommendations.</li>
+<li>FAC recommendations are advisory — corporate retains final decision authority.</li>
+<li>Recommendations on Brand Standards changes, Marketing Fund spend, technology priorities, and franchisee-impacting policy changes carry significant weight; corporate commits in writing to either adopt FAC recommendations or provide a written reasoned explanation if rejected.</li>
+</ul>
+<p><strong>Term limits:</strong></p>
+<ul>
+<li>Initial FAC term: 2 years.</li>
+<li>Maximum consecutive terms: 2 (4 years total).</li>
+<li>Election cadence: annual.</li>
+</ul>
+<p><strong>Meeting cadence:</strong></p>
+<ul>
+<li>Quarterly (4 per year) — 1 in-person at Sherpa University, 3 video.</li>
+<li>Annual at Annual Franchisee Summit — full-FAC + open franchisee-feedback session.</li>
+</ul>
+<p><strong>Standing agenda:</strong></p>
+<ol>
+<li>Marketing Fund quarterly report (income + expenditure)</li>
+<li>Brand Standards review (proposed changes + rationale)</li>
+<li>Technology roadmap (next-quarter releases + franchisee-priority requests)</li>
+<li>Pro recruiting + retention metrics (system-wide + per-franchisee benchmarks)</li>
+<li>Open franchisee issues (prioritized list with corporate response committed)</li>
+</ol>
+<hr>
+<h2 id="13-international-franchising-overlay">13. International Franchising Overlay</h2>
+<p><strong>Defer to:</strong> <code>docs/superpowers/specs/2026-04-25-international-expansion-design.md</code> for full international rollout, country-by-country regulatory mapping, country-by-country market entry sequence, country-by-country Master Franchisee economics.</p>
+<p><strong>Summary for franchise-program reference (this spec):</strong></p>
+<ul>
+<li><strong>Model:</strong> one Master Franchisee per country (international equivalent of Metro Master — Option C). Master Franchisee assumes country-level FDD-equivalent compliance.</li>
+<li><strong>Initial Master Franchise Fee:</strong> $500,000–$2,000,000 depending on country market size (Canada $750K, UK $1.2M, Australia $850K, Mexico $500K reference points).</li>
+<li><strong>Royalty:</strong> 4–6 percent of gross revenue (lower than US to compensate Master Franchisee for taking on country-level regulatory and operational complexity).</li>
+<li><strong>Marketing Fund:</strong> 1 percent of gross revenue (lower than US 2 percent because the Master Franchisee runs country-level marketing rather than contributing to a US national fund).</li>
+</ul>
+<p><strong>Country-level franchise regulatory regimes the Master Franchisee handles:</strong></p>
+<ul>
+<li><strong>Canada:</strong> provincial Franchise Acts in Ontario (Arthur Wishart Act), Alberta (Franchises Act), Prince Edward Island, Manitoba, New Brunswick. Each requires province-specific disclosure document.</li>
+<li><strong>United Kingdom:</strong> voluntary British Franchise Association (BFA) Code of Ethics. No statutory franchise law; common-law contract law governs.</li>
+<li><strong>Australia:</strong> mandatory Franchising Code of Conduct (under Competition and Consumer Act). Requires Australian Disclosure Document (analogous to FDD), mandatory cooling-off period, mandatory dispute-resolution mechanism.</li>
+<li><strong>European Union:</strong> member-state-level franchise law varies. France (Loi Doubin) requires pre-contractual disclosure; Spain, Italy, Belgium have similar regimes; Germany has no statutory franchise law but voluntary Deutscher Franchise-Verband (DFV) Code.</li>
+<li><strong>Mexico:</strong> Industrial Property Law requires franchise registration with Mexican Institute of Industrial Property (IMPI) and Spanish-language disclosure document.</li>
+</ul>
+<p>The international-expansion spec is the authoritative reference for international-rollout sequencing and per-country execution detail; this section is the franchise-program-specific summary.</p>
+<hr>
+<h2 id="14-capital-required--return-on-investment-roi-for-franchisor">14. Capital Required + Return on Investment (ROI) for Franchisor</h2>
+<h3 id="141-one-time-franchise-program-setup-cost">14.1 One-Time Franchise Program Setup Cost</h3>
+<table>
+<thead>
+<tr>
+<th>Line</th>
+<th>Cost</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Franchise attorney engagement (FDD development through Version 1.0)</td>
+<td>$80,000–$120,000</td>
+</tr>
+<tr>
+<td>Audit firm engagement (initial 3 years of audited financial statements)</td>
+<td>$60,000–$90,000 (3 years × $20K–$30K per year)</td>
+</tr>
+<tr>
+<td>State registrations (initial filing in 14 registration states)</td>
+<td>$5,825 in filing fees + $15,000–$25,000 in attorney state-amendment fees</td>
+</tr>
+<tr>
+<td>FDD design + production</td>
+<td>$8,000–$12,000</td>
+</tr>
+<tr>
+<td>Sherpa University / training facility setup (initial Hub #1 expansion)</td>
+<td>$35,000–$60,000</td>
+</tr>
+<tr>
+<td>Operations Manual development</td>
+<td>$25,000–$40,000</td>
+</tr>
+<tr>
+<td>Brand Standards Manual development</td>
+<td>$15,000–$25,000</td>
+</tr>
+<tr>
+<td>Sherpa Hub Franchise marketing materials (website, brochure, video)</td>
+<td>$30,000–$50,000</td>
+</tr>
+<tr>
+<td>Recruiting + screening tooling (FranchiseGrade subscription, BoeFly account, background check vendor)</td>
+<td>$5,000–$10,000</td>
+</tr>
+<tr>
+<td><strong>Total one-time setup</strong></td>
+<td><strong>$280,000–$432,000</strong></td>
+</tr>
+</tbody></table>
+<h3 id="142-annual-recurring-compliance-cost">14.2 Annual Recurring Compliance Cost</h3>
+<table>
+<thead>
+<tr>
+<th>Line</th>
+<th>Annual Cost</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>State registration renewals (14 states + 4 biz-opp)</td>
+<td>$2,800–$4,500 in fees + $8,000–$15,000 in attorney maintenance</td>
+</tr>
+<tr>
+<td>Annual FDD update (required under FTC rule within 120 days of fiscal year end)</td>
+<td>$20,000–$35,000 in attorney + audit</td>
+</tr>
+<tr>
+<td>Annual financial audit</td>
+<td>$30,000–$45,000</td>
+</tr>
+<tr>
+<td>Compliance monitoring + reporting</td>
+<td>$25,000–$40,000 (Vice President of Franchise Development part-time + outside compliance counsel)</td>
+</tr>
+<tr>
+<td>FAC operations</td>
+<td>$15,000–$25,000 (meeting costs, travel reimbursement)</td>
+</tr>
+<tr>
+<td><strong>Total annual recurring</strong></td>
+<td><strong>~$100,000–$165,000</strong></td>
+</tr>
+</tbody></table>
+<h3 id="143-per-franchise-sale-revenue-to-franchisor">14.3 Per-Franchise-Sale Revenue to Franchisor</h3>
+<table>
+<thead>
+<tr>
+<th>Revenue Line</th>
+<th>Year 1</th>
+<th>Year 2</th>
+<th>Year 3+</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Initial Franchise Fee (one-time)</td>
+<td>$45,000</td>
+<td>$0</td>
+<td>$0</td>
+</tr>
+<tr>
+<td>Royalty (6% Y1, 8% Y2+, on Mid revenue)</td>
+<td>$34,800</td>
+<td>$84,000</td>
+<td>$100,000</td>
+</tr>
+<tr>
+<td>Marketing Fund</td>
+<td>$11,600</td>
+<td>$21,000</td>
+<td>$25,000</td>
+</tr>
+<tr>
+<td>Technology Fee</td>
+<td>$2,400</td>
+<td>$2,400</td>
+<td>$2,400</td>
+</tr>
+<tr>
+<td>Material rebate share (estimated 2% of franchisee inventory through approved suppliers)</td>
+<td>$4,400</td>
+<td>$8,000</td>
+<td>$9,500</td>
+</tr>
+<tr>
+<td><strong>Total per-Hub per-year revenue to franchisor</strong></td>
+<td><strong>$98,200</strong></td>
+<td><strong>$115,400</strong></td>
+<td><strong>$136,900</strong></td>
+</tr>
+</tbody></table>
+<h3 id="144-breakeven-on-the-franchise-program">14.4 Breakeven on the Franchise Program</h3>
+<p>Franchise program one-time setup of $280,000–$432,000 is recovered after <strong>3 to 5 sold franchises</strong> (at $45K Initial Franchise Fee + first-year royalty contribution). Annual recurring compliance cost of $100K–$165K is covered by ongoing royalty + tech fee + marketing fund contributions from approximately <strong>2–4 mature Hubs</strong>.</p>
+<p><strong>Bottom line:</strong> the franchise program is cash-flow positive at 5 sold franchises, contributes meaningfully to corporate operating cash by 10 sold, and becomes the dominant capital-light expansion engine by 15+ sold franchises. The Phase 4 target of 10–20 franchised Hubs aligns directly with this economic threshold.</p>
+<hr>
+<h2 id="15-risk-register">15. Risk Register</h2>
+<p>Top 10 risks ranked by combined likelihood × impact.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Risk</th>
+<th>Likelihood</th>
+<th>Impact</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>FDD legal exposure — drafting error or material omission triggers FTC enforcement or franchisee rescission claim</td>
+<td>Medium</td>
+<td>High</td>
+<td>Engage tier-1 franchise attorney; second-opinion review by independent franchise counsel before Version 1.0 release; quarterly FDD compliance audit</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Franchisee underperformance reflecting on the Sherpa Pros brand</td>
+<td>High</td>
+<td>High</td>
+<td>Rigorous 7-stage screening (§6.3); monthly performance review; clear cure-period framework; right to terminate for repeated default</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Royalty collection challenges — franchisee underreporting or late-paying</td>
+<td>Medium</td>
+<td>Medium</td>
+<td>Direct integration of franchisee Point of Sale with Sherpa Materials reporting; monthly auto-debit Automated Clearing House (ACH) of royalty + technology fee; audit fee penalty for &gt;2% underreporting</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Franchisee litigation against franchisor (most common: territory dispute, Item 19 reliance claim, brand-standards-enforcement dispute)</td>
+<td>Medium</td>
+<td>High</td>
+<td>Tight Item 12 territory definitions; conservative Item 19 numbers with explicit caveats; documented Brand Standards enforcement process; mandatory mediation before arbitration</td>
+</tr>
+<tr>
+<td>5</td>
+<td>FTC compliance audit</td>
+<td>Low</td>
+<td>High</td>
+<td>Comprehensive FDD attorney review; audited financials; documented disclosure-receipt process; experienced franchise attorney on retainer</td>
+</tr>
+<tr>
+<td>6</td>
+<td>State registration delays preventing market entry</td>
+<td>Medium</td>
+<td>Medium</td>
+<td>File in highest-priority states first (NY, RI, MD, VA); conservative 4-month assumption for state review; ready-to-go Phase 4 launch markets in non-registration states first</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Master Franchisee mismanagement internationally (Phase 5+)</td>
+<td>High</td>
+<td>High</td>
+<td>Master Franchisee deeply vetted; corporate retains audit + termination rights; reserved corporate flagship Hub in each country gives leverage</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Brand inconsistency across franchisees (signage, customer service, kit assembly quality, training program quality)</td>
+<td>High</td>
+<td>Medium</td>
+<td>Strict Brand Standards Manual; quarterly mystery-shopper audit; FAC-driven Brand Standards updates; Brand Compliance Score tied to franchise renewal eligibility</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Technology adoption resistance (franchisee fails to adopt Sherpa codes engine, Sherpa Materials, Dispatch, etc.)</td>
+<td>Medium</td>
+<td>High</td>
+<td>Software adoption metrics included in Performance Review; technology adoption tied to Marketing Fund matching; franchise renewal contingent on adoption compliance</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Franchisor-franchisee channel conflict (corporate sells digital Marketplace product into franchisee's territory at terms franchisee finds unfair)</td>
+<td>Medium</td>
+<td>High</td>
+<td>Documented channel rules in Item 12; FAC reviews any pricing change to digital products that affects franchisee economics; per-pro engagement royalty from corporate to Hub for any in-territory pro keeps channel aligned</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="16-open-decisions">16. Open Decisions</h2>
+<ol>
+<li><strong>Lead franchise unit option:</strong> confirm Option A (Sherpa Hub franchise) as the primary unit — or revisit if Phase 3 due-diligence reveals stronger Option B (Pro Network) demand from prospective franchisees.</li>
+<li><strong>Area Development Agreement aggressiveness:</strong> push for Area Development with most Phase 4 Year 1 prospects (encourages multi-Hub commitment) — or accept single-Hub-only and convert to Area Development at first renewal?</li>
+<li><strong>FDD attorney selection:</strong> evaluate Spadea Lanard &amp; Lignana, DLA Piper Franchise Group, Faegre Drinker Biddle &amp; Reath, Lathrop GPM. Vice President of Franchise Development to scope by Phase 3 Quarter 2.</li>
+<li><strong>Audit firm selection:</strong> evaluate Marcum, BDO USA, RSM US, Aprio. Chief Financial Officer to scope by Phase 3 Quarter 2.</li>
+<li><strong>Franchise broker engagement:</strong> engage IFPG (International Franchise Professionals Group) or FranNet for franchisee-prospect lead generation, paying broker commission of $15K–$25K per sale — or build organic franchise sales funnel and capture full Initial Franchise Fee?</li>
+<li><strong>International Master Franchise Fee structure:</strong> $500K floor seems low for established markets (UK, Canada); $2M ceiling seems low for Australia given market size. Re-validate with international-expansion spec authors.</li>
+<li><strong>Sherpa University location:</strong> stay at Hub #1 (Atkinson NH) through Phase 4 Year 2 — or invest in dedicated training facility in Manchester NH or Boston MA earlier?</li>
+<li><strong>Franchise Advisory Council (FAC) charter timing:</strong> FAC at 5 active franchisees (per §12) — or accelerate to FAC at 3 active franchisees to bake in franchisee voice from the earliest stage?</li>
+<li><strong>Conversion of existing corporate Hubs to franchise:</strong> policy on selling Phase 1–3 corporate-owned Hubs to qualified franchisees — and at what valuation multiple?</li>
+<li><strong>Sherpa Pro Network franchise launch timing:</strong> Phase 4 Year 3 (per §2.5) — or earlier if Phase 4 Year 1 surfaces prospects who want digital-only territory rights immediately?</li>
+</ol>
+<hr>
+<h2 id="appendix-a--brand-bible-compliance-footer">Appendix A — Brand-Bible Compliance Footer</h2>
+<p>This spec adheres to the Sherpa Pros brand bible documented in <code>docs/superpowers/specs/2026-04-22-gtm-marketing-design.md</code> §3.3 (Voice &amp; Principles).</p>
+<ul>
+<li><strong>All abbreviations spelled out on first use:</strong> Federal Trade Commission (FTC), Franchise Disclosure Document (FDD), Limited Liability Company (LLC), Small Business Administration (SBA), Mass Statistical Area (MSA), Earnings Before Interest, Taxes, Depreciation, Amortization (EBITDA), Cost of Goods Sold (COGS), Operating Expenses (OpEx), Capital Expenditures (CapEx), American Arbitration Association (AAA), United States Patent and Trademark Office (USPTO), Application Programming Interface (API), Optical Character Recognition (OCR), Short Message Service (SMS), Service Organization Control 2 (SOC 2), Role-Based Access Control (RBAC), Profit and Loss (P&amp;L), Common Area Maintenance (CAM), Frequently Asked Questions (FAQ), Non-Disclosure Agreement (NDA), Right of First Refusal (ROFR), Franchise Advisory Council (FAC), British Franchise Association (BFA), Deutscher Franchise-Verband (DFV), Mexican Institute of Industrial Property (IMPI), Annual Business Opportunity Filing, Automated Clearing House (ACH), Certified Public Accountant (CPA).</li>
+<li><strong>"Wiseman" never exposed externally</strong> — the codes intelligence layer is referenced as the Sherpa codes engine; Wiseman Materials is referenced as the Sherpa Materials engine or Smart Materials.</li>
+<li><strong>Founder reference:</strong> Phyrom (founder of Sherpa Pros LLC; founder of HJD Builders LLC in New Hampshire). Surname omitted in this internal spec — to be provided by Phyrom for the actual FDD.</li>
+<li><strong>8th-grade reading level on human-facing summary sections</strong> (Executive Summary, Franchisee Profile narrative); legally precise / technical language acceptable in Items 1–23 disclosure detail.</li>
+<li><strong>Geographic brand rule:</strong> the Sherpa Pros brand is national (with international roadmap). Launch geography (Northeast corridor for Phase 4) is operational; the brand remains national in every external surface. Phyrom's New Hampshire General Contractor identity is biography, not a brand cap.</li>
+<li><strong>Product naming convention:</strong> "Sherpa" + ProductName for every product reference (Sherpa Marketplace, Sherpa Hub, Sherpa Home, Sherpa Success Manager, Sherpa Rewards, Sherpa Flex, Sherpa Threads, Sherpa Smart Scan, Sherpa Mobile, Sherpa Guard, Sherpa Dispatch, Sherpa Materials).</li>
+<li><strong>No contractor jargon in human-facing sections</strong> — Initial Investment, not "II"; Initial Franchise Fee, not "IFF"; Cost of Goods Sold, not "COGS" without spelling out first.</li>
+</ul>
+<hr>
+<h2 id="appendix-b--referenced-sources">Appendix B — Referenced Sources</h2>
+<ul>
+<li>FTC Franchise Rule, 16 Code of Federal Regulations Part 436</li>
+<li>North American Securities Administrators Association (NASAA) 2008 Franchise Registration and Disclosure Guidelines (as updated)</li>
+<li>Servpro Franchise Disclosure Document 2025 (publicly available, used as franchise economics comparable)</li>
+<li>Anytime Fitness Franchise Disclosure Document 2025 (publicly available, used as multi-unit franchise structure comparable)</li>
+<li>ServiceMaster Restore Franchise Disclosure Document 2025 (publicly available, used as digital-only territory franchise comparable)</li>
+<li>IFA (International Franchise Association) 2026 Industry Outlook</li>
+<li>BoeFly Franchise Lending Marketplace data (used for SBA financing benchmarks)</li>
+<li>Hadfield Gray Franchise Industry Compliance Quarterly (used for state registration cost benchmarks)</li>
+<li>Sherpa Pros internal — Hub #1 (Atkinson NH) operating financials (Phase 1, used as Item 19 substantiation reference)</li>
+<li>Sherpa Pros internal — <code>docs/superpowers/specs/2026-04-15-sherpa-hub-model-design.md</code> (the Hub physical + digital model)</li>
+<li>Sherpa Pros internal — <code>docs/superpowers/specs/2026-04-22-gtm-marketing-design.md</code> (GTM phasing + brand bible)</li>
+<li>Sherpa Pros internal — <code>docs/operations/sherpa-product-portfolio.md</code> (product portfolio reference)</li>
+</ul>
+
+	
+
+
+</body>
+</html>

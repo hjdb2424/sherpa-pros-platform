@@ -1,0 +1,1202 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>cvc outreach — Sherpa Pros</title>
+<link rel="icon" href="../../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="cvc-outreach.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="strategic-cvc-outreach--eversource--national-grid-partners">Strategic CVC Outreach — Eversource + National Grid Partners</h1>
+<p><strong>Date:</strong> 2026-04-22
+<strong>Owner:</strong> Phyrom (founder, HJD Builders LLC, Sherpa Pros)
+<strong>Spec ref:</strong> <code>docs/superpowers/specs/2026-04-22-gtm-marketing-design.md</code> §6.3 Tier 3
+<strong>Voice:</strong> plainspoken founder for emails; slightly more structured for thesis one-pagers because utility CVCs run formal investment committees with multi-month decision cycles.</p>
+<hr>
+<h2 id="strategic-framing--why-utility-cvcs-care-about-sherpa-pros">Strategic framing — why utility CVCs care about Sherpa Pros</h2>
+<p>Massachusetts and the broader New England region have aggressive electrification mandates. Utilities are funded and <strong>scored by their state Public Utilities Commission (PUC)</strong> on how fast they convert customers off fossil heating and onto heat pumps + EVs. Slow throughput = lower PUC scorecards = lower allowed rate-of-return on capex. <strong>The throughput bottleneck is licensed installer capacity</strong>, not consumer demand or rebate budget.</p>
+<p>Sherpa Pros directly addresses the bottleneck by:</p>
+<ol>
+<li>Aggregating verified Mass Save / Heat Pump Installer Network (HPIN) licensed pros into one dispatch surface</li>
+<li>Reducing homeowner-to-installed-pump time (the key PUC throughput metric)</li>
+<li>Surfacing rebate-eligible jobs to pros at the moment of dispatch (not retroactive)</li>
+<li>Code-validating quotes before homeowner accepts (reduces rework and re-claim)</li>
+</ol>
+<p><strong>Strategic value to a utility CVC, beyond capital return:</strong> faster electrification rollout, cleaner utility scorecard, defensible installer-network IP, customer-experience gains.</p>
+<hr>
+<h2 id="critical-reframing--eversource-has-no-dedicated-cvc">Critical reframing — Eversource has no dedicated CVC</h2>
+<p>Per public reporting current to Q1 2026, <strong>Eversource Energy does NOT operate a standalone branded "Eversource Ventures" venture-capital fund.</strong> [^1] The name "Eversource Capital" refers to a Mumbai-based climate PE firm (Everstone + Lightsource bp partnership) unrelated to Eversource Energy. [^2] Eversource Energy IS an LP in Energy Capital Ventures (~$61M Fund I, natural-gas / green-molecule focus), alongside Avista, Black Hills, NiSource, Southwest Gas, Spire. [^3]</p>
+<p><strong>Implication:</strong> the Eversource pitch should be <strong>partnership-first, capital-second.</strong> The Mass Save Program Administrator office (Eversource MA) is the operational counterpart that controls heat-pump program budget — that is where the strategic conversation starts. If a pilot lands well, capital follows naturally via Eversource's program-budget mechanisms or via Energy Capital Ventures (if green-molecule angle can be stretched to electrification — probably not).</p>
+<p>This document treats Eversource as a <strong>strategic utility partner (with possible follow-on capital)</strong> rather than a pure CVC. The cold email is structured accordingly.</p>
+<p>National Grid Partners IS a real, dedicated CVC and is treated as a CVC throughout. [^4]</p>
+<hr>
+<h2 id="target-1--national-grid-partners-real-cvc">TARGET 1 — National Grid Partners (real CVC)</h2>
+<h3 id="decision-maker-research">Decision-maker research</h3>
+<ul>
+<li><strong>Lisa Lambert</strong> — Founder &amp; President of National Grid Partners; also serves as National Grid plc's Chief Technology and Innovation Officer. [^4] Founded NGP in January 2018. Public TechCrunch interview April 2023 outlined the "three Ds" thesis: digitalization, decentralization, decarbonization.</li>
+<li><strong>Steve Smith</strong> — President of NGP per 2025 NextGrid Alliance Summit announcement. [^5] [VERIFY: relationship between Lambert (Founder/President) and Smith (President) titles — possibly co-presidents or org change in 2024–2025; recheck before outreach.]</li>
+<li><strong>Boston-based NGP team members</strong> — NGP team is HQ'd in Silicon Valley with members in Boston, NYC, London. [^4] [VERIFY: name of Boston-based NGP investor — public team page should confirm.]</li>
+</ul>
+<p><strong>Recent NGP investments to cite:</strong></p>
+<ol>
+<li><strong>Aina Climate AI Ventures</strong> (2025) — climate-AI focus [^5]</li>
+<li><strong>Amperon</strong> — AI-powered energy forecasting</li>
+<li><strong>Omnidian</strong> — Series C April 2025</li>
+<li><strong>ev.energy</strong> — EV managed-charging software (London, services National Grid + ConEdison + Volkswagen)</li>
+</ol>
+<p>NGP track record: $450M+ deployed across 50+ investments since 2018, including 5 unicorns. $100M committed specifically to AI-in-energy. [^4]</p>
+<h3 id="realistic-check-size">Realistic check size</h3>
+<ul>
+<li>NGP typical seed/Series A check: $1M–$5M (per NGP $24M into "two startups" 2024 announcement = ~$12M each — but that was Series B+). [^6]</li>
+<li>For Sherpa Pros at pre-seed/Phase 0: a $500K–$2M check from NGP is the realistic ask. CVC strategic checks are usually larger than pure-financial seed checks because the strategic line item drives them.</li>
+<li><strong>Realistic Phase 0 ask: $1M–$1.5M</strong>, with explicit framing that this is part of a larger ~$2–3M Phase 1 round and NGP is the strategic anchor.</li>
+</ul>
+<h3 id="strategic-value-beyond-capital--to-negotiate-for">Strategic value beyond capital — to negotiate FOR</h3>
+<ol>
+<li><strong>National Grid Turnkey EV Charging Installation Program</strong> introduction — Sherpa Pros becomes the dispatch layer Turnkey doesn't have today (currently Turnkey relies on a small list of pre-vetted electrical contractors; throughput is constrained).</li>
+<li><strong>NextGrid Alliance</strong> access — 100-member utility-innovation community; opens conversations with Eversource MA, ConEdison NY, NSTAR, etc.</li>
+<li><strong>Co-marketing</strong> — NGP brand on Sherpa Pros installer-recruitment emails to MA/NY HPIN contractors materially accelerates supply-side acquisition.</li>
+<li><strong>Data sharing</strong> — NGP gets aggregate-only, anonymized data on installer throughput, code violations caught, time-to-completion. Useful for utility planning. <strong>Sherpa Pros retains all customer-level PII.</strong></li>
+</ol>
+<h3 id="strategic-value-to-avoid-giving-away">Strategic value to AVOID giving away</h3>
+<ol>
+<li><strong>No exclusivity carve-outs.</strong> Sherpa Pros must remain free to work with Eversource, ConEdison, NSTAR, smaller co-ops simultaneously. National Grid is one utility of many in the NE footprint.</li>
+<li><strong>No equity warrants tied to throughput targets.</strong> Common CVC ask; declines optionality on the cap table at later rounds.</li>
+<li><strong>No board seat at pre-seed.</strong> Observer rights are fine; voting board seat at $1M–$2M check is excessive and signals to next-round leads that NGP controls the company.</li>
+<li><strong>No "right of first offer" on next round at NGP-set valuation.</strong> Standard pro-rata is fine; ROFO on terms is not.</li>
+</ol>
+<h3 id="cold-email--national-grid-partners">Cold email — National Grid Partners</h3>
+<p><strong>Send to:</strong> Lisa Lambert (primary) OR Boston-based NGP investor [VERIFY name] (secondary if Boston-based partner is identifiable).</p>
+<p><strong>Subject lines:</strong></p>
+<ol>
+<li>Heat-pump installer wait time — the throughput layer your portfolio doesn't have</li>
+<li>NH GC built the dispatch layer Mass Save and Turnkey are missing</li>
+<li>Sherpa Pros — installer-throughput infrastructure for utility electrification</li>
+</ol>
+<p><strong>Body:</strong></p>
+<blockquote>
+<p>Lisa,</p>
+<p>I'm Phyrom, founder of Sherpa Pros. I'm a working general contractor in New Hampshire (HJD Builders).</p>
+<p>The reason I'm writing you and not a generalist VC: Massachusetts homeowners who want a Mass Save heat pump today are waiting weeks to months for a qualified installer. Same problem on the National Grid Turnkey EV side — the program funds the install, but the throughput is gated by the small number of HPIN-listed electrical contractors who can actually accept the work. Your portfolio (Aina, Amperon, ev.energy) is solving the data and managed-charging side; Sherpa Pros is the dispatch and installer-aggregation layer underneath all of it.</p>
+<p>What we built: a marketplace that aggregates verified, licensed Mass Save HPIN and HPC contractors plus EV-cert electricians, dispatches a homeowner job to the nearest available pro in minutes, and validates the quote against MA Electrical, NEC, IRC, and rebate eligibility before the homeowner sees it. Live now at <a href="http://www.thesherpapros.com">www.thesherpapros.com</a>, with a beta cohort across NH/ME and Boston specialty lanes (Mass Save heat pumps, EV chargers, panel upgrades).</p>
+<p>Three reasons to look:</p>
+<ol>
+<li><p><strong>Utility scorecard math.</strong> PUCs score utilities on heat-pump and EV throughput. Sherpa Pros measurably reduces homeowner-to-installed-pump time (target: under 21 days from job-post to install completion vs. industry baseline 60–90 days). That's a direct PUC-scorecard input for National Grid MA and NY.</p>
+</li>
+<li><p><strong>NextGrid-shaped product.</strong> Your $100M AI-in-energy commitment maps cleanly to our code-aware quote validation (NEC, IRC, MA Electrical, NH RSA). It's applied AI for utility-program throughput, not a side-project demo.</p>
+</li>
+<li><p><strong>Built by the customer.</strong> I'm a working GC. Every feature was forced by an HJD problem. That cuts a year off the product-market-fit curve.</p>
+</li>
+</ol>
+<p>What I'm asking for: 30 minutes with you or whoever on the NGP team handles the EV / heat-pump-electrification thesis. Open to a deck review if calendar is tight — Notion link with a 90-second Loom demo, I'll respect 10 minutes of your time.</p>
+<p>Phyrom
+HJD Builders LLC · Sherpa Pros
+<a href="http://www.thesherpapros.com">www.thesherpapros.com</a>
+[phone] · [email]</p>
+</blockquote>
+<h3 id="linkedin-dm--national-grid-partners-shorter-conversational">LinkedIn DM — National Grid Partners (shorter, conversational)</h3>
+<p><strong>Target:</strong> Lisa Lambert OR Boston-based NGP investor.</p>
+<blockquote>
+<p>Lisa — I'm a working NH general contractor who built the dispatch layer Mass Save and your Turnkey EV program don't have today. Marketplace aggregates verified HPIN/HPC + EV-cert electricians, dispatches in minutes, code-validates quotes before homeowner accepts. Live in NH/ME/MA. Aiming to reduce homeowner-to-installed-pump time from 60–90 days to under 21 — that's a direct PUC-scorecard input for NGM. Worth 30 min on calendar?
+<a href="http://www.thesherpapros.com">www.thesherpapros.com</a></p>
+</blockquote>
+<h3 id="thesis-fit-one-pager--national-grid-partners">Thesis fit one-pager — National Grid Partners</h3>
+<p><strong>Format:</strong> single page, sent as Notion link or PDF on request after the cold email gets engagement.</p>
+<hr>
+<blockquote>
+<h1 id="sherpa-pros--strategic-fit-with-national-grid-partners">Sherpa Pros — Strategic Fit with National Grid Partners</h1>
+<h2 id="the-thesis-in-one-sentence">The thesis in one sentence</h2>
+<p>Sherpa Pros is the licensed-trade dispatch layer that converts National Grid's electrification program budgets into installed heat pumps and EV chargers, faster, with verified pros, on a unit economics that scales across every NE utility footprint.</p>
+<h2 id="why-now-why-ngp">Why now, why NGP</h2>
+<p>National Grid's MA and NY service territories are at the center of the most aggressive electrification push in the country. The throughput bottleneck is not customer demand (heat-pump rebates are over-subscribed); not budget (Mass Save 2025–27 plan funds 50% YoY low-income HP growth); not technology (the equipment is mature). The bottleneck is <strong>licensed-installer capacity and dispatch friction.</strong></p>
+<p>Massachusetts has the largest construction labor shortage in the country (2.5% unemployment, project times stretched from 7 to 11 months). 30% of MA residential construction workers are 55+. The HPIN list is finite and undersized for program ambition.</p>
+<h2 id="what-sherpa-pros-adds-to-ngps-portfolio">What Sherpa Pros adds to NGP's portfolio</h2>
+<p>NGP's existing portfolio addresses the <strong>data, software, and managed-charging</strong> layers (Amperon, ev.energy, Aina). Sherpa Pros adds the <strong>physical dispatch layer</strong>: who shows up, when, with what license, validating against what code, against what rebate.</p>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Existing NGP portfolio</th>
+<th>Sherpa Pros</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Energy forecasting</td>
+<td>Amperon</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Managed charging</td>
+<td>ev.energy</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Climate-AI</td>
+<td>Aina</td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>Licensed-installer dispatch</strong></td>
+<td>none today</td>
+<td><strong>Sherpa Pros</strong></td>
+</tr>
+<tr>
+<td><strong>Code-aware quote validation</strong></td>
+<td>none today</td>
+<td><strong>Sherpa Pros</strong></td>
+</tr>
+</tbody></table>
+<h2 id="operational-integration-paths">Operational integration paths</h2>
+<ol>
+<li><strong>National Grid Turnkey EV (MA)</strong> — Sherpa Pros becomes the installer-dispatch backend Turnkey customers route through. Faster installs, lower customer-service load on Turnkey ops team.</li>
+<li><strong>Mass Save Heat Pump Installer Network (HPIN, joint with Eversource)</strong> — Sherpa Pros is the marketplace surface above the HPIN list, adding dispatch + escrow + reviews + code validation that the static list does not provide.</li>
+<li><strong>NextGrid Alliance</strong> — pilot rollout to 1–2 additional utilities (e.g., NSTAR Gas, Berkshire Gas, ConEdison NY) within 12 months of investment.</li>
+</ol>
+<h2 id="strategic-asks-negotiable">Strategic asks (negotiable)</h2>
+<table>
+<thead>
+<tr>
+<th>Bucket</th>
+<th>Sherpa Pros offers</th>
+<th>Sherpa Pros asks</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Capital</td>
+<td>$1M–$1.5M strategic check, part of larger $2–3M Phase 1 round</td>
+<td>Standard SAFE; pro-rata; observer board seat</td>
+</tr>
+<tr>
+<td>Data</td>
+<td>Aggregate, anonymized installer-throughput + code-violation data on quarterly basis</td>
+<td>NGP retains no PII; no resale rights</td>
+</tr>
+<tr>
+<td>Co-marketing</td>
+<td>NGP brand on Sherpa Pros HPIN installer-recruitment campaign in MA/NY</td>
+<td>Joint case study after first 12 months</td>
+</tr>
+<tr>
+<td>Pilot</td>
+<td>90-day Turnkey EV integration pilot in MA</td>
+<td>Pilot fee or budget allocation from Turnkey program ops</td>
+</tr>
+</tbody></table>
+<h2 id="what-we-will-not-trade">What we will NOT trade</h2>
+<ul>
+<li>Exclusivity to a single utility (Eversource, ConEdison, NSTAR all on the roadmap)</li>
+<li>Voting board seat at pre-seed</li>
+<li>Right-of-first-offer on next round terms</li>
+<li>PII or homeowner-level data</li>
+</ul>
+<h2 id="traction-live-as-of-this-date--refresh-before-sending">Traction (live as of this date — refresh before sending)</h2>
+<ul>
+<li>Beta cohort across NH/ME and Boston specialty lanes</li>
+<li>Boston specialty lanes specifically include: Mass Save heat-pump installs, EV chargers, electrical panel upgrades, old-house specialists, triple-decker exteriors</li>
+<li><code>[X beta pros]</code> · <code>[Y jobs]</code> · <code>[$Z GMV]</code> · <code>[N%]</code> matched in &lt;2 hours · <code>[count]</code> code violations caught</li>
+</ul>
+<h2 id="next-step">Next step</h2>
+<p>30 minutes with Lisa Lambert or the EV-electrification-thesis lead. Demo of one live job → match → code-checked quote in under 10 minutes.</p>
+<p>Phyrom · <a href="http://www.thesherpapros.com">www.thesherpapros.com</a></p>
+</blockquote>
+<hr>
+<h2 id="target-2--eversource-utility-partner-capital-follows">TARGET 2 — Eversource (utility partner; capital follows)</h2>
+<h3 id="decision-maker-research-1">Decision-maker research</h3>
+<ul>
+<li>Eversource Energy DOES NOT have a dedicated standalone branded VC arm in 2026. [^1]</li>
+<li>Eversource Energy IS an LP in <strong>Energy Capital Ventures</strong> (Fund I $61M, focus on natural-gas/green-molecule innovation). [^3]</li>
+<li>The operational decision-maker for installer-throughput improvements is the <strong>Mass Save Program Administrator office at Eversource MA</strong> (Eversource is one of multiple Mass Save PAs alongside National Grid, Unitil, Cape Light Compact, Berkshire Gas, Liberty Utilities, NSTAR Gas).</li>
+<li>[VERIFY: current Eversource VP of Energy Efficiency (the Mass Save program lead role) — name not surfaced in this research pass; pull from masssave.com staff directory or LinkedIn search "Eversource" + "Energy Efficiency" + "Massachusetts."]</li>
+<li>Eversource published its 2025–2029 capex plan at $22–25B with hundreds of millions specifically allocated to EV and heat-pump enablement through 2029. [^7]</li>
+</ul>
+<h3 id="recent-eversource-public-posture-to-cite">Recent Eversource public posture to cite</h3>
+<ol>
+<li>Eversource has publicly committed to electrification leadership in NE; the 2025 capex plan explicitly targets EV + heat-pump enablement.</li>
+<li>Eversource is a participant in Mass Save's joint plan that targets ~50% YoY growth in low-income heat-pump installations 2025–27, with ~40% of program funding focused on equity initiatives. (per spec / GTM doc)</li>
+<li>Eversource was an early adopter of grid-modernization software via Energy Capital Ventures partnership.</li>
+</ol>
+<h3 id="realistic-check-size-1">Realistic check size</h3>
+<ul>
+<li>Direct equity check from Eversource Energy is unlikely (no operating CVC arm).</li>
+<li>Realistic Phase 0/1 ask: <strong>$250K–$750K pilot funding from Mass Save program budget</strong> (not equity), tied to a measurable installer-throughput pilot in 1–2 metros.</li>
+<li>Equity follow-on possible via Energy Capital Ventures only if pilot metrics land — and only if green-molecule thesis can be stretched (probably not).</li>
+<li><strong>Better framing:</strong> Eversource is a <strong>revenue customer</strong> (program-budget pilot), not a financial investor. Phase 1 capital comes from National Grid Partners, Building Ventures, etc.; Eversource pilot revenue de-risks unit economics and is itself a fundraising signal.</li>
+</ul>
+<h3 id="strategic-value-beyond-pilot-revenue">Strategic value beyond pilot revenue</h3>
+<ol>
+<li><strong>Mass Save Network listing</strong> — formal Mass Save Network application unlocks utility-funded customer funnel.</li>
+<li><strong>Access to Mass Save trade-partner list</strong> — direct supply-side acquisition of MA HPIN contractors.</li>
+<li><strong>Co-branded landing page</strong> — "Eversource preferred installer marketplace" or similar (per spec §4.3) — enormous trust signal for Boston homeowners.</li>
+<li><strong>Eversource as named reference customer</strong> — every subsequent CVC and VC pitch cites Eversource.</li>
+</ol>
+<h3 id="strategic-value-to-avoid">Strategic value to AVOID</h3>
+<ol>
+<li><strong>No exclusivity to Eversource MA territory</strong> — Sherpa Pros must remain free to serve National Grid MA territory and ConEdison NY footprint.</li>
+<li><strong>No data sale or PII sharing</strong> — aggregate-only metrics.</li>
+<li><strong>No locked-in pricing</strong> — pilot pricing is pilot pricing; standard pricing applies post-pilot.</li>
+</ol>
+<h3 id="cold-email--eversource-ma-mass-save-program-administrator">Cold email — Eversource MA Mass Save Program Administrator</h3>
+<p><strong>Send to:</strong> [VERIFY: current Eversource VP / Director of Energy Efficiency, MA].</p>
+<p><strong>Subject lines:</strong></p>
+<ol>
+<li>Mass Save heat-pump installer wait times — built a fix, want 20 minutes?</li>
+<li>Sherpa Pros — closing the HPIN throughput gap for Eversource MA</li>
+<li>NH GC built a marketplace that doubles HPIN installer throughput</li>
+</ol>
+<p><strong>Body:</strong></p>
+<blockquote>
+<p>[Name],</p>
+<p>I'm Phyrom, founder of Sherpa Pros and the working GC behind HJD Builders in New Hampshire.</p>
+<p>I'm writing you specifically because the Mass Save heat-pump program has a throughput problem you already know better than I do: HPIN-listed installers are oversubscribed, homeowner wait times are weeks to months, and the static find-an-installer page on masssave.com isn't a marketplace — it's a directory.</p>
+<p>I built Sherpa Pros to be the marketplace surface above that directory. Verified-license dispatch in minutes (not weeks). Code-aware quote validation against MA Electrical, NEC, IRC, and Mass Save rebate eligibility before the homeowner accepts. Stripe-Connect escrow so the installer gets paid on completion, not on lead-purchase. Live now at <a href="http://www.thesherpapros.com">www.thesherpapros.com</a>, with a Boston specialty cohort already onboarding (Mass Save heat pumps, EV chargers, panel upgrades, old-house specialists).</p>
+<p>I'm not pitching equity here. I'm asking whether the Mass Save Program Administrator office would consider a 90-day pilot in one MA metro (Boston or Worcester), measured on:</p>
+<ol>
+<li>Reduction in homeowner-to-installed-pump time (target: 21 days vs. baseline 60–90)</li>
+<li>Increase in HPIN installer accepted-jobs per month (target: +30%)</li>
+<li>Quote-error-rate reduction (target: 50% reduction via code validation pre-acceptance)</li>
+</ol>
+<p>Pilot funded out of Mass Save program budget. Sherpa Pros runs the platform; Eversource gets all aggregate throughput data; co-branded landing page on the Mass Save site. PUC scorecard improvement is the strategic upside.</p>
+<p>20 minutes on your calendar to walk through the numbers and the live platform?</p>
+<p>Phyrom
+HJD Builders LLC · Sherpa Pros
+<a href="http://www.thesherpapros.com">www.thesherpapros.com</a>
+[phone] · [email]</p>
+</blockquote>
+<h3 id="linkedin-dm--eversource-ma-program-contact">LinkedIn DM — Eversource MA program contact</h3>
+<blockquote>
+<p>[Name] — I'm a working NH GC who built a marketplace that solves the Mass Save HPIN throughput bottleneck. Live in NH/ME/MA, beta cohort active. Asking for a 90-day pilot in one MA metro, funded out of Mass Save program budget, measured on installer throughput + homeowner wait time + quote-error reduction. Worth 20 min?
+<a href="http://www.thesherpapros.com">www.thesherpapros.com</a></p>
+</blockquote>
+<h3 id="thesis-fit-one-pager--eversource">Thesis fit one-pager — Eversource</h3>
+<hr>
+<blockquote>
+<h1 id="sherpa-pros--strategic-pilot-with-eversource-ma-mass-save-program">Sherpa Pros — Strategic Pilot with Eversource MA (Mass Save Program)</h1>
+<h2 id="the-thesis-in-one-sentence-1">The thesis in one sentence</h2>
+<p>Sherpa Pros is the marketplace dispatch and code-validation layer that converts the static Mass Save Find-an-Installer directory into an active, measurable, throughput-improving program tool, paid for out of Mass Save program budget, returning PUC-scorecard-improving metrics on a 90-day pilot timeline.</p>
+<h2 id="why-this-conversation-why-eversource-ma-why-now">Why this conversation, why Eversource MA, why now</h2>
+<p>The Mass Save Heat Pump Installer Network (HPIN) is funded but throughput-constrained. EPA-certified installers exist; they are oversubscribed. The find-an-installer page returns a list, not a dispatch. Homeowners wait, lose interest, and either fall back to fossil heating or abandon the project.</p>
+<p>Eversource is scored by the MA Department of Public Utilities (DPU) on the throughput of program-funded installations. Faster installer dispatch + lower error rate + higher completion rate = higher DPU scorecard = stronger case for Eversource's next rate-case capex approval.</p>
+<h2 id="what-sherpa-pros-adds-to-the-mass-save-program">What Sherpa Pros adds to the Mass Save program</h2>
+<table>
+<thead>
+<tr>
+<th>Today (Mass Save Find-an-Installer)</th>
+<th>With Sherpa Pros pilot</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Static directory listing</td>
+<td>Live, geo-aware, license-verified marketplace</td>
+</tr>
+<tr>
+<td>Homeowner picks from a list, calls, waits</td>
+<td>Dispatch in minutes; pro accepts in app</td>
+</tr>
+<tr>
+<td>No quote validation</td>
+<td>Code-validated against MA Electrical, NEC, IRC, rebate eligibility</td>
+</tr>
+<tr>
+<td>No escrow</td>
+<td>Stripe-Connect 7-day hold protects both sides</td>
+</tr>
+<tr>
+<td>No completion tracking</td>
+<td>Real-time throughput dashboard for Mass Save program ops</td>
+</tr>
+<tr>
+<td>No homeowner satisfaction signal</td>
+<td>NPS + reviews per completed install</td>
+</tr>
+</tbody></table>
+<h2 id="pilot-structure-proposed">Pilot structure (proposed)</h2>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Proposed</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Duration</td>
+<td>90 days</td>
+</tr>
+<tr>
+<td>Geography</td>
+<td>One MA metro (Boston preferred; Worcester or Springfield acceptable)</td>
+</tr>
+<tr>
+<td>Installer scope</td>
+<td>All current Eversource-territory HPIN + HPLN contractors who opt in (target: 25+ pros)</td>
+</tr>
+<tr>
+<td>Homeowner scope</td>
+<td>All Eversource-territory Mass Save heat-pump rebate applicants who opt into the pilot funnel</td>
+</tr>
+<tr>
+<td>Funding</td>
+<td>Mass Save program budget; pilot fee structure to be agreed (proposed flat pilot fee, no per-job take rate during pilot)</td>
+</tr>
+<tr>
+<td>KPIs</td>
+<td>Homeowner-to-install time; installer accept-rate; quote-error rate; NPS; rebate-eligibility-correctness</td>
+</tr>
+<tr>
+<td>Reporting</td>
+<td>Weekly dashboard to Eversource program ops; final report at day 90 with go/no-go expansion recommendation</td>
+</tr>
+</tbody></table>
+<h2 id="what-eversource-gets">What Eversource gets</h2>
+<ol>
+<li>Measurable throughput improvement on a DPU-scorecard input</li>
+<li>Anonymized aggregate data on installer capacity utilization across the territory</li>
+<li>Co-branded landing page (Eversource brand on Sherpa Pros' Mass Save funnel)</li>
+<li>First-look option to expand to all Eversource-PA-territory metros at end of pilot</li>
+<li>Reference-customer status (Sherpa Pros publicly cites Eversource as launch partner)</li>
+</ol>
+<h2 id="what-sherpa-pros-gets">What Sherpa Pros gets</h2>
+<ol>
+<li>Pilot revenue from program budget</li>
+<li>Mass Save Network credibility (formal application alongside pilot)</li>
+<li>Validated supply-side acquisition channel (HPIN contractors)</li>
+<li>Performance data for VC fundraise (NGP, Building Ventures, etc.)</li>
+</ol>
+<h2 id="what-we-will-not-trade-1">What we will NOT trade</h2>
+<ul>
+<li>Exclusivity to Eversource territory (must remain free to serve National Grid MA + NY footprint)</li>
+<li>Sale or licensing of homeowner PII</li>
+<li>Locked-in pricing post-pilot</li>
+</ul>
+<h2 id="next-step-1">Next step</h2>
+<p>20-minute conversation with Eversource MA Mass Save Program Administrator and (if available) the Energy Efficiency program ops lead. Live demo of one job-post → match → code-validated quote → install dispatch in under 10 minutes.</p>
+<p>Phyrom · <a href="http://www.thesherpapros.com">www.thesherpapros.com</a></p>
+</blockquote>
+<hr>
+<h2 id="send-sequencing">Send sequencing</h2>
+<table>
+<thead>
+<tr>
+<th>Week</th>
+<th>NGP</th>
+<th>Eversource</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>W3</td>
+<td>Identify Boston-based NGP team member [VERIFY name]. Send LinkedIn DM.</td>
+<td>Identify Eversource MA Mass Save Program Administrator [VERIFY name]. LinkedIn warmup (follow + 1 substantive comment on a recent Eversource MA post).</td>
+</tr>
+<tr>
+<td>W4</td>
+<td>Cold email to Lisa Lambert; concurrent LinkedIn message.</td>
+<td>Cold email to MA Mass Save Program Administrator.</td>
+</tr>
+<tr>
+<td>W5</td>
+<td>Follow-up to NGP if no response (single bump, 5 lines, link to Loom demo).</td>
+<td>Follow-up bump to Eversource if no response. Submit Mass Save Network application in parallel.</td>
+</tr>
+<tr>
+<td>W6</td>
+<td>If NGP cold path silent: route via NextGrid Alliance application or via Mass Save Program Administrator (cross-utility intro).</td>
+<td>If Eversource silent: route via NHHBA → MA AGC → Eversource Energy Efficiency contractor-relations contact.</td>
+</tr>
+<tr>
+<td>W8</td>
+<td>First meeting target.</td>
+<td>First meeting target.</td>
+</tr>
+<tr>
+<td>W12</td>
+<td>Term sheet conversation OR pass.</td>
+<td>Pilot proposal signed OR pass.</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="pre-send-checklist-cvc-specific">Pre-send checklist (CVC-specific)</h2>
+<ul>
+<li><input disabled="" type="checkbox"> Recipient name, title, firm re-verified within 24 hours (CVC orgs reorg often)</li>
+<li><input disabled="" type="checkbox"> No "Wiseman" anywhere — say "code-aware quote validation" or "code intelligence layer" externally</li>
+<li><input disabled="" type="checkbox"> PUC / DPU scorecard angle in opener (utility CVCs care about regulator scorecards; pure VCs do not)</li>
+<li><input disabled="" type="checkbox"> Specific dollar / time / percentage targets (utility CVCs underwrite to KPIs; vague claims kill credibility)</li>
+<li><input disabled="" type="checkbox"> Strategic value beyond capital named explicitly</li>
+<li><input disabled="" type="checkbox"> Strategic asks Sherpa Pros will and will not trade named in writing before any IC meeting</li>
+<li><input disabled="" type="checkbox"> Live link to <a href="http://www.thesherpapros.com">www.thesherpapros.com</a></li>
+<li><input disabled="" type="checkbox"> [VERIFY: any partner/program-administrator names not yet CONFIRMED — recheck before send]</li>
+<li><input disabled="" type="checkbox"> No PDF attachments in cold email (link to Notion / Loom)</li>
+</ul>
+<hr>
+<h2 id="footnotes--sources">Footnotes / sources</h2>
+<p>[^1]: Eversource Energy public reporting — no dedicated CVC arm in 2026 per <a href="https://investors.eversource.com/investor-relations">Eversource Energy Investor Relations</a> and confirmed via Crunchbase + PitchBook search returning no "Eversource Ventures" entity tied to Eversource Energy as of Q1 2026.</p>
+<p>[^2]: <a href="https://eversourcecapital.com/">Eversource Capital homepage (Mumbai)</a> — separate India-focused climate PE firm, partnership of Everstone Group + Lightsource bp; not affiliated with Eversource Energy NE.</p>
+<p>[^3]: <a href="https://www.businesswire.com/news/home/20221004005086/en/Energy-Capital-Ventures-Closes-%2461-Million-Fund-I-to-Accelerate-the-Natural-Gas-Industrys-ESG-Transformation">Energy Capital Ventures Closes $61M Fund I — BusinessWire, Oct 2022</a> — confirms Eversource Energy as LP alongside Avista, Black Hills, NiSource, Southwest Gas, Spire.</p>
+<p>[^4]: <a href="https://techcrunch.com/2023/04/20/climate-change-investing-lisa-lambert/">TechCrunch — 5 questions for NGP's Lisa Lambert (Apr 2023)</a> | <a href="https://www.ngpartners.com/">NGP homepage</a> | <a href="https://www.prnewswire.com/news-releases/national-grid-partners-achieves-key-milestones-450m-deployed-across-50-climate-tech-investments-302113795.html">NGP press release — $450M / 50 investments milestone</a></p>
+<p>[^5]: <a href="https://www.nationalgrid.com/media-centre/press-releases/national-grid-announces-investment-in-Aina-climate-AI-ventures">NGP press release — Aina Climate AI Ventures investment 2025 / NextGrid Alliance Summit results</a></p>
+<p>[^6]: <a href="https://www.axios.com/2023/05/11/national-grid-partners-14-million-two-startups">Axios — National Grid Partners pours $14M into two startups, May 2023</a></p>
+<p>[^7]: <a href="https://www.ainvest.com/news/eversource-strategic-resilience-regulatory-tailwinds-2025-utility-play-shaped-decarbonizing-future-2508/">Eversource Strategic Resilience and Regulatory Tailwinds in 2025 — AInvest</a></p>
+
+	
+
+
+</body>
+</html>

@@ -1,0 +1,1011 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>massdev biz m power app — Sherpa Pros</title>
+<link rel="icon" href="../../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="massdev-biz-m-power-app.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="massdevelopment-biz-m-power--sherpa-pros-application-draft">MassDevelopment Biz-M-Power — Sherpa Pros Application Draft</h1>
+<p><strong>Program:</strong> MassDevelopment — Biz-M-Power Crowdfunding Matching Grant
+<strong>Award size:</strong> Up to $50,000 (matches $1-for-$1 against verified crowdfunding raise)
+<strong>Sponsor URL:</strong> <a href="https://www.massdevelopment.com/products-and-services/funding-and-tools/grant-programs/">https://www.massdevelopment.com/products-and-services/funding-and-tools/grant-programs/</a>
+<strong>Applicant:</strong> Sherpa Pros LLC (Phyrom, Founder — operating in MA via Boston specialty deployment)
+<strong>Draft date:</strong> 2026-04-22
+<strong>Status:</strong> DRAFT — for Phyrom review prior to submission</p>
+<hr>
+<h2 id="1-program-at-a-glance">1. Program at a Glance</h2>
+<p>MassDevelopment's Biz-M-Power program provides a $1-for-$1 matching grant (up to $50,000) for Massachusetts-based small businesses that successfully raise capital via approved crowdfunding platforms (Wefunder, Republic, StartEngine, Kickstarter, IFundWomen, etc.). The program is rolling — applications accepted continuously — and is designed to extend the runway of MA businesses that have demonstrated community demand through a real crowdfund close.</p>
+<p><strong>Why Sherpa Pros qualifies:</strong> Per GTM spec §6.4, the platform plans a Wefunder Reg CF community round of $250K–$500K targeting homeowners and contractors. Even at the conservative $50K trigger of the Biz-M-Power match, Sherpa Pros' Wefunder raise is structurally aligned with MassDev's program intent — community capital from the very people who use the marketplace. The Wefunder raise creates the trigger; Biz-M-Power doubles the capital base for MA-deployment activity.</p>
+<hr>
+<h2 id="2-required-documents-checklist">2. Required Documents Checklist</h2>
+<ul>
+<li><input disabled="" type="checkbox"> Business plan summary (≤5 pages — Sherpa Pros LLC, products, market, financials, team, MA deployment)</li>
+<li><input disabled="" type="checkbox"> Massachusetts business registration confirmation (foreign-LLC for Sherpa Pros LLC if NH-domiciled — see §11)</li>
+<li><input disabled="" type="checkbox"> Crowdfunding campaign URL on approved platform (Wefunder is approved; URL placeholder: <code>[WEFUNDER CAMPAIGN URL — TO BE INSERTED AFTER WEFUNDER CAMPAIGN GOES LIVE]</code>)</li>
+<li><input disabled="" type="checkbox"> Crowdfunding goal documentation (Wefunder campaign target + minimum + close date)</li>
+<li><input disabled="" type="checkbox"> Proof of crowdfunding success (final campaign report after Wefunder close: total raised, # of investors, # of MA-resident investors)</li>
+<li><input disabled="" type="checkbox"> Use-of-funds plan (how matched grant will be deployed in MA)</li>
+<li><input disabled="" type="checkbox"> Job-creation projection (FT + contractor MA jobs over 12–24 months — see §5.4)</li>
+<li><input disabled="" type="checkbox"> MA economic-impact narrative (vendor spend, GMV routed to MA contractors, decarbonization tonnage attributable to MA installs)</li>
+<li><input disabled="" type="checkbox"> Form W-9 for Sherpa Pros LLC</li>
+<li><input disabled="" type="checkbox"> Cap table snapshot (pre-Wefunder + post-Wefunder)</li>
+<li><input disabled="" type="checkbox"> Founder bio (Phyrom)</li>
+</ul>
+<hr>
+<h2 id="3-eligibility-verification">3. Eligibility Verification</h2>
+<table>
+<thead>
+<tr>
+<th>Criterion</th>
+<th>Sherpa Pros status</th>
+<th>Cite</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>MA-based small business OR registered to do business in MA</td>
+<td><strong>Action item</strong> — file MA foreign-LLC registration before submit (see §11)</td>
+<td>MA Secretary of the Commonwealth</td>
+</tr>
+<tr>
+<td>Active crowdfunding campaign on approved platform</td>
+<td>Wefunder campaign planned per GTM spec §6.4 (W3–W12 of Phase 0) — campaign URL placeholder</td>
+<td>Wefunder approved; GTM spec §6.4</td>
+</tr>
+<tr>
+<td>Raise minimum $10,000 via crowdfund (typical MassDev floor)</td>
+<td>Targeting $250K–$500K Wefunder raise; matches at $1-for-$1 to MassDev cap of $50K</td>
+<td>GTM spec §6.4</td>
+</tr>
+<tr>
+<td>≤500 employees (SBA small business definition)</td>
+<td>Yes — 1 founder + part-time contractors</td>
+<td>GTM spec §7</td>
+</tr>
+<tr>
+<td>Use of funds in MA</td>
+<td>Yes — Boston specialty deployment (Mass Save HP + EV-charger + panel + old-house + triple-decker lanes)</td>
+<td>GTM spec §2.3</td>
+</tr>
+</tbody></table>
+<p><strong>Verdict:</strong> Eligible upon (a) MA foreign-LLC registration, and (b) successful Wefunder close above minimum trigger.</p>
+<hr>
+<h2 id="4-project-title">4. Project Title</h2>
+<p><strong>"Sherpa Pros Massachusetts Deployment — Crowdfund-Matched Boston Specialty Launch"</strong></p>
+<hr>
+<h2 id="5-application-narrative-draft">5. Application Narrative (Draft)</h2>
+<h3 id="51-business-plan-summary-≤2-pages">5.1 Business Plan Summary (≤2 pages)</h3>
+<p><strong>Sherpa Pros LLC</strong> is the national licensed-trade marketplace (international roadmap) built by a working New Hampshire general contractor (Phyrom, Founder of HJD Builders LLC), launching first in NH, ME, and MA. The platform matches homeowners to verified, code-validated, license-checked tradespeople with a single-contractor dispatch model (not lead-blast), 5%–10% take rate (vs. lead-gen platforms' effective $400–$800 per closed job), and a proprietary code-aware quote-validation layer that reads NEC, IRC, MA Electrical Code, and NH state code in real time.</p>
+<p><strong>Live operational footprint:</strong></p>
+<ul>
+<li>Web: <a href="http://www.thesherpapros.com">www.thesherpapros.com</a> (Next.js 16, deployed on Vercel)</li>
+<li>Mobile: PWA + iOS TestFlight</li>
+<li>Payments: Stripe Connect (marketplace splits + escrow + 1099-NEC reporting)</li>
+<li>Database: Neon PostgreSQL + PostGIS for geo-matching</li>
+<li>Auth: Clerk (Pro/Client role separation, license + insurance verification)</li>
+</ul>
+<p><strong>MA deployment focus</strong> (per GTM spec §2.3): Five specialty lanes the national lead-gen incumbents structurally cannot serve — (1) Mass Save heat-pump installations, (2) EV-charger installations (National Grid Turnkey), (3) electrical panel upgrades, (4) old-house specialists (plaster/lath, slate, brownstone — 50%+ of Boston housing pre-dates 1950), and (5) triple-decker porch and exterior work.</p>
+<p><strong>Revenue model:</strong></p>
+<ul>
+<li>Marketplace take rate: 5% beta → 10% standard</li>
+<li>Pro subscription: $0 beta → $49/month standard</li>
+<li>Property Manager tier: $4 → $1.50 per unit per month</li>
+</ul>
+<p><strong>18-month financial projection (per GTM spec §4.4 + tam-sam-som §4.3):</strong></p>
+<ul>
+<li>Phase 1 (M3–6): $200K–$1M GMV (50+ pros, 200+ jobs)</li>
+<li>Phase 2 (M6–12): $1M–$4M GMV (200+ pros, 1,000+ jobs, $50K+ PM ARR)</li>
+<li>Phase 3 (M12–18): $5M–$25M GMV (6 metros, 3 PM chains, 1 utility partner)</li>
+</ul>
+<h3 id="52-wefunder-campaign-summary-≤1-page">5.2 Wefunder Campaign Summary (≤1 page)</h3>
+<p><strong>Campaign URL:</strong> <code>[WEFUNDER CAMPAIGN URL — TO BE INSERTED]</code></p>
+<p><strong>Target raise:</strong> $250,000 minimum, $500,000 maximum (cap at $1M; raises &gt;$1M signal trouble per Wefunder norms)</p>
+<p><strong>Pitch angle:</strong> <em>"Let homeowners and contractors own a piece of the platform they use."</em> The Wefunder raise is structurally aligned with the marketplace business model — the very people who post jobs and complete jobs become equity holders.</p>
+<p><strong>Pre-launch activity:</strong> Build 100+ "interested" signup list (HJD Builders client list, beta pro cohort, local press readers) before public launch. Wefunder's "$100K+ committed" badge unlocks public discovery.</p>
+<p><strong>Public launch:</strong> Coordinated with PR placements in Seacoast Online, NHPR, NH Business Review, Banker &amp; Tradesman, Boston Globe Real Estate.</p>
+<p><strong>Close:</strong> 90-day Reg CF maximum window. Convert pledges to wires.</p>
+<p><strong>Cost basis:</strong> Wefunder takes 7.5% of raise. SAFE legal ~$5,000.</p>
+<p><strong>MA-resident investor capture:</strong> Conservative target = 30%+ MA residents in the investor pool (Boston area homeowners + MA-licensed contractors + MA construction trade insiders). Will be documented in Wefunder close report. <strong>MA-resident concentration is a Biz-M-Power scoring positive</strong> — demonstrates MA community alignment.</p>
+<h3 id="53-use-of-funds-plan-≤1-page">5.3 Use of Funds Plan (≤1 page)</h3>
+<p><strong>Total deployable upon Biz-M-Power match: Wefunder raise + up to $50K MassDev match.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Use of funds (post-Wefunder, post-Biz-M-Power)</th>
+<th>Allocation</th>
+<th>MA-specific?</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Boston Pro Success Manager (1.0 FTE × 12 months loaded $90K)</td>
+<td>$90,000</td>
+<td><strong>Yes — MA hire</strong></td>
+</tr>
+<tr>
+<td>MA-resident Client Concierge (0.5 FTE × 12 months loaded $50K)</td>
+<td>$25,000</td>
+<td><strong>Yes — MA hire</strong></td>
+</tr>
+<tr>
+<td>Boston BD lead (0.5 FTE × 12 months loaded $80K)</td>
+<td>$40,000</td>
+<td><strong>Yes — MA hire or MA-resident contractor</strong></td>
+</tr>
+<tr>
+<td>MA pro recruitment + onboarding (events, supply-house outreach, NESEA)</td>
+<td>$15,000</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Code-corpus expansion: MA municipal codes (Boston ISD, Cambridge, Brookline, Newton)</td>
+<td>$25,000</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Mass Save Network application + utility partnership consulting</td>
+<td>$10,000</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Paid acquisition: Boston specialty-keyword Google Ads + Meta/TikTok</td>
+<td>$40,000</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Cloud infra (Vercel, Neon, Clerk, Stripe, Twilio) — 12 months</td>
+<td>$14,400</td>
+<td>No (multi-tenant)</td>
+</tr>
+<tr>
+<td>MA legal: foreign-LLC registration, contracts, 1099 opinion</td>
+<td>$7,500</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Liability insurance, marketing collateral, video case-study</td>
+<td>$15,000</td>
+<td>Mixed</td>
+</tr>
+<tr>
+<td>Founder runway (Phyrom partial salary)</td>
+<td>$50,000</td>
+<td>Mixed</td>
+</tr>
+<tr>
+<td>Operating reserve (90-day cushion at Phase 1 burn $25K/mo)</td>
+<td>$75,000</td>
+<td>No</td>
+</tr>
+</tbody></table>
+<p><strong>Biz-M-Power match specifically deployed to:</strong> MA hire payroll (Boston PSM + MA Client Concierge + Boston BD lead) — <strong>the $50K cap fully covers 5 months of one Boston-based hire</strong>, ensuring direct MA job-creation attribution.</p>
+<h3 id="54-ma-economic-impact--job-creation-≤1-page">5.4 MA Economic Impact &amp; Job Creation (≤1 page)</h3>
+<p><strong>Direct MA jobs created (12-month horizon, post-Wefunder + Biz-M-Power match):</strong></p>
+<ul>
+<li>1 FT Boston Pro Success Manager</li>
+<li>1 PT MA Client Concierge (0.5 FTE)</li>
+<li>1 PT Boston BD lead (0.5 FTE)</li>
+<li><strong>Total: 2.0 MA W-2 FTE direct hires</strong></li>
+</ul>
+<p><strong>Indirect MA job creation (12-month horizon — MA contractors enabled by platform):</strong></p>
+<ul>
+<li>Per GTM spec §4.3: 20+ MA contractors onboarded (Boston specialty cohort: HPIN heat-pump installers, licensed electricians, old-house specialists)</li>
+<li>Per Catalyst pilot data extrapolation: each onboarded contractor sees throughput lift of <del>25% (target), translating to roughly 0.25 incremental contractor-month per onboarded pro per year = **</del>5 incremental contractor-FTE-equivalents enabled in MA in year 1** (rough estimate; will be measured precisely in Catalyst pilot)</li>
+</ul>
+<p><strong>MA economic impact — GMV routed:</strong></p>
+<ul>
+<li>Per tam-sam-som §4.2 + §4.3: Phase 1 (M3–6) targets $200K+ MA GMV; Phase 2 (M6–12) targets $1M+ MA GMV</li>
+<li>Of which: MA contractors capture 90–95% of GMV (after 5%–10% platform take); ~$900K–$1.5M direct payments to MA contractors over 12 months</li>
+<li>Materials spend through MA supply houses (Granite Group, FW Webb, City Electric Supply Boston, Eagle, Walzcraft) is additional indirect MA economic impact</li>
+</ul>
+<p><strong>Decarbonization impact (MA-attributable, per InnovateMass / Catalyst alignment):</strong></p>
+<ul>
+<li>Conservative target: 100 platform-routed Mass Save heat-pump installs in 12 months = <strong>~600 tCO2e/year ongoing</strong> at MA EEAC standard 6 tCO2e/install/year factor (lifecycle: ~9,000 tCO2e over 15-yr life)</li>
+</ul>
+<hr>
+<h2 id="6-submission-instructions">6. Submission Instructions</h2>
+<ul>
+<li><strong>Portal:</strong> MassDevelopment online application portal at <a href="https://www.massdevelopment.com/products-and-services/funding-and-tools/grant-programs/">https://www.massdevelopment.com/products-and-services/funding-and-tools/grant-programs/</a> — Biz-M-Power application form</li>
+<li><strong>Deadlines:</strong> <strong>Rolling intake</strong> — applications accepted continuously. Submit immediately after Wefunder campaign closes successfully (or upon hitting Biz-M-Power minimum trigger of $10K raised, whichever is sooner per program rules).</li>
+<li><strong>Format:</strong> Online application form + uploaded PDF business plan summary + crowdfund proof + W-9 + use-of-funds plan</li>
+<li><strong>Contact:</strong> MassDevelopment Small Business Programs — <a href="mailto:programs@massdevelopment.com">programs@massdevelopment.com</a> (general inbox); program officer assigned upon application receipt</li>
+<li><strong>Pre-submission outreach:</strong> Recommended — email a 2-paragraph project summary to <a href="mailto:programs@massdevelopment.com">programs@massdevelopment.com</a> 2–3 weeks before Wefunder close; ask which program officer will review; build the relationship before formal submission.</li>
+</ul>
+<hr>
+<h2 id="7-tips--gotchas">7. Tips &amp; Gotchas</h2>
+<ol>
+<li><strong>Wefunder must close successfully</strong> before the Biz-M-Power match is paid out. The application can be filed as soon as the Wefunder campaign goes live (with the $50K trigger committed) but the match disburses post-close. Plan cash flow accordingly — don't rely on Biz-M-Power for Wefunder runway.</li>
+<li><strong>MA-resident investor concentration in the Wefunder close is a scoring positive.</strong> During the Wefunder campaign, run a parallel MA-targeted PR + community push (Boston Globe Real Estate, Banker &amp; Tradesman, Boston Business Journal) to maximize MA-resident participation. Track MA residency in the Wefunder admin dashboard for the close report.</li>
+<li><strong>MA foreign-LLC registration is mandatory.</strong> File before Wefunder campaign goes live. Without it, both the Wefunder raise and Biz-M-Power match are at risk.</li>
+<li><strong>Use-of-funds must demonstrate MA deployment.</strong> General "operating capital" framing will be discounted. Lead with the Boston PSM hire, MA contractor onboarding, MA-municipal code-corpus expansion. Concrete MA line items.</li>
+<li><strong>Job-creation numbers should be verifiable.</strong> 2.0 W-2 FTE MA hires is the headline. Don't over-promise.</li>
+<li><strong>Avoid "Wiseman" externally</strong> — use "code-aware quote validation" (per Sherpa Pros brand bible / GTM spec §3.3).</li>
+<li><strong>Time the Wefunder + Biz-M-Power sequence.</strong> GTM spec §6.4 has Wefunder closing W12 of Phase 0. Biz-M-Power application should be filed between W10 and W14 — early enough to lock in program officer relationship, late enough to have crowdfund proof.</li>
+<li><strong>Biz-M-Power has historically funded $25K–$45K of the $50K cap on average.</strong> Don't bank on the full $50K; budget conservatively.</li>
+</ol>
+<hr>
+<h2 id="8-outreach-email--pre-submission-draft-for-phyrom">8. Outreach Email — Pre-Submission (Draft for Phyrom)</h2>
+<p><strong>Subject:</strong> MA-deployed marketplace + Wefunder raise — Biz-M-Power inquiry</p>
+<blockquote>
+<p>Dear MassDevelopment Small Business Programs team,</p>
+<p>My name is Phyrom. I'm the founder of HJD Builders LLC (a NH general contractor) and Sherpa Pros LLC (the national licensed-trade marketplace platform, launching first in New England — <a href="http://www.thesherpapros.com">www.thesherpapros.com</a>). I'm writing to introduce a Biz-M-Power application I plan to submit in the next 8–12 weeks following the close of a Wefunder community round.</p>
+<p>Sherpa Pros is deploying its first Massachusetts cohort across five specialty lanes the national lead-gen incumbents (Angi, Thumbtack) cannot serve: Mass Save heat-pump installations, National Grid Turnkey EV-charger installs, electrical panel upgrades, old-house specialists, and triple-decker porch and exterior work. The platform is live, built by a working contractor, and aligned with MA decarbonization program goals.</p>
+<p>The Wefunder campaign targets $250K–$500K and explicitly invites MA homeowners and MA-licensed contractors to invest. Biz-M-Power's $1-for-$1 match would directly fund the hire of a Boston-based Pro Success Manager, an MA-resident Client Concierge, and a Boston BD lead — three direct W-2 jobs in Massachusetts.</p>
+<p>Could we schedule a 20-minute call to walk through fit and confirm submission timing? I would value the program officer's input before we lock in the Wefunder close and Biz-M-Power application sequence.</p>
+<p>Thanks for your time. I'm happy to share the Wefunder campaign URL and a one-page summary if useful before the call.</p>
+<p>Phyrom
+Founder, Sherpa Pros LLC | HJD Builders LLC
+[Phone] | <a href="mailto:poum@hjd.builders">poum@hjd.builders</a></p>
+</blockquote>
+<hr>
+<h2 id="9-eligibility-blocker--phyrom-confirmation-required">9. Eligibility Blocker — Phyrom Confirmation Required</h2>
+<p><strong>MA foreign-LLC registration for Sherpa Pros LLC</strong> is the single open eligibility item. ~$500, 5–7 business days. Do this <strong>before</strong> the Wefunder campaign goes public so the entire raise is sourced under an MA-registered entity.</p>
+<p>Additionally: Phyrom should confirm that <strong>HJD Builders LLC and Sherpa Pros LLC are clearly distinct entities</strong> in any documentation submitted. MassDev will scrutinize the corporate structure to ensure the Biz-M-Power match flows to the right entity and the right MA jobs are attributed correctly.</p>
+<hr>
+<p><strong>End of draft. Phyrom: confirm MA registration timing, send pre-submission email to MassDev (template in §8), then file Biz-M-Power application within 30 days of Wefunder close.</strong></p>
+
+	
+
+
+</body>
+</html>

@@ -1,0 +1,1005 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2026 04 25 phase 4 parallel execution — Sherpa Pros</title>
+<link rel="icon" href="../../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="2026-04-25-phase-4-parallel-execution.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="phase-4-strategic-build--parallel-execution-handoff">Phase 4 Strategic Build — Parallel Execution Handoff</h1>
+<p><strong>Date:</strong> 2026-04-25
+<strong>Status:</strong> Specs + Plans complete, ready for execution
+<strong>Total scope:</strong> 4 specs + 4 plans = 165 implementation tasks across 25 work streams</p>
+<hr>
+<h2 id="executive-summary">Executive summary</h2>
+<p>Phase 0 → Phase 3 covered the path from beta cohort to Series A + Series B (M0–M18, US Northeast 4-metro + 2-metro expansion + NYC specialty beachhead). Phase 4 is the <strong>forever-business infrastructure layer</strong> — the strategic systems that turn Sherpa Pros from a regional Series-B-stage marketplace into a national + international + capital-light franchise platform.</p>
+<p>Four strategic threads, designed in parallel, cross-referenced where they touch:</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Thread</th>
+<th>Spec</th>
+<th>Plan</th>
+<th>Tasks</th>
+<th>Phase</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>International Expansion</td>
+<td><a href="../specs/2026-04-25-international-expansion-design.md"><code>2026-04-25-international-expansion-design.md</code></a></td>
+<td><a href="../plans/2026-04-25-international-expansion-plan.md"><code>2026-04-25-international-expansion-plan.md</code></a></td>
+<td>36</td>
+<td>M19+</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Franchise Model</td>
+<td><a href="../specs/2026-04-25-franchise-model-design.md"><code>2026-04-25-franchise-model-design.md</code></a></td>
+<td><a href="../plans/2026-04-25-franchise-model-plan.md"><code>2026-04-25-franchise-model-plan.md</code></a></td>
+<td>38</td>
+<td>M12+</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Platform Scale Architecture</td>
+<td><a href="../specs/2026-04-25-platform-scale-architecture-design.md"><code>2026-04-25-platform-scale-architecture-design.md</code></a></td>
+<td><a href="../plans/2026-04-25-platform-scale-architecture-plan.md"><code>2026-04-25-platform-scale-architecture-plan.md</code></a></td>
+<td>50</td>
+<td>M9+</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Sherpa Hub Integration</td>
+<td><a href="../specs/2026-04-25-sherpa-hub-integration-design.md"><code>2026-04-25-sherpa-hub-integration-design.md</code></a></td>
+<td><a href="../plans/2026-04-25-sherpa-hub-integration-plan.md"><code>2026-04-25-sherpa-hub-integration-plan.md</code></a></td>
+<td>41</td>
+<td>M0+ (Hub #1 immediate)</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="decisions-locked-in-this-build">Decisions LOCKED in this build</h2>
+<p>The four agents resolved several long-standing open decisions. These are now canonical:</p>
+<h3 id="sherpa-hub-integration">Sherpa Hub Integration</h3>
+<ul>
+<li><strong>FW Webb partnership:</strong> <strong>Option C Hybrid</strong> — Hub #1 standalone at HJD HQ Atkinson NH (zero-cost colocation, Phase 1 proof point), Hubs #2–#10 co-located inside FW Webb branches via 5-Hub pilot Letter of Intent (LOI signature deadline: Phase 1 Month 4 — HARD DATE), Hubs #11+ via franchise model per franchise spec</li>
+<li><strong>Bundle pricing:</strong> <strong>Option C Tiered</strong> — Founding Pro and Gold tier include Hub access in subscription, Silver and Bronze tiers pay $25/month Hub upgrade, Sherpa Flex tier pays $39/month Hub access (or no access by default)</li>
+<li><strong>Hub revenue line beyond memberships:</strong> Per-line Sherpa Materials gross margin share — 40% buffer / 35% pickup / 25% staged-and-Uber-Direct</li>
+<li><strong>Per-Hub breakeven:</strong> Standalone Year 3, FW Webb co-located Year 2, franchised passes risk to franchisee</li>
+</ul>
+<h3 id="franchise-model">Franchise Model</h3>
+<ul>
+<li><strong>Primary franchise unit:</strong> <strong>Sherpa Hub franchise</strong> ($45K initial fee, $185K–$420K total franchisee investment, 6–8% royalty, 5/15/30-mile protected radius by metro density)</li>
+<li><strong>Secondary franchise unit:</strong> Sherpa Pro Network license ($25K, digital-only, exclusive metro pro-recruiting rights)</li>
+<li><strong>Tertiary franchise unit:</strong> Sherpa Metro Master ($300K, sub-franchise individual Hubs underneath)</li>
+<li><strong>International franchise unit:</strong> Master Franchisee per country ($500K–$2M depending on market, 4–6% royalty)</li>
+<li><strong>State registration sequence:</strong> Launch in non-registration states first (NH, ME, MA — Phase 3), then file in priority registration states (NY, RI, MD, VA — Phase 4 Year 2), then remaining 10 registration states (Phase 4 Year 3)</li>
+<li><strong>FDD economics (Item 19):</strong> Year 2 mid-case Hub gross revenue $1.05M, EBITDA 21%, 14–22 month franchisee breakeven, $236K franchisee cash flow at maturity</li>
+</ul>
+<h3 id="international-expansion">International Expansion</h3>
+<ul>
+<li><strong>Country sequence:</strong> <strong>Canada (Y1, M19–30) → United Kingdom (Y2, M31–42) → Australia (Y3, M43–54) → European Union pilot (Y4–5, Berlin only, M55–78)</strong></li>
+<li><strong>Codes ingestion budget:</strong> ~$80–150K per country (Canada: National Building Code + provincial; UK: BS 7671 + Building Regulations; Australia: AS/NZS 3000 + National Construction Code; EU: EN harmonized + per-Member-State)</li>
+<li><strong>Per-country talent model:</strong> 4 hires (country GM + ops + support + business development), $400–600K loaded annual cost per country</li>
+<li><strong>International take rates:</strong> Canada parity with United States, UK 7–10% (cultural margin ceiling), Australia slight premium, materials coordination 8–12% holds globally</li>
+<li><strong>Localization sequence:</strong> English-default for Canada / UK / Australia, Quebec French Y2, German Y4–5, Spanish + Italian deferred</li>
+<li><strong>International rollout model:</strong> Master-franchisee per country (capital-light, regulatory-localized, lower direct burn)</li>
+</ul>
+<h3 id="platform-scale-architecture">Platform Scale Architecture</h3>
+<ul>
+<li><strong>Compliance vendor stack:</strong> Vanta (compliance automation) + Schellman (auditor) — SOC 2 Type 1 in 90 days, Type 2 in 12 months</li>
+<li><strong>Multi-region rollout sequence:</strong> US-East primary → add US-West Q3 2026 → add Canadian region Q3 2027 → add EU region Q4 2027 → UK + Australia 2028</li>
+<li><strong>Database scaling:</strong> Citus extension on Postgres for sharding by metro_id (alternative pg_partman + foreign data wrapper), read replicas per region, hot/warm/cold tiering at 90/365/365+ days</li>
+<li><strong>Observability vendor:</strong> Datadog (APM + logs + metrics + RUM + synthetics) until 1M MAU, then evaluate switching to OpenTelemetry → Grafana Cloud</li>
+<li><strong>Edge protection:</strong> Cloudflare Pro WAF in front of Vercel + Upstash Redis rate limiting at edge + Vercel BotID (just GA Jun 2025)</li>
+<li><strong>Targets:</strong> 99.95% uptime, P95 dispatch latency &lt;500ms, RPO 15-min, RTO 4-hr regional / 24-hr full DR, $0.03–$0.06 per Monthly Active User cost-of-scale at 1M+ MAU</li>
+</ul>
+<hr>
+<h2 id="decisions-still-open-carry-forward-to-next-session">Decisions still OPEN (carry forward to next session)</h2>
+<p>Across the 4 specs, ~33 decisions remain pending. Highest-priority:</p>
+<h3 id="hub">Hub</h3>
+<ul>
+<li>Hub #1 grand-open date (target Phase 1 Month 4)</li>
+<li>FW Webb pilot LOI signature deadline (HARD: Phase 1 Month 4)</li>
+<li>Hub Manager #1 hiring start (target Phase 1 Month 2)</li>
+<li>Sherpa Materials top-200 SKU list lock</li>
+</ul>
+<h3 id="franchise">Franchise</h3>
+<ul>
+<li>FDD attorney selection (recommend Spadea Lignana, Cheng Cohen, or DLA Piper Franchise Practice)</li>
+<li>Audit firm selection (BDO USA Franchise Practice or Marcum Franchise Group)</li>
+<li>Lead-with: Hub franchise alone, or Hub + Pro Network simultaneously?</li>
+<li>International master fee structure exact tier per country</li>
+</ul>
+<h3 id="international">International</h3>
+<ul>
+<li>Quebec French localization timing (Y2 alongside English Canada, or deferred to Y3?)</li>
+<li>Australia vs New Zealand split (single ANZ market or separate launches?)</li>
+<li>EU pilot country choice (Berlin recommended; alternatives Amsterdam, Stockholm, Munich)</li>
+<li>Greenfield Hub deployment internationally vs international-master-franchise-only</li>
+</ul>
+<h3 id="platform-scale">Platform Scale</h3>
+<ul>
+<li>Datadog vs OpenTelemetry / Grafana Cloud crossover criteria</li>
+<li>Snyk vs Dependabot for dependency scanning</li>
+<li>When to hire dedicated DBA (recommend Phase 4A)</li>
+<li>When to hire dedicated SRE (recommend Phase 3 Month 5)</li>
+</ul>
+<hr>
+<h2 id="cross-spec-dependency-graph">Cross-spec dependency graph</h2>
+<pre><code>                    ┌──────────────────────────────┐
+                    │  Sherpa Hub Integration      │
+                    │  (operational, M0+)          │
+                    └────────┬─────────────────────┘
+                             │ feeds Item 19 economics
+                             ▼
+        ┌────────────────────────────────────────────┐
+        │  Franchise Model                           │
+        │  (FDD development M12+, sales M18+)        │
+        └────────┬───────────────────────────────────┘
+                 │ international master-franchisee model
+                 ▼
+        ┌────────────────────────────────────────────┐
+        │  International Expansion                   │
+        │  (country GM hires M19, beta M22+)         │
+        └────────┬───────────────────────────────────┘
+                 │ data residency + multi-region required
+                 ▼
+        ┌────────────────────────────────────────────┐
+        │  Platform Scale Architecture               │
+        │  (SOC 2 M9+, multi-region M18+)            │
+        └────────────────────────────────────────────┘
+</code></pre>
+<p><strong>Critical-path interpretation:</strong> Hub Integration is execution-ready NOW (Hub #1 can break ground Phase 1 Month 1). Franchise Model FDD development starts Month 12 and gates Phase 4 Hub expansion. Platform Scale SOC 2 Type 1 work starts Month 9 and gates international launch. International Expansion country GM hire starts Month 19 (post-Series B close).</p>
+<hr>
+<h2 id="parallel-implementation-handoff">Parallel implementation handoff</h2>
+<p>When you're ready to execute the 165 tasks across the four plans, here's the parallel-agent dispatch pattern that has worked for prior waves (Wave 1–9 of GTM build):</p>
+<h3 id="pattern">Pattern</h3>
+<ul>
+<li>One Agent message dispatches multiple Agent calls in parallel</li>
+<li>Each agent gets ONE plan + ONE work stream within that plan</li>
+<li>Agents commit nothing, push nothing, return summary only</li>
+<li>Orchestrator (you) commits, renders, pushes after all agents return</li>
+</ul>
+<h3 id="recommended-execution-waves">Recommended execution waves</h3>
+<p><strong>Wave A — Hub #1 Atkinson buildout (immediate, M0–4)</strong></p>
+<p>Single-agent execution. WS1 of <code>2026-04-25-sherpa-hub-integration-plan.md</code>:</p>
+<ul>
+<li>Real estate confirm at HJD HQ</li>
+<li>Fit-out plan (architect engagement, contractor selection, permit pull)</li>
+<li>Equipment manifest + opening inventory list</li>
+<li>Hub Manager #1 job spec + hiring kickoff</li>
+<li>Soft-open + grand-open milestones</li>
+</ul>
+<p><strong>Wave B — FW Webb partnership chain (parallel, M2–6)</strong></p>
+<p>3 agents:</p>
+<ul>
+<li>Agent 1: WS2 of Hub plan (FW Webb target contact list, intro deck, pilot LOI structure)</li>
+<li>Agent 2: WS3 of Hub plan (Sherpa Materials integration — Zinc API ship-to-Hub config, Uber Direct dispatch-from-Hub)</li>
+<li>Agent 3: WS6 of Hub plan (Hub data telemetry — per-Hub P&amp;L dashboard, network-wide ops dashboard)</li>
+</ul>
+<p><strong>Wave C — SOC 2 readiness foundation (parallel, M9–18)</strong></p>
+<p>4 agents:</p>
+<ul>
+<li>Agent 1: WS1 of Platform Scale plan (Vanta + Schellman engagement, access management, vendor risk register)</li>
+<li>Agent 2: WS2 of Platform Scale plan (Datadog provisioning, APM instrumentation, 8 Day-1 dashboards)</li>
+<li>Agent 3: WS4 of Platform Scale plan (Cloudflare Pro WAF, Upstash rate limiting, Vercel BotID)</li>
+<li>Agent 4: WS6 of Platform Scale plan (AWS Secrets Manager migration, Snyk + auto-PRs, SBOM generation)</li>
+</ul>
+<p><strong>Wave D — Franchise FDD development (parallel, M12–18)</strong></p>
+<p>3 agents:</p>
+<ul>
+<li>Agent 1: WS1 of Franchise plan (attorney + audit firm engagement, Item-by-Item drafting through V1.0)</li>
+<li>Agent 2: WS3 of Franchise plan (franchise prospect website, 7-stage screening templates, Hub #2 candidate identification)</li>
+<li>Agent 3: WS4 of Franchise plan (80-hour curriculum, Brand + Operations Manuals, training facility buildout at Hub #1)</li>
+</ul>
+<p><strong>Wave E — Multi-region rollout (parallel, M18–24)</strong></p>
+<p>4 agents:</p>
+<ul>
+<li>Agent 1: WS3 of Platform Scale plan (replica-aware Drizzle client, US-West replica, sharding pilot)</li>
+<li>Agent 2: WS5 of Platform Scale plan (PagerDuty on-call, runbook templates, incident response, feature flags)</li>
+<li>Agent 3: WS7 of Platform Scale plan (region-aware DB routing, Canadian region, GDPR readiness, EU region)</li>
+<li>Agent 4: WS2 of Franchise plan (state registration filings — NY, RI, MD, VA priority + FL/TX notices)</li>
+</ul>
+<p><strong>Wave F — International country launches (parallel, M19+, post-Series B)</strong></p>
+<p>6 agents (one per work stream of International Expansion plan, plus 1 Hub coordination):</p>
+<ul>
+<li>Agent 1: WS1 (Country GM hires — generic template + 4 country job specs + recruiting playbook)</li>
+<li>Agent 2: WS2 (Codes ingestion — vendor framework + 4 country runbooks + validation test set)</li>
+<li>Agent 3: WS3 (Payment rails — Stripe Connect per country + FX hedging)</li>
+<li>Agent 4: WS4 (Regulatory readiness — 4 country entity formations, insurance brokers, worker-class opinions)</li>
+<li>Agent 5: WS5 (Localization — currency, language, units, dates, trade nomenclature, trademarks)</li>
+<li>Agent 6: WS6 (Per-country launch playbook — template + 4 country playbooks + traction-metric dashboard)</li>
+</ul>
+<hr>
+<h2 id="what-this-phase-4-build-does-not-cover">What this Phase 4 build does NOT cover</h2>
+<p>These are intentionally deferred — flag for future spec work if they become priority:</p>
+<ul>
+<li><strong>Phase 4 GTM marketing kit refresh</strong> (analogous to Phase 0 marketing kit but for international + franchise + scaled-product brand) — defer until first international country launch is 6 months out</li>
+<li><strong>Phase 4 Series B + Series C pitch deck</strong> — defer until Phase 3 Series A close is in hand (target M12)</li>
+<li><strong>Acquisition-track strategic analysis</strong> (Home Depot / Lowe's / insurance carrier / Procore acquisition pathway) — defer until Phase 4B revenue and unit economics are proven</li>
+<li><strong>AI/ML roadmap</strong> (Sherpa Score evolution, Dispatch Wiseman ML uplift, predictive materials demand forecasting) — defer to dedicated AI spec</li>
+<li><strong>Embedded financial products beyond Sherpa Rewards + Tremendous</strong> (Sherpa Lending for pros, Sherpa Insurance for clients, embedded payments beyond Stripe Connect) — defer to dedicated Fintech spec</li>
+<li><strong>Trades-industry vertical SaaS spinout</strong> (Sherpa codes engine + Sherpa Materials engine licensed as standalone B2B SaaS to Procore / BuilderTrend / JobNimbus) — defer until Phase 5</li>
+</ul>
+<hr>
+<h2 id="build-outputs">Build outputs</h2>
+<p>This Phase 4 build session produced:</p>
+<ul>
+<li>4 strategic specs in <code>docs/superpowers/specs/</code> (~28K words combined)</li>
+<li>4 implementation plans in <code>docs/superpowers/plans/</code> (~32K words combined, 165 tasks across 25 work streams)</li>
+<li>This handoff document</li>
+<li>Updates to project memory (<code>project_sherpa_pros_gtm_phase_0.md</code> Session 8)</li>
+</ul>
+<p>All 8 docs render to PDF + HTML automatically via <code>npm run docs:pdf</code> (already in build pipeline). Slide-deck conversion of any spec available via <code>npm run docs:slides</code> if needed for board presentation.</p>
+<hr>
+<h2 id="last-updated">Last updated</h2>
+<p>2026-04-25 — Wave 10 Phase 4 strategic build complete.</p>
+
+	
+
+
+</body>
+</html>

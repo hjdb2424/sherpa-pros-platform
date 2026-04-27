@@ -1,0 +1,1024 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>10 pre open checklist — Sherpa Pros</title>
+<link rel="icon" href="../../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="10-pre-open-checklist.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="hub-1-atkinson-nh---pre-open-operational-readiness-checklist">Hub #1 Atkinson NH - Pre-Open Operational Readiness Checklist</h1>
+<h2 id="purpose">Purpose</h2>
+<p>Final go / no-go checklist before Hub #1 grand-open. Every item must be checked off and signed by the owner before grand-open week activates. Items marked "blocking" must be complete; items marked "advisory" can launch with a documented exception.</p>
+<p><strong>Target sign-off:</strong> 7 days before grand-open date.</p>
+<hr>
+<h2 id="1-insurance-blocking">1. Insurance (Blocking)</h2>
+<p>Per integration spec section 6 + insurance-broker-outreach.md.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>General Liability bound</strong> ($2M aggregate / $1M per occurrence, target $1,400/year)</li>
+<li><input disabled="" type="checkbox"> <strong>Property bound</strong> (building improvements + inventory + equipment, target $1,100/year)</li>
+<li><input disabled="" type="checkbox"> <strong>Business Interruption bound</strong> (90-day coverage, target $400/year)</li>
+<li><input disabled="" type="checkbox"> <strong>Crime / Employee Dishonesty bound</strong> (target $350/year)</li>
+<li><input disabled="" type="checkbox"> <strong>Cyber liability bound</strong> (POS + member data, target $300/year)</li>
+<li><input disabled="" type="checkbox"> <strong>Workers Comp bound</strong> for Hub Manager + Hub Associate</li>
+<li><input disabled="" type="checkbox"> <strong>Auto / hired-non-owned auto</strong> if Hub uses any vehicle for materials runs</li>
+<li><input disabled="" type="checkbox"> <strong>Total Year 1 premium target: ~$3,550</strong> + workers comp + auto</li>
+<li><input disabled="" type="checkbox"> Carrier preference: The Hartford or Chubb</li>
+<li><input disabled="" type="checkbox"> Master policy structure with per-Hub schedule (so Hub #2+ adds via addendum)</li>
+<li><input disabled="" type="checkbox"> Certificate of Insurance on file</li>
+<li><input disabled="" type="checkbox"> HJD Builders LLC + Sherpa Pros LLC named as additional insureds where applicable</li>
+</ul>
+<hr>
+<h2 id="2-pos--inventory--it-systems-blocking">2. POS + Inventory + IT Systems (Blocking)</h2>
+<h3 id="pos-hardware-install">POS hardware install</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Counter terminal installed + tested (live transactions)</li>
+<li><input disabled="" type="checkbox"> Mobile barcode scanners paired + tested</li>
+<li><input disabled="" type="checkbox"> Receipt printer connected + tested</li>
+<li><input disabled="" type="checkbox"> Card reader (Stripe Terminal or Square) connected + tested with test transaction</li>
+<li><input disabled="" type="checkbox"> Cash drawer installed + tested</li>
+<li><input disabled="" type="checkbox"> Label printer (DYMO LabelWriter) installed + ribbons stocked</li>
+</ul>
+<h3 id="inventory-system-live">Inventory system live</h3>
+<ul>
+<li><input disabled="" type="checkbox"> <code>hub_inventory</code> table loaded with launch top-50 SKUs (per <code>06-opening-inventory-list.md</code>)</li>
+<li><input disabled="" type="checkbox"> Bin labels printed + applied</li>
+<li><input disabled="" type="checkbox"> Cycle-count tablets configured + provisioned to Hub Manager + Hub Associate</li>
+<li><input disabled="" type="checkbox"> RFID handheld reader configured for rental fleet ping</li>
+</ul>
+<h3 id="it-infrastructure">IT infrastructure</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Business-grade fiber internet active + tested (&gt;100 Mbps down / 50 Mbps up)</li>
+<li><input disabled="" type="checkbox"> Router + firewall configured (UniFi Dream Machine Pro or pfSense)</li>
+<li><input disabled="" type="checkbox"> PoE switch live with all ports tested</li>
+<li><input disabled="" type="checkbox"> 3 Wi-Fi APs covering warehouse + showroom/lounge + training room</li>
+<li><input disabled="" type="checkbox"> Member Wi-Fi SSID configured (separate from staff/POS SSID)</li>
+<li><input disabled="" type="checkbox"> 4 staff workstations provisioned + accounts created</li>
+<li><input disabled="" type="checkbox"> 2 customer-facing kiosks live with showroom self-serve catalog</li>
+<li><input disabled="" type="checkbox"> UPS units in place for POS + NVR + router rack</li>
+</ul>
+<h3 id="software-end-to-end-test">Software end-to-end test</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Hub Manager dashboard API live + returning expected JSON shape (per integration spec section 7)</li>
+<li><input disabled="" type="checkbox"> Wiseman Materials engine routing logic deployed (per integration plan WS3.5)</li>
+<li><input disabled="" type="checkbox"> Zinc API ship-to-Hub configured + tested with mock order</li>
+<li><input disabled="" type="checkbox"> Uber Direct dispatch-from-Hub wave grouping logic deployed + tested</li>
+<li><input disabled="" type="checkbox"> Pro mobile app Hub features live (nearest Hub, hours, parts in stock, training calendar, pickup-at-Hub toggle)</li>
+</ul>
+<hr>
+<h2 id="3-security-system-blocking">3. Security System (Blocking)</h2>
+<h3 id="cameras--nvr">Cameras + NVR</h3>
+<ul>
+<li><input disabled="" type="checkbox"> All 8 IP cameras installed (5 indoor + 2 outdoor + 1 dock)</li>
+<li><input disabled="" type="checkbox"> NVR recording all 8 channels with 4TB local storage</li>
+<li><input disabled="" type="checkbox"> 30-day cloud retention subscription active</li>
+<li><input disabled="" type="checkbox"> Hub Manager mobile dashboard configured with live camera streams + after-hours motion alerts</li>
+<li><input disabled="" type="checkbox"> Camera coverage verified: receiving dock, warehouse aisles, tool cage, pickup counter, showroom, training room, building exterior</li>
+</ul>
+<h3 id="alarm--access-control">Alarm + access control</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Alarm panel armed + tested with central monitoring</li>
+<li><input disabled="" type="checkbox"> Door + window contacts active + tested</li>
+<li><input disabled="" type="checkbox"> Motion sensors live + tested</li>
+<li><input disabled="" type="checkbox"> Keypad at member entry tested (codes provisioned for staff)</li>
+<li><input disabled="" type="checkbox"> Badge reader at member entry tested with sample member badge</li>
+<li><input disabled="" type="checkbox"> Member badges (RFID cards) lot of 100 stocked</li>
+<li><input disabled="" type="checkbox"> Tool cage RFID infrastructure live with test rental tag</li>
+</ul>
+<h3 id="cash--safe">Cash + safe</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Deposit safe installed + tested</li>
+<li><input disabled="" type="checkbox"> Cashless POS policy posted at counter</li>
+<li><input disabled="" type="checkbox"> If cash accepted: end-of-day cash drop procedure documented + tested</li>
+</ul>
+<h3 id="access-logging">Access logging</h3>
+<ul>
+<li><input disabled="" type="checkbox"> <code>hub_access_log</code> table receiving badge-in / keypad events</li>
+<li><input disabled="" type="checkbox"> First test access events logged + viewable in Hub Manager dashboard</li>
+</ul>
+<hr>
+<h2 id="4-hub-manager--hub-associate-trained-blocking">4. Hub Manager + Hub Associate Trained (Blocking)</h2>
+<h3 id="hub-manager">Hub Manager</h3>
+<ul>
+<li><input disabled="" type="checkbox"> On-floor for at least 14 days before grand-open</li>
+<li><input disabled="" type="checkbox"> Completed 2-week onboarding curriculum (per <code>07-hub-manager-job-spec.md</code> section 9)</li>
+<li><input disabled="" type="checkbox"> Trained on POS, inventory, materials staging workflow, dispatch coordination, returns processing</li>
+<li><input disabled="" type="checkbox"> Trained on security playbook + access control + cycle count</li>
+<li><input disabled="" type="checkbox"> Has run at least 5 mock dispatch waves</li>
+<li><input disabled="" type="checkbox"> Has personally onboarded at least 5 founding pros during soft-open</li>
+<li><input disabled="" type="checkbox"> Has signed off on first weekly Hub Manager dashboard report</li>
+</ul>
+<h3 id="hub-associate">Hub Associate</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Hired + on-floor at least 7 days before grand-open</li>
+<li><input disabled="" type="checkbox"> Completed 5-day onboarding curriculum (per integration plan WS4.2)</li>
+<li><input disabled="" type="checkbox"> Trained on POS basics, kit assembly, rental check-in/out, member greet protocol</li>
+<li><input disabled="" type="checkbox"> Has shadowed Hub Manager on at least 2 morning dispatch waves</li>
+<li><input disabled="" type="checkbox"> Has run at least 5 test member checkins</li>
+</ul>
+<hr>
+<h2 id="5-member-onboarding-flow-blocking">5. Member Onboarding Flow (Blocking)</h2>
+<ul>
+<li><input disabled="" type="checkbox"> Member onboarding flow live in pro mobile app (per integration plan WS5.1)</li>
+<li><input disabled="" type="checkbox"> Member onboarding flow tested with at least 3 founding pros end-to-end (badge enrollment, lounge orientation, parts catalog walkthrough, training calendar subscription, first transaction)</li>
+<li><input disabled="" type="checkbox"> Average onboarding completion time &lt;15 min verified</li>
+<li><input disabled="" type="checkbox"> First-90-day free Hub access (per integration spec section 5) configured for all new members</li>
+<li><input disabled="" type="checkbox"> Tiered-bundle pricing (per integration spec section 5) deferred to Phase 2 onward (Hub #1 launches with all members free for first 90 days)</li>
+</ul>
+<hr>
+<h2 id="6-sherpa-materials-hub-side-integration-blocking">6. Sherpa Materials Hub-Side Integration (Blocking)</h2>
+<p>End-to-end test order from Marketplace through Hub through dispatch to job site.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Test scenario:</strong> Create a mock job in Marketplace within Hub #1 catchment (45-min drive radius)</li>
+<li><input disabled="" type="checkbox"> <strong>Test step 1:</strong> Wiseman Materials engine generates materials list and routes per decision tree (per integration spec section 8)</li>
+<li><input disabled="" type="checkbox"> <strong>Test step 2:</strong> Routing returns "hub_staged" for at least one line item; Zinc API ships to Hub address</li>
+<li><input disabled="" type="checkbox"> <strong>Test step 3:</strong> Hub Manager confirms inbound delivery, scans pallet manifest, reconciles against <code>hub_materials_staging.expected_at</code></li>
+<li><input disabled="" type="checkbox"> <strong>Test step 4:</strong> Hub Manager builds job-labeled rack with printed label (job ID, pro name, dispatch wave, dispatch method)</li>
+<li><input disabled="" type="checkbox"> <strong>Test step 5:</strong> Inventory system updates <code>hub_materials_staging.staged_at</code></li>
+<li><input disabled="" type="checkbox"> <strong>Test step 6:</strong> Wave dispatch fires Uber Direct API at scheduled time; Uber Direct driver picks up; QR scan logs <code>dispatched_at</code></li>
+<li><input disabled="" type="checkbox"> <strong>Test step 7:</strong> Pro confirms receipt at job site; system writes <code>delivered_at</code></li>
+<li><input disabled="" type="checkbox"> <strong>Test step 8:</strong> Margin to Hub recorded in <code>margin_to_hub_cents</code></li>
+<li><input disabled="" type="checkbox"> <strong>Test alternate flow:</strong> Pro pickup option tested - pro arrives at Hub, scans member badge, system surfaces staged materials, pro takes materials, system writes <code>dispatched_at</code> with <code>dispatch_method = 'pro_pickup'</code></li>
+</ul>
+<hr>
+<h2 id="7-marketing-assets-blocking-for-grand-open">7. Marketing Assets (Blocking for grand-open)</h2>
+<h3 id="web--social">Web + social</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Hub-page on website live with location, hours, member benefits, training calendar</li>
+<li><input disabled="" type="checkbox"> Social media announcement scheduled (LinkedIn, Instagram, Twitter/X)</li>
+<li><input disabled="" type="checkbox"> Member welcome packet printed + branded (badge enrollment QR + Hub map + Q1 training calendar + welcome letter from Phyrom)</li>
+</ul>
+<h3 id="press--community">Press + community</h3>
+<ul>
+<li><input disabled="" type="checkbox"> NHHBA press release drafted + ready to distribute on grand-open day</li>
+<li><input disabled="" type="checkbox"> Local trade press outreach (NH Business Review, Manchester Ink Link, Eagle-Tribune) - press kit + interview availability windows</li>
+<li><input disabled="" type="checkbox"> Email blast to Sherpa Pros database (founding pros + waitlist) drafted + scheduled</li>
+<li><input disabled="" type="checkbox"> Grand-open RSVP page live + tracking confirmations</li>
+<li><input disabled="" type="checkbox"> Sponsor manufacturers (Festool, Hilti, FW Webb) confirmed for on-site presence + display equipment</li>
+</ul>
+<h3 id="signage">Signage</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Exterior primary sign installed + illuminated</li>
+<li><input disabled="" type="checkbox"> Building-mounted secondary signs installed</li>
+<li><input disabled="" type="checkbox"> Wayfinding signs installed (parking, dock, member parking)</li>
+<li><input disabled="" type="checkbox"> Interior zone signs installed (Pickup / Tool Rental / Training / Lounge / Restroom)</li>
+<li><input disabled="" type="checkbox"> Tool cage + buffer stock "Staff Only" signs installed</li>
+<li><input disabled="" type="checkbox"> Branded wall graphics installed (member-lounge feature wall + brand identity)</li>
+</ul>
+<hr>
+<h2 id="8-backup--recovery-plan-blocking">8. Backup + Recovery Plan (Blocking)</h2>
+<h3 id="data-backup">Data backup</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Daily automated database backup (existing platform infrastructure - confirm Hub-related tables included)</li>
+<li><input disabled="" type="checkbox"> Off-site backup retention 30+ days</li>
+<li><input disabled="" type="checkbox"> Restore procedure tested at least once</li>
+</ul>
+<h3 id="pos--inventory-backup">POS / inventory backup</h3>
+<ul>
+<li><input disabled="" type="checkbox"> If POS terminal fails: manual ticket + reconciliation procedure documented</li>
+<li><input disabled="" type="checkbox"> If internet outage: cellular backup hotspot for POS card processing + inventory query</li>
+<li><input disabled="" type="checkbox"> If power outage: UPS holds POS + NVR + router for 30+ minutes; 4-hour business interruption plan</li>
+</ul>
+<h3 id="member-access-backup">Member access backup</h3>
+<ul>
+<li><input disabled="" type="checkbox"> If badge reader fails: manual entry log + Hub Manager approval procedure</li>
+<li><input disabled="" type="checkbox"> If keypad fails: backup key control + Hub Manager admin override</li>
+<li><input disabled="" type="checkbox"> After-hours emergency access procedure documented</li>
+</ul>
+<hr>
+<h2 id="9-emergency-procedures-blocking">9. Emergency Procedures (Blocking)</h2>
+<h3 id="fire">Fire</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Fire extinguishers in place per fire department spec + inspected</li>
+<li><input disabled="" type="checkbox"> Exit signage illuminated + tested</li>
+<li><input disabled="" type="checkbox"> Fire evacuation route posted at member entry, lounge, training room</li>
+<li><input disabled="" type="checkbox"> Hub Manager + Hub Associate trained on fire procedure</li>
+<li><input disabled="" type="checkbox"> Quarterly fire drill scheduled (first drill within 30 days of grand-open)</li>
+</ul>
+<h3 id="security-incident">Security incident</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Incident escalation tree documented (Hub Manager -&gt; Phyrom -&gt; law enforcement)</li>
+<li><input disabled="" type="checkbox"> After-hours alarm triggers central monitoring -&gt; Hub Manager mobile alert -&gt; Phyrom escalation if no response</li>
+<li><input disabled="" type="checkbox"> Quarterly theft-response drill scheduled</li>
+</ul>
+<h3 id="medical">Medical</h3>
+<ul>
+<li><input disabled="" type="checkbox"> First-aid kit stocked + locations marked</li>
+<li><input disabled="" type="checkbox"> AED installed (recommended for occupancy load + training room) + locations marked</li>
+<li><input disabled="" type="checkbox"> Hub Manager + Hub Associate certified in basic first aid + CPR (defer to first 30 days post-grand-open if not pre-grand-open)</li>
+<li><input disabled="" type="checkbox"> 911 + nearest hospital info posted (Atkinson NH - Parkland Medical Center Derry NH or Holy Family Hospital Methuen MA)</li>
+</ul>
+<h3 id="weather-nh-winter-focus">Weather (NH winter focus)</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Snow removal contract in place for Hub-dedicated parking area</li>
+<li><input disabled="" type="checkbox"> Roof snow load monitoring procedure (NH building code - flag if accumulation exceeds threshold)</li>
+<li><input disabled="" type="checkbox"> Power outage procedure (UPS for critical, generator-ready hookup for extended outage)</li>
+<li><input disabled="" type="checkbox"> Heat-loss procedure: warehouse zone monitored to maintain 55F minimum (inventory freeze protection per <code>01-real-estate-confirmation.md</code> section 3)</li>
+</ul>
+<hr>
+<h2 id="10-permits--compliance-blocking">10. Permits + Compliance (Blocking)</h2>
+<ul>
+<li><input disabled="" type="checkbox"> Certificate of Occupancy issued by Town of Atkinson (per <code>04-permit-checklist-nh.md</code>)</li>
+<li><input disabled="" type="checkbox"> All permits closed out (no open inspections)</li>
+<li><input disabled="" type="checkbox"> Insurance Certificate filed</li>
+<li><input disabled="" type="checkbox"> Workers comp coverage filed with NH Department of Labor</li>
+<li><input disabled="" type="checkbox"> Business license / DBA filed with Town of Atkinson if separate from HJD Builders LLC umbrella</li>
+</ul>
+<hr>
+<h2 id="11-final-walk-through-blocking-t-7-days">11. Final Walk-Through (Blocking, T-7 days)</h2>
+<p>Phyrom + Hub Manager walk every system one final time:</p>
+<ul>
+<li><input disabled="" type="checkbox"> Member entry: badge in, keypad in, walk member journey to lounge / counter / training room</li>
+<li><input disabled="" type="checkbox"> Receiving dock: trace inbound delivery path through staging racks</li>
+<li><input disabled="" type="checkbox"> Tool cage: rental check-out + check-in mock workflow</li>
+<li><input disabled="" type="checkbox"> POS counter: 3 mock transactions (kit pickup, parts pickup, member account charge)</li>
+<li><input disabled="" type="checkbox"> Camera coverage: review every angle from Hub Manager mobile dashboard</li>
+<li><input disabled="" type="checkbox"> Restroom + ADA accessibility verified</li>
+<li><input disabled="" type="checkbox"> Member lounge: coffee station, Wi-Fi, seating, lockers all functional</li>
+<li><input disabled="" type="checkbox"> Training room: A/V, demo bench, seating, white board ready for first event</li>
+<li><input disabled="" type="checkbox"> Exterior signage illumination verified at dusk</li>
+<li><input disabled="" type="checkbox"> Parking allocation correct + signage accurate</li>
+</ul>
+<hr>
+<h2 id="12-sign-off">12. Sign-off</h2>
+<p><strong>All blocking items checked.</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> Phyrom signature (Founder)</li>
+<li><input disabled="" type="checkbox"> Hub Manager signature</li>
+<li><input disabled="" type="checkbox"> Date signed</li>
+<li><input disabled="" type="checkbox"> Date of grand-open</li>
+</ul>
+<p><strong>Advisory exceptions documented (if any):</strong></p>
+<pre><code>Item:
+Reason for exception:
+Resolution plan:
+Resolution target date:
+</code></pre>
+<hr>
+<p><strong>Once this checklist is complete, Hub #1 is cleared for grand-open per <code>09-soft-open-and-grand-open-calendar.md</code>.</strong></p>
+
+	
+
+
+</body>
+</html>

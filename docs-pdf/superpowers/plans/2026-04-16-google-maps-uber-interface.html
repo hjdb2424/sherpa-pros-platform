@@ -1,0 +1,1963 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2026 04 16 google maps uber interface — Sherpa Pros</title>
+<link rel="icon" href="../../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="2026-04-16-google-maps-uber-interface.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="google-maps-uber-like-interface--implementation-plan">Google Maps Uber-Like Interface — Implementation Plan</h1>
+<blockquote>
+<p><strong>For agentic workers:</strong> REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (<code>- [ ]</code>) syntax for tracking.</p>
+</blockquote>
+<p><strong>Goal:</strong> Replace Mapbox with Google Maps and build an Uber-like map-first interface across Client Find Pros, Pro Browse Jobs, and Emergency Dispatch.</p>
+<p><strong>Architecture:</strong> Google Maps loaded via <code>@vis.gl/react-google-maps</code> with a shared provider. Hybrid layout — full-screen map + draggable bottom sheet on mobile, split panel on desktop. Progressive detail markers (clusters → avatars → mini-cards by zoom). Dark/light theme follows system preference. All views work with mock data when no API key or DB is configured.</p>
+<p><strong>Tech Stack:</strong> <code>@vis.gl/react-google-maps</code>, Google Maps JavaScript API, AdvancedMarkerElement, Directions API, CSS custom properties for theming.</p>
+<hr>
+<h2 id="file-structure">File Structure</h2>
+<h3 id="new-files">New Files</h3>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Responsibility</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>src/components/maps/GoogleMapProvider.tsx</code></td>
+<td>API loader context, theme detection, API key guard</td>
+</tr>
+<tr>
+<td><code>src/components/maps/MapView.tsx</code></td>
+<td>Core map rendering, zoom tracking, bounds events</td>
+</tr>
+<tr>
+<td><code>src/components/maps/BottomSheet.tsx</code></td>
+<td>Draggable mobile sheet / desktop side panel</td>
+</tr>
+<tr>
+<td><code>src/components/maps/ProMarker.tsx</code></td>
+<td>Pro pins with progressive detail (cluster/avatar/card)</td>
+</tr>
+<tr>
+<td><code>src/components/maps/JobMarker.tsx</code></td>
+<td>Job pins with urgency colors and progressive detail</td>
+</tr>
+<tr>
+<td><code>src/components/maps/DispatchTracker.tsx</code></td>
+<td>Emergency live tracking with route, ETA, pro movement</td>
+</tr>
+<tr>
+<td><code>src/components/maps/MapPlaceholder.tsx</code></td>
+<td>Fallback UI when no API key</td>
+</tr>
+<tr>
+<td><code>src/lib/mock-data/map-data.ts</code></td>
+<td>Mock pros with lat/lng, mock jobs with lat/lng, mock route</td>
+</tr>
+</tbody></table>
+<h3 id="modified-files">Modified Files</h3>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Change</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>package.json</code></td>
+<td>Add <code>@vis.gl/react-google-maps</code>, remove Mapbox packages</td>
+</tr>
+<tr>
+<td><code>src/components/maps/index.ts</code></td>
+<td>Update exports to new components</td>
+</tr>
+<tr>
+<td><code>src/app/(dashboard)/client/find-pros/find-pros-content.tsx</code></td>
+<td>Wire in MapView + BottomSheet, add MAP/LIST toggle</td>
+</tr>
+<tr>
+<td><code>src/app/(dashboard)/pro/jobs/JobsPageClient.tsx</code></td>
+<td>Wire in MapView + BottomSheet for job map</td>
+</tr>
+<tr>
+<td><code>src/app/(dashboard)/client/emergency/</code></td>
+<td>Wire DispatchTracker into emergency flow</td>
+</tr>
+</tbody></table>
+<h3 id="deleted-files">Deleted Files</h3>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Reason</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>src/components/maps/MapProvider.tsx</code></td>
+<td>Mapbox provider — replaced by GoogleMapProvider</td>
+</tr>
+<tr>
+<td><code>src/components/maps/HubMap.tsx</code></td>
+<td>Mapbox hub map — no longer needed</td>
+</tr>
+<tr>
+<td><code>src/components/maps/JobMap.tsx</code></td>
+<td>Mapbox job map — replaced by MapView + JobMarker</td>
+</tr>
+<tr>
+<td><code>src/components/maps/ProMap.tsx</code></td>
+<td>Mapbox pro map — replaced by MapView + ProMarker</td>
+</tr>
+<tr>
+<td><code>src/components/maps/MapMarker.tsx</code></td>
+<td>Mapbox marker — replaced by ProMarker/JobMarker</td>
+</tr>
+<tr>
+<td><code>src/components/maps/hooks/useMapBounds.ts</code></td>
+<td>Mapbox bounds hook — handled by MapView onBoundsChanged</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="task-1-remove-mapbox-and-install-google-maps">Task 1: Remove Mapbox and Install Google Maps</h3>
+<p><strong>Files:</strong></p>
+<ul>
+<li><p>Modify: <code>package.json</code></p>
+</li>
+<li><p>Delete: <code>src/components/maps/MapProvider.tsx</code></p>
+</li>
+<li><p>Delete: <code>src/components/maps/HubMap.tsx</code></p>
+</li>
+<li><p>Delete: <code>src/components/maps/JobMap.tsx</code></p>
+</li>
+<li><p>Delete: <code>src/components/maps/ProMap.tsx</code></p>
+</li>
+<li><p>Delete: <code>src/components/maps/MapMarker.tsx</code></p>
+</li>
+<li><p>Delete: <code>src/components/maps/hooks/useMapBounds.ts</code></p>
+</li>
+<li><p>Modify: <code>src/components/maps/index.ts</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Remove Mapbox packages</strong></p>
+</li>
+</ul>
+<pre><code class="hljs bash"><span class="hljs-built_in">cd</span> ~/sherpa-pros-platform
+npm uninstall mapbox-gl react-map-gl @turf/circle @deck.gl/layers @deck.gl/react @types/mapbox-gl
+</code></pre>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Install Google Maps React library</strong></li>
+</ul>
+<pre><code class="hljs bash">npm install @vis.gl/react-google-maps
+</code></pre>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 3: Delete old Mapbox component files</strong></li>
+</ul>
+<pre><code class="hljs bash"><span class="hljs-built_in">rm</span> src/components/maps/MapProvider.tsx
+<span class="hljs-built_in">rm</span> src/components/maps/HubMap.tsx
+<span class="hljs-built_in">rm</span> src/components/maps/JobMap.tsx
+<span class="hljs-built_in">rm</span> src/components/maps/ProMap.tsx
+<span class="hljs-built_in">rm</span> src/components/maps/MapMarker.tsx
+<span class="hljs-built_in">rm</span> -rf src/components/maps/hooks
+</code></pre>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 4: Update the maps barrel export</strong></li>
+</ul>
+<p>Replace <code>src/components/maps/index.ts</code> with:</p>
+<pre><code class="hljs typescript"><span class="hljs-keyword">export</span> { <span class="hljs-title class_">AddressAutocomplete</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">'./AddressAutocomplete'</span>;
+</code></pre>
+<p>Only keep AddressAutocomplete — we'll add new exports as we build components.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 5: Verify build passes</strong></li>
+</ul>
+<pre><code class="hljs bash">npm run build
+</code></pre>
+<p>Expected: Build passes. No pages import the deleted Mapbox components (verified — only internal map files referenced them).</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 6: Commit</strong></li>
+</ul>
+<pre><code class="hljs bash">git add -A
+git commit -m <span class="hljs-string">"chore: remove Mapbox dependencies, install @vis.gl/react-google-maps"</span>
+</code></pre>
+<hr>
+<h3 id="task-2-mock-map-data">Task 2: Mock Map Data</h3>
+<p><strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>src/lib/mock-data/map-data.ts</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Create mock map data file</strong></p>
+</li>
+</ul>
+<pre><code class="hljs typescript"><span class="hljs-comment">// src/lib/mock-data/map-data.ts</span>
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">MockProLocation</span> {
+  <span class="hljs-attr">id</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">initials</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">trade</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">rating</span>: <span class="hljs-built_in">number</span>;
+  <span class="hljs-attr">reviewCount</span>: <span class="hljs-built_in">number</span>;
+  <span class="hljs-attr">lat</span>: <span class="hljs-built_in">number</span>;
+  <span class="hljs-attr">lng</span>: <span class="hljs-built_in">number</span>;
+  <span class="hljs-attr">verified</span>: <span class="hljs-built_in">boolean</span>;
+  <span class="hljs-attr">distance</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">responseTime</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">jobsCompleted</span>: <span class="hljs-built_in">number</span>;
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">MockJobLocation</span> {
+  <span class="hljs-attr">id</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">title</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">category</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">budget</span>: <span class="hljs-built_in">number</span>;
+  <span class="hljs-attr">urgency</span>: <span class="hljs-string">'emergency'</span> | <span class="hljs-string">'standard'</span> | <span class="hljs-string">'flexible'</span>;
+  <span class="hljs-attr">lat</span>: <span class="hljs-built_in">number</span>;
+  <span class="hljs-attr">lng</span>: <span class="hljs-built_in">number</span>;
+  <span class="hljs-attr">distance</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">postedAgo</span>: <span class="hljs-built_in">string</span>;
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">MockRoute</span> {
+  <span class="hljs-attr">proStart</span>: { <span class="hljs-attr">lat</span>: <span class="hljs-built_in">number</span>; <span class="hljs-attr">lng</span>: <span class="hljs-built_in">number</span> };
+  <span class="hljs-attr">clientLocation</span>: { <span class="hljs-attr">lat</span>: <span class="hljs-built_in">number</span>; <span class="hljs-attr">lng</span>: <span class="hljs-built_in">number</span> };
+  <span class="hljs-attr">etaMinutes</span>: <span class="hljs-built_in">number</span>;
+  <span class="hljs-attr">distanceMiles</span>: <span class="hljs-built_in">number</span>;
+}
+
+<span class="hljs-comment">// Portsmouth, NH area — default hub center</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-variable constant_">DEFAULT_CENTER</span> = { <span class="hljs-attr">lat</span>: <span class="hljs-number">43.0718</span>, <span class="hljs-attr">lng</span>: -<span class="hljs-number">70.7626</span> };
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-variable constant_">DEFAULT_ZOOM</span> = <span class="hljs-number">12</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-attr">MOCK_PROS</span>: <span class="hljs-title class_">MockProLocation</span>[] = [
+  { <span class="hljs-attr">id</span>: <span class="hljs-string">'pro-1'</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">'Mike Rodriguez'</span>, <span class="hljs-attr">initials</span>: <span class="hljs-string">'MR'</span>, <span class="hljs-attr">trade</span>: <span class="hljs-string">'Plumber'</span>, <span class="hljs-attr">rating</span>: <span class="hljs-number">4.9</span>, <span class="hljs-attr">reviewCount</span>: <span class="hljs-number">142</span>, <span class="hljs-attr">lat</span>: <span class="hljs-number">43.0766</span>, <span class="hljs-attr">lng</span>: -<span class="hljs-number">70.7581</span>, <span class="hljs-attr">verified</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">distance</span>: <span class="hljs-string">'0.3 mi'</span>, <span class="hljs-attr">responseTime</span>: <span class="hljs-string">'&lt; 1 hr'</span>, <span class="hljs-attr">jobsCompleted</span>: <span class="hljs-number">47</span> },
+  { <span class="hljs-attr">id</span>: <span class="hljs-string">'pro-2'</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">'Sarah Chen'</span>, <span class="hljs-attr">initials</span>: <span class="hljs-string">'SC'</span>, <span class="hljs-attr">trade</span>: <span class="hljs-string">'Electrician'</span>, <span class="hljs-attr">rating</span>: <span class="hljs-number">4.8</span>, <span class="hljs-attr">reviewCount</span>: <span class="hljs-number">98</span>, <span class="hljs-attr">lat</span>: <span class="hljs-number">43.0654</span>, <span class="hljs-attr">lng</span>: -<span class="hljs-number">70.7712</span>, <span class="hljs-attr">verified</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">distance</span>: <span class="hljs-string">'0.8 mi'</span>, <span class="hljs-attr">responseTime</span>: <span class="hljs-string">'&lt; 2 hr'</span>, <span class="hljs-attr">jobsCompleted</span>: <span class="hljs-number">63</span> },
+  { <span class="hljs-attr">id</span>: <span class="hljs-string">'pro-3'</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">'James Wilson'</span>, <span class="hljs-attr">initials</span>: <span class="hljs-string">'JW'</span>, <span class="hljs-attr">trade</span>: <span class="hljs-string">'HVAC'</span>, <span class="hljs-attr">rating</span>: <span class="hljs-number">4.7</span>, <span class="hljs-attr">reviewCount</span>: <span class="hljs-number">76</span>, <span class="hljs-attr">lat</span>: <span class="hljs-number">43.0821</span>, <span class="hljs-attr">lng</span>: -<span class="hljs-number">70.7445</span>, <span class="hljs-attr">verified</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">distance</span>: <span class="hljs-string">'1.2 mi'</span>, <span class="hljs-attr">responseTime</span>: <span class="hljs-string">'&lt; 1 hr'</span>, <span class="hljs-attr">jobsCompleted</span>: <span class="hljs-number">35</span> },
+  { <span class="hljs-attr">id</span>: <span class="hljs-string">'pro-4'</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">'Maria Santos'</span>, <span class="hljs-attr">initials</span>: <span class="hljs-string">'MS'</span>, <span class="hljs-attr">trade</span>: <span class="hljs-string">'General Contractor'</span>, <span class="hljs-attr">rating</span>: <span class="hljs-number">5.0</span>, <span class="hljs-attr">reviewCount</span>: <span class="hljs-number">201</span>, <span class="hljs-attr">lat</span>: <span class="hljs-number">43.0588</span>, <span class="hljs-attr">lng</span>: -<span class="hljs-number">70.7834</span>, <span class="hljs-attr">verified</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">distance</span>: <span class="hljs-string">'1.5 mi'</span>, <span class="hljs-attr">responseTime</span>: <span class="hljs-string">'Same day'</span>, <span class="hljs-attr">jobsCompleted</span>: <span class="hljs-number">89</span> },
+  { <span class="hljs-attr">id</span>: <span class="hljs-string">'pro-5'</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">'Tom Baker'</span>, <span class="hljs-attr">initials</span>: <span class="hljs-string">'TB'</span>, <span class="hljs-attr">trade</span>: <span class="hljs-string">'Roofer'</span>, <span class="hljs-attr">rating</span>: <span class="hljs-number">4.6</span>, <span class="hljs-attr">reviewCount</span>: <span class="hljs-number">54</span>, <span class="hljs-attr">lat</span>: <span class="hljs-number">43.0903</span>, <span class="hljs-attr">lng</span>: -<span class="hljs-number">70.7392</span>, <span class="hljs-attr">verified</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">distance</span>: <span class="hljs-string">'2.1 mi'</span>, <span class="hljs-attr">responseTime</span>: <span class="hljs-string">'&lt; 4 hr'</span>, <span class="hljs-attr">jobsCompleted</span>: <span class="hljs-number">28</span> },
+  { <span class="hljs-attr">id</span>: <span class="hljs-string">'pro-6'</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">'Linda Park'</span>, <span class="hljs-attr">initials</span>: <span class="hljs-string">'LP'</span>, <span class="hljs-attr">trade</span>: <span class="hljs-string">'Painter'</span>, <span class="hljs-attr">rating</span>: <span class="hljs-number">4.9</span>, <span class="hljs-attr">reviewCount</span>: <span class="hljs-number">112</span>, <span class="hljs-attr">lat</span>: <span class="hljs-number">43.0512</span>, <span class="hljs-attr">lng</span>: -<span class="hljs-number">70.7956</span>, <span class="hljs-attr">verified</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">distance</span>: <span class="hljs-string">'2.8 mi'</span>, <span class="hljs-attr">responseTime</span>: <span class="hljs-string">'&lt; 2 hr'</span>, <span class="hljs-attr">jobsCompleted</span>: <span class="hljs-number">71</span> },
+  { <span class="hljs-attr">id</span>: <span class="hljs-string">'pro-7'</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">'Dave Nelson'</span>, <span class="hljs-attr">initials</span>: <span class="hljs-string">'DN'</span>, <span class="hljs-attr">trade</span>: <span class="hljs-string">'Carpenter'</span>, <span class="hljs-attr">rating</span>: <span class="hljs-number">4.5</span>, <span class="hljs-attr">reviewCount</span>: <span class="hljs-number">43</span>, <span class="hljs-attr">lat</span>: <span class="hljs-number">43.0978</span>, <span class="hljs-attr">lng</span>: -<span class="hljs-number">70.7289</span>, <span class="hljs-attr">verified</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">distance</span>: <span class="hljs-string">'3.4 mi'</span>, <span class="hljs-attr">responseTime</span>: <span class="hljs-string">'Next day'</span>, <span class="hljs-attr">jobsCompleted</span>: <span class="hljs-number">19</span> },
+  { <span class="hljs-attr">id</span>: <span class="hljs-string">'pro-8'</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">'Ana Rivera'</span>, <span class="hljs-attr">initials</span>: <span class="hljs-string">'AR'</span>, <span class="hljs-attr">trade</span>: <span class="hljs-string">'Plumber'</span>, <span class="hljs-attr">rating</span>: <span class="hljs-number">4.8</span>, <span class="hljs-attr">reviewCount</span>: <span class="hljs-number">87</span>, <span class="hljs-attr">lat</span>: <span class="hljs-number">43.0445</span>, <span class="hljs-attr">lng</span>: -<span class="hljs-number">70.8067</span>, <span class="hljs-attr">verified</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">distance</span>: <span class="hljs-string">'3.9 mi'</span>, <span class="hljs-attr">responseTime</span>: <span class="hljs-string">'&lt; 1 hr'</span>, <span class="hljs-attr">jobsCompleted</span>: <span class="hljs-number">56</span> },
+];
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-attr">MOCK_JOBS</span>: <span class="hljs-title class_">MockJobLocation</span>[] = [
+  { <span class="hljs-attr">id</span>: <span class="hljs-string">'job-1'</span>, <span class="hljs-attr">title</span>: <span class="hljs-string">'Kitchen Faucet Replacement'</span>, <span class="hljs-attr">category</span>: <span class="hljs-string">'Plumbing'</span>, <span class="hljs-attr">budget</span>: <span class="hljs-number">350</span>, <span class="hljs-attr">urgency</span>: <span class="hljs-string">'standard'</span>, <span class="hljs-attr">lat</span>: <span class="hljs-number">43.0734</span>, <span class="hljs-attr">lng</span>: -<span class="hljs-number">70.7598</span>, <span class="hljs-attr">distance</span>: <span class="hljs-string">'0.4 mi'</span>, <span class="hljs-attr">postedAgo</span>: <span class="hljs-string">'2h ago'</span> },
+  { <span class="hljs-attr">id</span>: <span class="hljs-string">'job-2'</span>, <span class="hljs-attr">title</span>: <span class="hljs-string">'Emergency Water Heater Leak'</span>, <span class="hljs-attr">category</span>: <span class="hljs-string">'Plumbing'</span>, <span class="hljs-attr">budget</span>: <span class="hljs-number">800</span>, <span class="hljs-attr">urgency</span>: <span class="hljs-string">'emergency'</span>, <span class="hljs-attr">lat</span>: <span class="hljs-number">43.0689</span>, <span class="hljs-attr">lng</span>: -<span class="hljs-number">70.7656</span>, <span class="hljs-attr">distance</span>: <span class="hljs-string">'0.6 mi'</span>, <span class="hljs-attr">postedAgo</span>: <span class="hljs-string">'15m ago'</span> },
+  { <span class="hljs-attr">id</span>: <span class="hljs-string">'job-3'</span>, <span class="hljs-attr">title</span>: <span class="hljs-string">'Bathroom Remodel'</span>, <span class="hljs-attr">category</span>: <span class="hljs-string">'General'</span>, <span class="hljs-attr">budget</span>: <span class="hljs-number">12000</span>, <span class="hljs-attr">urgency</span>: <span class="hljs-string">'flexible'</span>, <span class="hljs-attr">lat</span>: <span class="hljs-number">43.0812</span>, <span class="hljs-attr">lng</span>: -<span class="hljs-number">70.7423</span>, <span class="hljs-attr">distance</span>: <span class="hljs-string">'1.1 mi'</span>, <span class="hljs-attr">postedAgo</span>: <span class="hljs-string">'1d ago'</span> },
+  { <span class="hljs-attr">id</span>: <span class="hljs-string">'job-4'</span>, <span class="hljs-attr">title</span>: <span class="hljs-string">'Panel Upgrade 100A to 200A'</span>, <span class="hljs-attr">category</span>: <span class="hljs-string">'Electrical'</span>, <span class="hljs-attr">budget</span>: <span class="hljs-number">2500</span>, <span class="hljs-attr">urgency</span>: <span class="hljs-string">'standard'</span>, <span class="hljs-attr">lat</span>: <span class="hljs-number">43.0567</span>, <span class="hljs-attr">lng</span>: -<span class="hljs-number">70.7801</span>, <span class="hljs-attr">distance</span>: <span class="hljs-string">'1.7 mi'</span>, <span class="hljs-attr">postedAgo</span>: <span class="hljs-string">'5h ago'</span> },
+  { <span class="hljs-attr">id</span>: <span class="hljs-string">'job-5'</span>, <span class="hljs-attr">title</span>: <span class="hljs-string">'Furnace Not Heating'</span>, <span class="hljs-attr">category</span>: <span class="hljs-string">'HVAC'</span>, <span class="hljs-attr">budget</span>: <span class="hljs-number">600</span>, <span class="hljs-attr">urgency</span>: <span class="hljs-string">'emergency'</span>, <span class="hljs-attr">lat</span>: <span class="hljs-number">43.0623</span>, <span class="hljs-attr">lng</span>: -<span class="hljs-number">70.7734</span>, <span class="hljs-attr">distance</span>: <span class="hljs-string">'0.9 mi'</span>, <span class="hljs-attr">postedAgo</span>: <span class="hljs-string">'30m ago'</span> },
+  { <span class="hljs-attr">id</span>: <span class="hljs-string">'job-6'</span>, <span class="hljs-attr">title</span>: <span class="hljs-string">'Deck Staining &amp; Repair'</span>, <span class="hljs-attr">category</span>: <span class="hljs-string">'Carpentry'</span>, <span class="hljs-attr">budget</span>: <span class="hljs-number">1800</span>, <span class="hljs-attr">urgency</span>: <span class="hljs-string">'flexible'</span>, <span class="hljs-attr">lat</span>: <span class="hljs-number">43.0945</span>, <span class="hljs-attr">lng</span>: -<span class="hljs-number">70.7312</span>, <span class="hljs-attr">distance</span>: <span class="hljs-string">'3.2 mi'</span>, <span class="hljs-attr">postedAgo</span>: <span class="hljs-string">'3d ago'</span> },
+];
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-attr">MOCK_DISPATCH_ROUTE</span>: <span class="hljs-title class_">MockRoute</span> = {
+  <span class="hljs-attr">proStart</span>: { <span class="hljs-attr">lat</span>: <span class="hljs-number">43.0766</span>, <span class="hljs-attr">lng</span>: -<span class="hljs-number">70.7581</span> },
+  <span class="hljs-attr">clientLocation</span>: { <span class="hljs-attr">lat</span>: <span class="hljs-number">43.0689</span>, <span class="hljs-attr">lng</span>: -<span class="hljs-number">70.7656</span> },
+  <span class="hljs-attr">etaMinutes</span>: <span class="hljs-number">8</span>,
+  <span class="hljs-attr">distanceMiles</span>: <span class="hljs-number">2.3</span>,
+};
+</code></pre>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Verify build</strong></li>
+</ul>
+<pre><code class="hljs bash">npm run build
+</code></pre>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 3: Commit</strong></li>
+</ul>
+<pre><code class="hljs bash">git add src/lib/mock-data/map-data.ts
+git commit -m <span class="hljs-string">"feat: add mock map data for pros, jobs, and dispatch route"</span>
+</code></pre>
+<hr>
+<h3 id="task-3-googlemapprovider--mapplaceholder">Task 3: GoogleMapProvider + MapPlaceholder</h3>
+<p><strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>src/components/maps/GoogleMapProvider.tsx</code></p>
+</li>
+<li><p>Create: <code>src/components/maps/MapPlaceholder.tsx</code></p>
+</li>
+<li><p>Modify: <code>src/components/maps/index.ts</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Create GoogleMapProvider</strong></p>
+</li>
+</ul>
+<pre><code class="hljs tsx"><span class="hljs-comment">// src/components/maps/GoogleMapProvider.tsx</span>
+<span class="hljs-string">'use client'</span>;
+
+<span class="hljs-keyword">import</span> { createContext, useContext, useMemo, <span class="hljs-title class_">ReactNode</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
+<span class="hljs-keyword">import</span> { <span class="hljs-title class_">APIProvider</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">'@vis.gl/react-google-maps'</span>;
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">GoogleMapsContextValue</span> {
+  <span class="hljs-attr">apiKey</span>: <span class="hljs-built_in">string</span> | <span class="hljs-literal">null</span>;
+  <span class="hljs-attr">mapId</span>: <span class="hljs-built_in">string</span> | <span class="hljs-literal">null</span>;
+  <span class="hljs-attr">isReady</span>: <span class="hljs-built_in">boolean</span>;
+}
+
+<span class="hljs-keyword">const</span> <span class="hljs-title class_">GoogleMapsContext</span> = createContext&lt;<span class="hljs-title class_">GoogleMapsContextValue</span>&gt;({
+  <span class="hljs-attr">apiKey</span>: <span class="hljs-literal">null</span>,
+  <span class="hljs-attr">mapId</span>: <span class="hljs-literal">null</span>,
+  <span class="hljs-attr">isReady</span>: <span class="hljs-literal">false</span>,
+});
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">useGoogleMaps</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">return</span> <span class="hljs-title function_">useContext</span>(<span class="hljs-title class_">GoogleMapsContext</span>);
+}
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">GoogleMapProviderProps</span> {
+  <span class="hljs-attr">children</span>: <span class="hljs-title class_">ReactNode</span>;
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">GoogleMapProvider</span>(<span class="hljs-params">{ children }: <span class="hljs-title class_">GoogleMapProviderProps</span></span>) {
+  <span class="hljs-keyword">const</span> apiKey = process.<span class="hljs-property">env</span>.<span class="hljs-property">NEXT_PUBLIC_GOOGLE_MAPS_API_KEY</span> ?? <span class="hljs-literal">null</span>;
+  <span class="hljs-keyword">const</span> mapId = process.<span class="hljs-property">env</span>.<span class="hljs-property">NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID</span> ?? <span class="hljs-literal">null</span>;
+
+  <span class="hljs-keyword">const</span> value = <span class="hljs-title function_">useMemo</span>(
+    <span class="hljs-function">() =&gt;</span> ({ apiKey, mapId, <span class="hljs-attr">isReady</span>: !!apiKey }),
+    [apiKey, mapId]
+  );
+
+  <span class="hljs-keyword">if</span> (!apiKey) {
+    <span class="hljs-keyword">return</span> (
+      <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">GoogleMapsContext.Provider</span> <span class="hljs-attr">value</span>=<span class="hljs-string">{value}</span>&gt;</span>
+        {children}
+      <span class="hljs-tag">&lt;/<span class="hljs-name">GoogleMapsContext.Provider</span>&gt;</span></span>
+    );
+  }
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">APIProvider</span> <span class="hljs-attr">apiKey</span>=<span class="hljs-string">{apiKey}</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">GoogleMapsContext.Provider</span> <span class="hljs-attr">value</span>=<span class="hljs-string">{value}</span>&gt;</span>
+        {children}
+      <span class="hljs-tag">&lt;/<span class="hljs-name">GoogleMapsContext.Provider</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">APIProvider</span>&gt;</span></span>
+  );
+}
+</code></pre>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Create MapPlaceholder</strong></li>
+</ul>
+<pre><code class="hljs tsx"><span class="hljs-comment">// src/components/maps/MapPlaceholder.tsx</span>
+<span class="hljs-keyword">import</span> { <span class="hljs-title class_">MapPinIcon</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">'@heroicons/react/24/outline'</span>;
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">MapPlaceholderProps</span> {
+  <span class="hljs-attr">onListView</span>?: <span class="hljs-function">() =&gt;</span> <span class="hljs-built_in">void</span>;
+  <span class="hljs-attr">className</span>?: <span class="hljs-built_in">string</span>;
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">MapPlaceholder</span>(<span class="hljs-params">{ onListView, className = <span class="hljs-string">''</span> }: <span class="hljs-title class_">MapPlaceholderProps</span></span>) {
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>
+      <span class="hljs-attr">className</span>=<span class="hljs-string">{</span>`<span class="hljs-attr">flex</span> <span class="hljs-attr">flex-col</span> <span class="hljs-attr">items-center</span> <span class="hljs-attr">justify-center</span> <span class="hljs-attr">bg-gradient-to-br</span> <span class="hljs-attr">from-sky-50</span> <span class="hljs-attr">via-blue-50</span>/<span class="hljs-attr">30</span> <span class="hljs-attr">to-slate-50</span> ${<span class="hljs-attr">className</span>}`}
+    &gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"flex h-20 w-20 items-center justify-center rounded-full bg-[#00a9e0]/10"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">MapPinIcon</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"h-10 w-10 text-[#00a9e0]"</span> <span class="hljs-attr">aria-hidden</span>=<span class="hljs-string">"true"</span> /&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"mt-4 text-lg font-semibold text-zinc-900"</span>&gt;</span>Map View<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"mt-1 max-w-xs text-center text-sm text-zinc-500"</span>&gt;</span>
+        Add a Google Maps API key to enable the interactive map experience.
+      <span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+      {onListView &amp;&amp; (
+        <span class="hljs-tag">&lt;<span class="hljs-name">button</span>
+          <span class="hljs-attr">onClick</span>=<span class="hljs-string">{onListView}</span>
+          <span class="hljs-attr">className</span>=<span class="hljs-string">"mt-6 rounded-full border border-zinc-200 px-6 py-2.5 text-sm font-semibold text-zinc-700 transition-all hover:bg-zinc-50 active:scale-[0.98]"</span>
+        &gt;</span>
+          View as List
+        <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+      )}
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}
+</code></pre>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 3: Update barrel exports</strong></li>
+</ul>
+<pre><code class="hljs typescript"><span class="hljs-comment">// src/components/maps/index.ts</span>
+<span class="hljs-keyword">export</span> { <span class="hljs-title class_">AddressAutocomplete</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">'./AddressAutocomplete'</span>;
+<span class="hljs-keyword">export</span> { <span class="hljs-keyword">default</span> <span class="hljs-keyword">as</span> <span class="hljs-title class_">GoogleMapProvider</span>, useGoogleMaps } <span class="hljs-keyword">from</span> <span class="hljs-string">'./GoogleMapProvider'</span>;
+<span class="hljs-keyword">export</span> { <span class="hljs-keyword">default</span> <span class="hljs-keyword">as</span> <span class="hljs-title class_">MapPlaceholder</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">'./MapPlaceholder'</span>;
+</code></pre>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 4: Verify build</strong></li>
+</ul>
+<pre><code class="hljs bash">npm run build
+</code></pre>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 5: Commit</strong></li>
+</ul>
+<pre><code class="hljs bash">git add src/components/maps/GoogleMapProvider.tsx src/components/maps/MapPlaceholder.tsx src/components/maps/index.ts
+git commit -m <span class="hljs-string">"feat: add GoogleMapProvider with API key guard and MapPlaceholder fallback"</span>
+</code></pre>
+<hr>
+<h3 id="task-4-mapview-core-component">Task 4: MapView Core Component</h3>
+<p><strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>src/components/maps/MapView.tsx</code></p>
+</li>
+<li><p>Modify: <code>src/components/maps/index.ts</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Create the dark mode styles constant</strong></p>
+</li>
+</ul>
+<p>Create the file with the Google Maps dark mode JSON styles and the core MapView component:</p>
+<pre><code class="hljs tsx"><span class="hljs-comment">// src/components/maps/MapView.tsx</span>
+<span class="hljs-string">'use client'</span>;
+
+<span class="hljs-keyword">import</span> { useCallback, useEffect, useState, <span class="hljs-title class_">ReactNode</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
+<span class="hljs-keyword">import</span> { <span class="hljs-title class_">Map</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">'@vis.gl/react-google-maps'</span>;
+<span class="hljs-keyword">import</span> { useGoogleMaps } <span class="hljs-keyword">from</span> <span class="hljs-string">'./GoogleMapProvider'</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">MapPlaceholder</span> <span class="hljs-keyword">from</span> <span class="hljs-string">'./MapPlaceholder'</span>;
+
+<span class="hljs-keyword">const</span> <span class="hljs-attr">DARK_MAP_STYLES</span>: google.<span class="hljs-property">maps</span>.<span class="hljs-property">MapTypeStyle</span>[] = [
+  { <span class="hljs-attr">elementType</span>: <span class="hljs-string">'geometry'</span>, <span class="hljs-attr">stylers</span>: [{ <span class="hljs-attr">color</span>: <span class="hljs-string">'#1a1a2e'</span> }] },
+  { <span class="hljs-attr">elementType</span>: <span class="hljs-string">'labels.text.fill'</span>, <span class="hljs-attr">stylers</span>: [{ <span class="hljs-attr">color</span>: <span class="hljs-string">'#cbd5e1'</span> }] },
+  { <span class="hljs-attr">elementType</span>: <span class="hljs-string">'labels.text.stroke'</span>, <span class="hljs-attr">stylers</span>: [{ <span class="hljs-attr">color</span>: <span class="hljs-string">'#0f172a'</span> }] },
+  { <span class="hljs-attr">featureType</span>: <span class="hljs-string">'road'</span>, <span class="hljs-attr">elementType</span>: <span class="hljs-string">'geometry'</span>, <span class="hljs-attr">stylers</span>: [{ <span class="hljs-attr">color</span>: <span class="hljs-string">'#334155'</span> }] },
+  { <span class="hljs-attr">featureType</span>: <span class="hljs-string">'road'</span>, <span class="hljs-attr">elementType</span>: <span class="hljs-string">'geometry.stroke'</span>, <span class="hljs-attr">stylers</span>: [{ <span class="hljs-attr">color</span>: <span class="hljs-string">'#1e293b'</span> }] },
+  { <span class="hljs-attr">featureType</span>: <span class="hljs-string">'water'</span>, <span class="hljs-attr">elementType</span>: <span class="hljs-string">'geometry'</span>, <span class="hljs-attr">stylers</span>: [{ <span class="hljs-attr">color</span>: <span class="hljs-string">'#0c4a6e'</span> }] },
+  { <span class="hljs-attr">featureType</span>: <span class="hljs-string">'poi'</span>, <span class="hljs-attr">elementType</span>: <span class="hljs-string">'geometry'</span>, <span class="hljs-attr">stylers</span>: [{ <span class="hljs-attr">color</span>: <span class="hljs-string">'#1e293b'</span> }] },
+  { <span class="hljs-attr">featureType</span>: <span class="hljs-string">'poi.park'</span>, <span class="hljs-attr">elementType</span>: <span class="hljs-string">'geometry'</span>, <span class="hljs-attr">stylers</span>: [{ <span class="hljs-attr">color</span>: <span class="hljs-string">'#1a2e1a'</span> }] },
+];
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">MapViewProps</span> {
+  <span class="hljs-attr">center</span>: { <span class="hljs-attr">lat</span>: <span class="hljs-built_in">number</span>; <span class="hljs-attr">lng</span>: <span class="hljs-built_in">number</span> };
+  <span class="hljs-attr">zoom</span>?: <span class="hljs-built_in">number</span>;
+  <span class="hljs-attr">onBoundsChanged</span>?: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">bounds</span>: google.maps.<span class="hljs-title class_">LatLngBounds</span></span>) =&gt;</span> <span class="hljs-built_in">void</span>;
+  <span class="hljs-attr">onZoomChanged</span>?: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">zoom</span>: <span class="hljs-built_in">number</span></span>) =&gt;</span> <span class="hljs-built_in">void</span>;
+  <span class="hljs-attr">onListView</span>?: <span class="hljs-function">() =&gt;</span> <span class="hljs-built_in">void</span>;
+  <span class="hljs-attr">className</span>?: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">children</span>?: <span class="hljs-title class_">ReactNode</span>;
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">MapView</span>(<span class="hljs-params">{
+  center,
+  zoom = <span class="hljs-number">12</span>,
+  onBoundsChanged,
+  onZoomChanged,
+  onListView,
+  className = <span class="hljs-string">''</span>,
+  children,
+}: <span class="hljs-title class_">MapViewProps</span></span>) {
+  <span class="hljs-keyword">const</span> { isReady, mapId } = <span class="hljs-title function_">useGoogleMaps</span>();
+  <span class="hljs-keyword">const</span> [isDark, setIsDark] = <span class="hljs-title function_">useState</span>(<span class="hljs-literal">false</span>);
+
+  <span class="hljs-title function_">useEffect</span>(<span class="hljs-function">() =&gt;</span> {
+    <span class="hljs-keyword">const</span> mq = <span class="hljs-variable language_">window</span>.<span class="hljs-title function_">matchMedia</span>(<span class="hljs-string">'(prefers-color-scheme: dark)'</span>);
+    <span class="hljs-title function_">setIsDark</span>(mq.<span class="hljs-property">matches</span>);
+    <span class="hljs-keyword">const</span> <span class="hljs-title function_">handler</span> = (<span class="hljs-params"><span class="hljs-attr">e</span>: <span class="hljs-title class_">MediaQueryListEvent</span></span>) =&gt; <span class="hljs-title function_">setIsDark</span>(e.<span class="hljs-property">matches</span>);
+    mq.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">'change'</span>, handler);
+    <span class="hljs-keyword">return</span> <span class="hljs-function">() =&gt;</span> mq.<span class="hljs-title function_">removeEventListener</span>(<span class="hljs-string">'change'</span>, handler);
+  }, []);
+
+  <span class="hljs-keyword">const</span> handleBoundsChanged = <span class="hljs-title function_">useCallback</span>(
+    <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">event</span>: { detail: { bounds: google.maps.LatLngBounds } }</span>) =&gt;</span> {
+      onBoundsChanged?.(event.<span class="hljs-property">detail</span>.<span class="hljs-property">bounds</span>);
+    },
+    [onBoundsChanged]
+  );
+
+  <span class="hljs-keyword">const</span> handleZoomChanged = <span class="hljs-title function_">useCallback</span>(
+    <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">event</span>: { detail: { zoom: <span class="hljs-built_in">number</span> } }</span>) =&gt;</span> {
+      onZoomChanged?.(event.<span class="hljs-property">detail</span>.<span class="hljs-property">zoom</span>);
+    },
+    [onZoomChanged]
+  );
+
+  <span class="hljs-keyword">if</span> (!isReady) {
+    <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">MapPlaceholder</span> <span class="hljs-attr">onListView</span>=<span class="hljs-string">{onListView}</span> <span class="hljs-attr">className</span>=<span class="hljs-string">{className}</span> /&gt;</span></span>;
+  }
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Map</span>
+      <span class="hljs-attr">defaultCenter</span>=<span class="hljs-string">{center}</span>
+      <span class="hljs-attr">defaultZoom</span>=<span class="hljs-string">{zoom}</span>
+      <span class="hljs-attr">mapId</span>=<span class="hljs-string">{mapId</span> ?? <span class="hljs-attr">undefined</span>}
+      <span class="hljs-attr">styles</span>=<span class="hljs-string">{!mapId</span> &amp;&amp; <span class="hljs-attr">isDark</span> ? <span class="hljs-attr">DARK_MAP_STYLES</span> <span class="hljs-attr">:</span> <span class="hljs-attr">undefined</span>}
+      <span class="hljs-attr">gestureHandling</span>=<span class="hljs-string">"greedy"</span>
+      <span class="hljs-attr">disableDefaultUI</span>
+      <span class="hljs-attr">zoomControl</span>
+      <span class="hljs-attr">onBoundsChanged</span>=<span class="hljs-string">{handleBoundsChanged}</span>
+      <span class="hljs-attr">onZoomChanged</span>=<span class="hljs-string">{handleZoomChanged}</span>
+      <span class="hljs-attr">className</span>=<span class="hljs-string">{className}</span>
+    &gt;</span>
+      {children}
+    <span class="hljs-tag">&lt;/<span class="hljs-name">Map</span>&gt;</span></span>
+  );
+}
+</code></pre>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Update barrel exports</strong></li>
+</ul>
+<p>Add to <code>src/components/maps/index.ts</code>:</p>
+<pre><code class="hljs typescript"><span class="hljs-keyword">export</span> { <span class="hljs-keyword">default</span> <span class="hljs-keyword">as</span> <span class="hljs-title class_">MapView</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">'./MapView'</span>;
+</code></pre>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 3: Verify build</strong></li>
+</ul>
+<pre><code class="hljs bash">npm run build
+</code></pre>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 4: Commit</strong></li>
+</ul>
+<pre><code class="hljs bash">git add src/components/maps/MapView.tsx src/components/maps/index.ts
+git commit -m <span class="hljs-string">"feat: add MapView core component with dark mode and graceful fallback"</span>
+</code></pre>
+<hr>
+<h3 id="task-5-bottomsheet-component">Task 5: BottomSheet Component</h3>
+<p><strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>src/components/maps/BottomSheet.tsx</code></p>
+</li>
+<li><p>Modify: <code>src/components/maps/index.ts</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Create BottomSheet</strong></p>
+</li>
+</ul>
+<pre><code class="hljs tsx"><span class="hljs-comment">// src/components/maps/BottomSheet.tsx</span>
+<span class="hljs-string">'use client'</span>;
+
+<span class="hljs-keyword">import</span> { useRef, useState, useEffect, useCallback, <span class="hljs-title class_">ReactNode</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
+
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">SnapPoint</span> = <span class="hljs-string">'peek'</span> | <span class="hljs-string">'half'</span> | <span class="hljs-string">'full'</span>;
+
+<span class="hljs-keyword">const</span> <span class="hljs-attr">SNAP_HEIGHTS</span>: <span class="hljs-title class_">Record</span>&lt;<span class="hljs-title class_">SnapPoint</span>, <span class="hljs-built_in">string</span>&gt; = {
+  <span class="hljs-attr">peek</span>: <span class="hljs-string">'80px'</span>,
+  <span class="hljs-attr">half</span>: <span class="hljs-string">'50vh'</span>,
+  <span class="hljs-attr">full</span>: <span class="hljs-string">'90vh'</span>,
+};
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">BottomSheetProps</span> {
+  <span class="hljs-attr">children</span>: <span class="hljs-title class_">ReactNode</span>;
+  <span class="hljs-attr">peekContent</span>?: <span class="hljs-title class_">ReactNode</span>;
+  <span class="hljs-attr">initialSnap</span>?: <span class="hljs-title class_">SnapPoint</span>;
+  <span class="hljs-attr">className</span>?: <span class="hljs-built_in">string</span>;
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">BottomSheet</span>(<span class="hljs-params">{
+  children,
+  peekContent,
+  initialSnap = <span class="hljs-string">'peek'</span>,
+  className = <span class="hljs-string">''</span>,
+}: <span class="hljs-title class_">BottomSheetProps</span></span>) {
+  <span class="hljs-keyword">const</span> [isDesktop, setIsDesktop] = <span class="hljs-title function_">useState</span>(<span class="hljs-literal">false</span>);
+  <span class="hljs-keyword">const</span> [snap, setSnap] = useState&lt;<span class="hljs-title class_">SnapPoint</span>&gt;(initialSnap);
+  <span class="hljs-keyword">const</span> dragRef = useRef&lt;{ <span class="hljs-attr">startY</span>: <span class="hljs-built_in">number</span>; <span class="hljs-attr">startHeight</span>: <span class="hljs-built_in">number</span> } | <span class="hljs-literal">null</span>&gt;(<span class="hljs-literal">null</span>);
+  <span class="hljs-keyword">const</span> sheetRef = useRef&lt;<span class="hljs-title class_">HTMLDivElement</span>&gt;(<span class="hljs-literal">null</span>);
+
+  <span class="hljs-title function_">useEffect</span>(<span class="hljs-function">() =&gt;</span> {
+    <span class="hljs-keyword">const</span> mq = <span class="hljs-variable language_">window</span>.<span class="hljs-title function_">matchMedia</span>(<span class="hljs-string">'(min-width: 1024px)'</span>);
+    <span class="hljs-title function_">setIsDesktop</span>(mq.<span class="hljs-property">matches</span>);
+    <span class="hljs-keyword">const</span> <span class="hljs-title function_">handler</span> = (<span class="hljs-params"><span class="hljs-attr">e</span>: <span class="hljs-title class_">MediaQueryListEvent</span></span>) =&gt; <span class="hljs-title function_">setIsDesktop</span>(e.<span class="hljs-property">matches</span>);
+    mq.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">'change'</span>, handler);
+    <span class="hljs-keyword">return</span> <span class="hljs-function">() =&gt;</span> mq.<span class="hljs-title function_">removeEventListener</span>(<span class="hljs-string">'change'</span>, handler);
+  }, []);
+
+  <span class="hljs-keyword">const</span> handleDragStart = <span class="hljs-title function_">useCallback</span>(<span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">clientY</span>: <span class="hljs-built_in">number</span></span>) =&gt;</span> {
+    <span class="hljs-keyword">const</span> sheet = sheetRef.<span class="hljs-property">current</span>;
+    <span class="hljs-keyword">if</span> (!sheet) <span class="hljs-keyword">return</span>;
+    dragRef.<span class="hljs-property">current</span> = { <span class="hljs-attr">startY</span>: clientY, <span class="hljs-attr">startHeight</span>: sheet.<span class="hljs-property">offsetHeight</span> };
+  }, []);
+
+  <span class="hljs-keyword">const</span> handleDragEnd = <span class="hljs-title function_">useCallback</span>(<span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">clientY</span>: <span class="hljs-built_in">number</span></span>) =&gt;</span> {
+    <span class="hljs-keyword">if</span> (!dragRef.<span class="hljs-property">current</span>) <span class="hljs-keyword">return</span>;
+    <span class="hljs-keyword">const</span> delta = dragRef.<span class="hljs-property">current</span>.<span class="hljs-property">startY</span> - clientY;
+    dragRef.<span class="hljs-property">current</span> = <span class="hljs-literal">null</span>;
+
+    <span class="hljs-keyword">if</span> (delta &gt; <span class="hljs-number">60</span>) {
+      <span class="hljs-title function_">setSnap</span>(<span class="hljs-function">(<span class="hljs-params">prev</span>) =&gt;</span> (prev === <span class="hljs-string">'peek'</span> ? <span class="hljs-string">'half'</span> : <span class="hljs-string">'full'</span>));
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (delta &lt; -<span class="hljs-number">60</span>) {
+      <span class="hljs-title function_">setSnap</span>(<span class="hljs-function">(<span class="hljs-params">prev</span>) =&gt;</span> (prev === <span class="hljs-string">'full'</span> ? <span class="hljs-string">'half'</span> : <span class="hljs-string">'peek'</span>));
+    }
+  }, []);
+
+  <span class="hljs-comment">// Desktop: side panel</span>
+  <span class="hljs-keyword">if</span> (isDesktop) {
+    <span class="hljs-keyword">return</span> (
+      <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>
+        <span class="hljs-attr">className</span>=<span class="hljs-string">{</span>`<span class="hljs-attr">fixed</span> <span class="hljs-attr">left-0</span> <span class="hljs-attr">top-14</span> <span class="hljs-attr">bottom-0</span> <span class="hljs-attr">z-30</span> <span class="hljs-attr">w-</span>[<span class="hljs-attr">400px</span>] <span class="hljs-attr">overflow-y-auto</span> <span class="hljs-attr">border-r</span> <span class="hljs-attr">border-zinc-100</span> <span class="hljs-attr">bg-white</span> <span class="hljs-attr">dark:border-zinc-800</span> <span class="hljs-attr">dark:bg-zinc-900</span> ${<span class="hljs-attr">className</span>}`}
+      &gt;</span>
+        {children}
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+    );
+  }
+
+  <span class="hljs-comment">// Mobile: bottom sheet</span>
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>
+      <span class="hljs-attr">ref</span>=<span class="hljs-string">{sheetRef}</span>
+      <span class="hljs-attr">className</span>=<span class="hljs-string">{</span>`<span class="hljs-attr">fixed</span> <span class="hljs-attr">inset-x-0</span> <span class="hljs-attr">bottom-0</span> <span class="hljs-attr">z-40</span> <span class="hljs-attr">rounded-t-2xl</span> <span class="hljs-attr">bg-white</span> <span class="hljs-attr">shadow-</span>[<span class="hljs-attr">0_-4px_20px_rgba</span>(<span class="hljs-attr">0</span>,<span class="hljs-attr">0</span>,<span class="hljs-attr">0</span>,<span class="hljs-attr">0.08</span>)] <span class="hljs-attr">transition-</span>[<span class="hljs-attr">height</span>] <span class="hljs-attr">duration-300</span> <span class="hljs-attr">ease-out</span> <span class="hljs-attr">dark:bg-zinc-900</span> ${<span class="hljs-attr">className</span>}`}
+      <span class="hljs-attr">style</span>=<span class="hljs-string">{{</span> <span class="hljs-attr">height:</span> <span class="hljs-attr">SNAP_HEIGHTS</span>[<span class="hljs-attr">snap</span>] }}
+    &gt;</span>
+      {/* Drag handle */}
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span>
+        <span class="hljs-attr">className</span>=<span class="hljs-string">"flex cursor-grab items-center justify-center py-3 active:cursor-grabbing"</span>
+        <span class="hljs-attr">style</span>=<span class="hljs-string">{{</span> <span class="hljs-attr">touchAction:</span> '<span class="hljs-attr">none</span>' }}
+        <span class="hljs-attr">onTouchStart</span>=<span class="hljs-string">{(e)</span> =&gt;</span> handleDragStart(e.touches[0].clientY)}
+        onTouchEnd={(e) =&gt; handleDragEnd(e.changedTouches[0].clientY)}
+        onMouseDown={(e) =&gt; handleDragStart(e.clientY)}
+        onMouseUp={(e) =&gt; handleDragEnd(e.clientY)}
+      &gt;
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"h-1 w-10 rounded-full bg-zinc-300 dark:bg-zinc-600"</span> /&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+      {/* Peek summary (visible when collapsed) */}
+      {snap === 'peek' &amp;&amp; peekContent &amp;&amp; (
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"px-4 pb-2"</span>&gt;</span>{peekContent}<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      )}
+
+      {/* Full content (visible when expanded) */}
+      {snap !== 'peek' &amp;&amp; (
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"overflow-y-auto px-4 pb-20"</span> <span class="hljs-attr">style</span>=<span class="hljs-string">{{</span> <span class="hljs-attr">maxHeight:</span> '<span class="hljs-attr">calc</span>(<span class="hljs-attr">100</span>% <span class="hljs-attr">-</span> <span class="hljs-attr">48px</span>)' }}&gt;</span>
+          {children}
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      )}
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}
+</code></pre>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Update barrel exports</strong></li>
+</ul>
+<p>Add to <code>src/components/maps/index.ts</code>:</p>
+<pre><code class="hljs typescript"><span class="hljs-keyword">export</span> { <span class="hljs-keyword">default</span> <span class="hljs-keyword">as</span> <span class="hljs-title class_">BottomSheet</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">'./BottomSheet'</span>;
+</code></pre>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 3: Verify build</strong></li>
+</ul>
+<pre><code class="hljs bash">npm run build
+</code></pre>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 4: Commit</strong></li>
+</ul>
+<pre><code class="hljs bash">git add src/components/maps/BottomSheet.tsx src/components/maps/index.ts
+git commit -m <span class="hljs-string">"feat: add BottomSheet with mobile drag + desktop side panel"</span>
+</code></pre>
+<hr>
+<h3 id="task-6-promarker--jobmarker">Task 6: ProMarker + JobMarker</h3>
+<p><strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>src/components/maps/ProMarker.tsx</code></p>
+</li>
+<li><p>Create: <code>src/components/maps/JobMarker.tsx</code></p>
+</li>
+<li><p>Modify: <code>src/components/maps/index.ts</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Create ProMarker</strong></p>
+</li>
+</ul>
+<pre><code class="hljs tsx"><span class="hljs-comment">// src/components/maps/ProMarker.tsx</span>
+<span class="hljs-string">'use client'</span>;
+
+<span class="hljs-keyword">import</span> { <span class="hljs-title class_">AdvancedMarker</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">'@vis.gl/react-google-maps'</span>;
+<span class="hljs-keyword">import</span> { <span class="hljs-title class_">ShieldCheckIcon</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">'@heroicons/react/24/solid'</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-keyword">type</span> { <span class="hljs-title class_">MockProLocation</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">'@/lib/mock-data/map-data'</span>;
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">ProMarkerProps</span> {
+  <span class="hljs-attr">pro</span>: <span class="hljs-title class_">MockProLocation</span>;
+  <span class="hljs-attr">zoom</span>: <span class="hljs-built_in">number</span>;
+  <span class="hljs-attr">selected</span>?: <span class="hljs-built_in">boolean</span>;
+  <span class="hljs-attr">onClick</span>?: <span class="hljs-function">() =&gt;</span> <span class="hljs-built_in">void</span>;
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">ProMarker</span>(<span class="hljs-params">{ pro, zoom, selected, onClick }: <span class="hljs-title class_">ProMarkerProps</span></span>) {
+  <span class="hljs-comment">// Cluster level</span>
+  <span class="hljs-keyword">if</span> (zoom &lt; <span class="hljs-number">10</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>; <span class="hljs-comment">// handled by parent cluster logic</span>
+
+  <span class="hljs-comment">// Avatar level</span>
+  <span class="hljs-keyword">if</span> (zoom &lt;= <span class="hljs-number">14</span> &amp;&amp; !selected) {
+    <span class="hljs-keyword">return</span> (
+      <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">AdvancedMarker</span> <span class="hljs-attr">position</span>=<span class="hljs-string">{{</span> <span class="hljs-attr">lat:</span> <span class="hljs-attr">pro.lat</span>, <span class="hljs-attr">lng:</span> <span class="hljs-attr">pro.lng</span> }} <span class="hljs-attr">onClick</span>=<span class="hljs-string">{onClick}</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span>
+          <span class="hljs-attr">className</span>=<span class="hljs-string">{</span>`<span class="hljs-attr">flex</span> <span class="hljs-attr">h-10</span> <span class="hljs-attr">w-10</span> <span class="hljs-attr">items-center</span> <span class="hljs-attr">justify-center</span> <span class="hljs-attr">rounded-full</span> <span class="hljs-attr">bg-</span>[#<span class="hljs-attr">00a9e0</span>] <span class="hljs-attr">text-sm</span> <span class="hljs-attr">font-bold</span> <span class="hljs-attr">text-white</span> <span class="hljs-attr">shadow-md</span> <span class="hljs-attr">transition-transform</span> ${
+            <span class="hljs-attr">selected</span> ? '<span class="hljs-attr">scale-110</span> <span class="hljs-attr">ring-2</span> <span class="hljs-attr">ring-</span>[#<span class="hljs-attr">00a9e0</span>] <span class="hljs-attr">ring-offset-2</span>' <span class="hljs-attr">:</span> ''
+          }`}
+          <span class="hljs-attr">style</span>=<span class="hljs-string">{{</span> <span class="hljs-attr">border:</span> '<span class="hljs-attr">3px</span> <span class="hljs-attr">solid</span> <span class="hljs-attr">white</span>' }}
+        &gt;</span>
+          {pro.initials}
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">AdvancedMarker</span>&gt;</span></span>
+    );
+  }
+
+  <span class="hljs-comment">// Detail level (zoomed in or selected)</span>
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">AdvancedMarker</span> <span class="hljs-attr">position</span>=<span class="hljs-string">{{</span> <span class="hljs-attr">lat:</span> <span class="hljs-attr">pro.lat</span>, <span class="hljs-attr">lng:</span> <span class="hljs-attr">pro.lng</span> }} <span class="hljs-attr">onClick</span>=<span class="hljs-string">{onClick}</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span>
+        <span class="hljs-attr">className</span>=<span class="hljs-string">{</span>`<span class="hljs-attr">w-48</span> <span class="hljs-attr">rounded-xl</span> <span class="hljs-attr">border</span> <span class="hljs-attr">bg-white</span> <span class="hljs-attr">p-3</span> <span class="hljs-attr">shadow-lg</span> <span class="hljs-attr">transition-transform</span> <span class="hljs-attr">dark:border-zinc-700</span> <span class="hljs-attr">dark:bg-zinc-800</span> ${
+          <span class="hljs-attr">selected</span> ? '<span class="hljs-attr">scale-105</span> <span class="hljs-attr">border-</span>[#<span class="hljs-attr">00a9e0</span>]' <span class="hljs-attr">:</span> '<span class="hljs-attr">border-zinc-200</span>'
+        }`}
+      &gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"flex items-center gap-2"</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#00a9e0] text-xs font-bold text-white"</span>&gt;</span>
+            {pro.initials}
+          <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"min-w-0"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"flex items-center gap-1 truncate text-sm font-semibold text-zinc-900 dark:text-white"</span>&gt;</span>
+              {pro.name}
+              {pro.verified &amp;&amp; (
+                <span class="hljs-tag">&lt;<span class="hljs-name">ShieldCheckIcon</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"h-3.5 w-3.5 shrink-0 text-emerald-500"</span> /&gt;</span>
+              )}
+            <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"flex items-center gap-1 text-xs text-zinc-500 dark:text-zinc-400"</span>&gt;</span>
+              <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"text-[#ff4500]"</span>&gt;</span>★ {pro.rating}<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+              <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>·<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+              <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>{pro.trade}<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"mt-2 flex items-center justify-between"</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"text-xs text-zinc-500 dark:text-zinc-400"</span>&gt;</span>{pro.distance}<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"rounded-full bg-[#00a9e0] px-3 py-1 text-xs font-semibold text-white shadow-sm transition-all hover:bg-[#0ea5e9] active:scale-[0.98]"</span>&gt;</span>
+            Request
+          <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">AdvancedMarker</span>&gt;</span></span>
+  );
+}
+</code></pre>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Create JobMarker</strong></li>
+</ul>
+<pre><code class="hljs tsx"><span class="hljs-comment">// src/components/maps/JobMarker.tsx</span>
+<span class="hljs-string">'use client'</span>;
+
+<span class="hljs-keyword">import</span> { <span class="hljs-title class_">AdvancedMarker</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">'@vis.gl/react-google-maps'</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-keyword">type</span> { <span class="hljs-title class_">MockJobLocation</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">'@/lib/mock-data/map-data'</span>;
+
+<span class="hljs-keyword">const</span> <span class="hljs-variable constant_">URGENCY_COLORS</span> = {
+  <span class="hljs-attr">emergency</span>: { <span class="hljs-attr">border</span>: <span class="hljs-string">'#ff4500'</span>, <span class="hljs-attr">bg</span>: <span class="hljs-string">'bg-red-50'</span>, <span class="hljs-attr">text</span>: <span class="hljs-string">'text-red-700'</span>, <span class="hljs-attr">label</span>: <span class="hljs-string">'URGENT'</span> },
+  <span class="hljs-attr">standard</span>: { <span class="hljs-attr">border</span>: <span class="hljs-string">'#00a9e0'</span>, <span class="hljs-attr">bg</span>: <span class="hljs-string">'bg-sky-50'</span>, <span class="hljs-attr">text</span>: <span class="hljs-string">'text-sky-700'</span>, <span class="hljs-attr">label</span>: <span class="hljs-string">'Standard'</span> },
+  <span class="hljs-attr">flexible</span>: { <span class="hljs-attr">border</span>: <span class="hljs-string">'#94a3b8'</span>, <span class="hljs-attr">bg</span>: <span class="hljs-string">'bg-zinc-50'</span>, <span class="hljs-attr">text</span>: <span class="hljs-string">'text-zinc-600'</span>, <span class="hljs-attr">label</span>: <span class="hljs-string">'Flexible'</span> },
+};
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">JobMarkerProps</span> {
+  <span class="hljs-attr">job</span>: <span class="hljs-title class_">MockJobLocation</span>;
+  <span class="hljs-attr">zoom</span>: <span class="hljs-built_in">number</span>;
+  <span class="hljs-attr">selected</span>?: <span class="hljs-built_in">boolean</span>;
+  <span class="hljs-attr">onClick</span>?: <span class="hljs-function">() =&gt;</span> <span class="hljs-built_in">void</span>;
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">JobMarker</span>(<span class="hljs-params">{ job, zoom, selected, onClick }: <span class="hljs-title class_">JobMarkerProps</span></span>) {
+  <span class="hljs-keyword">const</span> urgency = <span class="hljs-variable constant_">URGENCY_COLORS</span>[job.<span class="hljs-property">urgency</span>];
+
+  <span class="hljs-keyword">if</span> (zoom &lt; <span class="hljs-number">10</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+
+  <span class="hljs-comment">// Pin level</span>
+  <span class="hljs-keyword">if</span> (zoom &lt;= <span class="hljs-number">14</span> &amp;&amp; !selected) {
+    <span class="hljs-keyword">return</span> (
+      <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">AdvancedMarker</span> <span class="hljs-attr">position</span>=<span class="hljs-string">{{</span> <span class="hljs-attr">lat:</span> <span class="hljs-attr">job.lat</span>, <span class="hljs-attr">lng:</span> <span class="hljs-attr">job.lng</span> }} <span class="hljs-attr">onClick</span>=<span class="hljs-string">{onClick}</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span>
+          <span class="hljs-attr">className</span>=<span class="hljs-string">"flex h-10 w-10 items-center justify-center rounded-full bg-white text-xs font-bold shadow-md"</span>
+          <span class="hljs-attr">style</span>=<span class="hljs-string">{{</span> <span class="hljs-attr">border:</span> `<span class="hljs-attr">3px</span> <span class="hljs-attr">solid</span> ${<span class="hljs-attr">urgency.border</span>}` }}
+        &gt;</span>
+          ${job.budget &gt;= 1000 ? `${(job.budget / 1000).toFixed(0)}k` : job.budget}
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">AdvancedMarker</span>&gt;</span></span>
+    );
+  }
+
+  <span class="hljs-comment">// Detail level</span>
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">AdvancedMarker</span> <span class="hljs-attr">position</span>=<span class="hljs-string">{{</span> <span class="hljs-attr">lat:</span> <span class="hljs-attr">job.lat</span>, <span class="hljs-attr">lng:</span> <span class="hljs-attr">job.lng</span> }} <span class="hljs-attr">onClick</span>=<span class="hljs-string">{onClick}</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span>
+        <span class="hljs-attr">className</span>=<span class="hljs-string">{</span>`<span class="hljs-attr">w-52</span> <span class="hljs-attr">rounded-xl</span> <span class="hljs-attr">border</span> <span class="hljs-attr">bg-white</span> <span class="hljs-attr">p-3</span> <span class="hljs-attr">shadow-lg</span> <span class="hljs-attr">transition-transform</span> <span class="hljs-attr">dark:border-zinc-700</span> <span class="hljs-attr">dark:bg-zinc-800</span> ${
+          <span class="hljs-attr">selected</span> ? '<span class="hljs-attr">scale-105</span>' <span class="hljs-attr">:</span> ''
+        }`}
+        <span class="hljs-attr">style</span>=<span class="hljs-string">{{</span> <span class="hljs-attr">borderColor:</span> <span class="hljs-attr">selected</span> ? <span class="hljs-attr">urgency.border</span> <span class="hljs-attr">:</span> <span class="hljs-attr">undefined</span> }}
+      &gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"flex items-center justify-between"</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"text-sm font-semibold text-zinc-900 dark:text-white truncate"</span>&gt;</span>
+            {job.title}
+          <span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">className</span>=<span class="hljs-string">{</span>`<span class="hljs-attr">shrink-0</span> <span class="hljs-attr">rounded-full</span> <span class="hljs-attr">px-2</span> <span class="hljs-attr">py-0.5</span> <span class="hljs-attr">text-</span>[<span class="hljs-attr">10px</span>] <span class="hljs-attr">font-semibold</span> ${<span class="hljs-attr">urgency.bg</span>} ${<span class="hljs-attr">urgency.text</span>}`}&gt;</span>
+            {urgency.label}
+          <span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"mt-1 flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-400"</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>{job.category}<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>·<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>{job.distance}<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>·<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>{job.postedAgo}<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"mt-2 flex items-center justify-between"</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"text-base font-bold text-zinc-900 dark:text-white"</span>&gt;</span>
+            ${job.budget.toLocaleString()}
+          <span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"rounded-full bg-[#00a9e0] px-3 py-1 text-xs font-semibold text-white shadow-sm transition-all hover:bg-[#0ea5e9] active:scale-[0.98]"</span>&gt;</span>
+            Bid
+          <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">AdvancedMarker</span>&gt;</span></span>
+  );
+}
+</code></pre>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 3: Update barrel exports</strong></li>
+</ul>
+<p>Add to <code>src/components/maps/index.ts</code>:</p>
+<pre><code class="hljs typescript"><span class="hljs-keyword">export</span> { <span class="hljs-keyword">default</span> <span class="hljs-keyword">as</span> <span class="hljs-title class_">ProMarker</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">'./ProMarker'</span>;
+<span class="hljs-keyword">export</span> { <span class="hljs-keyword">default</span> <span class="hljs-keyword">as</span> <span class="hljs-title class_">JobMarker</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">'./JobMarker'</span>;
+</code></pre>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 4: Verify build</strong></li>
+</ul>
+<pre><code class="hljs bash">npm run build
+</code></pre>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 5: Commit</strong></li>
+</ul>
+<pre><code class="hljs bash">git add src/components/maps/ProMarker.tsx src/components/maps/JobMarker.tsx src/components/maps/index.ts
+git commit -m <span class="hljs-string">"feat: add ProMarker and JobMarker with progressive detail levels"</span>
+</code></pre>
+<hr>
+<h3 id="task-7-wire-client-find-pros-map">Task 7: Wire Client Find Pros Map</h3>
+<p><strong>Files:</strong></p>
+<ul>
+<li><p>Modify: <code>src/app/(dashboard)/client/find-pros/find-pros-content.tsx</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Read the current find-pros-content.tsx</strong></p>
+</li>
+</ul>
+<p>Read the file to understand the current list-only implementation and its state/filter logic.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Add map view with toggle</strong></li>
+</ul>
+<p>Modify <code>find-pros-content.tsx</code> to add:</p>
+<ol>
+<li>A <code>'map' | 'list'</code> view state toggle (segmented control in the header)</li>
+<li>Wrap the page in <code>&lt;GoogleMapProvider&gt;</code></li>
+<li>When view is <code>'map'</code>:<ul>
+<li>Mobile: <code>&lt;MapView&gt;</code> full-screen with <code>&lt;BottomSheet&gt;</code> containing the pro list</li>
+<li>Desktop: <code>&lt;BottomSheet&gt;</code> as side panel (left) + <code>&lt;MapView&gt;</code> (right)</li>
+</ul>
+</li>
+<li><code>&lt;ProMarker&gt;</code> for each filtered pro</li>
+<li>Track zoom via <code>onZoomChanged</code> and pass to markers</li>
+<li>Track selected pro — clicking a marker opens the bottom sheet to that pro's card</li>
+<li>Keep existing list view as the <code>'list'</code> state — unchanged</li>
+<li>Import mock pros from <code>map-data.ts</code> and merge lat/lng into existing pro data (or use mock directly)</li>
+</ol>
+<p>Key layout pattern for hybrid:</p>
+<pre><code class="hljs tsx">{viewMode === <span class="hljs-string">'map'</span> ? (
+  <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"relative h-[calc(100dvh-56px)] lg:flex"</span>&gt;</span>
+    {/* Desktop side panel / Mobile bottom sheet */}
+    <span class="hljs-tag">&lt;<span class="hljs-name">BottomSheet</span>
+      <span class="hljs-attr">peekContent</span>=<span class="hljs-string">{</span>&lt;<span class="hljs-attr">p</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"text-sm font-semibold"</span>&gt;</span>{filtered.length} Pros Nearby<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>}
+    &gt;
+      {/* Existing pro list cards */}
+    <span class="hljs-tag">&lt;/<span class="hljs-name">BottomSheet</span>&gt;</span>
+
+    {/* Map fills remaining space */}
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"h-full w-full lg:ml-[400px]"</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">MapView</span>
+        <span class="hljs-attr">center</span>=<span class="hljs-string">{DEFAULT_CENTER}</span>
+        <span class="hljs-attr">className</span>=<span class="hljs-string">"h-full w-full"</span>
+        <span class="hljs-attr">onZoomChanged</span>=<span class="hljs-string">{setCurrentZoom}</span>
+      &gt;</span>
+        {filtered.map((pro) =&gt; (
+          <span class="hljs-tag">&lt;<span class="hljs-name">ProMarker</span>
+            <span class="hljs-attr">key</span>=<span class="hljs-string">{pro.id}</span>
+            <span class="hljs-attr">pro</span>=<span class="hljs-string">{pro}</span>
+            <span class="hljs-attr">zoom</span>=<span class="hljs-string">{currentZoom}</span>
+            <span class="hljs-attr">selected</span>=<span class="hljs-string">{selectedId</span> === <span class="hljs-string">pro.id}</span>
+            <span class="hljs-attr">onClick</span>=<span class="hljs-string">{()</span> =&gt;</span> setSelectedId(pro.id)}
+          /&gt;
+        ))}
+      <span class="hljs-tag">&lt;/<span class="hljs-name">MapView</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+) : (
+  <span class="hljs-comment">// Existing list view — unchanged</span>
+)}
+</code></pre>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 3: Add MAP/LIST segmented toggle to the page header</strong></li>
+</ul>
+<pre><code class="hljs tsx">&lt;div className=<span class="hljs-string">"flex items-center rounded-lg border border-zinc-200 p-0.5"</span>&gt;
+  <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">button</span>
+    <span class="hljs-attr">onClick</span>=<span class="hljs-string">{()</span> =&gt;</span> setViewMode('map')}
+    className={`rounded-md px-3 py-1.5 text-xs font-semibold transition-all ${
+      viewMode === 'map'
+        ? 'bg-[#00a9e0] text-white'
+        : 'text-zinc-500 hover:text-zinc-700'
+    }`}
+  &gt;
+    Map
+  <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span>
+  <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">button</span>
+    <span class="hljs-attr">onClick</span>=<span class="hljs-string">{()</span> =&gt;</span> setViewMode('list')}
+    className={`rounded-md px-3 py-1.5 text-xs font-semibold transition-all ${
+      viewMode === 'list'
+        ? 'bg-[#00a9e0] text-white'
+        : 'text-zinc-500 hover:text-zinc-700'
+    }`}
+  &gt;
+    List
+  <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span>
+&lt;/div&gt;
+</code></pre>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 4: Verify build and test in browser</strong></li>
+</ul>
+<pre><code class="hljs bash">npm run build
+</code></pre>
+<p>Then open <code>http://localhost:3001/client/find-pros</code> and verify:</p>
+<ul>
+<li><p>Toggle switches between map and list views</p>
+</li>
+<li><p>Map shows placeholder if no API key, or renders Google Map if key is set</p>
+</li>
+<li><p>Pro markers appear on map at correct positions</p>
+</li>
+<li><p>Bottom sheet drags on mobile, side panel on desktop</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 5: Commit</strong></p>
+</li>
+</ul>
+<pre><code class="hljs bash">git add src/app/(dashboard)/client/find-pros/find-pros-content.tsx
+git commit -m <span class="hljs-string">"feat: wire Google Maps into Client Find Pros with map/list toggle"</span>
+</code></pre>
+<hr>
+<h3 id="task-8-wire-pro-browse-jobs-map">Task 8: Wire Pro Browse Jobs Map</h3>
+<p><strong>Files:</strong></p>
+<ul>
+<li><p>Modify: <code>src/app/(dashboard)/pro/jobs/JobsPageClient.tsx</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Read the current JobsPageClient.tsx</strong></p>
+</li>
+</ul>
+<p>Read the file to understand the current list implementation.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Add map view with toggle</strong></li>
+</ul>
+<p>Same hybrid pattern as Task 7 but using <code>JobMarker</code> and <code>MOCK_JOBS</code>:</p>
+<ol>
+<li>Add <code>viewMode</code> state and segmented toggle</li>
+<li>Wrap in <code>GoogleMapProvider</code></li>
+<li>Map view: <code>MapView</code> with <code>JobMarker</code> for each job</li>
+<li>Emergency jobs get <code>urgency: 'emergency'</code> which shows red border on pin</li>
+<li>Bottom sheet shows job cards with category, budget, urgency badge</li>
+<li>Tap a job marker → highlight in bottom sheet</li>
+<li>Existing list view stays as <code>'list'</code> mode</li>
+</ol>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 3: Verify build and test</strong></li>
+</ul>
+<pre><code class="hljs bash">npm run build
+</code></pre>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 4: Commit</strong></li>
+</ul>
+<pre><code class="hljs bash">git add src/app/(dashboard)/pro/jobs/JobsPageClient.tsx
+git commit -m <span class="hljs-string">"feat: wire Google Maps into Pro Browse Jobs with job markers"</span>
+</code></pre>
+<hr>
+<h3 id="task-9-dispatchtracker--emergency-flow">Task 9: DispatchTracker + Emergency Flow</h3>
+<p><strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>src/components/maps/DispatchTracker.tsx</code></p>
+</li>
+<li><p>Modify: <code>src/components/maps/index.ts</code></p>
+</li>
+<li><p>Modify: <code>src/components/emergency/EnRouteTracker.tsx</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Create DispatchTracker</strong></p>
+</li>
+</ul>
+<pre><code class="hljs tsx"><span class="hljs-comment">// src/components/maps/DispatchTracker.tsx</span>
+<span class="hljs-string">'use client'</span>;
+
+<span class="hljs-keyword">import</span> { useEffect, useState, useCallback } <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
+<span class="hljs-keyword">import</span> { <span class="hljs-title class_">Map</span>, <span class="hljs-title class_">AdvancedMarker</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">'@vis.gl/react-google-maps'</span>;
+<span class="hljs-keyword">import</span> { useGoogleMaps } <span class="hljs-keyword">from</span> <span class="hljs-string">'./GoogleMapProvider'</span>;
+<span class="hljs-keyword">import</span> { <span class="hljs-title class_">PhoneIcon</span>, <span class="hljs-title class_">ChatBubbleLeftIcon</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">'@heroicons/react/24/solid'</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-keyword">type</span> { <span class="hljs-title class_">MockProLocation</span>, <span class="hljs-title class_">MockRoute</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">'@/lib/mock-data/map-data'</span>;
+
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">DispatchTrackerProps</span> {
+  <span class="hljs-attr">pro</span>: <span class="hljs-title class_">MockProLocation</span>;
+  <span class="hljs-attr">route</span>: <span class="hljs-title class_">MockRoute</span>;
+  <span class="hljs-attr">onCancel</span>?: <span class="hljs-function">() =&gt;</span> <span class="hljs-built_in">void</span>;
+  <span class="hljs-attr">onArrived</span>?: <span class="hljs-function">() =&gt;</span> <span class="hljs-built_in">void</span>;
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">DispatchTracker</span>(<span class="hljs-params">{
+  pro,
+  route,
+  onCancel,
+  onArrived,
+}: <span class="hljs-title class_">DispatchTrackerProps</span></span>) {
+  <span class="hljs-keyword">const</span> { isReady } = <span class="hljs-title function_">useGoogleMaps</span>();
+  <span class="hljs-keyword">const</span> [eta, setEta] = <span class="hljs-title function_">useState</span>(route.<span class="hljs-property">etaMinutes</span>);
+  <span class="hljs-keyword">const</span> [proPos, setProPos] = <span class="hljs-title function_">useState</span>(route.<span class="hljs-property">proStart</span>);
+  <span class="hljs-keyword">const</span> [progress, setProgress] = <span class="hljs-title function_">useState</span>(<span class="hljs-number">0</span>);
+
+  <span class="hljs-comment">// Simulate pro movement</span>
+  <span class="hljs-title function_">useEffect</span>(<span class="hljs-function">() =&gt;</span> {
+    <span class="hljs-keyword">if</span> (eta &lt;= <span class="hljs-number">0</span>) {
+      onArrived?.();
+      <span class="hljs-keyword">return</span>;
+    }
+    <span class="hljs-keyword">const</span> interval = <span class="hljs-built_in">setInterval</span>(<span class="hljs-function">() =&gt;</span> {
+      <span class="hljs-title function_">setEta</span>(<span class="hljs-function">(<span class="hljs-params">prev</span>) =&gt;</span> {
+        <span class="hljs-keyword">const</span> next = prev - <span class="hljs-number">0.5</span>;
+        <span class="hljs-keyword">if</span> (next &lt;= <span class="hljs-number">0</span>) {
+          <span class="hljs-built_in">clearInterval</span>(interval);
+          <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        }
+        <span class="hljs-keyword">return</span> next;
+      });
+      <span class="hljs-title function_">setProgress</span>(<span class="hljs-function">(<span class="hljs-params">prev</span>) =&gt;</span> <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">min</span>(prev + <span class="hljs-number">100</span> / (route.<span class="hljs-property">etaMinutes</span> * <span class="hljs-number">2</span>), <span class="hljs-number">100</span>));
+      <span class="hljs-title function_">setProPos</span>(<span class="hljs-function">(<span class="hljs-params">prev</span>) =&gt;</span> ({
+        <span class="hljs-attr">lat</span>: prev.<span class="hljs-property">lat</span> + (route.<span class="hljs-property">clientLocation</span>.<span class="hljs-property">lat</span> - route.<span class="hljs-property">proStart</span>.<span class="hljs-property">lat</span>) / (route.<span class="hljs-property">etaMinutes</span> * <span class="hljs-number">2</span>),
+        <span class="hljs-attr">lng</span>: prev.<span class="hljs-property">lng</span> + (route.<span class="hljs-property">clientLocation</span>.<span class="hljs-property">lng</span> - route.<span class="hljs-property">proStart</span>.<span class="hljs-property">lng</span>) / (route.<span class="hljs-property">etaMinutes</span> * <span class="hljs-number">2</span>),
+      }));
+    }, <span class="hljs-number">3000</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-function">() =&gt;</span> <span class="hljs-built_in">clearInterval</span>(interval);
+  }, [eta, route, onArrived]);
+
+  <span class="hljs-keyword">const</span> center = {
+    <span class="hljs-attr">lat</span>: (route.<span class="hljs-property">proStart</span>.<span class="hljs-property">lat</span> + route.<span class="hljs-property">clientLocation</span>.<span class="hljs-property">lat</span>) / <span class="hljs-number">2</span>,
+    <span class="hljs-attr">lng</span>: (route.<span class="hljs-property">proStart</span>.<span class="hljs-property">lng</span> + route.<span class="hljs-property">clientLocation</span>.<span class="hljs-property">lng</span>) / <span class="hljs-number">2</span>,
+  };
+
+  <span class="hljs-keyword">return</span> (
+    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"relative h-[100dvh] w-full"</span>&gt;</span>
+      {/* Map */}
+      {isReady ? (
+        <span class="hljs-tag">&lt;<span class="hljs-name">Map</span>
+          <span class="hljs-attr">defaultCenter</span>=<span class="hljs-string">{center}</span>
+          <span class="hljs-attr">defaultZoom</span>=<span class="hljs-string">{14}</span>
+          <span class="hljs-attr">gestureHandling</span>=<span class="hljs-string">"greedy"</span>
+          <span class="hljs-attr">disableDefaultUI</span>
+          <span class="hljs-attr">className</span>=<span class="hljs-string">"h-full w-full"</span>
+        &gt;</span>
+          {/* Pro marker */}
+          <span class="hljs-tag">&lt;<span class="hljs-name">AdvancedMarker</span> <span class="hljs-attr">position</span>=<span class="hljs-string">{proPos}</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"relative"</span>&gt;</span>
+              <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"absolute -inset-2 animate-ping rounded-full bg-[#00a9e0]/30"</span> /&gt;</span>
+              <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"flex h-10 w-10 items-center justify-center rounded-full bg-[#00a9e0] text-sm font-bold text-white shadow-lg"</span> <span class="hljs-attr">style</span>=<span class="hljs-string">{{</span> <span class="hljs-attr">border:</span> '<span class="hljs-attr">3px</span> <span class="hljs-attr">solid</span> <span class="hljs-attr">white</span>' }}&gt;</span>
+                {pro.initials}
+              <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">AdvancedMarker</span>&gt;</span>
+
+          {/* Client location */}
+          <span class="hljs-tag">&lt;<span class="hljs-name">AdvancedMarker</span> <span class="hljs-attr">position</span>=<span class="hljs-string">{route.clientLocation}</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"relative"</span>&gt;</span>
+              <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"absolute -inset-1.5 animate-ping rounded-full bg-[#ff4500]/20"</span> /&gt;</span>
+              <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"h-4 w-4 rounded-full bg-[#ff4500] shadow-lg"</span> <span class="hljs-attr">style</span>=<span class="hljs-string">{{</span> <span class="hljs-attr">border:</span> '<span class="hljs-attr">3px</span> <span class="hljs-attr">solid</span> <span class="hljs-attr">white</span>' }} /&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">AdvancedMarker</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">Map</span>&gt;</span>
+      ) : (
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"flex h-full items-center justify-center bg-zinc-100 dark:bg-zinc-900"</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"text-zinc-500"</span>&gt;</span>Map requires API key<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      )}
+
+      {/* Floating ETA pill */}
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"absolute left-1/2 top-4 z-10 -translate-x-1/2 rounded-full bg-white px-5 py-2 shadow-lg dark:bg-zinc-800"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"flex items-center gap-2"</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"text-2xl font-bold text-[#00a9e0]"</span>&gt;</span>{Math.ceil(eta)}<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"text-xs leading-tight text-zinc-500 dark:text-zinc-400"</span>&gt;</span>
+            MIN
+            <span class="hljs-tag">&lt;<span class="hljs-name">br</span> /&gt;</span>
+            AWAY
+          <span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+      {/* Bottom info panel */}
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"absolute inset-x-0 bottom-0 z-10 rounded-t-2xl bg-white p-4 shadow-[0_-4px_20px_rgba(0,0,0,0.08)] dark:bg-zinc-900"</span>&gt;</span>
+        {/* ETA + Status */}
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"flex items-center justify-between"</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"text-lg font-bold text-zinc-900 dark:text-white"</span>&gt;</span>{Math.ceil(eta)} min<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"ml-2 text-sm text-zinc-500 dark:text-zinc-400"</span>&gt;</span>· {route.distanceMiles} mi away<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-0.5 text-xs font-semibold text-emerald-700 dark:border-emerald-800 dark:bg-emerald-950 dark:text-emerald-400"</span>&gt;</span>
+            EN ROUTE
+          <span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+        {/* Progress bar */}
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"mt-3 h-1 rounded-full bg-zinc-100 dark:bg-zinc-800"</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">div</span>
+            <span class="hljs-attr">className</span>=<span class="hljs-string">"h-full rounded-full bg-gradient-to-r from-[#00a9e0] to-emerald-500 transition-all duration-1000"</span>
+            <span class="hljs-attr">style</span>=<span class="hljs-string">{{</span> <span class="hljs-attr">width:</span> `${<span class="hljs-attr">progress</span>}%` }}
+          /&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+        {/* Pro info */}
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"mt-4 flex items-center gap-3"</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#00a9e0] text-sm font-bold text-white"</span>&gt;</span>
+            {pro.initials}
+          <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"min-w-0 flex-1"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"text-sm font-semibold text-zinc-900 dark:text-white"</span>&gt;</span>
+              {pro.name} · <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"text-[#ff4500]"</span>&gt;</span>★ {pro.rating}<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"text-xs text-zinc-500 dark:text-zinc-400"</span>&gt;</span>
+              {pro.trade} · {pro.jobsCompleted} jobs completed
+            <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"flex gap-2"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"flex h-9 w-9 items-center justify-center rounded-full bg-[#00a9e0] text-white shadow-sm transition-all hover:bg-[#0ea5e9] active:scale-95"</span>&gt;</span>
+              <span class="hljs-tag">&lt;<span class="hljs-name">PhoneIcon</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"h-4 w-4"</span> /&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"flex h-9 w-9 items-center justify-center rounded-full border border-zinc-200 text-zinc-600 shadow-sm transition-all hover:bg-zinc-50 active:scale-95 dark:border-zinc-700 dark:text-zinc-400"</span>&gt;</span>
+              <span class="hljs-tag">&lt;<span class="hljs-name">ChatBubbleLeftIcon</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"h-4 w-4"</span> /&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+        {/* Cancel */}
+        {onCancel &amp;&amp; (
+          <span class="hljs-tag">&lt;<span class="hljs-name">button</span>
+            <span class="hljs-attr">onClick</span>=<span class="hljs-string">{onCancel}</span>
+            <span class="hljs-attr">className</span>=<span class="hljs-string">"mt-4 w-full text-center text-sm text-zinc-400 transition-colors hover:text-zinc-600 dark:hover:text-zinc-300"</span>
+          &gt;</span>
+            Cancel Dispatch
+          <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+        )}
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+  );
+}
+</code></pre>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Update barrel exports</strong></li>
+</ul>
+<p>Add to <code>src/components/maps/index.ts</code>:</p>
+<pre><code class="hljs typescript"><span class="hljs-keyword">export</span> { <span class="hljs-keyword">default</span> <span class="hljs-keyword">as</span> <span class="hljs-title class_">DispatchTracker</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">'./DispatchTracker'</span>;
+</code></pre>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 3: Wire into EnRouteTracker</strong></li>
+</ul>
+<p>Read <code>src/components/emergency/EnRouteTracker.tsx</code>. Replace the mock progress bar / animated UI with <code>DispatchTracker</code>. Wrap in <code>GoogleMapProvider</code>. Pass the matched pro and mock route data. Keep the cancel confirmation dialog.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 4: Verify build and test</strong></li>
+</ul>
+<pre><code class="hljs bash">npm run build
+</code></pre>
+<p>Then test the emergency flow at <code>http://localhost:3001/client/emergency</code>.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 5: Commit</strong></li>
+</ul>
+<pre><code class="hljs bash">git add src/components/maps/DispatchTracker.tsx src/components/maps/index.ts src/components/emergency/EnRouteTracker.tsx
+git commit -m <span class="hljs-string">"feat: add DispatchTracker with live ETA, route simulation, and pro tracking"</span>
+</code></pre>
+<hr>
+<h3 id="task-10-final-cleanup--build-verification">Task 10: Final Cleanup + Build Verification</h3>
+<p><strong>Files:</strong></p>
+<ul>
+<li><p>Modify: <code>CLAUDE.md</code></p>
+</li>
+<li><p>Modify: <code>.env.local.example</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Update .env.local.example</strong></p>
+</li>
+</ul>
+<p>Add the Google Maps env vars:</p>
+<pre><code>NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=your_google_maps_api_key
+NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID=optional_cloud_map_id
+</code></pre>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Update CLAUDE.md</strong></li>
+</ul>
+<p>Add to the Tech Stack section:</p>
+<pre><code>- **Maps:** Google Maps JavaScript API (@vis.gl/react-google-maps) — Uber-like map interface
+</code></pre>
+<p>Update the Integration Notes section to remove Mapbox references and add:</p>
+<pre><code>- Google Maps gracefully degrades — shows branded placeholder when API key is missing
+- Maps use system theme preference (light/dark) automatically
+</code></pre>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 3: Full build verification</strong></li>
+</ul>
+<pre><code class="hljs bash">npm run build
+</code></pre>
+<p>Expected: Clean build, all routes compile, zero errors.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 4: Commit</strong></li>
+</ul>
+<pre><code class="hljs bash">git add CLAUDE.md .env.local.example
+git commit -m <span class="hljs-string">"docs: update CLAUDE.md and env example for Google Maps integration"</span>
+</code></pre>
+
+	
+
+
+</body>
+</html>

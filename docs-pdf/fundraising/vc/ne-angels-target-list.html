@@ -1,0 +1,1527 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ne angels target list — Sherpa Pros</title>
+<link rel="icon" href="../../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="ne-angels-target-list.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="sherpa-pros--ne-local-angel-target-list-tier-0">Sherpa Pros — NE-Local Angel Target List (Tier 0)</h1>
+<p><strong>Date:</strong> 2026-04-22
+<strong>Owner:</strong> Phyrom (founder, HJD Builders LLC, Sherpa Pros)
+<strong>Spec reference:</strong> <code>docs/superpowers/specs/2026-04-22-gtm-marketing-design.md</code> §6.3 Tier 0
+<strong>Pipeline cross-ref:</strong> <code>docs/fundraising/vc/investor-pipeline.md</code> (this file extends rows #38–#53 of that pipeline with named individuals)
+<strong>Voice:</strong> dry analyst notes; no marketing language; founder hook = working NH GC running HJD Builders
+<strong>Current stage gate:</strong> Phase 0 (per spec §4.2). Goal: 5+ angel checks ($25K–$150K each) by Week 4 = $250K–$500K total raised as one path to Phase 0 Exit Gate (per spec §12).</p>
+<hr>
+<h2 id="how-to-read-this-file">How to read this file</h2>
+<ul>
+<li><strong>Tier 0</strong> in the master pipeline = NE-local angels writing personal SAFEs of $25K–$150K. Lowest friction, highest warmth, fastest yes/no cycle.</li>
+<li>Each row is a real person or a real network. <strong>Where a name is not 100% confirmed in 2024–2026 public sources, the row is tagged <code>[VERIFY]</code></strong> — Phyrom should re-check the linked source page (LinkedIn, firm team page, board listing) before any cold contact.</li>
+<li>The HJD client list (Category 1) is left as a structured <strong>TEMPLATE</strong> because Phyrom is the only person who knows who has what relationship to HJD Builders, and SEC accreditation status is private data Phyrom maintains.</li>
+<li>The <strong>founder hook leads every outreach</strong> (per spec §3.3): <em>"I'm Phyrom. I run HJD Builders, a licensed NH general contractor. I built the platform I wished existed."</em> The angle line for each angel below adapts that hook to the angel's personal thesis (built environment vs. marketplace vs. NE-local vs. climate-tech).</li>
+</ul>
+<hr>
+<h2 id="outreach-sequencing-master-plan">Outreach sequencing (master plan)</h2>
+<table>
+<thead>
+<tr>
+<th>Week</th>
+<th>Category focus</th>
+<th>Mode</th>
+<th>Goal</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>W1</strong></td>
+<td>Cat. 1 (HJD network warm intros)</td>
+<td>Phyrom personal calls. No email.</td>
+<td>3 angel commitments by W2</td>
+</tr>
+<tr>
+<td><strong>W2–3</strong></td>
+<td>Cat. 1 (NHHBA + HBRAME boards)</td>
+<td>Next monthly chapter meeting + targeted pre-meeting calls. Bring laptop and phone for live demo.</td>
+<td>5 board members in one-on-ones</td>
+</tr>
+<tr>
+<td><strong>W3–4</strong></td>
+<td>Cat. 2 (Boston angels via AngelList + LinkedIn)</td>
+<td>Cold via AngelList platform + LinkedIn DMs referencing recent investment.</td>
+<td>5 introductory meetings booked by W5</td>
+</tr>
+<tr>
+<td><strong>W4–6</strong></td>
+<td>Cat. 3 (Construction industry execs)</td>
+<td>Warm via NHHBA + Suffolk Tech BOOST network.</td>
+<td>2 construction-exec angel calls</td>
+</tr>
+<tr>
+<td><strong>W5–7</strong></td>
+<td>Cat. 4 (NE tech founders)</td>
+<td>Cold but referenced via mutual connection on LinkedIn.</td>
+<td>3 introductory calls from this category</td>
+</tr>
+</tbody></table>
+<p><strong>Cross-track: Wefunder coordination (per spec §6.4 + Wave 2 cross-ref).</strong> Category 1 + 2 angels can simultaneously be Wefunder soft-commit lead investors. Pitch the <em>both</em> path: $X SAFE direct + co-invest via Wefunder for friends/family. This raises the angel's stake without forcing the full upfront commitment, and creates the "$100K+ committed" badge Wefunder needs for public launch (per spec §6.4).</p>
+<hr>
+<h2 id="decision-framework--when-to-take-an-angel-check-phyrom-playbook">Decision framework — when to take an angel check (Phyrom playbook)</h2>
+<table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>Read</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Angel writes within 2 weeks of first meeting</td>
+<td>Strong commitment</td>
+<td>Accept; ask for 2 referrals to other angels in their network</td>
+</tr>
+<tr>
+<td>Angel suggests other angels in their network unprompted</td>
+<td>Multiplier value</td>
+<td>Accept even if check is small ($25K) — the network is the prize</td>
+</tr>
+<tr>
+<td>Angel commits to specific check size + signs SAFE</td>
+<td>Cleanest path</td>
+<td>Accept</td>
+</tr>
+<tr>
+<td>Angel offers advisory shares in lieu of check</td>
+<td>We need cash, not equity grants in Phase 0</td>
+<td>Reject for Phase 0; revisit at Phase 1</td>
+</tr>
+<tr>
+<td>Angel wants special board observer rights for &lt;$100K</td>
+<td>Anti-dilution complexity for too little capital</td>
+<td>Reject; offer quarterly investor update access only</td>
+</tr>
+<tr>
+<td>Angel pushes for over-aggressive valuation cap (sub-$4M)</td>
+<td>Trying to get cheap-deal Wefunder cap before our priced round</td>
+<td>Reject; cap is set per FAQ Q23 in <code>docs/fundraising/wefunder/page-content.md</code></td>
+</tr>
+<tr>
+<td>Angel ghosts after first meeting + no follow-up within 30 days</td>
+<td>Dead lead</td>
+<td>Mark <code>PASS</code> in pipeline; don't chase</td>
+</tr>
+<tr>
+<td>Angel asks for full Stripe Connect transaction-level access</td>
+<td>Diligence is reasonable but excessive at this stage</td>
+<td>Provide aggregate dashboard only; full data at term-sheet stage</td>
+</tr>
+</tbody></table>
+<hr>
+<h1 id="category-1--hjd-builders-network-10-slots--template-for-phyrom-to-fill">CATEGORY 1 — HJD Builders network (10+ slots — TEMPLATE for Phyrom to fill)</h1>
+<p><strong>Why this category is highest warmth:</strong> these are people Phyrom already knows personally. No cold-outreach cost. Fastest yes/no. The angel check from a former HJD client is also an implicit endorsement of the founder narrative — every check from this list becomes a recruiting story.</p>
+<p><strong>Accreditation reminder (SEC Rule 501):</strong> an individual is an accredited investor if (a) net worth &gt;$1M excluding primary residence, OR (b) income &gt;$200K (or $300K joint with spouse) for the past 2 years and reasonable expectation of same in current year. Many HJD clients with second-home builds, full-custom dwellings, or recent business sales clear this bar — but Phyrom must NOT solicit or accept investment from anyone he doesn't have a reasonable basis to believe is accredited. Wefunder Reg CF round (per spec §6.4) is the path for non-accredited HJD clients who want to participate.</p>
+<h2 id="template--fill-one-row-per-name-in-phyroms-contact-list">Template — fill one row per name in Phyrom's contact list</h2>
+<pre><code>| # | Name (private — Phyrom only) | Relationship to HJD | Net-worth signal | Recent capital event | Suggested check ask | Why they care about Sherpa Pros | Wefunder coordination | Status |
+|---|------------------------------|---------------------|------------------|---------------------|---------------------|---------------------------------|----------------------|--------|
+| 1 | [TBD]                        | [Past full-build client / lot-purchase client / sub / vendor / sub-of-sub / referral source] | [Built &gt;$1M dwelling / sold business / inherited / hedge-fund partner / executive at $X co.] | [2024–2026 home purchase / project / liquidity event] | [$25K / $50K / $100K / $150K] | [Personal pain point — couldn't find the right plumber, got burned by Angi, Mass Save heat-pump installer flake-out, etc.] | [Direct SAFE only / Direct + Wefunder co-invest / Wefunder lead investor only] | [WARMING / INTRO / MET / DD / TS / PASS] |
+| 2 | ...                          | ...                 | ...              | ...                 | ...                 | ...                             | ...                  | ...    |
+</code></pre>
+<p><strong>Suggested 10 buckets to source from (Phyrom fills with names from his CRM / phone / memory):</strong></p>
+<ol>
+<li><strong>Past full-build clients with custom dwellings &gt;$800K final cost</strong> (HJD typical custom range — these clients self-select for net worth signal)</li>
+<li><strong>Repeat clients (2+ HJD projects in last 5 years)</strong> — repeat = trust + capital + emotional buy-in</li>
+<li><strong>Lot-purchase + spec-build clients</strong> (real-estate developer pattern; understand marketplace economics natively)</li>
+<li><strong>Past clients who sold a business 2023–2026</strong> (capital event = appetite for early-stage SAFE)</li>
+<li><strong>HJD subs and sub-of-sub owners with 5+ employees</strong> (these are exactly the pros Sherpa Pros recruits — angel check + supply-side recruit, double play)</li>
+<li><strong>HJD vendors with multi-state distribution (Brian's Lumber, FW Webb sales reps with personal investing history, etc.)</strong> [VERIFY each]</li>
+<li><strong>Past clients with second-home portfolios in the Seacoast / Lakes Region / White Mountains</strong> (PM-tier potential customer too — triple play)</li>
+<li><strong>Past clients who are NHHBA, BRAGB, HBRAME, or MA AGC board members</strong> (overlap with Cat. 1 NHHBA list below)</li>
+<li><strong>Past clients who are partners at Boston-area law firms, hedge funds, or VC firms</strong> (warm intros into Cat. 2 angel networks)</li>
+<li><strong>Past clients who are executives at HubSpot, Wayfair, DraftKings, TripAdvisor, iRobot, Akamai, or other Boston tech exits</strong> (warm intros into Cat. 4 angel network)</li>
+</ol>
+<hr>
+<h2 id="nhhba--hbrame-board-members--category-1-sub-list">NHHBA + HBRAME board members — Category 1 sub-list</h2>
+<p>The NH Home Builders Association (<code>nhhba.com</code>) and Home Builders &amp; Remodelers Association of Maine (<code>hbrame.org</code>) board members are the highest-priority warm-warm targets. Phyrom is already an NHHBA member through HJD Builders. Each board member who invests becomes a recruiting magnet for the pros in their chapter.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Name</th>
+<th>Position</th>
+<th>Source</th>
+<th>Status</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1.A</td>
+<td><strong>Maya Bogh</strong></td>
+<td>President, Home Builders &amp; Remodelers Association of Maine (HBRAME)</td>
+<td><a href="https://greatnorthernbuilders.info/maya-bogh-elected-president-of-home-builders-remodelers-association-of-maine/">Great Northern Builders — Maya Bogh elected President of HBRAME</a></td>
+<td>NEW</td>
+<td>⭐ <strong>Phase 0 priority — Portland ME launch metro overlap</strong> (per spec §4.3). Maine builder, runs Great Northern Builders. Direct line to Portland-area pro recruiting + capital.</td>
+</tr>
+<tr>
+<td>1.B</td>
+<td><strong>NHHBA 2026 Board Chair</strong></td>
+<td>[VERIFY: nhhba.com/about does not surface board roster in public crawl. Phyrom should pull current board list at next monthly meeting or via NHHBA executive director]</td>
+<td>nhhba.com</td>
+<td>NEW</td>
+<td>Highest-warmth intro — Phyrom is already an NHHBA dues-paying member</td>
+</tr>
+<tr>
+<td>1.C</td>
+<td><strong>NHHBA Executive Committee</strong> (typically 5–7 members)</td>
+<td>[VERIFY at next chapter meeting]</td>
+<td>nhhba.com</td>
+<td>NEW</td>
+<td>Same approach: introduce Sherpa Pros at monthly meeting demo, follow-up with one-on-one investor pitch within 14 days</td>
+</tr>
+<tr>
+<td>1.D</td>
+<td><strong>Susan Kadilak</strong></td>
+<td>Board of Directors, Builders &amp; Remodelers Association of Greater Boston (BRAGB)</td>
+<td><a href="https://www.bragb.org/leadership">BRAGB Leadership page</a></td>
+<td>NEW</td>
+<td>Boston specialty-lane validation source. Founder of Kadilak Homes (Boston-area custom builder).</td>
+</tr>
+<tr>
+<td>1.E</td>
+<td><strong>David O'Sullivan</strong></td>
+<td>Past President, BRAGB</td>
+<td><a href="https://www.bragb.org/about">BRAGB About page</a></td>
+<td>NEW</td>
+<td>Past-president status = experienced operator with discretionary capital</td>
+</tr>
+<tr>
+<td>1.F</td>
+<td><strong>Anthony Consigli</strong></td>
+<td>CEO, Consigli Construction ($2.5B revenue, 100% ESOP-owned, Milford MA)</td>
+<td><a href="https://www.wbjournal.com/article/2024-power-100-anthony-consigli">Worcester Business Journal 2024 Power 100 — Anthony Consigli</a> · <a href="https://commercialobserver.com/2025/09/consigli-ceo-anthony-consigli-construction/">Commercial Observer Sept 2025 interview</a></td>
+<td>NEW</td>
+<td>⭐ <strong>Cross-list with Cat. 3.</strong> Construction industry exec. ESOP-employee-owned status = personal liquidity is real.</td>
+</tr>
+<tr>
+<td>1.G</td>
+<td><strong>Matthew Consigli</strong></td>
+<td>President, Consigli Construction; Trustee, Beth Israel Deaconess Medical Center (appointed 2025)</td>
+<td><a href="https://www.consigli.com/news-insights/">Consigli News &amp; Insights</a></td>
+<td>NEW</td>
+<td>Same family + same liquidity profile as Anthony. Cross-list with Cat. 3.</td>
+</tr>
+</tbody></table>
+<hr>
+<h1 id="category-2--boston-angels-via-angellist-syndicates--scout-networks-10-named">CATEGORY 2 — Boston angels via AngelList syndicates / scout networks (10+ named)</h1>
+<p><strong>Why this category:</strong> Boston's angel scene wrote $340M across 280+ deals in 2025, with most checks $50K–$150K from former founders who sold companies or made money at local tech giants (<a href="https://www.ellty.com/blog/boston-angel-investors">Ellty — Boston Angel Investors 2026</a>). Sherpa Pros' "GC who built the platform" angle is unusually concrete — most pitches these angels see are Stanford grads with no operating background. Phyrom's narrative cuts through.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Name</th>
+<th>Primary firm / role</th>
+<th>Why they invest (thesis)</th>
+<th>Recent investments (2024–2026)</th>
+<th>Check size</th>
+<th>Contact path</th>
+<th>Phyrom angle</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>2.1</strong></td>
+<td><strong>Dharmesh Shah</strong></td>
+<td>Co-founder + CTO, HubSpot (Cambridge MA). 100+ company angel portfolio.</td>
+<td>Boston-local. Backs technical founders building category-defining vertical software. Famously selective — writes the largest angel checks in Boston.</td>
+<td>Latest exit: Milk Video (Jun 2025). Acquired SinCode AI (Dec 2024). 100+ portfolio cos including Drift, Klaviyo. (<a href="https://tracxn.com/d/people/dharmesh-shah/__bZiIl8KNdjfGzmLBVpGSTdkwOTIzmZ1XFckfX7vC5sU">Tracxn — Dharmesh Shah portfolio</a> · <a href="https://www.onstartups.com/investments">onstartups.com investments</a>)</td>
+<td>$100K–$500K+ when he writes (rare; selective)</td>
+<td>LinkedIn: <a href="https://www.linkedin.com/in/dharmesh">in/dharmesh</a> · Twitter <a href="https://twitter.com/dharmesh">@dharmesh</a>. Warm intro via Inbound Angels (Cat. 2.5 below), or Phyrom engages on Twitter first then DMs.</td>
+<td><strong>Built-environment + vertical software moat.</strong> Frame the code-intelligence layer as "vertical software for the trades, with a moat that requires a working GC to build." Dharmesh's whole investment thesis is "founders solving problems they lived." Phyrom = textbook fit.</td>
+</tr>
+<tr>
+<td><strong>2.2</strong></td>
+<td><strong>Brian Halligan</strong></td>
+<td>Co-founder, HubSpot. Executive Chairperson HubSpot until May 2025.</td>
+<td>Boston-local. Backs marketing + sales tech founders post-exit. Extremely well connected to Boston institutional VCs.</td>
+<td>Co-invested with Dharmesh + Mike Volpe in Onescreen.ai pre-seed. Drift early backer. (<a href="https://billboardinsider.com/onescreen-ai-joins-the-automated-out-of-home-crowd/">Billboard Insider — Onescreen.ai pre-seed with Halligan + Shah + Volpe</a>)</td>
+<td>$50K–$200K typical</td>
+<td>LinkedIn: <a href="https://www.linkedin.com/in/brianhalligan">in/brianhalligan</a>. Warm intro via Pillar VC (Halligan was an early LP) or via HubSpot alumni network.</td>
+<td><strong>Founder-built-it-because-he-lived-it</strong> — same archetype as Dharmesh. Halligan also a sailor / outdoorsman; the NH-trades story resonates more than a Stanford pitch.</td>
+</tr>
+<tr>
+<td><strong>2.3</strong></td>
+<td><strong>Mike Volpe</strong></td>
+<td>Founding CMO + 5th employee, HubSpot. CEO Lola.com (sold 2022). 75+ angel investments.</td>
+<td>Active marketplace + B2B SaaS angel. Boston-based.</td>
+<td>Co-invested with Halligan + Shah in Onescreen.ai pre-seed. 75+ portfolio. (<a href="https://www.mikevolpe.com">mikevolpe.com</a>)</td>
+<td>$25K–$100K typical first check</td>
+<td>LinkedIn: <a href="https://www.linkedin.com/in/mvolpe">in/mvolpe</a>. Direct cold-warm via mutual HubSpot connections. Volpe is responsive to founder cold emails with a clean one-line pitch.</td>
+<td><strong>Marketplace + Boston operator angle.</strong> Frame Sherpa Pros as the marketplace HubSpot would have built if HubSpot were vertical-trades. Volpe respects clean unit economics — lead with the 5%-take + $49/mo + PM tier stack.</td>
+</tr>
+<tr>
+<td><strong>2.4</strong></td>
+<td><strong>Niraj Shah</strong></td>
+<td>CEO + co-founder, Wayfair ($12.5B FY25 revenue). Founding LP, Pillar VC.</td>
+<td>Marketplace + consumer-retail. 15+ personal angel portfolio. Boston-local.</td>
+<td>Latest: Elodin (Seed, Feb 2024). Founding LP at Pillar VC alongside Halligan + Conine + Robins + Kaufer. (<a href="https://tracxn.com/d/people/niraj-shah/__D27jhOlkkqnLFLnjIVGgXOnTAjDKh0LOczenPxzJgzs">Tracxn — Niraj Shah portfolio</a> · <a href="https://indianewengland.com/wayfair-ceo-niraj-shah-part-bostons-newest-investment-firm-wants-disrupt-venture-capital/">INE — Niraj Shah part of Pillar VC</a>)</td>
+<td>$25K–$100K typical angel; larger via Pillar VC LP position</td>
+<td>LinkedIn: <a href="https://www.linkedin.com/in/nirajshah10">in/nirajshah10</a>. Pillar VC team page is the warm-intro front door.</td>
+<td><strong>Two-sided marketplace operator angle.</strong> Wayfair = supply-side curation + demand-side acquisition at scale = exactly Sherpa Pros' thesis. Frame Sherpa Pros as Wayfair-for-licensed-trades. Niraj responds to operator-shaped pitches.</td>
+</tr>
+<tr>
+<td><strong>2.5</strong></td>
+<td><strong>Steve Conine</strong></td>
+<td>Co-founder, Wayfair. Founding LP, Pillar VC. CarGurus board.</td>
+<td>Marketplace + consumer + automotive marketplace (CarGurus board). Boston-local.</td>
+<td>Founding LP Pillar VC. Active TurningArt early-stage backing. (<a href="https://www.pillar.vc/team/steve-conine/">Pillar VC — Steve Conine</a> · <a href="https://investors.cargurus.com/board-member/steve-conine">CarGurus board</a>)</td>
+<td>$25K–$100K</td>
+<td>LinkedIn (verify handle). Same Pillar VC warm path as Niraj.</td>
+<td><strong>Marketplace operator</strong> — same angle as Niraj but Steve specifically built Wayfair's product engineering side. The Sherpa Pros code-intelligence layer is exactly the kind of product-engineering moat Steve underwrites.</td>
+</tr>
+<tr>
+<td><strong>2.6</strong></td>
+<td><strong>Jason Robins</strong></td>
+<td>CEO + co-founder, DraftKings (NASDAQ: DKNG). Founding LP, Pillar VC. 17+ angel portfolio.</td>
+<td>Marketplace + consumer-network-effects + Boston-local. Strategic adviser at Drive by DraftKings (DraftKings' VC arm).</td>
+<td>Portfolio: Jackpot.com, Grow Credit, Sports Innovation Lab, WAX Insurance. 1 unicorn (Extend). 3 exits (Digits, Sports Innovation Lab, Trumpit). (<a href="https://tracxn.com/d/people/jason-robins/__LwpvoLopftKJj0cnSSopYOHZK7zCG0PpPHuzRRNxP3A">Tracxn — Jason Robins</a> · <a href="https://www.pillar.vc/team/jason-robins/">Pillar VC — Jason Robins</a>)</td>
+<td>$50K–$200K typical</td>
+<td>LinkedIn (verify). Pillar VC warm path.</td>
+<td><strong>Marketplace + network-effects.</strong> Robins built DraftKings' two-sided liquidity from zero in Boston. Sherpa Pros faces the same chicken-and-egg problem and uses the same playbook (curated supply first, geographic concentration). Robins gets it instantly.</td>
+</tr>
+<tr>
+<td><strong>2.7</strong></td>
+<td><strong>Stephen Kaufer</strong></td>
+<td>Co-founder + ex-CEO TripAdvisor (retired 2022, 22 years as CEO). CEO Give Freely. Founding LP, Pillar VC.</td>
+<td>Marketplace + consumer + Boston-local. Travel + hospitality tech focus, but the marketplace pattern is the wider thesis.</td>
+<td>Latest: Cruisebound (Series B, Oct 2024). (<a href="https://tracxn.com/d/people/stephen-kaufer/__beZaj65b_5DKCTAIZt-6tfbiRtsr3O7QyVDqaa0wlLg">Tracxn — Steve Kaufer</a> · <a href="https://www.pillar.vc/team/steve-kaufer/">Pillar VC — Steve Kaufer</a>)</td>
+<td>$25K–$100K</td>
+<td>LinkedIn: <a href="https://www.linkedin.com/in/stkaufer">in/stkaufer</a>. Pillar VC warm path.</td>
+<td><strong>Marketplace founder narrative.</strong> TripAdvisor = consumer reviews + verified-supply marketplace. Sherpa Pros = consumer reviews + verified-LICENSE marketplace. The license-verification layer is the equivalent of TripAdvisor's review-quality layer. Kaufer respects founder-built-from-pain stories.</td>
+</tr>
+<tr>
+<td><strong>2.8</strong></td>
+<td><strong>Inbound Angels</strong> (syndicate, AngelList)</td>
+<td>HubSpot alumni syndicate. Members include Kipp Bodnar (current HubSpot CMO), Brad Coffey (ex-CSO HubSpot), Mike Volpe (above), and others.</td>
+<td>SaaS + marketplace + emerging tech. Founders who are former HubSpotters or in the HubSpot ecosystem. Single decision flow via syndicate lead.</td>
+<td>Active 2024–2026 syndicate. Investments include OneScreen.ai, Air, InfiniGrow. (<a href="https://www.inbound-angels.com/for-investors">Inbound Angels — for investors</a> · <a href="https://venture.angellist.com/hs-angels/syndicate">Inbound Angels syndicate on AngelList</a>)</td>
+<td>Syndicate per-deal: $250K–$1M aggregate (made up of many small investor checks $5K–$50K each)</td>
+<td>Apply via <a href="https://www.inbound-angels.com/">inbound-angels.com</a> intake form. Warm path via Mike Volpe (above) is the strongest.</td>
+<td><strong>GC-built-the-platform = unusually concrete pitch for HubSpot ecosystem.</strong> Inbound Angels typically sees marketing-tech-founder pitches; Sherpa Pros is wildly differentiated. Lead with: "HubSpot built marketing-software-for-software-companies. We're building software-for-the-trades. Same playbook, different vertical."</td>
+</tr>
+<tr>
+<td><strong>2.9</strong></td>
+<td><strong>Marketplace Syndicate (Flight.vc)</strong> — led by Gil Penchina + Jeff Epstein</td>
+<td>AngelList syndicate. Penchina is top-ranked AngelList angel (100+ companies, 5+ unicorns including Cruise, LinkedIn, PayPal, Dollar Shave Club).</td>
+<td>Marketplaces meeting Bill Gurley's 10-factor framework. Single-decision-maker (Penchina) running an SPV with 200+ accredited LPs. Fast cycle — days to weeks.</td>
+<td>Active 2024–2026 syndicate. (<a href="https://venture.angellist.com/marketplace-syndicate/syndicate">Marketplace Syndicate on AngelList</a> · <a href="https://venture.angellist.com/penchina/syndicate">Flight.vc syndicate</a>)</td>
+<td>Syndicate per-deal: $200K–$500K aggregate</td>
+<td>Apply via AngelList syndicate page. Penchina is responsive to founders with a clean concrete one-page memo (NOT a deck).</td>
+<td><strong>Bill Gurley's 10-factor marketplace framework — fits Sherpa Pros across all 10.</strong> Lead with: take rate (5-10% vs Angi's effective 25%+), supply-side fragmentation (every state has its own license regime — local liquidity moat), demand frequency (homeowners need licensed pros 2–4x/year for a typical home), high-AOV ($800–$30K per job — supply-side absorbable cost).</td>
+</tr>
+<tr>
+<td><strong>2.10</strong></td>
+<td><strong>Hub Angels Investment Group</strong> (network) — Charles "Charlie" Cameron (Co-founder + Managing Director)</td>
+<td>Boston-based angel group founded 2000. $50M+ deployed. Notable exits: DraftKings, Localytics, Zipcar, Repsly (exit Jan 2025).</td>
+<td>Mostly software/finance/analytics historically — but DraftKings + Zipcar prove they back consumer-marketplace plays.</td>
+<td>Latest exit: Repsly (Jan 14, 2025). (<a href="https://www.hubangels.com/">Hub Angels homepage</a> · <a href="https://www.crunchbase.com/organization/hub-angels-investment-group">Crunchbase — Hub Angels</a>)</td>
+<td>$200K–$1M aggregate group check</td>
+<td>Apply via <a href="https://www.hubangels.com/">hubangels.com</a>. Warm intro path: Suffolk Tech alumni co-investors. Charlie Cameron's contact via the Hub Angels About page.</td>
+<td><strong>Zipcar precedent — a Boston-local, two-sided, asset-meets-consumer marketplace.</strong> Hub Angels backed Zipcar early. Sherpa Pros = same Boston-local + two-sided + asset-meets-consumer DNA, but for licensed labor instead of cars. Lead the pitch with the Zipcar parallel.</td>
+</tr>
+<tr>
+<td><strong>2.11</strong></td>
+<td><strong>Launchpad Venture Group</strong> (network) — Hambleton "Ham" Lord (Managing Director, also GP at Race Point Capital)</td>
+<td>Newton MA. Largest angel group in NE. 150+ portfolio cos since 2001. $125M+ invested. 24 exits. 1 unicorn.</td>
+<td>Generalist seed. Highest-velocity NE angel network.</td>
+<td>Latest: Surgicure Technologies ($1.78M Seed, Mar 12, 2025). 30–40 deals/year. (<a href="https://www.launchpadventuregroup.com/team">Launchpad team page</a> · <a href="https://tracxn.com/d/angel-network/launchpad-venture-group/__fuIcwQzcAxZvx6EHBQ08o1MsYQN5jpBigb6Py2pGnkw">Tracxn — Launchpad</a>)</td>
+<td>$250K–$1M aggregate group check</td>
+<td>Apply via <a href="https://www.launchpadventuregroup.com">launchpadventuregroup.com</a>. Ham Lord on LinkedIn.</td>
+<td><strong>Highest-velocity NE network.</strong> Submit early in Phase 0 — they screen fast. Lead with: NE-local founder + live transacting product + clear unit economics. They don't waste cycles on R&amp;D-stage.</td>
+</tr>
+<tr>
+<td><strong>2.12</strong></td>
+<td><strong>Boston Harbor Angels</strong> (network) — Ziad Henry Moukheiber (President + CEO)</td>
+<td>Boston angel network founded 2004. 70+ portfolio cos. Just hit 20-year anniversary.</td>
+<td>Generalist (mostly biotech + IT historically). Sherpa Pros' GC-built angle stands out in their deal flow.</td>
+<td>2024–2025 active. (<a href="https://bostonharborangels.com/about-us/management-team/">Boston Harbor Angels Management Team</a> · <a href="https://tracxn.com/d/angel-network/boston-harbor-angels/__OCO0c5PoCJ80WBy8w9ato3RTAOwtu_6dyKyg8qbOuS4">Tracxn — Boston Harbor Angels</a>)</td>
+<td>$250K–$1.5M aggregate group check</td>
+<td>Apply via <a href="https://bostonharborangels.com/">bostonharborangels.com</a>. Group decision; longer cycle but creates multi-angel social proof in one shot.</td>
+<td><strong>Differentiation pitch.</strong> BHA mostly sees biotech / IT pitches. Sherpa Pros' physical-world + revenue-already-flowing + NH-GC-founder profile is rare in their pipeline. Lead with: "I'm not a biotech PhD, I'm a working contractor — and that's why this is the marketplace that finally works."</td>
+</tr>
+<tr>
+<td><strong>2.13</strong></td>
+<td><strong>Walnut Ventures</strong> (network) — Ralph Wagner (Managing General Partner)</td>
+<td>Cambridge MA. Founded 1997. 28 exits. 1 unicorn. Notable: ezCater, Splitwise, PanTher Therapeutics.</td>
+<td>Tech-based products. Boston-local seed/early-stage.</td>
+<td>Latest exit: Softrax (Feb 27, 2025). RockStep Solutions acquired by Instem (Jul 2025). (<a href="https://www.walnutventures.com/">Walnut Ventures homepage</a> · <a href="https://www.walnutventures.com/our-members.html">Walnut Members</a>)</td>
+<td>$50K–$250K aggregate group</td>
+<td><a href="https://www.walnutventures.com/">walnutventures.com</a>. Sal Daher (member of Walnut + MIT Angels, host of the now-archived Angel Invest Boston podcast) is a warm-intro path.</td>
+<td><strong>ezCater precedent — two-sided B2B marketplace built in Boston.</strong> Walnut backed ezCater early. Sherpa Pros = ezCater pattern (two-sided, Boston-local liquidity, vertical-specific take rate) but for licensed trades.</td>
+</tr>
+<tr>
+<td><strong>2.14</strong></td>
+<td><strong>Beacon Angels</strong> (network) — Mr. Swiggart (Founder + Manager)</td>
+<td>Boston angel group founded 2006. 22 portfolio cos. $50K–$400K range.</td>
+<td>Life sciences, enterprise apps, healthtech. Sector-stretchy but quality-driven.</td>
+<td>Latest: GelMEDIX ($13M Seed, Feb 17, 2026). (<a href="https://beaconangels.com/">Beacon Angels homepage</a> · <a href="https://tracxn.com/d/angel-network/beaconangels/__aBbvT570XwZJNG4C1YFsDa3ajMPyC_gmdOG4XvbkUPs">Tracxn — Beacon Angels</a>)</td>
+<td>$50K–$400K aggregate group</td>
+<td><a href="https://beaconangels.com/">beaconangels.com</a>. Smaller group, longer process.</td>
+<td><strong>Lower-priority for Phase 0</strong> — sector stretch. Park as Phase 1 followup.</td>
+</tr>
+</tbody></table>
+<hr>
+<h1 id="category-3--construction-industry-executives--family-business-owners-5-named">CATEGORY 3 — Construction industry executives / family-business owners (5+ named)</h1>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Name</th>
+<th>Primary role</th>
+<th>Why they invest</th>
+<th>Recent activity (2024–2026)</th>
+<th>Check size</th>
+<th>Contact path</th>
+<th>Phyrom angle</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>3.1</strong></td>
+<td><strong>John F. Fish</strong></td>
+<td>Founder + CEO + Chairman, Suffolk Construction ($9B+ annual revenue, 3,000 employees). Founder of Suffolk Capital + Suffolk Technologies.</td>
+<td>Built environment investor at scale. Suffolk Technologies = #1 Most Active ConTech Investor 2018–2025 per AGC Partners. Personal capital deployment correlates with Suffolk's strategic interests.</td>
+<td>Suffolk Technologies $110M Fund close 2023; Sourgum Waste Series A (Apr 2025). (<a href="https://suffolk.com/people/john-fish/">Suffolk — John Fish</a> · <a href="https://bostonrealestatetimes.com/suffolk-technologies-named-top-construction-tech-investor-in-2025-by-agc-partners/">Suffolk Tech named #1 ConTech investor 2025</a>)</td>
+<td>Personal angel: $100K–$500K typical. Suffolk Tech via formal BOOST or seed channels.</td>
+<td>Direct: Suffolk Construction HQ Boston. Warm: BOOST application (per spec §6.2) is the front door.</td>
+<td><strong>⭐ Highest-strategic-fit Cat. 3 angel.</strong> Fish's keynote at BuiltWorlds Venture East 2025 was about "the future of construction" — Sherpa Pros is exactly that future at the residential/light-com layer. Pitch: "Suffolk handles the $100M commercial jobs; Sherpa Pros handles the $5K–$50K licensed-trade jobs that feed your subs."</td>
+</tr>
+<tr>
+<td><strong>3.2</strong></td>
+<td><strong>Anthony Consigli</strong></td>
+<td>CEO, Consigli Construction ($2.5B revenue). 100% ESOP-employee-owned. Milford MA.</td>
+<td>Construction industry exec. ESOP buyout = real personal liquidity. 35-year tenure profiled in 2025.</td>
+<td>Lendlease NY/NJ acquisition pending; Beth Israel Deaconess board appointment 2025. (<a href="https://www.wbjournal.com/article/2024-power-100-anthony-consigli">Worcester Business Journal — Power 100 2024</a> · <a href="https://commercialobserver.com/2025/09/consigli-ceo-anthony-consigli-construction/">Commercial Observer Sept 2025</a>)</td>
+<td>Personal: $50K–$250K</td>
+<td>LinkedIn (verify). Warm via NHHBA cross-association or BRAGB intro.</td>
+<td><strong>Built-environment + employee-ownership angle.</strong> Consigli is privately held + employee-owned — they understand long-term ownership models. Sherpa Pros' "Founding Pros locked at 5% forever" = same loyalty-lock philosophy. Lead with the operator-empathy pitch.</td>
+</tr>
+<tr>
+<td><strong>3.3</strong></td>
+<td><strong>Matthew Consigli</strong></td>
+<td>President, Consigli Construction. Trustee, Beth Israel Deaconess Medical Center (appointed 2025).</td>
+<td>Same family + same operator profile as Anthony. Younger generation = more digital-native.</td>
+<td>Beth Israel board appointment 2025. (<a href="https://www.consigli.com/news-insights/">Consigli — News &amp; Insights</a>)</td>
+<td>Personal: $50K–$250K</td>
+<td>LinkedIn (verify). Same path as 3.2.</td>
+<td><strong>Same as 3.2 — but Matthew is more likely to engage with the technology pitch directly.</strong> Lead with the live demo, not the deck.</td>
+</tr>
+<tr>
+<td><strong>3.4</strong></td>
+<td><strong>Jeff Pope</strong></td>
+<td>President (3rd-generation Pope family), F.W. Webb Company. $2.3B revenue 2024. Largest plumbing supply distributor in NE. 100+ locations across 9 NE states.</td>
+<td>Pope family is private; F.W. Webb is privately held. Personal angel investing not publicly disclosed but multi-billion-dollar family enterprise = accreditation guaranteed.</td>
+<td>F.W. Webb 2024 revenue $2.3B. (<a href="https://www.fwwebb.com/history.php">F.W. Webb History page</a> · <a href="https://www.fwwebb.com/about-us.php">F.W. Webb About</a>)</td>
+<td>[VERIFY: family-office investment activity not publicly indexed]. Estimate $50K–$250K personal.</td>
+<td>Direct via FW Webb HQ (Bedford MA). Warm: Phyrom's HJD spend at FW Webb is the anchor. Ask local FW Webb sales rep to escalate to corporate.</td>
+<td><strong>HJD plumbing-supply spend = the open door.</strong> Phyrom is a paying customer. Lead with: "I spend $X/year at FW Webb. I built a platform that gets your plumbing-contractor customers more jobs (and so they spend more at FW Webb). Want to back it?"</td>
+</tr>
+<tr>
+<td><strong>3.5</strong></td>
+<td><strong>[VERIFY] Erland Construction leadership</strong></td>
+<td>Erland is Burlington MA-based commercial GC. Family-held.</td>
+<td>Construction industry exec. NE-local.</td>
+<td>[VERIFY 2024–2026 angel activity not surfaced in public research pass — Phyrom should pull team page at erland.com]</td>
+<td>Estimate $25K–$100K personal</td>
+<td>LinkedIn (verify). Warm via MA AGC.</td>
+<td>Lower-priority Cat. 3 — keep on the list as Phase 1 followup.</td>
+</tr>
+<tr>
+<td><strong>3.6</strong></td>
+<td><strong>[VERIFY] Skanska New England regional president</strong></td>
+<td>Skanska is publicly traded; NE office handles major Boston commercial work.</td>
+<td>Less likely to be a personal angel (publicly-traded company, restricted-trading windows) but the NE regional leadership has discretionary capital outside Skanska stock.</td>
+<td>[VERIFY]</td>
+<td>Estimate $25K–$100K personal</td>
+<td>Warm via MA AGC, Suffolk Tech BOOST</td>
+<td>Lower-priority Cat. 3.</td>
+</tr>
+<tr>
+<td><strong>3.7</strong></td>
+<td><strong>[VERIFY] Marvin Windows family (Marvin family of Warroad MN)</strong></td>
+<td>Marvin Windows is a private MN-based family company with deep NE distributor network.</td>
+<td>Family is intensely private. NE-distributor relationships are the practical angle.</td>
+<td>[VERIFY family-office angel activity]</td>
+<td>Estimate $50K–$250K</td>
+<td>Warm via Marvin sales rep at HJD or via NHHBA partnership programs (Marvin sponsors many HBA chapters).</td>
+<td><strong>Built-environment + NE-distribution-channel angle.</strong> Marvin sells to the same contractors Sherpa Pros recruits — strategic alignment.</td>
+</tr>
+</tbody></table>
+<hr>
+<h1 id="category-4--ne-tech-founders--exits-with-ne-residency-5-named">CATEGORY 4 — NE tech founders + exits with NE residency (5+ named)</h1>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Name</th>
+<th>Primary role</th>
+<th>Why they invest</th>
+<th>Recent investments (2024–2026)</th>
+<th>Check size</th>
+<th>Contact path</th>
+<th>Phyrom angle</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>4.1</strong></td>
+<td><strong>David Cancel</strong></td>
+<td>Founder + ex-CEO Drift (Cambridge MA, sold to Vista Equity 2024). Scout @ Sequoia Capital. 5-time founder. Based Waltham MA.</td>
+<td>Boston-local. Marketplace + SaaS. Sequoia scout = leverage into bigger checks if Sherpa Pros moves up-stack.</td>
+<td>Notable angel investments: Klaviyo, Digits. Drift early backers included Halligan + Shah + Brian Shin. (<a href="https://www.crunchbase.com/person/david-cancel">Crunchbase — David Cancel</a> · <a href="https://davidcancel.com/">davidcancel.com</a> · <a href="https://tracxn.com/d/people/david-cancel/__vKhazC8h5EFx_o_SOZPkfeuCxIXbFmyKZIxc5-eFMLQ">Tracxn — David Cancel</a>)</td>
+<td>$25K–$100K personal; potentially Sequoia scout SAFE on top</td>
+<td>LinkedIn: <a href="https://www.linkedin.com/in/dcancel">in/dcancel</a> · Twitter <a href="https://twitter.com/dcancel">@dcancel</a>. Cancel is highly active on Twitter — engagement-then-DM works.</td>
+<td><strong>Founder-empathy pitch.</strong> Cancel has built and sold 5 companies. He respects builders. Lead with the Loom of the live platform, not the deck. The Sequoia-scout angle = if he writes, the Sequoia signal follows.</td>
+</tr>
+<tr>
+<td><strong>4.2</strong></td>
+<td><strong>Colin Angle</strong></td>
+<td>Co-founder + ex-CEO iRobot (Bedford MA, filed bankruptcy late 2025). New venture: Familiar Machines &amp; Magic (home robotics, raising $30M).</td>
+<td>Boston-local. Hardware + home-services adjacent. Personally raised $15M for new venture from 8 investors (Nov 2024).</td>
+<td>New venture announcement Nov 2024. Familiar Machines based in Boston with LA presence. (<a href="https://www.bostonglobe.com/2024/11/21/business/colin-angle-irobot-home-robotics-venture/">Boston Globe — Colin Angle Familiar Machines Nov 2024</a> · <a href="https://techcrunch.com/2024/12/16/irobot-co-founders-new-home-robot-startup-hopes-to-raise-30m/">TechCrunch — Familiar Machines $30M raise Dec 2024</a>)</td>
+<td>$25K–$100K personal (capital partly tied up in new venture)</td>
+<td>LinkedIn: <a href="https://www.linkedin.com/in/colinangle">in/colinangle</a>. Mutual MIT alumni connection path likely.</td>
+<td><strong>Home-robotics-adjacent angle.</strong> iRobot was the consumer-home robot. Sherpa Pros is the consumer-home licensed-services platform. Same end-customer, same trust-in-the-home dynamic. Lead with: "iRobot earned trust in the home through a roomba; Sherpa Pros earns trust in the home through verified licensed pros." Caution: Angle's capital may be heavily allocated to Familiar Machines.</td>
+</tr>
+<tr>
+<td><strong>4.3</strong></td>
+<td><strong>Tom Leighton</strong></td>
+<td>Co-founder + CEO Akamai Technologies (Cambridge MA, NASDAQ: AKAM, $3.99B FY24 revenue). MIT CSAIL professor (on leave).</td>
+<td>Boston-local. Deep-tech infrastructure operator. Less likely to do small angel checks personally given executive duties — but a real fit for an enterprise/infrastructure pitch.</td>
+<td>Akamai 2025 results: 45% YoY growth in CIS, 36% YoY in Guardicore. (<a href="https://www.ir.akamai.com/management/tom-leighton">Akamai management</a>)</td>
+<td>[VERIFY: personal angel portfolio not publicly indexed]. If active, $50K–$250K.</td>
+<td>LinkedIn: <a href="https://www.linkedin.com/in/tleighton">in/tleighton</a>. Warm via MIT CSAIL alumni.</td>
+<td><strong>Lower-priority Cat. 4</strong> — Leighton's bandwidth is on Akamai. Keep on the list as a Phase 1 advisor target rather than a Phase 0 angel target.</td>
+</tr>
+<tr>
+<td><strong>4.4</strong></td>
+<td><strong>Jamie Goldstein</strong></td>
+<td>Founder + Partner, Pillar VC ($500M AUM, $175M Fund IV closed March 2025). Co-founder of Pillar with Wayfair / DraftKings / Rapid7 / TripAdvisor CEOs (see 2.4–2.7).</td>
+<td>Boston-local. Pillar's thesis: 75% of deals from Boston, 75% from academia (MIT/Harvard). Sherpa Pros is <em>unusually</em> non-academic but the marketplace + Boston angle still fits. Goldstein writes personal angel checks alongside Pillar.</td>
+<td>Recent Pillar exit: Zilla Security acquired by CyberArk for $175M (Feb 2025). (<a href="https://fortune.com/2025/03/17/pillar-venture-capital-175-million-fund-boston-tech/">Fortune — Pillar VC $175M Fund IV March 2025</a> · <a href="https://www.pillar.vc/team/jamie-goldstein/">Pillar VC team</a>)</td>
+<td>Pillar institutional: $500K–$3M typical. Personal angel from Goldstein: $25K–$100K.</td>
+<td>LinkedIn: <a href="https://www.linkedin.com/in/jamiegoldstein1">in/jamiegoldstein1</a>. Pillar's "Pillar Garage" intake form is the public path; warm via Niraj Shah / Steve Conine / Jason Robins / Steve Kaufer (founding LPs).</td>
+<td><strong>The Pillar founding-LP angle = compound leverage.</strong> If Goldstein writes a personal check AND Pillar institutional follows, the founding LPs (Niraj/Steve/Jason/Steve) all get warm-intro'd in one shot. Highest-leverage single conversation in the entire pipeline.</td>
+</tr>
+<tr>
+<td><strong>4.5</strong></td>
+<td><strong>Reed Sturtevant</strong></td>
+<td>General Partner, Engine Ventures (MIT-spinout fund). Co-founder Project 11 Ventures (Lexington MA pre-seed, $500K–$1.5M first-money checks). Ex-Microsoft Startup Labs Cambridge. Ex-Idealab Boston.</td>
+<td>Pre-seed first-money writer. NE-local. Operator background. Project 11 explicitly leads first outside capital.</td>
+<td>Active 2024–2026. (<a href="https://engineventures.com/people/reed-sturtevant">Engine Ventures — Reed Sturtevant</a> · <a href="https://www.crunchbase.com/organization/project-11-ventures">Crunchbase — Project 11</a>)</td>
+<td>Project 11 institutional: $500K–$1.5M. Personal angel: $25K–$50K.</td>
+<td>LinkedIn [in/sturtevant] (verify), <a href="http://sturtevant.com/contact/">sturtevant.com</a>. Direct cold-warm via MIT alumni.</td>
+<td><strong>Pre-seed first-money fit.</strong> Project 11 explicitly leads first outside capital — that's exactly Sherpa Pros' Phase 0 ask. Tight check-size + fast cycle. Lower founder-narrative risk.</td>
+</tr>
+<tr>
+<td><strong>4.6</strong></td>
+<td><strong>Kipp Bodnar</strong></td>
+<td>Current CMO HubSpot. Inbound Angels syndicate member.</td>
+<td>Marketing-tech + marketplace. Boston-local. Active personal angel.</td>
+<td>OneScreen.ai, Air, InfiniGrow. (<a href="https://pitchbook.com/profiles/investor/465782-32">PitchBook — Kipp Bodnar</a> · <a href="https://www.inbound-angels.com/">Inbound Angels</a>)</td>
+<td>$25K–$100K personal</td>
+<td>LinkedIn (verify). Inbound Angels syndicate path.</td>
+<td><strong>HubSpot-marketing-playbook fit.</strong> Bodnar runs marketing for the playbook Sherpa Pros emulates. Lead with: "Your inbound playbook for B2B SaaS — we're applying it to vertical trades."</td>
+</tr>
+<tr>
+<td><strong>4.7</strong></td>
+<td><strong>Brad Coffey</strong></td>
+<td>Ex-CSO HubSpot (oversaw HubSpot Ventures). Inbound Angels syndicate member.</td>
+<td>Marketplace + corporate-development experience. Strategic-pricing depth.</td>
+<td>Active 2024–2026 angel. (<a href="https://www.bradfordcoffey.com/">Brad Coffey site</a> · <a href="https://www.inbound-angels.com/">Inbound Angels</a>)</td>
+<td>$25K–$100K personal</td>
+<td>LinkedIn (verify), <a href="https://www.bradfordcoffey.com/">bradfordcoffey.com</a>.</td>
+<td><strong>Pricing + corp-dev angle.</strong> Coffey ran HubSpot's pricing + ventures + corp-dev — exactly the three things Phyrom needs help with as Sherpa Pros scales. Pitch as both angel AND advisor.</td>
+</tr>
+<tr>
+<td><strong>4.8</strong></td>
+<td><strong>Niraj Shah</strong></td>
+<td>(Cross-listed from 2.4)</td>
+<td>(See 2.4)</td>
+<td>(See 2.4)</td>
+<td>(See 2.4)</td>
+<td>(See 2.4)</td>
+<td>(See 2.4)</td>
+</tr>
+<tr>
+<td><strong>4.9</strong></td>
+<td><strong>Steve Conine</strong></td>
+<td>(Cross-listed from 2.5)</td>
+<td>(See 2.5)</td>
+<td>(See 2.5)</td>
+<td>(See 2.5)</td>
+<td>(See 2.5)</td>
+<td>(See 2.5)</td>
+</tr>
+<tr>
+<td><strong>4.10</strong></td>
+<td><strong>Jason Robins</strong></td>
+<td>(Cross-listed from 2.6)</td>
+<td>(See 2.6)</td>
+<td>(See 2.6)</td>
+<td>(See 2.6)</td>
+<td>(See 2.6)</td>
+<td>(See 2.6)</td>
+</tr>
+</tbody></table>
+<hr>
+<h1 id="category-5--nh-local-angel-networks-bonus--high-warmth-small-checks">CATEGORY 5 — NH-local angel networks (bonus — high warmth, small checks)</h1>
+<p>These are NH-based angel networks that bundle small checks into a coordinated group decision. Useful for stacking the cap table with NH names (NH-local pride is a Phyrom-narrative multiplier).</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Name</th>
+<th>Type</th>
+<th>Lead</th>
+<th>Recent activity</th>
+<th>Check size</th>
+<th>Contact</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>5.1</strong></td>
+<td><strong>eCoast Angels</strong></td>
+<td>Network (Portsmouth NH, founded 2000)</td>
+<td>[VERIFY: 2026 chair]</td>
+<td>Latest: Flexxbotics (Oct 10, 2025). $100M+ deployed since founding. (<a href="https://www.ecoastangels.net/">eCoast Angels homepage</a>)</td>
+<td>$250K–$2M aggregate group</td>
+<td><a href="https://www.ecoastangels.net/">ecoastangels.net</a>.</td>
+<td>⭐ <strong>Portsmouth NH = Phase 1 launch metro.</strong> Highest geographic fit. Phyrom should attend their next pitch night.</td>
+</tr>
+<tr>
+<td><strong>5.2</strong></td>
+<td><strong>Granite State Angels (GSA)</strong></td>
+<td>Network (35+ experienced entrepreneurs, NH/NE)</td>
+<td>[VERIFY: 2026 leadership]</td>
+<td>Active 2024–2026 (<a href="https://www.businessnhmagazine.com/article/venture-capital-and-angel-sources">Business NH Magazine — VC and Angel Sources</a>)</td>
+<td>$25K–$100K per individual; $250K+ aggregate</td>
+<td>Via NH Tech Alliance</td>
+<td>NE-local network — same warmth as eCoast</td>
+</tr>
+<tr>
+<td><strong>5.3</strong></td>
+<td><strong>10X Venture Partners</strong></td>
+<td>Operator-led NH angel group (Manchester NH) — Jason Syversen (Managing Director)</td>
+<td>Promotes NH-based community for operators + post-exit founders + angels. Cybersecurity + AI + B2B SaaS focus.</td>
+<td>Portfolio includes Polymer Solutions, goHappy, Nearpeer. (<a href="https://www.10xvp.com/">10xvp.com</a> · <a href="https://www.tipranks.com/news/private-companies/10x-venture-partners-expands-operator-focused-angel-investing-network">10X — operator-led</a>)</td>
+<td>$25K–$250K</td>
+<td><a href="https://www.10xvp.com/contact/">10xvp.com/contact</a></td>
+<td>Manchester NH-based — NH-pride angle. Sector stretch (their thesis is cybersecurity/AI) — pitch the Wiseman code-intelligence layer as the AI angle.</td>
+</tr>
+<tr>
+<td><strong>5.4</strong></td>
+<td><strong>NH Tech Alliance member angels</strong> (broader network)</td>
+<td>Statewide NH tech ecosystem</td>
+<td>Various; David Gerry (Bugcrowd CEO) named 2025 Entrepreneur of the Year</td>
+<td>Annual TechOut pitch competition. (<a href="https://nhtechalliance.org/">nhtechalliance.org</a>)</td>
+<td>$10K–$50K typical individual</td>
+<td>NH Tech Alliance membership; networking events</td>
+<td>NH-local pride angle for the "GC built a NH platform" story</td>
+</tr>
+</tbody></table>
+<hr>
+<h1 id="category-6--mass-save--utility-program-operator-angels-bonus--strategic-value--check-size">CATEGORY 6 — Mass Save / utility-program operator angels (bonus — strategic value &gt; check size)</h1>
+<p>Per spec §2.3 + §6.3, Boston specialty lanes (Mass Save heat pumps, EV chargers) are core Phase 1/2 strategy. Angels who built or operate within these programs bring strategic value worth more than their check.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Name</th>
+<th>Role</th>
+<th>Why they care</th>
+<th>Source</th>
+<th>Check size</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>6.1</strong></td>
+<td><strong>Jonathan Neves</strong></td>
+<td>Founder + CEO, Green Energy Mechanical (Canton + Needham + Lexington MA). Recently named to Mass Save Heat Pump Leaders Network (HPLN, launched 2025).</td>
+<td>Operator who lives the Mass Save installer-throughput problem daily.</td>
+<td><a href="https://fox5sandiego.com/business/press-releases/ein-presswire/859114056/green-energy-mechanical-recognized-as-heat-pump-leader-by-mass-save/">EIN Presswire — Green Energy Mechanical recognized as Heat Pump Leader by Mass Save</a></td>
+<td>$10K–$50K</td>
+<td><strong>Triple-play: angel + pro recruit + Mass Save channel.</strong> Pitch as all three simultaneously.</td>
+</tr>
+<tr>
+<td><strong>6.2</strong></td>
+<td><strong>Denommee Plumbing leadership</strong></td>
+<td>HPLN-recognized contractor. Featured Mass Save heat pump installer leader.</td>
+<td>Same operator-empathy as Neves.</td>
+<td><a href="https://www.denommeeplumbing.com/blog/your-local-mass-save-heat-pump-installer-network-hpin-contractor-2">Denommee Plumbing — HPLN status</a></td>
+<td>$10K–$50K</td>
+<td>Same triple-play opportunity.</td>
+</tr>
+<tr>
+<td><strong>6.3</strong></td>
+<td><strong>[VERIFY] Mass Save Program Administrator (Eversource MA) leadership alumni</strong></td>
+<td>Ex-Mass Save staff who now angel-invest publicly.</td>
+<td>Program-design knowledge = strategic gold.</td>
+<td>LinkedIn search "Mass Save" + "former"</td>
+<td>$10K–$50K</td>
+<td>Smallest checks, biggest strategic value.</td>
+</tr>
+</tbody></table>
+<hr>
+<h1 id="pipeline-summary-tier-0-angels--extends-investor-pipelinemd">Pipeline summary (Tier 0 angels — extends investor-pipeline.md)</h1>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Named individuals</th>
+<th>TEMPLATE rows</th>
+<th>Status mix</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Cat. 1 — HJD network + NHHBA + HBRAME boards</td>
+<td>7 named (Maya Bogh + Susan Kadilak + David O'Sullivan + Anthony Consigli + Matthew Consigli + 2 NHHBA seats <code>[VERIFY]</code>)</td>
+<td>10+ template slots for HJD personal contacts</td>
+<td>All NEW or WARMING</td>
+</tr>
+<tr>
+<td>Cat. 2 — Boston angels via AngelList / scout networks</td>
+<td>14 named</td>
+<td>—</td>
+<td>All NEW</td>
+</tr>
+<tr>
+<td>Cat. 3 — Construction industry execs</td>
+<td>7 named (incl. 2 cross-listed from Cat. 1)</td>
+<td>—</td>
+<td>All NEW; 3 <code>[VERIFY]</code></td>
+</tr>
+<tr>
+<td>Cat. 4 — NE tech founders + exits</td>
+<td>10 named (incl. 3 cross-listed from Cat. 2)</td>
+<td>—</td>
+<td>All NEW; 1 <code>[VERIFY]</code></td>
+</tr>
+<tr>
+<td>Cat. 5 — NH-local angel networks (bonus)</td>
+<td>4 networks</td>
+<td>—</td>
+<td>All NEW; 2 <code>[VERIFY]</code></td>
+</tr>
+<tr>
+<td>Cat. 6 — Mass Save operator angels (bonus)</td>
+<td>3 named (incl. 1 <code>[VERIFY]</code>)</td>
+<td>—</td>
+<td>All NEW</td>
+</tr>
+<tr>
+<td><strong>Total named individuals (no double-count)</strong></td>
+<td><strong>38 unique named</strong></td>
+<td><strong>+10 template</strong></td>
+<td></td>
+</tr>
+</tbody></table>
+<hr>
+<h1 id="operating-cadence">Operating cadence</h1>
+<ul>
+<li><strong>Weekly:</strong> Phyrom + SDR review pipeline. Advance one row per category per week minimum.</li>
+<li><strong>Per-row commit:</strong> Before any cold contact, run a 5-minute LinkedIn check for the angel's activity in last 90 days. Cite a specific recent post or investment in the opener — angels who get 100 cold pitches/month answer the one that proves the founder did 5 minutes of homework.</li>
+<li><strong>Wefunder coordination:</strong> every Cat. 1 + Cat. 2 angel conversation closes with: <em>"Would you also consider co-investing $X via our Wefunder community round? It lets your wife / business partner / friends-and-family participate alongside you without you fronting the full amount."</em></li>
+<li><strong>Founding Pro coordination (per spec §5.2):</strong> every Cat. 1 sub or sub-of-sub angel ALSO gets the Founding Pro offer (5% take rate forever) — angel check + supply-side recruit in one conversation.</li>
+</ul>
+<hr>
+<h1 id="footnotes--sources">Footnotes / sources</h1>
+<p>(All sources cited inline above. This file extends <code>docs/fundraising/vc/investor-pipeline.md</code> Tier 0 section and references its existing footnote framework for sources used in both files.)</p>
+<p>Key new sources surfaced in this research pass (2026-04-22):</p>
+<ul>
+<li><a href="https://www.bostonglobe.com/2024/11/21/business/colin-angle-irobot-home-robotics-venture/">Boston Globe — Colin Angle Familiar Machines Nov 2024</a></li>
+<li><a href="https://fortune.com/2025/03/17/pillar-venture-capital-175-million-fund-boston-tech/">Fortune — Pillar VC $175M Fund IV March 2025</a></li>
+<li><a href="https://www.wbjournal.com/article/2024-power-100-anthony-consigli">Worcester Business Journal — Anthony Consigli 2024 Power 100</a></li>
+<li><a href="https://commercialobserver.com/2025/09/consigli-ceo-anthony-consigli-construction/">Commercial Observer — Anthony Consigli September 2025</a></li>
+<li><a href="https://greatnorthernbuilders.info/maya-bogh-elected-president-of-home-builders-remodelers-association-of-maine/">Great Northern Builders — Maya Bogh elected HBRAME President</a></li>
+<li><a href="https://bostonrealestatetimes.com/suffolk-technologies-named-top-construction-tech-investor-in-2025-by-agc-partners/">Suffolk Tech — named #1 ConTech investor 2025</a></li>
+<li><a href="https://venture.angellist.com/hs-angels/syndicate">Inbound Angels syndicate (HubSpot alumni) on AngelList</a></li>
+<li><a href="https://venture.angellist.com/marketplace-syndicate/syndicate">Marketplace Syndicate (Flight.vc / Penchina) on AngelList</a></li>
+<li><a href="https://tracxn.com/d/people/dharmesh-shah/__bZiIl8KNdjfGzmLBVpGSTdkwOTIzmZ1XFckfX7vC5sU">Tracxn — Dharmesh Shah portfolio</a></li>
+<li><a href="https://tracxn.com/d/people/jason-robins/__LwpvoLopftKJj0cnSSopYOHZK7zCG0PpPHuzRRNxP3A">Tracxn — Jason Robins portfolio</a></li>
+<li><a href="https://tracxn.com/d/people/niraj-shah/__D27jhOlkkqnLFLnjIVGgXOnTAjDKh0LOczenPxzJgzs">Tracxn — Niraj Shah portfolio</a></li>
+<li><a href="https://tracxn.com/d/people/stephen-kaufer/__beZaj65b_5DKCTAIZt-6tfbiRtsr3O7QyVDqaa0wlLg">Tracxn — Steve Kaufer portfolio</a></li>
+<li><a href="https://www.ecoastangels.net/">eCoast Angels homepage (Portsmouth NH)</a></li>
+<li><a href="https://www.10xvp.com/">10X Venture Partners (Manchester NH, Jason Syversen)</a></li>
+<li><a href="https://fox5sandiego.com/business/press-releases/ein-presswire/859114056/green-energy-mechanical-recognized-as-heat-pump-leader-by-mass-save/">Mass Save HPLN — Green Energy Mechanical recognized 2025</a></li>
+<li><a href="https://www.hubangels.com/">Hub Angels Investment Group (Boston, Charlie Cameron)</a></li>
+<li><a href="https://www.launchpadventuregroup.com">Launchpad Venture Group (Newton MA, Ham Lord)</a></li>
+<li><a href="https://bostonharborangels.com/">Boston Harbor Angels (Boston, Ziad Moukheiber)</a></li>
+<li><a href="https://www.walnutventures.com/">Walnut Ventures (Cambridge MA, Ralph Wagner)</a></li>
+<li><a href="https://beaconangels.com/">Beacon Angels (Boston, Mr. Swiggart)</a></li>
+<li><a href="https://www.bragb.org/leadership">BRAGB Leadership</a></li>
+<li><a href="https://hbrame.org/">HBRAME homepage</a></li>
+</ul>
+
+	
+
+
+</body>
+</html>

@@ -1,0 +1,1310 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2026 04 18 mobile app expo design — Sherpa Pros</title>
+<link rel="icon" href="../../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="2026-04-18-mobile-app-expo-design.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="sherpa-pros-mobile-app--design-spec">Sherpa Pros Mobile App — Design Spec</h1>
+<h2 id="overview">Overview</h2>
+<p>Native iOS + Android app built with Expo (React Native) that delivers an Uber/DoorDash-level map-first experience. One app with role switching (Client or Pro). Lives at <code>~/sherpa-pros-platform/mobile/</code> inside the existing monorepo. Consumes the web app's Vercel API routes. Shares TypeScript types from <code>../src/lib/</code>.</p>
+<h2 id="decisions">Decisions</h2>
+<table>
+<thead>
+<tr>
+<th>Decision</th>
+<th>Choice</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Framework</td>
+<td>Expo SDK 52 + expo-router</td>
+</tr>
+<tr>
+<td>Repo structure</td>
+<td>Monorepo — <code>mobile/</code> directory in existing repo</td>
+</tr>
+<tr>
+<td>App model</td>
+<td>One app, role switch (like Uber driver/rider)</td>
+</tr>
+<tr>
+<td>MVP scope</td>
+<td>Full workflow — 15 screens (map + business flow)</td>
+</tr>
+<tr>
+<td>Maps</td>
+<td>react-native-maps (native MapKit + Google Maps)</td>
+</tr>
+<tr>
+<td>Bottom sheet</td>
+<td>@gorhom/bottom-sheet (Uber-identical gestures)</td>
+</tr>
+<tr>
+<td>Animations</td>
+<td>react-native-reanimated (60fps native thread)</td>
+</tr>
+<tr>
+<td>API</td>
+<td>Existing Vercel routes via fetch</td>
+</tr>
+</tbody></table>
+<h2 id="tech-stack">Tech Stack</h2>
+<h3 id="core">Core</h3>
+<ul>
+<li><strong>Expo SDK 52</strong> — managed workflow, EAS Build for App Store</li>
+<li><strong>expo-router v4</strong> — file-based routing (same mental model as Next.js App Router)</li>
+<li><strong>TypeScript</strong> — strict mode, shared types from <code>../src/lib/</code></li>
+<li><strong>React Native 0.76+</strong></li>
+</ul>
+<h3 id="native-libraries">Native Libraries</h3>
+<table>
+<thead>
+<tr>
+<th>Library</th>
+<th>Purpose</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>react-native-maps</code></td>
+<td>Google Maps rendering</td>
+<td>Native MapKit/Google Maps, 60fps, custom markers</td>
+</tr>
+<tr>
+<td><code>@gorhom/bottom-sheet</code></td>
+<td>Draggable bottom sheets</td>
+<td>Identical to Uber's gesture behavior</td>
+</tr>
+<tr>
+<td><code>react-native-reanimated</code></td>
+<td>Animations</td>
+<td>Runs on native thread, 60fps guaranteed</td>
+</tr>
+<tr>
+<td><code>react-native-gesture-handler</code></td>
+<td>Touch handling</td>
+<td>Native gesture recognition, not JS bridge</td>
+</tr>
+<tr>
+<td><code>expo-location</code></td>
+<td>GPS + background tracking</td>
+<td>Foreground + background position updates</td>
+</tr>
+<tr>
+<td><code>expo-camera</code></td>
+<td>Photo capture</td>
+<td>Checklist photo uploads</td>
+</tr>
+<tr>
+<td><code>expo-notifications</code></td>
+<td>Push notifications</td>
+<td>Job alerts, dispatch, bid updates</td>
+</tr>
+<tr>
+<td><code>expo-secure-store</code></td>
+<td>Auth token storage</td>
+<td>Encrypted keychain/keystore</td>
+</tr>
+<tr>
+<td><code>expo-image-picker</code></td>
+<td>Photo library access</td>
+<td>Upload existing photos</td>
+</tr>
+<tr>
+<td><code>expo-haptics</code></td>
+<td>Haptic feedback</td>
+<td>Button press, dispatch confirmed</td>
+</tr>
+</tbody></table>
+<h3 id="api-communication">API Communication</h3>
+<ul>
+<li><strong>Base URL:</strong> <code>https://www.thesherpapros.com/api</code> (production)</li>
+<li><strong>Dev URL:</strong> <code>http://localhost:3001/api</code> (local development)</li>
+<li><strong>Auth:</strong> Bearer token in headers (from Clerk or test portal localStorage equivalent)</li>
+<li><strong>Pattern:</strong> Custom <code>useApi()</code> hook wrapping <code>fetch</code> with auth headers, error handling, loading state</li>
+</ul>
+<h2 id="directory-structure">Directory Structure</h2>
+<pre><code>mobile/
+  app/
+    _layout.tsx              — Root layout, auth check, role routing
+    (auth)/
+      sign-in.tsx            — Test portal / Clerk sign-in
+      select-role.tsx        — Pro or Client role selection
+    (client)/
+      _layout.tsx            — Tab navigator (Map, Jobs, Messages, Profile)
+      index.tsx              — Map: find pros (full-screen + bottom sheet)
+      post-job/
+        index.tsx            — Job wizard (multi-step)
+      my-jobs/
+        index.tsx            — Job list
+        [id].tsx             — Job detail + materials flow
+      messages.tsx           — Conversation list + chat
+    (pro)/
+      _layout.tsx            — Tab navigator (Map, Jobs, Earnings, Profile)
+      index.tsx              — Map: browse jobs (full-screen + bottom sheet)
+      jobs/
+        index.tsx            — Job list with tabs
+        [id].tsx             — Job detail + checklist tabs
+      earnings.tsx           — Chart + payouts + Stripe Capital
+      messages.tsx           — Conversation list + chat
+    (emergency)/
+      index.tsx              — Category → Severity → Dispatch
+      tracking.tsx           — Full-screen live tracking
+    profile.tsx              — User profile + settings
+    notifications.tsx        — Push notification list
+  components/
+    maps/
+      MapScreen.tsx          — Full-screen map wrapper
+      ProMarker.tsx          — Custom pro marker (progressive detail)
+      JobMarker.tsx          — Custom job marker (urgency colors)
+      DispatchMap.tsx         — Emergency tracking map
+    sheets/
+      ProSheet.tsx           — Bottom sheet pro card list
+      JobSheet.tsx           — Bottom sheet job card list
+      ProDetailSheet.tsx     — Single pro detail in sheet
+      JobDetailSheet.tsx     — Single job detail in sheet
+    checklist/
+      ScopeView.tsx          — Scope document native view
+      ProcessTimeline.tsx    — Work process vertical timeline
+      ChecklistView.tsx      — Interactive checklist with camera
+      MaterialsView.tsx      — Materials list with review badges
+      MaterialsApproval.tsx  — Fee breakdown + approve
+      PaymentSheet.tsx       — Card hold vs Wisetack
+      DeliveryPicker.tsx     — Delivery tier selection
+      DeliveryTracker.tsx    — Gig delivery live tracking
+    chat/
+      ConversationList.tsx   — Message threads
+      ChatScreen.tsx         — Individual chat
+    common/
+      Button.tsx             — Brand pill button
+      Card.tsx               — Rounded card with border
+      Badge.tsx              — Status badge
+      EmptyState.tsx         — Empty state with icon + CTA
+      LoadingScreen.tsx      — Skeleton shimmer
+      Avatar.tsx             — User avatar circle
+  lib/
+    api.ts                   — useApi hook, fetch wrapper, auth headers
+    auth.ts                  — Auth context, token storage, role management
+    theme.ts                 — Brand colors, spacing, typography, shadows
+    types.ts                 — Re-export shared types from ../src/lib/
+  assets/
+    icon.png                 — App icon (1024x1024)
+    splash.png               — Splash screen
+    adaptive-icon.png        — Android adaptive icon
+  app.json                   — Expo config (name, slug, scheme, plugins)
+  eas.json                   — EAS Build config (dev, preview, production)
+  package.json
+  tsconfig.json
+</code></pre>
+<h2 id="screen-specifications">Screen Specifications</h2>
+<h3 id="1-sign-in-appauthsign-intsx">1. Sign In (<code>app/(auth)/sign-in.tsx</code>)</h3>
+<ul>
+<li>Same logic as web: check for Clerk → if not configured, show test portal</li>
+<li>Test portal: logo (SHERPA + PROS in brand colors), role dropdown, test user cards</li>
+<li>On sign in: store token in <code>expo-secure-store</code>, redirect to role-appropriate tab navigator</li>
+<li><code>expo-haptics</code> medium impact on successful sign-in</li>
+</ul>
+<h3 id="2-role-select-appauthselect-roletsx">2. Role Select (<code>app/(auth)/select-role.tsx</code>)</h3>
+<ul>
+<li>Two large cards: "I'm a Pro" (wrench icon) / "I need a Pro" (home icon)</li>
+<li>Sky blue hover/press states, orange-red "Get started" reveal on press</li>
+<li>Store role in secure store, navigate to <code>/(client)</code> or <code>/(pro)</code></li>
+</ul>
+<h3 id="3-client-map-home-appclientindextsx">3. Client Map Home (<code>app/(client)/index.tsx</code>)</h3>
+<ul>
+<li><strong>Full-screen <code>&lt;MapView&gt;</code></strong> from <code>react-native-maps</code><ul>
+<li>Provider: <code>PROVIDER_GOOGLE</code> on Android, default (Apple Maps) on iOS — or force Google on both</li>
+<li>Custom style JSON for brand-tinted map (subtle blue water, muted labels)</li>
+<li><code>showsUserLocation={true}</code> with custom blue dot</li>
+</ul>
+</li>
+<li><strong>ProMarkers</strong> — custom <code>&lt;Marker&gt;</code> components<ul>
+<li>Zoom &lt; 10: cluster count circles</li>
+<li>Zoom 10-14: avatar circles with initials</li>
+<li>Zoom &gt; 14 or selected: <code>&lt;Callout&gt;</code> with mini-card (name, rating, trade, Request button)</li>
+</ul>
+</li>
+<li><strong>Bottom sheet</strong> via <code>@gorhom/bottom-sheet</code><ul>
+<li>Snap points: [80, '50%', '90%']</li>
+<li>Peek shows: "{N} Pros Nearby" + horizontal trade filter chips</li>
+<li>Half/full shows: scrollable FlatList of ProCard components</li>
+<li>Tap a marker → sheet scrolls to that pro's card (animated)</li>
+</ul>
+</li>
+<li><strong>Search bar</strong> — absolute positioned at top, address autocomplete via Google Places</li>
+<li><strong>Trade filter chips</strong> — horizontal ScrollView: All, Plumber, Electrician, HVAC, etc.</li>
+<li><strong>Map/List toggle</strong> — segmented control in header</li>
+</ul>
+<h3 id="4-post-job-wizard-appclientpost-jobindextsx">4. Post Job Wizard (<code>app/(client)/post-job/index.tsx</code>)</h3>
+<ul>
+<li>Multi-step form with step indicator at top</li>
+<li>Step 1: CategoryGrid (2-column grid of trade icons)</li>
+<li>Step 2: Title + description (TextInput)</li>
+<li>Step 3: Budget range slider</li>
+<li>Step 4: Photos (expo-camera launch + expo-image-picker)</li>
+<li>Step 5: Location (map with draggable pin)</li>
+<li>Step 6: Review summary → Submit</li>
+<li>On submit: POST <code>/api/jobs</code>, haptic success, navigate to my-jobs</li>
+<li>Back button on each step, progress saves in local state</li>
+</ul>
+<h3 id="5-client-my-jobs-appclientmy-jobsindextsx">5. Client My Jobs (<code>app/(client)/my-jobs/index.tsx</code>)</h3>
+<ul>
+<li>FlatList with job cards showing: title, status badge, budget, assigned pro avatar</li>
+<li>Pull-to-refresh</li>
+<li>Tap → navigate to <code>my-jobs/[id]</code></li>
+<li>Empty state: "No projects yet" with "Post a Job" CTA</li>
+</ul>
+<h3 id="6-client-job-detail-appclientmy-jobsidtsx">6. Client Job Detail (<code>app/(client)/my-jobs/[id].tsx</code>)</h3>
+<ul>
+<li>ScrollView with:<ul>
+<li>Job header card (title, status, budget, assigned pro)</li>
+<li>Materials flow state machine (same 6 steps as web):<ul>
+<li>review → payment → delivery → ordered → tracking → complete</li>
+</ul>
+</li>
+<li>Materials list (read-only)</li>
+<li>MaterialsApproval with fee breakdown</li>
+<li>PaymentSheet (card hold vs Wisetack)</li>
+<li>DeliveryPicker (4 tiers)</li>
+<li>DeliveryTracker (embedded map for gig delivery)</li>
+</ul>
+</li>
+<li>Step progress bar at top of materials section</li>
+</ul>
+<h3 id="7-pro-map-home-appproindextsx">7. Pro Map Home (<code>app/(pro)/index.tsx</code>)</h3>
+<ul>
+<li>Same architecture as Client Map but with JobMarkers</li>
+<li>Urgency color coding: emergency = red border, standard = blue, flexible = gray</li>
+<li>Emergency jobs pulse with animated ring (Reanimated)</li>
+<li>Bottom sheet with job cards: title, category, budget, urgency badge, distance</li>
+<li>Tap marker → sheet snaps to job card → "Place Bid" button</li>
+<li>Trade + urgency filter chips</li>
+</ul>
+<h3 id="8-pro-job-list-appprojobsindextsx">8. Pro Job List (<code>app/(pro)/jobs/index.tsx</code>)</h3>
+<ul>
+<li>Segmented tabs: Available | My Bids | Active | Completed</li>
+<li>FlatList per tab with appropriate cards</li>
+<li>Available: job card + quick bid button</li>
+<li>My Bids: job card + bid status (pending/accepted/rejected)</li>
+<li>Active: job card + milestone progress bar</li>
+<li>Completed: job card + rating + earnings</li>
+</ul>
+<h3 id="9-pro-job-detail-appprojobsidtsx">9. Pro Job Detail (<code>app/(pro)/jobs/[id].tsx</code>)</h3>
+<ul>
+<li>Tab bar: Overview | Scope | Process | Checklist | Materials</li>
+<li><strong>Overview:</strong> Job info, client info, milestone tracker</li>
+<li><strong>Scope:</strong> ScopeView with code reference badges</li>
+<li><strong>Process:</strong> ProcessTimeline with vertical steps + safety callouts</li>
+<li><strong>Checklist:</strong> Interactive ChecklistView — native checkboxes, camera button per item (launches expo-camera), quality gate indicators</li>
+<li><strong>Materials:</strong> MaterialsView (editable) + inline note inputs + "Get HD Pricing" button + DeliveryPicker + "Send to Client"</li>
+</ul>
+<h3 id="10-pro-earnings-appproearningstsx">10. Pro Earnings (<code>app/(pro)/earnings.tsx</code>)</h3>
+<ul>
+<li>Bar chart (react-native-chart-kit or victory-native)</li>
+<li>Stats row: This Month, Pending, Completed</li>
+<li>Payout history FlatList</li>
+<li>Stripe Capital offer card at bottom</li>
+</ul>
+<h3 id="11-emergency-flow-appemergencyindextsx">11. Emergency Flow (<code>app/(emergency)/index.tsx</code>)</h3>
+<ul>
+<li>Dark theme override for this screen</li>
+<li>Large category buttons (4x2 grid): Water, Fire, Storm, HVAC, Electrical, Gas, Structural, Other</li>
+<li>Severity slider (1-5) with color gradient</li>
+<li>Auto-detect location via expo-location</li>
+<li>"Finding nearby pros..." animation (pulsing concentric rings on map)</li>
+<li>Match found → pro card appears with bounce animation + haptic</li>
+</ul>
+<h3 id="12-dispatch-tracker-appemergencytrackingtsx">12. Dispatch Tracker (<code>app/(emergency)/tracking.tsx</code>)</h3>
+<ul>
+<li>Full-screen map, no tab bar (immersive)</li>
+<li>Pro marker with pulsing ring, animated along route polyline</li>
+<li>Client location as orange-red pulsing dot</li>
+<li>Floating ETA pill at top</li>
+<li>Bottom panel (not draggable): ETA, progress bar, pro info, call/message buttons</li>
+<li>Haptic on arrival</li>
+<li>Simulated movement in mock mode (same as web)</li>
+</ul>
+<h3 id="13-14-messages-messagestsx-in-both-client-and-pro">13-14. Messages (<code>messages.tsx</code> in both client and pro)</h3>
+<ul>
+<li>Conversation list: FlatList with avatar, name, last message preview, timestamp, unread badge</li>
+<li>Chat screen: KeyboardAvoidingView + FlatList (inverted) + TextInput</li>
+<li>Sent = sky blue bubble (right), received = gray bubble (left)</li>
+<li>Auto-scroll on new message</li>
+</ul>
+<h3 id="15-profile--notifications">15. Profile + Notifications</h3>
+<ul>
+<li>Profile: avatar, name, email, role badge, sign out button</li>
+<li>Notification list: FlatList with type icon, message, timestamp, read/unread state</li>
+<li>Tap notification → deep link to relevant screen</li>
+</ul>
+<h2 id="native-integrations">Native Integrations</h2>
+<h3 id="push-notifications">Push Notifications</h3>
+<ul>
+<li>Register via <code>expo-notifications</code> on first launch</li>
+<li>Store push token to <code>/api/notifications/register</code></li>
+<li>Notification types: new_job, bid_accepted, dispatch_alert, message, payment</li>
+<li>Deep linking: notification tap navigates to relevant screen</li>
+</ul>
+<h3 id="background-location-pro">Background Location (Pro)</h3>
+<ul>
+<li><code>expo-location</code> background task for active dispatch tracking</li>
+<li>Updates pro position every 5 seconds during active dispatch</li>
+<li>POST to <code>/api/dispatch/location</code> with lat/lng</li>
+<li>Stops when dispatch completes</li>
+<li>Requires iOS background modes + Android foreground service</li>
+</ul>
+<h3 id="camera">Camera</h3>
+<ul>
+<li><code>expo-camera</code> for live capture in checklist flow</li>
+<li><code>expo-image-picker</code> for gallery selection</li>
+<li>Compress to 1024px max dimension before upload</li>
+<li>Upload to <code>/api/uploads</code> (or direct to cloud storage)</li>
+</ul>
+<h3 id="haptics">Haptics</h3>
+<ul>
+<li><code>expo-haptics</code> for:<ul>
+<li>Button press: <code>impactAsync(ImpactFeedbackStyle.Light)</code></li>
+<li>Bid submitted: <code>notificationAsync(NotificationFeedbackType.Success)</code></li>
+<li>Dispatch confirmed: <code>impactAsync(ImpactFeedbackStyle.Heavy)</code></li>
+<li>Emergency category selected: <code>impactAsync(ImpactFeedbackStyle.Medium)</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="brand-theme">Brand Theme</h2>
+<pre><code class="hljs typescript"><span class="hljs-comment">// mobile/lib/theme.ts</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> colors = {
+  <span class="hljs-attr">primary</span>: <span class="hljs-string">'#00a9e0'</span>,
+  <span class="hljs-attr">primaryLight</span>: <span class="hljs-string">'#e0f7ff'</span>,
+  <span class="hljs-attr">primaryDark</span>: <span class="hljs-string">'#0ea5e9'</span>,
+  <span class="hljs-attr">accent</span>: <span class="hljs-string">'#ff4500'</span>,
+  <span class="hljs-attr">accentLight</span>: <span class="hljs-string">'#fff0eb'</span>,
+  <span class="hljs-attr">success</span>: <span class="hljs-string">'#10b981'</span>,
+  <span class="hljs-attr">successLight</span>: <span class="hljs-string">'#d1fae5'</span>,
+  <span class="hljs-attr">warning</span>: <span class="hljs-string">'#f59e0b'</span>,
+  <span class="hljs-attr">warningLight</span>: <span class="hljs-string">'#fef3c7'</span>,
+  <span class="hljs-attr">danger</span>: <span class="hljs-string">'#dc2626'</span>,
+  <span class="hljs-attr">dangerLight</span>: <span class="hljs-string">'#fee2e2'</span>,
+  <span class="hljs-attr">background</span>: <span class="hljs-string">'#ffffff'</span>,
+  <span class="hljs-attr">surface</span>: <span class="hljs-string">'#ffffff'</span>,
+  <span class="hljs-attr">surfaceSecondary</span>: <span class="hljs-string">'#f8fafc'</span>,
+  <span class="hljs-attr">text</span>: <span class="hljs-string">'#18181b'</span>,
+  <span class="hljs-attr">textSecondary</span>: <span class="hljs-string">'#52525b'</span>,
+  <span class="hljs-attr">textMuted</span>: <span class="hljs-string">'#71717a'</span>,
+  <span class="hljs-attr">textInverse</span>: <span class="hljs-string">'#ffffff'</span>,
+  <span class="hljs-attr">border</span>: <span class="hljs-string">'rgba(0, 169, 224, 0.2)'</span>,
+  <span class="hljs-attr">borderLight</span>: <span class="hljs-string">'#f4f4f5'</span>,
+  <span class="hljs-attr">borderMedium</span>: <span class="hljs-string">'#e4e4e7'</span>,
+};
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> spacing = {
+  <span class="hljs-attr">xs</span>: <span class="hljs-number">4</span>, <span class="hljs-attr">sm</span>: <span class="hljs-number">8</span>, <span class="hljs-attr">md</span>: <span class="hljs-number">12</span>, <span class="hljs-attr">lg</span>: <span class="hljs-number">16</span>, <span class="hljs-attr">xl</span>: <span class="hljs-number">24</span>, <span class="hljs-attr">xxl</span>: <span class="hljs-number">32</span>, <span class="hljs-attr">xxxl</span>: <span class="hljs-number">48</span>,
+};
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> borderRadius = {
+  <span class="hljs-attr">sm</span>: <span class="hljs-number">8</span>, <span class="hljs-attr">md</span>: <span class="hljs-number">12</span>, <span class="hljs-attr">lg</span>: <span class="hljs-number">16</span>, <span class="hljs-attr">xl</span>: <span class="hljs-number">24</span>, <span class="hljs-attr">full</span>: <span class="hljs-number">9999</span>,
+};
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> shadows = {
+  <span class="hljs-attr">sm</span>: { <span class="hljs-attr">shadowColor</span>: <span class="hljs-string">'#000'</span>, <span class="hljs-attr">shadowOffset</span>: { <span class="hljs-attr">width</span>: <span class="hljs-number">0</span>, <span class="hljs-attr">height</span>: <span class="hljs-number">1</span> }, <span class="hljs-attr">shadowOpacity</span>: <span class="hljs-number">0.05</span>, <span class="hljs-attr">shadowRadius</span>: <span class="hljs-number">2</span>, <span class="hljs-attr">elevation</span>: <span class="hljs-number">1</span> },
+  <span class="hljs-attr">md</span>: { <span class="hljs-attr">shadowColor</span>: <span class="hljs-string">'#000'</span>, <span class="hljs-attr">shadowOffset</span>: { <span class="hljs-attr">width</span>: <span class="hljs-number">0</span>, <span class="hljs-attr">height</span>: <span class="hljs-number">2</span> }, <span class="hljs-attr">shadowOpacity</span>: <span class="hljs-number">0.1</span>, <span class="hljs-attr">shadowRadius</span>: <span class="hljs-number">4</span>, <span class="hljs-attr">elevation</span>: <span class="hljs-number">3</span> },
+  <span class="hljs-attr">lg</span>: { <span class="hljs-attr">shadowColor</span>: <span class="hljs-string">'#000'</span>, <span class="hljs-attr">shadowOffset</span>: { <span class="hljs-attr">width</span>: <span class="hljs-number">0</span>, <span class="hljs-attr">height</span>: <span class="hljs-number">4</span> }, <span class="hljs-attr">shadowOpacity</span>: <span class="hljs-number">0.15</span>, <span class="hljs-attr">shadowRadius</span>: <span class="hljs-number">8</span>, <span class="hljs-attr">elevation</span>: <span class="hljs-number">5</span> },
+  <span class="hljs-attr">primaryGlow</span>: { <span class="hljs-attr">shadowColor</span>: <span class="hljs-string">'#00a9e0'</span>, <span class="hljs-attr">shadowOffset</span>: { <span class="hljs-attr">width</span>: <span class="hljs-number">0</span>, <span class="hljs-attr">height</span>: <span class="hljs-number">4</span> }, <span class="hljs-attr">shadowOpacity</span>: <span class="hljs-number">0.25</span>, <span class="hljs-attr">shadowRadius</span>: <span class="hljs-number">8</span>, <span class="hljs-attr">elevation</span>: <span class="hljs-number">5</span> },
+};
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> typography = {
+  <span class="hljs-attr">heroDisplay</span>: { <span class="hljs-attr">fontSize</span>: <span class="hljs-number">32</span>, <span class="hljs-attr">fontWeight</span>: <span class="hljs-string">'700'</span> <span class="hljs-keyword">as</span> <span class="hljs-keyword">const</span>, <span class="hljs-attr">letterSpacing</span>: -<span class="hljs-number">0.5</span> },
+  <span class="hljs-attr">heading</span>: { <span class="hljs-attr">fontSize</span>: <span class="hljs-number">24</span>, <span class="hljs-attr">fontWeight</span>: <span class="hljs-string">'700'</span> <span class="hljs-keyword">as</span> <span class="hljs-keyword">const</span> },
+  <span class="hljs-attr">subheading</span>: { <span class="hljs-attr">fontSize</span>: <span class="hljs-number">18</span>, <span class="hljs-attr">fontWeight</span>: <span class="hljs-string">'600'</span> <span class="hljs-keyword">as</span> <span class="hljs-keyword">const</span> },
+  <span class="hljs-attr">body</span>: { <span class="hljs-attr">fontSize</span>: <span class="hljs-number">16</span>, <span class="hljs-attr">fontWeight</span>: <span class="hljs-string">'400'</span> <span class="hljs-keyword">as</span> <span class="hljs-keyword">const</span>, <span class="hljs-attr">lineHeight</span>: <span class="hljs-number">24</span> },
+  <span class="hljs-attr">bodySmall</span>: { <span class="hljs-attr">fontSize</span>: <span class="hljs-number">14</span>, <span class="hljs-attr">fontWeight</span>: <span class="hljs-string">'400'</span> <span class="hljs-keyword">as</span> <span class="hljs-keyword">const</span>, <span class="hljs-attr">lineHeight</span>: <span class="hljs-number">20</span> },
+  <span class="hljs-attr">caption</span>: { <span class="hljs-attr">fontSize</span>: <span class="hljs-number">12</span>, <span class="hljs-attr">fontWeight</span>: <span class="hljs-string">'500'</span> <span class="hljs-keyword">as</span> <span class="hljs-keyword">const</span> },
+  <span class="hljs-attr">badge</span>: { <span class="hljs-attr">fontSize</span>: <span class="hljs-number">11</span>, <span class="hljs-attr">fontWeight</span>: <span class="hljs-string">'600'</span> <span class="hljs-keyword">as</span> <span class="hljs-keyword">const</span>, <span class="hljs-attr">textTransform</span>: <span class="hljs-string">'uppercase'</span> <span class="hljs-keyword">as</span> <span class="hljs-keyword">const</span> },
+};
+</code></pre>
+<h2 id="app-store-configuration">App Store Configuration</h2>
+<h3 id="appjson">app.json</h3>
+<pre><code class="hljs json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">"expo"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">"name"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"Sherpa Pros"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"slug"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"sherpa-pros"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"scheme"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"sherpapros"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"version"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"1.0.0"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"orientation"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"portrait"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"icon"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"./assets/icon.png"</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"splash"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">"image"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"./assets/splash.png"</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">"backgroundColor"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"#ffffff"</span> <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"ios"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">"bundleIdentifier"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"com.sherpapros.app"</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">"supportsTablet"</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">"infoPlist"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+        <span class="hljs-attr">"NSLocationWhenInUseUsageDescription"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"Sherpa Pros needs your location to find nearby pros and jobs."</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">"NSLocationAlwaysUsageDescription"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"Sherpa Pros tracks your location during active dispatches to show clients your ETA."</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">"NSCameraUsageDescription"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"Sherpa Pros needs camera access for checklist photo documentation."</span>
+      <span class="hljs-punctuation">}</span>
+    <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"android"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">"package"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"com.sherpapros.app"</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">"adaptiveIcon"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">"foregroundImage"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"./assets/adaptive-icon.png"</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">"backgroundColor"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"#ffffff"</span> <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">"permissions"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">"ACCESS_FINE_LOCATION"</span><span class="hljs-punctuation">,</span> <span class="hljs-string">"ACCESS_BACKGROUND_LOCATION"</span><span class="hljs-punctuation">,</span> <span class="hljs-string">"CAMERA"</span><span class="hljs-punctuation">]</span>
+    <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"plugins"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+      <span class="hljs-string">"expo-location"</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-string">"expo-camera"</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-string">"expo-notifications"</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-string">"expo-secure-store"</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-string">"expo-haptics"</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-string">"expo-image-picker"</span>
+    <span class="hljs-punctuation">]</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<h3 id="easjson">eas.json</h3>
+<pre><code class="hljs json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">"build"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">"development"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">"developmentClient"</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span> <span class="hljs-attr">"distribution"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"internal"</span> <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"preview"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">"distribution"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"internal"</span> <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"production"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span><span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">"submit"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">"production"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">"ios"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">"appleId"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"poum@hjd.builders"</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">"ascAppId"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"TBD"</span> <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">"android"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">"serviceAccountKeyPath"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"TBD"</span> <span class="hljs-punctuation">}</span>
+    <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<h2 id="implementation-phases">Implementation Phases</h2>
+<h3 id="phase-1-week-1-2-foundation--maps">Phase 1 (Week 1-2): Foundation + Maps</h3>
+<ul>
+<li>Expo init, expo-router setup, theme, auth flow</li>
+<li>Sign in + role select screens</li>
+<li>Client map home with ProMarkers + bottom sheet</li>
+<li>Pro map home with JobMarkers + bottom sheet</li>
+<li>Common components (Button, Card, Badge, Avatar, EmptyState)</li>
+</ul>
+<h3 id="phase-2-week-2-3-business-flow">Phase 2 (Week 2-3): Business Flow</h3>
+<ul>
+<li>Post job wizard (client)</li>
+<li>My jobs list + job detail (client)</li>
+<li>Job list + job detail with checklist tabs (pro)</li>
+<li>Materials list + approval flow</li>
+<li>Earnings page (pro)</li>
+</ul>
+<h3 id="phase-3-week-3-4-emergency--communication">Phase 3 (Week 3-4): Emergency + Communication</h3>
+<ul>
+<li>Emergency flow (category → severity → dispatch)</li>
+<li>Dispatch tracker with live map</li>
+<li>Messages (conversation list + chat)</li>
+<li>Push notifications</li>
+<li>Profile + notifications screen</li>
+</ul>
+<h3 id="phase-4-week-4-polish--ship">Phase 4 (Week 4): Polish + Ship</h3>
+<ul>
+<li>Camera integration for checklist photos</li>
+<li>Background location for dispatch tracking</li>
+<li>Haptic feedback throughout</li>
+<li>App Store assets (screenshots, description, keywords)</li>
+<li>TestFlight + Play Store internal testing</li>
+<li>Bug fixes from beta testers</li>
+</ul>
+<h2 id="shared-code-strategy">Shared Code Strategy</h2>
+<table>
+<thead>
+<tr>
+<th>From Web App</th>
+<th>How Mobile Uses It</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>src/lib/mock-data/*.ts</code></td>
+<td>Import directly via <code>../src/lib/mock-data/</code></td>
+</tr>
+<tr>
+<td><code>src/lib/pricing/fee-calculator.ts</code></td>
+<td>Import directly</td>
+</tr>
+<tr>
+<td>Type definitions (MockProLocation, MaterialItem, etc.)</td>
+<td>Import via <code>../src/lib/</code></td>
+</tr>
+<tr>
+<td>API routes (<code>/api/*</code>)</td>
+<td>Call via HTTP fetch from mobile</td>
+</tr>
+<tr>
+<td>Services (SerpApi, Zinc, Stripe, Wisetack)</td>
+<td>Stay server-side, consumed via API</td>
+</tr>
+<tr>
+<td>DESIGN.md brand tokens</td>
+<td>Translated to <code>mobile/lib/theme.ts</code></td>
+</tr>
+</tbody></table>
+
+	
+
+
+</body>
+</html>

@@ -1,0 +1,1206 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>08 canada codes ingestion runbook — Sherpa Pros</title>
+<link rel="icon" href="../../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="08-canada-codes-ingestion-runbook.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="canada-codes-ingestion-runbook">Canada Codes Ingestion Runbook</h1>
+<blockquote>
+<p>Detailed phase-by-phase runbook for ingesting Canadian building codes into the <strong>Sherpa codes engine</strong>. Canada is the <strong>first international launch country</strong> — we go deepest here, then templatize for UK, Australia, EU pilot.</p>
+</blockquote>
+<h2 id="goal">Goal</h2>
+<p>By Canada Year 1 launch end (Phase 4 Month 30), the Sherpa codes engine returns correct citation + paragraph for <strong>≥ 95% of test code lookups</strong> across 5 trade categories (electrical, plumbing, structural, fire, building) for <strong>federal codes + Ontario provincial overlay + Toronto municipal overlay</strong>.</p>
+<h2 id="phase-plan">Phase plan</h2>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Window</th>
+<th>Scope</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Phase 1</td>
+<td>Phase 4 Month 16 → Month 19 (M-3 to M0)</td>
+<td>Federal baseline ingestion</td>
+</tr>
+<tr>
+<td>Phase 2</td>
+<td>Phase 4 Month 19 → Month 22 (M0 to M+3)</td>
+<td>Provincial overlay (4 provinces — ON, BC, AB, QC)</td>
+</tr>
+<tr>
+<td>Phase 3</td>
+<td>Phase 4 Month 22 → Month 25 (M+3 to M+6)</td>
+<td>Municipal overlay (Toronto, Vancouver, Montreal)</td>
+</tr>
+<tr>
+<td>Phase 4</td>
+<td>Phase 4 Month 25+ (M+6+)</td>
+<td>Remaining provinces + territories</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="phase-1-federal-baseline-m-3-to-m0">Phase 1: Federal baseline (M-3 to M0)</h2>
+<h3 id="vendor">Vendor</h3>
+<p><strong>Canadian Standards Association (CSA Group)</strong> direct — commercial license.</p>
+<h3 id="codes-to-ingest">Codes to ingest</h3>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Abbreviation</th>
+<th>Trade categories</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>National Building Code of Canada</td>
+<td>NBCC</td>
+<td>Building, structural, fire</td>
+</tr>
+<tr>
+<td>National Electrical Code Canada</td>
+<td>CSA C22.1</td>
+<td>Electrical</td>
+</tr>
+<tr>
+<td>National Fire Code</td>
+<td>NFC</td>
+<td>Fire</td>
+</tr>
+<tr>
+<td>National Plumbing Code</td>
+<td>NPC</td>
+<td>Plumbing</td>
+</tr>
+<tr>
+<td>National Energy Code of Canada for Buildings</td>
+<td>NECB</td>
+<td>Energy / mechanical</td>
+</tr>
+</tbody></table>
+<h3 id="activities">Activities</h3>
+<ul>
+<li><input disabled="" type="checkbox"> CSA Group commercial license negotiated — confirm marketplace use rights, redistribution scope, per-organization vs per-user licensing, API access vs document download.</li>
+<li><input disabled="" type="checkbox"> Sherpa Pros Engineering ingests CSA standards into Sherpa codes engine schema.</li>
+<li><input disabled="" type="checkbox"> Build automated change-detection feed against CSA publication releases.</li>
+<li><input disabled="" type="checkbox"> Validation test set v1 built (50 federal-only test lookups across 5 trade categories).</li>
+<li><input disabled="" type="checkbox"> Sherpa codes engine returns ≥ 95% pass rate on federal baseline test set.</li>
+</ul>
+<h3 id="cost-phase-1">Cost (Phase 1)</h3>
+<table>
+<thead>
+<tr>
+<th>Line item</th>
+<th>Budget (CAD)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CSA Group commercial license (Year 1)</td>
+<td>$40,000 – $60,000</td>
+</tr>
+<tr>
+<td>Engineering ingestion + schema build</td>
+<td>$25,000 – $40,000</td>
+</tr>
+<tr>
+<td>Validation test set build</td>
+<td>$10,000 – $15,000</td>
+</tr>
+<tr>
+<td><strong>Phase 1 subtotal</strong></td>
+<td><strong>CAD $75,000 – $115,000</strong> (USD ≈ $55,000 – $85,000)</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="phase-2-provincial-overlay-m0-to-m3">Phase 2: Provincial overlay (M0 to M+3)</h2>
+<h3 id="provinces-in-priority-order">Provinces (in priority order)</h3>
+<ol>
+<li><strong>Ontario</strong> — Ontario Building Code (OBC) via Ontario Ministry of Municipal Affairs and Housing. Ontario uses <strong>Skilled Trades Ontario</strong> for trade certification.</li>
+<li><strong>British Columbia</strong> — British Columbia Building Code (BCBC) via BC Building and Safety Standards Branch. BC uses <strong>Industry Training Authority (ITA)</strong>.</li>
+<li><strong>Alberta</strong> — Alberta Building Code (ABC) via Alberta Municipal Affairs. Alberta uses <strong>Apprenticeship and Industry Training</strong>.</li>
+<li><strong>Quebec</strong> — Code de Construction du Québec (CCQ) via Régie du bâtiment du Québec (RBQ). Quebec is <strong>French-language source</strong> — translation pipeline required. Quebec uses <strong>Commission de la construction du Québec (CCQ — also the certification body, distinct from the building code itself)</strong>.</li>
+</ol>
+<h3 id="activities-per-province">Activities (per province)</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Provincial code commercial license or government PDF acquired.</li>
+<li><input disabled="" type="checkbox"> Engineering ingests provincial overlay into Sherpa codes engine, layered on federal baseline.</li>
+<li><input disabled="" type="checkbox"> <strong>Quebec only:</strong> engage translation vendor (recommend <strong>Translatewise</strong> or equivalent) for French-to-English ingestion; native-translator review for trade-specific nomenclature.</li>
+<li><input disabled="" type="checkbox"> Validation test set expanded by 30 lookups per province (4 provinces × 30 = 120 additional test lookups).</li>
+<li><input disabled="" type="checkbox"> Sherpa codes engine returns ≥ 95% pass rate on federal + provincial overlay test set.</li>
+</ul>
+<h3 id="cost-phase-2--4-provinces">Cost (Phase 2 — 4 provinces)</h3>
+<table>
+<thead>
+<tr>
+<th>Line item</th>
+<th>Budget (CAD)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Provincial code licenses (4 provinces)</td>
+<td>$20,000 – $40,000</td>
+</tr>
+<tr>
+<td>Engineering ingestion + overlay build</td>
+<td>$40,000 – $60,000</td>
+</tr>
+<tr>
+<td>Quebec French-to-English translation pipeline</td>
+<td>$25,000 – $40,000 (one-time + maintenance)</td>
+</tr>
+<tr>
+<td>Validation test set expansion</td>
+<td>$15,000 – $20,000</td>
+</tr>
+<tr>
+<td><strong>Phase 2 subtotal</strong></td>
+<td><strong>CAD $100,000 – $160,000</strong> (USD ≈ $75,000 – $120,000)</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="phase-3-municipal-overlay-m3-to-m6">Phase 3: Municipal overlay (M+3 to M+6)</h2>
+<h3 id="municipalities">Municipalities</h3>
+<ol>
+<li><strong>Toronto</strong> — Toronto Municipal Code (Chapter 363 Building Construction, Chapter 925 Building Permits, others)</li>
+<li><strong>Vancouver</strong> — Vancouver Building By-Law (VBBL — Vancouver has its own building code separate from BCBC)</li>
+<li><strong>Montreal</strong> — Montréal Construction Code (also French source)</li>
+</ol>
+<h3 id="activities-per-municipality">Activities (per municipality)</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Municipal code source acquired (most are free PDF download).</li>
+<li><input disabled="" type="checkbox"> Engineering ingests municipal overlay layered on provincial + federal.</li>
+<li><input disabled="" type="checkbox"> <strong>Vancouver special case:</strong> VBBL is materially different from BCBC and must be treated as a co-equal source, not just an overlay.</li>
+<li><input disabled="" type="checkbox"> <strong>Montreal:</strong> French translation pipeline reused from Phase 2.</li>
+<li><input disabled="" type="checkbox"> Validation test set expanded by 20 lookups per municipality.</li>
+</ul>
+<h3 id="cost-phase-3--3-municipalities">Cost (Phase 3 — 3 municipalities)</h3>
+<table>
+<thead>
+<tr>
+<th>Line item</th>
+<th>Budget (CAD)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Municipal code acquisition (mostly free)</td>
+<td>$0 – $5,000</td>
+</tr>
+<tr>
+<td>Engineering ingestion + overlay</td>
+<td>$30,000 – $50,000</td>
+</tr>
+<tr>
+<td>Validation test set expansion</td>
+<td>$10,000 – $15,000</td>
+</tr>
+<tr>
+<td><strong>Phase 3 subtotal</strong></td>
+<td><strong>CAD $40,000 – $70,000</strong> (USD ≈ $30,000 – $52,000)</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="phase-4-remaining-provinces--territories-m6-onward">Phase 4: Remaining provinces + territories (M+6 onward)</h2>
+<h3 id="provinces--territories-in-launch-priority-order-gated-by-metro-launches">Provinces + territories (in launch-priority order, gated by metro launches)</h3>
+<table>
+<thead>
+<tr>
+<th>Province / territory</th>
+<th>Building code</th>
+<th>Trade certification body</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Nova Scotia (NS)</td>
+<td>Nova Scotia Building Code</td>
+<td>Nova Scotia Apprenticeship Agency</td>
+</tr>
+<tr>
+<td>New Brunswick (NB)</td>
+<td>New Brunswick Building Code</td>
+<td>NB Apprenticeship and Occupational Certification</td>
+</tr>
+<tr>
+<td>Manitoba (MB)</td>
+<td>Manitoba Building Code</td>
+<td>Apprenticeship Manitoba</td>
+</tr>
+<tr>
+<td>Saskatchewan (SK)</td>
+<td>Saskatchewan Construction Codes Act</td>
+<td>Saskatchewan Apprenticeship and Trade Certification Commission</td>
+</tr>
+<tr>
+<td>Newfoundland and Labrador (NL)</td>
+<td>NL National Building Code (adopted federal)</td>
+<td>NL Apprenticeship and Trades Certification</td>
+</tr>
+<tr>
+<td>Prince Edward Island (PEI)</td>
+<td>PEI Building Code</td>
+<td>PEI Apprenticeship Office</td>
+</tr>
+<tr>
+<td>Northwest Territories (NT)</td>
+<td>National Building Code (adopted federal) + NT amendments</td>
+<td>NT Apprenticeship</td>
+</tr>
+<tr>
+<td>Yukon (YT)</td>
+<td>National Building Code (adopted federal) + YT amendments</td>
+<td>YT Apprenticeship</td>
+</tr>
+<tr>
+<td>Nunavut (NU)</td>
+<td>National Building Code (adopted federal) + NU amendments</td>
+<td>NU Department of Family Services</td>
+</tr>
+</tbody></table>
+<p><strong>Many adopt the federal NBCC with minor amendments</strong>, so ingestion is cheaper per province than ON/BC/AB/QC.</p>
+<h3 id="cost-phase-4--9-jurisdictions">Cost (Phase 4 — 9 jurisdictions)</h3>
+<table>
+<thead>
+<tr>
+<th>Line item</th>
+<th>Budget (CAD)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Code acquisition (mostly government, mostly free)</td>
+<td>$5,000 – $15,000</td>
+</tr>
+<tr>
+<td>Engineering ingestion + overlay (lighter due to federal adoption)</td>
+<td>$40,000 – $70,000</td>
+</tr>
+<tr>
+<td>Validation test set expansion</td>
+<td>$15,000 – $25,000</td>
+</tr>
+<tr>
+<td><strong>Phase 4 subtotal</strong></td>
+<td><strong>CAD $60,000 – $110,000</strong> (USD ≈ $45,000 – $82,000)</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="total-canada-codes-ingestion-cost">Total Canada codes ingestion cost</h2>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Budget (CAD)</th>
+<th>Budget (USD ≈)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Phase 1 federal</td>
+<td>$75,000 – $115,000</td>
+<td>$55,000 – $85,000</td>
+</tr>
+<tr>
+<td>Phase 2 provinces (4 priority)</td>
+<td>$100,000 – $160,000</td>
+<td>$75,000 – $120,000</td>
+</tr>
+<tr>
+<td>Phase 3 municipal</td>
+<td>$40,000 – $70,000</td>
+<td>$30,000 – $52,000</td>
+</tr>
+<tr>
+<td>Phase 4 remaining</td>
+<td>$60,000 – $110,000</td>
+<td>$45,000 – $82,000</td>
+</tr>
+<tr>
+<td><strong>Year 1 total</strong></td>
+<td><strong>CAD $275,000 – $455,000</strong></td>
+<td><strong>USD ≈ $205,000 – $340,000</strong></td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>Note: Year 1 total exceeds the per-country plan envelope of $80-150K because Canada is the <strong>first international country and template builder</strong> — engineering one-time costs (schema, ingestion pipeline, translation pipeline) are amortized across all subsequent countries. Steady-state Canada Year 2+ maintenance is <del>CAD $30,000-50,000/year (</del>USD $22,000-37,000).</p>
+</blockquote>
+<h2 id="year-2-maintenance">Year 2+ maintenance</h2>
+<ul>
+<li><input disabled="" type="checkbox"> Monthly automated re-ingestion checks against all CSA + provincial + municipal sources.</li>
+<li><input disabled="" type="checkbox"> 90-day diff alerts on any source change.</li>
+<li><input disabled="" type="checkbox"> Quarterly validation test re-run (full ≥ 250 test lookup set).</li>
+<li><input disabled="" type="checkbox"> Annual full code-edition re-ingestion when CSA / province publishes new edition (NBCC publishes ~5-year cycle; provincial codes ~3-5 year cycles).</li>
+</ul>
+<h2 id="validation-test-set-target-≥-250-lookups-by-end-of-year-1">Validation test set (target ≥ 250 lookups by end of Year 1)</h2>
+<table>
+<thead>
+<tr>
+<th>Trade category</th>
+<th>Phase 1 federal</th>
+<th>Phase 2 provincial</th>
+<th>Phase 3 municipal</th>
+<th>Phase 4 remaining</th>
+<th>Total</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Electrical</td>
+<td>12</td>
+<td>24</td>
+<td>12</td>
+<td>18</td>
+<td>66</td>
+</tr>
+<tr>
+<td>Plumbing</td>
+<td>10</td>
+<td>24</td>
+<td>12</td>
+<td>18</td>
+<td>64</td>
+</tr>
+<tr>
+<td>Structural</td>
+<td>10</td>
+<td>24</td>
+<td>12</td>
+<td>18</td>
+<td>64</td>
+</tr>
+<tr>
+<td>Fire</td>
+<td>10</td>
+<td>24</td>
+<td>12</td>
+<td>18</td>
+<td>64</td>
+</tr>
+<tr>
+<td>Building (general)</td>
+<td>8</td>
+<td>24</td>
+<td>12</td>
+<td>18</td>
+<td>62</td>
+</tr>
+<tr>
+<td><strong>Total test lookups</strong></td>
+<td><strong>50</strong></td>
+<td><strong>120</strong></td>
+<td><strong>60</strong></td>
+<td><strong>90</strong></td>
+<td><strong>320</strong></td>
+</tr>
+</tbody></table>
+<p>Pass criterion: Sherpa codes engine returns correct citation + paragraph for ≥ 95% of test lookups (≥ 304 / 320 by end of Year 1).</p>
+<h2 id="translation-pipeline-quebec">Translation pipeline (Quebec)</h2>
+<ul>
+<li><strong>Vendor:</strong> Translatewise (or equivalent specialist construction translation vendor).</li>
+<li><strong>Process:</strong> Source CCQ (French) → automated machine translation (DeepL Pro or similar) → native-translator review → trade-specialist review for nomenclature → ingestion into Sherpa codes engine with bilingual citation (French source + English translation displayed).</li>
+<li><strong>Cost:</strong> CAD $25,000 – $40,000 one-time + CAD $5,000 – $10,000 / year maintenance.</li>
+<li><strong>Quality gate:</strong> specialist construction translator reviews 100% of translated content before publication.</li>
+</ul>
+<h2 id="update-cadence--monitoring">Update cadence + monitoring</h2>
+<ul>
+<li><strong>CSA Group:</strong> publishes amendments roughly every 12-18 months, full new editions every 5 years. Subscribe to CSA notification feeds.</li>
+<li><strong>Provinces:</strong> publish amendments every 12-24 months, full new editions every 3-5 years. Per-province Government Gazette / official publication monitoring.</li>
+<li><strong>Municipalities:</strong> by-law amendments more frequent (quarterly possible). Per-municipality clerk subscription.</li>
+<li><strong>Monthly re-ingestion check</strong> automated; <strong>quarterly full validation re-run</strong> by Engineering + Country GM signoff.</li>
+</ul>
+<h2 id="risks--mitigations">Risks + mitigations</h2>
+<table>
+<thead>
+<tr>
+<th>Risk</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CSA Group refuses marketplace-use license</td>
+<td>Engage 12+ months ahead; offer revenue share / attribution; fall back to LawSource Canada aggregator</td>
+</tr>
+<tr>
+<td>Quebec French translation quality is insufficient for trade nomenclature</td>
+<td>Native + specialist construction translator double-review; bilingual display (French source visible)</td>
+</tr>
+<tr>
+<td>Vancouver Building By-Law (VBBL) divergence from BCBC creates dual-source maintenance burden</td>
+<td>Treat VBBL as co-equal source, separate ingestion pipeline, dedicated test lookups</td>
+</tr>
+<tr>
+<td>Code editions change mid-launch and break Sherpa codes engine</td>
+<td>90-day diff alerts + automated re-ingestion + manual gate before publication</td>
+</tr>
+<tr>
+<td>Trade certification body data (Skilled Trades Ontario, ITA BC, etc.) not codes per se but pro-vetting input</td>
+<td>Tracked separately in pro vetting pipeline, not in codes engine</td>
+</tr>
+</tbody></table>
+<hr>
+<p><em>This runbook is the gold standard. UK / AU / EU pilot will reuse the phase structure with country-specific vendors per <code>07-codes-vendor-evaluation-framework.md</code>.</em></p>
+
+	
+
+
+</body>
+</html>

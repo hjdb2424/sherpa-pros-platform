@@ -1,0 +1,1015 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>faq — Sherpa Pros</title>
+<link rel="icon" href="../../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="faq.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="sherpa-pros--wefunder-investor-faq">Sherpa Pros — Wefunder Investor FAQ</h1>
+<p><strong>Date:</strong> 2026-04-22
+<strong>Audience:</strong> Prospective Wefunder community-round investors (accredited and non-accredited)
+<strong>Founder:</strong> Phyrom, working general contractor (HJD Builders LLC, NH)
+<strong>Tone:</strong> Plain English. 8th-grade reading level. No jargon. No marketing-speak.</p>
+<hr>
+<h2 id="important-disclaimer-read-this-first">Important disclaimer (read this first)</h2>
+<p>This FAQ is for informational purposes only. <strong>It is not legal advice, financial advice, investment advice, or tax advice.</strong> Investing in early-stage companies is high-risk. <strong>You can lose everything you invest.</strong> Past performance does not predict future results. Before you invest, read the full Wefunder offering page, the SAFE document, the Form C filed with the U.S. Securities and Exchange Commission (SEC), and consult your own attorney, accountant, and financial advisor.</p>
+<p>The U.S. Securities and Exchange Commission has not passed on the accuracy or adequacy of this offering. Securities sold under Regulation Crowdfunding are restricted from resale for one year except in limited circumstances.</p>
+<hr>
+<h2 id="the-basics">The basics</h2>
+<h3 id="q1-who-can-invest-in-sherpa-pros-on-wefunder">Q1. Who can invest in Sherpa Pros on Wefunder?</h3>
+<p>Almost any U.S. resident 18 or older can invest. You do <strong>not</strong> need to be an accredited investor (a high-income or high-net-worth investor under SEC rules). This raise is offered under SEC <strong>Regulation Crowdfunding (Reg CF)</strong>, which lets everyday people invest in private startups for as little as <strong>$100</strong>.</p>
+<p>There are SEC-set caps on how much non-accredited investors can put into Reg CF deals across all platforms in a 12-month period. The cap depends on your annual income and net worth. Wefunder will calculate and enforce the cap during checkout, so you do not need to do that math yourself.</p>
+<p>If you are an accredited investor (generally, an individual with $200K+ income or $1M+ net worth excluding primary residence — see the SEC definition for current thresholds), there is <strong>no Reg CF investment cap</strong> for you.</p>
+<p>International investors: case-by-case. Wefunder will check during checkout.</p>
+<h3 id="q2-what-does-my-investment-actually-buy-me">Q2. What does my investment actually buy me?</h3>
+<p>A <strong>SAFE.</strong> That stands for <strong>Simple Agreement for Future Equity.</strong> It is a contract that gives you the right to convert your investment into shares of Sherpa Pros stock <strong>later</strong>, when one of these things happens:</p>
+<ol>
+<li>The company raises money from venture capitalists or other investors at a "priced round" (an investment that sets a per-share price for Sherpa Pros stock). Your SAFE converts into shares at that price, with the discount and valuation cap explained below.</li>
+<li>The company is acquired by another company. Your SAFE pays out cash based on the acquisition price.</li>
+<li>The company has an Initial Public Offering (IPO) — much later, if ever.</li>
+</ol>
+<p>In plain English: <strong>a SAFE is a placeholder for shares.</strong> You hand the company money today. You do not get shares today. You get shares (or cash) later when there's a triggering event.</p>
+<h3 id="q3-what-is-the-valuation-cap-and-why-does-it-matter">Q3. What is the valuation cap, and why does it matter?</h3>
+<p>The <strong>valuation cap</strong> is the maximum company value at which your SAFE will convert into shares. <strong>Lower cap = better for you (you get more shares for your money).</strong></p>
+<p>Sherpa Pros is offering a SAFE at a <strong>$5M–$8M valuation cap</strong> (final number will be set by the founder with attorney review before public launch — see Q23). At a $6M cap, every $1,000 you invest buys roughly 1/6,000th of the company at conversion (assuming the company raises a future priced round at any value above $6M).</p>
+<p>Worked example. You invest $1,000 at a $6M cap. Six months later, Sherpa Pros raises a priced round at a $24M valuation. Your $1,000 converts as if you had paid the $6M-cap price, not the $24M price. You get <strong>4× more shares</strong> than the new investors paying $24M.</p>
+<h3 id="q4-what-is-the-discount">Q4. What is the discount?</h3>
+<p>The SAFE includes a <strong>20% discount</strong> in addition to the valuation cap. If the future priced round is below the cap, the discount kicks in instead — you pay 80% of what new investors pay per share.</p>
+<p>You always get the <strong>better of the two</strong> (cap or discount), so you are protected on both ends.</p>
+<h3 id="q5-what-is-mfn-and-does-this-safe-have-it">Q5. What is "MFN" and does this SAFE have it?</h3>
+<p>MFN stands for <strong>Most Favored Nation.</strong> It means: if Sherpa Pros later issues a SAFE to another investor on better terms (lower cap, bigger discount, more protective rights), <strong>your SAFE automatically upgrades to those better terms.</strong> You are not penalized for investing early.</p>
+<p><strong>Yes, this Wefunder SAFE includes MFN.</strong> Confirmed in the SAFE document attached to the offering page.</p>
+<h3 id="q6-when-and-how-do-i-get-my-money-back">Q6. When and how do I get my money back?</h3>
+<p>Three paths:</p>
+<ol>
+<li><strong>Next priced equity round.</strong> When Sherpa Pros raises from a venture capital firm at a per-share price, your SAFE converts to shares (at the better of the cap or discount). You then own actual stock. You get money back when (a) the company is acquired, (b) the company IPOs, or (c) you sell the shares on a secondary market — which is restricted and rare for early-stage private stock.</li>
+<li><strong>Acquisition.</strong> If Sherpa Pros is bought by another company before a priced round, your SAFE pays out cash according to the SAFE's terms. This is faster but not guaranteed to happen.</li>
+<li><strong>Company fails.</strong> If Sherpa Pros runs out of money and shuts down, you lose your investment. SAFEs are unsecured. There is no guaranteed payout.</li>
+</ol>
+<p><strong>There is no scheduled "payback date."</strong> This is not a loan. This is not a bond. There is no interest. Plan to lock up your money for <strong>5–10 years minimum</strong> — and to lose it entirely if the company fails.</p>
+<h3 id="q7-whats-the-fundraising-timeline">Q7. What's the fundraising timeline?</h3>
+<p>Reg CF rules give us a <strong>maximum 90-day window</strong> once the offering goes live on Wefunder. We have a <strong>minimum target raise</strong> (the smallest amount we need to "succeed") and a <strong>maximum</strong> (the cap above which we stop accepting checks).</p>
+<ul>
+<li>If we hit the <strong>minimum target</strong> within 90 days → the round closes, money is wired, SAFEs are issued.</li>
+<li>If we <strong>do not hit</strong> the minimum target within 90 days → <strong>all investor funds are returned in full.</strong> You do not lose money on a failed raise.</li>
+</ul>
+<p>The exact target and timing will be visible on the live Wefunder page.</p>
+<h3 id="q8-what-is-wefunders-platform-fee">Q8. What is Wefunder's platform fee?</h3>
+<p>Wefunder charges the company <strong>7.5%</strong> of the total amount raised. This comes out of Sherpa Pros' funds, not yours. You pay no platform fee on top of your investment.</p>
+<p>There is a small per-transaction processing fee (typically 2% credit card or $0 ACH) charged at checkout. ACH bank transfer is the default.</p>
+<hr>
+<h2 id="whos-running-the-company">Who's running the company</h2>
+<h3 id="q9-whats-the-founder-taking-out-of-this-round">Q9. What's the founder taking out of this round?</h3>
+<p>Phyrom (founder, working GC, HJD Builders LLC) is being intentionally transparent here.</p>
+<ul>
+<li><strong>Founder personal investment:</strong> Phyrom has self-funded the platform build through HJD Builders for two years. Engineering, hosting, legal, tooling — funded out of pocket. The platform you can see at <a href="http://www.thesherpapros.com">www.thesherpapros.com</a> exists because the founder wrote those checks.</li>
+<li><strong>Founder salary plan:</strong> Phyrom takes <strong>$0 salary</strong> until the first close. Post-close, founder salary will be set at a market-floor rate for an early-stage NE founder ($90K–$120K/year), reviewed by the lead investor or board at Seed close. Lower than market for the role; deliberately so.</li>
+<li><strong>Founder equity stake:</strong> Phyrom retains majority equity in Sherpa Pros LLC at this stage (specifics in the cap table inside the data room). Future dilution is expected as the company raises priced rounds — that's normal.</li>
+</ul>
+<p>The point: the founder has skin in the game and is not using this raise to pay himself out of the company. The use of funds (Question 17 below) goes to hires, marketing, and runway.</p>
+<h3 id="q10-what-if-sherpa-pros-raises-money-from-vcs-at-the-same-time-as-wefunder">Q10. What if Sherpa Pros raises money from VCs at the same time as Wefunder?</h3>
+<p>Good for everyone.</p>
+<p>When VCs invest, they typically do a <strong>priced round</strong> — they buy shares at a set per-share price. Your SAFE then converts to shares at the <strong>better of the valuation cap or the 20% discount.</strong> You benefit from the priced round terms without having to negotiate them yourself.</p>
+<p>If a VC priced round closes before the Wefunder raise closes, the MFN clause may also pick up any better SAFE terms negotiated after yours. You are not punished for being first.</p>
+<h3 id="q11-can-the-founder-fire-me-dilute-me-or-change-the-terms">Q11. Can the founder fire me, dilute me, or change the terms?</h3>
+<p>No on "fire you" — you own a SAFE, not a job. You cannot be removed.</p>
+<p>Yes on dilution — like every shareholder, your future ownership percentage will be reduced when the company issues new shares to raise more money or to grant employee stock options. <strong>This is normal and expected</strong> for any growing startup. The valuation cap protects you on price; nothing protects any shareholder from dilution by future fundraises.</p>
+<p>The terms of your specific SAFE cannot be changed unilaterally by the founder. They are fixed by the SAFE contract you sign at checkout.</p>
+<hr>
+<h2 id="comparing-it-to-other-things">Comparing it to other things</h2>
+<h3 id="q12-how-is-this-different-from-kickstarter-or-gofundme">Q12. How is this different from Kickstarter or GoFundMe?</h3>
+<p>Kickstarter and GoFundMe are <strong>donations</strong> or <strong>rewards-based crowdfunding</strong>. You give money to back a project. You get a t-shirt, a gadget, or a thank-you. <strong>You do not own anything.</strong></p>
+<p>Wefunder Reg CF is <strong>equity crowdfunding.</strong> You give money in exchange for the right to a future ownership stake in the company (the SAFE). If the company succeeds, you get a return. If it fails, you lose the money. <strong>You own a piece of the business.</strong></p>
+<h3 id="q13-can-i-lose-all-my-money">Q13. Can I lose all my money?</h3>
+<p><strong>Yes. You can lose every dollar you invest.</strong> This is real and the SEC requires us to say it clearly.</p>
+<p>Most early-stage startups fail. Industry data on Reg CF outcomes is still maturing, but a meaningful portion of community-round companies do not survive 5 years. Sherpa Pros could fail — see the Risks section of the offering page (and Section 11 of the GTM design spec for the founder's own risk register).</p>
+<p>Only invest money you can fully afford to lose. Do not invest money you need for rent, groceries, retirement near-term, your kids' tuition, or an emergency fund. <strong>A common rule of thumb: do not put more than 1–5% of your investable assets into early-stage private startups.</strong></p>
+<hr>
+<h2 id="the-mechanics">The mechanics</h2>
+<h3 id="q14-how-do-i-keep-up-with-sherpa-pros-after-i-invest">Q14. How do I keep up with Sherpa Pros after I invest?</h3>
+<p>Three places:</p>
+<ol>
+<li><strong>Quarterly investor updates</strong> posted to the Wefunder investor portal. Updates cover real numbers (Gross Merchandise Value transacted on the platform, active pros, jobs completed, runway, hires, big wins, big misses). The founder writes them personally.</li>
+<li><strong>Wefunder investor portal.</strong> You can log back in any time, see other investor activity, ask questions in the Q&amp;A.</li>
+<li><strong>Founder LinkedIn.</strong> Phyrom posts publicly about the build, the launch, and the lessons (good and bad). Search "Phyrom Sherpa Pros" on LinkedIn.</li>
+</ol>
+<p>If you want a deeper relationship, large investors (typically $5K+) get optional invites to a quarterly investor call.</p>
+<h3 id="q15-what-is-the-minimum-i-should-invest">Q15. What is the minimum I should invest?</h3>
+<p>The <strong>legal minimum</strong> is <strong>$100</strong> per Wefunder's platform rules.</p>
+<p>The founder's recommended thoughtful range — <strong>only money you can afford to lose entirely</strong> — is <strong>$250 to $2,500</strong> for most everyday investors. That range is large enough to feel meaningful (and to motivate you to follow the company), small enough that losing it does not change your life.</p>
+<p>Investors writing $5K+ are essentially angel-sized; they should treat this with the same diligence as any other angel investment (read the data room, talk to the founder, understand the cap table, and only invest if it fits a portfolio approach to early-stage exposure).</p>
+<h3 id="q16-tax-treatment--what-do-i-need-to-know">Q16. Tax treatment — what do I need to know?</h3>
+<p>You will receive a <strong>Schedule K-1</strong> (or equivalent) annually from Sherpa Pros' SAFE-holding entity if structured through a Wefunder special-purpose vehicle (SPV). For most Wefunder Reg CF deals investors receive a <strong>K-1 partnership tax form</strong>.</p>
+<p>Practical points:</p>
+<ul>
+<li>Until your SAFE converts to shares (or pays out via acquisition), there is typically <strong>no taxable event</strong> for you year-over-year. The K-1 may show $0 in income.</li>
+<li>When the SAFE converts and shares are eventually sold (via acquisition or secondary), gains may be taxed as long-term or short-term capital gains depending on holding period.</li>
+<li><strong>Qualified Small Business Stock (QSBS, Section 1202)</strong> may apply if the SAFE converts to qualifying stock and is held 5+ years — potentially up to 100% federal capital gains exclusion on up to $10M. Eligibility is technical and not guaranteed. <strong>Talk to your CPA.</strong></li>
+<li>Losses on a failed startup investment may be deductible as a capital loss or, in some cases, ordinary loss under Section 1244. <strong>Talk to your CPA.</strong></li>
+</ul>
+<p><strong>This is not tax advice.</strong> Talk to your CPA before investing if tax treatment matters to your decision.</p>
+<h3 id="q17-what-is-the-money-used-for">Q17. What is the money used for?</h3>
+<p>See the full Use of Funds section on the live Wefunder page. High-level:</p>
+<ul>
+<li>~40% engineering and product (next-phase platform features, mobile build hardening, code-aware quote validation expansion)</li>
+<li>~30% New England operations and expansion (Pro Success Manager hires, Boston specialty-lane launch, supply-house partnerships)</li>
+<li>~20% marketing and customer acquisition (paid social, Google Ads on Boston specialty keywords, founder-led PR)</li>
+<li>~10% reserves, legal, insurance, compliance</li>
+</ul>
+<p>The founder commits to publishing actual deployment of funds quarterly so investors can compare promised vs. actual.</p>
+<h3 id="q18-what-happens-to-my-safe-if-sherpa-pros-raises-money-from-a-priced-round-at-a-low-valuation">Q18. What happens to my SAFE if Sherpa Pros raises money from a "priced round" at a low valuation?</h3>
+<p>The 20% discount kicks in. You pay 80% of the new investor per-share price.</p>
+<p>If the priced round is below the SAFE's cap (the company is valued lower than expected), the <strong>discount</strong> controls and protects you. If the priced round is above the cap (the company is valued higher than expected), the <strong>cap</strong> controls and protects you — you get the lower of the two effective prices, meaning more shares per dollar.</p>
+<p>You always get the <strong>better of the two protections.</strong></p>
+<h3 id="q19-what-happens-to-my-safe-if-sherpa-pros-gets-acquired-before-a-priced-round">Q19. What happens to my SAFE if Sherpa Pros gets acquired before a priced round?</h3>
+<p>The SAFE pays out cash based on the SAFE's "Liquidity Event" terms. In short: you get <strong>the greater of (a) your money back, or (b) the share-equivalent value at the cap.</strong></p>
+<p>Worked example. You invest $1,000 at a $6M cap. Eighteen months later, Sherpa Pros is acquired for $30M. The cap-equivalent share entitles you to roughly $5,000 ($1,000 × $30M ÷ $6M). You get $5,000.</p>
+<p>If the acquisition is for less than the cap (a fire sale), you get your $1,000 back (assuming the buyer can pay; senior debt and preferred shares are paid first, which is rare for early-stage SAFE-only cap tables but possible).</p>
+<h3 id="q20-what-happens-to-my-safe-if-sherpa-pros-fails">Q20. What happens to my SAFE if Sherpa Pros fails?</h3>
+<p>You lose your investment. SAFEs sit at the bottom of the priority stack in a wind-down — after employees, vendors, debt holders, and any preferred equity holders. In a typical small-startup wind-down there is <strong>no money left</strong> for SAFE holders.</p>
+<p>This is the risk you accept by investing in a Reg CF round.</p>
+<hr>
+<h2 id="specific-to-sherpa-pros">Specific to Sherpa Pros</h2>
+<h3 id="q21-why-community-ownership-why-not-just-raise-from-vcs">Q21. Why community ownership? Why not just raise from VCs?</h3>
+<p>Two reasons.</p>
+<p><strong>One — the brand fit is real.</strong> Sherpa Pros is a marketplace built for homeowners and licensed contractors in New England. Letting the homeowners and contractors who use the platform also <strong>own a piece of the platform</strong> is honest to the mission. We are not making this decision because Reg CF is fashionable. We are making it because the people who benefit from the platform should benefit from the upside.</p>
+<p><strong>Two — we are running four funding tracks in parallel</strong> (non-dilutive grants, accelerators, VCs, and Wefunder), per Section 6 of the GTM spec. The Wefunder community round is one of four. None of the four is the company's only shot. Whichever closes first triggers Phase 1.</p>
+<h3 id="q22-why-should-i-trust-this-team-to-execute">Q22. Why should I trust this team to execute?</h3>
+<p>Honest answer: read the founder's track record yourself. Phyrom has run HJD Builders LLC as a working NH general contractor for 12+ years. The Sherpa Pros platform is <strong>already built and live</strong> at <a href="http://www.thesherpapros.com">www.thesherpapros.com</a>. That is not a slide deck — it is software. License it, kick the tires, post a job, see what happens.</p>
+<p>Where the team is thin: this is a solo founder with a 60-hour weekly cap. Phase 1 hires (Pro Success Manager, Client Concierge) close that gap with first-close funding. Phase 2 hires (4 more PSMs, BD reps, ops lead) close it further. <strong>Founder burnout is a real risk</strong> — see the GTM spec's Risk R8.</p>
+<h3 id="q23-the-valuation-cap-range-is-5m8m-why-the-range">Q23. The valuation cap range is $5M–$8M. Why the range?</h3>
+<p>The final cap will be set by the founder with attorney review before public launch. The range reflects three inputs:</p>
+<ol>
+<li><strong>Comparables.</strong> Pre-seed marketplace companies in 2025–2026 with built-and-live product but limited GMV typically price at $4M–$10M post-money valuation caps (sources: Kingscrowd 2025 Crowdfunding Annual Report; AngelList Q4 2025 pre-seed data).</li>
+<li><strong>Stage.</strong> Sherpa Pros is post-build, pre-revenue-at-scale. Built product earns the upper end of the range; pre-revenue keeps it from going higher.</li>
+<li><strong>Investor fairness.</strong> Setting the cap too high punishes early investors (they get fewer shares per dollar). Setting it too low gives away too much equity. The middle of the range — around <strong>$6M</strong> — is a defensible starting point pending attorney review.</li>
+</ol>
+<p><strong>Disclaimer: this is not the final cap.</strong> The number on the live Wefunder page at launch is the binding number. Do not invest based on this FAQ's range.</p>
+<h3 id="q24-whats-the-target-raise">Q24. What's the target raise?</h3>
+<p><strong>Target raise: $250K–$500K</strong> (per GTM spec Section 6.4).</p>
+<p>We are deliberately <strong>not</strong> raising the Reg CF maximum (~$5M). Per the spec: <em>"Cap at $1M — raises &gt;$1M signal trouble."</em> A $250K–$500K community round signals authentic community ownership; a multi-million-dollar Reg CF raise signals "we couldn't get institutional money."</p>
+<p>If Wefunder commits hit $250K, that is enough to trigger Phase 1 in combination with other tracks. If commits exceed $500K, we will likely close early.</p>
+<h3 id="q25-is-there-a-wefunder-track-record-for-similar-companies">Q25. Is there a Wefunder track record for similar companies?</h3>
+<p>Yes. Wefunder has funded <strong>2,000+ companies</strong> to date and was the largest Reg CF platform in 2025 with $109M total platform volume — roughly 5× the volume of the second-largest platform (Republic). See <a href="https://sharkponds.com/wefunder-vs-republic-vs-startengine-2025-ultimate-comparison/">Sharkponds Wefunder vs. Republic vs. StartEngine 2025 comparison</a> and <a href="https://kingscrowd.com/2025-investment-crowdfunding-annual-report/">Kingscrowd 2025 Crowdfunding Annual Report</a>.</p>
+<p>Outcomes vary — some Wefunder companies have IPO'd or been acquired (notable wins), many have stalled, some have failed entirely. <strong>Past Wefunder outcomes do not predict Sherpa Pros' outcome.</strong></p>
+<h3 id="q26-can-i-tour-the-platform-before-i-invest">Q26. Can I tour the platform before I invest?</h3>
+<p>Yes. Web platform live at <a href="https://www.thesherpapros.com">www.thesherpapros.com</a>. iOS via TestFlight (request access by email). Demo video on the Wefunder page. Founder is available for 15-minute Zoom calls with prospective investors writing $1K+ — book through the Wefunder messaging system.</p>
+<h3 id="q27-what-happens-to-me-if-sherpa-pros-pivots-away-from-the-marketplace-model">Q27. What happens to me if Sherpa Pros pivots away from the marketplace model?</h3>
+<p>The SAFE entitles you to the future equity of <strong>Sherpa Pros, the company.</strong> If the company pivots its business model but remains the same legal entity, your SAFE is unchanged.</p>
+<p>If the company is wound down and a new entity is started (a hard pivot via shutdown), you would lose your SAFE in the wind-down and have no claim on the new entity. This is the same for every shareholder.</p>
+<p>The founder commits in the offering to <strong>not pivoting away from the licensed-trade marketplace thesis without first communicating to investors.</strong> (This commitment is non-binding moral, not a legal SAFE term — but the founder is on record.)</p>
+<h3 id="q28-will-i-have-voting-rights">Q28. Will I have voting rights?</h3>
+<p><strong>No.</strong> SAFE holders do not have voting rights. When the SAFE converts to shares at a future priced round, you may receive non-voting common stock or preferred stock — depending on the structure of the priced round. Most Wefunder community rounds convert into a non-voting class.</p>
+<p>This is standard for community rounds. Voting rights typically go to the lead investor of the priced round and to founders.</p>
+<h3 id="q29-can-i-sell-my-safe-before-it-converts">Q29. Can I sell my SAFE before it converts?</h3>
+<p><strong>Generally no.</strong> Securities sold under Reg CF have a <strong>one-year holding period restriction</strong> before they can be resold (with limited exceptions). After that, the practical market for unconverted SAFEs is essentially zero — there is no Wefunder secondary market for SAFEs.</p>
+<p>After the SAFE converts to shares, those shares may be sellable on Wefunder's secondary platform or via private secondary marketplaces (Forge, EquityZen). Liquidity is limited and not guaranteed.</p>
+<p><strong>Plan to hold for 5–10 years.</strong></p>
+<h3 id="q30-what-if-i-want-to-invest-more-than-the-legal-cap-allows-me">Q30. What if I want to invest more than the legal cap allows me?</h3>
+<p>If you are <strong>not accredited</strong>, the SEC investment cap is the cap. There is no workaround. You cannot exceed it.</p>
+<p>If you are <strong>accredited</strong>, there is no Reg CF cap for you. You can also explore the parallel Sherpa Pros Seed angel track (separate from Wefunder; minimum check $25K). Email the founder directly.</p>
+<hr>
+<h2 id="what-changed-this-quarter-the-new-vertical-integration-story">What changed this quarter (the new vertical-integration story)</h2>
+<h3 id="q31-what-is-the-difference-between-sherpa-pros-and-angi-or-thumbtack">Q31. What is the difference between Sherpa Pros and Angi or Thumbtack?</h3>
+<p>Angi and Thumbtack are <strong>labor-only lead-gen platforms.</strong> They sell a contractor the chance to bid on a homeowner job — and then the contractor still has to handle everything else themselves: ordering the materials, picking them up, coordinating any other trades on the project, and managing the schedule.</p>
+<p>Sherpa Pros is a <strong>vertically integrated trade orchestration platform.</strong> That is a long phrase for a simple idea: we handle four things on every job, not one.</p>
+<ol>
+<li><strong>Labor</strong> — like Angi and Thumbtack, we match a homeowner with a licensed pro. Unlike them, we charge a take rate when the job actually completes (not a lead fee for the chance to bid).</li>
+<li><strong>Materials</strong> — through Sherpa Materials, the platform orders all the materials for the job from the major retail catalogs and gets them delivered to the jobsite the same day through Uber Direct. Angi and Thumbtack do not do this at all.</li>
+<li><strong>Delivery</strong> — same-day delivery is built in. The pro does not lose half a day driving to the supply house. Angi and Thumbtack do not do this either.</li>
+<li><strong>Coordination</strong> — through Sherpa Dispatch, the platform sequences every trade on a multi-trade project (a kitchen renovation can involve 6+ trades) on one timeline, so the project finishes in 5 weeks instead of 11. Angi and Thumbtack do not touch this layer at all.</li>
+</ol>
+<p>The plain-English version: Angi and Thumbtack compete in one lane (labor matching). Sherpa Pros operates in four lanes (labor + materials + delivery + coordination). The competitive set for Sherpa Pros is no longer the labor-marketplace category — it is the entire trade-supply-chain stack (companies like FW Webb, Grainger, Procore, and the same-day delivery services). Nobody is putting all four of those lanes together for the residential and small-commercial trade. <strong>That is the wedge.</strong></p>
+<p>For a longer explainer, see Section 4.5 and Section 4.6 of the Wefunder page.</p>
+<h3 id="q32-how-do-you-make-money">Q32. How do you make money?</h3>
+<p>We make money on every job in four stacked ways:</p>
+<ol>
+<li><strong>Labor commission.</strong> When a pro completes a job, we take a percentage of the labor cost. The rate depends on the pro tier — 5 percent forever for our Founding Pros, 8 percent for top-rated Gold-tier pros, 12 percent for Silver and Bronze, 18 percent for Sherpa Flex (our no-LLC entry tier, which includes $1 million per-project liability insurance).</li>
+<li><strong>Materials coordination fee.</strong> When the pro orders the job's materials through Sherpa Materials, we add an 8 to 12 percent coordination fee on top of the wholesale materials cost. This stacks on top of the labor commission — it is a separate revenue line.</li>
+<li><strong>Pro subscription.</strong> Pros pay $49 per month for the standard subscription tier (free during beta).</li>
+<li><strong>Property Manager tier and Success Manager retainer.</strong> Property managers pay $4 per unit per month at entry, dropping to $1.50 per unit per month at scale (5,000+ units). White-glove "Sherpa Manager" accounts pay an additional retainer for a real human running the account.</li>
+</ol>
+<p><strong>The blended take rate per job — all four revenue lines combined — works out to roughly 18 to 25 percent of the all-in job cost (labor + materials).</strong> That is a different category of marketplace than Angi or Thumbtack, where the take rate ceiling is structurally 10 to 15 percent because labor is the only revenue line.</p>
+<p>This is also why Sherpa Materials matters so much for the company's path to profitability. Materials revenue has near-zero customer acquisition cost — every job we already booked is a materials-coordination opportunity at no extra acquisition spend. The materials line shortens the runway calculus for the same Phase 0 ask.</p>
+<h3 id="q33-what-does-multi-trade-coordination-mean">Q33. What does "multi-trade coordination" mean?</h3>
+<p>The plain-English answer: a kitchen renovation looks simple from the outside, but inside it is <strong>six or more separate trades that all have to show up in the right order.</strong></p>
+<p>Take a typical kitchen remodel:</p>
+<ol>
+<li><strong>Demolition</strong> rips out the old cabinets, countertops, and flooring.</li>
+<li><strong>Electrical</strong> has to rough-in new outlets, the dishwasher line, the range hood, and recessed lighting — but only after demo and before drywall.</li>
+<li><strong>Plumbing</strong> has to rough-in the new sink, dishwasher, and refrigerator water line — same window as electrical.</li>
+<li><strong>Drywall</strong> patches and finishes — only after electrical and plumbing are inspected.</li>
+<li><strong>Paint</strong> has to come in after drywall is done — but before cabinets so paint splatter isn't an issue.</li>
+<li><strong>Tile</strong> for the backsplash — after paint, before cabinets.</li>
+<li><strong>Cabinetry</strong> install — after paint and backsplash tile.</li>
+<li><strong>Finish carpentry</strong> for trim, crown molding, and any built-ins — last.</li>
+</ol>
+<p>If even one of those trades shows up on the wrong day — say plumbing arrives before electrical is done — the whole project slips by a week or more. Today, most contractors juggle that with a paper notebook, a spreadsheet, a group text, and a lot of swearing. <strong>An 11-week kitchen renovation that runs 3 weeks late (so 14 weeks total) is the industry norm.</strong></p>
+<p><strong>Sherpa Dispatch puts every one of those trades on one timeline, owns the handoff between them, and warns everyone in the chain before a delay becomes a slip.</strong> A real-world example from our beta: that same 11-week kitchen renovation finishes in <strong>5 weeks</strong> with Sherpa Dispatch — because the trades are sequenced correctly the first time. Faster project completion means happier homeowners, happier pros (who get paid sooner), and happier property managers (whose unit comes back online for rent sooner).</p>
+<p>Multi-trade coordination is the layer enterprise general contractors pay $1,000+ per user per month for software like Procore to handle. We bring it down to the residential and small-commercial scale and bake it into the Sherpa Pros platform every customer already uses. Nobody else in the licensed-trade marketplace category does this.</p>
+<hr>
+<h2 id="the-long-arc-roadmap-added-2026-04-25">The long-arc roadmap (added 2026-04-25)</h2>
+<h3 id="q34-whats-the-multi-year-roadmap-for-sherpa-pros">Q34. What's the multi-year roadmap for Sherpa Pros?</h3>
+<p>We think about Sherpa Pros in four phases. Each phase has a clear goal, a clear funding round attached, and a clear set of metrics that have to land before we move to the next.</p>
+<p><strong>Phase 1 — Lean Launch (Months 3 to 6 from first close).</strong> This is what your Wefunder investment funds first. We turn the live beta into a public launch across four New England metros: Portsmouth New Hampshire, Manchester New Hampshire, Portland Maine, and Boston (specialty work only at first). The beta contractors who joined early keep their 5 percent take rate forever. Goal: 50+ working pros, 1 commercial property-management anchor, 500+ homeowners signed up. End of Phase 1, we are positioned to raise a Seed round.</p>
+<p><strong>Phase 2 — Scaled Launch (Months 6 to 12).</strong> Seed round closes (target $2M to $3M). We deepen all four metros instead of adding new ones. Goal: 200+ active pros, 1,000+ jobs, $1M+ in total job value, 3+ property-management anchors, 5,000+ homeowners. The first physical Sherpa Hub opens. Take rate stabilizes at 10 percent. End of Phase 2, conversations open with venture capital firms about a Series A.</p>
+<p><strong>Phase 3 — Regional Expansion (Months 12 to 18).</strong> Series A closes (target $8M to $12M). We add Providence Rhode Island and Hartford Connecticut. We open a New York City specialty beachhead — Brooklyn brownstones and Manhattan pre-war work. We sign our first utility partnership (Eversource Massachusetts/Connecticut or National Grid New York). Goal: 6 active metros, $5M+ in annualized job value, take rate climbs to 12 to 15 percent. By Month 17, we are preparing the Series B.</p>
+<p><strong>Phase 4 — National + International + Franchise + Scale (Month 18 and beyond).</strong> Series B closes (target $20M to $40M). National United States rollout: Philadelphia, Washington DC, San Francisco, Chicago — specialty lanes first. International expansion follows on a one-country-per-year staircase (see Q35). The Sherpa Hub model goes franchise from Hub #11 onwards. The platform earns Service Organization Control 2 Type 2 security certification by Month 30. Around Months 27 to 30, the company is positioned for either a Series C or a strategic acquisition.</p>
+<p><strong>One brand. Four phases. Expanding footprint.</strong> The brand identity does not change as we expand — the wordmark stays the same, the founder origin story stays the same, the voice stays the same. What expands is the operational footprint, the cohorts of customers we serve, and the product surfaces live. A homeowner in Toronto in Phase 4 sees the same brand a homeowner in Portsmouth saw in Phase 1.</p>
+<p>The standard early-stage investment risks still apply (see Section 11 of the page-content). The platform might not get past Phase 1. We are not promising any of these phases will close on schedule. We are showing you the road we are driving.</p>
+<h3 id="q35-when-does-international-expansion-begin">Q35. When does international expansion begin?</h3>
+<p>International expansion begins in Phase 4 — Month 18 and beyond, after the Series B closes. We expand on a one-country-per-year staircase to keep operational risk manageable.</p>
+<ul>
+<li><strong>Year 1 of Phase 4 — Canada.</strong> Closest regulatory and cultural fit to the United States. The Canadian licensed-trades market has the same shortage dynamics (aging workforce, lead-gen platforms underserve, code complexity is high). We expect Toronto + Vancouver + Calgary as the first three Canadian metros, mirroring the New England Northern Triangle pattern.</li>
+<li><strong>Year 2 of Phase 4 — United Kingdom.</strong> English-speaking, mature trade-licensing regime (Gas Safe Register, National Inspection Council for Electrical Installation Contracting (NICEIC)), and a comparable home-services market structure. London + Manchester + Edinburgh likely as the first three metros.</li>
+<li><strong>Year 3 of Phase 4 — Australia.</strong> English-speaking, mature trade-licensing regime, and a market that has historically been underserved by United States home-services platforms. Sydney + Melbourne + Brisbane likely.</li>
+<li><strong>Years 4 to 5 of Phase 4 — European Union pilot.</strong> One country first (likely Germany or the Netherlands), with the option to expand based on what we learn. The European Union introduces multi-language and General Data Protection Regulation complexity, so we wait until the international playbook is proven in Canada / United Kingdom / Australia.</li>
+</ul>
+<p>International expansion is a Phase 4 commitment, not a Phase 1 or Phase 2 promise. We are sharing the staircase so investors understand the long-term opportunity, not so anyone treats it as a near-term milestone.</p>
+<hr>
+<h2 id="where-to-learn-more">Where to learn more</h2>
+<ul>
+<li><strong>Live platform:</strong> <a href="https://www.thesherpapros.com">www.thesherpapros.com</a></li>
+<li><strong>Investor deck:</strong> see Wefunder offering page (data room link)</li>
+<li><strong>One-pager:</strong> see Wefunder offering page (data room link)</li>
+<li><strong>Competitive analysis:</strong> see Wefunder offering page (data room link)</li>
+<li><strong>TAM/SAM/SOM sizing:</strong> see Wefunder offering page (data room link)</li>
+<li><strong>GTM design spec (full plan):</strong> internal document — request access if you are evaluating an angel-sized check</li>
+<li><strong>Founder direct contact:</strong> <a href="mailto:poum@hjd.builders">poum@hjd.builders</a></li>
+<li><strong>SEC EDGAR Form C filing:</strong> linked from the Wefunder offering page once filed</li>
+</ul>
+<hr>
+<h2 id="final-reminder">Final reminder</h2>
+<p><strong>Investing in Sherpa Pros — or any Reg CF startup — is high-risk. You can lose everything.</strong> Read the SAFE. Read the Form C. Talk to a CPA, an attorney, and your spouse. Then decide.</p>
+<p>The U.S. Securities and Exchange Commission has not passed on the accuracy or adequacy of this offering. This is not investment, financial, legal, or tax advice.</p>
+<hr>
+<p><em>Built by a working contractor for the contractors he works with every day.</em>
+<em>Licensed · Verified · Code-aware · Local · Jobs, not leads.</em></p>
+
+	
+
+
+</body>
+</html>

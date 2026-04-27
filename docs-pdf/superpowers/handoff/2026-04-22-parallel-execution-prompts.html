@@ -1,0 +1,1443 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2026 04 22 parallel execution prompts — Sherpa Pros</title>
+<link rel="icon" href="../../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="2026-04-22-parallel-execution-prompts.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="sherpa-pros-phase-0--parallel-execution-handoff">Sherpa Pros Phase 0 — Parallel Execution Handoff</h1>
+<p><strong>Purpose:</strong> Run the remaining Phase 0 work across multiple Claude Code terminal sessions in parallel. Each terminal owns one workstream, has a clear scope, knows what files it owns, and knows what NOT to touch.</p>
+<p><strong>Source plan:</strong> <code>docs/superpowers/plans/2026-04-22-phase-0-fundraise-and-beta.md</code> (47 tasks, 9 workstreams)
+<strong>Source spec:</strong> <code>docs/superpowers/specs/2026-04-22-gtm-marketing-design.md</code>
+<strong>Brand audit:</strong> <code>docs/pitch/brand-audit.md</code></p>
+<p><strong>Phase 0 framework amendments (added 2026-04-24 — every terminal must read these):</strong></p>
+<ul>
+<li><code>docs/operations/liability-insurance-framework.md</code> — 4-layer liability model (pro CGL → platform CGL/E&amp;O/Cyber → Work Guarantee → dispute workflow). <strong>Plan §A5 budget revised: $800/yr → $4K-$9K/yr. Plan §A7 attorney scope expanded: $1.5-3K → $10-15K. New tasks A8/A9/A10 added</strong> (Insurance Certificate Tracking, Dispute Resolution Workflow, COI verification API).</li>
+<li><code>docs/operations/embedded-protection-products.md</code> — Phase 1 white-label paid insurance products (per-job Project Protection $89/$249, annual membership $199/yr, PM portfolio protection). <strong>Bookmark for first-close kickoff — do NOT spin up a terminal yet.</strong></li>
+<li><code>docs/operations/quick-job-lane.md</code> — Phase 1 small-job product mode ($200-$1,500). <strong>Phase 0 amendment: beta cohort target 10+ → 15+</strong> (add 4-5 Quick Job pros: dedicated handyman, small-project painter, light plumber, light electrician, move-in-ready handyman). Quick Job lane build itself is Phase 1.</li>
+</ul>
+<hr>
+<h2 id="how-to-use-this-document">How to use this document</h2>
+<ol>
+<li>Open 6 terminal windows in <code>/Users/poum/sherpa-pros-platform/</code></li>
+<li>In each terminal, run <code>claude</code> to start a Claude Code session</li>
+<li>Paste the corresponding prompt (T1–T6 below) into each terminal</li>
+<li>Each session works independently in its own scope — minimal coordination overhead</li>
+<li>Re-converge once a week (or when blocked) — point all sessions to update the <strong>Weekly Status</strong> doc at <code>docs/operations/weekly-status/&lt;YYYY-WW&gt;.md</code></li>
+</ol>
+<p><strong>Coordination rules (apply to all terminals):</strong></p>
+<ul>
+<li>✅ Each terminal commits to <code>main</code> after completing a discrete task</li>
+<li>✅ Each terminal pulls before pushing to avoid conflicts (<code>git pull --rebase origin main</code>)</li>
+<li>❌ Do NOT modify files outside your declared scope (listed per terminal below)</li>
+<li>❌ Do NOT touch <code>docs/superpowers/specs/</code> or <code>docs/superpowers/plans/</code> — those are source-of-truth, never modified by execution</li>
+<li>✅ If you discover something the spec needs, add a <code>## Open Questions</code> section to your terminal's status file and flag it to Phyrom</li>
+</ul>
+<p><strong>Phyrom's open decisions (block some terminal work):</strong></p>
+<ul>
+<li>Surname: still UNKNOWN — never write a Phyrom surname until confirmed</li>
+<li>Canonical email: <code>phyrom@thesherpapros.com</code> vs <code>poum@hjd.builders</code> — pick one</li>
+<li>Canonical domain: <code>thesherpapros.com</code> vs <code>www.thesherpapros.com</code> — pick one</li>
+<li>Mass Save 2026 rebate: spec says "$10K+", verify against current program docs</li>
+</ul>
+<hr>
+<h2 id="t1--engineering--code-work">T1 — Engineering / Code Work</h2>
+<p><strong>Scope:</strong> Phase 0 critical-path code from plan §A and §B (data scoping, beta finance backend, dashboard live queries) + new tasks A8/A9/A10 from liability framework amendment.</p>
+<p><strong>Owns these files:</strong></p>
+<ul>
+<li><code>src/app/api/**</code> (data scoping fixes per <code>docs/TODO-MVP-FIXES.md</code>)</li>
+<li><code>src/app/api/beta-feedback/route.ts</code> (new — per plan Task B4)</li>
+<li><code>src/app/(dashboard)/pro/feedback/page.tsx</code> (new — per plan Task B4)</li>
+<li><code>src/app/api/disputes/**</code> (new — per liability framework Task A9)</li>
+<li><code>src/app/(dashboard)/admin/disputes/**</code> (new — Concierge dispute view)</li>
+<li><code>src/lib/payments/stripe.ts</code> (Stripe Connect live keys per plan Task A1)</li>
+<li><code>src/db/migrations/006_*.sql</code> and onward (any new migrations needed — including <code>pro_insurance_certificates</code> and <code>disputes</code> tables)</li>
+<li><code>tests/api/**</code> (TDD coverage)</li>
+</ul>
+<p><strong>Will NOT touch:</strong></p>
+<ul>
+<li><code>docs/**</code> (other terminals own docs)</li>
+<li><code>src/app/(marketing)/**</code> (T5 owns marketing pages)</li>
+<li><code>src/app/(dashboard)/admin/investor-metrics/**</code> (already shipped, leave alone)</li>
+</ul>
+<p><strong>Prompt to paste:</strong></p>
+<pre><code>I'm taking over the Engineering workstream for Sherpa Pros Phase 0.
+
+Read these for full context (in this order):
+1. docs/superpowers/specs/2026-04-22-gtm-marketing-design.md (the GTM spec)
+2. docs/superpowers/plans/2026-04-22-phase-0-fundraise-and-beta.md (47-task plan, focus on Workstream A and B)
+3. docs/TODO-MVP-FIXES.md (the existing data-scoping checklist)
+4. CLAUDE.md (project conventions — Server Components default, App Router only, lazy SDK init, etc.)
+5. src/db/drizzle-schema.ts (current schema — already has migration 005 additions)
+
+Tasks I own (in priority order):
+1. Plan Task A1 — switch src/lib/payments/stripe.ts to live Stripe Connect keys (test in test mode first; coordinate Vercel env var add with Phyrom)
+2. Plan Task A3 — apply data scoping per docs/TODO-MVP-FIXES.md, TDD-style. Write failing scoping test → fix route → green test → commit per route.
+3. Plan Task B4 — beta feedback API + in-app form (use the schema already added in migration 005: nps_responses table)
+4. Deploy migration 005 to Neon production (via psql or drizzle-kit push) — coordinate timing with Phyrom
+5. **Task A8 (NEW per liability framework)** — Insurance Certificate Tracking: add `pro_insurance_certificates` table (migration 006), nightly expiry-check background job, Insurance tab on pro profile, real-time COI check at job acceptance (block if expired), Concierge admin view of expiring COIs (60/30/7 day alerts).
+6. **Task A9 (NEW per liability framework)** — Dispute Resolution Workflow: add `disputes` table, `/api/disputes` POST/GET/PUT routes, in-app dispute form on job-completion screen + 30-day post-completion access, Concierge admin view at `/admin/disputes` with triage queue + Track A (quality) and Track B (safety) flow per liability framework §7.
+7. **Task A10 (NEW per liability framework)** — Insurance verification API integration prep (Phase 0 = manual COI upload + Phase 1 = automated via Trust Layer / Evident / Certificial). Phase 0 deliverable: clean abstraction in `src/lib/insurance/verify.ts` so Phase 1 swap is trivial.
+
+Use superpowers:test-driven-development for each code task. Use superpowers:verification-before-completion before claiming any task done.
+
+Files I own: src/app/api/**, src/lib/**, src/db/migrations/006_*.sql onward, tests/**.
+Files I DON'T touch: docs/**, src/app/(marketing)/**, src/app/(dashboard)/admin/investor-metrics/**.
+
+Commit per task. Push to origin/main after each. Pull --rebase before push.
+
+Track my progress in docs/operations/weekly-status/&lt;YYYY-WW&gt;.md (create the file if missing). Format: ## T1 Engineering — section with date, completed tasks, blockers.
+
+When I'm blocked or done with the in-flight task, post a status update and wait for Phyrom or other terminal coordination.
+</code></pre>
+<hr>
+<h2 id="t2--grant-application-submissions">T2 — Grant Application Submissions</h2>
+<p><strong>Scope:</strong> Take the 6 grant drafts in <code>docs/fundraising/grants/</code>, edit each into Phyrom's voice (he reviews), submit, track status.</p>
+<p><strong>Owns these files:</strong></p>
+<ul>
+<li><code>docs/fundraising/grants/*.md</code> (edit drafts to submission-ready)</li>
+<li><code>docs/fundraising/status/grants.md</code> (NEW — submission tracker)</li>
+</ul>
+<p><strong>Will NOT touch:</strong></p>
+<ul>
+<li>Anything in <code>src/</code>, <code>mobile/</code>, <code>public/</code></li>
+<li>Other <code>docs/fundraising/</code> subdirectories (T3, T4 own those)</li>
+<li>Spec or plan files</li>
+</ul>
+<p><strong>Prompt to paste:</strong></p>
+<pre><code>I'm taking over the Grant Submissions workstream for Sherpa Pros Phase 0.
+
+Read these for full context:
+1. docs/superpowers/specs/2026-04-22-gtm-marketing-design.md (especially §6.1 non-dilutive tracks)
+2. docs/superpowers/plans/2026-04-22-phase-0-fundraise-and-beta.md (Workstream E, tasks E1-E6)
+3. docs/pitch/sherpa-pros-deck-v1.md, sherpa-pros-onepager-v1.md (the canonical narrative)
+4. docs/pitch/competitive-analysis.md, tam-sam-som.md (sourced numbers + claims)
+5. docs/pitch/brand-audit.md (P0 + P1 issues that may apply to grant copy too)
+6. docs/fundraising/grants/ (the 6 existing drafts)
+
+Tasks I own (in this order — highest ROI first per Wave 2 agent recommendation):
+1. NH BFA microloan + Innovation Voucher (rolling, easiest, ~30 day approval)
+2. MA SBTA via nonprofit partner (after Phyrom picks the partner — Asian American Civic Association recommended over BECMA per Wave 2 finding)
+3. MassDev Biz-M-Power (file in parallel with Wefunder pre-launch)
+4. NSF SBIR Phase I — Project Pitch first, then full proposal if invited (requires SAM.gov registration first)
+5. MassCEC Catalyst (next round — confirm dates with masscec.com)
+6. MassCEC InnovateMass (next round)
+
+For EACH grant, my workflow:
+  a) Re-read the existing draft at docs/fundraising/grants/&lt;name&gt;.md
+  b) Apply Phyrom voice edits (plainspoken, founder-led, no marketing speak per spec §3.3)
+  c) Run the brand-audit checklist (no "Wiseman" externally, no jargon abbreviations on first use, no surname for Phyrom)
+  d) Verify eligibility blockers from Wave 2 agent's eligibility list (MA foreign-LLC reg, SAM.gov reg, BECMA fit, etc.)
+  e) Output the FINAL submission text + a step-by-step "how to submit" runbook (URLs, login flow, attachments needed)
+  f) Update docs/fundraising/status/grants.md with: program, status (drafting/awaiting-Phyrom/submitted/awarded/rejected), submission date, decision date, $ committed
+  g) Commit with message "docs(fundraising): grant &lt;name&gt; ready for submission" or "docs(fundraising): grant &lt;name&gt; submitted [date]"
+
+Files I own: docs/fundraising/grants/*.md, docs/fundraising/status/grants.md (create if missing).
+Files I DON'T touch: anywhere in src/, mobile/, public/, other docs/fundraising/ subdirs.
+
+Important constraints:
+- Phyrom's surname is UNKNOWN — never write "Phyrom Doung" or any surname. Use "Phyrom" or "P" only.
+- Never use "Wiseman" externally — call it "code-aware quote validation" or "code intelligence layer"
+- Spell out abbreviations on first use (CO → Change Order, GMV → Gross Merchandise Value, etc.)
+- Use real numbers from tam-sam-som.md; placeholder beta cohort metrics as [X beta pros, $Y GMV]
+
+Pull --rebase before each commit. Commit + push per grant ready for submission.
+
+When a grant draft is "ready for Phyrom review," stop and post a status update — do NOT try to submit on his behalf.
+</code></pre>
+<hr>
+<h2 id="t3--accelerator-application-submissions">T3 — Accelerator Application Submissions</h2>
+<p><strong>Scope:</strong> 5 accelerator drafts in <code>docs/fundraising/accelerators/</code> — edit to submission-ready, track.</p>
+<p><strong>Owns these files:</strong></p>
+<ul>
+<li><code>docs/fundraising/accelerators/*.md</code></li>
+<li><code>docs/fundraising/status/accelerators.md</code> (NEW)</li>
+</ul>
+<p><strong>Prompt to paste:</strong></p>
+<pre><code>I'm taking over the Accelerator Submissions workstream for Sherpa Pros Phase 0.
+
+Read these for full context:
+1. docs/superpowers/specs/2026-04-22-gtm-marketing-design.md (especially §6.2 accelerators)
+2. docs/superpowers/plans/2026-04-22-phase-0-fundraise-and-beta.md (Workstream F, tasks F1-F5)
+3. docs/pitch/sherpa-pros-deck-v1.md, sherpa-pros-onepager-v1.md (canonical narrative)
+4. docs/pitch/brand-audit.md (P0 + P1 brand issues — esp. Wiseman/BldSync internal-name leaks already cleaned)
+5. docs/fundraising/accelerators/ (the 5 existing drafts)
+
+Tasks I own (in optimal submission order per Wave 2 agent recommendation):
+1. Y Combinator (rolling, shortest application, highest brand-halo) — submit Week 1
+2. Suffolk Technologies (Boston Built Environment — bullseye fit, mentors include Suffolk Construction execs) — submit Week 1
+3. MassChallenge (zero equity, up to $1M cash prize, MA-impact thesis fit) — submit Week 1-2
+4. Techstars ConstructionTech (vertical-specific, $220K @ 5%) — submit Week 2
+5. Greentown Labs (membership inquiry first, then formal app) — Week 2-3
+
+For EACH accelerator, my workflow:
+  a) Re-read the existing draft
+  b) Verify cycle window is open (visit URL listed in draft)
+  c) Apply Phyrom voice edits — every accelerator has a different reviewer bias (Suffolk = operator-first, YC = short and specific, MassChallenge = impact-first, Techstars = traction-first, Greentown = climate-impact)
+  d) Run brand-audit checklist — no Wiseman, no surname, no AI-powered headline
+  e) Output FINAL submission text + step-by-step "how to submit" runbook (URLs, format requirements, supplemental materials needed)
+  f) Update docs/fundraising/status/accelerators.md per submission
+  g) Commit + push
+
+Files I own: docs/fundraising/accelerators/*.md, docs/fundraising/status/accelerators.md.
+Files I DON'T touch: src/, mobile/, public/, other docs/fundraising/ subdirs.
+
+Critical reminder from Wave 2 agent: each accelerator needs different supplemental materials Phyrom may not have:
+- Founder video shot on a real NH jobsite (Suffolk, Techstars, YC, Greentown all want this)
+- Real beta cohort numbers (every draft has [X beta pros, $Y GMV] placeholders — cannot submit until beta is live with real Stripe transactions)
+- Climate-impact one-pager variant for Greentown
+- Cap table PDF (Phyrom 100% common, no SAFEs yet)
+- Cycle date verification per accelerator
+
+Stop and ask Phyrom before submitting any application. My job is to get drafts into "ready for Phyrom approval and submission" state.
+
+Pull --rebase before commit. Commit + push per accelerator ready.
+</code></pre>
+<hr>
+<h2 id="t4--wefunder-community-round-launch">T4 — Wefunder Community Round Launch</h2>
+<p><strong>Scope:</strong> Wefunder kit in <code>docs/fundraising/wefunder/</code> — pre-launch list build, page setup, launch day execution.</p>
+<p><strong>Owns these files:</strong></p>
+<ul>
+<li><code>docs/fundraising/wefunder/*.md</code></li>
+<li><code>docs/fundraising/wefunder/prelaunch-list.md</code> (NEW)</li>
+<li><code>docs/fundraising/status/wefunder.md</code> (NEW)</li>
+</ul>
+<p><strong>Prompt to paste:</strong></p>
+<pre><code>I'm taking over the Wefunder Community Round workstream for Sherpa Pros Phase 0.
+
+Read these for full context:
+1. docs/superpowers/specs/2026-04-22-gtm-marketing-design.md (especially §6.4 Wefunder track)
+2. docs/superpowers/plans/2026-04-22-phase-0-fundraise-and-beta.md (Workstream H, tasks H1-H6)
+3. docs/fundraising/wefunder/faq.md (30-question investor FAQ — already drafted)
+4. docs/fundraising/wefunder/page-content.md (full Wefunder page — 12 sections drafted)
+5. docs/fundraising/wefunder/pr-launch-plan.md (press release + 30 named reporters + podcast pitches)
+6. docs/pitch/brand-audit.md (P0 + P1 brand issues)
+
+Tasks I own (sequenced):
+1. WEEKS 1-2: Pre-launch list build
+   - Create docs/fundraising/wefunder/prelaunch-list.md
+   - Outreach to HJD client network (script: "Building something new — would mean a lot if you'd be among the first to look at it. No commitment yet.")
+   - Outreach to beta pros + their clients (permissioned)
+   - Outreach to local press readers (Seacoast Online, NHPR, NHBR editors)
+   - Goal: 100+ "interested" signups before public launch
+
+2. WEEKS 2-4: Wefunder page setup
+   - Phyrom edit pass on faq.md and page-content.md
+   - Build the page in Wefunder admin (will require Phyrom login)
+   - Submit to Wefunder for compliance review (5-10 business days)
+   - Lock SAFE terms (valuation cap, discount, MFN) per attorney review — flag MFN side-letter question to attorney before publishing
+
+3. WEEKS 5-6: Soft-launch (private mode)
+   - Activate Wefunder page in private mode
+   - Share link only with pre-launch list
+   - Goal: $100K+ soft-committed before public
+
+4. WEEKS 7-8: Public launch + PR push
+   - Flip page to public when $100K+ soft-committed
+   - Execute pr-launch-plan.md: press release, podcast pitches, social launch playbook
+   - Use the Banker &amp; Tradesman housing-decline story as primary newsjack angle
+
+5. WEEKS 9-12: Drive to $250K+ committed by W12
+   - Daily LinkedIn cadence highlighting raise progress
+   - Weekly investor updates to commit-watchers
+   - Close Reg CF campaign at W12 (90-day max)
+
+Files I own: docs/fundraising/wefunder/**, docs/fundraising/status/wefunder.md.
+Files I DON'T touch: src/, mobile/, public/, other docs/fundraising/ subdirs, docs/marketing/ (T5 owns LinkedIn).
+
+Critical pre-launch items:
+- Attorney must review SAFE template (Wefunder standard) — specifically the MFN side-letter shutdown question flagged by Wave 2 agent
+- MassDev Biz-M-Power application must be filed BEFORE Wefunder closes (so the $50K state match is captured)
+- Every public-facing artifact must run brand-audit checklist (no Wiseman, no surname, no jargon)
+- Mass Save rebate amount in page-content.md is "$10,000+" — verify against current Mass Save 2026 program docs before publish
+
+Coordinate with T5 (marketing) for LinkedIn-driven Wefunder traffic.
+
+Pull --rebase before commit. Status updates to docs/fundraising/status/wefunder.md weekly.
+</code></pre>
+<hr>
+<h2 id="t5--marketing-channel-execution--beta-cohort-pro-recruiting">T5 — Marketing Channel Execution + Beta Cohort Pro Recruiting</h2>
+<p><strong>Scope:</strong> Daily LinkedIn posting cadence, supply-house flyer distribution, NHHBA + MEHBA outreach, content calendar execution, AND beta cohort pro recruiting (Workstream B in plan — was implicit, now explicit).</p>
+<p><strong>Owns these files:</strong></p>
+<ul>
+<li><code>docs/marketing/*.md</code> (read-only on existing files; create new content as needed)</li>
+<li><code>docs/marketing/posted/&lt;YYYY-MM-DD&gt;-linkedin.md</code> (NEW per post — paste the published version)</li>
+<li><code>docs/marketing/supply-house-distribution.md</code> (NEW — flyer drop log)</li>
+<li><code>docs/marketing/trade-association-outreach.md</code> (NEW — partnership tracker)</li>
+</ul>
+<p><strong>Prompt to paste:</strong></p>
+<pre><code>I'm taking over the Marketing Channel Execution workstream for Sherpa Pros Phase 0.
+
+Read these for full context:
+1. docs/superpowers/specs/2026-04-22-gtm-marketing-design.md (§3 brand voice, §8 channels)
+2. docs/superpowers/plans/2026-04-22-phase-0-fundraise-and-beta.md (Workstream D, tasks D1-D5)
+3. docs/marketing/linkedin-editorial.md (39 posts already drafted, 90-day calendar)
+4. docs/marketing/email-sequences/ (4 email sequences ready to send)
+5. docs/marketing/referral-mechanics-design.md (4 referral loops — implement copy as feedback flows)
+6. docs/pitch/brand-audit.md (Phyrom voice rules)
+
+Tasks I own (3-week rolling cadence):
+1. LINKEDIN POSTING (3x/week, Mon/Wed/Fri)
+   - Pull next post from docs/marketing/linkedin-editorial.md
+   - Phyrom voice-pass (he reviews, may edit, posts manually OR via Buffer/Hypefury if connected)
+   - After post is live, save the published version to docs/marketing/posted/&lt;YYYY-MM-DD&gt;-linkedin.md with engagement metrics added 48hr later
+   - Capture insights worth flagging back to Phyrom (high-engagement post types, audience comments worth replying to, viral threads to amplify)
+
+2. SUPPLY-HOUSE FLYER DISTRIBUTION (Weeks 2-6)
+   - Use docs/marketing/supply-house-flyer.pdf if it exists; if not, design one (Phyrom approves)
+   - Track distribution at docs/marketing/supply-house-distribution.md (column: store name, manager contact, drop date, return-for-refill date, scan QR analytics if available)
+   - Target: 20 supply houses (FW Webb, Lowe's Pro Desk, Rockler, Best Tile, Riverhead Building Supply)
+
+3. NHHBA + MEHBA PARTNERSHIP OUTREACH (Weeks 1-4)
+   - Identify ED + board chair at each
+   - Customized pitch: "free Founding Pro for any member"
+   - Track at docs/marketing/trade-association-outreach.md
+   - Goal: featured in member newsletter, table at next member meeting, intro to top 10 active members
+
+4. EMAIL SEQUENCE EXECUTION
+   - Pro-recruiting (5 emails): triggered when a cold contractor contact is added to outreach
+   - Client-recruiting (3 emails): for HJD existing clients onboarding
+   - Pro re-engagement (3 emails): triggered for inactive Founding Pros
+   - PM outbound (4 emails): B2B to property managers
+
+5. **BETA COHORT PRO RECRUITING (Weeks 1-6) — TARGET REVISED 10+ → 15+** per Phase 0 amendment for Quick Job lane (docs/operations/quick-job-lane.md §9).
+
+   Cohort composition (was 10-12, now 14-17):
+   - **Project mode pros (10-12):** 2 GCs (HJD network), 2 plumbers, 1 HVAC/heat-pump specialist, 1 painter (full-project), 1 landscaper, 1 licensed electrician (Mass Save cert preferred), 1 old-house specialist (Boston), 1 roofer, 1-2 handymen (cross-mode)
+   - **Quick Job mode pros (NEW — add 4-5):**
+     - +1 dedicated handyman (Boston metro — high Quick Job density area)
+     - +1 small-project painter (NH/ME — accent walls, single-room, drywall patches)
+     - +1 light plumber (Manchester or Portsmouth — high call volume for toilets, faucets, valves)
+     - +1 light electrician (Boston suburbs — ceiling fans, GFCIs, smart switches)
+     - +1 move-in-ready handyman (PM tier crossover — punch lists, quick fixes between tenants)
+
+   Tracker: docs/operations/beta-cohort-pipeline.md (per plan Task B2). Update weekly. Quick Job pros are EASIER to recruit (lower onboarding bar, faster decision, 5% take is dramatically cheaper than Angi's $400+ effective lead cost).
+
+   Coordinate with Phyrom for HJD network warm leads + with T6 (VC) for trade-association angel/Founding-Pro double-dip opportunities.
+
+Files I own: docs/marketing/posted/, docs/marketing/supply-house-distribution.md, docs/marketing/trade-association-outreach.md.
+Files I DON'T touch: docs/fundraising/ (T2/T3/T4/T6), src/, mobile/, public/.
+
+Critical:
+- Phyrom voice rules: plainspoken, 8th-grade reading level, founder hook leads, no Wiseman externally, no surname
+- Coordinate with T4 (Wefunder) for raise-momentum LinkedIn posts in W7-12
+- Coordinate with T6 (VC outreach) when an investor signal worth amplifying appears
+
+Status updates to docs/operations/weekly-status/&lt;YYYY-WW&gt;.md weekly. Section header: "## T5 Marketing".
+</code></pre>
+<hr>
+<h2 id="t6--vc-outreach--building-ventures-push">T6 — VC Outreach + Building Ventures Push</h2>
+<p><strong>Scope:</strong> Work the 53-firm investor pipeline, run the Building Ventures warm intro, manage CVC conversations, track meetings + follow-ups.</p>
+<p><strong>Owns these files:</strong></p>
+<ul>
+<li><code>docs/fundraising/vc/*.md</code></li>
+<li><code>docs/fundraising/status/vc-meetings.md</code> (NEW — meeting log)</li>
+</ul>
+<p><strong>Prompt to paste:</strong></p>
+<pre><code>I'm taking over the VC Outreach workstream for Sherpa Pros Phase 0.
+
+Read these for full context:
+1. docs/superpowers/specs/2026-04-22-gtm-marketing-design.md (especially §6.3 VC tracks)
+2. docs/superpowers/plans/2026-04-22-phase-0-fundraise-and-beta.md (Workstream G, tasks G1-G5)
+3. docs/fundraising/vc/investor-pipeline.md (53 firms across 4 tiers — Built World, marketplace, strategic CVC, NE-local angels)
+4. docs/fundraising/vc/building-ventures-warm-intro.md (3 voices + cold backup — top priority outreach)
+5. docs/fundraising/vc/cvc-outreach.md (National Grid Partners pitch — note: Eversource has NO branded CVC arm, treat as utility partnership not equity)
+6. docs/pitch/sherpa-pros-deck-v1.md (the deck)
+7. docs/pitch/competitive-analysis.md, tam-sam-som.md (sourced numbers for pitch follow-ups)
+8. docs/pitch/brand-audit.md (Phyrom voice rules)
+
+Tasks I own (in priority order):
+1. WEEK 1: Building Ventures warm intro
+   - Identify warm-intro path (per Wave 2 agent: NHHBA → MA AGC → Suffolk Construction → Building Ventures via BOOST accelerator network)
+   - Phyrom sends warm-intro request email to mutual contact (use one of 3 voice variants in building-ventures-warm-intro.md)
+   - Log every touch in docs/fundraising/status/vc-meetings.md
+   - If no warm path materializes within 2 weeks, use cold backup email
+
+2. WEEKS 1-2: Tier 0 NE-local angels (lowest friction, fastest signal)
+   - HJD network high-net-worth GCs/developers (Phyrom names them)
+   - NHHBA + MEHBA board members
+   - Coordinate with T4 (Wefunder) — these angels can also become Wefunder soft-commit lead investors
+   - Goal: 5+ angel checks ($25K-$150K each) by W4
+
+3. WEEKS 3-6: Tier 1 Built-World VCs (warm intros)
+   - Building Ventures (in flight from #1)
+   - Brick &amp; Mortar Ventures (research warm path through Phyrom's NHHBA + Suffolk network)
+   - Foundamental (Adam Zobler, NA partner — engagement hook: his "generalist vs specialist VC" essay per Wave 2 agent)
+   - Zacua Ventures, Schematic Ventures, Nine Four Ventures
+   - Goal: 5 first-meetings booked by W6
+
+4. WEEKS 5-8: Tier 2 marketplace + general pre-seed (NFX, Version One, Hustle Fund, Pear, Forum, Precursor)
+   - Each meeting: send 24hr follow-up with requested materials
+   - Update docs/fundraising/vc/investor-pipeline.md per touch
+
+5. WEEKS 7-10: Strategic CVC (National Grid Partners is the primary target)
+   - Lisa Lambert at National Grid Partners (per Wave 2 agent research)
+   - Entry path: NextGrid Alliance (100-member network) is the natural waypoint
+   - Realistic check size: $1M-$1.5M strategic
+   - Pitch: "Mass Save heat-pump installer wait times are 3-6 months. We solve that."
+   - Eversource is NOT a CVC target — pursue as utility partnership instead
+
+6. WEEKS 9-12: First close target
+   - Term sheet negotiation if any Tier 1/2 VC commits
+   - Phyrom + attorney handle SAFE/priced-round mechanics
+   - Coordinate with T4 (Wefunder) — VC term sheet validates Wefunder valuation cap
+
+Files I own: docs/fundraising/vc/*.md, docs/fundraising/status/vc-meetings.md.
+Files I DON'T touch: src/, mobile/, public/, other docs/fundraising/ subdirs, docs/marketing/.
+
+Critical:
+- Use REAL partner names + recent investments in outreach. Don't invent. Cite sources.
+- No Wiseman externally — call it "code-aware quote validation" or "code intelligence layer"
+- No Phyrom surname — just "Phyrom" or "P"
+- Mark any partner whose name isn't 100% verified as [VERIFY: name]
+- Building Ventures is the FIRST CALL — this is the highest-leverage single conversation in the entire VC pipeline
+
+Pull --rebase before commit. Status updates to docs/operations/weekly-status/&lt;YYYY-WW&gt;.md weekly. Section header: "## T6 VC Outreach".
+</code></pre>
+<hr>
+<h2 id="workstream-j--liability--insurance-phyrom-led-t1-supports">Workstream J — Liability &amp; Insurance (Phyrom-led, T1 supports)</h2>
+<p><strong>Not a separate terminal.</strong> Phyrom owns the broker/attorney engagement; T1 builds the supporting infrastructure (Tasks A8/A9/A10 listed in T1's prompt above).</p>
+<p><strong>Phyrom's actions (Phase 0):</strong></p>
+<ul>
+<li><strong>Week 1:</strong> Engage Vouch (or 2 brokers — Embroker, Newfront alternates) for Phase 0 platform insurance quote. Target bind by Week 3. Coverage spec per <code>docs/operations/liability-insurance-framework.md</code> §5 — CGL + Tech E&amp;O + Cyber + Marketplace Endorsement. Realistic budget: $4K-$9K/yr (NOT the $800 placeholder in plan §A5).</li>
+<li><strong>Week 1-2:</strong> Engage attorney (per plan §A7) for FULL package — NOT just 1099 memo. Scope: 1099 classification memo + ToS + Pro Service Agreement + Work Order template + Wefunder SAFE review. Budget: $10K-$15K. Recommended firms: Foley Hoag (Boston), Devine Millimet (NH), Pierce Atwood (ME).</li>
+<li><strong>Week 3:</strong> Update <code>docs/legal/founding-pro-agreement.md</code> with Layer 1 insurance requirements (COI naming Sherpa Pros LLC as Additional Insured, expiry monitoring consent, license re-verification consent). Coordinate with T1 on OpenSign template update.</li>
+<li><strong>Week 4:</strong> Publish customer-facing "Sherpa Pros Work Guarantee" page (<code>/guarantee</code>) explaining caps + exclusions. T1 builds the page from copy Phyrom drafts.</li>
+<li><strong>Week 4:</strong> Train Concierge (Phyrom + 1 Upwork US contractor) on the Track A + Track B dispute workflow per liability framework §7.</li>
+<li><strong>Weeks 4-6:</strong> Pilot with first 5 beta pros — actually verify their COIs, run a mock dispute end-to-end before any real customer dispute happens.</li>
+</ul>
+<p><strong>Open questions Phyrom must resolve before any external customer-facing publication:</strong></p>
+<ol>
+<li>Work guarantee cap — $5K/job + $25K/customer/year — confirm or adjust</li>
+<li>Reserve fund — what % of trailing-90-day GMV held to fund Layer 3 guarantees before Tech E&amp;O kicks in (suggest 2%)</li>
+<li><strong>MA contractor-referral-service licensing</strong> — MA Office of Consumer Affairs may require state registration; confirm with attorney</li>
+<li>PM tier liability — when Sherpa Pros sends a pro to a PM's tenant unit, who's the customer of record for liability?</li>
+<li>Specialty lane risk concentration — Boston specialty (heat pump, EV, panel) jobs have $10K-$50K stakes; consider differential cap</li>
+<li>Mass Save / National Grid partnership coverage requirements — confirm during partnership outreach</li>
+<li>Mandatory arbitration enforceability — ME and MA courts increasingly skeptical</li>
+<li>Class-action waiver enforceability — same question, especially given AB5-style worker classification environment</li>
+</ol>
+<p><strong>Status:</strong> Phyrom updates docs/operations/weekly-status/<yyyy-ww>.md weekly with section "## J Liability &amp; Insurance" — broker quote status, attorney milestones, ToS draft progress, customer-facing guarantee page status.</yyyy-ww></p>
+<hr>
+<h2 id="phase-1-bookmarked-workstreams-do-not-spin-up-yet">Phase 1 Bookmarked Workstreams (do NOT spin up yet)</h2>
+<p>These workstreams launch AFTER Phase 0 first close. Bookmarked here so Phyrom + future terminals know they're queued.</p>
+<h3 id="workstream-k--embedded-protection-products-phase-1-months-4-6">Workstream K — Embedded Protection Products (Phase 1, Months 4-6)</h3>
+<p><strong>Trigger:</strong> Phase 0 first close + active Stripe Connect + 30+ jobs/month volume.</p>
+<p><strong>Source doc:</strong> <code>docs/operations/embedded-protection-products.md</code></p>
+<p><strong>Three-product roadmap:</strong></p>
+<ul>
+<li><strong>K-A (Phase 1):</strong> Per-job Project Protection ($89 Plus / $249 Premium) at checkout — white-label backend via Boost Insurance or Cover Genius</li>
+<li><strong>K-B (Phase 2):</strong> Annual Home Maintenance Membership ($199/yr) — partner with home warranty co (Super, 2-10, Old Republic)</li>
+<li><strong>K-C (Phase 2/3):</strong> PM Portfolio Protection ($24/unit/yr B2B) — specialty commercial insurance partner</li>
+</ul>
+<p><strong>First action when triggered:</strong> email Boost Insurance + Cover Genius using template in <code>docs/operations/embedded-protection-products.md</code> §11.</p>
+<p><strong>Engineering scope:</strong> ~2 weeks T1 work (new checkout flow, MGA API integration, Stripe charge bundling, policy management UI).</p>
+<p><strong>Revenue projection:</strong> Phase 1 ~$2K/mo, Phase 2 ~$10K/mo, Phase 3 ~$48K/mo, combined Phase 4 (A+B+C) ~$1.1M/yr.</p>
+<h3 id="workstream-l--quick-job-lane-phase-1-build-phase-0-cohort-impact">Workstream L — Quick Job Lane (Phase 1 build, Phase 0 cohort impact)</h3>
+<p><strong>Trigger:</strong> Phase 0 first close + base Project mode infrastructure stable + 15+ pros recruited (Quick Job pros now part of Phase 0 cohort target).</p>
+<p><strong>Source doc:</strong> <code>docs/operations/quick-job-lane.md</code></p>
+<p><strong>Phase 0 impact (already amended):</strong> beta cohort target 10+ → 15+ to include 4-5 Quick Job pros. T5 prompt updated above.</p>
+<p><strong>Phase 1 build (after first close):</strong></p>
+<ul>
+<li>L1: Define Quick Job catalog with metro-specific pricing (start with top 12 tasks per quick-job-lane.md §4)</li>
+<li>L2: Engineering build (T1, ~3 weeks): catalog table, dispatch logic, pricing API, customer + pro Quick Job flows, Stripe 24-hour-hold variant</li>
+<li>L3: Soft-launch Quick Job tab to existing beta customers (Month 4)</li>
+<li>L4: Public launch Quick Job tab (Month 5)</li>
+<li>L5: Same-Day Guarantee A/B test ($9 add-on at checkout)</li>
+<li>L6: Measure attach rate, time-to-match, customer satisfaction lift, Project-mode-conversion rate (small-job → big-job upsell)</li>
+</ul>
+<p><strong>Why this matters strategically:</strong> Quick Job is the <strong>acquisition funnel</strong> for Project work, the <strong>liquidity engine</strong> for matching algorithm, and the <strong>defense</strong> vs Angi/Thumbtack/Handy in their owned category.</p>
+<p><strong>Revenue projection:</strong> Phase 1 <del>$20K take/mo, Phase 2 ~$160K take/mo (</del>25% of total platform revenue at Phase 2 scale).</p>
+<p><strong>Brand check:</strong> Quick Job lane uses different headline ("Real licensed pros. Pre-priced. Confirmed in 30 minutes. The handyman lane Angi can't deliver.") — same brand bible rules apply (Licensed, Verified, Local, Jobs not leads — no Wiseman externally, no surname for Phyrom).</p>
+<hr>
+<h2 id="daily-standup-5-min-all-terminals">Daily Standup (5-min, all terminals)</h2>
+<p><strong>Cadence:</strong> Every weekday morning. Each terminal posts in <code>docs/operations/weekly-status/&lt;YYYY-WW&gt;.md</code>:</p>
+<pre><code class="hljs markdown"><span class="hljs-section">## YYYY-MM-DD Standup</span>
+
+<span class="hljs-section">### T1 Engineering</span>
+<span class="hljs-bullet">-</span> Yesterday: <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">one-liner</span>&gt;</span></span>
+<span class="hljs-bullet">-</span> Today: <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">one-liner</span>&gt;</span></span>
+<span class="hljs-bullet">-</span> Blockers: <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">none</span> / <span class="hljs-attr">specific</span> <span class="hljs-attr">item</span>&gt;</span></span>
+
+<span class="hljs-section">### T2 Grants</span>
+<span class="hljs-bullet">-</span> (same format)
+
+<span class="hljs-section">### T3 Accelerators</span>
+<span class="hljs-bullet">-</span> (same format)
+
+<span class="hljs-section">### T4 Wefunder</span>
+<span class="hljs-bullet">-</span> (same format)
+
+<span class="hljs-section">### T5 Marketing</span>
+<span class="hljs-bullet">-</span> (same format)
+
+<span class="hljs-section">### T6 VC</span>
+<span class="hljs-bullet">-</span> (same format)
+
+<span class="hljs-section">### J Liability &amp; Insurance (Phyrom)</span>
+<span class="hljs-bullet">-</span> (same format — broker quote status, attorney milestones, ToS draft, guarantee page)
+</code></pre>
+<p>When a terminal hits a blocker that requires Phyrom decision, the blocker line should be:
+<code>Blocker: &lt;specific decision needed&gt; — Phyrom</code></p>
+<hr>
+<h2 id="weekly-phase-0-review-60-min-phyrom-led">Weekly Phase-0 Review (60 min, Phyrom-led)</h2>
+<p><strong>Cadence:</strong> Every Monday. Phyrom reviews progress against Phase 0 exit gate criteria:</p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Target</th>
+<th>Current</th>
+<th>On Track?</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Beta pros active</td>
+<td>15+ (10-12 Project + 4-5 Quick Job)</td>
+<td>TBD</td>
+<td>TBD</td>
+</tr>
+<tr>
+<td>Jobs in pipeline</td>
+<td>30+ in 60 days</td>
+<td>TBD</td>
+<td>TBD</td>
+</tr>
+<tr>
+<td>GMV captured</td>
+<td>$24K+ in 60 days</td>
+<td>TBD</td>
+<td>TBD</td>
+</tr>
+<tr>
+<td>Non-dilutive committed</td>
+<td>$250K+</td>
+<td>TBD</td>
+<td>TBD</td>
+</tr>
+<tr>
+<td>Wefunder soft-commit</td>
+<td>$100K+</td>
+<td>TBD</td>
+<td>TBD</td>
+</tr>
+<tr>
+<td>Tier-1 accelerator status</td>
+<td>Accept / Reject / Pending</td>
+<td>TBD</td>
+<td>TBD</td>
+</tr>
+<tr>
+<td>VC term sheets</td>
+<td>1+</td>
+<td>TBD</td>
+<td>TBD</td>
+</tr>
+</tbody></table>
+<p><strong>Phase 1 trigger:</strong> Hit ANY ONE of (a) $250K+ non-dilutive committed, (b) $500K+ Wefunder+angel soft-circled, (c) Tier-1 accelerator acceptance.</p>
+<p>When Phase 1 triggers, Phyrom opens a new spec + plan: <code>docs/superpowers/specs/&lt;date&gt;-phase-1-lean-launch-design.md</code>. Each terminal pivots from Phase 0 workstream to Phase 1 workstream per the new plan.</p>
+<hr>
+<h2 id="things-not-in-this-handoff-phyrom-personal-action-required">Things NOT in this Handoff (Phyrom Personal Action Required)</h2>
+<p>These cannot be delegated to a terminal:</p>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Owner</th>
+<th>Deadline</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Stripe Connect live setup for Sherpa Pros LLC</td>
+<td>Phyrom</td>
+<td>48hr</td>
+</tr>
+<tr>
+<td>Apple Developer account ($99/yr)</td>
+<td>Phyrom</td>
+<td>48hr</td>
+</tr>
+<tr>
+<td>MA foreign-LLC registration for Sherpa Pros LLC ($500)</td>
+<td>Phyrom</td>
+<td>Week 1</td>
+</tr>
+<tr>
+<td>SAM.gov + Research.gov registration</td>
+<td>Phyrom</td>
+<td>Week 1 (gates SBIR)</td>
+</tr>
+<tr>
+<td>Surname decision (use one or strip everywhere)</td>
+<td>Phyrom</td>
+<td>Week 1</td>
+</tr>
+<tr>
+<td>Canonical email decision</td>
+<td>Phyrom</td>
+<td>Week 1</td>
+</tr>
+<tr>
+<td>Canonical domain decision</td>
+<td>Phyrom</td>
+<td>Week 1</td>
+</tr>
+<tr>
+<td>Mass Save 2026 rebate amount verification</td>
+<td>Phyrom</td>
+<td>Before any Mass Save mention publishes</td>
+</tr>
+<tr>
+<td><strong>Engage Vouch / Embroker / Newfront broker — Phase 0 platform insurance (CGL + Tech E&amp;O + Cyber + Marketplace endorsement, $4K-$9K/yr realistic)</strong></td>
+<td>Phyrom</td>
+<td>Week 1, bind by Week 3</td>
+</tr>
+<tr>
+<td><strong>Engage attorney for FULL package — 1099 memo + ToS + Pro Service Agreement + Work Order template + SAFE review ($10K-$15K)</strong></td>
+<td>Phyrom</td>
+<td>Week 1-2</td>
+</tr>
+<tr>
+<td>Founder video on NH jobsite (for Suffolk, Techstars, YC, Greentown apps)</td>
+<td>Phyrom</td>
+<td>Week 2-3</td>
+</tr>
+<tr>
+<td>Founder professional headshot (~$300 NH photographer)</td>
+<td>Phyrom</td>
+<td>Week 2-3</td>
+</tr>
+<tr>
+<td>HJD network beta pro asks (close 6-7 to commitment — Project + Quick Job mix)</td>
+<td>Phyrom</td>
+<td>Weeks 1-3</td>
+</tr>
+<tr>
+<td>Schema migration 005 deploy to Neon production</td>
+<td>Phyrom + T1</td>
+<td>Week 1</td>
+</tr>
+<tr>
+<td>Vercel env var add for live Stripe keys</td>
+<td>Phyrom + T1</td>
+<td>Week 1 (after Stripe Connect approves)</td>
+</tr>
+<tr>
+<td>Resolve 8 open liability questions (work guarantee cap, reserve %, MA referral-service licensing, PM tier liability, specialty lane cap, Mass Save coverage, mandatory arbitration, class-action waiver enforceability)</td>
+<td>Phyrom + attorney</td>
+<td>Week 4</td>
+</tr>
+<tr>
+<td>Approve Quick Job catalog + pricing bands per metro (use <code>docs/operations/quick-job-lane.md</code> §4 as starting point)</td>
+<td>Phyrom</td>
+<td>Phase 1 kickoff (Month 4)</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="quick-reference--where-everything-lives">Quick Reference — Where Everything Lives</h2>
+<pre><code>sherpa-pros-platform/
+├── docs/
+│   ├── superpowers/
+│   │   ├── specs/2026-04-22-gtm-marketing-design.md     ← source-of-truth GTM design
+│   │   ├── plans/2026-04-22-phase-0-fundraise-and-beta.md ← 47-task implementation plan
+│   │   └── handoff/2026-04-22-parallel-execution-prompts.md ← THIS FILE
+│   ├── pitch/
+│   │   ├── sherpa-pros-deck-v1.md                       ← 10-slide investor deck
+│   │   ├── sherpa-pros-onepager-v1.md                   ← exec one-pager
+│   │   ├── competitive-analysis.md                      ← competitive matrix
+│   │   ├── tam-sam-som.md                               ← market sizing
+│   │   ├── metrics-dashboard-design.md                  ← admin/investor-metrics design
+│   │   └── brand-audit.md                               ← Brand Guardian P0/P1/P2 punch list
+│   ├── operations/
+│   │   ├── liability-insurance-framework.md             ← 4-layer liability model (Workstream J) ★
+│   │   ├── embedded-protection-products.md              ← Phase 1 paid insurance (Workstream K) — bookmark
+│   │   └── quick-job-lane.md                            ← Phase 1 small-jobs mode (Workstream L) — Phase 0 cohort impact
+│   ├── marketing/
+│   │   ├── linkedin-editorial.md                        ← 39-post 90-day calendar (T5)
+│   │   ├── referral-mechanics-design.md                 ← 4 loops, fraud controls
+│   │   └── email-sequences/                             ← 4 sequences (T5)
+│   ├── fundraising/
+│   │   ├── grants/                                      ← 6 drafts (T2)
+│   │   ├── accelerators/                                ← 5 drafts (T3)
+│   │   ├── vc/                                          ← 53-firm pipeline + outreach (T6)
+│   │   ├── wefunder/                                    ← FAQ + page + PR plan (T4)
+│   │   └── status/                                      ← submission tracking (created by terminals)
+│   └── operations/
+│       └── weekly-status/                               ← daily standups + weekly reviews
+├── src/
+│   ├── app/(dashboard)/admin/investor-metrics/         ← live dashboard (already shipped)
+│   ├── app/(marketing)/                                 ← landing pages (already refreshed)
+│   ├── db/migrations/005_phase_0_traction_telemetry.sql ← needs deploy to Neon
+│   └── ...                                              ← T1 territory
+└── .npmrc                                               ← legacy-peer-deps=true (DO NOT DELETE)
+</code></pre>
+<hr>
+<p><strong>Source plan + spec are immutable execution-time references.</strong> Update them only when Phase 1 triggers or when Phyrom explicitly approves a spec amendment.</p>
+
+	
+
+
+</body>
+</html>

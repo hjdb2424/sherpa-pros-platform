@@ -1,0 +1,1045 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2026 04 16 google maps uber interface design — Sherpa Pros</title>
+<link rel="icon" href="../../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="2026-04-16-google-maps-uber-interface-design.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="google-maps-uber-like-interface--design-spec">Google Maps Uber-Like Interface — Design Spec</h1>
+<h2 id="overview">Overview</h2>
+<p>Replace all Mapbox dependencies with Google Maps to create an Uber-like map-first interface across three flows: Client Find Pros, Pro Browse Jobs, and Emergency Dispatch. The map is the primary interface — not a widget on a page.</p>
+<h2 id="decisions">Decisions</h2>
+<table>
+<thead>
+<tr>
+<th>Decision</th>
+<th>Choice</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Scope</td>
+<td>All three flows — client, pro, emergency</td>
+</tr>
+<tr>
+<td>Map library</td>
+<td>Google Maps only — remove Mapbox entirely</td>
+</tr>
+<tr>
+<td>Layout</td>
+<td>Hybrid — full-screen + bottom sheet on mobile, split panel on desktop</td>
+</tr>
+<tr>
+<td>Markers</td>
+<td>Progressive Detail — clusters → avatars → mini-cards by zoom level</td>
+</tr>
+<tr>
+<td>Emergency UX</td>
+<td>Rich bottom sheet — ETA, progress bar, pro details, call/message</td>
+</tr>
+<tr>
+<td>Theme</td>
+<td>System preference — respects <code>prefers-color-scheme</code>, no forced override</td>
+</tr>
+</tbody></table>
+<h2 id="dependencies">Dependencies</h2>
+<h3 id="add">Add</h3>
+<ul>
+<li><code>@vis.gl/react-google-maps</code> — React wrapper for Google Maps JavaScript API (Advanced Markers, Map ID support, theme-aware)</li>
+</ul>
+<h3 id="remove">Remove</h3>
+<ul>
+<li><code>mapbox-gl</code></li>
+<li><code>react-map-gl</code></li>
+<li><code>@turf/circle</code></li>
+<li><code>@deck.gl/layers</code></li>
+<li><code>@deck.gl/react</code></li>
+<li><code>@types/mapbox-gl</code></li>
+</ul>
+<h3 id="keep">Keep</h3>
+<ul>
+<li><code>@googlemaps/js-api-loader</code> — already installed, used by AddressAutocomplete</li>
+</ul>
+<h2 id="environment-variables">Environment Variables</h2>
+<pre><code>NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=AIza...    # Required for map rendering
+NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID=...         # Optional: for cloud-based styling + AdvancedMarkerElement
+</code></pre>
+<p>Without <code>NEXT_PUBLIC_GOOGLE_MAPS_API_KEY</code>, map areas show a branded placeholder with address search. All data and list views still work — the map is an enhancement, not a gate.</p>
+<h2 id="architecture">Architecture</h2>
+<h3 id="new-components">New Components</h3>
+<h4 id="1-srccomponentsmapsgooglemapprovidertsx">1. <code>src/components/maps/GoogleMapProvider.tsx</code></h4>
+<p>Context provider that wraps the app (or map-containing routes) with the Google Maps API loader.</p>
+<ul>
+<li>Loads API via <code>@vis.gl/react-google-maps</code> <code>&lt;APIProvider&gt;</code></li>
+<li>Passes <code>NEXT_PUBLIC_GOOGLE_MAPS_API_KEY</code> and optional <code>mapId</code></li>
+<li>Provides a <code>useGoogleMapsReady()</code> hook for children to check load state</li>
+<li>Handles missing API key gracefully — renders children without map capability</li>
+</ul>
+<h4 id="2-srccomponentsmapsmapviewtsx">2. <code>src/components/maps/MapView.tsx</code></h4>
+<p>Core map component used across all three flows.</p>
+<ul>
+<li>Renders <code>&lt;Map&gt;</code> from <code>@vis.gl/react-google-maps</code></li>
+<li>Props: <code>center</code>, <code>zoom</code>, <code>markers[]</code>, <code>onMarkerClick</code>, <code>selectedId</code>, <code>className</code></li>
+<li>Theme-aware: applies dark map style when <code>prefers-color-scheme: dark</code></li>
+<li>Uses manual zoom-based logic for progressive detail (no separate clustering library needed)</li>
+<li>Full-screen on mobile (100dvh minus nav), split panel width on desktop</li>
+<li>Emits <code>onBoundsChanged</code> for list filtering by visible map area</li>
+</ul>
+<h4 id="3-srccomponentsmapsbottomsheettsx">3. <code>src/components/maps/BottomSheet.tsx</code></h4>
+<p>Draggable bottom sheet for mobile map overlay. On desktop, renders as a side panel instead.</p>
+<ul>
+<li>Three snap points: peek (80px — shows count/summary), half (50vh), full (90vh)</li>
+<li>Drag handle at top with pill indicator</li>
+<li>Touch-friendly: <code>touch-action: none</code> on handle, momentum scrolling in content</li>
+<li>Content slot receives list of pros/jobs/dispatch info</li>
+<li>Desktop: renders as <code>w-[400px]</code> fixed left panel with scroll, no drag behavior</li>
+<li>Uses <code>matchMedia('(min-width: 1024px)')</code> to switch between sheet and panel</li>
+</ul>
+<h4 id="4-srccomponentsmapspromarkertsx">4. <code>src/components/maps/ProMarker.tsx</code></h4>
+<p>Custom marker for pros on the map. Uses <code>AdvancedMarkerElement</code> for rich HTML content.</p>
+<ul>
+<li><strong>Cluster level (zoom &lt; 10):</strong> Numbered circle — <code>bg-[#00a9e0]</code>, white text, count of pros in area</li>
+<li><strong>Avatar level (zoom 10-14):</strong> Circle with initials — <code>bg-[#00a9e0]</code>, white text, 40x40px, white border + shadow</li>
+<li><strong>Detail level (zoom &gt; 14 or tapped):</strong> Mini-card — white card with avatar, name, rating (orange-red stars), trade, distance, "Request" button in sky blue</li>
+<li>Props: <code>pro: { id, name, initials, rating, trade, lat, lng, verified }</code>, <code>zoom</code>, <code>selected</code></li>
+<li>Selected state: scale up 1.1x, add blue ring</li>
+</ul>
+<h4 id="5-srccomponentsmapsjobmarkertsx">5. <code>src/components/maps/JobMarker.tsx</code></h4>
+<p>Custom marker for jobs on the map.</p>
+<ul>
+<li><strong>Cluster level:</strong> Same as ProMarker clusters</li>
+<li><strong>Pin level:</strong> Circle with price — white bg, blue border, <code>$450</code> text, 40x40px</li>
+<li><strong>Detail level:</strong> Mini-card — white card with category icon, title, budget, urgency badge, distance, "Bid" button</li>
+<li>Urgency color coding: emergency = <code>#ff4500</code> border, standard = <code>#00a9e0</code> border, flexible = <code>#94a3b8</code> border</li>
+<li>Props: <code>job: { id, title, category, budget, urgency, lat, lng }</code>, <code>zoom</code>, <code>selected</code></li>
+</ul>
+<h4 id="6-srccomponentsmapsdispatchtrackertsx">6. <code>src/components/maps/DispatchTracker.tsx</code></h4>
+<p>Emergency dispatch map with live pro tracking. Always full-screen regardless of device.</p>
+<ul>
+<li>Full-viewport Google Map with dark or light style (system preference)</li>
+<li>Route line: <code>google.maps.DirectionsRenderer</code> showing path from pro to client</li>
+<li>Pro marker: animated avatar circle with pulsing shadow ring (sky blue glow)</li>
+<li>Client marker: orange-red pulsing dot (your location)</li>
+<li>Floating ETA pill: centered at top — large number + "MIN AWAY" label</li>
+<li>Rich bottom sheet (always visible, not draggable on this screen):<ul>
+<li>ETA + distance text</li>
+<li>Progress bar (gradient from <code>#00a9e0</code> to <code>#10b981</code>)</li>
+<li>Pro avatar + name + rating + certifications</li>
+<li>Call button (sky blue circle) + Message button (gray circle)</li>
+<li>"Cancel Dispatch" text link at bottom</li>
+</ul>
+</li>
+<li>Simulated movement: in mock mode, pro marker moves along route every 3 seconds</li>
+<li>Props: <code>proLocation: {lat, lng}</code>, <code>clientLocation: {lat, lng}</code>, <code>pro: ProInfo</code>, <code>eta: number</code></li>
+</ul>
+<h4 id="7-srccomponentsmapsmapplaceholdertsx">7. <code>src/components/maps/MapPlaceholder.tsx</code></h4>
+<p>Fallback when no Google Maps API key is configured.</p>
+<ul>
+<li>Branded container matching the map area dimensions</li>
+<li>Sky blue gradient background with map pin icon</li>
+<li>"Add Google Maps API key to enable map view" message</li>
+<li>Address search input still functional (uses existing AddressAutocomplete)</li>
+<li>"View as List" button to switch to list-only mode</li>
+</ul>
+<h3 id="keep-existing">Keep Existing</h3>
+<ul>
+<li><code>src/components/maps/AddressAutocomplete.tsx</code> — already uses <code>@googlemaps/js-api-loader</code>, no changes needed</li>
+</ul>
+<h3 id="remove-1">Remove</h3>
+<ul>
+<li><code>src/components/maps/MapProvider.tsx</code> — Mapbox provider, replaced by GoogleMapProvider</li>
+<li><code>src/components/maps/HubMap.tsx</code> — Mapbox hub visualization</li>
+<li><code>src/components/maps/JobMap.tsx</code> — Mapbox job map</li>
+<li><code>src/components/maps/ProMap.tsx</code> — Mapbox pro map</li>
+<li><code>src/components/maps/MapMarker.tsx</code> — Mapbox custom marker</li>
+</ul>
+<h2 id="page-integration">Page Integration</h2>
+<h3 id="1-client-find-pros-clientfind-pros">1. Client: Find Pros (<code>/client/find-pros</code>)</h3>
+<p><strong>Current:</strong> List-only view with search and filters.
+<strong>New:</strong> Map is the primary interface.</p>
+<ul>
+<li><strong>Mobile:</strong> Full-screen map with bottom sheet. Sheet shows pro list (peek = "5 Pros Nearby", half = scrollable cards, full = detailed list with filters).</li>
+<li><strong>Desktop:</strong> Split panel — pro list left (400px), map right (fills remaining).</li>
+<li><strong>Map behavior:</strong><ul>
+<li>Centers on user's location (via browser geolocation API)</li>
+<li>Falls back to hub center (Portsmouth, NH) if location denied</li>
+<li>Shows ProMarkers for all pros in visible bounds</li>
+<li><code>onBoundsChanged</code> filters the list panel to show only visible pros</li>
+<li>Tap a pin → bottom sheet slides up with pro detail card</li>
+<li>Trade filter pills overlay the map top (horizontal scroll)</li>
+</ul>
+</li>
+<li><strong>MAP/LIST toggle:</strong> On mobile navbar, segmented control lets user switch between map view and full list view.</li>
+</ul>
+<h3 id="2-pro-browse-jobs-projobs">2. Pro: Browse Jobs (<code>/pro/jobs</code>)</h3>
+<p><strong>Current:</strong> List view of available jobs with filters.
+<strong>New:</strong> Map + list hybrid.</p>
+<ul>
+<li>Same hybrid layout as Find Pros (full-screen + sheet on mobile, split on desktop)</li>
+<li>Shows JobMarkers with urgency color coding</li>
+<li>Bottom sheet shows job cards with category, budget, distance, urgency badge</li>
+<li>Tap a pin → sheet slides to that job's detail card with "Place Bid" button</li>
+<li>Emergency jobs pulse on the map (animated ring around pin)</li>
+<li>Filter by: trade, urgency, distance, budget range</li>
+</ul>
+<h3 id="3-emergency-dispatch-clientemergency">3. Emergency: Dispatch (<code>/client/emergency</code>)</h3>
+<p><strong>Current:</strong> Multi-step flow with mock radar and progress bars.
+<strong>New:</strong> Map-first dispatch experience.</p>
+<p>The existing category → severity → location flow stays. The map replaces the mock radar and en-route tracker:</p>
+<ul>
+<li><strong>Step: Matching</strong> — Full-screen map centered on client location. Pulsing orange-red dot. Animated search radius expanding outward (concentric rings). "Finding nearby pros..." text overlay. When a match is found, pro marker appears on map with bounce animation.</li>
+<li><strong>Step: Dispatched</strong> — DispatchTracker takes over. Route line drawn. ETA countdown. Pro marker moves along route (simulated in mock mode). Rich bottom sheet with pro details and call/message.</li>
+<li><strong>Step: Arrived</strong> — Pro marker reaches client location. Celebration micro-animation. Sheet updates to "Pro has arrived" with job detail + emergency checklist link.</li>
+</ul>
+<h2 id="theme-support">Theme Support</h2>
+<h3 id="light-mode-default">Light Mode (default)</h3>
+<ul>
+<li>Standard Google Maps style (or custom Map ID with brand-tinted roads/water)</li>
+<li>White bottom sheet and panels</li>
+<li>Blue pins, dark text, standard shadows</li>
+</ul>
+<h3 id="dark-mode-prefers-color-scheme-dark">Dark Mode (<code>prefers-color-scheme: dark</code>)</h3>
+<ul>
+<li>Google Maps dark style (via <code>mapId</code> or custom JSON styles array)</li>
+<li>Dark bottom sheet (<code>bg-zinc-900</code>) and panels</li>
+<li>Brighter blue pins (<code>#0ea5e9</code>), lighter text, adjusted shadows</li>
+<li>Route line stays sky blue (high contrast on dark map)</li>
+</ul>
+<h3 id="implementation">Implementation</h3>
+<ul>
+<li><code>GoogleMapProvider</code> reads system preference via <code>matchMedia('(prefers-color-scheme: dark)')</code></li>
+<li>Passes <code>colorScheme</code> prop to <code>MapView</code></li>
+<li><code>MapView</code> applies dark styles JSON when dark mode detected</li>
+<li>All overlay components (BottomSheet, markers, ETA pill) use CSS variables from globals.css which already support dark mode</li>
+</ul>
+<h2 id="mock-data">Mock Data</h2>
+<p>All three flows work with mock data when no database is connected:</p>
+<ul>
+<li><strong>Find Pros:</strong> 8 mock pros around Portsmouth, NH with varied trades, ratings, distances</li>
+<li><strong>Browse Jobs:</strong> 6 mock jobs with varied urgency, categories, budgets</li>
+<li><strong>Emergency Dispatch:</strong> Pre-set mock route from pro location to client, 8-minute simulated ETA that counts down</li>
+</ul>
+<p>Mock data lives in <code>src/lib/mock-data/</code> alongside existing mock files.</p>
+<h2 id="graceful-degradation">Graceful Degradation</h2>
+<table>
+<thead>
+<tr>
+<th>Condition</th>
+<th>Behavior</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>No API key</td>
+<td>MapPlaceholder shown. List views fully functional. Address search works.</td>
+</tr>
+<tr>
+<td>API key set, no Map ID</td>
+<td>Standard Google Map (no custom styling). AdvancedMarkerElement still works.</td>
+</tr>
+<tr>
+<td>API key + Map ID</td>
+<td>Full custom-styled map with cloud-based themes + dark mode.</td>
+</tr>
+<tr>
+<td>Geolocation denied</td>
+<td>Map centers on default hub (Portsmouth, NH 43.0718, -70.7626).</td>
+</tr>
+<tr>
+<td>No database</td>
+<td>Mock pro/job data populates all views.</td>
+</tr>
+</tbody></table>
+<h2 id="file-changes-summary">File Changes Summary</h2>
+<h3 id="new-files-7">New Files (7)</h3>
+<ul>
+<li><code>src/components/maps/GoogleMapProvider.tsx</code></li>
+<li><code>src/components/maps/MapView.tsx</code></li>
+<li><code>src/components/maps/BottomSheet.tsx</code></li>
+<li><code>src/components/maps/ProMarker.tsx</code></li>
+<li><code>src/components/maps/JobMarker.tsx</code></li>
+<li><code>src/components/maps/DispatchTracker.tsx</code></li>
+<li><code>src/components/maps/MapPlaceholder.tsx</code></li>
+</ul>
+<h3 id="modified-files-5">Modified Files (5)</h3>
+<ul>
+<li><code>src/app/(dashboard)/client/find-pros/</code> — wire in MapView + BottomSheet</li>
+<li><code>src/app/(dashboard)/pro/jobs/</code> — wire in MapView + BottomSheet</li>
+<li><code>src/app/(dashboard)/client/emergency/</code> — wire in DispatchTracker</li>
+<li><code>src/lib/mock-data/</code> — add map-specific mock data (pro locations, job locations, routes)</li>
+<li><code>package.json</code> — add <code>@vis.gl/react-google-maps</code>, remove Mapbox packages</li>
+</ul>
+<h3 id="deleted-files-5">Deleted Files (5)</h3>
+<ul>
+<li><code>src/components/maps/MapProvider.tsx</code></li>
+<li><code>src/components/maps/HubMap.tsx</code></li>
+<li><code>src/components/maps/JobMap.tsx</code></li>
+<li><code>src/components/maps/ProMap.tsx</code></li>
+<li><code>src/components/maps/MapMarker.tsx</code></li>
+</ul>
+
+	
+
+
+</body>
+</html>

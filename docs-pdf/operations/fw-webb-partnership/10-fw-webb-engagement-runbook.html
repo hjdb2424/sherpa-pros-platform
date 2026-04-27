@@ -1,0 +1,1047 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>10 fw webb engagement runbook — Sherpa Pros</title>
+<link rel="icon" href="../../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="10-fw-webb-engagement-runbook.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="fw-webb-engagement-runbook">FW Webb Engagement Runbook</h1>
+<h2 id="hard-deadline">Hard deadline</h2>
+<p><strong>LOI SIGNED by Phase 1 Month 4.</strong></p>
+<p>This runbook works backward from that date. Phyrom is the Single Threaded Owner. Every phase has named handoffs, owner, and gating evidence.</p>
+<h2 id="phase-1--prep--warm-intro-mapping-month-0-→-month-1">Phase 1 — Prep + warm-intro mapping (Month 0 → Month 1)</h2>
+<h3 id="goals">Goals</h3>
+<ul>
+<li>FW Webb HQ org chart confirmed</li>
+<li>Warm-intro paths to CEO / COO / VP Partnerships identified</li>
+<li>Intro pitch deck (<code>02-intro-pitch-deck.md</code>) finalized + reviewed by 2 trusted advisors</li>
+<li>Tier 1 branch managers identified by name</li>
+<li>LOI template (<code>03-pilot-loi-template.md</code>) reviewed by Sherpa Pros counsel</li>
+</ul>
+<h3 id="tasks">Tasks</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Confirm FW Webb CEO / COO / VP Partnerships names via FW Webb website + LinkedIn (Phyrom)</li>
+<li><input disabled="" type="checkbox"> Map warm-intro paths: NE Pro Council, mutual-customer GCs, Sherpa Pros advisor network, FW Webb supplier reps (Phyrom)</li>
+<li><input disabled="" type="checkbox"> Draft 3 intro outreach messages: (a) cold-but-warm direct, (b) via warm-intro, (c) via FW Webb supplier rep referral (Phyrom + advisor)</li>
+<li><input disabled="" type="checkbox"> Lock intro pitch deck — review with Sherpa advisors + 1 contractor friend who buys at FW Webb (Phyrom)</li>
+<li><input disabled="" type="checkbox"> Counsel review of LOI template — flag binding-vs-non-binding sections (Phyrom + counsel)</li>
+<li><input disabled="" type="checkbox"> Identify Tier 1 branch managers by name via LinkedIn + FW Webb branch directory (Phyrom)</li>
+<li><input disabled="" type="checkbox"> Build 1-pager economic-model summary for branch-manager-level conversations (Phyrom)</li>
+</ul>
+<h3 id="gating-evidence">Gating evidence</h3>
+<ul>
+<li>FW Webb HQ org chart with names + contact info</li>
+<li>3 confirmed warm-intro paths</li>
+<li>Pitch deck reviewed and approved</li>
+<li>LOI template counsel-reviewed</li>
+<li>Tier 1 branch managers named</li>
+</ul>
+<h3 id="exit-criteria">Exit criteria</h3>
+<p>Phyrom can credibly request a 30-min meeting with at least one of FW Webb CEO / COO / VP Partnerships.</p>
+<h2 id="phase-2--initial-hq-meetings-month-1-→-month-2">Phase 2 — Initial HQ meetings (Month 1 → Month 2)</h2>
+<h3 id="goals-1">Goals</h3>
+<ul>
+<li>First meeting with at least one of FW Webb CEO / COO / VP Partnerships</li>
+<li>Buy-in on the strategic logic ("yes, the partnership shape makes sense")</li>
+<li>Regional VP introductions secured</li>
+<li>5 Tier 1 branch managers introduced</li>
+</ul>
+<h3 id="tasks-1">Tasks</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Send warm-intro request to first FW Webb HQ exec (Phyrom)</li>
+<li><input disabled="" type="checkbox"> Hold first 30-min HQ meeting; share intro deck slides 1-7 only (Phyrom)</li>
+<li><input disabled="" type="checkbox"> Follow up within 48 hrs with full deck + economic model + LOI template summary (Phyrom)</li>
+<li><input disabled="" type="checkbox"> Schedule 60-min follow-up with VP Partnerships + Regional VP North + Regional VP South (Phyrom)</li>
+<li><input disabled="" type="checkbox"> Coordinate Regional VP intros to 5 Tier 1 branch managers (Phyrom + Reg VPs)</li>
+<li><input disabled="" type="checkbox"> Send branch-manager intro emails (Phyrom — personalized per branch)</li>
+</ul>
+<h3 id="gating-evidence-1">Gating evidence</h3>
+<ul>
+<li>HQ meeting completed; meeting notes circulated</li>
+<li>VP Partnerships engaged as primary day-to-day counterpart</li>
+<li>Regional VP introductions made</li>
+<li>5 Tier 1 branch manager calls scheduled</li>
+</ul>
+<h3 id="exit-criteria-1">Exit criteria</h3>
+<p>FW Webb has assigned a named primary counterpart (VP Partnerships) who is actively responding to email within 48 hrs.</p>
+<h3 id="risks-to-monitor">Risks to monitor</h3>
+<ul>
+<li>FW Webb leadership references "we want to think about it" → escalate to founder-to-founder ask</li>
+<li>Regional VP says branch managers are too busy → propose virtual intros first, on-site visits second</li>
+<li>HQ asks for exclusivity outside what LOI offers → defer to legal scope; do not concede</li>
+</ul>
+<h2 id="phase-3--on-site-branch-visits-month-2-→-month-3">Phase 3 — On-site branch visits (Month 2 → Month 3)</h2>
+<h3 id="goals-2">Goals</h3>
+<ul>
+<li>Phyrom physically visits each of 5 Tier 1 candidate branches with Regional VP</li>
+<li>Branch managers see and feel the Sherpa Hub vision</li>
+<li>Branch-level data collected (sq-ft availability, parking, loading-dock fit, current pro counter throughput)</li>
+<li>5 branch managers verbally support hosting a pilot</li>
+</ul>
+<h3 id="tasks-2">Tasks</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Schedule 5 on-site visits (Phyrom + Regional VP + Branch Mgr) — half-day each (Phyrom)</li>
+<li><input disabled="" type="checkbox"> Bring physical mockup / FFE plan for the 800 sq-ft Sherpa Hub footprint (Phyrom)</li>
+<li><input disabled="" type="checkbox"> Walk through the branch with the Branch Mgr; identify the proposed Hub footprint location (Phyrom + Branch Mgr)</li>
+<li><input disabled="" type="checkbox"> Document Branch Site Schedule data (sq ft available, configuration, doorways, utilities) per branch (Phyrom + FW Webb facilities)</li>
+<li><input disabled="" type="checkbox"> Interview Branch Mgr on: top 50 pro accounts, pro-account churn signals, top SKU velocity, counter-pain-point list (Phyrom)</li>
+<li><input disabled="" type="checkbox"> Take photos + measurements; build per-branch buildout estimate refinement (Phyrom)</li>
+</ul>
+<h3 id="gating-evidence-2">Gating evidence</h3>
+<ul>
+<li>5 completed on-site visits with notes</li>
+<li>5 Branch Site Schedules drafted</li>
+<li>5 Branch Mgrs verbally supportive</li>
+<li>Per-branch buildout cost refined to within ±10% of $80K planning number</li>
+</ul>
+<h3 id="exit-criteria-2">Exit criteria</h3>
+<p>5 Tier 1 branches have viable Hub footprints + supportive Branch Mgrs.</p>
+<p>If &lt;5 viable, substitute with Tier 2 candidates from <code>01-target-contact-list.md</code>.</p>
+<h2 id="phase-4--loi-negotiation--legal-review-month-3-→-month-4">Phase 4 — LOI negotiation + legal review (Month 3 → Month 4)</h2>
+<h3 id="goals-3">Goals</h3>
+<ul>
+<li>LOI negotiated to executable form</li>
+<li>Both Parties' counsel signed off</li>
+<li>Sub-lease terms finalized per branch</li>
+<li>Definitive Master Services Agreement structure agreed</li>
+</ul>
+<h3 id="tasks-3">Tasks</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Send LOI template (<code>03-pilot-loi-template.md</code>) to FW Webb VP Partnerships + GC (Phyrom)</li>
+<li><input disabled="" type="checkbox"> Schedule LOI negotiation working session (Phyrom + Sherpa counsel + FW Webb VP Partnerships + FW Webb GC)</li>
+<li><input disabled="" type="checkbox"> Iterate on flagged [LEGAL] sections: §2.1 footprint classification, §3 economics, §6 data sharing, §7 exclusivity, §10 termination, §11 IP, §13 binding/non-binding, §14 governing law (joint counsel)</li>
+<li><input disabled="" type="checkbox"> Finalize per-branch Branch Site Schedules (FW Webb facilities + Phyrom)</li>
+<li><input disabled="" type="checkbox"> Negotiate any commercial term adjustments (e.g. sub-lease fee, exclusivity scope) with explicit P/L impact analysis from <code>04-fw-webb-economic-model.md</code> (Phyrom + FW Webb VP Partnerships)</li>
+<li><input disabled="" type="checkbox"> Final review by both CEOs (Phyrom + FW Webb CEO)</li>
+</ul>
+<h3 id="gating-evidence-3">Gating evidence</h3>
+<ul>
+<li>LOI text finalized</li>
+<li>Both counsels signed off</li>
+<li>5 Branch Site Schedules attached as Exhibit B</li>
+<li>CEO sign-off</li>
+</ul>
+<h3 id="exit-criteria-3">Exit criteria</h3>
+<p>LOI is execution-ready by <strong>Phase 1 Month 4 Week 1</strong> to allow signature in Week 2-3.</p>
+<h2 id="phase-5--loi-signed-month-4">Phase 5 — LOI SIGNED (Month 4)</h2>
+<h3 id="goals-4">Goals</h3>
+<ul>
+<li>LOI executed by both Parties</li>
+<li>Public announcement (jointly drafted, jointly approved)</li>
+<li>Internal kick-off both Parties</li>
+</ul>
+<h3 id="tasks-4">Tasks</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Both Parties sign LOI (CEOs) — <strong>HARD DEADLINE Phase 1 Month 4</strong></li>
+<li><input disabled="" type="checkbox"> Joint press release approved + scheduled (Sherpa marketing + FW Webb marketing)</li>
+<li><input disabled="" type="checkbox"> Internal kickoff meeting both teams (Phyrom + FW Webb VP Partnerships + ops counterparts)</li>
+<li><input disabled="" type="checkbox"> Set up joint Slack channel / shared workspace</li>
+<li><input disabled="" type="checkbox"> Schedule first QBR for Pilot M3</li>
+<li><input disabled="" type="checkbox"> Update GTM Phase 0 fundraise narrative to cite signed LOI (Phyrom + Sherpa marketing)</li>
+</ul>
+<h3 id="gating-evidence-4">Gating evidence</h3>
+<ul>
+<li>Signed LOI in Sherpa Pros document vault</li>
+<li>Joint press release published</li>
+<li>First QBR on calendar</li>
+</ul>
+<h3 id="exit-criteria-4">Exit criteria</h3>
+<p>LOI signed; pilot Hub buildouts can commence per Phase 6.</p>
+<h2 id="phase-6--pilot-hub-buildouts-begin-month-4-→-month-6">Phase 6 — Pilot Hub buildouts begin (Month 4 → Month 6)</h2>
+<h3 id="goals-5">Goals</h3>
+<ul>
+<li>5 pilot Hubs in active buildout</li>
+<li>First Hub opens (Plaistow NH or Manchester NH) by Pilot Month 2 from LOI</li>
+<li>All 5 Hubs operational by Pilot Month 6 from LOI</li>
+</ul>
+<h3 id="tasks-5">Tasks</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Mirror Wave A Hub #1 buildout playbook adapted for co-located format (Sherpa Network Ops)</li>
+<li><input disabled="" type="checkbox"> Stagger the 5 buildouts: Hub 1 (Plaistow) week 1, Hub 2 (Haverhill) week 3, Hub 3 (Manchester) week 5, Hub 4 (Woburn) week 7, Hub 5 (Warwick) week 9 (Sherpa Network Ops)</li>
+<li><input disabled="" type="checkbox"> Hire Hub Manager for each Hub on a -6-week lead from open date (Sherpa HR)</li>
+<li><input disabled="" type="checkbox"> FFE delivery + installation per Hub buildout playbook</li>
+<li><input disabled="" type="checkbox"> Pre-open member acquisition campaign per Hub (FW Webb in-branch signage + counter handouts + Sherpa Marketplace push)</li>
+<li><input disabled="" type="checkbox"> Sherpa Materials engine integration per Hub (per spec <code>05-sherpa-materials-hub-integration-spec.md</code>)</li>
+<li><input disabled="" type="checkbox"> Per-Hub dashboard + Network Ops dashboard wired up (per specs <code>06</code> + <code>07</code>)</li>
+<li><input disabled="" type="checkbox"> Soft-open invite-only beta per Hub for first 2 weeks</li>
+<li><input disabled="" type="checkbox"> Public open per Hub</li>
+<li><input disabled="" type="checkbox"> Pilot M0 starts on Hub #1 soft-open date</li>
+</ul>
+<h3 id="gating-evidence-5">Gating evidence</h3>
+<ul>
+<li>All 5 Hubs operational by Pilot Month 6</li>
+<li>All Hub Managers hired + trained</li>
+<li>Sherpa Materials engine fulfilling orders at all 5 Hubs</li>
+<li>Per-Hub + Network Ops dashboards live</li>
+<li>Pilot M0 confirmed</li>
+</ul>
+<h3 id="exit-criteria-5">Exit criteria</h3>
+<p>5 Hubs operational; Pilot Month 6 review (per <code>09-pilot-success-metrics.md</code> Layer 2 gates) imminent.</p>
+<h2 id="owner--raci-summary">Owner / RACI summary</h2>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>R (Responsible)</th>
+<th>A (Accountable)</th>
+<th>C (Consulted)</th>
+<th>I (Informed)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1 — Prep</td>
+<td>Phyrom</td>
+<td>Phyrom</td>
+<td>Sherpa counsel, advisors</td>
+<td>Sherpa team</td>
+</tr>
+<tr>
+<td>2 — HQ meetings</td>
+<td>Phyrom</td>
+<td>Phyrom</td>
+<td>Advisor (warm-intro)</td>
+<td>Sherpa team, FW Webb regional VPs</td>
+</tr>
+<tr>
+<td>3 — On-site visits</td>
+<td>Phyrom</td>
+<td>Phyrom</td>
+<td>FW Webb Reg VPs, Branch Mgrs</td>
+<td>Sherpa team, FW Webb VP Partnerships</td>
+</tr>
+<tr>
+<td>4 — LOI negotiation</td>
+<td>Phyrom + Sherpa counsel</td>
+<td>Phyrom</td>
+<td>FW Webb VP Partnerships + GC</td>
+<td>Both Parties leadership</td>
+</tr>
+<tr>
+<td>5 — LOI SIGNED</td>
+<td>Both CEOs</td>
+<td>Both CEOs</td>
+<td>Counsel both sides</td>
+<td>Both Parties teams + market</td>
+</tr>
+<tr>
+<td>6 — Hub buildouts</td>
+<td>Sherpa Network Ops</td>
+<td>Phyrom</td>
+<td>FW Webb Branch Mgrs + Facilities</td>
+<td>Both Parties teams</td>
+</tr>
+</tbody></table>
+<h2 id="comms-cadence-during-pursuit">Comms cadence during pursuit</h2>
+<ul>
+<li><strong>Weekly</strong> Phyrom + FW Webb VP Partnerships 30-min sync (post Phase 2)</li>
+<li><strong>Monthly</strong> Phyrom + FW Webb COO 30-min update (post Phase 2)</li>
+<li><strong>Phase-end</strong> joint exec review with both CEOs (Phases 2, 3, 4 end)</li>
+<li><strong>Slack</strong> between teams set up at LOI signature (Phase 5)</li>
+</ul>
+<h2 id="scenarios--escalations">Scenarios + escalations</h2>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Escalation path</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>FW Webb VP Partnerships unresponsive &gt;5 business days</td>
+<td>Phyrom escalates to COO directly</td>
+</tr>
+<tr>
+<td>Branch Mgr opposes pilot at their branch</td>
+<td>Substitute with Tier 2 candidate (<code>01-target-contact-list.md</code>)</td>
+</tr>
+<tr>
+<td>Legal stalls LOI past Month 4 deadline</td>
+<td>Compromise on non-essential clauses; escalate to both CEOs for executive override</td>
+</tr>
+<tr>
+<td>FW Webb requests exclusivity outside scope</td>
+<td>Counter with carve-outs to single-trade specialty distributors + DIY retail (LOI §7.3)</td>
+</tr>
+<tr>
+<td>Phyrom personal capacity constrained</td>
+<td>Engage Sherpa Pros COO (when hired Year 1) as deputy; Phyrom remains face of partnership</td>
+</tr>
+<tr>
+<td>FW Webb requests data sharing beyond LOI §6.3 scope</td>
+<td>Refuse; offer aggregate-only as pilot data; revisit at Year 2 expansion negotiation</td>
+</tr>
+</tbody></table>
+<h2 id="dependencies-on-other-waves">Dependencies on other Waves</h2>
+<ul>
+<li><strong>Wave A (Hub #1 Atkinson NH)</strong> — Hub buildout playbook is the source pattern for Phase 6 co-located buildouts; Wave A learnings flow into Phase 6</li>
+<li><strong>Wave C/D/E/F (other parallel work)</strong> — Sherpa Pros platform readiness for member onboarding, dispatch, payments, materials engine — must be production-ready by Phase 6 Hub openings</li>
+<li><strong>GTM phase-arc refresh</strong> — fundraise narrative cites the LOI; runbook holds the Month 4 deadline that GTM is also tracking</li>
+</ul>
+
+	
+
+
+</body>
+</html>

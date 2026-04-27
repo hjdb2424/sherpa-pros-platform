@@ -1,0 +1,1039 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>02 architect engagement rfp — Sherpa Pros</title>
+<link rel="icon" href="../../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="02-architect-engagement-rfp.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="hub-1-atkinson-nh---architect-engagement-request-for-proposal-rfp">Hub #1 Atkinson NH - Architect Engagement Request for Proposal (RFP)</h1>
+<h2 id="purpose">Purpose</h2>
+<p>Engage a New Hampshire-licensed commercial architect to produce permit-ready drawings, code-compliance review, fixtures-furnishings-equipment (FF&amp;E) layout, and signage design for the Hub #1 fit-out at HJD Builders LLC HQ in Atkinson NH.</p>
+<p><strong>Engage by:</strong> Phase 1 Month 1 (target signed engagement letter within 30 days of this RFP).</p>
+<p><strong>Budget cap:</strong> $12,000 - $18,000 fixed-fee engagement (all phases below included).</p>
+<hr>
+<h2 id="1-project-scope">1. Project Scope</h2>
+<h3 id="11-as-built-drawings">1.1 As-built drawings</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Field-measure existing HJD HQ bay</li>
+<li><input disabled="" type="checkbox"> Produce as-built floor plan, reflected ceiling plan, electrical one-line, mechanical schematic</li>
+<li><input disabled="" type="checkbox"> Document existing conditions (structural, MEP, finishes)</li>
+</ul>
+<h3 id="12-code-compliance-review">1.2 Code-compliance review</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Review against IBC (International Building Code) as adopted by NH</li>
+<li><input disabled="" type="checkbox"> Review against NH State Building Code amendments</li>
+<li><input disabled="" type="checkbox"> Review against Atkinson Town building ordinance + zoning ordinance</li>
+<li><input disabled="" type="checkbox"> Review accessibility (ADA + NH state accessibility code)</li>
+<li><input disabled="" type="checkbox"> Identify required upgrades (egress, fire separation, accessibility, occupancy load) and cost-impact each</li>
+</ul>
+<h3 id="13-permit-drawings">1.3 Permit drawings</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Construction-ready architectural plans</li>
+<li><input disabled="" type="checkbox"> Stamped + signed plans for Atkinson Building Department</li>
+<li><input disabled="" type="checkbox"> Plans include: floor plan, reflected ceiling plan, demo plan, finish schedule, door/hardware schedule, electrical plan (coordinated with electrical sub), mechanical plan (coordinated with HVAC sub), plumbing plan, life-safety plan</li>
+<li><input disabled="" type="checkbox"> Coordinate with engineering subs (structural / MEP) for stamped sub-discipline drawings as required by code</li>
+</ul>
+<h3 id="14-ffe-layout">1.4 FF&amp;E layout</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Design furniture, fixtures, equipment layout coordinated with WS1.3 equipment manifest</li>
+<li><input disabled="" type="checkbox"> Specify finish schedules (flooring, paint, ceiling, lighting)</li>
+<li><input disabled="" type="checkbox"> Specify millwork (POS counter, member-lounge work table, kit-assembly bench)</li>
+<li><input disabled="" type="checkbox"> Specify storefront / showroom layout for brand consistency with Sherpa Pros visual identity</li>
+</ul>
+<h3 id="15-signage-design">1.5 Signage design</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Design exterior primary sign + secondary signage per Atkinson sign ordinance</li>
+<li><input disabled="" type="checkbox"> Design interior wayfinding system</li>
+<li><input disabled="" type="checkbox"> Coordinate signage drawings for permit submission</li>
+<li><input disabled="" type="checkbox"> Source signage fabricator + installation oversight</li>
+</ul>
+<hr>
+<h2 id="2-deliverables">2. Deliverables</h2>
+<table>
+<thead>
+<tr>
+<th>Deliverable</th>
+<th>Format</th>
+<th>Due</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>As-built drawings</td>
+<td>PDF + DWG</td>
+<td>Week 2 of engagement</td>
+</tr>
+<tr>
+<td>Code-compliance memo</td>
+<td>PDF</td>
+<td>Week 3 of engagement</td>
+</tr>
+<tr>
+<td>Permit-ready plans (stamped)</td>
+<td>PDF + paper for Town</td>
+<td>Week 6 of engagement</td>
+</tr>
+<tr>
+<td>FF&amp;E layout + finish schedule</td>
+<td>PDF + spec book</td>
+<td>Week 6 of engagement</td>
+</tr>
+<tr>
+<td>Signage design package</td>
+<td>PDF + fabricator-ready files</td>
+<td>Week 7 of engagement</td>
+</tr>
+<tr>
+<td>Construction-administration support</td>
+<td>hourly bank, see section 4</td>
+<td>During build (Months 2-3)</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="3-architect-selection---target-3-candidates">3. Architect Selection - Target 3 Candidates</h2>
+<p>Identify and shortlist 3 NH-licensed commercial architects with strong contractor / supply-house / retail-light-industrial experience. Recommended search radius: Manchester / Concord / Portsmouth / Salem NH and northern MA border (Andover / Methuen).</p>
+<h3 id="sourcing-criteria">Sourcing criteria</h3>
+<ul>
+<li><input disabled="" type="checkbox"> NH-licensed (active, in good standing with NH Joint Board of Licensure)</li>
+<li><input disabled="" type="checkbox"> 5+ years commercial fit-out experience</li>
+<li><input disabled="" type="checkbox"> Demonstrated portfolio: contractor supply, retail, light industrial, or mixed-use commercial</li>
+<li><input disabled="" type="checkbox"> Experience with Town of Atkinson or peer NH towns (Plaistow, Hampstead, Salem) - knows local Building Department personalities + permit timing</li>
+<li><input disabled="" type="checkbox"> Comfortable with $12-18K fixed-fee engagement at this scope</li>
+<li><input disabled="" type="checkbox"> Available to start within 30 days</li>
+</ul>
+<h3 id="recommended-sourcing-channels">Recommended sourcing channels</h3>
+<ul>
+<li><input disabled="" type="checkbox"> AIA NH Chapter (American Institute of Architects, NH chapter directory)</li>
+<li><input disabled="" type="checkbox"> NHHBA member directory (NH Home Builders Association - many member firms have architects on retainer or in-network)</li>
+<li><input disabled="" type="checkbox"> LinkedIn search: "commercial architect" + "New Hampshire"</li>
+<li><input disabled="" type="checkbox"> Referrals from HJD Builders sub network (electricians, GCs, supply reps often know who they prefer working with)</li>
+<li><input disabled="" type="checkbox"> Atkinson Town Building Department - ask Building Inspector who has filed cleanly recently</li>
+<li><input disabled="" type="checkbox"> Phyrom's existing professional network from HJD project history</li>
+</ul>
+<h3 id="shortlist-evaluation">Shortlist evaluation</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Initial 30-min phone screen with 5+ candidates</li>
+<li><input disabled="" type="checkbox"> Site visit + RFP walkthrough with top 3</li>
+<li><input disabled="" type="checkbox"> Reference check: last 2 commercial fit-out clients (timeline adherence, budget adherence, change-order discipline, ease of working with)</li>
+<li><input disabled="" type="checkbox"> Insurance + license verification</li>
+</ul>
+<hr>
+<h2 id="4-compensation-structure">4. Compensation Structure</h2>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Fee</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>As-built + code review</td>
+<td>$3,000-$4,500</td>
+<td>Fixed</td>
+</tr>
+<tr>
+<td>Permit-ready drawings</td>
+<td>$5,000-$8,000</td>
+<td>Fixed</td>
+</tr>
+<tr>
+<td>FF&amp;E + signage</td>
+<td>$2,500-$3,500</td>
+<td>Fixed</td>
+</tr>
+<tr>
+<td>Construction admin</td>
+<td>$1,500-$2,000</td>
+<td>Hourly bank, drawn down during build, unused returned</td>
+</tr>
+<tr>
+<td><strong>Total fixed-fee target</strong></td>
+<td><strong>$12,000-$18,000</strong></td>
+<td></td>
+</tr>
+</tbody></table>
+<p><strong>Reimbursables:</strong> Permit fees, printing, travel paid as actual cost (cap $1,500 unless pre-approved).</p>
+<p><strong>Payment schedule:</strong></p>
+<ul>
+<li>25% on engagement signing</li>
+<li>25% on as-built + code review delivery</li>
+<li>25% on permit submission</li>
+<li>25% on construction-admin completion (or 90 days post-fit-out, whichever first)</li>
+</ul>
+<hr>
+<h2 id="5-timeline">5. Timeline</h2>
+<table>
+<thead>
+<tr>
+<th>Week</th>
+<th>Milestone</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0</td>
+<td>Engagement signed</td>
+</tr>
+<tr>
+<td>1-2</td>
+<td>Site survey + as-built field measure</td>
+</tr>
+<tr>
+<td>2-3</td>
+<td>As-built drawings + code-compliance memo delivered</td>
+</tr>
+<tr>
+<td>3-5</td>
+<td>Permit-ready drawing development</td>
+</tr>
+<tr>
+<td>5-6</td>
+<td>FF&amp;E + signage design</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Permit package submitted to Town of Atkinson</td>
+</tr>
+<tr>
+<td>6-9</td>
+<td>Town review + permit issuance (typical Atkinson lead time: 3-4 weeks for commercial)</td>
+</tr>
+<tr>
+<td>9+</td>
+<td>Construction-admin (during fit-out build per <code>03-contractor-rfp-and-criteria.md</code>)</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="6-rfp-submission-requirements">6. RFP Submission Requirements</h2>
+<h3 id="from-candidate-architect">From candidate architect</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Firm capabilities statement (2-3 pages)</li>
+<li><input disabled="" type="checkbox"> Resume of lead architect on this project</li>
+<li><input disabled="" type="checkbox"> 3 relevant portfolio examples (similar scope: 1,500-3,000 sq ft commercial fit-out)</li>
+<li><input disabled="" type="checkbox"> 3 client references (with permission to contact)</li>
+<li><input disabled="" type="checkbox"> Certificate of insurance (general liability, professional liability, workers comp)</li>
+<li><input disabled="" type="checkbox"> License verification (NH state)</li>
+<li><input disabled="" type="checkbox"> Fixed-fee proposal against the scope above</li>
+<li><input disabled="" type="checkbox"> Proposed timeline</li>
+<li><input disabled="" type="checkbox"> Sample contract / engagement letter</li>
+</ul>
+<h3 id="submission-deadline">Submission deadline</h3>
+<ul>
+<li><input disabled="" type="checkbox"> 14 days from RFP issue</li>
+<li><input disabled="" type="checkbox"> Submit to: Phyrom (<a href="mailto:poum@hjd.builders">poum@hjd.builders</a>) - subject line "Sherpa Hub Atkinson - Architect RFP Response"</li>
+</ul>
+<hr>
+<h2 id="7-selection-criteria--scoring-matrix">7. Selection Criteria + Scoring Matrix</h2>
+<table>
+<thead>
+<tr>
+<th>Criterion</th>
+<th>Weight</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>NH licensure + insurance in order</td>
+<td>Pass / fail</td>
+</tr>
+<tr>
+<td>Relevant portfolio depth</td>
+<td>25%</td>
+</tr>
+<tr>
+<td>References quality</td>
+<td>20%</td>
+</tr>
+<tr>
+<td>Town of Atkinson / Rockingham County permit familiarity</td>
+<td>15%</td>
+</tr>
+<tr>
+<td>Fixed-fee competitiveness</td>
+<td>15%</td>
+</tr>
+<tr>
+<td>Timeline alignment with Phase 1 schedule</td>
+<td>15%</td>
+</tr>
+<tr>
+<td>Cultural fit (responsiveness, communication, founder-friendly)</td>
+<td>10%</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="8-engagement-sign-off">8. Engagement Sign-off</h2>
+<ul>
+<li><input disabled="" type="checkbox"> 3 RFP responses received</li>
+<li><input disabled="" type="checkbox"> Top candidate selected</li>
+<li><input disabled="" type="checkbox"> Reference checks complete</li>
+<li><input disabled="" type="checkbox"> Engagement letter signed</li>
+<li><input disabled="" type="checkbox"> Kickoff meeting scheduled</li>
+</ul>
+<p><strong>Critical-path date:</strong> Architect engaged by end of Phase 1 Month 1 to keep permit submission on track for Month 2 construction kickoff.</p>
+
+	
+
+
+</body>
+</html>

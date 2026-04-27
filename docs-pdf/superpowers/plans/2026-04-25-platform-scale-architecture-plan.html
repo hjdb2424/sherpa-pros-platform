@@ -1,0 +1,1969 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2026 04 25 platform scale architecture plan — Sherpa Pros</title>
+<link rel="icon" href="../../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="2026-04-25-platform-scale-architecture-plan.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="platform-scale-architecture--implementation-plan">Platform Scale Architecture — Implementation Plan</h1>
+<blockquote>
+<p><strong>For agentic workers:</strong> REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (<code>- [ ]</code>) syntax for tracking.</p>
+</blockquote>
+<p><strong>Goal:</strong> Migrate Sherpa Pros from single-region MVP to multi-region, SOC 2 Type 2 certified, 99.95% SLA platform capable of 1M+ MAU. Execution window: Q3 2026 through Q2 2028 (Type 2 issuance). 7 parallel work streams totaling ~50 bite-sized tasks.</p>
+<p><strong>Source spec:</strong> <code>docs/superpowers/specs/2026-04-25-platform-scale-architecture-design.md</code></p>
+<p><strong>Owners:</strong></p>
+<ul>
+<li><strong>P</strong> = Phyrom (founder, decision authority on every vendor + budget)</li>
+<li><strong>CTO</strong> = future hire (Phase 4A); until then, Phyrom acts in this role</li>
+<li><strong>SRE</strong> = future hire (Phase 4A); until then, Phyrom + part-time advisor</li>
+<li><strong>DBA</strong> = future hire (Phase 4A); until then, Neon support + Postgres advisor</li>
+<li><strong>Security</strong> = Vanta + auditor + pen test firm</li>
+<li><strong>AI</strong> = Claude sub-agent dispatch (parallelized in waves)</li>
+</ul>
+<p><strong>Critical-path dependencies:</strong></p>
+<ul>
+<li>WS1 (SOC 2 Type 1) gates WS7 step 5 (Canadian region — enterprise PM customers require Type 1)</li>
+<li>WS2 (Observability) gates WS3 step 4 (sharding rollout — need APM to detect regression)</li>
+<li>WS4 (WAF + rate limiting) gates any high-profile public launch</li>
+<li>WS5 (SRE practices) gates WS3 + WS7 (multi-region work without on-call discipline = burnout)</li>
+</ul>
+<hr>
+<h2 id="workstream-1-ws1--soc-2-type-1-readiness">Workstream 1 (WS1) — SOC 2 Type 1 Readiness</h2>
+<p><strong>Goal:</strong> Issuable SOC 2 Type 1 report by end of Q2 2027. Engages Vanta as compliance automation, Schellman as auditor.</p>
+<h3 id="task-ws11-engage-vanta-for-compliance-automation">Task WS1.1: Engage Vanta for compliance automation</h3>
+<p><strong>Owner:</strong> P
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/compliance/vendor-engagement.md</code> (NEW — log of compliance vendors and contracts)</p>
+</li>
+<li><p>Create: <code>docs/compliance/control-implementation-plan.md</code> (NEW — generated by Vanta scoping call)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Schedule Vanta sales demo, scope-of-work call, request quote for SOC 2 Type 1 + 12-month Type 2 path</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Compare Vanta quote against Drata quote (request both for negotiating leverage)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Sign Vanta annual contract, document in <code>vendor-engagement.md</code> with renewal date + escalation contact</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Connect Vanta integrations: Vercel, Neon, Clerk, Stripe, GitHub, Google Workspace, Slack</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 5:</strong> Receive Vanta gap report — save to <code>control-implementation-plan.md</code> with prioritized list of controls to implement</p>
+</li>
+</ul>
+<p><strong>Acceptance:</strong> Vanta dashboard shows ≥80% of in-scope controls auto-monitored within 30 days of integration
+<strong>Dependencies:</strong> None — start immediately Q3 2026</p>
+<hr>
+<h3 id="task-ws12-engage-schellman-as-auditor-or-a-lign-as-fallback">Task WS1.2: Engage Schellman as auditor (or A-LIGN as fallback)</h3>
+<p><strong>Owner:</strong> P
+<strong>Files:</strong></p>
+<ul>
+<li><p>Update: <code>docs/compliance/vendor-engagement.md</code></p>
+</li>
+<li><p>Create: <code>docs/compliance/audit-timeline.md</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Request quotes from Schellman + A-LIGN for Type 1 + 12-month Type 2 path</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Reference-check both auditors with 2 SaaS founders each</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Sign with chosen auditor, schedule pre-audit scoping call</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Document audit timeline (Type 1 fieldwork, observation period, Type 2 fieldwork)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 5:</strong> Add audit milestones to company OKRs</p>
+</li>
+</ul>
+<p><strong>Acceptance:</strong> Auditor contracted, timeline documented, kickoff date set
+<strong>Dependencies:</strong> WS1.1 complete (Vanta gives auditor visibility)</p>
+<hr>
+<h3 id="task-ws13-implement-access-management-controls">Task WS1.3: Implement access management controls</h3>
+<p><strong>Owner:</strong> P + CTO
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/policies/access-management.md</code> (NEW)</p>
+</li>
+<li><p>Modify: <code>src/middleware.ts</code> (Sherpa Guard already shipped — add quarterly access review export endpoint)</p>
+</li>
+<li><p>Create: <code>src/app/api/admin/access-review/route.ts</code> (NEW — exports current access matrix as CSV)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Document access management policy (least privilege, MFA required for admin, quarterly review cadence)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Implement <code>/api/admin/access-review/route.ts</code> that exports all roles + users + last-login as CSV</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Schedule quarterly access review event in calendar (every 90 days, P + CTO review)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Enable Clerk MFA enforcement for all admin-tier roles (admin, sherpa_success, ops)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 5:</strong> Document evidence of first quarterly review in Vanta</p>
+</li>
+</ul>
+<p><strong>Acceptance:</strong> First quarterly access review completed, evidence in Vanta, no orphaned admin accounts found
+<strong>Dependencies:</strong> WS1.1 (Vanta needs evidence destination)</p>
+<hr>
+<h3 id="task-ws14-vendor-management-catalog">Task WS1.4: Vendor management catalog</h3>
+<p><strong>Owner:</strong> P
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/compliance/vendor-risk-register.md</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> List every third-party vendor with access to production data or customer PII</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> For each vendor, request and store latest SOC 2 / ISO 27001 report</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Classify each vendor by risk tier (critical / high / medium / low)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Document data shared with each vendor (PII type, retention, disposition)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 5:</strong> Set annual review cadence per vendor in Vanta</p>
+</li>
+</ul>
+<p><strong>Acceptance:</strong> All Tier-1 vendors (Vercel, Neon, Clerk, Stripe, Twilio, Cloudflare) have current SOC 2 reports stored, annual review scheduled
+<strong>Dependencies:</strong> None</p>
+<hr>
+<h3 id="task-ws15-document-change-management-policy--evidence-trail">Task WS1.5: Document change management policy + evidence trail</h3>
+<p><strong>Owner:</strong> CTO
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/policies/change-management.md</code> (NEW)</p>
+</li>
+<li><p>Update: <code>.github/PULL_REQUEST_TEMPLATE.md</code> (NEW or update existing)</p>
+</li>
+<li><p>Create: <code>docs/policies/deployment-windows.md</code> (NEW — codifies "no Friday deploys")</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Document change management policy: PR review required, automated testing gate, deploy-window enforcement</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Update PR template with required fields: change classification (low/medium/high risk), rollback plan, observability checks</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Document deploy-window policy (Mon-Thu 10:00-16:00 ET, off-hours requires CTO approval)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Configure GitHub branch protection on <code>main</code>: require 1 review, status checks, no force-push</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 5:</strong> Verify Vercel deployment audit log retention is set to 7 years</p>
+</li>
+</ul>
+<p><strong>Acceptance:</strong> Change management policy published, branch protection enforced, deploy-window policy followed for 30 consecutive days without exception
+<strong>Dependencies:</strong> None</p>
+<hr>
+<h3 id="task-ws16-backup--restore-policy-and-quarterly-test">Task WS1.6: Backup + restore policy and quarterly test</h3>
+<p><strong>Owner:</strong> P + DBA (when hired) or Neon support
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/policies/backup-and-restore.md</code> (NEW)</p>
+</li>
+<li><p>Create: <code>docs/runbooks/db-restore-from-pitr.md</code> (NEW)</p>
+</li>
+<li><p>Create: <code>docs/dr-test-results/</code> directory</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Document backup cadence (continuous WAL + nightly full + weekly cross-region + monthly cold archive)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Document RPO/RTO targets per Section 10 of spec</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Write <code>db-restore-from-pitr.md</code> runbook with exact CLI commands for Neon PITR</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Run first quarterly restore test in staging, document outcome in <code>dr-test-results/2026-Q4.md</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 5:</strong> Schedule recurring quarterly restore test (calendar invite + Vanta evidence)</p>
+</li>
+</ul>
+<p><strong>Acceptance:</strong> First restore test successful, RTO measured and documented, runbook validated
+<strong>Dependencies:</strong> None</p>
+<hr>
+<h3 id="task-ws17-annual-penetration-test-engagement">Task WS1.7: Annual penetration test engagement</h3>
+<p><strong>Owner:</strong> P + CTO
+<strong>Files:</strong></p>
+<ul>
+<li><p>Update: <code>docs/compliance/vendor-engagement.md</code></p>
+</li>
+<li><p>Create: <code>docs/security/pen-test-results/</code> directory (private, not committed in plain text)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Request quotes from Trail of Bits + Bishop Fox for annual external pen test</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Sign annual contract, schedule first engagement Q1 2027</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Define scope: web app, mobile (iOS + Android), API, internal infrastructure</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Run engagement, receive report, triage findings into Linear/Jira tickets</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 5:</strong> Remediate critical/high findings within 30 days, document in Vanta</p>
+</li>
+</ul>
+<p><strong>Acceptance:</strong> First pen test completed, all critical findings remediated within SLA
+<strong>Dependencies:</strong> WS3 + WS4 substantially complete (no point pen-testing pre-WAF infrastructure)</p>
+<hr>
+<h2 id="workstream-2-ws2--observability-stack-rollout">Workstream 2 (WS2) — Observability Stack Rollout</h2>
+<p><strong>Goal:</strong> Datadog full APM + RUM + dashboards live before any SLO commitments. Establishes baseline for all future scale work.</p>
+<h3 id="task-ws21-datadog-account-provisioning--vercel-integration">Task WS2.1: Datadog account provisioning + Vercel integration</h3>
+<p><strong>Owner:</strong> CTO
+<strong>Files:</strong></p>
+<ul>
+<li><p>Update: <code>.env.example</code> (add DD_API_KEY, DD_APP_KEY documentation)</p>
+</li>
+<li><p>Create: <code>src/lib/observability/datadog.ts</code> (NEW — server-side helper)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Sign up for Datadog Pro tier (request startup discount via Datadog for Startups)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Install Datadog Vercel integration (vercel.com/integrations/datadog)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Provision API key + APP key, store in Vercel environment variables (production + preview)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Document keys in <code>.env.example</code> without values</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 5:</strong> Verify Vercel function logs flowing into Datadog (check Logs Explorer)</p>
+</li>
+</ul>
+<p><strong>Acceptance:</strong> Vercel function logs visible in Datadog within 5 minutes of test deploy
+<strong>Dependencies:</strong> None</p>
+<hr>
+<h3 id="task-ws22-apm-instrumentation-for-nextjs-routes">Task WS2.2: APM instrumentation for Next.js routes</h3>
+<p><strong>Owner:</strong> CTO
+<strong>Files:</strong></p>
+<ul>
+<li><p>Modify: <code>next.config.ts</code> (add Datadog tracer hooks)</p>
+</li>
+<li><p>Create: <code>src/lib/observability/tracer.ts</code> (NEW)</p>
+</li>
+<li><p>Modify: <code>src/middleware.ts</code> (add Datadog trace propagation)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Install <code>dd-trace</code> package (<code>npm install dd-trace</code>)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Initialize tracer in <code>src/lib/observability/tracer.ts</code> with service name <code>sherpa-pros-web</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Add tracer initialization to Next.js instrumentation hook (<code>src/instrumentation.ts</code>)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Verify traces appearing in Datadog APM UI for <code>/api/jobs</code> and <code>/api/dispatch</code> routes</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 5:</strong> Confirm Sherpa Guard middleware spans appear in trace timeline</p>
+</li>
+</ul>
+<p><strong>Acceptance:</strong> End-to-end traces visible in Datadog for 100% of <code>/api/*</code> routes within 24 hours of deploy
+<strong>Dependencies:</strong> WS2.1</p>
+<hr>
+<h3 id="task-ws23-build-the-8-required-day-1-dashboards">Task WS2.3: Build the 8 required Day-1 dashboards</h3>
+<p><strong>Owner:</strong> CTO + Datadog
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/observability/dashboards.md</code> (NEW — links to each Datadog dashboard URL)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Build dispatch latency dashboard (P50/P95/P99 from job creation to first pro notification, per metro, per urgency tier)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Build payment success rate dashboard (Stripe Connect transactions per region per hour)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Build job-creation funnel dashboard (wizard step completion, drop-off per step)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Build pro response rate dashboard (% dispatched pros accepting within urgency window, per metro)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 5:</strong> Build audit log ingestion rate dashboard (count of <code>audit_logs</code> rows per minute per action type)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 6:</strong> Build error rate per route dashboard (5xx errors per <code>/api/*</code> route, per region)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 7:</strong> Build database connection pool saturation dashboard (Neon connection metrics)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 8:</strong> Build cost dashboard (daily Vercel invocations, Neon compute-hours, Datadog ingest, Stripe fees)</p>
+</li>
+</ul>
+<p><strong>Acceptance:</strong> All 8 dashboards live, linked in <code>dashboards.md</code>, reviewed by Phyrom
+<strong>Dependencies:</strong> WS2.2</p>
+<hr>
+<h3 id="task-ws24-slo-definitions--alerting">Task WS2.4: SLO definitions + alerting</h3>
+<p><strong>Owner:</strong> CTO + SRE (when hired)
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/observability/slos.md</code> (NEW — formal SLO definitions per Section 6 of spec)</p>
+</li>
+<li><p>Create: <code>docs/runbooks/</code> directory with one stub runbook per SLO</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Document each SLO in <code>slos.md</code>: target, measurement window, error budget calc</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Configure Datadog SLO objects matching the spec (uptime, dispatch P95, payment P95, wizard completion, audit log delivery)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Configure error budget burn-rate alerts (25%, 50%, 75%, 100% burn in 24h rolling window)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Route alerts to PagerDuty</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 5:</strong> Create stub runbook per alert under <code>docs/runbooks/</code> and link from each Datadog alert description</p>
+</li>
+</ul>
+<p><strong>Acceptance:</strong> All SLOs configured in Datadog, all alerts have runbook links, on-call test page successfully delivered
+<strong>Dependencies:</strong> WS2.3</p>
+<hr>
+<h3 id="task-ws25-real-user-monitoring-rum-for-web--mobile">Task WS2.5: Real User Monitoring (RUM) for web + mobile</h3>
+<p><strong>Owner:</strong> CTO
+<strong>Files:</strong></p>
+<ul>
+<li><p>Modify: <code>src/app/layout.tsx</code> (add Datadog RUM SDK)</p>
+</li>
+<li><p>Modify: <code>mobile/App.tsx</code> (add Datadog Mobile RUM SDK)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Install <code>@datadog/browser-rum</code> for web; initialize in root layout</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Install <code>@datadog/mobile-react-native</code> for mobile; initialize in App.tsx</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Configure session replay (sample rate 10%) and error tracking (100%)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Verify sessions appearing in Datadog RUM dashboard within 1 hour of deploy</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 5:</strong> Add RUM events to dispatch funnel dashboard (correlate frontend behavior with backend latency)</p>
+</li>
+</ul>
+<p><strong>Acceptance:</strong> RUM data flowing for both web + mobile, session-replay confirmed working, no PII captured
+<strong>Dependencies:</strong> WS2.1</p>
+<hr>
+<h2 id="workstream-3-ws3--multi-region-database-strategy">Workstream 3 (WS3) — Multi-Region Database Strategy</h2>
+<p><strong>Goal:</strong> From single-region Neon primary to Citus-sharded multi-region setup. Sequenced to minimize risk.</p>
+<h3 id="task-ws31-replica-aware-drizzle-client">Task WS3.1: Replica-aware Drizzle client</h3>
+<p><strong>Owner:</strong> CTO + DBA
+<strong>Files:</strong></p>
+<ul>
+<li><p>Modify: <code>src/db/index.ts</code> (export <code>dbWrite</code> + <code>dbRead</code>)</p>
+</li>
+<li><p>Update: <code>.env.example</code> (add <code>DATABASE_URL_REPLICA</code>)</p>
+</li>
+<li><p>Create: <code>docs/db/replica-routing-guide.md</code> (NEW — when to use which client)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Refactor <code>src/db/index.ts</code> to export <code>dbWrite</code> (primary) and <code>dbRead</code> (replica)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Add <code>DATABASE_URL_REPLICA</code> env var (initially same value as primary — no harm)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Document routing convention in <code>replica-routing-guide.md</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Run full test suite to confirm no regression</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 5:</strong> Identify top 10 read-heavy routes and migrate to <code>dbRead</code> (pro search, dashboards, job browse)</p>
+</li>
+</ul>
+<p><strong>Acceptance:</strong> Build passes, all tests pass, no behavioral change yet (replica points at primary)
+<strong>Dependencies:</strong> None</p>
+<hr>
+<h3 id="task-ws32-provision-us-west-2-read-replica">Task WS3.2: Provision us-west-2 read replica</h3>
+<p><strong>Owner:</strong> CTO + Neon support
+<strong>Files:</strong></p>
+<ul>
+<li><p>Update: <code>.env</code> (production env vars in Vercel — <code>DATABASE_URL_REPLICA</code> now points at us-west-2)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Provision Neon read replica in us-west-2 via Neon dashboard</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Wait for initial replication catch-up (~30 min for current data volume)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Update <code>DATABASE_URL_REPLICA</code> in Vercel production env to us-west-2 connection string</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Verify dashboard queries return consistent results</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 5:</strong> Measure dispatch latency from west-coast Datadog synthetic — confirm improvement</p>
+</li>
+</ul>
+<p><strong>Acceptance:</strong> West-coast P95 dispatch latency drops below 200ms
+<strong>Dependencies:</strong> WS3.1, WS2.3 (need dashboards to measure)</p>
+<hr>
+<h3 id="task-ws33-sharding-decision-citus-vs-pg_partman--fdw">Task WS3.3: Sharding decision: Citus vs pg_partman + FDW</h3>
+<p><strong>Owner:</strong> P + CTO + DBA + Neon
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/db/sharding-decision.md</code> (NEW — formal ADR)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Schedule call with Neon team to confirm Citus-on-Neon support status + pricing</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Build PoC with both approaches in staging (small dataset, measure cross-shard query overhead)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Document trade-offs in <code>sharding-decision.md</code> (Architecture Decision Record format)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Make formal decision (default per spec: Citus)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 5:</strong> Get Phyrom sign-off, archive decision doc</p>
+</li>
+</ul>
+<p><strong>Acceptance:</strong> Sharding decision formally recorded, all stakeholders aligned
+<strong>Dependencies:</strong> None</p>
+<hr>
+<h3 id="task-ws34-pilot-sharding-with-2-metros-boston--portsmouth">Task WS3.4: Pilot sharding with 2 metros (Boston + Portsmouth)</h3>
+<p><strong>Owner:</strong> DBA + CTO
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>src/db/migrations/011_enable_citus.sql</code> (NEW)</p>
+</li>
+<li><p>Create: <code>src/db/migrations/012_distribute_jobs_table.sql</code> (NEW)</p>
+</li>
+<li><p>Create: <code>docs/runbooks/shard-rebalancing.md</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> In staging, enable Citus extension via migration 011</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> In staging, distribute <code>jobs</code>, <code>bids</code>, <code>dispatch_events</code>, <code>materials_orders</code>, <code>deliveries</code> tables sharded by <code>metro_id</code> via migration 012</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Run full test suite in staging — fix any cross-shard query that breaks</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Document shard-rebalancing runbook</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 5:</strong> Promote migration to production for Boston + Portsmouth metros only (feature-flag gated)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 6:</strong> Monitor dispatch latency + cross-shard query count for 7 days</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 7:</strong> If green, enable for next 5 metros; iterate until full rollout</p>
+</li>
+</ul>
+<p><strong>Acceptance:</strong> All metros sharded, dispatch latency unchanged or improved, cross-shard query count &lt;5% of total
+<strong>Dependencies:</strong> WS3.3, WS2.3</p>
+<hr>
+<h3 id="task-ws35-partitioning-strategy-implementation">Task WS3.5: Partitioning strategy implementation</h3>
+<p><strong>Owner:</strong> DBA
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>src/db/migrations/013_partition_jobs_by_month.sql</code> (NEW)</p>
+</li>
+<li><p>Create: <code>src/db/migrations/014_partition_audit_logs_by_week.sql</code> (NEW)</p>
+</li>
+<li><p>Create: <code>src/db/migrations/015_partition_messages_by_conversation_hash.sql</code> (NEW)</p>
+</li>
+<li><p>Create: <code>src/app/api/admin/maintenance/create-partitions/route.ts</code> (NEW — Vercel Cron Job target)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Migration 013: convert <code>jobs</code> to partitioned table by <code>created_at</code> month</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Migration 014: convert <code>audit_logs</code> to partitioned table by <code>created_at</code> week</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Migration 015: convert <code>messages</code> (Sherpa Threads) to partitioned table by <code>conversation_id</code> hash</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Implement maintenance route that creates partitions 3 months ahead (idempotent)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 5:</strong> Schedule Vercel Cron Job to hit maintenance route weekly</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 6:</strong> Verify partitions created in production, no query regression</p>
+</li>
+</ul>
+<p><strong>Acceptance:</strong> All target tables partitioned, maintenance cron runs successfully for 30 consecutive days
+<strong>Dependencies:</strong> WS3.4</p>
+<hr>
+<h3 id="task-ws36-hotwarmcold-tiering-implementation">Task WS3.6: Hot/warm/cold tiering implementation</h3>
+<p><strong>Owner:</strong> DBA + CTO
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>src/lib/data-tiering/migrate-to-warm.ts</code> (NEW)</p>
+</li>
+<li><p>Create: <code>src/lib/data-tiering/migrate-to-cold.ts</code> (NEW)</p>
+</li>
+<li><p>Create: <code>src/app/api/admin/maintenance/tier-migration/route.ts</code> (NEW — Vercel Cron Job target)</p>
+</li>
+<li><p>Create: <code>docs/runbooks/restore-cold-tier-data.md</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Implement migrate-to-warm logic (rows past 90 days → archive replica via partition swap)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Implement migrate-to-cold logic (rows past 365 days → S3 Parquet + Iceberg metadata)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Implement tier-migration cron route, schedule nightly via Vercel Cron Jobs</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Document restore-from-cold runbook with exact CLI commands</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 5:</strong> Test restore in staging — verify round-trip integrity</p>
+</li>
+</ul>
+<p><strong>Acceptance:</strong> Tier migration runs nightly without error, restore test successful
+<strong>Dependencies:</strong> WS3.5</p>
+<hr>
+<h2 id="workstream-4-ws4--api-rate-limiting--waf">Workstream 4 (WS4) — API Rate Limiting + WAF</h2>
+<p><strong>Goal:</strong> Cloudflare WAF + Upstash rate limiting + Vercel BotID live before any high-profile launch. Currently zero defense beyond Vercel defaults.</p>
+<h3 id="task-ws41-cloudflare-pro-setup-in-front-of-vercel">Task WS4.1: Cloudflare Pro setup in front of Vercel</h3>
+<p><strong>Owner:</strong> CTO
+<strong>Files:</strong></p>
+<ul>
+<li><p>Update: <code>vercel.ts</code> (Vercel config — replaces <code>vercel.json</code> per knowledge update — confirm origin certificate setup)</p>
+</li>
+<li><p>Create: <code>docs/infrastructure/cloudflare-config.md</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Sign up for Cloudflare Pro plan ($20/mo per zone)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Add <code>thesherpapros.com</code> zone to Cloudflare; update nameservers at registrar</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Configure SSL/TLS to "Full (Strict)" mode; install Vercel origin certificate</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Confirm zero downtime during cutover (DNS TTL prepped 24 hours prior)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 5:</strong> Document configuration in <code>cloudflare-config.md</code></p>
+</li>
+</ul>
+<p><strong>Acceptance:</strong> Site loads through Cloudflare, TLS A+ rating confirmed via SSL Labs
+<strong>Dependencies:</strong> None</p>
+<hr>
+<h3 id="task-ws42-configure-waf-rules-per-spec-section-5">Task WS4.2: Configure WAF rules per spec Section 5</h3>
+<p><strong>Owner:</strong> CTO + Security
+<strong>Files:</strong></p>
+<ul>
+<li><p>Update: <code>docs/infrastructure/cloudflare-config.md</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Enable OWASP managed ruleset (SQL injection, XSS, request smuggling)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Add rate limiting: POST /api/jobs → 10/min/IP (challenge), POST /api/auth → 5/min/IP (block)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Add User-Agent rules (challenge scrapers like scrapy/wget without auth)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Add Origin header check on /api/* routes</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 5:</strong> Configure geographic block for countries with no service AND no inbound business</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 6:</strong> Test each rule in staging mode for 7 days, then promote to block mode</p>
+</li>
+</ul>
+<p><strong>Acceptance:</strong> All rules in production block mode, false-positive rate &lt;0.1% over 30 days
+<strong>Dependencies:</strong> WS4.1</p>
+<hr>
+<h3 id="task-ws43-upstash-redis--per-tier-rate-limiting-in-middleware">Task WS4.3: Upstash Redis + per-tier rate limiting in middleware</h3>
+<p><strong>Owner:</strong> CTO
+<strong>Files:</strong></p>
+<ul>
+<li><p>Modify: <code>src/middleware.ts</code> (extend existing Sherpa Guard middleware with rate limiting)</p>
+</li>
+<li><p>Create: <code>src/lib/rate-limit.ts</code> (NEW — tier definitions + helper)</p>
+</li>
+<li><p>Update: <code>.env.example</code> (add UPSTASH_REDIS_REST_URL + UPSTASH_REDIS_REST_TOKEN)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Provision Upstash Redis (global database, eventual consistency)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Install <code>@upstash/ratelimit</code> + <code>@upstash/redis</code> packages</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Implement <code>src/lib/rate-limit.ts</code> with tier definitions per spec Section 5</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Extend <code>src/middleware.ts</code> to apply rate limiting after Sherpa Guard tier resolution</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 5:</strong> Add <code>X-RateLimit-*</code> response headers for client-side handling</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 6:</strong> Test in staging — confirm 429 responses on burst, recovery on cooldown</p>
+</li>
+</ul>
+<p><strong>Acceptance:</strong> Rate limiting active in production, no false positives in normal traffic, alerts configured for 429 spike
+<strong>Dependencies:</strong> WS4.1</p>
+<hr>
+<h3 id="task-ws44-vercel-botid-integration">Task WS4.4: Vercel BotID integration</h3>
+<p><strong>Owner:</strong> CTO
+<strong>Files:</strong></p>
+<ul>
+<li><p>Modify: <code>src/middleware.ts</code> (add BotID scoring on sign-up + waitlist + job-create)</p>
+</li>
+<li><p>Create: <code>src/lib/botid.ts</code> (NEW — helper)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Enable Vercel BotID in Vercel project settings (GA Jun 2025)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Implement <code>src/lib/botid.ts</code> helper to extract score from request headers</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Apply BotID gating in middleware: score &gt;0.7 → Cloudflare Turnstile challenge, &gt;0.9 → block</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Apply gating to <code>/sign-up</code>, POST <code>/api/jobs</code>, POST <code>/api/waitlist</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 5:</strong> Monitor Datadog for legitimate-traffic blocks (false positives), tune threshold</p>
+</li>
+</ul>
+<p><strong>Acceptance:</strong> BotID gating live, false-positive rate &lt;0.5%, bot-creation attempts blocked
+<strong>Dependencies:</strong> WS4.2</p>
+<hr>
+<h2 id="workstream-5-ws5--sre-practices-implementation">Workstream 5 (WS5) — SRE Practices Implementation</h2>
+<p><strong>Goal:</strong> On-call rotation, runbook discipline, incident response procedures formalized before multi-region rollout.</p>
+<h3 id="task-ws51-pagerduty-setup--on-call-rotation">Task WS5.1: PagerDuty setup + on-call rotation</h3>
+<p><strong>Owner:</strong> CTO + SRE
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/policies/on-call-rotation.md</code> (NEW)</p>
+</li>
+<li><p>Create: <code>docs/policies/on-call-compensation.md</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Sign up for PagerDuty Professional tier</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Create on-call schedule (Phase 1-3: P + 1 senior eng, week-on/week-off)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Configure escalation policy (primary on-call → secondary → P)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Document policy + compensation per spec Section 7</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 5:</strong> Run on-call test page, verify SLA met (ack &lt;5 min)</p>
+</li>
+</ul>
+<p><strong>Acceptance:</strong> On-call rotation live, first week completed without missed page
+<strong>Dependencies:</strong> WS2.4 (need alerts to route)</p>
+<hr>
+<h3 id="task-ws52-runbook-templates--initial-runbooks">Task WS5.2: Runbook templates + initial runbooks</h3>
+<p><strong>Owner:</strong> CTO + SRE
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/runbooks/_template.md</code> (NEW — runbook template)</p>
+</li>
+<li><p>Create: <code>docs/runbooks/dispatch-latency-degraded.md</code> (NEW)</p>
+</li>
+<li><p>Create: <code>docs/runbooks/payment-success-rate-low.md</code> (NEW)</p>
+</li>
+<li><p>Create: <code>docs/runbooks/db-connection-pool-saturation.md</code> (NEW)</p>
+</li>
+<li><p>Create: <code>docs/runbooks/cloudflare-waf-false-positives.md</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Write template per spec Section 7 (severity, detection, triage, mitigation, comms, postmortem)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Write each of the 4 initial runbooks above</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Link each runbook from corresponding Datadog alert description</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Validate runbooks via tabletop exercise (one engineer reads runbook aloud, others identify gaps)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 5:</strong> Iterate until tabletop reveals zero blocking gaps</p>
+</li>
+</ul>
+<p><strong>Acceptance:</strong> All Datadog alerts link to runbooks, tabletop exercise passes
+<strong>Dependencies:</strong> WS5.1</p>
+<hr>
+<h3 id="task-ws53-incident-response-procedures--postmortem-template">Task WS5.3: Incident response procedures + postmortem template</h3>
+<p><strong>Owner:</strong> CTO + SRE
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/policies/incident-response.md</code> (NEW)</p>
+</li>
+<li><p>Create: <code>docs/templates/postmortem.md</code> (NEW)</p>
+</li>
+<li><p>Create: <code>docs/postmortems/</code> directory</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Document SEV1/2/3/4 classification per spec Section 7</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Document incident comms protocol (status page update template, customer email template)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Write postmortem template (timeline, root cause via 5-whys, action items)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Document blameless culture norms</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 5:</strong> Run mock incident with the team — write practice postmortem</p>
+</li>
+</ul>
+<p><strong>Acceptance:</strong> Procedures published, mock incident postmortem reviewed by Phyrom
+<strong>Dependencies:</strong> WS5.2</p>
+<hr>
+<h3 id="task-ws54-feature-flags-via-vercel-edge-config--launchdarkly-evaluation">Task WS5.4: Feature flags via Vercel Edge Config + LaunchDarkly evaluation</h3>
+<p><strong>Owner:</strong> CTO
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>src/lib/feature-flags.ts</code> (NEW — abstraction over Edge Config / LaunchDarkly)</p>
+</li>
+<li><p>Create: <code>docs/policies/feature-flag-discipline.md</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Set up Vercel Edge Config for simple flags</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Evaluate LaunchDarkly for complex flags (cohort targeting, % rollout)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Implement <code>src/lib/feature-flags.ts</code> with abstraction supporting both</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Document discipline: every new feature behind a flag, default off, gradual rollout 1% → 10% → 50% → 100%</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 5:</strong> Migrate any existing ad-hoc env-var feature toggles to the new system</p>
+</li>
+</ul>
+<p><strong>Acceptance:</strong> Feature flag abstraction live, first feature shipped behind flag with gradual rollout
+<strong>Dependencies:</strong> None</p>
+<hr>
+<h3 id="task-ws55-quarterly-game-day-chaos-engineering">Task WS5.5: Quarterly Game Day (chaos engineering)</h3>
+<p><strong>Owner:</strong> SRE (Phase 4B+)
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/sre/game-day-playbook.md</code> (NEW)</p>
+</li>
+<li><p>Create: <code>docs/dr-test-results/</code> directory (used by both WS1.6 and here)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Document Game Day playbook (scenario list, run-of-show, observation criteria)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Schedule first Game Day in staging (one quarter before Phase 4B production rollout)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Execute scenario: "Primary database fails over" — observe Vercel Function recovery</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Document outcome in <code>docs/dr-test-results/2027-Q3-game-day.md</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 5:</strong> Feed findings into runbook updates</p>
+</li>
+</ul>
+<p><strong>Acceptance:</strong> First Game Day executed, findings documented, 2+ runbook improvements identified
+<strong>Dependencies:</strong> WS5.2 (need runbooks to test against)</p>
+<hr>
+<h2 id="workstream-6-ws6--security-hardening">Workstream 6 (WS6) — Security Hardening</h2>
+<p><strong>Goal:</strong> Beyond SOC 2 baseline — secrets management, dependency scanning, supply chain, bug bounty.</p>
+<h3 id="task-ws61-migrate-production-secrets-to-aws-secrets-manager">Task WS6.1: Migrate production secrets to AWS Secrets Manager</h3>
+<p><strong>Owner:</strong> CTO + Security
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>src/lib/secrets/aws-secrets-client.ts</code> (NEW)</p>
+</li>
+<li><p>Update: <code>.env.example</code> (document migration)</p>
+</li>
+<li><p>Create: <code>docs/policies/secrets-management.md</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Provision AWS Secrets Manager in us-east-1</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Migrate database credentials to Secrets Manager with auto-rotation</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Migrate Stripe + Twilio API keys (manual rotation, audit trail enabled)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Implement <code>src/lib/secrets/aws-secrets-client.ts</code> (lazy fetch, cached)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 5:</strong> Update Vercel runtime to fetch secrets from AWS Secrets Manager (Vercel native AWS integration)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 6:</strong> Confirm secret rotation works without downtime</p>
+</li>
+</ul>
+<p><strong>Acceptance:</strong> All production secrets in Secrets Manager, rotation tested, audit trail enabled
+<strong>Dependencies:</strong> None</p>
+<hr>
+<h3 id="task-ws62-snyk-integration--automated-dependency-prs">Task WS6.2: Snyk integration + automated dependency PRs</h3>
+<p><strong>Owner:</strong> CTO
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>.snyk</code> (NEW — Snyk config file)</p>
+</li>
+<li><p>Create: <code>.github/workflows/snyk.yml</code> (NEW — CI scan)</p>
+</li>
+<li><p>Create: <code>docs/policies/vulnerability-management.md</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Sign up for Snyk paid tier (request startup discount)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Connect Snyk to GitHub repo (full code + dependencies + container scan)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Configure Snyk to auto-create PRs for high/critical CVEs</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Document SLA per spec Section 11 (critical &lt;7d, high &lt;30d, medium &lt;90d)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 5:</strong> Add Snyk gate to CI pipeline (block merge on new high/critical)</p>
+</li>
+</ul>
+<p><strong>Acceptance:</strong> Snyk live, first auto-PR merged, SLA tracking dashboard set up
+<strong>Dependencies:</strong> None</p>
+<hr>
+<h3 id="task-ws63-software-bill-of-materials-sbom-generation">Task WS6.3: Software Bill of Materials (SBOM) generation</h3>
+<p><strong>Owner:</strong> CTO
+<strong>Files:</strong></p>
+<ul>
+<li><p>Modify: <code>package.json</code> (add SBOM generation script)</p>
+</li>
+<li><p>Create: <code>.github/workflows/sbom.yml</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Install CycloneDX npm package</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Add <code>npm run sbom</code> script that generates SBOM in CycloneDX JSON format</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Add CI workflow that generates SBOM per release, uploads as artifact</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Document SBOM access for customer security reviews</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 5:</strong> Verify SBOM accurate by spot-checking 10 dependencies</p>
+</li>
+</ul>
+<p><strong>Acceptance:</strong> SBOM generated per release, accessible from Vercel deployment metadata
+<strong>Dependencies:</strong> None</p>
+<hr>
+<h3 id="task-ws64-hackerone-bug-bounty-launch">Task WS6.4: HackerOne bug bounty launch</h3>
+<p><strong>Owner:</strong> P + CTO + Security
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/security/bug-bounty-policy.md</code> (NEW)</p>
+</li>
+<li><p>Create: <code>src/app/security/page.tsx</code> (NEW — <code>/security</code> customer-facing page)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Sign up for HackerOne, complete program setup</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Document scope (in: web + mobile + APIs; out: third-party services + DoS + social engineering)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Document payout tiers per spec Section 11 (Critical $5K-15K, High $1K-5K, Medium $300-1K, Low $100-300)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Build <code>/security</code> page with PGP key, vulnerability disclosure process, bug bounty link</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 5:</strong> Launch program in private beta (invite-only) for first 30 days, then public</p>
+</li>
+</ul>
+<p><strong>Acceptance:</strong> Bug bounty live, first valid finding triaged within SLA (&lt;48h ack)
+<strong>Dependencies:</strong> WS4 substantially complete (no point bounty-hunting unprotected APIs)</p>
+<hr>
+<h3 id="task-ws65-customer-facing-security-page--sub-processor-list">Task WS6.5: Customer-facing security page + sub-processor list</h3>
+<p><strong>Owner:</strong> P + CTO
+<strong>Files:</strong></p>
+<ul>
+<li><p>Modify: <code>src/app/security/page.tsx</code> (extend from WS6.4)</p>
+</li>
+<li><p>Create: <code>docs/security/sub-processors.md</code> (NEW — public sub-processor list)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Document compliance posture (SOC 2 status, GDPR, PIPEDA, APP)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Document encryption (TLS 1.3 in-transit, AES-256 at-rest)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Publish sub-processor list with what data each accesses</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Add public incident history (last 12 months)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 5:</strong> Link from footer + sales materials</p>
+</li>
+</ul>
+<p><strong>Acceptance:</strong> <code>/security</code> page live, reviewed by legal, linked from footer
+<strong>Dependencies:</strong> WS6.4, WS1.1</p>
+<hr>
+<h2 id="workstream-7-ws7--data-residency-for-international">Workstream 7 (WS7) — Data Residency for International</h2>
+<p><strong>Goal:</strong> Per-region database + compliance posture for Canada, EU, UK, AU. Sequenced to align with International Expansion plan.</p>
+<h3 id="task-ws71-region-aware-database-routing-layer">Task WS7.1: Region-aware database routing layer</h3>
+<p><strong>Owner:</strong> CTO + DBA
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>src/lib/region-router.ts</code> (NEW — resolves user region from Clerk metadata + URL)</p>
+</li>
+<li><p>Modify: <code>src/db/index.ts</code> (extend to support per-region database connections)</p>
+</li>
+<li><p>Update: <code>.env.example</code> (document per-region DATABASE_URL_* vars)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Implement <code>src/lib/region-router.ts</code> returning region code (<code>us</code>, <code>ca</code>, <code>eu</code>, <code>uk</code>, <code>au</code>) from user identity</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Extend <code>src/db/index.ts</code> to map region → connection string</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Verify behavior with synthetic test users in each region</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Document routing rules in <code>docs/db/region-routing-guide.md</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 5:</strong> Add Datadog metric for cross-region access attempts (should be zero except admin proxy)</p>
+</li>
+</ul>
+<p><strong>Acceptance:</strong> Region routing live, zero cross-region PII leaks observed in production for 30 days
+<strong>Dependencies:</strong> WS3.1</p>
+<hr>
+<h3 id="task-ws72-provision-canadian-region-phase-4b">Task WS7.2: Provision Canadian region (Phase 4B)</h3>
+<p><strong>Owner:</strong> CTO + Neon
+<strong>Files:</strong></p>
+<ul>
+<li><p>Update: production env vars in Vercel (DATABASE_URL_CA, STRIPE_SECRET_KEY_CA, TWILIO_AUTH_TOKEN_CA)</p>
+</li>
+<li><p>Create: <code>src/db/migrations/ca-001-bootstrap.sql</code> (NEW — Canada-specific schema, mirror of US)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Provision Neon database in <code>ca-central-1</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Run all schema migrations against Canadian database (clone-from-US)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Configure Vercel functions to execute in CA region for CA traffic</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Provision Stripe Connect Canadian platform (separate platform account)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 5:</strong> Provision Twilio CA Messaging Service with Canadian phone numbers</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 6:</strong> Smoke test Canadian sign-up, job posting, payment, messaging end-to-end</p>
+</li>
+</ul>
+<p><strong>Acceptance:</strong> Canadian region live, first Canadian beta user successfully completes a job
+<strong>Dependencies:</strong> WS7.1, WS1 (Type 1 cert in hand for enterprise PM sales)</p>
+<hr>
+<h3 id="task-ws73-gdpr-readiness-review--data-processing-agreement-dpa-flow">Task WS7.3: GDPR readiness review + Data Processing Agreement (DPA) flow</h3>
+<p><strong>Owner:</strong> P + Legal + CTO
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/legal/gdpr-readiness.md</code> (NEW — gap analysis)</p>
+</li>
+<li><p>Create: <code>docs/legal/dpa-template.md</code> (NEW)</p>
+</li>
+<li><p>Create: <code>src/app/api/me/export/route.ts</code> (NEW — data portability)</p>
+</li>
+<li><p>Create: <code>src/app/api/me/delete/route.ts</code> (NEW — right to erasure)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Engage GDPR-specialist counsel for readiness review</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Document gap analysis in <code>gdpr-readiness.md</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Implement DPA acceptance flow at sign-up (version-tracked in DB)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Implement <code>/api/me/export</code> for data portability (JSON export)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 5:</strong> Implement <code>/api/me/delete</code> for right to erasure (hard-delete PII, retain anonymized audit entry)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 6:</strong> Smoke test: complete sign-up → export → delete cycle for test user</p>
+</li>
+</ul>
+<p><strong>Acceptance:</strong> GDPR controls in place, first DSAR request handled within 30-day SLA
+<strong>Dependencies:</strong> WS7.1</p>
+<hr>
+<h3 id="task-ws74-cookie-consent--dsar-flow">Task WS7.4: Cookie consent + DSAR flow</h3>
+<p><strong>Owner:</strong> CTO
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>src/components/cookie-consent.tsx</code> (NEW)</p>
+</li>
+<li><p>Create: <code>src/app/dsar/page.tsx</code> (NEW — Data Subject Access Request portal)</p>
+</li>
+<li><p>Create: <code>docs/policies/cookie-policy.md</code> (NEW — public-facing)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Evaluate cookie consent vendors: OneTrust vs Cookiebot vs Klaro (open source)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Implement cookie consent banner for EU/UK users (region-aware via WS7.1)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Build DSAR portal at <code>/dsar</code> (request form, identity verification, response tracking)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Document cookie policy publicly</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 5:</strong> Test consent flow in staging with EU IP via VPN</p>
+</li>
+</ul>
+<p><strong>Acceptance:</strong> Cookie consent live for EU/UK traffic, DSAR portal functional
+<strong>Dependencies:</strong> WS7.3</p>
+<hr>
+<h3 id="task-ws75-provision-eu-region-phase-4c">Task WS7.5: Provision EU region (Phase 4C)</h3>
+<p><strong>Owner:</strong> CTO + Neon
+<strong>Files:</strong></p>
+<ul>
+<li><p>Update: production env vars (DATABASE_URL_EU, STRIPE_SECRET_KEY_EU, TWILIO_AUTH_TOKEN_EU)</p>
+</li>
+<li><p>Create: <code>src/db/migrations/eu-001-bootstrap.sql</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Provision Neon database in <code>eu-central-1</code> (Frankfurt)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Run schema migrations against EU database</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Configure Vercel functions to execute in EU for EU traffic</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Provision Stripe Connect EU platform (SEPA support)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 5:</strong> Provision Twilio EU Messaging Service (multi-language phone numbers)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 6:</strong> Smoke test EU sign-up flow + DPA acceptance + cookie consent end-to-end</p>
+</li>
+</ul>
+<p><strong>Acceptance:</strong> EU region live, first EU beta user completes job + payment + messaging
+<strong>Dependencies:</strong> WS7.4, WS1 (Type 2 cert in hand)</p>
+<hr>
+<h3 id="task-ws76-cross-border-anonymized-analytics-pipeline">Task WS7.6: Cross-border anonymized analytics pipeline</h3>
+<p><strong>Owner:</strong> CTO + DBA
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>src/lib/analytics/regional-aggregator.ts</code> (NEW)</p>
+</li>
+<li><p>Create: <code>src/app/api/admin/maintenance/regional-aggregate/route.ts</code> (NEW — Vercel Cron Job target)</p>
+</li>
+<li><p>Create: <code>docs/policies/cross-border-data-flow.md</code> (NEW — DPA disclosure)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Implement regional aggregator producing anonymized metrics (job count, pro count, GMV, NPS)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Implement maintenance route running per-region nightly aggregation</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Provision US-based analytics warehouse (BigQuery or ClickHouse — TBD per cost analysis)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Push anonymized aggregates from each region to US warehouse nightly</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 5:</strong> Document data flow in DPA disclosure</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 6:</strong> Verify zero PII in warehouse (audit query for any column name matching PII patterns)</p>
+</li>
+</ul>
+<p><strong>Acceptance:</strong> Aggregates flowing nightly, PII audit clean, DPA discloses cross-border flow
+<strong>Dependencies:</strong> WS7.2 (need at least 2 regions to validate pipeline)</p>
+<hr>
+<h2 id="cross-workstream-dependencies-summary">Cross-Workstream Dependencies Summary</h2>
+<pre><code>WS1 (SOC 2) ──┬──&gt; WS7.2 (Canada — Type 1 gates enterprise PM sales)
+              └──&gt; WS7.5 (EU — Type 2 gates enterprise EU sales)
+
+WS2 (Observability) ──&gt; WS3.4 (Sharding rollout — need APM to detect regression)
+                  └──&gt; WS5 (SRE — alerts route to PagerDuty)
+
+WS4 (WAF + RL) ──&gt; WS6.4 (Bug bounty — no point bounty-hunting unprotected APIs)
+
+WS5 (SRE) ──&gt; WS3 + WS7 (Multi-region work without on-call discipline = burnout)
+
+WS3.1 (Replica-aware client) ──&gt; WS7.1 (Region routing extends from same pattern)
+
+WS7.3 (GDPR readiness) ──&gt; WS7.4 (Cookie consent) ──&gt; WS7.5 (EU region launch)
+</code></pre>
+<h2 id="phasing-summary">Phasing Summary</h2>
+<table>
+<thead>
+<tr>
+<th>Quarter</th>
+<th>Workstream Milestones</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Q3 2026</td>
+<td>WS1.1-WS1.4 (Vanta engaged), WS2.1-WS2.3 (Datadog live), WS3.1-WS3.2 (us-west replica), WS4.1-WS4.2 (Cloudflare WAF), WS5.1-WS5.2 (PagerDuty + runbooks), WS6.1-WS6.2 (Secrets Manager + Snyk)</td>
+</tr>
+<tr>
+<td>Q4 2026</td>
+<td>WS1.5-WS1.6 (change mgmt + backup), WS2.4-WS2.5 (SLOs + RUM), WS3.3-WS3.4 (sharding pilot), WS4.3-WS4.4 (rate limiting + BotID), WS5.3-WS5.4 (incident response + feature flags), WS6.3-WS6.4 (SBOM + bug bounty)</td>
+</tr>
+<tr>
+<td>Q1 2027</td>
+<td>WS3.5-WS3.6 (partitioning + tiering), WS6.5 (security page), WS7.1 (region routing layer), pen test fieldwork</td>
+</tr>
+<tr>
+<td>Q2 2027</td>
+<td><strong>SOC 2 Type 1 issued.</strong> WS7.3-WS7.4 (GDPR + cookie consent)</td>
+</tr>
+<tr>
+<td>Q3 2027</td>
+<td>WS7.2 (Canada region live), WS5.5 (first Game Day)</td>
+</tr>
+<tr>
+<td>Q4 2027</td>
+<td><strong>SOC 2 Type 2 observation period closes — report issued.</strong> WS7.6 (cross-border analytics)</td>
+</tr>
+<tr>
+<td>Q1-Q2 2028</td>
+<td>WS7.5 (EU region live)</td>
+</tr>
+<tr>
+<td>Q3 2028+</td>
+<td>UK + Australia regions (repeat WS7 template)</td>
+</tr>
+</tbody></table>
+<hr>
+<p><strong>End of plan — full architecture context: <code>docs/superpowers/specs/2026-04-25-platform-scale-architecture-design.md</code></strong></p>
+
+	
+
+
+</body>
+</html>

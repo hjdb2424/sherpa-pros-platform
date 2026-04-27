@@ -1,0 +1,1128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>09 brand manual outline — Sherpa Pros</title>
+<link rel="icon" href="../../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="09-brand-manual-outline.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="sherpa-pros-brand-manual--outline">Sherpa Pros Brand Manual — Outline</h1>
+<h2 id="0-about-this-outline">0. About This Outline</h2>
+<p>This document is the structural outline for the Sherpa Pros Brand Manual (Volume 2 of the Franchisee Manual Set; Volume 1 is the Operations Manual per <code>10-operations-manual-outline.md</code>). The full Brand Manual is approximately 80 pages when complete and is delivered to every franchisee at signing as a perpetual brand-license under the Sherpa Brand License Agreement (FDD Item 22 exhibit).</p>
+<p><strong>The source of truth for brand standards is <code>docs/operations/brand-portfolio.md</code>.</strong> This Brand Manual is a franchisee-readable distillation of that internal document, organized for operational use by a Hub Manager who needs to know how to use the wordmark on a vehicle wrap, post on Instagram in-brand, or hire a local printer for grand-opening signage without violating brand standards.</p>
+<h2 id="1-front-matter-pages-16">1. Front Matter (Pages 1–6)</h2>
+<ul>
+<li><strong>Page 1:</strong> Title page — "Sherpa Pros Brand Manual, Volume 2" + brand wordmark + Edition / Date</li>
+<li><strong>Page 2:</strong> Letter from the founder (Phyrom) — why brand consistency matters; the pros and clients deserve a brand they can trust to look the same in every Hub</li>
+<li><strong>Page 3:</strong> Manual revision history + version control (semantic versioning: 1.0, 1.1, 2.0)</li>
+<li><strong>Page 4:</strong> How to use this manual — index, search tips, and quick-reference page numbers for the most-asked questions</li>
+<li><strong>Page 5:</strong> Where to ask questions — Brand Lead corporate email; turnaround time commitment (within 2 business days)</li>
+<li><strong>Page 6:</strong> Critical "Do Not" summary — single page summary of the highest-stakes brand violations with consequence ladder (warning → cure period → audit fee → notice of default)</li>
+</ul>
+<h2 id="2-brand-voice--tone-pages-714">2. Brand Voice + Tone (Pages 7–14)</h2>
+<h3 id="section-21--voice-pillars">Section 2.1 — Voice Pillars</h3>
+<ul>
+<li>The working contractor is the customer, not the marketing target</li>
+<li>Verified-licensed-trade quality over scale-at-any-cost growth</li>
+<li>Founder-built, contractor-empathetic</li>
+<li>Plain-spoken, technically accurate, no jargon-dressing</li>
+</ul>
+<h3 id="section-22--tone-by-context">Section 2.2 — Tone by Context</h3>
+<ul>
+<li>Marketing copy (warm + confident + earned)</li>
+<li>Customer support (empathetic + clear + quick)</li>
+<li>Pro-facing communication (peer-respectful + technically literate)</li>
+<li>Crisis communication (calm + accountable + actionable)</li>
+<li>Internal staff communication (direct + collaborative)</li>
+</ul>
+<h3 id="section-23--word-lists">Section 2.3 — Word Lists</h3>
+<ul>
+<li>Words we use (always): pro, verified, licensed, kit, dispatch, materials, Hub, member, code, score, training event, lounge</li>
+<li>Words we never use: gig worker, contractor (when meaning a Sherpa pro — say "pro"), hustle, side job (in a derisive sense), DIY (when describing pro work), price-shop, race-to-the-bottom</li>
+<li>Abbreviations spelled out on first use: Federal Trade Commission (FTC), Franchise Disclosure Document (FDD), Letter of Intent (LOI), Net Promoter Score (NPS), Profit and Loss (P&amp;L), Stock Keeping Unit (SKU), Optical Character Recognition (OCR), Role-Based Access Control (RBAC)</li>
+</ul>
+<h3 id="section-24--editorial-standards">Section 2.4 — Editorial Standards</h3>
+<ul>
+<li>Sentence-case headlines (not Title Case)</li>
+<li>Oxford comma always</li>
+<li>Numbers under 10 spelled out except for measurements + currency</li>
+<li>Currency formatted with comma separator + cents only when required ($45,000 not $45,000.00; $45,000.50 only when cents matter)</li>
+<li>Percentages spelled out in body copy ("two percent") but numeric in tables ("2%")</li>
+<li>Dates: month-day-year long form in marketing copy ("April 25, 2026"); ISO 8601 short form in operations docs ("2026-04-25")</li>
+</ul>
+<h2 id="3-visual-identity-pages-1534">3. Visual Identity (Pages 15–34)</h2>
+<h3 id="section-31--wordmark--logo-variants">Section 3.1 — Wordmark + Logo Variants</h3>
+<p>(Per <code>docs/operations/brand-portfolio.md</code> §2.1–§2.5)</p>
+<ul>
+<li>Primary wordmark — full color (sky blue + orange red blocks)</li>
+<li>App icon variant — square iOS-style with letters S + P</li>
+<li>Single-color variants (3): all sky blue, all orange red, all white</li>
+<li>Tagline lockup — wordmark + Fraunces italic tagline below</li>
+<li>Product lockup — wordmark + thin sky-blue rule + product name in Manrope small caps</li>
+<li>HJD Builders LLC attribution lockup — wordmark + thin amber rule + "Built by HJD Builders LLC"</li>
+</ul>
+<h3 id="section-32--wordmark-usage-rules">Section 3.2 — Wordmark Usage Rules</h3>
+<ul>
+<li>Minimum size: 80px wide digital / 0.75 inch wide print</li>
+<li>Minimum clear space: equal to height of the SHERPA block on all sides</li>
+<li>Approved background colors: white, warm cream (#FAF7F0), dark navy (#1A1A2E)</li>
+<li>Background contrast requirements: 4.5:1 minimum per Web Content Accessibility Guidelines (WCAG) AA</li>
+</ul>
+<h3 id="section-33--color-palette">Section 3.3 — Color Palette</h3>
+<p>(Per <code>docs/operations/brand-portfolio.md</code> §3)</p>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Color</th>
+<th>Hex</th>
+<th>Pantone</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Primary brand: Sky Blue</td>
+<td>sky-blue</td>
+<td>#00A9E0</td>
+<td>Pantone 299 C</td>
+</tr>
+<tr>
+<td>Primary brand: Orange Red</td>
+<td>orange-red</td>
+<td>#FF4500</td>
+<td>Pantone Orange 021 C</td>
+</tr>
+<tr>
+<td>Background: White</td>
+<td>white</td>
+<td>#FFFFFF</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Editorial backgrounds: Warm Cream</td>
+<td>warm-cream</td>
+<td>#FAF7F0</td>
+<td>Pantone 7527 C</td>
+</tr>
+<tr>
+<td>Text + dark mode: Dark Navy</td>
+<td>dark-navy</td>
+<td>#1A1A2E</td>
+<td>Pantone 533 C</td>
+</tr>
+<tr>
+<td>Accent (sparingly): Amber</td>
+<td>amber</td>
+<td>#F59E0B</td>
+<td>Pantone 137 C</td>
+</tr>
+</tbody></table>
+<h3 id="section-34--typography">Section 3.4 — Typography</h3>
+<table>
+<thead>
+<tr>
+<th>Use</th>
+<th>Font</th>
+<th>License Source</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Display + headlines</td>
+<td>Fraunces (italic for accents)</td>
+<td>Google Fonts (open license)</td>
+</tr>
+<tr>
+<td>Body + UI</td>
+<td>Manrope</td>
+<td>Google Fonts (open license)</td>
+</tr>
+<tr>
+<td>Numerics + technical</td>
+<td>JetBrains Mono</td>
+<td>JetBrains (open license)</td>
+</tr>
+<tr>
+<td>Cyrillic / Asian script (international, Phase 5)</td>
+<td>Inter (fallback)</td>
+<td>Google Fonts (open license)</td>
+</tr>
+</tbody></table>
+<p>Type scale, weights, and letter-spacing per <code>docs/operations/brand-portfolio.md</code> typography section.</p>
+<h3 id="section-35--iconography">Section 3.5 — Iconography</h3>
+<ul>
+<li>6-product portfolio icon set (Sherpa Hub, Marketplace, Materials, Home, Manager, Rewards/Flex) — locked custom illustration</li>
+<li>8-platform-capability icon set (codes engine, Materials engine, Dispatch, Threads, Smart Scan, Mobile, Guard, Score) — locked custom illustration</li>
+<li>Operational iconography (kits, equipment, rentals, training, member, dispatch wave) — locked custom illustration set</li>
+<li>Weather + status icons — Lucide icon set under license (accent only; never primary)</li>
+</ul>
+<h3 id="section-36--photography-style">Section 3.6 — Photography Style</h3>
+<ul>
+<li>Editorial documentary: working pros in real job environments (no stock photography of "models pretending to be contractors")</li>
+<li>Natural light preferred; overcast Northeast light is the brand default</li>
+<li>Color grading: warm, slightly desaturated; no Instagram-trendy filters</li>
+<li>Subjects: real Sherpa Pros pros + clients with signed model release; no actor-model substitutes</li>
+<li>Composition: medium-tight shots, not wide vista shots; the work + the worker are the subject</li>
+<li>File naming + tagging conventions for the Sherpa Pros asset library (Cloudinary or equivalent)</li>
+</ul>
+<h2 id="4-signage-standards-pages-3546">4. Signage Standards (Pages 35–46)</h2>
+<h3 id="section-41--storefront-exterior-signage">Section 4.1 — Storefront Exterior Signage</h3>
+<ul>
+<li>Approved sign types: channel letters + halo lit (preferred); blade signs for urban locations</li>
+<li>Wordmark application: full-color primary (corner-illuminated halo) on light-toned building facades; all-white reversed on dark facades</li>
+<li>Minimum size: SHERPA block 18 inches tall on storefront primary</li>
+<li>Approved sign vendors: 2–3 corporate-vetted national sign vendors (FastSigns franchise network alternative + Allied Signs + local-market vetted partner per market)</li>
+<li>Permitting + landlord approval workflow (corporate Brand Lead reviews proposed signage before installation)</li>
+</ul>
+<h3 id="section-42--interior-wayfinding">Section 4.2 — Interior Wayfinding</h3>
+<ul>
+<li>Member entrance vs receiving dock entrance differentiation</li>
+<li>Directional signage to: pickup counter, training room, member lounge, restrooms, emergency exits</li>
+<li>Sign substrate: brushed aluminum + dimensional letters (premium feel; matches editorial brand voice)</li>
+<li>Universal accessibility per Americans with Disabilities Act (ADA) signage requirements</li>
+</ul>
+<h3 id="section-43--vehicle-wraps--branded-apparel">Section 4.3 — Vehicle Wraps + Branded Apparel</h3>
+<ul>
+<li>Vehicle wraps: full-wrap design template available from corporate Brand Lead; 2-color minimum (sky blue + dark navy on white)</li>
+<li>Branded apparel: corporate-approved vendor (Custom Ink + Bonfire alternatives evaluated per market)</li>
+<li>Embroidery vs screen print rules per apparel item</li>
+<li>Hat + jacket + polo + t-shirt + hoodie standard SKU set with corporate-managed reorder cycle</li>
+</ul>
+<h3 id="section-44--training-event-signage">Section 4.4 — Training Event Signage</h3>
+<ul>
+<li>Corporate-supplied training event banner template</li>
+<li>Sponsor co-branding rules (manufacturer sponsors get 30% banner real estate maximum)</li>
+<li>Permitted modifications by franchisee: event title, date, time, RSVP link only</li>
+</ul>
+<h2 id="5-member-facing-materials-pages-4758">5. Member-Facing Materials (Pages 47–58)</h2>
+<h3 id="section-51--new-member-welcome-packet">Section 5.1 — New Member Welcome Packet</h3>
+<ul>
+<li>Welcome letter from Phyrom (templated; franchisee personalization in PS line only)</li>
+<li>Member benefits one-pager</li>
+<li>Hub map + hours</li>
+<li>Contact card (Hub Manager direct line + email)</li>
+<li>Branded hat + sticker pack (gift)</li>
+<li>First training event invitation</li>
+</ul>
+<h3 id="section-52--training-event-flyers">Section 5.2 — Training Event Flyers</h3>
+<ul>
+<li>Corporate-supplied template (Adobe InDesign + Canva versions)</li>
+<li>Permitted modifications: event title, date, time, manufacturer-sponsor logo lockup, RSVP link</li>
+<li>Distribution: Hub bulletin board, Hub member newsletter, local trade-association partnerships</li>
+</ul>
+<h3 id="section-53--monthly-member-newsletter">Section 5.3 — Monthly Member Newsletter</h3>
+<ul>
+<li>Corporate-supplied template (responsive HTML email)</li>
+<li>Standard sections: Hub Manager note (franchisee-written, Brand-Lead-edited), upcoming training events, new pro members highlight, manufacturer spotlight, code-change bulletin (corporate-supplied), contractor wisdom column (rotating)</li>
+<li>Send cadence: 2nd Tuesday of each month</li>
+<li>Brand-Lead review required before send (24-hour turnaround commitment)</li>
+</ul>
+<h3 id="section-54--hub-bulletin-board">Section 5.4 — Hub Bulletin Board</h3>
+<ul>
+<li>Physical bulletin board layout template</li>
+<li>Required elements: training event calendar, current Sherpa Score leaderboard (top 10 pros at this Hub), monthly member spotlight, code-update bulletin (printed), Hub Manager office hours</li>
+<li>Refresh cadence: monthly</li>
+</ul>
+<h2 id="6-social-media-co-op-rules-pages-5966">6. Social Media Co-Op Rules (Pages 59–66)</h2>
+<h3 id="section-61--brand-account-vs-personal-account">Section 6.1 — Brand Account vs Personal Account</h3>
+<ul>
+<li><strong>Brand account</strong> (Hub-specific): franchisee posts under "Sherpa Pros [City]" handles; corporate template + brand voice; Brand Lead pre-approval required for first 30 posts</li>
+<li><strong>Personal account</strong>: franchisee may post anything legal under personal name + handle; <strong>may not</strong> use Sherpa Pros wordmark, branded photography, or claim to speak for Sherpa Pros LLC</li>
+</ul>
+<h3 id="section-62--what-franchisee-can-post-under-brand-account">Section 6.2 — What Franchisee CAN Post Under Brand Account</h3>
+<ul>
+<li>Hub events (training events, member milestones, anniversary, holiday hours)</li>
+<li>Member spotlight (with member's signed photo release)</li>
+<li>Manufacturer spotlight (with manufacturer's signed brand co-marketing release)</li>
+<li>Local community events the Hub sponsors or participates in</li>
+<li>Local trade association engagement (NHHBA chapter meetings, Habitat for Humanity build days)</li>
+<li>Hub-Manager-led "tip of the week" with Brand-Lead pre-approval</li>
+</ul>
+<h3 id="section-63--what-franchisee-cannot-post-under-brand-account">Section 6.3 — What Franchisee CANNOT Post Under Brand Account</h3>
+<ul>
+<li>Pricing claims (always corporate-controlled)</li>
+<li>Item 19 financial performance representations (FDD-controlled — federal regulatory exposure)</li>
+<li>Competitive comparisons (legal exposure)</li>
+<li>Political content</li>
+<li>Religious content</li>
+<li>Controversial industry positions (immigration policy in trades, OSHA enforcement debates, union/non-union polemic) — refer to corporate</li>
+<li>Any content using a celebrity contractor without corporate co-approval (Item 18 disclosure exposure)</li>
+</ul>
+<h3 id="section-64--trade-press-representation-rules">Section 6.4 — Trade-Press Representation Rules</h3>
+<ul>
+<li>Local press inquiries: franchisee may speak to local press about local Hub operations only (member events, community engagement, training events). Cannot speak to corporate strategy, financial performance, franchise system size, or platform technology.</li>
+<li>Corporate press inquiries: route to corporate Public Relations lead within 24 hours; franchisee does not respond directly.</li>
+<li>Trade press national publications (Builder Magazine, Pro Magazine, Plumbing &amp; Mechanical, Air Conditioning Heating &amp; Refrigeration News): all responses corporate-controlled.</li>
+</ul>
+<h3 id="section-65--approved-social-media-platforms">Section 6.5 — Approved Social Media Platforms</h3>
+<ul>
+<li>Instagram (primary — visual brand)</li>
+<li>Facebook (community engagement + event RSVPs)</li>
+<li>LinkedIn (B2B + recruitment)</li>
+<li>TikTok (Phase 4 Year 2+ — controlled rollout under corporate Brand Lead approval)</li>
+<li>Twitter/X (corporate only — no franchisee accounts)</li>
+<li>YouTube (corporate primary; franchisee Hub channels Phase 4 Year 2+ with co-approval)</li>
+</ul>
+<h2 id="7-prohibited-brand-usage-examples-pages-6774">7. Prohibited Brand Usage Examples (Pages 67–74)</h2>
+<p>(Per <code>docs/operations/brand-portfolio.md</code> §3.4 prohibited usage section, expanded with case studies)</p>
+<h3 id="section-71--color-violations">Section 7.1 — Color Violations</h3>
+<ul>
+<li>Recoloring SHERPA or PROS blocks outside locked palette (NEVER purple, teal, green, holiday recoloring, client-color adaptation, agency-creative-test recoloring)</li>
+<li>Visual examples: 3 prohibited recolor examples + correction</li>
+</ul>
+<h3 id="section-72--form-violations">Section 7.2 — Form Violations</h3>
+<ul>
+<li>Rotating wordmark (not 5°, not 15°, not 90° for vertical signage)</li>
+<li>Stretching wordmark (no aspect-ratio distortion)</li>
+<li>Outlining wordmark in stroke (kills the diagonal-seam clarity)</li>
+<li>Adding drop shadow or 3D effect (against editorial brand voice)</li>
+<li>Visual examples: 4 prohibited form examples + correction</li>
+</ul>
+<h3 id="section-73--background-violations">Section 7.3 — Background Violations</h3>
+<ul>
+<li>Wordmark on busy photographic background without color block layer</li>
+<li>Wordmark on photo with insufficient contrast</li>
+<li>Wordmark on competitor-platform color (Angi-purple, Thumbtack-blue, TaskRabbit-green, ServiceTitan-orange-similar)</li>
+<li>Visual examples: 3 prohibited background examples + correction</li>
+</ul>
+<h3 id="section-74--voice-violations">Section 7.4 — Voice Violations</h3>
+<ul>
+<li>Marketing copy that uses "gig worker" or "side hustle" (degrades Sherpa Pros' verified-licensed-trade positioning)</li>
+<li>Marketing copy that frames pros as "labor" instead of as the customer</li>
+<li>Marketing copy that does not include required FDD disclosure footer (federal regulatory exposure)</li>
+<li>Examples: 3 prohibited copy examples + correction</li>
+</ul>
+<h3 id="section-75--co-branding-violations">Section 7.5 — Co-Branding Violations</h3>
+<ul>
+<li>Co-branding with unverified contractors not in Sherpa Pros pro network</li>
+<li>Co-branding with manufacturers not on the corporate-approved supplier list</li>
+<li>Co-branding with competing platforms (any platform on the competing-marketplace list maintained by corporate)</li>
+</ul>
+<h3 id="section-76--consequence-ladder">Section 7.6 — Consequence Ladder</h3>
+<table>
+<thead>
+<tr>
+<th>Violation Severity</th>
+<th>Consequence</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Minor (typography, low-stakes color)</td>
+<td>Warning + 14-day cure period</td>
+</tr>
+<tr>
+<td>Moderate (background, voice)</td>
+<td>Warning + 30-day cure period + Brand Lead training session</td>
+</tr>
+<tr>
+<td>Major (federal regulatory exposure, competitor co-branding, recoloring)</td>
+<td>Notice of default + 30-day cure period + audit fee per FDD Item 6</td>
+</tr>
+<tr>
+<td>Severe (intentional brand misappropriation, knock-off products under Sherpa branding)</td>
+<td>Notice of default + termination per FDD Item 17</td>
+</tr>
+</tbody></table>
+<h2 id="8-brand-asset-access-pages-7580">8. Brand Asset Access (Pages 75–80)</h2>
+<h3 id="section-81--where-to-get-brand-assets">Section 8.1 — Where to Get Brand Assets</h3>
+<ul>
+<li><strong>Sherpa Pros Brand Asset Portal</strong> (corporate-hosted; access provisioned at signing)</li>
+<li>Wordmark files (SVG, PNG, EPS) — full color + 3 single-color variants</li>
+<li>Logo lockup files (tagline lockup, product lockup, attribution lockup)</li>
+<li>Color palette swatch files (Adobe ASE, Sketch palette, Figma library)</li>
+<li>Typography files (Google Fonts links + JetBrains Mono direct download + license documentation)</li>
+<li>Photography library (curated; updated monthly by corporate Marketing Lead)</li>
+<li>Iconography (SVG + PNG)</li>
+<li>Templates: signage, vehicle wrap, apparel, training event flyer, monthly newsletter, social media post, Hub bulletin board</li>
+</ul>
+<h3 id="section-82--customization-rights">Section 8.2 — Customization Rights</h3>
+<ul>
+<li>Franchisee CAN customize: training event title, date, time, location, sponsor logo lockup; monthly newsletter Hub Manager note (within Brand Lead editing)</li>
+<li>Franchisee CANNOT customize: wordmark, color palette, typography, photography style, voice + tone, footer disclosure language, icon set</li>
+</ul>
+<h3 id="section-83--asset-refresh-cadence">Section 8.3 — Asset Refresh Cadence</h3>
+<ul>
+<li>Wordmark + logo lockup: stable (next major update Phase 5+ at earliest)</li>
+<li>Color palette: stable (annual review by corporate Brand Lead)</li>
+<li>Typography: stable (Fraunces + Manrope + JetBrains Mono locked)</li>
+<li>Photography library: monthly addition of new editorial shoots</li>
+<li>Templates: quarterly refresh of seasonal templates (training event seasonal themes, holiday hours, summer / winter program variants)</li>
+<li>Iconography: stable (next major update Phase 5+ at earliest)</li>
+</ul>
+<h3 id="section-84--reporting-brand-issues">Section 8.4 — Reporting Brand Issues</h3>
+<ul>
+<li>Brand violation observed in the wild (a competing platform misuses Sherpa marks, a fraudster impersonates a Hub) — report to corporate Legal within 24 hours</li>
+<li>Brand confusion in the market (clients ask about a service we don't offer because they saw a misleading ad) — report to corporate Brand Lead within 5 business days</li>
+<li>Local market opportunity (an unmet brand need) — submit to corporate Marketing Lead via FAC channel</li>
+</ul>
+<h3 id="section-85--annual-brand-audit">Section 8.5 — Annual Brand Audit</h3>
+<ul>
+<li>Once per year, corporate Brand Lead conducts an audit of every Hub's brand application (signage, social media, member-facing materials, vehicle wraps, apparel)</li>
+<li>Audit findings shared with franchisee within 30 days; cure period 60 days for minor + moderate findings; immediate cure for major findings</li>
+<li>Audit findings tracked over time; trend reports shared at Annual Franchisee Summit</li>
+</ul>
+
+	
+
+
+</body>
+</html>

@@ -1,0 +1,984 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>building ventures warm intro — Sherpa Pros</title>
+<link rel="icon" href="../../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="building-ventures-warm-intro.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="building-ventures--warm-intro-playbook">Building Ventures — Warm-Intro Playbook</h1>
+<p><strong>Date:</strong> 2026-04-22
+<strong>Owner:</strong> Phyrom (founder, HJD Builders LLC, Sherpa Pros)
+<strong>Spec ref:</strong> <code>docs/superpowers/specs/2026-04-22-gtm-marketing-design.md</code> §6.3 (Tier 1 priority — first call)
+<strong>Voice:</strong> plainspoken founder voice. 8th-grade reading level. No marketing-speak. Per spec §3.3.</p>
+<hr>
+<h2 id="research-brief--who-at-building-ventures">Research brief — who at Building Ventures</h2>
+<p><strong>Firm summary:</strong> Building Ventures is a Boston/SF venture capital firm founded in 2017 by the ex-Borealis Ventures built-environment team. They invest seed → Series A in companies that improve the full lifecycle of the built environment. Fund II closed Sept 2022 at $95M. As of Aug 2025, ~36 portfolio companies; top sectors are Real Estate/Construction Tech (23 investments) and Enterprise Applications (20). Most recent investment: BuildFactory, Nov 2025. [^1]</p>
+<h3 id="target-partner-jesse-devitte-co-founder--general-partner-boston-confirmed">Target partner: Jesse Devitte (Co-founder &amp; General Partner, Boston) [CONFIRMED]</h3>
+<p><strong>Why Devitte and not Connors first:</strong></p>
+<ul>
+<li>Devitte is Boston-based; Phyrom is in NH. Geographic alignment for in-person follow-up.</li>
+<li>Devitte was the named subject of a 2022 Boston Globe profile titled "Boston VC firm wants to take the waste out of building trades" — language directly maps to Sherpa Pros' "jobs not leads" thesis. [^2]</li>
+<li>Devitte personally manages the firm's content publishing (his author page on the BV site is a key voice for the firm's thesis).</li>
+</ul>
+<h3 id="backup-partner-travis-connors-co-founder--general-partner-sf-confirmed">Backup partner: Travis Connors (Co-founder &amp; General Partner, SF) [CONFIRMED]</h3>
+<p>If Devitte is slow or out, Connors is the SF-coast partner. Same firm; same conviction will travel internally.</p>
+<h3 id="what-building-ventures-has-said-publicly-cite-in-the-opener">What Building Ventures has said publicly (cite in the opener)</h3>
+<ol>
+<li><strong>Boston Globe 2022 profile</strong> — Devitte described the built environment as the largest under-digitized sector and emphasized "industrialization of construction" and "deployment of space as a service" as core theses. [^2] <strong>Hook for Phyrom:</strong> Sherpa Pros is the digitization of the licensed-trade dispatch layer that all those previous investments depended on but never solved.</li>
+<li><strong>Founding-team narrative</strong> — Devitte and Connors led "the most prolific early investor in the built world space with over 20 investments and 10 successful exits" at Borealis before launching Building Ventures. [^3] <strong>Hook:</strong> they've seen what wins. Sherpa Pros' founder-built-by-a-working-GC story is the missing link they haven't had a clean shot at.</li>
+<li><strong>Recent investments</strong> — BuildFactory (Nov 2025); historically Built Robotics, Dandelion Energy. [^1] <strong>Hook:</strong> Built Robotics is a labor-augmentation thesis. Sherpa Pros is a labor-allocation thesis. The MA labor shortage data (per spec §2.1: largest in nation, 2.5% unemployment) IS the demand signal Built Robotics solves on the supply side — Sherpa Pros solves it on the marketplace side.</li>
+</ol>
+<h3 id="portfolio-gap-analysis-research-derived-verify-portfolio-data-current-to-q4-2025">Portfolio gap analysis (research-derived, [VERIFY: portfolio-data current to Q4 2025])</h3>
+<p>Building Ventures has invested in:</p>
+<ul>
+<li>AEC software (PlanGrid-adjacent)</li>
+<li>Robotics (Built Robotics)</li>
+<li>Energy/HVAC (Dandelion Energy — geothermal HP installer)</li>
+<li>Modular construction</li>
+<li>Property tech / smart buildings</li>
+</ul>
+<p>Building Ventures has <strong>not</strong> publicly announced an investment in:</p>
+<ul>
+<li>Residential <strong>dispatch marketplace</strong> for licensed trades (the Sherpa Pros lane)</li>
+<li>Code-compliance / permit-validation engines (Sherpa Pros' code-aware quote validation lane)</li>
+<li>Mass-market homeowner-facing service-procurement layer (everyone else's lane is enterprise/CRE)</li>
+</ul>
+<p><strong>This is the gap Sherpa Pros plants the flag in.</strong></p>
+<hr>
+<h2 id="the-intro-request-to-phyroms-mutual-contact-3-versions">The intro request to Phyrom's mutual contact (3 versions)</h2>
+<h3 id="version-a--formal-use-for-nhhba-executive-committee-nh-bfa-nh-agc-professionals">Version A — Formal (use for: NHHBA executive committee, NH BFA, NH AGC professionals)</h3>
+<p><strong>Subject lines:</strong></p>
+<ol>
+<li>Quick favor — would you intro me to Jesse Devitte at Building Ventures?</li>
+<li>Intro request — Building Ventures (Boston) on Sherpa Pros</li>
+<li>Asking a favor on a Boston VC intro</li>
+</ol>
+<p><strong>Body:</strong></p>
+<blockquote>
+<p>[First name],</p>
+<p>I'm raising a pre-seed for Sherpa Pros, the licensed-trade marketplace I built. We're at the stage where the right Boston construction-tech VCs need to know us. Building Ventures (Jesse Devitte, Boston) is the cleanest fit on our list — they've backed Built Robotics, Dandelion Energy, and BuildFactory; we'd be the residential-marketplace layer their portfolio doesn't have.</p>
+<p>I see from LinkedIn you're connected to Jesse. Would you be willing to forward a one-paragraph intro to him? I've drafted the forward below — feel free to edit it down or send your own version. No worries either way if it doesn't make sense.</p>
+<p>Either way, thank you for the years of support on HJD jobs.</p>
+<p>Phyrom
+HJD Builders LLC · Sherpa Pros
+<a href="http://www.thesherpapros.com">www.thesherpapros.com</a></p>
+</blockquote>
+<hr>
+<h3 id="version-b--casual-use-for-friends-peer-gcs-phyroms-hjd-client-list">Version B — Casual (use for: friends, peer GCs, Phyrom's HJD client list)</h3>
+<p><strong>Subject lines:</strong></p>
+<ol>
+<li>Need a favor — Boston VC intro</li>
+<li>Quick ask — connect me to a guy at Building Ventures?</li>
+<li>You connected to Jesse Devitte at Building Ventures?</li>
+</ol>
+<p><strong>Body:</strong></p>
+<blockquote>
+<p>Hey [First name],</p>
+<p>Quick favor. I'm raising money for Sherpa Pros — that contractor marketplace I've been building (<a href="http://www.thesherpapros.com">www.thesherpapros.com</a>). The Boston VC that fits us best is Building Ventures. They invest in construction tech. The guy I want to talk to is Jesse Devitte.</p>
+<p>LinkedIn says you know him. Would you forward an email to him on my behalf? I drafted what I'd want him to see — pasted below. You can send it as-is or change anything.</p>
+<p>If it's a no for any reason, totally fine — appreciate you either way.</p>
+<p>Phyrom</p>
+</blockquote>
+<hr>
+<h3 id="version-c--contractor-network-voice-use-for-nhhba-peers-suffolk-construction-execs-ma-agc-contacts-supply-house-reps">Version C — Contractor-network voice (use for: NHHBA peers, Suffolk Construction execs, MA AGC contacts, supply-house reps)</h3>
+<p><strong>Subject lines:</strong></p>
+<ol>
+<li>One ask — VC intro on the platform I built</li>
+<li>Need a hand — intro to Building Ventures (the construction VC)</li>
+<li>Asking a favor on a Boston intro — won't take long</li>
+</ol>
+<p><strong>Body:</strong></p>
+<blockquote>
+<p>[First name],</p>
+<p>I built Sherpa Pros because none of us are getting a fair shake from Angi or Thumbtack. It's a marketplace that pays contractors for work, not for the chance to bid. Licensed only. Code-checked. The whole thing. Live now: <a href="http://www.thesherpapros.com">www.thesherpapros.com</a>.</p>
+<p>I need to raise some money to hire two people and run paid ads in Portsmouth and Boston. The Boston firm that backs construction-tech founders is Building Ventures. The partner is Jesse Devitte. LinkedIn says you know him.</p>
+<p>Would you forward an email to him? I wrote what I'd want him to read — pasted below. Send it as-is or rewrite it however you want. Either way, no hard feelings if it's not a fit.</p>
+<p>Phyrom
+HJD Builders LLC</p>
+</blockquote>
+<hr>
+<h2 id="the-actual-forward-email-what-the-mutual-contact-sends-to-devitte">The actual forward email (what the mutual contact sends to Devitte)</h2>
+<p>Phyrom drafts this. Mutual contact pastes it (with their name in the From) and sends.</p>
+<p><strong>Subject lines (mutual contact picks one):</strong></p>
+<ol>
+<li>Intro — Phyrom of Sherpa Pros (NH GC built a licensed-trade marketplace)</li>
+<li>NH contractor built a marketplace for licensed trades — worth 15 min?</li>
+<li>Founder intro — Sherpa Pros (Built by a working GC, live in NH/ME/MA)</li>
+</ol>
+<p><strong>Body:</strong></p>
+<blockquote>
+<p>Jesse,</p>
+<p>Wanted to put Phyrom in front of you. He's a working general contractor in New Hampshire (HJD Builders) who built a licensed-trade marketplace called Sherpa Pros — the platform he wished existed every time Angi or Thumbtack pitched his crew leads they couldn't afford.</p>
+<p>What he built: jobs (not leads) for licensed pros, code-aware quote validation, permit and rebate awareness. Live web at <a href="http://www.thesherpapros.com">www.thesherpapros.com</a>, mobile in TestFlight, beta cohort onboarding now in Portsmouth, Manchester, Portland and Boston specialty lanes (Mass Save heat pumps, EV chargers, panel upgrades, old-house specialists).</p>
+<p>I think this slots between Built Robotics (your labor-augmentation play) and Dandelion (your residential-energy play) — it's the dispatch layer the residential trades have been missing. Worth 15 min to look?</p>
+<p>[Mutual contact name]</p>
+<hr>
+<p>Phyrom can be reached at [<a href="mailto:phyrom@hjd.builders">phyrom@hjd.builders</a>]. Deck and 1-pager ready.</p>
+</blockquote>
+<hr>
+<h2 id="backup-cold-email--if-no-warm-intro-materializes-within-2-weeks">Backup cold email — if no warm intro materializes within 2 weeks</h2>
+<p>Send directly to Jesse Devitte at his Building Ventures address (verifiable on the BV team page; do not guess or scrape).</p>
+<p><strong>Subject lines:</strong></p>
+<ol>
+<li>NH GC built a licensed-trade marketplace — worth 15 min?</li>
+<li>Sherpa Pros — the labor-allocation layer Built Robotics doesn't solve</li>
+<li>Boston specialty (Mass Save heat pumps) — built by a working contractor</li>
+</ol>
+<p><strong>Body:</strong></p>
+<blockquote>
+<p>Jesse,</p>
+<p>I'm Phyrom. I run HJD Builders, a licensed GC in New Hampshire. I've spent twelve years buying leads from Angi and Thumbtack and watching the platforms send my crews homeowners who didn't need licensed work, and send licensed work to people who shouldn't be doing it.</p>
+<p>So I built the platform I wished existed. Sherpa Pros is the national licensed-trade marketplace — launching first in NH, ME, and MA, with Boston as our specialty-lane wedge. Jobs, not leads. Licensed only. Code-aware quote validation. Permit and rebate awareness. Live now at <a href="http://www.thesherpapros.com">www.thesherpapros.com</a>, with a beta cohort in Portsmouth, Manchester, Portland and Boston specialty lanes (Mass Save heat pumps, EV chargers, panel upgrades, old-house, triple-decker exteriors). The Boston specialty playbook is the template we'll deploy into every metro after.</p>
+<p>Two reasons I'm writing you specifically:</p>
+<ol>
+<li><p>The Boston Globe profiled you in 2022 saying you wanted to take the waste out of the building trades. The waste in residential trades is the lead-gen tax — Angi takes $400 to $800 per closed job from contractors. Sherpa Pros takes 5% during beta, 10% at scale. We are roughly half the cost of the platform our pros are abandoning.</p>
+</li>
+<li><p>Built Robotics solves the labor shortage on the supply side (do more with less labor). Dandelion is your residential-energy play. Sherpa Pros is the marketplace dispatch layer between them — match the right licensed pro to the right code-bound job in the right metro, fast. Massachusetts has the largest construction labor shortage in the country (2.5% unemployment, project times stretched from 7 to 11 months). The dispatch layer is the missing piece.</p>
+</li>
+</ol>
+<p>Three things I'd ask for, in order of preference:</p>
+<ul>
+<li><strong>15 minutes</strong> for a deck walk-through and one live demo of a posted job → matched pro → code-checked quote.</li>
+<li><strong>A deck review</strong> if you're slammed on calendar — I'll send it as a Notion link with a 90-second Loom intro, and you can give me 5 lines of feedback in 10 minutes.</li>
+<li><strong>A pass</strong> if it's not a fit — quickly, so I can route my time elsewhere. I'd rather lose fast than slow.</li>
+</ul>
+<p><a href="http://www.thesherpapros.com">www.thesherpapros.com</a>
+Deck + 1-pager ready on request.</p>
+<p>Phyrom
+HJD Builders LLC
+[phone] · [email]</p>
+</blockquote>
+<hr>
+<h2 id="send-sequencing">Send sequencing</h2>
+<table>
+<thead>
+<tr>
+<th>Day</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>W3 D1</td>
+<td>Identify 5 mutual connections to Devitte via LinkedIn (Phyrom + advisor scan).</td>
+</tr>
+<tr>
+<td>W3 D2</td>
+<td>Send Version A/B/C intro request to top mutual (highest LinkedIn weighting + most recent interaction).</td>
+</tr>
+<tr>
+<td>W3 D5</td>
+<td>If no response by Friday, send to mutual #2.</td>
+</tr>
+<tr>
+<td>W4 D1</td>
+<td>Mutual #3.</td>
+</tr>
+<tr>
+<td>W4 D5</td>
+<td>Mutual #4 + #5 in parallel.</td>
+</tr>
+<tr>
+<td>W5 D1</td>
+<td>If no warm intro confirmed by end of W4, send the backup cold email to Devitte directly.</td>
+</tr>
+<tr>
+<td>W5 D5</td>
+<td>Cold-email Travis Connors (SF backup partner) if Devitte is silent.</td>
+</tr>
+<tr>
+<td>W6 D1</td>
+<td>If no response from either: post a public LinkedIn founder thread tagging the BV thesis (without tagging individuals — pull, not push). Re-attempt cold email referencing the thread.</td>
+</tr>
+<tr>
+<td>W6 D3</td>
+<td>Hard pass on BV for Phase 0; reroute attention to Brick &amp; Mortar (Tier 1 #2) and Foundamental (Tier 1 #3).</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="pre-send-checklist-run-before-every-email-goes-out">Pre-send checklist (run before EVERY email goes out)</h2>
+<ul>
+<li><input disabled="" type="checkbox"> Recipient name, title, firm, LinkedIn URL all re-verified within last 24 hours</li>
+<li><input disabled="" type="checkbox"> No use of the internal product name (see CLAUDE.md) anywhere in body — use "code-aware quote validation" or "code intelligence layer"</li>
+<li><input disabled="" type="checkbox"> No "AI-powered," "disrupt," "revolutionize," "Uber for X," "gig," "task" (per spec §3.3)</li>
+<li><input disabled="" type="checkbox"> Founder hook in line 1 (Phyrom = working NH GC) — per spec §3.3</li>
+<li><input disabled="" type="checkbox"> <a href="http://www.thesherpapros.com">www.thesherpapros.com</a> link present (live software is the credibility lever — per deck slide 5 notes)</li>
+<li><input disabled="" type="checkbox"> Specific recent BV reference in opener (Boston Globe 2022 profile, BuildFactory Nov 2025 investment, etc.) — proves Phyrom did the homework</li>
+<li><input disabled="" type="checkbox"> Specific ask (15 min, deck review, OR fast pass — pick one or list in order of preference)</li>
+<li><input disabled="" type="checkbox"> No PDF attachments in cold email — link to Notion deck instead. Attachments trigger spam filters.</li>
+<li><input disabled="" type="checkbox"> Plaintext or near-plaintext formatting; no marketing-template HTML</li>
+<li><input disabled="" type="checkbox"> Phyrom's mobile and email both visible</li>
+<li><input disabled="" type="checkbox"> [VERIFY: any partner names not yet CONFIRMED — recheck firm team page]</li>
+</ul>
+<hr>
+<h2 id="footnotes--sources">Footnotes / sources</h2>
+<p>[^1]: <a href="https://tracxn.com/d/venture-capital/building-ventures/__HoRUJGqokeTg0HCWfzNKkpKsKZbBy7at0rOuxFiLOwM">Building Ventures — Tracxn investor profile</a> | <a href="https://buildingventures.com/">Building Ventures homepage</a> | BuildFactory Nov 2025 investment per Tracxn.</p>
+<p>[^2]: <a href="https://www.bostonglobe.com/2022/09/13/business/boston-vc-firm-wants-take-waste-out-building-trades/">Boston VC firm wants to take the waste out of building trades — Boston Globe, Sept 2022</a></p>
+<p>[^3]: <a href="https://www.businesswire.com/news/home/20180918005284/en/Borealis-Ventures-Launches-New-Early-Stage-VC-Focused">Borealis Ventures Launches Building Ventures — BusinessWire 2018</a> | <a href="https://www.businesswire.com/news/home/20220906005206/en/Building-Ventures-Launches-$95-Million-Fund-II-to-Continue-Driving-Built-Environment-Innovation">Building Ventures Fund II $95M close — BusinessWire 2022</a></p>
+
+	
+
+
+</body>
+</html>

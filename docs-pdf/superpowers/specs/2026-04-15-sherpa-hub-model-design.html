@@ -1,0 +1,1414 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2026 04 15 sherpa hub model design — Sherpa Pros</title>
+<link rel="icon" href="../../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="2026-04-15-sherpa-hub-model-design.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="sherpa-hub----physical--digital-supply-model">Sherpa Hub -- Physical + Digital Supply Model</h1>
+<p><strong>Date:</strong> 2026-04-15
+<strong>Status:</strong> Design Spec</p>
+<hr>
+<h2 id="1-hub-architecture">1. Hub Architecture</h2>
+<h3 id="physical-layout-3000-sqft-baseline">Physical Layout (3,000 sqft baseline)</h3>
+<pre><code>+----------------------------------------------------------+
+|  WAREHOUSE (60% = 1,800 sqft)                            |
+|  [Bulk Rack A-F] [Kit Assembly] [Tool Cage] [Staging]    |
++----------------------------------------------------------+
+|  SHOWROOM (20% = 600 sqft)        | TRAINING (20% = 600) |
+|  [POS Counter] [Tool Demo Wall]   | [12-seat classroom]  |
+|  [Digital Kiosk] [Pickup Window]  | [Demo benches]       |
++----------------------------------------------------------+
+</code></pre>
+<h3 id="software-modules-extends-existing-srcappapi">Software Modules (extends existing <code>src/app/api/</code>)</h3>
+<table>
+<thead>
+<tr>
+<th>Module</th>
+<th>Route</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Inventory</td>
+<td><code>/api/hub/inventory</code></td>
+<td>Real-time stock, barcode scan, reorder triggers</td>
+</tr>
+<tr>
+<td>Kits</td>
+<td><code>/api/hub/kits</code></td>
+<td>Kit catalog, assembly workflow, job-matched ordering</td>
+</tr>
+<tr>
+<td>Rentals</td>
+<td><code>/api/hub/rentals</code></td>
+<td>Equipment checkout/return, deposits, damage tracking</td>
+</tr>
+<tr>
+<td>Training</td>
+<td><code>/api/hub/training</code></td>
+<td>Event calendar, registration, cert issuance</td>
+</tr>
+<tr>
+<td>Delivery</td>
+<td><code>/api/hub/delivery</code></td>
+<td>Gig dispatch for kit/tool delivery to job site</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="2-kit-catalog----hd-retail-vs-sherpa-hub">2. Kit Catalog -- HD Retail vs Sherpa Hub</h2>
+<p>All prices are material-only, no labor. Sherpa bulk = 20-30% below HD retail via direct-buy (Schluter, Laticrete, DAP, GreenGuard). Hub margin 12% on bulk cost.</p>
+<table>
+<thead>
+<tr>
+<th>Kit</th>
+<th>Contents Summary</th>
+<th>HD Retail</th>
+<th>Sherpa Hub</th>
+<th>Pro Saves</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Bathroom Remodel (std 5x8)</td>
+<td>Cement board, Kerdi membrane, thinset, grout, caulk, screws, mixing bucket</td>
+<td>$485</td>
+<td>$340</td>
+<td>$145 (30%)</td>
+</tr>
+<tr>
+<td>Kitchen Faucet Swap</td>
+<td>Faucet supply lines, shutoff valves, plumber's putty, teflon, basin wrench rental</td>
+<td>$65</td>
+<td>$45</td>
+<td>$20 (31%)</td>
+</tr>
+<tr>
+<td>Panel Upgrade 100A-200A</td>
+<td>200A panel, breakers (20), wire (SE 2/0), ground rod, conduit, connectors</td>
+<td>$1,280</td>
+<td>$920</td>
+<td>$360 (28%)</td>
+</tr>
+<tr>
+<td>Deck Build (per 100 sqft)</td>
+<td>PT joists, deck boards, joist hangers, lag bolts, flashing, screws</td>
+<td>$1,850</td>
+<td>$1,350</td>
+<td>$500 (27%)</td>
+</tr>
+<tr>
+<td>Interior Paint Room (12x12)</td>
+<td>2 gal premium paint, primer, roller kit, tape, drop cloth, caulk, spackle</td>
+<td>$185</td>
+<td>$130</td>
+<td>$55 (30%)</td>
+</tr>
+<tr>
+<td>Emergency Plumbing (burst pipe)</td>
+<td>SharkBite couplings (4), pipe cutter, CPVC/PEX (10ft), bucket, towels, flashlight</td>
+<td>$145</td>
+<td>$105</td>
+<td>$40 (28%)</td>
+</tr>
+<tr>
+<td>Exterior Paint (per 1000 sqft)</td>
+<td>8 gal exterior paint, primer, brushes, roller system, caulk, scraper, ladder rental</td>
+<td>$680</td>
+<td>$490</td>
+<td>$190 (28%)</td>
+</tr>
+<tr>
+<td>Tile Floor (per 100 sqft)</td>
+<td>Porcelain tile, thinset, grout, spacers, leveling clips, saw blade rental</td>
+<td>$750</td>
+<td>$530</td>
+<td>$220 (29%)</td>
+</tr>
+<tr>
+<td>Rough-In Plumbing (1 bath)</td>
+<td>PEX manifold, fittings, hangers, valves, drain/vent DWV, test caps</td>
+<td>$420</td>
+<td>$295</td>
+<td>$125 (30%)</td>
+</tr>
+<tr>
+<td>Insulation (per 1000 sqft attic)</td>
+<td>R-38 batts, vapor barrier, staples, utility knife, dust mask, headlamp</td>
+<td>$890</td>
+<td>$640</td>
+<td>$250 (28%)</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="3-equipment-rental-catalog">3. Equipment Rental Catalog</h2>
+<p>Deposit = 50% of retail value, held on card. Insurance $5/day optional. Delivery $25 flat within hub radius.</p>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Retail</th>
+<th>Daily</th>
+<th>Weekly</th>
+<th>Monthly</th>
+<th>Break-Even Days</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Festool TS 55 Track Saw</td>
+<td>$620</td>
+<td>$45</td>
+<td>$150</td>
+<td>$400</td>
+<td>14</td>
+</tr>
+<tr>
+<td>Festool CT 36 Dust Extractor</td>
+<td>$730</td>
+<td>$50</td>
+<td>$170</td>
+<td>$450</td>
+<td>15</td>
+</tr>
+<tr>
+<td>Festool RO 150 Sander</td>
+<td>$540</td>
+<td>$40</td>
+<td>$130</td>
+<td>$350</td>
+<td>14</td>
+</tr>
+<tr>
+<td>Hilti TE 60-ATC Rotary Hammer</td>
+<td>$2,200</td>
+<td>$85</td>
+<td>$290</td>
+<td>$750</td>
+<td>26</td>
+</tr>
+<tr>
+<td>Hilti DD 150 Core Drill</td>
+<td>$4,800</td>
+<td>$150</td>
+<td>$500</td>
+<td>$1,300</td>
+<td>32</td>
+</tr>
+<tr>
+<td>Hilti PM 30-MG Laser Level</td>
+<td>$1,100</td>
+<td>$55</td>
+<td>$185</td>
+<td>$480</td>
+<td>20</td>
+</tr>
+<tr>
+<td>SawStop PCS 3HP Table Saw</td>
+<td>$3,500</td>
+<td>$110</td>
+<td>$375</td>
+<td>$950</td>
+<td>32</td>
+</tr>
+<tr>
+<td>Makita XGT 80V Miter Saw</td>
+<td>$850</td>
+<td>$55</td>
+<td>$185</td>
+<td>$480</td>
+<td>16</td>
+</tr>
+<tr>
+<td>Makita AWS Planer (cordless)</td>
+<td>$680</td>
+<td>$45</td>
+<td>$150</td>
+<td>$400</td>
+<td>16</td>
+</tr>
+<tr>
+<td>Bosch GRL 4000-80CHVK Laser</td>
+<td>$1,500</td>
+<td>$70</td>
+<td>$240</td>
+<td>$620</td>
+<td>22</td>
+</tr>
+<tr>
+<td>Wacker Neuson VP1340 Compactor</td>
+<td>$3,200</td>
+<td>$95</td>
+<td>$325</td>
+<td>$840</td>
+<td>34</td>
+</tr>
+<tr>
+<td>Wacker Neuson BS 50-4 Rammer</td>
+<td>$2,800</td>
+<td>$85</td>
+<td>$290</td>
+<td>$750</td>
+<td>33</td>
+</tr>
+<tr>
+<td>Mafell Erika 85 Pull-Push Saw</td>
+<td>$3,800</td>
+<td>$120</td>
+<td>$400</td>
+<td>$1,050</td>
+<td>32</td>
+</tr>
+<tr>
+<td>Fein MultiMaster 700</td>
+<td>$420</td>
+<td>$35</td>
+<td>$120</td>
+<td>$310</td>
+<td>12</td>
+</tr>
+<tr>
+<td>Milwaukee MX FUEL Breaker</td>
+<td>$3,200</td>
+<td>$100</td>
+<td>$340</td>
+<td>$880</td>
+<td>32</td>
+</tr>
+<tr>
+<td>Husqvarna K770 Cutoff Saw</td>
+<td>$1,400</td>
+<td>$65</td>
+<td>$220</td>
+<td>$570</td>
+<td>22</td>
+</tr>
+<tr>
+<td>Leica Disto X4 Laser Measure</td>
+<td>$550</td>
+<td>$35</td>
+<td>$120</td>
+<td>$310</td>
+<td>16</td>
+</tr>
+<tr>
+<td>Bluebeam Revu + iPad Setup</td>
+<td>$800</td>
+<td>$50</td>
+<td>$170</td>
+<td>$440</td>
+<td>16</td>
+</tr>
+<tr>
+<td>Spray Foam Rig (Graco)</td>
+<td>$8,500</td>
+<td>$250</td>
+<td>$850</td>
+<td>$2,200</td>
+<td>34</td>
+</tr>
+<tr>
+<td>Pipe Threading Machine (Ridgid)</td>
+<td>$4,200</td>
+<td>$130</td>
+<td>$440</td>
+<td>$1,150</td>
+<td>33</td>
+</tr>
+</tbody></table>
+<p><strong>Target utilization:</strong> 60% (15 rental-days/month per tool). At $60 avg daily rate x 20 tools x 15 days = $18,000/mo rental revenue.</p>
+<hr>
+<h2 id="4-training-program-calendar-annual-rotation">4. Training Program Calendar (Annual Rotation)</h2>
+<table>
+<thead>
+<tr>
+<th>Month</th>
+<th>Course</th>
+<th>Sponsor</th>
+<th>Duration</th>
+<th>Fee</th>
+<th>Cert</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Jan</td>
+<td>OSHA 10-Hour Construction</td>
+<td>OSHA/Sherpa</td>
+<td>2 days</td>
+<td>$75</td>
+<td>OSHA-10 Card</td>
+</tr>
+<tr>
+<td>Feb</td>
+<td>Festool Track Saw + Dust-Free</td>
+<td>Festool</td>
+<td>4 hrs</td>
+<td>Free</td>
+<td>Festool Certified</td>
+</tr>
+<tr>
+<td>Mar</td>
+<td>Hilti Anchor Systems (ICC/ESR)</td>
+<td>Hilti</td>
+<td>6 hrs</td>
+<td>Free</td>
+<td>Hilti Cert</td>
+</tr>
+<tr>
+<td>Apr</td>
+<td>Lead Paint RRP Certification</td>
+<td>EPA/Sherpa</td>
+<td>8 hrs</td>
+<td>$200</td>
+<td>EPA RRP Card</td>
+</tr>
+<tr>
+<td>May</td>
+<td>Milwaukee M18/MX Platform</td>
+<td>Milwaukee</td>
+<td>4 hrs</td>
+<td>Free</td>
+<td>Milwaukee Pro</td>
+</tr>
+<tr>
+<td>Jun</td>
+<td>Spray Foam Insulation</td>
+<td>Demilec/Lapolla</td>
+<td>8 hrs</td>
+<td>$150</td>
+<td>Installer Cert</td>
+</tr>
+<tr>
+<td>Jul</td>
+<td>Schluter Shower Systems</td>
+<td>Schluter</td>
+<td>4 hrs</td>
+<td>Free</td>
+<td>Schluter Certified</td>
+</tr>
+<tr>
+<td>Aug</td>
+<td>SawStop Safety + Cabinet Saws</td>
+<td>SawStop</td>
+<td>3 hrs</td>
+<td>Free</td>
+<td>SawStop Cert</td>
+</tr>
+<tr>
+<td>Sep</td>
+<td>Estimating with Sherpa Tools</td>
+<td>Sherpa Pros</td>
+<td>4 hrs</td>
+<td>$50</td>
+<td>Hub Estimator</td>
+</tr>
+<tr>
+<td>Oct</td>
+<td>Concrete Form + Pour (ICF)</td>
+<td>Fox Blocks</td>
+<td>6 hrs</td>
+<td>Free</td>
+<td>ICF Installer</td>
+</tr>
+<tr>
+<td>Nov</td>
+<td>Weatherization + Energy Audit</td>
+<td>BPI/Sherpa</td>
+<td>8 hrs</td>
+<td>$175</td>
+<td>BPI Cert</td>
+</tr>
+<tr>
+<td>Dec</td>
+<td>First Aid / CPR for Job Sites</td>
+<td>Red Cross</td>
+<td>4 hrs</td>
+<td>$85</td>
+<td>FA/CPR Card</td>
+</tr>
+</tbody></table>
+<p><strong>Revenue per event:</strong> Manufacturer-sponsored = $2,000-$5,000 venue fee paid to Sherpa. Self-hosted (OSHA, RRP, BPI) = attendee fees cover instructor cost. All certs appear on pro's Sherpa profile.</p>
+<hr>
+<h2 id="5-inventory-management-data-model">5. Inventory Management Data Model</h2>
+<p>Extends the existing <code>hubs</code> table. New tables for the Hub module:</p>
+<pre><code class="hljs sql"><span class="hljs-comment">-- Kit templates (generated from Assembly Wiseman data)</span>
+<span class="hljs-keyword">CREATE TABLE</span> hub_kit_templates (
+    id              UUID <span class="hljs-keyword">PRIMARY KEY</span> <span class="hljs-keyword">DEFAULT</span> gen_random_uuid(),
+    hub_id          UUID <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">REFERENCES</span> hubs(id),
+    name            <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">255</span>) <span class="hljs-keyword">NOT NULL</span>,       <span class="hljs-comment">-- "Bathroom Remodel Kit (5x8)"</span>
+    category        <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">100</span>) <span class="hljs-keyword">NOT NULL</span>,        <span class="hljs-comment">-- plumbing, electrical, finish, etc.</span>
+    sku             <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">50</span>) <span class="hljs-keyword">UNIQUE</span> <span class="hljs-keyword">NOT NULL</span>,
+    items           JSONB <span class="hljs-keyword">NOT NULL</span>,               <span class="hljs-comment">-- [{product_id, qty, unit}]</span>
+    retail_cents    <span class="hljs-type">INTEGER</span> <span class="hljs-keyword">NOT NULL</span>,              <span class="hljs-comment">-- HD retail comparison price</span>
+    hub_price_cents <span class="hljs-type">INTEGER</span> <span class="hljs-keyword">NOT NULL</span>,              <span class="hljs-comment">-- Sherpa hub price</span>
+    assembly_ref    <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">100</span>),                  <span class="hljs-comment">-- Assembly Wiseman reference ID</span>
+    is_active       <span class="hljs-type">BOOLEAN</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-literal">true</span>,
+    created_at      TIMESTAMPTZ <span class="hljs-keyword">DEFAULT</span> now()
+);
+
+<span class="hljs-comment">-- Physical inventory per hub</span>
+<span class="hljs-keyword">CREATE TABLE</span> hub_inventory (
+    id              UUID <span class="hljs-keyword">PRIMARY KEY</span> <span class="hljs-keyword">DEFAULT</span> gen_random_uuid(),
+    hub_id          UUID <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">REFERENCES</span> hubs(id),
+    product_name    <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">255</span>) <span class="hljs-keyword">NOT NULL</span>,
+    sku             <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">50</span>) <span class="hljs-keyword">NOT NULL</span>,
+    barcode         <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">50</span>),
+    qty_on_hand     <span class="hljs-type">INTEGER</span> <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-number">0</span>,
+    qty_reserved    <span class="hljs-type">INTEGER</span> <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-number">0</span>,
+    reorder_point   <span class="hljs-type">INTEGER</span> <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-number">5</span>,
+    reorder_qty     <span class="hljs-type">INTEGER</span> <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-number">20</span>,
+    unit_cost_cents <span class="hljs-type">INTEGER</span> <span class="hljs-keyword">NOT NULL</span>,              <span class="hljs-comment">-- Sherpa bulk buy cost</span>
+    supplier        <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">255</span>),
+    location_bin    <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">20</span>),                    <span class="hljs-comment">-- "A3-02" (rack-shelf)</span>
+    last_counted    TIMESTAMPTZ,
+    updated_at      TIMESTAMPTZ <span class="hljs-keyword">DEFAULT</span> now(),
+    <span class="hljs-keyword">UNIQUE</span> (hub_id, sku)
+);
+
+<span class="hljs-comment">-- Equipment available for rental</span>
+<span class="hljs-keyword">CREATE TABLE</span> hub_equipment (
+    id              UUID <span class="hljs-keyword">PRIMARY KEY</span> <span class="hljs-keyword">DEFAULT</span> gen_random_uuid(),
+    hub_id          UUID <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">REFERENCES</span> hubs(id),
+    name            <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">255</span>) <span class="hljs-keyword">NOT NULL</span>,         <span class="hljs-comment">-- "Festool TS 55 Track Saw"</span>
+    brand           <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">100</span>) <span class="hljs-keyword">NOT NULL</span>,
+    model           <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">100</span>),
+    serial_number   <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">100</span>) <span class="hljs-keyword">UNIQUE</span>,
+    retail_cents    <span class="hljs-type">INTEGER</span> <span class="hljs-keyword">NOT NULL</span>,               <span class="hljs-comment">-- replacement value</span>
+    daily_rate      <span class="hljs-type">INTEGER</span> <span class="hljs-keyword">NOT NULL</span>,               <span class="hljs-comment">-- cents</span>
+    weekly_rate     <span class="hljs-type">INTEGER</span> <span class="hljs-keyword">NOT NULL</span>,
+    monthly_rate    <span class="hljs-type">INTEGER</span> <span class="hljs-keyword">NOT NULL</span>,
+    deposit_cents   <span class="hljs-type">INTEGER</span> <span class="hljs-keyword">NOT NULL</span>,               <span class="hljs-comment">-- 50% of retail</span>
+    status          <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">20</span>) <span class="hljs-keyword">DEFAULT</span> <span class="hljs-string">'available'</span>
+                    <span class="hljs-keyword">CHECK</span> (status <span class="hljs-keyword">IN</span> (<span class="hljs-string">'available'</span>,<span class="hljs-string">'rented'</span>,<span class="hljs-string">'maintenance'</span>,<span class="hljs-string">'retired'</span>)),
+    condition_notes TEXT,
+    next_service    <span class="hljs-type">DATE</span>,
+    created_at      TIMESTAMPTZ <span class="hljs-keyword">DEFAULT</span> now()
+);
+
+<span class="hljs-comment">-- Rental transactions</span>
+<span class="hljs-keyword">CREATE TABLE</span> hub_rentals (
+    id              UUID <span class="hljs-keyword">PRIMARY KEY</span> <span class="hljs-keyword">DEFAULT</span> gen_random_uuid(),
+    equipment_id    UUID <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">REFERENCES</span> hub_equipment(id),
+    pro_id          UUID <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">REFERENCES</span> pros(id),
+    hub_id          UUID <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">REFERENCES</span> hubs(id),
+    checked_out     TIMESTAMPTZ <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> now(),
+    due_back        TIMESTAMPTZ <span class="hljs-keyword">NOT NULL</span>,
+    returned_at     TIMESTAMPTZ,
+    rate_type       <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">10</span>) <span class="hljs-keyword">CHECK</span> (rate_type <span class="hljs-keyword">IN</span> (<span class="hljs-string">'daily'</span>,<span class="hljs-string">'weekly'</span>,<span class="hljs-string">'monthly'</span>)),
+    total_cents     <span class="hljs-type">INTEGER</span> <span class="hljs-keyword">NOT NULL</span>,
+    deposit_cents   <span class="hljs-type">INTEGER</span> <span class="hljs-keyword">NOT NULL</span>,
+    deposit_status  <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">15</span>) <span class="hljs-keyword">DEFAULT</span> <span class="hljs-string">'held'</span>
+                    <span class="hljs-keyword">CHECK</span> (deposit_status <span class="hljs-keyword">IN</span> (<span class="hljs-string">'held'</span>,<span class="hljs-string">'released'</span>,<span class="hljs-string">'claimed'</span>)),
+    condition_out   TEXT,
+    condition_in    TEXT,
+    damage_cents    <span class="hljs-type">INTEGER</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-number">0</span>,
+    stripe_hold_id  <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">255</span>),                   <span class="hljs-comment">-- Stripe PaymentIntent for deposit</span>
+    created_at      TIMESTAMPTZ <span class="hljs-keyword">DEFAULT</span> now()
+);
+
+<span class="hljs-comment">-- Training events</span>
+<span class="hljs-keyword">CREATE TABLE</span> hub_training_events (
+    id              UUID <span class="hljs-keyword">PRIMARY KEY</span> <span class="hljs-keyword">DEFAULT</span> gen_random_uuid(),
+    hub_id          UUID <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">REFERENCES</span> hubs(id),
+    title           <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">255</span>) <span class="hljs-keyword">NOT NULL</span>,
+    sponsor         <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">255</span>),
+    instructor      <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">255</span>),
+    event_date      <span class="hljs-type">DATE</span> <span class="hljs-keyword">NOT NULL</span>,
+    start_time      <span class="hljs-type">TIME</span> <span class="hljs-keyword">NOT NULL</span>,
+    duration_hours  <span class="hljs-type">DECIMAL</span>(<span class="hljs-number">4</span>,<span class="hljs-number">1</span>) <span class="hljs-keyword">NOT NULL</span>,
+    max_seats       <span class="hljs-type">INTEGER</span> <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-number">12</span>,
+    fee_cents       <span class="hljs-type">INTEGER</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-number">0</span>,
+    sponsor_fee_cents <span class="hljs-type">INTEGER</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-number">0</span>,            <span class="hljs-comment">-- what sponsor pays Sherpa</span>
+    cert_type       <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">100</span>),                   <span class="hljs-comment">-- maps to pro_certifications.cert_type</span>
+    description     TEXT,
+    created_at      TIMESTAMPTZ <span class="hljs-keyword">DEFAULT</span> now()
+);
+
+<span class="hljs-comment">-- Training registrations</span>
+<span class="hljs-keyword">CREATE TABLE</span> hub_training_registrations (
+    id              UUID <span class="hljs-keyword">PRIMARY KEY</span> <span class="hljs-keyword">DEFAULT</span> gen_random_uuid(),
+    event_id        UUID <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">REFERENCES</span> hub_training_events(id),
+    pro_id          UUID <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">REFERENCES</span> pros(id),
+    status          <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">15</span>) <span class="hljs-keyword">DEFAULT</span> <span class="hljs-string">'registered'</span>
+                    <span class="hljs-keyword">CHECK</span> (status <span class="hljs-keyword">IN</span> (<span class="hljs-string">'registered'</span>,<span class="hljs-string">'attended'</span>,<span class="hljs-string">'no_show'</span>,<span class="hljs-string">'cancelled'</span>)),
+    paid_cents      <span class="hljs-type">INTEGER</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-number">0</span>,
+    cert_issued     <span class="hljs-type">BOOLEAN</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-literal">false</span>,
+    created_at      TIMESTAMPTZ <span class="hljs-keyword">DEFAULT</span> now(),
+    <span class="hljs-keyword">UNIQUE</span> (event_id, pro_id)
+);
+
+<span class="hljs-comment">-- Kit orders (pro orders a kit for a specific job)</span>
+<span class="hljs-keyword">CREATE TABLE</span> hub_kit_orders (
+    id              UUID <span class="hljs-keyword">PRIMARY KEY</span> <span class="hljs-keyword">DEFAULT</span> gen_random_uuid(),
+    kit_template_id UUID <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">REFERENCES</span> hub_kit_templates(id),
+    pro_id          UUID <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">REFERENCES</span> pros(id),
+    job_id          UUID <span class="hljs-keyword">REFERENCES</span> jobs(id),
+    hub_id          UUID <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">REFERENCES</span> hubs(id),
+    quantity        <span class="hljs-type">INTEGER</span> <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-number">1</span>,
+    total_cents     <span class="hljs-type">INTEGER</span> <span class="hljs-keyword">NOT NULL</span>,
+    status          <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">20</span>) <span class="hljs-keyword">DEFAULT</span> <span class="hljs-string">'pending'</span>
+                    <span class="hljs-keyword">CHECK</span> (status <span class="hljs-keyword">IN</span> (<span class="hljs-string">'pending'</span>,<span class="hljs-string">'assembling'</span>,<span class="hljs-string">'ready'</span>,<span class="hljs-string">'picked_up'</span>,<span class="hljs-string">'delivered'</span>,<span class="hljs-string">'cancelled'</span>)),
+    delivery_type   <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">10</span>) <span class="hljs-keyword">DEFAULT</span> <span class="hljs-string">'pickup'</span>
+                    <span class="hljs-keyword">CHECK</span> (delivery_type <span class="hljs-keyword">IN</span> (<span class="hljs-string">'pickup'</span>,<span class="hljs-string">'delivery'</span>)),
+    delivery_address TEXT,
+    notes           TEXT,
+    created_at      TIMESTAMPTZ <span class="hljs-keyword">DEFAULT</span> now(),
+    updated_at      TIMESTAMPTZ <span class="hljs-keyword">DEFAULT</span> now()
+);
+</code></pre>
+<hr>
+<h2 id="6-manufacturer-partnership-pitch">6. Manufacturer Partnership Pitch</h2>
+<p><strong>What Sherpa offers manufacturers:</strong></p>
+<ul>
+<li><strong>Captive audience:</strong> 200+ verified, active contractors in the Seacoast NH market (growing)</li>
+<li><strong>Training venue:</strong> 600 sqft classroom, 12 seats, projector, demo benches -- zero setup cost for manufacturer reps</li>
+<li><strong>Rental fleet as demo:</strong> Every rental is a 1-30 day product trial. Conversion to purchase: 15-25% historically (Hilti fleet model)</li>
+<li><strong>Purchase funnel:</strong> Contractor tries tool on rental, attends training, gets 10% Sherpa-exclusive discount code -- buys direct. Sherpa earns 5-8% referral commission</li>
+<li><strong>Data:</strong> Sherpa knows which tools get rented most, by which trades, for which job types. Manufacturers get anonymized usage reports quarterly</li>
+<li><strong>Co-marketing:</strong> Manufacturer logo on Sherpa Hub signage, featured in Sherpa app "Recommended Tools" section, email blasts to pro network</li>
+</ul>
+<p><strong>Ask from manufacturer:</strong> $3,000/event sponsorship fee + consignment inventory (5-10 units for rental fleet at 40% off retail, Sherpa maintains and insures).</p>
+<hr>
+<h2 id="7-expansion-roadmap">7. Expansion Roadmap</h2>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Timeline</th>
+<th>Hubs</th>
+<th>Market</th>
+<th>Investment</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1 -- Proof</td>
+<td>Q3 2026</td>
+<td>1 (Portsmouth NH)</td>
+<td>Seacoast NH</td>
+<td>$100K (lease + inventory + buildout)</td>
+</tr>
+<tr>
+<td>2 -- Validate</td>
+<td>Q1 2027</td>
+<td>3 (+ Manchester NH, Portland ME)</td>
+<td>Southern NH + Southern ME</td>
+<td>$250K</td>
+</tr>
+<tr>
+<td>3 -- Regional</td>
+<td>Q3 2027</td>
+<td>5 (+ Boston metro, Providence)</td>
+<td>Full New England</td>
+<td>$500K</td>
+</tr>
+<tr>
+<td>4 -- Scale</td>
+<td>2028</td>
+<td>10-20 (franchise model)</td>
+<td>Northeast corridor</td>
+<td>Series A territory</td>
+</tr>
+</tbody></table>
+<p><strong>Hub 1 success metrics (6 months):</strong> 150+ kit orders/mo, 60% tool utilization, 8+ training events, 200 registered pros, $30K+/mo net revenue.</p>
+<hr>
+<h2 id="8-software-features-to-build">8. Software Features to Build</h2>
+<h3 id="phase-1-mvp-with-hub-1-launch">Phase 1 (MVP with Hub 1 launch)</h3>
+<ol>
+<li><code>hub_inventory</code> CRUD + barcode scan (mobile camera)</li>
+<li>Kit catalog page in pro dashboard (browse, order, pay via Stripe)</li>
+<li>Equipment rental checkout flow (date picker, deposit hold, Stripe)</li>
+<li>Training calendar page with registration</li>
+<li>Hub manager admin panel (inventory counts, rental status, reorders)</li>
+<li>Push notifications: kit ready, rental due, training reminder</li>
+</ol>
+<h3 id="phase-2-post-launch-optimization">Phase 2 (Post-launch optimization)</h3>
+<ol start="7">
+<li>Auto-reorder triggers (inventory below threshold -&gt; supplier PO)</li>
+<li>Delivery dispatch (integrate existing gig delivery from materials API)</li>
+<li>Damage assessment workflow (photo upload on return, deposit claim)</li>
+<li>Manufacturer portal (view rental stats, training attendance, schedule events)</li>
+<li>Kit builder: pro customizes a kit from Assembly Wiseman data</li>
+<li>Demand forecasting: pipeline jobs -&gt; predicted kit demand</li>
+</ol>
+<h3 id="phase-3-multi-hub">Phase 3 (Multi-hub)</h3>
+<ol start="13">
+<li>Inter-hub transfer (tool at Hub A needed at Hub B)</li>
+<li>Hub-level P&amp;L dashboard</li>
+<li>Franchise management (onboard new hub operators)</li>
+<li>Loyalty program (rent 10x -&gt; free day, buy 20 kits -&gt; tier upgrade)</li>
+</ol>
+<hr>
+<h2 id="integration-with-existing-platform">Integration with Existing Platform</h2>
+<ul>
+<li><strong>Existing <code>hubs</code> table</strong> already has geography, radius, config JSONB -- extend <code>config</code> with hub_type: 'digital' | 'physical' | 'hybrid'</li>
+<li><strong>Existing materials API</strong> (<code>/api/materials/order</code>) uses Zinc/HD -- Hub kits become an alternative fulfillment path: if pro is near a physical hub, offer hub pickup at lower price vs HD delivery</li>
+<li><strong>Existing Stripe Connect</strong> handles deposits and kit payments through the same marketplace split infrastructure</li>
+<li><strong>Existing pro_certifications table</strong> receives certs from training events automatically</li>
+<li><strong>Dispatch Wiseman</strong> factors in hub proximity when scoring pros -- pros near a hub with stocked kits get a dispatch bonus</li>
+</ul>
+
+	
+
+
+</body>
+</html>

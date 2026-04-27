@@ -1,0 +1,1636 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>04 vendor risk register — Sherpa Pros</title>
+<link rel="icon" href="../../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="04-vendor-risk-register.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="vendor-risk-register">Vendor Risk Register</h1>
+<h2 id="1-purpose">1. Purpose</h2>
+<p>This register inventories every third-party vendor with access to Sherpa Pros customer data, infrastructure, or business operations. It satisfies SOC 2 CC9.2 (vendor risk management) and serves as the source of truth that Vanta's vendor risk module syncs to.</p>
+<h2 id="2-risk-classification">2. Risk Classification</h2>
+<table>
+<thead>
+<tr>
+<th>Criticality</th>
+<th>Definition</th>
+<th>Review cadence</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>High</strong></td>
+<td>Outage = platform outage; data breach = regulated PII exposure</td>
+<td>Annual + on contract change + on incident</td>
+</tr>
+<tr>
+<td><strong>Medium</strong></td>
+<td>Degraded service or limited PII exposure</td>
+<td>Annual</td>
+</tr>
+<tr>
+<td><strong>Low</strong></td>
+<td>Internal tooling, no customer data</td>
+<td>Biennial</td>
+</tr>
+</tbody></table>
+<h2 id="3-vendor-register-initial-14-vendors">3. Vendor Register (Initial 14 Vendors)</h2>
+<h3 id="31-vercel--compute--hosting">3.1 Vercel — Compute / Hosting</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Service</strong></td>
+<td>Edge + serverless compute, deployment platform</td>
+</tr>
+<tr>
+<td><strong>SOC 2</strong></td>
+<td>Type 2 ✓ (current report on file)</td>
+</tr>
+<tr>
+<td><strong>Other certs</strong></td>
+<td>ISO 27001, PCI DSS Level 1, HIPAA-eligible</td>
+</tr>
+<tr>
+<td><strong>Last review</strong></td>
+<td>2026-04-25 (initial)</td>
+</tr>
+<tr>
+<td><strong>Next review</strong></td>
+<td>2027-04-25</td>
+</tr>
+<tr>
+<td><strong>Data shared</strong></td>
+<td>Application code, runtime logs, customer request payloads (transient), environment variables (Tier 3 only post AWS SM migration)</td>
+</tr>
+<tr>
+<td><strong>Criticality</strong></td>
+<td><strong>High</strong></td>
+</tr>
+<tr>
+<td><strong>Security contact</strong></td>
+<td><a href="mailto:security@vercel.com">security@vercel.com</a></td>
+</tr>
+<tr>
+<td><strong>Contract renewal</strong></td>
+<td>Q4 2027 (annual)</td>
+</tr>
+<tr>
+<td><strong>DPA on file</strong></td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><strong>Data residency</strong></td>
+<td>US (iad1, sfo1)</td>
+</tr>
+<tr>
+<td><strong>Compensating controls</strong></td>
+<td>Cloudflare WAF in front; Sherpa Guard middleware audit logging</td>
+</tr>
+</tbody></table>
+<h3 id="32-neon--postgres-database">3.2 Neon — Postgres Database</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Service</strong></td>
+<td>Managed Postgres with branching + serverless scaling</td>
+</tr>
+<tr>
+<td><strong>SOC 2</strong></td>
+<td>Type 2 ✓</td>
+</tr>
+<tr>
+<td><strong>Other certs</strong></td>
+<td>ISO 27001</td>
+</tr>
+<tr>
+<td><strong>Last review</strong></td>
+<td>2026-04-25</td>
+</tr>
+<tr>
+<td><strong>Next review</strong></td>
+<td>2027-04-25</td>
+</tr>
+<tr>
+<td><strong>Data shared</strong></td>
+<td>All customer PII, payment metadata (tokenized), audit logs, business data</td>
+</tr>
+<tr>
+<td><strong>Criticality</strong></td>
+<td><strong>High</strong></td>
+</tr>
+<tr>
+<td><strong>Security contact</strong></td>
+<td><a href="mailto:security@neon.tech">security@neon.tech</a></td>
+</tr>
+<tr>
+<td><strong>Contract renewal</strong></td>
+<td>Q3 2027</td>
+</tr>
+<tr>
+<td><strong>DPA on file</strong></td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><strong>Data residency</strong></td>
+<td>US (us-east-2 primary; us-west-2 read replica Phase 4)</td>
+</tr>
+<tr>
+<td><strong>Compensating controls</strong></td>
+<td>Encryption at rest AES-256; PITR + nightly snapshots to S3; Sherpa Guard audit log captures all writes</td>
+</tr>
+</tbody></table>
+<h3 id="33-clerk--authentication">3.3 Clerk — Authentication</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Service</strong></td>
+<td>Identity provider, MFA, session mgmt, SSO</td>
+</tr>
+<tr>
+<td><strong>SOC 2</strong></td>
+<td>Type 2 ✓</td>
+</tr>
+<tr>
+<td><strong>Other certs</strong></td>
+<td>HIPAA-eligible</td>
+</tr>
+<tr>
+<td><strong>Last review</strong></td>
+<td>2026-04-25</td>
+</tr>
+<tr>
+<td><strong>Next review</strong></td>
+<td>2027-04-25</td>
+</tr>
+<tr>
+<td><strong>Data shared</strong></td>
+<td>User PII (name, email, phone), authentication logs, session tokens</td>
+</tr>
+<tr>
+<td><strong>Criticality</strong></td>
+<td><strong>High</strong></td>
+</tr>
+<tr>
+<td><strong>Security contact</strong></td>
+<td><a href="mailto:security@clerk.com">security@clerk.com</a></td>
+</tr>
+<tr>
+<td><strong>Contract renewal</strong></td>
+<td>Monthly auto-renew</td>
+</tr>
+<tr>
+<td><strong>DPA on file</strong></td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><strong>Data residency</strong></td>
+<td>US</td>
+</tr>
+<tr>
+<td><strong>Compensating controls</strong></td>
+<td>MFA mandatory; session timeout 12hr; suspicious sign-in alerts wired to PagerDuty</td>
+</tr>
+</tbody></table>
+<h3 id="34-stripe-connect--payments--escrow">3.4 Stripe Connect — Payments + Escrow</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Service</strong></td>
+<td>Payment processing, escrow, payouts to pros</td>
+</tr>
+<tr>
+<td><strong>SOC 2</strong></td>
+<td>Type 2 ✓</td>
+</tr>
+<tr>
+<td><strong>Other certs</strong></td>
+<td>PCI DSS Level 1, ISO 27001, HIPAA-eligible</td>
+</tr>
+<tr>
+<td><strong>Last review</strong></td>
+<td>2026-04-25</td>
+</tr>
+<tr>
+<td><strong>Next review</strong></td>
+<td>2027-04-25</td>
+</tr>
+<tr>
+<td><strong>Data shared</strong></td>
+<td>Payment instruments (tokenized only), homeowner billing details, pro payout details (KYC/AML data)</td>
+</tr>
+<tr>
+<td><strong>Criticality</strong></td>
+<td><strong>High</strong></td>
+</tr>
+<tr>
+<td><strong>Security contact</strong></td>
+<td><a href="mailto:security@stripe.com">security@stripe.com</a></td>
+</tr>
+<tr>
+<td><strong>Contract renewal</strong></td>
+<td>N/A (per-transaction pricing)</td>
+</tr>
+<tr>
+<td><strong>DPA on file</strong></td>
+<td>Yes (Stripe DPA accepted)</td>
+</tr>
+<tr>
+<td><strong>Data residency</strong></td>
+<td>US</td>
+</tr>
+<tr>
+<td><strong>Compensating controls</strong></td>
+<td>We never store raw card data — Stripe-tokenized only; webhook signatures verified; Stripe Radar fraud detection enabled; Sherpa Guard audit log captures every payment event</td>
+</tr>
+</tbody></table>
+<h3 id="35-twilio--sms--voice">3.5 Twilio — SMS + Voice</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Service</strong></td>
+<td>Job dispatch SMS, pro notifications, voice fallback</td>
+</tr>
+<tr>
+<td><strong>SOC 2</strong></td>
+<td>Type 2 ✓</td>
+</tr>
+<tr>
+<td><strong>Other certs</strong></td>
+<td>ISO 27001, HIPAA-eligible (Programmable Messaging only)</td>
+</tr>
+<tr>
+<td><strong>Last review</strong></td>
+<td>2026-04-25</td>
+</tr>
+<tr>
+<td><strong>Next review</strong></td>
+<td>2027-04-25</td>
+</tr>
+<tr>
+<td><strong>Data shared</strong></td>
+<td>Phone numbers, message content (job dispatch text only — no PII beyond first name)</td>
+</tr>
+<tr>
+<td><strong>Criticality</strong></td>
+<td><strong>High</strong></td>
+</tr>
+<tr>
+<td><strong>Security contact</strong></td>
+<td><a href="mailto:security@twilio.com">security@twilio.com</a></td>
+</tr>
+<tr>
+<td><strong>Contract renewal</strong></td>
+<td>Pay-as-you-go</td>
+</tr>
+<tr>
+<td><strong>DPA on file</strong></td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><strong>Data residency</strong></td>
+<td>US</td>
+</tr>
+<tr>
+<td><strong>Compensating controls</strong></td>
+<td>Toll-free 10DLC registered; opt-out compliance via STOP keyword; rate limiting at Sherpa Guard layer; sub-account isolation per environment</td>
+</tr>
+</tbody></table>
+<h3 id="36-tremendous--rewards-fulfillment">3.6 Tremendous — Rewards Fulfillment</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Service</strong></td>
+<td>Pro rewards + referral payouts (gift cards, ACH, virtual cards)</td>
+</tr>
+<tr>
+<td><strong>SOC 2</strong></td>
+<td>Type 2 ✓ (verify before contract — request current report)</td>
+</tr>
+<tr>
+<td><strong>Other certs</strong></td>
+<td>PCI DSS (verify)</td>
+</tr>
+<tr>
+<td><strong>Last review</strong></td>
+<td>2026-04-25 (pending vendor diligence)</td>
+</tr>
+<tr>
+<td><strong>Next review</strong></td>
+<td>2027-04-25</td>
+</tr>
+<tr>
+<td><strong>Data shared</strong></td>
+<td>Pro names, emails, payout amounts (no banking detail; Tremendous owns the rail)</td>
+</tr>
+<tr>
+<td><strong>Criticality</strong></td>
+<td><strong>Medium</strong></td>
+</tr>
+<tr>
+<td><strong>Security contact</strong></td>
+<td><a href="mailto:security@tremendous.com">security@tremendous.com</a> (verify)</td>
+</tr>
+<tr>
+<td><strong>Contract renewal</strong></td>
+<td>TBD on engagement</td>
+</tr>
+<tr>
+<td><strong>DPA on file</strong></td>
+<td>TBD — required before first payout</td>
+</tr>
+<tr>
+<td><strong>Data residency</strong></td>
+<td>US</td>
+</tr>
+<tr>
+<td><strong>Compensating controls</strong></td>
+<td>Webhook signatures verified; per-payout cap configured; Sherpa Guard audit log entry per payout request; daily reconciliation against ledger</td>
+</tr>
+</tbody></table>
+<h3 id="37-zinc-api--materials-ordering">3.7 Zinc API — Materials Ordering</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Service</strong></td>
+<td>Programmatic ordering of construction materials from retailers (Home Depot, Lowes, Amazon Business, etc.)</td>
+</tr>
+<tr>
+<td><strong>SOC 2</strong></td>
+<td><strong>VERIFY before contract.</strong> If Zinc lacks SOC 2 Type 2:</td>
+</tr>
+<tr>
+<td><strong>Compensating controls if no SOC 2</strong></td>
+<td>(a) DPA mandatory; (b) limit data shared to order line items + delivery address (no payment instruments — Zinc is invoiced separately by us); (c) Sherpa Guard audit log per order; (d) elevated quarterly vendor review instead of annual; (e) annual penetration test certification request from Zinc</td>
+</tr>
+<tr>
+<td><strong>Last review</strong></td>
+<td>2026-04-25 (pending vendor diligence)</td>
+</tr>
+<tr>
+<td><strong>Next review</strong></td>
+<td>Quarterly until SOC 2 obtained, then annual</td>
+</tr>
+<tr>
+<td><strong>Data shared</strong></td>
+<td>Delivery addresses, materials line items, order references</td>
+</tr>
+<tr>
+<td><strong>Criticality</strong></td>
+<td><strong>High</strong> (operational dependency)</td>
+</tr>
+<tr>
+<td><strong>Security contact</strong></td>
+<td>TBD</td>
+</tr>
+<tr>
+<td><strong>Contract renewal</strong></td>
+<td>TBD</td>
+</tr>
+<tr>
+<td><strong>DPA on file</strong></td>
+<td>Required before first order</td>
+</tr>
+<tr>
+<td><strong>Data residency</strong></td>
+<td>US</td>
+</tr>
+</tbody></table>
+<h3 id="38-uber-direct--delivery">3.8 Uber Direct — Delivery</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Service</strong></td>
+<td>Last-mile delivery for tools, materials, samples</td>
+</tr>
+<tr>
+<td><strong>SOC 2</strong></td>
+<td><strong>VERIFY before contract.</strong> Uber Eats / Direct part of Uber Tech which has SOC 2 Type 2 — confirm it covers Direct API</td>
+</tr>
+<tr>
+<td><strong>Compensating controls if uncertain</strong></td>
+<td>Limit PII shared to first-name + delivery address + phone (for driver coordination); webhook signature verification; Sherpa Guard audit log per delivery request</td>
+</tr>
+<tr>
+<td><strong>Last review</strong></td>
+<td>2026-04-25 (pending vendor diligence)</td>
+</tr>
+<tr>
+<td><strong>Next review</strong></td>
+<td>2027-04-25</td>
+</tr>
+<tr>
+<td><strong>Data shared</strong></td>
+<td>Recipient first name, delivery address, phone (transient for driver), package descriptors</td>
+</tr>
+<tr>
+<td><strong>Criticality</strong></td>
+<td><strong>Medium</strong></td>
+</tr>
+<tr>
+<td><strong>Security contact</strong></td>
+<td><a href="mailto:security@uber.com">security@uber.com</a></td>
+</tr>
+<tr>
+<td><strong>Contract renewal</strong></td>
+<td>Per-delivery pricing</td>
+</tr>
+<tr>
+<td><strong>DPA on file</strong></td>
+<td>Required</td>
+</tr>
+<tr>
+<td><strong>Data residency</strong></td>
+<td>US</td>
+</tr>
+</tbody></table>
+<h3 id="39-cloudflare--waf--edge-protection">3.9 Cloudflare — WAF + Edge Protection</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Service</strong></td>
+<td>Web application firewall, DDoS, bot protection (paired with Vercel BotID), DNS</td>
+</tr>
+<tr>
+<td><strong>SOC 2</strong></td>
+<td>Type 2 ✓</td>
+</tr>
+<tr>
+<td><strong>Other certs</strong></td>
+<td>ISO 27001, PCI DSS, FedRAMP Moderate (subset)</td>
+</tr>
+<tr>
+<td><strong>Last review</strong></td>
+<td>2026-04-25</td>
+</tr>
+<tr>
+<td><strong>Next review</strong></td>
+<td>2027-04-25</td>
+</tr>
+<tr>
+<td><strong>Data shared</strong></td>
+<td>All inbound HTTP traffic metadata (URLs, headers, IPs); request bodies inspected by WAF rules transiently</td>
+</tr>
+<tr>
+<td><strong>Criticality</strong></td>
+<td><strong>High</strong></td>
+</tr>
+<tr>
+<td><strong>Security contact</strong></td>
+<td><a href="mailto:security@cloudflare.com">security@cloudflare.com</a></td>
+</tr>
+<tr>
+<td><strong>Contract renewal</strong></td>
+<td>Annual (Pro plan today; Business tier when MAU &gt; 100K)</td>
+</tr>
+<tr>
+<td><strong>DPA on file</strong></td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><strong>Data residency</strong></td>
+<td>Global edge with US POP preference</td>
+</tr>
+<tr>
+<td><strong>Compensating controls</strong></td>
+<td>TLS 1.3 end-to-end; HSTS preload; bot management rules tuned</td>
+</tr>
+</tbody></table>
+<h3 id="310-datadog--observability">3.10 Datadog — Observability</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Service</strong></td>
+<td>APM, logs, metrics, RUM, synthetics</td>
+</tr>
+<tr>
+<td><strong>SOC 2</strong></td>
+<td>Type 2 ✓</td>
+</tr>
+<tr>
+<td><strong>Other certs</strong></td>
+<td>ISO 27001, HIPAA-eligible, FedRAMP Moderate, PCI DSS</td>
+</tr>
+<tr>
+<td><strong>Last review</strong></td>
+<td>2026-04-25</td>
+</tr>
+<tr>
+<td><strong>Next review</strong></td>
+<td>2027-04-25</td>
+</tr>
+<tr>
+<td><strong>Data shared</strong></td>
+<td>Application logs (PII scrubbing applied at agent), performance traces, user session recordings (RUM with PII masking)</td>
+</tr>
+<tr>
+<td><strong>Criticality</strong></td>
+<td><strong>Medium</strong> (observability outage degrades incident response but not customer experience)</td>
+</tr>
+<tr>
+<td><strong>Security contact</strong></td>
+<td><a href="mailto:security@datadoghq.com">security@datadoghq.com</a></td>
+</tr>
+<tr>
+<td><strong>Contract renewal</strong></td>
+<td>Annual</td>
+</tr>
+<tr>
+<td><strong>DPA on file</strong></td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><strong>Data residency</strong></td>
+<td>US (datadoghq.com)</td>
+</tr>
+<tr>
+<td><strong>Compensating controls</strong></td>
+<td>PII scrubbing rules at agent + processor; sensitive data masking in RUM; access tier separation per <code>03-access-management-policy.md</code></td>
+</tr>
+</tbody></table>
+<h3 id="311-vanta--compliance-automation">3.11 Vanta — Compliance Automation</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Service</strong></td>
+<td>SOC 2 evidence automation, vendor risk, employee training, Trust Center</td>
+</tr>
+<tr>
+<td><strong>SOC 2</strong></td>
+<td>Type 2 ✓</td>
+</tr>
+<tr>
+<td><strong>Other certs</strong></td>
+<td>ISO 27001</td>
+</tr>
+<tr>
+<td><strong>Last review</strong></td>
+<td>2026-04-25</td>
+</tr>
+<tr>
+<td><strong>Next review</strong></td>
+<td>2027-04-25</td>
+</tr>
+<tr>
+<td><strong>Data shared</strong></td>
+<td>Read-only API access to: Vercel, Neon, Clerk, Stripe, AWS, Cloudflare, Datadog, GitHub, Linear, PagerDuty for evidence collection</td>
+</tr>
+<tr>
+<td><strong>Criticality</strong></td>
+<td><strong>Medium</strong> (downtime delays evidence collection but no customer impact)</td>
+</tr>
+<tr>
+<td><strong>Security contact</strong></td>
+<td><a href="mailto:security@vanta.com">security@vanta.com</a></td>
+</tr>
+<tr>
+<td><strong>Contract renewal</strong></td>
+<td>Annual (per <code>01-vanta-engagement-rfp.md</code>)</td>
+</tr>
+<tr>
+<td><strong>DPA on file</strong></td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><strong>Data residency</strong></td>
+<td>US</td>
+</tr>
+<tr>
+<td><strong>Compensating controls</strong></td>
+<td>Read-only scopes; least-privilege OAuth grants per integration</td>
+</tr>
+</tbody></table>
+<h3 id="312-schellman--auditor">3.12 Schellman — Auditor</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Service</strong></td>
+<td>SOC 2 Type 1 + Type 2 audit firm</td>
+</tr>
+<tr>
+<td><strong>SOC 2</strong></td>
+<td>N/A (auditor, not data processor)</td>
+</tr>
+<tr>
+<td><strong>Other certs</strong></td>
+<td>AICPA-licensed CPA firm; ISO accredited</td>
+</tr>
+<tr>
+<td><strong>Last review</strong></td>
+<td>2026-04-25</td>
+</tr>
+<tr>
+<td><strong>Next review</strong></td>
+<td>2027-04-25</td>
+</tr>
+<tr>
+<td><strong>Data shared</strong></td>
+<td>Read-only access to Vanta evidence portal; sample data pulls during fieldwork (anonymized where possible)</td>
+</tr>
+<tr>
+<td><strong>Criticality</strong></td>
+<td><strong>Low</strong> (audit-cycle vendor; no operational dependency)</td>
+</tr>
+<tr>
+<td><strong>Security contact</strong></td>
+<td>per engagement letter</td>
+</tr>
+<tr>
+<td><strong>Contract renewal</strong></td>
+<td>Per engagement (Type 1 + Type 2 contracts separate)</td>
+</tr>
+<tr>
+<td><strong>DPA on file</strong></td>
+<td>Engagement letter includes confidentiality</td>
+</tr>
+<tr>
+<td><strong>Data residency</strong></td>
+<td>US</td>
+</tr>
+<tr>
+<td><strong>Compensating controls</strong></td>
+<td>Auditor independence; access via Vanta scoped read-only</td>
+</tr>
+</tbody></table>
+<h3 id="313-upstash--redis">3.13 Upstash — Redis</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Service</strong></td>
+<td>Edge-compatible Redis for rate limiting, session caching, idempotency keys</td>
+</tr>
+<tr>
+<td><strong>SOC 2</strong></td>
+<td>Type 2 ✓</td>
+</tr>
+<tr>
+<td><strong>Other certs</strong></td>
+<td>ISO 27001</td>
+</tr>
+<tr>
+<td><strong>Last review</strong></td>
+<td>2026-04-25</td>
+</tr>
+<tr>
+<td><strong>Next review</strong></td>
+<td>2027-04-25</td>
+</tr>
+<tr>
+<td><strong>Data shared</strong></td>
+<td>Rate-limit counters keyed by IP/user-id (no PII); idempotency keys (opaque); transient session lookup hashes</td>
+</tr>
+<tr>
+<td><strong>Criticality</strong></td>
+<td><strong>High</strong> (rate-limit outage opens platform to abuse; mitigation via Cloudflare WAF fallback)</td>
+</tr>
+<tr>
+<td><strong>Security contact</strong></td>
+<td><a href="mailto:security@upstash.com">security@upstash.com</a></td>
+</tr>
+<tr>
+<td><strong>Contract renewal</strong></td>
+<td>Pay-as-you-go</td>
+</tr>
+<tr>
+<td><strong>DPA on file</strong></td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><strong>Data residency</strong></td>
+<td>US (us-east-1 + us-west-2)</td>
+</tr>
+<tr>
+<td><strong>Compensating controls</strong></td>
+<td>TLS in transit; encryption at rest; no PII keys; Cloudflare WAF as redundant rate limit</td>
+</tr>
+</tbody></table>
+<h3 id="314-aws--secrets-manager--s3-backup">3.14 AWS — Secrets Manager + S3 Backup</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Service</strong></td>
+<td>Production secrets storage; nightly + weekly cross-region DB backups (S3 + Glacier)</td>
+</tr>
+<tr>
+<td><strong>SOC 2</strong></td>
+<td>Type 2 ✓</td>
+</tr>
+<tr>
+<td><strong>Other certs</strong></td>
+<td>ISO 27001/27017/27018, PCI DSS Level 1, HIPAA-eligible, FedRAMP High</td>
+</tr>
+<tr>
+<td><strong>Last review</strong></td>
+<td>2026-04-25</td>
+</tr>
+<tr>
+<td><strong>Next review</strong></td>
+<td>2027-04-25</td>
+</tr>
+<tr>
+<td><strong>Data shared</strong></td>
+<td>All Tier 1 + Tier 2 production secrets; full DB backups (encrypted)</td>
+</tr>
+<tr>
+<td><strong>Criticality</strong></td>
+<td><strong>High</strong></td>
+</tr>
+<tr>
+<td><strong>Security contact</strong></td>
+<td><a href="mailto:security@aws.amazon.com">security@aws.amazon.com</a></td>
+</tr>
+<tr>
+<td><strong>Contract renewal</strong></td>
+<td>Pay-as-you-go (Enterprise Support Plan TBD when spend &gt; $5K/mo)</td>
+</tr>
+<tr>
+<td><strong>DPA on file</strong></td>
+<td>Yes (AWS DPA accepted via Service Terms)</td>
+</tr>
+<tr>
+<td><strong>Data residency</strong></td>
+<td>us-east-1 primary, us-west-2 cross-region replica</td>
+</tr>
+<tr>
+<td><strong>Compensating controls</strong></td>
+<td>KMS-encrypted secrets; IAM least privilege; CloudTrail audit log; MFA-Delete on backup buckets; lifecycle to Glacier after 90 days</td>
+</tr>
+</tbody></table>
+<h2 id="4-per-vendor-annual-review-trigger">4. Per-Vendor Annual Review Trigger</h2>
+<p>Vanta auto-creates a review ticket 30 days before the <strong>Next review</strong> date for each vendor. Review checklist:</p>
+<ul>
+<li><input disabled="" type="checkbox"> SOC 2 Type 2 report current within last 12 months — request fresh copy</li>
+<li><input disabled="" type="checkbox"> No material adverse changes in vendor security posture (breach disclosures, board changes)</li>
+<li><input disabled="" type="checkbox"> Contract terms still aligned with our use (volume bands, geographic scope)</li>
+<li><input disabled="" type="checkbox"> Data shared still limited to documented scope</li>
+<li><input disabled="" type="checkbox"> Security contact still valid (test ping)</li>
+<li><input disabled="" type="checkbox"> DPA still aligned with current applicable laws (CCPA, evolving state laws)</li>
+<li><input disabled="" type="checkbox"> Compensating controls still operational</li>
+<li><input disabled="" type="checkbox"> Pricing renewal triggered if needed</li>
+<li><input disabled="" type="checkbox"> Termination workflow documented (off-boarding plan if vendor change required)</li>
+</ul>
+<h2 id="5-new-vendor-onboarding-workflow">5. New Vendor Onboarding Workflow</h2>
+<pre><code>[Business case] → [Security review] → [DPA negotiation] → [Pilot] → [Production cutover] → [Register entry]
+</code></pre>
+<ul>
+<li><input disabled="" type="checkbox"> Business sponsor submits new-vendor proposal in Linear with use case</li>
+<li><input disabled="" type="checkbox"> Compliance lead requests SOC 2 / ISO 27001 / PCI cert as applicable</li>
+<li><input disabled="" type="checkbox"> If no SOC 2: compensating controls plan required + executive approval</li>
+<li><input disabled="" type="checkbox"> DPA negotiated and signed before production data flows</li>
+<li><input disabled="" type="checkbox"> Pilot in staging env with synthetic data</li>
+<li><input disabled="" type="checkbox"> Cutover requires Sherpa Guard audit logging integration + Datadog monitoring</li>
+<li><input disabled="" type="checkbox"> Vendor added to this register + Vanta vendor risk module</li>
+</ul>
+<h2 id="6-vendor-incident-response">6. Vendor Incident Response</h2>
+<p>If a vendor reports a breach or vulnerability that affects our customer data:</p>
+<ul>
+<li><input disabled="" type="checkbox"> Treat as SEV1 incident — see <code>06-incident-response-procedures.md</code></li>
+<li><input disabled="" type="checkbox"> Within 1 hour: identify scope of impact (which customers, which data)</li>
+<li><input disabled="" type="checkbox"> Within 24 hours: customer notification draft prepared if PII exposure confirmed</li>
+<li><input disabled="" type="checkbox"> Within 72 hours: customer notification sent (or sooner per state law)</li>
+<li><input disabled="" type="checkbox"> Postmortem filed in Vanta with action items and vendor relationship review</li>
+<li><input disabled="" type="checkbox"> Vendor criticality re-evaluated; may trigger replacement search</li>
+</ul>
+<h2 id="7-register-maintenance">7. Register Maintenance</h2>
+<ul>
+<li><strong>Owner</strong>: Compliance lead (Phyrom until SRE hire)</li>
+<li><strong>Sync target</strong>: Vanta vendor risk module</li>
+<li><strong>Edit cadence</strong>: Real-time on changes; quarterly reconciliation against Vanta</li>
+<li><strong>Auditor view</strong>: Schellman pulls register from Vanta during fieldwork</li>
+</ul>
+
+	
+
+
+</body>
+</html>

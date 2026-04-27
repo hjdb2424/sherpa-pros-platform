@@ -1,0 +1,1108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>07 vendor accounts setup — Sherpa Pros</title>
+<link rel="icon" href="../../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="07-vendor-accounts-setup.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="vendor-accounts-setup--franchise-operations-support">Vendor Accounts Setup — Franchise Operations Support</h1>
+<h2 id="1-vendor-inventory--recommendation-summary">1. Vendor Inventory + Recommendation Summary</h2>
+<table>
+<thead>
+<tr>
+<th>Vendor Category</th>
+<th>Recommended Primary</th>
+<th>Backup</th>
+<th>Phase 4 Year 1 Budget</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Franchise management software</td>
+<td>FranConnect</td>
+<td>FranchiseSoft</td>
+<td>$12K–$18K</td>
+</tr>
+<tr>
+<td>Franchise agreement e-signature</td>
+<td>OpenSign (self-hosted, low-cost)</td>
+<td>DocuSign</td>
+<td>$0–$3K</td>
+</tr>
+<tr>
+<td>24/7 prospect inquiry handling</td>
+<td>Defer to Phase 4 Year 2 (volume gating)</td>
+<td>AnswerNet (when triggered)</td>
+<td>$0 (Year 1)</td>
+</tr>
+<tr>
+<td>Royalty + technology fee auto-debit</td>
+<td>Stripe Connect (existing platform)</td>
+<td>BlueSnap</td>
+<td>&lt; $1K platform fees</td>
+</tr>
+<tr>
+<td>Marketing fund management</td>
+<td>Separate Sherpa Pros Marketing Fund LLC + dedicated bank account + audit trail</td>
+<td>n/a</td>
+<td>$3K–$5K formation + $2K annual audit</td>
+</tr>
+<tr>
+<td>Background check + credit check</td>
+<td>HireRight + Experian Business</td>
+<td>FranchiseGrade + BoeFly</td>
+<td>$550 per prospect (reimbursed)</td>
+</tr>
+<tr>
+<td>Franchise legal counsel</td>
+<td>Spadea Lignana (per <code>01-attorney-evaluation-matrix.md</code>)</td>
+<td>Cheng Cohen</td>
+<td>Per <code>01</code> document budget</td>
+</tr>
+<tr>
+<td>Audit firm</td>
+<td>BDO USA Franchise Services (per <code>02-audit-firm-evaluation.md</code>)</td>
+<td>Marcum</td>
+<td>Per <code>02</code> document budget</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="2-franchise-management-software--franconnect-recommended-primary">2. Franchise Management Software — FranConnect (RECOMMENDED PRIMARY)</h2>
+<h3 id="21-why-franconnect">2.1 Why FranConnect</h3>
+<ul>
+<li><strong>Industry-standard</strong> — used by 800+ franchisors including emerging-system franchisors at Sherpa Pros' scale (Years 1–5)</li>
+<li><strong>Modular</strong> — pay only for the modules needed in Phase 4 Year 1 (Sales + Operations); add Marketing + FAC later</li>
+<li><strong>API-extensible</strong> — integrates with Stripe Connect (royalty pulls), QuickBooks Online (corporate accounting), and HubSpot or Salesforce (lead management) without custom development</li>
+<li><strong>Compliance-ready</strong> — FDD distribution tracking, prospect 14-day waiting period clock, state-by-state filing matrix tracking, royalty calculation + collection module</li>
+<li><strong>Reporting</strong> — pre-built dashboards for franchisee P&amp;L roll-up (per <code>03-item-19-economics-spreadsheet.md</code> data needs)</li>
+</ul>
+<h3 id="22-phase-4-year-1-modules">2.2 Phase 4 Year 1 Modules</h3>
+<table>
+<thead>
+<tr>
+<th>Module</th>
+<th>Function</th>
+<th>Estimated Annual Cost</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Sales Module (FranConnect Sales)</td>
+<td>Prospect pipeline (7-stage screening), FDD distribution tracking, 14-day waiting period clock, state-by-state filing matrix</td>
+<td>$6K–$9K</td>
+</tr>
+<tr>
+<td>Operations Module (FranConnect Operations)</td>
+<td>Franchisee performance dashboard, monthly P&amp;L upload + roll-up, royalty calculation, marketing fund tracking</td>
+<td>$6K–$9K</td>
+</tr>
+<tr>
+<td><strong>Total Phase 4 Year 1</strong></td>
+<td></td>
+<td><strong>$12K–$18K</strong></td>
+</tr>
+</tbody></table>
+<h3 id="23-phase-4-year-2-add-on-modules">2.3 Phase 4 Year 2+ Add-On Modules</h3>
+<table>
+<thead>
+<tr>
+<th>Module</th>
+<th>Function</th>
+<th>Estimated Annual Cost</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Marketing Module</td>
+<td>National + regional campaign distribution, marketing fund spend tracking, co-op approval workflow</td>
+<td>$4K–$6K</td>
+</tr>
+<tr>
+<td>FAC Module</td>
+<td>Franchise Advisory Council communication, voting, document distribution</td>
+<td>$2K–$3K</td>
+</tr>
+<tr>
+<td>Field Visits Module</td>
+<td>Quarterly Business Review scheduling, field-visit checklists, photo upload, compliance audit</td>
+<td>$3K–$5K</td>
+</tr>
+</tbody></table>
+<h3 id="24-account-setup-steps-phase-4-year-1-month-1">2.4 Account Setup Steps (Phase 4 Year 1 Month 1)</h3>
+<ol>
+<li>Schedule FranConnect demo with their emerging-franchisor sales team</li>
+<li>Request 90-day pilot at 50% standard pricing (industry-standard for emerging franchisors)</li>
+<li>Configure Sherpa Pros LLC entity, brand, and product taxonomy in FranConnect</li>
+<li>Configure 7-stage screening pipeline (matches <code>05-7-stage-screening-templates.md</code>)</li>
+<li>Configure state-by-state filing matrix (NH/ME/MA/VT non-registration; NY/RI/MD/VA Phase 4 Year 2 priority; remaining 10 Phase 4 Year 3)</li>
+<li>Configure royalty calculation logic (6% Year 1 / 8% Year 2+ + 2% Marketing Fund + $200/month Tech Fee)</li>
+<li>Configure franchisee P&amp;L upload template (matches <code>03-item-19-economics-spreadsheet.md</code> line items)</li>
+<li>Train VPFD + COO + Phyrom on platform (8-hour training session)</li>
+<li>Configure Single Sign-On (SSO) integration with Sherpa Pros LLC corporate Google Workspace account</li>
+<li>Confirm Service Level Agreement (99.5% uptime target) + data export rights (so Sherpa Pros can leave FranConnect at any future point without data lock-in)</li>
+</ol>
+<h3 id="25-backup-franchisesoft">2.5 Backup: FranchiseSoft</h3>
+<ul>
+<li>Smaller installed base than FranConnect (~300 franchisors)</li>
+<li>Lower price point ($8K–$12K Year 1 estimated)</li>
+<li>Less mature integration ecosystem (Stripe Connect integration less battle-tested)</li>
+<li>Reasonable backup if FranConnect declines, prices above budget, or won't support emerging-franchisor pilot pricing</li>
+</ul>
+<hr>
+<h2 id="3-franchise-agreement-e-signature--opensign-recommended-primary">3. Franchise Agreement E-Signature — OpenSign (RECOMMENDED PRIMARY)</h2>
+<h3 id="31-why-opensign">3.1 Why OpenSign</h3>
+<ul>
+<li><strong>Cost</strong> — open-source, self-hostable, $0 base cost (vs DocuSign Business Pro ~$600/year per user); reference doc <code>reference_esign_research.md</code> already validated OpenSign for beta deployment</li>
+<li><strong>Control</strong> — self-hosted means franchise agreement signing data stays on Sherpa Pros infrastructure (no third-party SaaS escrow risk)</li>
+<li><strong>FTC compliance</strong> — supports the audit-trail requirements for Item 23 receipt pages (date/time stamping, IP capture, signed document hash chain)</li>
+<li><strong>Scale path</strong> — adequate for Phase 4 Years 1–3 franchise agreement volume (5–25 signings per year); migrate to DocuSeal or DocuSign at scale</li>
+</ul>
+<h3 id="32-account-setup-steps">3.2 Account Setup Steps</h3>
+<ol>
+<li>Deploy OpenSign on Sherpa Pros Vercel/DigitalOcean infrastructure (per existing platform deployment patterns)</li>
+<li>Configure Sherpa Pros LLC entity branding (logo, colors, signing-page template per brand portfolio)</li>
+<li>Upload all template documents from <code>05-7-stage-screening-templates.md</code>:<ul>
+<li>Mutual Non-Disclosure Agreement template</li>
+<li>FDD receipt page (Item 23)</li>
+<li>Sherpa Hub Franchise Agreement</li>
+<li>Sherpa Brand License Agreement</li>
+<li>Sherpa Software License Agreement</li>
+<li>Personal Guaranty Agreement</li>
+</ul>
+</li>
+<li>Configure signature workflows (sequential signing for multi-party documents)</li>
+<li>Configure audit log + retention policy (7 years per franchise industry standard)</li>
+<li>Test full signing flow with internal staff before any prospect signing</li>
+</ol>
+<h3 id="33-backup-docusign">3.3 Backup: DocuSign</h3>
+<ul>
+<li>Mature, name-brand, $0 setup risk</li>
+<li>$600–$1,200/year per user pricing; 5-user team estimated $4K–$6K Year 1</li>
+<li>Use as backup if OpenSign deployment hits production issues or if prospect counsel insists on a name-brand e-signature (rare but possible with sophisticated franchise prospects)</li>
+</ul>
+<hr>
+<h2 id="4-247-franchise-prospect-inquiry-handling--defer-to-phase-4-year-2">4. 24/7 Franchise Prospect Inquiry Handling — DEFER TO PHASE 4 YEAR 2</h2>
+<h3 id="41-phase-4-year-1-approach">4.1 Phase 4 Year 1 Approach</h3>
+<p>Franchise prospect inquiry volume in Phase 4 Year 1 is expected at 50–150 inquiries (per <code>06-hub-2-candidate-list.md</code> 12–15 active candidates × 4–10x funnel ratio). VPFD + Phyrom can handle inquiry response within 2 business days at this volume without third-party answering service.</p>
+<h3 id="42-phase-4-year-2-trigger">4.2 Phase 4 Year 2 Trigger</h3>
+<p>When monthly inquiry volume exceeds 30 inquiries OR average response time exceeds 24 hours, engage 24/7 answering service to maintain Stage 1 auto-response promise.</p>
+<h3 id="43-recommended-vendor-answernet">4.3 Recommended Vendor: AnswerNet</h3>
+<ul>
+<li>Franchise-industry-specialized answering service</li>
+<li>Estimated cost: $1.50–$3.00 per inquiry handled (call back, email response, screening question answer)</li>
+<li>30-inquiry/month pace = $45–$90/month — small, easy expense to justify when triggered</li>
+<li>Backup vendor: Specialty Answering Service (SAS) — comparable pricing</li>
+</ul>
+<h3 id="44-account-setup-steps-when-triggered">4.4 Account Setup Steps (when triggered)</h3>
+<ol>
+<li>Issue Request for Proposal to AnswerNet + Specialty Answering Service</li>
+<li>Train answering-service team on 7-stage screening flow + Sherpa Pros brand voice</li>
+<li>Configure call-routing logic (qualified prospects → VPFD; out-of-scope inquiries → email response template)</li>
+<li>Configure FranConnect integration (logged inquiries flow into pipeline automatically)</li>
+<li>Quarterly performance review (response time, qualification accuracy, prospect feedback)</li>
+</ol>
+<hr>
+<h2 id="5-royalty--technology-fee-auto-debit--stripe-connect">5. Royalty + Technology Fee Auto-Debit — Stripe Connect</h2>
+<h3 id="51-why-stripe-connect">5.1 Why Stripe Connect</h3>
+<ul>
+<li><strong>Already in use</strong> — Sherpa Pros platform already runs Stripe Connect for marketplace payments per <code>CLAUDE.md</code> tech stack</li>
+<li><strong>Compliance</strong> — Stripe Connect supports Automated Clearing House (ACH) auto-debit with NACHA-compliant authorization workflow</li>
+<li><strong>Cost</strong> — ACH transfer fees &lt; 1% per transaction; cheaper than alternative franchise-collection platforms</li>
+<li><strong>Audit trail</strong> — every royalty pull is auditable in Stripe dashboard + Sherpa Pros database (matches FDD Item 6 disclosure requirements)</li>
+<li><strong>Reconciliation</strong> — automated reconciliation against franchisee's monthly P&amp;L upload in FranConnect (catches underreporting per FDD Item 6 audit fee trigger)</li>
+</ul>
+<h3 id="52-royalty--tech-fee-collection-flow">5.2 Royalty + Tech Fee Collection Flow</h3>
+<pre><code>1. Franchisee uploads monthly P&amp;L to FranConnect by 15th of following month (per FDD Item 9 obligation)
+2. FranConnect calculates royalty (6% Y1 / 8% Y2+) + Marketing Fund (2%) + Tech Fee ($200 flat)
+3. FranConnect generates royalty invoice and pushes to Stripe Connect API
+4. Stripe Connect auto-debits franchisee's authorized bank account on the 20th of the month
+5. Royalty + Marketing Fund + Tech Fee land in Sherpa Pros LLC operating account (royalty + tech fee) and Sherpa Pros Marketing Fund LLC account (marketing fund) per the routing logic
+6. Reconciliation report emailed to franchisee + filed in audit trail
+</code></pre>
+<h3 id="53-account-setup-steps">5.3 Account Setup Steps</h3>
+<ol>
+<li>Enable Stripe Connect ACH debit for Sherpa Pros LLC (existing account; toggle ACH-debit feature flag)</li>
+<li>Configure routing rules (royalty + Tech Fee → Sherpa Pros LLC operating account; Marketing Fund → Sherpa Pros Marketing Fund LLC dedicated account)</li>
+<li>Build FranConnect → Stripe Connect integration (webhook on royalty calculation completion)</li>
+<li>Build NACHA authorization workflow into franchisee onboarding (signed at Stage 7 with Franchise Agreement)</li>
+<li>Test end-to-end with Hub #1 (corporate-owned, simulated) before first franchisee signs</li>
+<li>Document escalation path for failed debits (insufficient funds, closed account, fraud alert)</li>
+</ol>
+<h3 id="54-backup-bluesnap">5.4 Backup: BlueSnap</h3>
+<ul>
+<li>Alternative payments platform with strong franchise-collection module</li>
+<li>Higher per-transaction cost than Stripe Connect</li>
+<li>Use only if Stripe Connect ACH-debit feature unavailable in any required state (none expected, but verify)</li>
+</ul>
+<hr>
+<h2 id="6-marketing-fund-management--separate-llc--dedicated-bank-account">6. Marketing Fund Management — Separate LLC + Dedicated Bank Account</h2>
+<h3 id="61-why-separate-llc">6.1 Why Separate LLC</h3>
+<ul>
+<li><strong>FDD Item 11 disclosure compliance</strong> — Marketing Fund contributions must be held in a separate fund account, not commingled with franchisor general funds</li>
+<li><strong>Annual audit requirement</strong> — Marketing Fund spend must be auditable separately from franchisor operations (FDD Item 11 disclosure obligation; audit recommended industry-standard even when not legally mandatory)</li>
+<li><strong>Franchisee transparency</strong> — separate LLC + bank account simplifies disclosure to franchisees of where their 2% Marketing Fund contribution is spent</li>
+<li><strong>Tax treatment</strong> — separate-entity treatment simplifies franchisor tax filings (Marketing Fund spend is not franchisor revenue, not franchisor expense — passes through cleanly)</li>
+</ul>
+<h3 id="62-setup-steps">6.2 Setup Steps</h3>
+<ol>
+<li><strong>Form Sherpa Pros Marketing Fund LLC</strong> (Delaware LLC, single-member managed by Sherpa Pros LLC). Estimated formation cost: $500–$1,000 plus first-year Delaware franchise tax (~$300).</li>
+<li><strong>Open dedicated bank account</strong> at the same banking partner as Sherpa Pros LLC (recommend Mercury or Brex for fintech-native experience; Live Oak Bank if SBA-friendly is priority). Estimated: $0 setup.</li>
+<li><strong>Configure Stripe Connect routing</strong> so 2% Marketing Fund pulls land in Marketing Fund LLC account, not Sherpa Pros LLC operating account.</li>
+<li><strong>Engage independent CPA for annual Marketing Fund audit.</strong> Recommend BDO USA Franchise Services (the same firm engaged for Sherpa Pros LLC Item 21 audit per <code>02-audit-firm-evaluation.md</code>) — coordinated audit reduces total cost. Estimated: $2K–$3K Year 1; $1.5K–$2.5K Year 2+.</li>
+<li><strong>Establish Marketing Fund Charter document</strong> that specifies allowable spend categories (per FDD Item 11):<ul>
+<li>National brand campaigns (television, podcast, paid social, public relations, search engine marketing)</li>
+<li>Regional co-op campaigns (when 3+ adjacent Hubs co-fund)</li>
+<li>Franchise-system lead generation (paid search to franchise prospect website)</li>
+<li>Brand asset development (photography, video, design system updates)</li>
+<li>Annual Franchisee Summit production costs</li>
+<li>Sherpa University training facility branding</li>
+</ul>
+</li>
+<li><strong>Excluded spend categories</strong> (must NOT be charged to Marketing Fund):<ul>
+<li>Franchisor general operations (salaries, rent, utilities)</li>
+<li>Litigation costs</li>
+<li>Franchisor business development unrelated to franchise sales</li>
+<li>Founder personal travel or compensation</li>
+</ul>
+</li>
+<li><strong>FAC oversight</strong> (when Franchise Advisory Council seated in Phase 4 Year 2 per WS5-4): FAC reviews Marketing Fund spend quarterly; FAC can challenge spend at Annual Franchisee Summit. FAC recommendation is advisory; final spend authority rests with Sherpa Pros LLC.</li>
+</ol>
+<h3 id="63-total-year-1-cost">6.3 Total Year 1 Cost</h3>
+<ul>
+<li>LLC formation: $500–$1,000</li>
+<li>First-year Delaware franchise tax: $300</li>
+<li>Bank account: $0</li>
+<li>Annual audit: $2K–$3K</li>
+<li><strong>Total Year 1: $2.8K–$4.3K</strong></li>
+</ul>
+<hr>
+<h2 id="7-background-check--credit-check-vendors">7. Background Check + Credit Check Vendors</h2>
+<h3 id="71-background-check--hireright">7.1 Background Check — HireRight</h3>
+<ul>
+<li>Industry-standard franchise vendor</li>
+<li>Federal + state criminal records, sex offender registry, employment verification, education verification</li>
+<li>Estimated cost per check: $150–$250</li>
+<li>Turnaround: 3–5 business days</li>
+</ul>
+<h3 id="72-credit-check--experian-business--personal">7.2 Credit Check — Experian Business + Personal</h3>
+<ul>
+<li>Business credit report (if prospect has existing business)</li>
+<li>Personal credit report (FICO + Vantage)</li>
+<li>Estimated cost per check: $50–$150</li>
+<li>Turnaround: &lt; 24 hours</li>
+</ul>
+<h3 id="73-combined-application-processing-fee">7.3 Combined Application Processing Fee</h3>
+<ul>
+<li>Sherpa Pros charges prospect $550 application processing fee at Stage 6</li>
+<li>Covers: HireRight check ($200 avg) + Experian Business + Personal ($100 avg) + VPFD review time ($250 estimated)</li>
+<li>Reimbursable per FDD Item 6 disclosure</li>
+<li>Account setup: standard franchise-industry vendor onboarding (1–2 weeks)</li>
+</ul>
+<hr>
+<h2 id="8-vendor-setup-sequencing--phase-4-year-1-months-16">8. Vendor Setup Sequencing — Phase 4 Year 1 Months 1–6</h2>
+<table>
+<thead>
+<tr>
+<th>Month</th>
+<th>Vendor Setup</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Month 1</td>
+<td>FranConnect demo + RFP; OpenSign deployment kickoff; Stripe Connect ACH debit toggle review</td>
+</tr>
+<tr>
+<td>Month 2</td>
+<td>FranConnect contract signed + module configuration; OpenSign template upload; Sherpa Pros Marketing Fund LLC formation</td>
+</tr>
+<tr>
+<td>Month 3</td>
+<td>FranConnect 7-stage pipeline configured; OpenSign first internal-test signing; Marketing Fund LLC bank account active</td>
+</tr>
+<tr>
+<td>Month 4</td>
+<td>FranConnect royalty calculation logic configured; HireRight + Experian vendor accounts active; Marketing Fund Charter ratified</td>
+</tr>
+<tr>
+<td>Month 5</td>
+<td>End-to-end signing flow test (FranConnect → OpenSign → Stripe Connect); Marketing Fund first annual audit firm engaged</td>
+</tr>
+<tr>
+<td>Month 6</td>
+<td>Production-ready vendor stack; first prospect Stage 1 inquiry runs through full vendor stack as live test</td>
+</tr>
+</tbody></table>
+<h2 id="9-vendor-risk-notes--open-questions">9. Vendor Risk Notes + Open Questions</h2>
+<ul>
+<li><strong>FranConnect contract negotiation leverage</strong> — emerging-franchisor pilot pricing requires Sherpa Pros to commit to FranConnect for 24+ months. Negotiate data-export rights aggressively to avoid lock-in.</li>
+<li><strong>OpenSign self-hosting risk</strong> — if Sherpa Pros loses an OpenSign instance to infrastructure failure, signed franchise agreements could become unrecoverable. Document backup + disaster recovery procedure before first production signing.</li>
+<li><strong>Stripe Connect ACH-debit timing</strong> — confirm Stripe ACH-debit availability in every state where Sherpa Pros plans to sell franchises (no expected gaps but verify).</li>
+<li><strong>Marketing Fund audit firm conflict</strong> — using BDO USA for both Sherpa Pros LLC Item 21 audit AND Marketing Fund LLC audit is acceptable per AICPA independence standards (separate engagements, separate financial statements). Document the engagement structure to demonstrate independence.</li>
+<li><strong>NACHA ACH-debit fraud risk</strong> — every franchisee ACH authorization is exposure point for fraud or chargeback. Configure Stripe Connect fraud-screening rules + dual-authorization for any debit &gt; $10K/month.</li>
+<li><strong>Vendor consolidation opportunity</strong> — if FranConnect adds e-signature capability natively (rumored Phase 4 Year 2 product roadmap), consider consolidating from FranConnect + OpenSign to FranConnect-only. Re-evaluate Phase 4 Year 2.</li>
+</ul>
+
+	
+
+
+</body>
+</html>

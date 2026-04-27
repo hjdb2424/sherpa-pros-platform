@@ -1,0 +1,1149 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>02 founding pro recruit — Sherpa Pros</title>
+<link rel="icon" href="../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="02-founding-pro-recruit.pdf">Download PDF →</a>
+</nav>
+
+		<!-- _class: lead -->
+<!-- _paginate: false -->
+
+<h1 id="stop-paying-for-leads">Stop paying for leads.</h1>
+<h1 id="start-getting-jobs">Start getting jobs.</h1>
+<h2 id="sherpa-pros--founding-pro-recruit">Sherpa Pros — Founding Pro recruit</h2>
+<div class="meta-strip">
+<span>Phyrom · HJD Builders LLC</span>
+<span>New Hampshire · 2026</span>
+<span>10 spots · 90-day beta</span>
+</div>
+
+<!-- ASSET REQUIRED: cover treatment — bold cream-on-navy or navy-on-cream typographic poster. Optional: behind the type, a desaturated full-bleed jobsite photo (work boots on subfloor, framing in background) at 15% opacity. Source: Phyrom's iPhone or Ideogram brief: "documentary contractor work boots, framed wall, subfloor, mid-day, 35mm, no faces." Dimensions: 1920x1080. -->
+
+<hr>
+<!-- _class: divider -->
+
+<h2 id="i">I.</h2>
+<h1 id="the-founder">The Founder</h1>
+<hr>
+<h1 id="hi-im-phyrom">Hi, I'm Phyrom.</h1>
+<p>I run <strong>HJD Builders</strong> out of New Hampshire. <strong>Working general contractor, same as you.</strong></p>
+<p>I built <strong>Sherpa Pros</strong> for the contractors I hire every day.</p>
+<p>Today I want <strong>30 minutes</strong> to show you what I built and ask if you want one of the founding spots.</p>
+<p><img src="placeholder-phyrom-jobsite.jpg" alt="bg right:40%"></p>
+<!-- ASSET REQUIRED: NH jobsite portrait of Phyrom — same photo used in investor + BV decks for visual continuity. Source: Phyrom captures on jobsite. Dimensions: 1080x1920 vertical. -->
+
+<hr>
+<!-- _class: quote -->
+
+<blockquote>
+<p>I got tired of watching good subs pay Angi five hundred bucks a month for shared leads that ghosted. The platforms got rich. The pros got squeezed. So I built the one I wished existed — built by a contractor, for contractors.
+<strong>Jobs. Not leads.</strong></p>
+</blockquote>
+<p><strong>— Phyrom · Founder, HJD Builders LLC</strong></p>
+<hr>
+<!-- _class: divider -->
+
+<h2 id="ii">II.</h2>
+<h1 id="what-you-get">What You Get</h1>
+<hr>
+<!-- _class: contents -->
+
+<h1 id="what-you-get-on-sherpa-pros">What you get on Sherpa Pros.</h1>
+<h2 id="four-things-every-other-platform-gets-wrong"><strong>Four things every other platform gets wrong.</strong></h2>
+<div class="contents-grid">
+
+<h3 id="real-jobs">Real jobs</h3>
+<p>The job is yours when you accept it. <strong>Not sold to 5 other pros.</strong></p>
+<h3 id="instant-payout">Instant payout</h3>
+<p>Stripe Connect drops the money in your bank in <strong>days, not Net 30.</strong></p>
+<h3 id="code-checked-quotes">Code-checked quotes</h3>
+<p>Every bid checked against your <strong>state and town code</strong> before it goes out.</p>
+<h3 id="no-lead-blast">No lead-blast</h3>
+<p>License + insurance verified by us. <strong>Direct match. No bidding wars.</strong></p>
+</div>
+
+<hr>
+<!-- _class: divider -->
+
+<h2 id="iii">III.</h2>
+<h1 id="the-math">The Math</h1>
+<hr>
+<!-- _class: bignumber -->
+
+<h1 id="400800">$400–$800</h1>
+<h2 id="what-angi-takes-from-you-for-one-closed-job-lead-fees-shared-even-on-the-jobs-you-lose">What Angi takes from you for ONE closed job. Lead fees, shared, even on the jobs you lose.</h2>
+<hr>
+<!-- _class: bignumber -->
+
+<h1 id="25">$25</h1>
+<h2 id="what-sherpa-pros-takes-on-a-500-paint-job-5-beta-·-paid-only-when-the-client-pays-you">What Sherpa Pros takes on a $500 paint job. <strong>5% beta · paid only when the client pays you.</strong></h2>
+<hr>
+<!-- _class: compare -->
+
+<h1 id="sherpa-pros-vs-angi-the-math">Sherpa Pros vs. Angi: the math.</h1>
+<h2 id="you-only-pay-when-the-client-pays-you-no-subscription-no-lead-fees"><strong>You only pay when the client pays you. No subscription. No lead fees.</strong></h2>
+<table>
+<thead>
+<tr>
+<th>The job</th>
+<th><strong>Angi (lead fees)</strong></th>
+<th><strong>Sherpa Pros (take rate)</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>$500 paint job</strong></td>
+<td><strong>$400–$800</strong> <em>(lead fees + sub, even on jobs you lose)</em></td>
+<td><strong>$25</strong> <em>(5% beta · $50 at standard 10%)</em></td>
+</tr>
+<tr>
+<td><strong>$5,000 panel upgrade</strong></td>
+<td><strong>$400–$800</strong> <em>(same lead cost — doesn't scale with your work)</em></td>
+<td><strong>$250</strong> <em>(5% beta · $500 at standard 10%)</em></td>
+</tr>
+<tr>
+<td><strong>Pricing model</strong></td>
+<td>Pay-to-bid · shared with 40 competitors</td>
+<td>Pay only when the job completes</td>
+</tr>
+<tr>
+<td><strong>Subscription</strong></td>
+<td>Required</td>
+<td>$0 during beta · $49/mo at standard (Founding Pros: free forever)</td>
+</tr>
+</tbody></table>
+<hr>
+<!-- _class: divider -->
+
+<h2 id="iv">IV.</h2>
+<h1 id="founding-pro-perks">Founding Pro Perks</h1>
+<hr>
+<!-- _class: contents -->
+
+<h1 id="founding-pro-perks-1">Founding Pro perks.</h1>
+<h2 id="first-10-pros-only-locked-in-for-the-life-of-the-platform"><strong>First 10 pros only. Locked in for the life of the platform.</strong></h2>
+<div class="contents-grid">
+
+<h3 id="half-price-forever">Half-price forever</h3>
+<p><strong>5% take rate locked in for life</strong> if you stay. New pros pay 10% + $49/mo subscription.</p>
+<h3 id="founding-pro-badge">Founding Pro badge</h3>
+<p><strong>Permanent.</strong> Shows on every quote, every match, every search.</p>
+<h3 id="direct-line-to-me">Direct line to me</h3>
+<p><strong>My cell.</strong> Real product feedback shapes what ships next.</p>
+<h3 id="free-promo-video">Free promo video</h3>
+<p>I come to one of your jobsites and <strong>shoot a walk-the-job video.</strong> Yours to use.</p>
+<h3 id="press-push">Press push</h3>
+<p><strong>Mass Save and Old-House Verified pro spotlights name you first.</strong></p>
+<h3 id="shared-client-pipeline">Shared client pipeline</h3>
+<p>HJD Builders sends you overflow work when I'm booked. <strong>Real revenue, not future-revenue.</strong></p>
+</div>
+
+<hr>
+<!-- _class: bignumber -->
+
+<h1 id="8"><strong>8%</strong></h1>
+<h2 id="gold-tier-sherpa-score--permanent-8-take-rate-silverbronze-pros-pay-12-earn-your-gold-during-beta-and-lock-5-forever">Gold-tier Sherpa Score = permanent 8% take rate. Silver/Bronze pros pay 12%. Earn your Gold during beta and lock 5% forever.</h2>
+<!-- ASSET REQUIRED: Sherpa Score Gold-tier badge graphic — sky-blue shield + warm yellow-gold (#D4A017) inner circle + "GOLD · 8% FEE" white text. See `docs/operations/social-media-prompt-library.md` Section 9A for the full Ideogram prompt. Place lower-right of slide at ~480px tall. Same graphic used across LinkedIn (Wks 14-15), IG/TikTok (Days 14, 21, 24, 28), pro recruiting + re-engagement emails, and /pro/score detail page. Generate this asset FIRST — it is the single most-referenced visual in the Sherpa Score sweep. -->
+
+<hr>
+<!-- _class: compare -->
+
+<h1 id="where-do-you-fit">Where do you fit?</h1>
+<h2 id="5-pro-tiers-one-ladder-the-fee-you-pay-is-the-door-you-came-in-through"><strong>5 pro tiers. One ladder. The fee you pay is the door you came in through.</strong></h2>
+<table>
+<thead>
+<tr>
+<th>Tier</th>
+<th><strong>Fee</strong></th>
+<th><strong>Path</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Founding Pro</strong></td>
+<td><strong>5% forever</strong></td>
+<td>Beta cohort · Locked at Sherpa Score Gold during beta</td>
+</tr>
+<tr>
+<td><strong>Sherpa Score Gold</strong></td>
+<td><strong>8%</strong> + 4hr early access to job postings</td>
+<td>Score 80+ · Quality + Communication + Reviews</td>
+</tr>
+<tr>
+<td><strong>Sherpa Score Silver</strong></td>
+<td><strong>12%</strong></td>
+<td>Score 60-79 · Doing fine, room to climb</td>
+</tr>
+<tr>
+<td><strong>Sherpa Score Bronze</strong></td>
+<td><strong>12%</strong> + structured improvement coaching</td>
+<td>Score under 60 · The path back up is a checklist</td>
+</tr>
+<tr>
+<td><strong>Sherpa Flex</strong></td>
+<td><strong>18%</strong> <em>(includes $1M per-project liability insurance)</em></td>
+<td>No LLC · Jobs under $5K · Background check · Side-hustle door</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>One ladder, both directions.</strong> Sherpa Flex pros who form an LLC and get their own insurance drop to Standard 12%. Climb Sherpa Score to Gold and you are at 8%. Founding Pros who hit Gold during beta lock 5% forever.</p>
+</blockquote>
+<!-- ASSET REQUIRED: Sherpa Pros 5-tier ladder infographic — Founding Pro → Gold → Silver → Bronze → Flex with fee + perks per tier. See `docs/operations/social-media-prompt-library.md` Section 10D for the full Ideogram prompt. Generate this asset FIRST — it is the single most-referenced visual in the Sherpa Rewards + Flex sweep AND the single image that explains Sherpa Pros' pro economics to investors AND pros simultaneously. Place as full-bleed background OR as a right-side 4:5 portrait if the table is rendered as the left column. Same graphic used across LinkedIn Wk 21 Mon, social-content-plan.md Day 26, investor pitch deck (Slide 7+), Wefunder Section 4. -->
+
+<hr>
+<h1 id="what-you-commit-to">What you commit to.</h1>
+<ul>
+<li><strong>90-day beta minimum.</strong> Real licensed work only.</li>
+<li><strong>License + insurance verified</strong> on file before your first job.</li>
+<li><strong>Reply to clients inside 24 hours.</strong> Hold your rating above 4 stars. That's the bar.</li>
+<li><strong>10-min weekly feedback.</strong> Call or text. One short video testimonial when you're ready.</li>
+</ul>
+<blockquote>
+<p><strong>Tone: direct, not soft. You know how this works. We don't waste each other's time.</strong></p>
+</blockquote>
+<hr>
+<!-- _class: divider -->
+
+<h2 id="v">V.</h2>
+<h1 id="how-it-works">How It Works</h1>
+<hr>
+<h1 id="the-two-modes-pick-one-or-both">The two modes. Pick one or both.</h1>
+<table>
+<thead>
+<tr>
+<th>Mode</th>
+<th><strong>Project</strong></th>
+<th><strong>Quick Job</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Job size</strong></td>
+<td>$1,500 and up · you bid</td>
+<td>$200–$1,500 · pre-priced menu</td>
+</tr>
+<tr>
+<td><strong>How it works</strong></td>
+<td>Multi-bid jobs — 2 to 3 pros</td>
+<td>Pick from a flat-rate menu — no bidding</td>
+</tr>
+<tr>
+<td><strong>Match speed</strong></td>
+<td>Code-aware quote validation</td>
+<td>Match-and-go in under 30 minutes</td>
+</tr>
+<tr>
+<td><strong>Payout</strong></td>
+<td>7-day Stripe hold</td>
+<td>24-hour Stripe payout</td>
+</tr>
+<tr>
+<td><strong>Examples</strong></td>
+<td>Kitchens · panels · heat pumps · roofs · old-house work</td>
+<td>Toilets · faucets · ceiling fans · drywall patches · single-wall paint</td>
+</tr>
+</tbody></table>
+<hr>
+<h1 id="tools-you-get-for-free">Tools you get for free.</h1>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>QuickBooks Online sync</strong></td>
+<td>1099 (subcontractor tax form) reporting on autopilot</td>
+</tr>
+<tr>
+<td><strong>Stripe Connect</strong></td>
+<td>Instant payouts to your bank when the job clears</td>
+</tr>
+<tr>
+<td><strong>Wisetack</strong></td>
+<td>Offer your client financing on bigger jobs</td>
+</tr>
+<tr>
+<td><strong>Zinc</strong></td>
+<td>Materials at contractor pricing, delivered</td>
+</tr>
+<tr>
+<td><strong>Uber Connect / DoorDash Drive</strong></td>
+<td>Same-day deliveries when you need them</td>
+</tr>
+<tr>
+<td><strong>Platform liability insurance</strong></td>
+<td>We carry coverage on every job. You stay the licensed pro.</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Boston pros:</strong> Mass Save heat-pump certified · EV charger work · old-house specialty — these lanes have their own client pipeline. Built for you.</p>
+</blockquote>
+<hr>
+<!-- _class: compare -->
+
+<h1 id="run-your-business-from-your-phone--sherpa-mobile-testflight">Run your business from your phone — Sherpa Mobile (TestFlight).</h1>
+<h2 id="ios-shipped-to-testflight-today-android-via-expo-right-behind-first-50-founding-pros-get-testflight-invites"><strong>iOS shipped to TestFlight today. Android via Expo right behind. First 50 founding pros get TestFlight invites.</strong></h2>
+<table>
+<thead>
+<tr>
+<th>Capability</th>
+<th><strong>Sherpa Web</strong></th>
+<th><strong>Sherpa Mobile (TestFlight)</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Bid jobs</strong></td>
+<td>Full bidding interface</td>
+<td>Same interface, optimized for the truck</td>
+</tr>
+<tr>
+<td><strong>Message clients</strong> (Sherpa Threads)</td>
+<td>In-app web chat</td>
+<td>In-app mobile chat <strong>+ push notifications when a client texts</strong></td>
+</tr>
+<tr>
+<td><strong>Scan receipts</strong> (Sherpa Smart Scan)</td>
+<td>Drag-and-drop file upload</td>
+<td><strong>Native camera → instant OCR → auto-tagged for Schedule C</strong></td>
+</tr>
+<tr>
+<td><strong>Get paid</strong> (Stripe Connect)</td>
+<td>Web payout dashboard</td>
+<td>Mobile payout dashboard + push notification on each clearance</td>
+</tr>
+<tr>
+<td><strong>Accept jobs in the field</strong></td>
+<td>Requires a laptop</td>
+<td><strong>One-tap accept from the phone in your pocket</strong></td>
+</tr>
+<tr>
+<td><strong>Sign up</strong></td>
+<td>Laptop after dinner</td>
+<td><strong>Phone in the field while you're already on a jobsite</strong></td>
+</tr>
+<tr>
+<td><strong>Code-aware quote validation</strong></td>
+<td>Full validator</td>
+<td>Same validator, mobile-formatted</td>
+</tr>
+<tr>
+<td><strong>Job-site photo capture</strong></td>
+<td>Upload from desktop</td>
+<td><strong>Native camera with auto-attach to the work order</strong></td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Most pros don't sit at a desk.</strong> Sherpa Mobile lets you run your bidding, your client messaging, your receipt-scanning, and your payouts from the phone you already carry. <strong>First 50 founding pros only — DM Phyrom or comment "MOBILE" on any LinkedIn post for the TestFlight invite.</strong></p>
+</blockquote>
+<!-- ASSET REQUIRED: Sherpa Mobile iOS hero shot — single iPhone in dark navy with the job-inbox screen visible (sky blue status bar + Sherpa Pros wordmark + 3 stacked job cards). See `docs/operations/social-media-prompt-library.md` Section 11C for the canonical Ideogram prompt. Generate at 1080×1350 and crop to 16:9 for slide layout. Place lower-right of slide at ~480px tall. Same graphic used across LinkedIn Wk 24 Fri inset, IG Reel Day 33 end-card, investor pitch deck Slide 5 composite. -->
+
+<hr>
+<!-- _class: split -->
+
+<h1 id="live-walkthrough">Live walkthrough.</h1>
+<p>Three screens. Real flows from the production platform.</p>
+<p><strong>1.</strong> Client posts a job — system already knows the building code for their address.</p>
+<p><strong>2.</strong> Dispatch matches the job to you in under 2 minutes.</p>
+<p><strong>3.</strong> Code-aware quote validation flags missing scope before client sees it.</p>
+<p><img src="placeholder-product-composite.jpg" alt="bg right:50%"></p>
+<!-- ASSET REQUIRED: composite product still — three iPhone frames overlapping on cream field. (1) Client post-job wizard. (2) Pro inbox with one matched job + green "Code-checked" badge. (3) Code-aware quote with one flagged line item. Source: Phyrom captures fresh from production within 24h of any send. Dimensions: 1920x1080 composite, transparent background. -->
+
+<hr>
+<!-- _class: divider -->
+
+<h2 id="vi">VI.</h2>
+<h1 id="next-steps">Next Steps</h1>
+<hr>
+<h1 id="what-happens-next">What happens next.</h1>
+<ol>
+<li><strong>Sign the Founding Pro Agreement</strong> — 5 min, electronic via OpenSign</li>
+<li><strong>Upload your license + insurance</strong> — 5 min</li>
+<li><strong>Build your profile</strong> — 15 min</li>
+<li><strong>First job within 7 days</strong> — I drive demand from my own client list if I have to</li>
+</ol>
+<blockquote>
+<p><strong>You're live by Friday.</strong></p>
+</blockquote>
+<hr>
+<!-- _class: lead -->
+<!-- _paginate: false -->
+
+<h1 id="are-you-in">Are you in?</h1>
+<h2 id="5-take-·-half-price-forever-·-10-founding-spots"><strong>5% take · Half-price forever · 10 founding spots</strong></h2>
+<div class="meta-strip">
+<span>thesherpapros.com/sign-up</span>
+<span>Or text Phyrom direct</span>
+<span>I read every reply myself</span>
+</div>
+
+<blockquote>
+<p>Got questions? <strong>Bring them.</strong> I'd rather answer one hard one in person than ten easy ones over text.</p>
+</blockquote>
+<!-- ASSET REQUIRED: QR code linking to www.thesherpapros.com/founding-pros (or wherever the Founding Pro Agreement signup lives). Generate at qr-code-generator.com. Place lower-right corner. Dimensions: 400x400px, sky-blue on navy for the lead-class dark background. -->
+
+	
+
+
+</body>
+</html>

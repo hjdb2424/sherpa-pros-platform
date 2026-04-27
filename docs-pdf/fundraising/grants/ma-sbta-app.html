@@ -1,0 +1,1002 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ma sbta app — Sherpa Pros</title>
+<link rel="icon" href="../../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="ma-sbta-app.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="ma-sbta-program--sherpa-pros-application-draft">MA SBTA Program — Sherpa Pros Application Draft</h1>
+<p><strong>Program:</strong> Massachusetts Small Business Technical Assistance (SBTA) Program — Empowering Small Business
+<strong>Award size:</strong> Up to $150,000 (services, NOT cash to applicant — delivered via SBTA-funded nonprofit partner)
+<strong>Sponsor URL:</strong> <a href="https://www.empoweringsmallbusiness.org/sbta">https://www.empoweringsmallbusiness.org/sbta</a>
+<strong>Applicant:</strong> Sherpa Pros LLC (Phyrom, Founder) — applies through a recommended SBTA-funded nonprofit partner
+<strong>Draft date:</strong> 2026-04-22
+<strong>Status:</strong> DRAFT — for Phyrom review prior to outreach</p>
+<hr>
+<h2 id="1-program-at-a-glance">1. Program at a Glance</h2>
+<p>The Massachusetts SBTA Program is administered by the Massachusetts Growth Capital Corporation (MGCC) and Empowering Small Business Inc., funding <strong>52+ nonprofit technical-assistance providers</strong> across the state. Eligible MA small businesses receive <strong>services</strong> (legal review, accounting, marketing, business plan development, financial modeling, web/IT) <strong>valued at up to $150,000 per business per year</strong> — delivered free or low-cost through these nonprofit partners.</p>
+<p><strong>Critical structural difference from the other 5 grants in this packet:</strong> SBTA is <strong>not a cash grant to Sherpa Pros</strong>. It is a referral pathway to a nonprofit that will perform services on Sherpa Pros' behalf. The application is therefore a <strong>two-part outreach</strong>: (1) identify the right nonprofit partner aligned with our needs and our identity (founder profile, sector, geographic), then (2) work with that nonprofit to access the SBTA-funded services.</p>
+<hr>
+<h2 id="2-recommended-sbta-funded-nonprofit-partners">2. Recommended SBTA-Funded Nonprofit Partners</h2>
+<p><strong>Highest fit (in priority order):</strong></p>
+<ol>
+<li><p><strong>CommonWealth Kitchen</strong> — Boston-based, food/CPG focus historically but expanded to small-business technical assistance broadly; strong with founder-led MA businesses entering Boston for the first time. Less direct fit for B2B marketplace but excellent on Boston-presence + community-trust signals. Recommend for marketing-services tier.</p>
+</li>
+<li><p><strong>EforAll Boston (Entrepreneurship for All)</strong> — <em>Highest fit.</em> EforAll runs accelerator + ongoing mentorship for under-resourced entrepreneurs; sector-agnostic; SBTA-funded; explicit pipeline for tech-enabled marketplaces. Strong likelihood of accepting Sherpa Pros into their portfolio. Boston + MetroWest cohorts.</p>
+</li>
+<li><p><strong>Black Economic Council of Massachusetts (BECMA)</strong> — SBTA-funded; serves Black-owned MA small businesses with legal, accounting, marketing services. Apply if Phyrom self-identifies as a founder of color (Khmer-American background per memory file). High-leverage relationship for both SBTA services and broader MA Black-led GC ecosystem connections.</p>
+</li>
+<li><p><strong>Lawyers Clearinghouse / Lawyers for Civil Rights MA Small Business</strong> — SBTA-funded legal services for MA small businesses. Direct fit for the legal scope (1099 vs W-2 opinion, OpenSign templates, MA foreign-LLC, USPTO Old-House Verified support, beta agreement review).</p>
+</li>
+<li><p><strong>Center for Women &amp; Enterprise (CWE)</strong> — SBTA-funded; focused on women founders but operates broader programming. Lower priority for Sherpa Pros.</p>
+</li>
+<li><p><strong>Massachusetts Small Business Development Center Network (MSBDC)</strong> at UMass / Salem State — SBTA-funded SBDC tier; offers free business advising + financial modeling. Always-available baseline.</p>
+</li>
+</ol>
+<p><strong>Recommended sequence:</strong></p>
+<ol>
+<li>Apply first to <strong>EforAll Boston</strong> (sector-agnostic, founder-friendly, explicit marketplace fit)</li>
+<li>In parallel, file with <strong>MSBDC at UMass-Boston</strong> for ongoing baseline business advising</li>
+<li>Engage <strong>Lawyers Clearinghouse</strong> for the specific legal scope</li>
+<li>If Phyrom's identity (Khmer-American founder) qualifies, also engage <strong>BECMA</strong></li>
+</ol>
+<p><strong>Total addressable services across these 4 partners: easily reaches the $150,000 SBTA cap</strong> if scoped well.</p>
+<hr>
+<h2 id="3-required-documents-checklist-per-partner-specifics-vary">3. Required Documents Checklist (Per-Partner; Specifics Vary)</h2>
+<ul>
+<li><input disabled="" type="checkbox"> Business plan summary (2–5 pages — reuse from MassDev Biz-M-Power application)</li>
+<li><input disabled="" type="checkbox"> Massachusetts business registration confirmation (foreign-LLC for Sherpa Pros LLC; see §11)</li>
+<li><input disabled="" type="checkbox"> Founder bio + identity demographics if relevant to partner mission (e.g., BECMA)</li>
+<li><input disabled="" type="checkbox"> Specific service request (legal scope; accounting scope; marketing scope; web/IT scope)</li>
+<li><input disabled="" type="checkbox"> Anticipated MA economic impact (jobs, vendor spend, taxable revenue)</li>
+<li><input disabled="" type="checkbox"> Form W-9 for Sherpa Pros LLC</li>
+<li><input disabled="" type="checkbox"> Proof of for-profit small-business status (SBA size standard ≤500 employees)</li>
+<li><input disabled="" type="checkbox"> Pre-existing financial statements OR projection (1-year forward)</li>
+<li><input disabled="" type="checkbox"> Two references from MA-based business contacts (if requested by partner)</li>
+</ul>
+<hr>
+<h2 id="4-eligibility-verification">4. Eligibility Verification</h2>
+<table>
+<thead>
+<tr>
+<th>Criterion</th>
+<th>Sherpa Pros status</th>
+<th>Cite</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>MA-based small business OR registered to do business in MA</td>
+<td><strong>Action item</strong> — file MA foreign-LLC registration before partner outreach (see §11)</td>
+<td>MA Secretary of the Commonwealth</td>
+</tr>
+<tr>
+<td>For-profit</td>
+<td>Yes — Sherpa Pros LLC</td>
+<td>—</td>
+</tr>
+<tr>
+<td>≤500 employees (SBA standard)</td>
+<td>Yes — 1 founder + part-time contractors</td>
+<td>GTM spec §7</td>
+</tr>
+<tr>
+<td>Service-need alignment with partner mission</td>
+<td>Yes — multiple partners aligned across legal, accounting, marketing, web/IT scopes</td>
+<td>This document §2</td>
+</tr>
+<tr>
+<td>Annual revenue typically &lt;$5M (varies by partner)</td>
+<td>Yes — pre-revenue</td>
+<td>—</td>
+</tr>
+</tbody></table>
+<p><strong>Verdict:</strong> Eligible upon MA foreign-LLC registration. Strong alignment with multiple SBTA-funded partners.</p>
+<hr>
+<h2 id="5-service-scope--total-request-across-partners">5. Service Scope — Total Request Across Partners</h2>
+<p><strong>Total requested services valuation: $145,000 across 4 partners (within $150,000 SBTA cap)</strong></p>
+<table>
+<thead>
+<tr>
+<th>Partner</th>
+<th>Service scope</th>
+<th>Estimated value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>EforAll Boston</strong></td>
+<td>12-month accelerator program (mentorship, ops support, fractional CFO advisor matching, monthly Pitch Practice, intro pipeline)</td>
+<td>$35,000</td>
+</tr>
+<tr>
+<td><strong>MSBDC at UMass-Boston</strong></td>
+<td>Free quarterly business advising + financial modeling + market research support (12 months × ~10 hr/quarter consulting time)</td>
+<td>$25,000</td>
+</tr>
+<tr>
+<td><strong>Lawyers Clearinghouse</strong> (or Lawyers for Civil Rights MA Small Business)</td>
+<td>(1) MA foreign-LLC filing + amendment package; (2) legal opinion: 1099 vs W-2 contractor classification (per GTM spec §10 R5); (3) OpenSign beta agreement template review; (4) USPTO Old-House Verified trademark filing support; (5) Stripe Connect compliance review; (6) MA AG / DOL pre-clearance correspondence on marketplace classification; (7) Wefunder Reg CF SAFE template review</td>
+<td>$50,000</td>
+</tr>
+<tr>
+<td><strong>BECMA</strong> <em>(if Phyrom self-identifies as Black/Asian-founder per BECMA's eligibility — verify with intake)</em></td>
+<td>Marketing services package: brand assets review, MA-Black-led-GC ecosystem introductions, accounting/bookkeeping referral, mentorship matching</td>
+<td>$35,000</td>
+</tr>
+<tr>
+<td><strong>TOTAL</strong></td>
+<td></td>
+<td><strong>$145,000</strong></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="6-application-narrative-draft--reusable-across-partners">6. Application Narrative (Draft — Reusable Across Partners)</h2>
+<h3 id="61-who-we-are-≤05-page">6.1 Who We Are (≤0.5 page)</h3>
+<p>Sherpa Pros LLC is the national licensed-trade marketplace (international roadmap) built by a working New Hampshire general contractor (Phyrom, Founder of HJD Builders LLC), launching first in NH, ME, and MA. The platform matches Massachusetts homeowners to verified, code-validated, license-checked tradespeople — heat-pump installers, electricians, plumbers, old-house specialists — with a single-contractor dispatch model and a 5%–10% take rate (vs. lead-gen platforms' effective $400–$800 per closed job).</p>
+<p>The platform is live (<a href="http://www.thesherpapros.com">www.thesherpapros.com</a>), built on Next.js 16 + Stripe Connect + Neon Postgres + PostGIS, and ready for a focused Boston-metro deployment across five specialty lanes the national lead-gen incumbents (Angi, Thumbtack, HomeAdvisor) structurally cannot serve: Mass Save heat-pump installs, EV-charger installs, electrical panel upgrades, old-house specialists, and triple-decker exterior work.</p>
+<h3 id="62-why-ma-specific-technical-assistance-now-≤05-page">6.2 Why MA-Specific Technical Assistance Now (≤0.5 page)</h3>
+<p>Sherpa Pros enters Massachusetts as part of a four-metro Phase 1–2 GTM (Portsmouth NH, Manchester NH, Portland ME, Boston MA — per GTM spec §1). Boston-specific MA-formation, MA-specific employment-classification opinions, MA municipal code-corpus ingestion, and MA-targeted community marketing are all critical-path. Without SBTA-funded technical assistance, these costs become a disproportionate bite out of an early-stage capital base. SBTA-funded technical assistance is the structural fit for a MA-deploying NH-domiciled small business that needs MA-specific scope without burning operating capital.</p>
+<h3 id="63-specific-service-requests-≤1-page-tailor-per-partner">6.3 Specific Service Requests (≤1 page; tailor per partner)</h3>
+<p><strong>For EforAll Boston:</strong> Accept Sherpa Pros into the next accelerator cohort. Match Phyrom with a fractional CFO advisor and a marketplace operator mentor. Open the EforAll Boston PR + community network for the Wefunder community-round launch.</p>
+<p><strong>For MSBDC at UMass-Boston:</strong> Quarterly business-advising sessions to refine 5-year financial model (per investor data room), pressure-test TAM/SAM/SOM, and connect with MA-supplier-diversity registration (if applicable to procurement opportunities).</p>
+<p><strong>For Lawyers Clearinghouse:</strong> Deliver the legal scope listed in §5 — particularly the 1099 vs W-2 contractor classification opinion (per GTM spec §10 R5: "Pros are independently licensed contractors w/ own insurance — defensible. Legal opinion W4."). MA AG and MA DOL correspondence on this front is the highest-value legal output.</p>
+<p><strong>For BECMA</strong> (if eligible): Marketing scope + mentorship + introductions into MA Black-led GC ecosystem. The HJD Builders network includes MA-licensed Black-led contractors who would benefit from cross-pollination with the MA-broader marketplace.</p>
+<h3 id="64-anticipated-ma-economic-impact">6.4 Anticipated MA Economic Impact</h3>
+<ul>
+<li><strong>Direct W-2 MA hires</strong> (12-month horizon): Boston Pro Success Manager (1.0 FTE), MA Client Concierge (0.5 FTE), Boston BD lead (0.5 FTE) = <strong>2.0 W-2 FTE hires</strong></li>
+<li><strong>Indirect MA contractor jobs enabled</strong> (per Catalyst pilot data extrapolation): ~5 incremental contractor-FTE-equivalents</li>
+<li><strong>MA GMV routed to MA contractors</strong> (12-month horizon): $900K–$1.5M in direct payments to MA contractors (after platform take)</li>
+<li><strong>Decarbonization tonnage attributable to MA installs</strong> (12-month horizon): ~600 tCO2e/yr ongoing from 100 platform-routed Mass Save heat-pump installs</li>
+</ul>
+<hr>
+<h2 id="7-outreach-email--eforall-boston-highest-priority-partner">7. Outreach Email — EforAll Boston (Highest-Priority Partner)</h2>
+<p><strong>To:</strong> <a href="mailto:info@eforall.org">info@eforall.org</a> (general inbox); cc: Boston-cohort program manager (find current name on eforall.org/boston)
+<strong>Subject:</strong> SBTA-funded marketplace platform — request to join next Boston cohort</p>
+<blockquote>
+<p>Dear EforAll Boston team,</p>
+<p>My name is Phyrom. I'm the founder of Sherpa Pros LLC, the national licensed-trade marketplace (international roadmap), launching first in New England — and matching Boston homeowners to verified Mass Save heat-pump installers, licensed electricians for EV-charger and panel upgrade work, and old-house specialists in pre-1950 Boston housing. The platform is live (<a href="http://www.thesherpapros.com">www.thesherpapros.com</a>) and entering Boston as part of a four-metro Phase 1 deployment.</p>
+<p>I'm a 12-year working New Hampshire general contractor (founder of HJD Builders LLC) and I built Sherpa Pros to solve the lead-gen problem from the contractor side. I'm reaching out to ask whether Sherpa Pros would be a fit for an upcoming EforAll Boston accelerator cohort. The fit factors I see:</p>
+<ul>
+<li><strong>MA deployment focus</strong>: Boston-metro specialty lanes are our Phase 1–2 priority</li>
+<li><strong>Tech-enabled marketplace</strong>: Aligned with EforAll's portfolio of digital-first founder-led businesses</li>
+<li><strong>Founder profile</strong>: First-time technology founder + working contractor; would benefit materially from a fractional-CFO advisor match and from your Pitch Practice cadence as we run a parallel Wefunder community-round launch</li>
+<li><strong>MA economic impact</strong>: 2.0 W-2 MA hires planned in next 12 months; indirect MA contractor enablement; measurable Mass Save heat-pump install throughput contribution</li>
+</ul>
+<p>Could we schedule a 20-minute call to discuss fit and timing? I can share a 1-page summary of Sherpa Pros and the live platform URL in advance.</p>
+<p>Thanks for your time. I look forward to the conversation.</p>
+<p>Phyrom
+Founder, Sherpa Pros LLC | HJD Builders LLC
+[Phone] | <a href="mailto:poum@hjd.builders">poum@hjd.builders</a>
+<a href="http://www.thesherpapros.com">www.thesherpapros.com</a></p>
+</blockquote>
+<hr>
+<h2 id="8-outreach-email--lawyers-clearinghouse-legal-scope-partner">8. Outreach Email — Lawyers Clearinghouse (Legal Scope Partner)</h2>
+<p><strong>To:</strong> <a href="mailto:info@lawyersclearinghouse.org">info@lawyersclearinghouse.org</a>
+<strong>Subject:</strong> SBTA-funded MA small business — request for marketplace-platform legal support</p>
+<blockquote>
+<p>Dear Lawyers Clearinghouse team,</p>
+<p>My name is Phyrom. I'm the founder of Sherpa Pros LLC, the national licensed-trade marketplace platform (international roadmap), launching first in New England and deploying its first Massachusetts cohort across the Boston metro. The platform is live (<a href="http://www.thesherpapros.com">www.thesherpapros.com</a>) and ready for MA operations.</p>
+<p>I'm requesting consideration for SBTA-funded legal services across the following scope:</p>
+<ol>
+<li><strong>MA foreign-LLC filing</strong> for Sherpa Pros LLC (NH-domiciled; needs MA registration before MA operations)</li>
+<li><strong>Legal opinion on 1099 vs W-2 contractor classification</strong> for marketplace platforms — independently licensed pros with own insurance and own client books, matched via the platform but not employed by it. This is critical-path before scaled MA operations.</li>
+<li><strong>OpenSign beta agreement template review</strong> — pro service agreement, beta terms, dispute mediation clause</li>
+<li><strong>USPTO Old-House Verified trademark filing support</strong></li>
+<li><strong>Stripe Connect compliance review</strong> — marketplace splits, escrow, 1099-NEC reporting</li>
+<li><strong>MA AG / MA DOL pre-clearance correspondence</strong> on marketplace classification (if recommended after the 1099/W-2 opinion is in hand)</li>
+<li><strong>Wefunder Reg CF SAFE template review</strong> for our planned community round</li>
+</ol>
+<p>Estimated scope value: ~$50,000. Sherpa Pros qualifies as an MA-deploying small business (≤500 employees, for-profit, MA business registration in process). Could we schedule a 20-minute intake call to scope the engagement?</p>
+<p>Thank you for your time. I'm happy to share the live platform URL and a one-page summary of Sherpa Pros in advance.</p>
+<p>Phyrom
+Founder, Sherpa Pros LLC | HJD Builders LLC
+[Phone] | <a href="mailto:poum@hjd.builders">poum@hjd.builders</a></p>
+</blockquote>
+<hr>
+<h2 id="9-submission-instructions">9. Submission Instructions</h2>
+<ul>
+<li><strong>No central SBTA portal for Sherpa Pros.</strong> SBTA funds the partner; Sherpa Pros applies to the partner.</li>
+<li><strong>Each partner has its own intake.</strong> Use partner websites for current intake forms:<ul>
+<li>EforAll Boston: <a href="https://eforall.org/">https://eforall.org/</a> (apply to next Boston cohort; cohorts typically open spring + fall)</li>
+<li>MSBDC: <a href="https://www.msbdc.org/">https://www.msbdc.org/</a> (rolling intake)</li>
+<li>Lawyers Clearinghouse: <a href="https://lawyersclearinghouse.org/">https://lawyersclearinghouse.org/</a> (rolling intake)</li>
+<li>BECMA: <a href="https://www.becma.org/">https://www.becma.org/</a> (rolling intake)</li>
+</ul>
+</li>
+<li><strong>Deadlines:</strong> EforAll cohorts have hard application deadlines (check current cycle). All others are rolling.</li>
+<li><strong>Contact:</strong> Use the outreach emails in §7 and §8 as templates.</li>
+<li><strong>Pre-submission outreach is mandatory.</strong> Cold-applying without a partner relationship is rarely accepted. Schedule the 20-minute scoping call first; submit formal intake after that call confirms fit.</li>
+</ul>
+<hr>
+<h2 id="10-tips--gotchas">10. Tips &amp; Gotchas</h2>
+<ol>
+<li><strong>SBTA is services, not cash.</strong> Set expectations internally: this packet does not bring money to the bank account. It brings legal, accounting, marketing, mentorship hours that would otherwise cost $50K–$150K.</li>
+<li><strong>Pick partners by fit, not by award size.</strong> EforAll's cohort acceptance is more strategically valuable than its raw $-equivalent because of the mentor + investor network it unlocks.</li>
+<li><strong>Stack partners.</strong> A single SBTA-funded partner will not deliver $150K of services. Two or three partners across different scopes get to the cap.</li>
+<li><strong>MA-resident decision-makers respond to MA-resident voices.</strong> When Phyrom is in Boston for the EforAll intake call, follow up in person if possible.</li>
+<li><strong>Identity-aligned partners (BECMA, CWE) require honest self-identification.</strong> If applicable, they unlock material extra service capacity. Phyrom should confirm whether his Khmer-American background fits BECMA's mandate (focused on Black-owned businesses) before applying — a more accurate fit may be Asian-American-focused MA small-business support organizations (e.g., Asian American Civic Association). Worth a separate discovery call.</li>
+<li><strong>MA foreign-LLC registration is the gating eligibility item across all partners.</strong> File before partner outreach.</li>
+<li><strong>Avoid "Wiseman" externally</strong> — use "code-aware quote validation" (per Sherpa Pros brand bible / GTM spec §3.3).</li>
+<li><strong>The legal scope (Lawyers Clearinghouse) is the highest-ROI single SBTA engagement</strong> — the 1099 vs W-2 opinion alone would cost $15K–$25K from a paid MA labor-and-employment firm and is critical-path before MA scaled operations.</li>
+<li><strong>EforAll cohort timing matters.</strong> If the next Boston cohort is full, ask to be on the waitlist + scheduled for the following cohort. Do not skip EforAll — the network is the thing.</li>
+</ol>
+<hr>
+<h2 id="11-eligibility-blocker--phyrom-confirmation-required">11. Eligibility Blocker — Phyrom Confirmation Required</h2>
+<p>Three items need Phyrom's confirmation before SBTA-partner outreach goes out:</p>
+<ol>
+<li><p><strong>MA foreign-LLC registration for Sherpa Pros LLC.</strong> Same as the other MA-targeted grants — file before partner outreach so all intakes can answer "yes" to MA business registration.</p>
+</li>
+<li><p><strong>BECMA fit confirmation.</strong> Phyrom's Khmer-American identity may not fit BECMA's Black-owned-business mandate. <strong>Confirm before sending the BECMA outreach email.</strong> Alternative: identify the right Asian-American-focused MA small-business technical-assistance organization (Asian American Civic Association, MA Asian American Commission's referral network, or similar). This may require a separate discovery call.</p>
+</li>
+<li><p><strong>Time commitment for EforAll cohort.</strong> EforAll Boston accelerator typically requires 4–6 hours/week for 12 weeks of in-person + virtual programming. <strong>Confirm Phyrom's bandwidth</strong> in light of the 60-hour/week cap (per GTM spec §10 R8). EforAll is high-leverage but is not free of time cost.</p>
+</li>
+</ol>
+<hr>
+<p><strong>End of draft. Phyrom: confirm MA registration timing, validate BECMA-vs-AACA fit, scope EforAll cohort timing against bandwidth, and send the outreach emails in §7 and §8 within 30 days.</strong></p>
+
+	
+
+
+</body>
+</html>

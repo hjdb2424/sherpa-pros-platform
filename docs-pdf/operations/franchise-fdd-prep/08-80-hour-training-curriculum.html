@@ -1,0 +1,2120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>08 80 hour training curriculum — Sherpa Pros</title>
+<link rel="icon" href="../../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="08-80-hour-training-curriculum.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="80-hour-initial-training-curriculum">80-Hour Initial Training Curriculum</h1>
+<h2 id="0-curriculum-overview">0. Curriculum Overview</h2>
+<table>
+<thead>
+<tr>
+<th>Module</th>
+<th>Title</th>
+<th>Hours</th>
+<th>Delivery Mode</th>
+<th>Phase</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>Sherpa Pros brand + history + product portfolio</td>
+<td>4</td>
+<td>Classroom</td>
+<td>Hub #1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Sherpa Marketplace + Dispatch operations</td>
+<td>8</td>
+<td>Classroom + hands-on</td>
+<td>Hub #1</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Sherpa Hub operations — daily/weekly/monthly runbook</td>
+<td>6</td>
+<td>Hands-on at Hub #1</td>
+<td>Hub #1</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Sherpa Materials orchestration</td>
+<td>8</td>
+<td>Classroom + hands-on</td>
+<td>Hub #1</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Sherpa Threads + Smart Scan + Mobile + Guard + Score</td>
+<td>4</td>
+<td>Classroom</td>
+<td>Hub #1</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Sherpa Rewards + Flex (member acquisition + engagement)</td>
+<td>4</td>
+<td>Classroom</td>
+<td>Hub #1</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Hub financial management — P&amp;L, royalty, marketing fund</td>
+<td>8</td>
+<td>Classroom</td>
+<td>Hub #1</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Hub Manager hiring + management + retention</td>
+<td>8</td>
+<td>Classroom + roleplay</td>
+<td>Hub #1</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Brand standards + visual identity + marketing co-op</td>
+<td>4</td>
+<td>Classroom</td>
+<td>Hub #1</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Member acquisition + retention</td>
+<td>8</td>
+<td>Hands-on</td>
+<td>Hub #1 + community visits</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Compliance + Sherpa Guard audit cooperation + insurance</td>
+<td>4</td>
+<td>Classroom</td>
+<td>Hub #1</td>
+</tr>
+<tr>
+<td>12</td>
+<td>Franchise Advisory Council + escalation + ongoing support</td>
+<td>4</td>
+<td>Classroom</td>
+<td>Hub #1</td>
+</tr>
+<tr>
+<td>FIELD</td>
+<td>Hub-opening field training at franchisee's Hub</td>
+<td>40</td>
+<td>Hands-on at franchisee's Hub</td>
+<td>Field (Weeks 1-2 of Hub operations)</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td></td>
+<td><strong>80 + 40 field = 80 hr classroom/Hub #1 + 40 hr field = 80 contact hours per FDD Item 11</strong></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p>(Item 11 disclosure: 80 contact hours initial training. The 40 + 40 split breakdown — 40 hours at Hub #1 + 40 hours field at franchisee's Hub — is the operational delivery model.)</p>
+<hr>
+<h2 id="module-1--sherpa-pros-brand--history--product-portfolio-4-hours">Module 1 — Sherpa Pros Brand + History + Product Portfolio (4 hours)</h2>
+<h3 id="learning-objectives">Learning Objectives</h3>
+<ul>
+<li>Understand the Sherpa Pros founder origin (HJD Builders LLC + working contractor lens)</li>
+<li>Articulate the 6-product portfolio + 8 platform capabilities to a prospect, an investor, and a pro</li>
+<li>Recognize what is corporate-owned vs franchise-owned (avoid scope creep at the franchisee level)</li>
+</ul>
+<h3 id="hour-by-hour-agenda">Hour-by-Hour Agenda</h3>
+<table>
+<thead>
+<tr>
+<th>Time</th>
+<th>Topic</th>
+<th>Format</th>
+<th>Lead</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0:00–0:45</td>
+<td>Founder talk: Phyrom's origin story + why Sherpa Pros exists</td>
+<td>Talk</td>
+<td>Phyrom</td>
+</tr>
+<tr>
+<td>0:45–1:30</td>
+<td>6-product portfolio walkthrough (Hub, Marketplace, Materials, Home, Manager, Rewards/Flex)</td>
+<td>Classroom</td>
+<td>VPOPS</td>
+</tr>
+<tr>
+<td>1:30–2:00</td>
+<td>8 platform capabilities walkthrough (codes engine, Materials engine, Dispatch, Threads, Smart Scan, Mobile, Guard, Score)</td>
+<td>Classroom</td>
+<td>Director of Training</td>
+</tr>
+<tr>
+<td>2:00–2:15</td>
+<td>Break</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>2:15–3:00</td>
+<td>What is corporate-owned vs franchise-owned (the digital/physical split)</td>
+<td>Classroom</td>
+<td>VPOPS</td>
+</tr>
+<tr>
+<td>3:00–3:30</td>
+<td>Brand voice + tone + editorial standards (intro to brand portfolio)</td>
+<td>Classroom</td>
+<td>Marketing lead</td>
+</tr>
+<tr>
+<td>3:30–4:00</td>
+<td>Module 1 quiz + Q&amp;A</td>
+<td>Assessment</td>
+<td>Director of Training</td>
+</tr>
+</tbody></table>
+<h3 id="required-reference-materials">Required Reference Materials</h3>
+<ul>
+<li><code>docs/operations/sherpa-product-portfolio.md</code></li>
+<li><code>docs/operations/brand-portfolio.md</code></li>
+<li>Sherpa Pros 90-second founder video</li>
+</ul>
+<h3 id="assessment">Assessment</h3>
+<ul>
+<li>10-question multiple choice quiz, 80% pass threshold</li>
+<li>Verbal articulation test: explain Sherpa Pros to a hypothetical investor in 60 seconds</li>
+</ul>
+<hr>
+<h2 id="module-2--sherpa-marketplace--dispatch-operations-8-hours">Module 2 — Sherpa Marketplace + Dispatch Operations (8 hours)</h2>
+<h3 id="learning-objectives-1">Learning Objectives</h3>
+<ul>
+<li>Understand the marketplace job lifecycle (post → match → bid → accept → execute → close)</li>
+<li>Operate the Dispatch matching algorithm at the Hub-supervisor level (override authority + escalation)</li>
+<li>Recognize anti-gaming patterns and report violations to corporate</li>
+</ul>
+<h3 id="hour-by-hour-agenda-1">Hour-by-Hour Agenda</h3>
+<table>
+<thead>
+<tr>
+<th>Time</th>
+<th>Topic</th>
+<th>Format</th>
+<th>Lead</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Day 1, 9:00–10:30</td>
+<td>Marketplace job lifecycle walkthrough</td>
+<td>Classroom + live demo</td>
+<td>Director of Training</td>
+</tr>
+<tr>
+<td>10:30–10:45</td>
+<td>Break</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>10:45–12:00</td>
+<td>Pro-side experience walkthrough (Sherpa Pro app demo)</td>
+<td>Hands-on</td>
+<td>Director of Training</td>
+</tr>
+<tr>
+<td>12:00–13:00</td>
+<td>Lunch</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>13:00–14:30</td>
+<td>Client-side experience walkthrough (Sherpa Home + Sherpa Manager demo)</td>
+<td>Hands-on</td>
+<td>Director of Training</td>
+</tr>
+<tr>
+<td>14:30–14:45</td>
+<td>Break</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>14:45–16:00</td>
+<td>Dispatch matching algorithm — the 7 factors</td>
+<td>Classroom</td>
+<td>VPOPS</td>
+</tr>
+<tr>
+<td>16:00–17:00</td>
+<td>Hub-side dispatch monitoring + override authority</td>
+<td>Hands-on</td>
+<td>Hub Manager (Hub #1)</td>
+</tr>
+<tr>
+<td>Day 2, 9:00–10:30</td>
+<td>Anti-gaming patterns + reporting protocol</td>
+<td>Classroom + case studies</td>
+<td>VPOPS</td>
+</tr>
+<tr>
+<td>10:30–11:30</td>
+<td>Job-quality monitoring + Sherpa Score impact</td>
+<td>Hands-on</td>
+<td>Director of Training</td>
+</tr>
+<tr>
+<td>11:30–12:00</td>
+<td>Module 2 quiz + roleplay assessment</td>
+<td>Assessment</td>
+<td>Director of Training</td>
+</tr>
+</tbody></table>
+<h3 id="hands-on-elements">Hands-On Elements</h3>
+<ul>
+<li>Live observation of 5+ marketplace jobs end-to-end at Hub #1</li>
+<li>Roleplay: handle 3 dispatch escalation scenarios (no-show pro, customer cancellation mid-job, code-compliance dispute)</li>
+</ul>
+<h3 id="required-reference-materials-1">Required Reference Materials</h3>
+<ul>
+<li>Sherpa Pros 7-factor Dispatch matching documentation</li>
+<li>Sherpa Pros anti-gaming detection runbook</li>
+<li>Sherpa Score algorithm overview (high-level — algorithm internals are corporate confidential)</li>
+</ul>
+<h3 id="assessment-1">Assessment</h3>
+<ul>
+<li>Written exam: 25 questions, 80% pass threshold</li>
+<li>Roleplay grading: 3 dispatch scenarios scored on judgment + escalation accuracy</li>
+</ul>
+<hr>
+<h2 id="module-3--sherpa-hub-operations-daily--weekly--monthly-runbook-6-hours">Module 3 — Sherpa Hub Operations: Daily / Weekly / Monthly Runbook (6 hours)</h2>
+<h3 id="learning-objectives-2">Learning Objectives</h3>
+<ul>
+<li>Execute the daily 5:00 AM through 6:00 PM Hub runbook (per Hub Integration spec §6)</li>
+<li>Execute the weekly cadence (inventory audit, returns batch, supplier reconciliation, P&amp;L pull, member newsletter)</li>
+<li>Execute the monthly cadence (P&amp;L review, member NPS survey, capex review)</li>
+</ul>
+<h3 id="hour-by-hour-agenda-2">Hour-by-Hour Agenda</h3>
+<table>
+<thead>
+<tr>
+<th>Time</th>
+<th>Topic</th>
+<th>Format</th>
+<th>Lead</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0:00–1:00</td>
+<td>Daily Hub runbook walkthrough (5:00 AM materials staging through 6:00 PM close)</td>
+<td>Classroom</td>
+<td>Hub #1 Manager</td>
+</tr>
+<tr>
+<td>1:00–2:30</td>
+<td>Live observation: 5:00 AM materials staging shift</td>
+<td>Hands-on</td>
+<td>Hub #1 Manager</td>
+</tr>
+<tr>
+<td>2:30–2:45</td>
+<td>Break</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>2:45–4:00</td>
+<td>Weekly cadence (Monday inventory audit through Saturday optional open hours)</td>
+<td>Classroom + tour</td>
+<td>Hub #1 Manager</td>
+</tr>
+<tr>
+<td>4:00–5:00</td>
+<td>Monthly cadence (P&amp;L review, NPS survey, capex review)</td>
+<td>Classroom</td>
+<td>VPOPS</td>
+</tr>
+<tr>
+<td>5:00–6:00</td>
+<td>Quarterly cadence (QBR, all-Hub call)</td>
+<td>Classroom + Module 3 quiz</td>
+<td>VPOPS</td>
+</tr>
+</tbody></table>
+<h3 id="required-reference-materials-2">Required Reference Materials</h3>
+<ul>
+<li><code>docs/superpowers/specs/2026-04-25-sherpa-hub-integration-design.md</code> (§6 Operational Runbook)</li>
+<li><code>docs/operations/franchise-fdd-prep/10-operations-manual-outline.md</code></li>
+<li>Hub #1 daily/weekly/monthly run sheet templates</li>
+</ul>
+<h3 id="assessment-2">Assessment</h3>
+<ul>
+<li>Practical demonstration: candidate executes a simulated daily open shift at Hub #1 (graded by Hub #1 Manager)</li>
+<li>15-question quiz on cadence specifics</li>
+</ul>
+<hr>
+<h2 id="module-4--sherpa-materials-orchestration-8-hours">Module 4 — Sherpa Materials Orchestration (8 hours)</h2>
+<h3 id="learning-objectives-3">Learning Objectives</h3>
+<ul>
+<li>Understand the Sherpa Materials engine architecture (Wiseman Materials internal name; Sherpa Materials engine in customer-facing copy)</li>
+<li>Operate the Hub-side materials staging workflow (receiving, racking, dispatch waves, returns)</li>
+<li>Manage Zinc API supplier orders, Uber Direct dispatch, and FW Webb-relationship-specific workflows</li>
+<li>Calculate per-line margin share (40% Hub buffer, 25% Hub staged + Uber Direct, 35% Hub staged + pro pickup, 0% supplier direct)</li>
+</ul>
+<h3 id="hour-by-hour-agenda-3">Hour-by-Hour Agenda</h3>
+<table>
+<thead>
+<tr>
+<th>Time</th>
+<th>Topic</th>
+<th>Format</th>
+<th>Lead</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Day 1, 9:00–10:30</td>
+<td>Sherpa Materials engine architecture overview</td>
+<td>Classroom</td>
+<td>Materials engineering lead</td>
+</tr>
+<tr>
+<td>10:30–10:45</td>
+<td>Break</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>10:45–12:00</td>
+<td>Routing rules walkthrough (Hub buffer / Hub staged / supplier direct decision tree)</td>
+<td>Classroom</td>
+<td>Materials engineering lead</td>
+</tr>
+<tr>
+<td>12:00–13:00</td>
+<td>Lunch</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>13:00–14:30</td>
+<td>Hub-side workflow: inbound receiving (4–9 PM prior day)</td>
+<td>Hands-on at receiving dock</td>
+<td>Hub #1 Materials Specialist</td>
+</tr>
+<tr>
+<td>14:30–16:00</td>
+<td>Hub-side workflow: staging (5–7 AM) — live observation</td>
+<td>Hands-on</td>
+<td>Hub #1 Materials Specialist</td>
+</tr>
+<tr>
+<td>16:00–17:00</td>
+<td>Hub-side workflow: dispatch waves (6:30 / 8:00 / 10:00 / 12:00)</td>
+<td>Hands-on</td>
+<td>Hub #1 Materials Specialist</td>
+</tr>
+<tr>
+<td>Day 2, 9:00–10:30</td>
+<td>Pro-pickup option workflow + margin economics</td>
+<td>Classroom + hands-on</td>
+<td>Hub #1 Manager</td>
+</tr>
+<tr>
+<td>10:30–12:00</td>
+<td>Returns processing (Wednesday batch)</td>
+<td>Classroom + hands-on</td>
+<td>Hub #1 Materials Specialist</td>
+</tr>
+<tr>
+<td>13:00–14:30</td>
+<td>Supplier reconciliation (Friday batch)</td>
+<td>Classroom + hands-on</td>
+<td>Hub #1 Manager</td>
+</tr>
+<tr>
+<td>14:30–15:30</td>
+<td>Margin share calculation walkthrough — by flow type</td>
+<td>Classroom + spreadsheet exercise</td>
+<td>VPOPS</td>
+</tr>
+<tr>
+<td>15:30–16:30</td>
+<td>FW Webb partnership-specific workflow (per Hub Integration spec §4)</td>
+<td>Classroom</td>
+<td>VPOPS</td>
+</tr>
+<tr>
+<td>16:30–17:00</td>
+<td>Module 4 quiz + practical assessment</td>
+<td>Assessment</td>
+<td>Materials engineering lead</td>
+</tr>
+</tbody></table>
+<h3 id="hands-on-elements-1">Hands-On Elements</h3>
+<ul>
+<li>Receive a real inbound supplier delivery + reconcile against Sherpa Materials staging manifest</li>
+<li>Stage materials by job onto labeled racks</li>
+<li>Dispatch a real Uber Direct wave (with Hub #1 Manager backup)</li>
+<li>Process a real returns batch</li>
+</ul>
+<h3 id="required-reference-materials-3">Required Reference Materials</h3>
+<ul>
+<li><code>docs/superpowers/specs/2026-04-25-sherpa-hub-integration-design.md</code> (§7 + §8 + §9)</li>
+<li>Sherpa Materials engine API reference (internal documentation under NDA)</li>
+<li>Zinc API integration runbook</li>
+<li>Uber Direct dispatch API runbook</li>
+</ul>
+<h3 id="assessment-3">Assessment</h3>
+<ul>
+<li>Hands-on grading: receive + stage + dispatch + return at observed-competency level</li>
+<li>Written exam: 30 questions, 80% pass threshold</li>
+<li>Margin share calculation exercise: 5 scenarios scored</li>
+</ul>
+<hr>
+<h2 id="module-5--sherpa-threads--smart-scan--mobile--guard--score-4-hours">Module 5 — Sherpa Threads + Smart Scan + Mobile + Guard + Score (4 hours)</h2>
+<h3 id="learning-objectives-4">Learning Objectives</h3>
+<ul>
+<li>Operate Sherpa Threads (in-app + Short Message Service messaging) for pro/client/Hub communication</li>
+<li>Use Sherpa Smart Scan for receipts, permits, photos</li>
+<li>Demonstrate Sherpa Mobile (iOS + Android) for franchisee-side and pro-side use</li>
+<li>Configure Sherpa Guard (Role-Based Access Control + audit logs) for Hub staff</li>
+<li>Read and interpret Sherpa Score for dispatch + member-engagement decisions</li>
+</ul>
+<h3 id="hour-by-hour-agenda-4">Hour-by-Hour Agenda</h3>
+<table>
+<thead>
+<tr>
+<th>Time</th>
+<th>Topic</th>
+<th>Format</th>
+<th>Lead</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0:00–0:45</td>
+<td>Sherpa Threads — channels, etiquette, escalation</td>
+<td>Classroom + hands-on</td>
+<td>Director of Training</td>
+</tr>
+<tr>
+<td>0:45–1:30</td>
+<td>Sherpa Smart Scan — receipt + permit + photo workflows</td>
+<td>Hands-on</td>
+<td>Director of Training</td>
+</tr>
+<tr>
+<td>1:30–1:45</td>
+<td>Break</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>1:45–2:30</td>
+<td>Sherpa Mobile — full app demo + Hub-side workflows</td>
+<td>Hands-on</td>
+<td>Director of Training</td>
+</tr>
+<tr>
+<td>2:30–3:00</td>
+<td>Sherpa Guard — Role-Based Access Control configuration for Hub staff</td>
+<td>Hands-on</td>
+<td>VPOPS</td>
+</tr>
+<tr>
+<td>3:00–3:45</td>
+<td>Sherpa Score — algorithm overview + Hub-side interpretation</td>
+<td>Classroom</td>
+<td>VPOPS</td>
+</tr>
+<tr>
+<td>3:45–4:00</td>
+<td>Module 5 quiz</td>
+<td>Assessment</td>
+<td>Director of Training</td>
+</tr>
+</tbody></table>
+<h3 id="assessment-4">Assessment</h3>
+<ul>
+<li>20-question quiz, 80% pass threshold</li>
+<li>Hands-on demo: configure RBAC for a hypothetical 4-person Hub staff in Sherpa Guard</li>
+</ul>
+<hr>
+<h2 id="module-6--sherpa-rewards--flex-member-engagement--acquisition-4-hours">Module 6 — Sherpa Rewards + Flex (Member Engagement + Acquisition) (4 hours)</h2>
+<h3 id="learning-objectives-5">Learning Objectives</h3>
+<ul>
+<li>Understand the Sherpa Rewards program (lifetime grandfather pricing for Founding Pros, tier benefits, retention drivers)</li>
+<li>Understand the Sherpa Flex tier (low-bandwidth side-hustle pros, $0/month, opt-in Hub access $39/month)</li>
+<li>Run member acquisition campaigns at the Hub level</li>
+<li>Run member retention activities (lounge programming, training event attendance, member newsletter)</li>
+</ul>
+<h3 id="hour-by-hour-agenda-5">Hour-by-Hour Agenda</h3>
+<table>
+<thead>
+<tr>
+<th>Time</th>
+<th>Topic</th>
+<th>Format</th>
+<th>Lead</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0:00–1:00</td>
+<td>Sherpa Rewards program walkthrough (Founding / Gold / Silver / Bronze tiers)</td>
+<td>Classroom</td>
+<td>Marketing lead</td>
+</tr>
+<tr>
+<td>1:00–1:45</td>
+<td>Sherpa Flex tier walkthrough + opt-in Hub access economics</td>
+<td>Classroom</td>
+<td>Marketing lead</td>
+</tr>
+<tr>
+<td>1:45–2:00</td>
+<td>Break</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>2:00–3:00</td>
+<td>Hub-level member acquisition campaign templates</td>
+<td>Classroom + workshop</td>
+<td>Marketing lead</td>
+</tr>
+<tr>
+<td>3:00–3:45</td>
+<td>Member retention playbook (lounge programming, training events, newsletter)</td>
+<td>Classroom</td>
+<td>Hub #1 Manager</td>
+</tr>
+<tr>
+<td>3:45–4:00</td>
+<td>Module 6 quiz</td>
+<td>Assessment</td>
+<td>Marketing lead</td>
+</tr>
+</tbody></table>
+<h3 id="assessment-5">Assessment</h3>
+<ul>
+<li>15-question quiz, 80% pass threshold</li>
+<li>Workshop deliverable: candidate drafts a Month 1 member acquisition plan for their Hub (graded by Marketing lead)</li>
+</ul>
+<hr>
+<h2 id="module-7--hub-financial-management-8-hours">Module 7 — Hub Financial Management (8 hours)</h2>
+<h3 id="learning-objectives-6">Learning Objectives</h3>
+<ul>
+<li>Read and interpret a Hub P&amp;L statement (matched to Item 19 line items in <code>03-item-19-economics-spreadsheet.md</code>)</li>
+<li>Manage to a monthly cash-flow forecast</li>
+<li>Calculate and remit royalty + Marketing Fund + Tech Fee + local marketing minimum</li>
+<li>Cooperate with corporate audit (annual + ad-hoc per FDD Item 6 audit fee trigger)</li>
+<li>Understand sensitivity to revenue ±20%, opex ±15%, materials margin ±10%</li>
+</ul>
+<h3 id="hour-by-hour-agenda-6">Hour-by-Hour Agenda</h3>
+<table>
+<thead>
+<tr>
+<th>Time</th>
+<th>Topic</th>
+<th>Format</th>
+<th>Lead</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Day 1, 9:00–10:30</td>
+<td>Hub P&amp;L line-item walkthrough</td>
+<td>Classroom + spreadsheet</td>
+<td>CFO or controller</td>
+</tr>
+<tr>
+<td>10:30–10:45</td>
+<td>Break</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>10:45–12:00</td>
+<td>Cash-flow forecasting (12-month rolling forecast template)</td>
+<td>Spreadsheet workshop</td>
+<td>CFO or controller</td>
+</tr>
+<tr>
+<td>12:00–13:00</td>
+<td>Lunch</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>13:00–14:30</td>
+<td>Royalty + Marketing Fund + Tech Fee remittance workflow (FranConnect → Stripe Connect ACH per <code>07-vendor-accounts-setup.md</code>)</td>
+<td>Hands-on</td>
+<td>CFO or controller</td>
+</tr>
+<tr>
+<td>14:30–15:30</td>
+<td>Local marketing minimum tracking + verification</td>
+<td>Classroom</td>
+<td>Marketing lead</td>
+</tr>
+<tr>
+<td>15:30–17:00</td>
+<td>Audit cooperation — what corporate audit looks like + how to prepare</td>
+<td>Classroom + roleplay</td>
+<td>CFO or controller</td>
+</tr>
+<tr>
+<td>Day 2, 9:00–10:30</td>
+<td>Sensitivity analysis — running stress scenarios on your own forecast</td>
+<td>Spreadsheet workshop</td>
+<td>CFO or controller</td>
+</tr>
+<tr>
+<td>10:30–12:00</td>
+<td>Capex management (replacement cycles, equipment refresh, IT upgrades)</td>
+<td>Classroom</td>
+<td>VPOPS</td>
+</tr>
+<tr>
+<td>12:00–13:00</td>
+<td>Lunch</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>13:00–14:00</td>
+<td>Tax basics for franchisees (federal + state; recommend franchisee retain own CPA)</td>
+<td>Classroom (high-level only)</td>
+<td>CFO or controller</td>
+</tr>
+<tr>
+<td>14:00–15:00</td>
+<td>Annual budget submission to corporate (November 15 deadline)</td>
+<td>Workshop</td>
+<td>CFO or controller</td>
+</tr>
+<tr>
+<td>15:00–15:30</td>
+<td>Module 7 final exam</td>
+<td>Assessment</td>
+<td>CFO or controller</td>
+</tr>
+</tbody></table>
+<h3 id="assessment-6">Assessment</h3>
+<ul>
+<li>Written exam: 30 questions, 80% pass threshold (highest stakes module — failure means re-training)</li>
+<li>Spreadsheet workshop deliverable: 12-month cash-flow forecast for franchisee's specific Hub (graded by CFO)</li>
+</ul>
+<hr>
+<h2 id="module-8--hub-manager-hiring--management--retention-8-hours">Module 8 — Hub Manager Hiring + Management + Retention (8 hours)</h2>
+<h3 id="learning-objectives-7">Learning Objectives</h3>
+<ul>
+<li>Recruit Hub Manager candidates from FW Webb branch managers, Lowe's Pro Desk leaders, Home Depot Pro Desk leaders, and trade-supply-house counter managers</li>
+<li>Conduct structured interviews + reference checks</li>
+<li>Onboard Hub Manager and Hub Associates per Sherpa Brand Standards</li>
+<li>Manage Hub Manager performance (compensation, bonus, performance review)</li>
+<li>Retain Hub Manager (career pathing, training, recognition)</li>
+</ul>
+<h3 id="hour-by-hour-agenda-7">Hour-by-Hour Agenda</h3>
+<table>
+<thead>
+<tr>
+<th>Time</th>
+<th>Topic</th>
+<th>Format</th>
+<th>Lead</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Day 1, 9:00–10:30</td>
+<td>Hub Manager job description + ideal candidate profile</td>
+<td>Classroom</td>
+<td>VPOPS</td>
+</tr>
+<tr>
+<td>10:30–12:00</td>
+<td>Sourcing channels (FW Webb, Lowe's, Home Depot, trade supply houses, NHHBA)</td>
+<td>Classroom + workshop</td>
+<td>VPOPS</td>
+</tr>
+<tr>
+<td>13:00–14:30</td>
+<td>Structured interview process (5-stage interview funnel)</td>
+<td>Classroom + roleplay</td>
+<td>VPOPS + HR consultant</td>
+</tr>
+<tr>
+<td>14:30–16:00</td>
+<td>Reference checks + background checks (HireRight workflow per <code>07-vendor-accounts-setup.md</code>)</td>
+<td>Classroom</td>
+<td>VPOPS</td>
+</tr>
+<tr>
+<td>16:00–17:00</td>
+<td>Compensation structure (salary $58–85K + bonus 8% net revenue, capped at 25% of base per Hub Integration spec)</td>
+<td>Classroom</td>
+<td>CFO</td>
+</tr>
+<tr>
+<td>Day 2, 9:00–10:30</td>
+<td>Onboarding playbook (first 90 days for Hub Manager)</td>
+<td>Classroom</td>
+<td>VPOPS</td>
+</tr>
+<tr>
+<td>10:30–12:00</td>
+<td>Performance management (monthly 1-on-1s, quarterly review, annual review)</td>
+<td>Classroom + roleplay</td>
+<td>VPOPS</td>
+</tr>
+<tr>
+<td>13:00–14:30</td>
+<td>Retention strategies (career pathing, recognition, succession planning)</td>
+<td>Classroom</td>
+<td>VPOPS</td>
+</tr>
+<tr>
+<td>14:30–15:30</td>
+<td>Hub Associate hiring + management (lighter-weight version)</td>
+<td>Classroom</td>
+<td>Hub #1 Manager</td>
+</tr>
+<tr>
+<td>15:30–16:00</td>
+<td>Module 8 quiz + roleplay assessment</td>
+<td>Assessment</td>
+<td>VPOPS</td>
+</tr>
+</tbody></table>
+<h3 id="assessment-7">Assessment</h3>
+<ul>
+<li>20-question quiz, 80% pass threshold</li>
+<li>Roleplay grading: conduct mock structured interview (Sherpa Pros HR consultant plays candidate)</li>
+</ul>
+<hr>
+<h2 id="module-9--brand-standards--visual-identity--marketing-co-op-4-hours">Module 9 — Brand Standards + Visual Identity + Marketing Co-Op (4 hours)</h2>
+<h3 id="learning-objectives-8">Learning Objectives</h3>
+<ul>
+<li>Apply Sherpa Pros brand voice + tone + editorial standards consistently</li>
+<li>Use the Sherpa Pros wordmark, logo variants, and color palette correctly (per brand-portfolio.md)</li>
+<li>Operate the regional marketing co-op (3+ adjacent Hubs co-fund campaigns)</li>
+<li>Recognize and avoid prohibited brand usage (recoloring, rotation, photo-overlay misuse, competitor-color borrowing)</li>
+</ul>
+<h3 id="hour-by-hour-agenda-8">Hour-by-Hour Agenda</h3>
+<table>
+<thead>
+<tr>
+<th>Time</th>
+<th>Topic</th>
+<th>Format</th>
+<th>Lead</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0:00–1:00</td>
+<td>Brand voice + tone + editorial walkthrough</td>
+<td>Classroom</td>
+<td>Marketing lead</td>
+</tr>
+<tr>
+<td>1:00–2:00</td>
+<td>Visual identity — wordmark, logo variants, color palette, typography (Fraunces + Manrope + JetBrains Mono)</td>
+<td>Classroom + workshop</td>
+<td>Marketing lead</td>
+</tr>
+<tr>
+<td>2:00–2:15</td>
+<td>Break</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>2:15–3:00</td>
+<td>Marketing co-op mechanics (regional campaigns, matching funds)</td>
+<td>Classroom</td>
+<td>Marketing lead</td>
+</tr>
+<tr>
+<td>3:00–3:45</td>
+<td>Prohibited brand usage examples + audit tools (per brand-portfolio.md)</td>
+<td>Classroom + case studies</td>
+<td>Marketing lead</td>
+</tr>
+<tr>
+<td>3:45–4:00</td>
+<td>Module 9 quiz</td>
+<td>Assessment</td>
+<td>Marketing lead</td>
+</tr>
+</tbody></table>
+<h3 id="required-reference-materials-4">Required Reference Materials</h3>
+<ul>
+<li><code>docs/operations/brand-portfolio.md</code> (full document)</li>
+<li><code>docs/operations/franchise-fdd-prep/09-brand-manual-outline.md</code></li>
+</ul>
+<h3 id="assessment-8">Assessment</h3>
+<ul>
+<li>15-question quiz, 80% pass threshold</li>
+<li>Visual identity audit exercise: candidate identifies 5 prohibited usage cases from a sample asset library</li>
+</ul>
+<hr>
+<h2 id="module-10--member-acquisition--retention-8-hours">Module 10 — Member Acquisition + Retention (8 hours)</h2>
+<h3 id="learning-objectives-9">Learning Objectives</h3>
+<ul>
+<li>Plan and execute local member acquisition (NHHBA-equivalent local engagement, supply-house partnerships, training event programming)</li>
+<li>Build supply-house partnerships in the franchisee's local market</li>
+<li>Program a 12-event training calendar for Year 1</li>
+<li>Retain members beyond Year 1 (community building, recognition, career pathing for pros)</li>
+<li>Measure and improve Net Promoter Score (NPS) — target 50+ at maturity</li>
+</ul>
+<h3 id="hour-by-hour-agenda-9">Hour-by-Hour Agenda</h3>
+<table>
+<thead>
+<tr>
+<th>Time</th>
+<th>Topic</th>
+<th>Format</th>
+<th>Lead</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Day 1, 9:00–10:30</td>
+<td>Local trade association engagement (NHHBA-equivalent)</td>
+<td>Classroom + case study</td>
+<td>Marketing lead</td>
+</tr>
+<tr>
+<td>10:30–12:00</td>
+<td>Supply-house partnership development (FW Webb-style hybrid)</td>
+<td>Classroom + workshop</td>
+<td>VPOPS</td>
+</tr>
+<tr>
+<td>13:00–14:30</td>
+<td>Training event programming — 12-event annual calendar</td>
+<td>Classroom + workshop</td>
+<td>Hub #1 Manager</td>
+</tr>
+<tr>
+<td>14:30–16:00</td>
+<td>Manufacturer co-sponsorship (free or low-fee training events)</td>
+<td>Classroom</td>
+<td>Marketing lead</td>
+</tr>
+<tr>
+<td>16:00–17:00</td>
+<td>Visit to local NHHBA chapter meeting (community immersion)</td>
+<td>Field trip</td>
+<td>Phyrom + VPOPS</td>
+</tr>
+<tr>
+<td>Day 2, 9:00–10:30</td>
+<td>Member onboarding workflow (first 30 days for new pro member)</td>
+<td>Hands-on</td>
+<td>Hub #1 Manager</td>
+</tr>
+<tr>
+<td>10:30–12:00</td>
+<td>Member retention playbook (lounge programming, monthly newsletter, recognition)</td>
+<td>Classroom + workshop</td>
+<td>Hub #1 Manager</td>
+</tr>
+<tr>
+<td>13:00–14:30</td>
+<td>NPS measurement + improvement (target 50+ at maturity)</td>
+<td>Classroom</td>
+<td>VPOPS</td>
+</tr>
+<tr>
+<td>14:30–15:30</td>
+<td>Member churn diagnosis + intervention</td>
+<td>Classroom + case studies</td>
+<td>VPOPS</td>
+</tr>
+<tr>
+<td>15:30–16:00</td>
+<td>Module 10 final assessment</td>
+<td>Assessment</td>
+<td>Marketing lead</td>
+</tr>
+</tbody></table>
+<h3 id="assessment-9">Assessment</h3>
+<ul>
+<li>25-question quiz, 80% pass threshold</li>
+<li>Workshop deliverable: 12-event training calendar for franchisee's specific Hub (graded by Hub #1 Manager + Marketing lead)</li>
+<li>Workshop deliverable: 30-day member onboarding workflow for franchisee's specific Hub</li>
+</ul>
+<hr>
+<h2 id="module-11--compliance--sherpa-guard-audit-cooperation--insurance-4-hours">Module 11 — Compliance + Sherpa Guard Audit Cooperation + Insurance (4 hours)</h2>
+<h3 id="learning-objectives-10">Learning Objectives</h3>
+<ul>
+<li>Understand FDD compliance obligations (royalty timely remittance, monthly P&amp;L upload, brand standards adherence, on-site operator presence per Item 15)</li>
+<li>Cooperate with Sherpa Guard audit (audit logs, RBAC review, compliance monitoring)</li>
+<li>Maintain insurance coverage (general liability, property, workers' comp, cyber) per FDD Item 9 obligation</li>
+<li>Manage local permits + licenses + sales tax + employment law</li>
+</ul>
+<h3 id="hour-by-hour-agenda-10">Hour-by-Hour Agenda</h3>
+<table>
+<thead>
+<tr>
+<th>Time</th>
+<th>Topic</th>
+<th>Format</th>
+<th>Lead</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0:00–1:00</td>
+<td>FDD obligations cross-reference walkthrough (Item 9 cross-reference table)</td>
+<td>Classroom</td>
+<td>Legal counsel or Phyrom</td>
+</tr>
+<tr>
+<td>1:00–1:45</td>
+<td>Sherpa Guard audit cooperation (what corporate sees, what franchisee can expect)</td>
+<td>Classroom + hands-on</td>
+<td>VPOPS</td>
+</tr>
+<tr>
+<td>1:45–2:00</td>
+<td>Break</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>2:00–2:45</td>
+<td>Insurance management (general liability + property + workers comp + cyber)</td>
+<td>Classroom</td>
+<td>Insurance broker</td>
+</tr>
+<tr>
+<td>2:45–3:30</td>
+<td>Local compliance (permits, business license, sales tax, employment law per state)</td>
+<td>Classroom</td>
+<td>Legal counsel</td>
+</tr>
+<tr>
+<td>3:30–4:00</td>
+<td>Module 11 quiz + Q&amp;A</td>
+<td>Assessment</td>
+<td>Legal counsel</td>
+</tr>
+</tbody></table>
+<h3 id="assessment-10">Assessment</h3>
+<ul>
+<li>15-question quiz, 80% pass threshold</li>
+</ul>
+<hr>
+<h2 id="module-12--franchise-advisory-council-participation--escalation-paths--ongoing-support-4-hours">Module 12 — Franchise Advisory Council Participation + Escalation Paths + Ongoing Support (4 hours)</h2>
+<h3 id="learning-objectives-11">Learning Objectives</h3>
+<ul>
+<li>Participate constructively in the Franchise Advisory Council (FAC; seated Phase 4 Year 2 per WS5-4)</li>
+<li>Use the corporate escalation tree appropriately (Hub Manager → regional VPOPS → corporate Operations → Phyrom → law enforcement / legal)</li>
+<li>Engage corporate ongoing support resources (24/7 platform support, monthly performance review, quarterly business review, annual summit, regional ride-alongs)</li>
+<li>Contribute to the franchise system long-term (referrals, brand co-creation, knowledge sharing)</li>
+</ul>
+<h3 id="hour-by-hour-agenda-11">Hour-by-Hour Agenda</h3>
+<table>
+<thead>
+<tr>
+<th>Time</th>
+<th>Topic</th>
+<th>Format</th>
+<th>Lead</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0:00–1:00</td>
+<td>FAC charter + participation expectations</td>
+<td>Classroom</td>
+<td>VPFD</td>
+</tr>
+<tr>
+<td>1:00–1:45</td>
+<td>Escalation tree walkthrough + escalation simulation roleplay</td>
+<td>Classroom + roleplay</td>
+<td>VPOPS</td>
+</tr>
+<tr>
+<td>1:45–2:00</td>
+<td>Break</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>2:00–3:00</td>
+<td>Ongoing support menu (what's included, what's incremental)</td>
+<td>Classroom</td>
+<td>VPOPS</td>
+</tr>
+<tr>
+<td>3:00–3:45</td>
+<td>Long-term franchise-system contribution paths (referrals, brand co-creation)</td>
+<td>Classroom</td>
+<td>Phyrom</td>
+</tr>
+<tr>
+<td>3:45–4:00</td>
+<td>Module 12 final assessment + 80-hour training graduation</td>
+<td>Assessment + ceremony</td>
+<td>Phyrom</td>
+</tr>
+</tbody></table>
+<h3 id="assessment-11">Assessment</h3>
+<ul>
+<li>10-question quiz, 80% pass threshold</li>
+<li>Verbal commitment: candidate articulates their personal contribution plan to the franchise system over the next 12 months</li>
+</ul>
+<hr>
+<h2 id="field-training--40-hours-at-franchisees-hub-during-hub-opening-weeks-12">FIELD TRAINING — 40 Hours at Franchisee's Hub During Hub-Opening Weeks 1–2</h2>
+<h3 id="learning-objectives-12">Learning Objectives</h3>
+<ul>
+<li>Apply all 12 modules in real operational context at the franchisee's Hub</li>
+<li>Build muscle memory on daily/weekly/monthly cadences in the franchisee's specific market</li>
+<li>Resolve real-time operational challenges with corporate trainer on-site</li>
+</ul>
+<h3 id="cadence">Cadence</h3>
+<table>
+<thead>
+<tr>
+<th>Week</th>
+<th>Days</th>
+<th>Hours per Day</th>
+<th>Activities</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Week 1</td>
+<td>Mon–Fri</td>
+<td>8 hr/day = 40 hr</td>
+<td>Soft launch operations: pre-opening readiness check, first 5 days of operations, daily debrief with corporate trainer</td>
+</tr>
+<tr>
+<td>Week 2</td>
+<td>Mon–Fri</td>
+<td>8 hr/day (corporate trainer present 4 hr/day; franchisee leads 4 hr/day) = 40 hr</td>
+<td>Full opening: Grand Opening day + first week of full operations; corporate trainer transitions from lead to advisor role</td>
+</tr>
+</tbody></table>
+<p>(80 contact hours total per FDD Item 11: 40 hours at Hub #1 + 40 hours field. Item 11 disclosure language follows this split.)</p>
+<h3 id="daily-field-training-cadence">Daily Field Training Cadence</h3>
+<table>
+<thead>
+<tr>
+<th>Time</th>
+<th>Activity</th>
+<th>Lead Day 1</th>
+<th>Lead Day 5</th>
+<th>Lead Day 10</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>5:00 AM</td>
+<td>Materials staging</td>
+<td>Corporate trainer</td>
+<td>Franchisee + corporate trainer</td>
+<td>Franchisee</td>
+</tr>
+<tr>
+<td>7:00 AM</td>
+<td>Hub opens</td>
+<td>Corporate trainer</td>
+<td>Franchisee</td>
+<td>Franchisee</td>
+</tr>
+<tr>
+<td>8:00 AM</td>
+<td>Wave dispatch</td>
+<td>Corporate trainer</td>
+<td>Franchisee</td>
+<td>Franchisee</td>
+</tr>
+<tr>
+<td>9:00 AM</td>
+<td>Member walk-in handling</td>
+<td>Corporate trainer</td>
+<td>Franchisee</td>
+<td>Franchisee</td>
+</tr>
+<tr>
+<td>12:00 PM</td>
+<td>Last morning wave</td>
+<td>Corporate trainer</td>
+<td>Franchisee</td>
+<td>Franchisee</td>
+</tr>
+<tr>
+<td>1:00 PM</td>
+<td>Lunch + daily debrief</td>
+<td>Both</td>
+<td>Both</td>
+<td>Both</td>
+</tr>
+<tr>
+<td>2:00 PM</td>
+<td>Inventory check / training event prep / member outreach</td>
+<td>Franchisee</td>
+<td>Franchisee</td>
+<td>Franchisee</td>
+</tr>
+<tr>
+<td>5:30 PM</td>
+<td>Day-end inventory check</td>
+<td>Corporate trainer</td>
+<td>Franchisee</td>
+<td>Franchisee</td>
+</tr>
+<tr>
+<td>6:00 PM</td>
+<td>Hub closes + corporate trainer departs</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p>By Day 10, franchisee + Hub Manager are running the Hub solo. Corporate trainer is on-call for Days 11–14 but not on-site.</p>
+<hr>
+<h2 id="training-logistics">Training Logistics</h2>
+<h3 id="schedule">Schedule</h3>
+<ul>
+<li><strong>Pre-Hub-Opening (Hub #1 Atkinson NH):</strong> 10 business days (2 weeks), 4–8 hours per day = 40 hours classroom + hands-on</li>
+<li><strong>Hub-Opening (franchisee's Hub):</strong> 10 business days (2 weeks), 4–8 hours per day = 40 hours field</li>
+<li><strong>Total elapsed time:</strong> ~30 days from training start to franchisee solo operation</li>
+</ul>
+<h3 id="costs-per-fdd-item-11-disclosure">Costs (per FDD Item 11 disclosure)</h3>
+<ul>
+<li><strong>Initial training of franchisee + designated Hub Manager:</strong> included in $45,000 Initial Franchise Fee</li>
+<li><strong>Additional staff training:</strong> $2,500 per attendee (per FDD Item 6)</li>
+<li><strong>Travel + lodging for franchisee + Hub Manager to Hub #1:</strong> $3,500–$5,500 per person (per FDD Item 7 estimated initial investment)</li>
+<li><strong>Corporate trainer travel + lodging to franchisee's Hub:</strong> corporate cost (no franchisee charge)</li>
+</ul>
+<h3 id="materials">Materials</h3>
+<ul>
+<li>80-Hour Training Workbook (~200 pages, printed + PDF)</li>
+<li>Operations Manual (Volume 1, ~150 pages — see <code>10-operations-manual-outline.md</code>)</li>
+<li>Brand Standards Manual (Volume 2, ~80 pages — see <code>09-brand-manual-outline.md</code>)</li>
+<li>Sherpa Pros Mobile app + Hub Manager dashboard credentials (provisioned during Module 5)</li>
+<li>Module-specific quizzes + assessments (delivered in FranConnect Learning Management System integration)</li>
+</ul>
+<h3 id="trainer-roster">Trainer Roster</h3>
+<table>
+<thead>
+<tr>
+<th>Trainer</th>
+<th>Modules Led</th>
+<th>Backup</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Phyrom (founder)</td>
+<td>1 (lead), 12 (lead), all modules guest appearance</td>
+<td>n/a (founder presence non-substitutable for Modules 1 + 12)</td>
+</tr>
+<tr>
+<td>VPOPS</td>
+<td>2, 3 (co-lead), 7 (co-lead), 8, 11 (co-lead), 12</td>
+<td>Director of Training</td>
+</tr>
+<tr>
+<td>Director of Training</td>
+<td>2 (co-lead), 5, 6 (co-lead), 9 (co-lead)</td>
+<td>VPOPS</td>
+</tr>
+<tr>
+<td>CFO or controller</td>
+<td>7 (lead), 8 (compensation section)</td>
+<td>External CPA contractor</td>
+</tr>
+<tr>
+<td>Marketing lead</td>
+<td>6 (lead), 9 (lead), 10 (co-lead)</td>
+<td>External marketing consultant</td>
+</tr>
+<tr>
+<td>Hub #1 Manager</td>
+<td>3 (lead), 4 (co-lead), 10 (co-lead)</td>
+<td>Future Hub Manager hires once trained</td>
+</tr>
+<tr>
+<td>Hub #1 Materials Specialist</td>
+<td>4 (lead)</td>
+<td>Materials engineering lead</td>
+</tr>
+<tr>
+<td>Materials engineering lead</td>
+<td>4 (architecture sections)</td>
+<td>Director of Training (high-level only)</td>
+</tr>
+<tr>
+<td>Insurance broker</td>
+<td>11 (insurance section, ~30 minutes)</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>Legal counsel</td>
+<td>11 (compliance + local law sections, ~60 minutes), 12 (FAC charter section, ~30 minutes)</td>
+<td>External franchise counsel</td>
+</tr>
+<tr>
+<td>HR consultant</td>
+<td>8 (interview + onboarding sections)</td>
+<td>VPOPS</td>
+</tr>
+<tr>
+<td>External franchise counsel (Spadea Lignana per <code>01-attorney-evaluation-matrix.md</code>)</td>
+<td>Quarterly continuing-education courses</td>
+<td>n/a</td>
+</tr>
+</tbody></table>
+<h3 id="quarterly-continuing-education-post-initial-training">Quarterly Continuing Education (Post-Initial Training)</h3>
+<p>Per FDD Item 11: 8 quarterly online courses, 2 hours each = 16 hours/year continuing education. Topics rotate:</p>
+<table>
+<thead>
+<tr>
+<th>Quarter</th>
+<th>Course</th>
+<th>Lead</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Q1</td>
+<td>Advanced pro retention</td>
+<td>VPOPS</td>
+</tr>
+<tr>
+<td>Q1</td>
+<td>Code-update bulletin (state + local code changes prior 90 days)</td>
+<td>Codes engine team</td>
+</tr>
+<tr>
+<td>Q2</td>
+<td>Materials supplier negotiation tactics</td>
+<td>VPOPS</td>
+</tr>
+<tr>
+<td>Q2</td>
+<td>Marketing campaign templates seasonal refresh</td>
+<td>Marketing lead</td>
+</tr>
+<tr>
+<td>Q3</td>
+<td>Financial benchmarking + peer-Hub comparison</td>
+<td>CFO</td>
+</tr>
+<tr>
+<td>Q3</td>
+<td>New Sherpa Pros product features rollout (per quarterly platform release)</td>
+<td>Director of Training</td>
+</tr>
+<tr>
+<td>Q4</td>
+<td>Pre-annual-summit prep + FAC voting topics</td>
+<td>VPFD</td>
+</tr>
+<tr>
+<td>Q4</td>
+<td>Annual planning + budget submission workshop</td>
+<td>CFO</td>
+</tr>
+</tbody></table>
+<h3 id="annual-franchisee-summit">Annual Franchisee Summit</h3>
+<p>Per FDD Item 11: 3 days/year, 24 contact hours, rotating venue (Sherpa University in Phase 4 Year 3+; franchisee-host market in Years 1–2). Mandatory attendance for all franchisees.</p>
+<h3 id="regional-ride-alongs">Regional Ride-Alongs</h3>
+<p>Per FDD Item 11: 4 per year, half-day each = ~16 hours/year. Regional VPOPS visits the Hub for operational review.</p>
+<hr>
+<h2 id="total-annual-training-hours-per-franchisee-post-initial">Total Annual Training Hours per Franchisee (Post-Initial)</h2>
+<table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Hours</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>8 quarterly continuing education courses</td>
+<td>16</td>
+</tr>
+<tr>
+<td>Annual Franchisee Summit</td>
+<td>24</td>
+</tr>
+<tr>
+<td>4 regional ride-alongs</td>
+<td>16</td>
+</tr>
+<tr>
+<td><strong>Total annual</strong></td>
+<td><strong>56 contact hours/year</strong></td>
+</tr>
+</tbody></table>
+<p>This is on top of the initial 80-hour training. Franchisee + Hub Manager continuously trained over the 10-year franchise term.</p>
+
+	
+
+
+</body>
+</html>

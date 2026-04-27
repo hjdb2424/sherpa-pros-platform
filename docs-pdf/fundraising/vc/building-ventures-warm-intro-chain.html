@@ -1,0 +1,1525 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>building ventures warm intro chain — Sherpa Pros</title>
+<link rel="icon" href="../../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="building-ventures-warm-intro-chain.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="building-ventures--warm-intro-chain-nhhba-→-ma-agc-→-suffolk-→-bv">Building Ventures — Warm-Intro Chain (NHHBA → MA AGC → Suffolk → BV)</h1>
+<p><strong>Date:</strong> 2026-04-22
+<strong>Owner:</strong> Phyrom (founder, HJD Builders LLC, Sherpa Pros)
+<strong>Spec ref:</strong> <code>docs/superpowers/specs/2026-04-22-gtm-marketing-design.md</code> §6.3 (Tier 1 priority — first call)
+<strong>Companion docs:</strong></p>
+<ul>
+<li><code>docs/fundraising/vc/building-ventures-warm-intro.md</code> (single-hop playbook — what to send once a warm intro lands)</li>
+<li><code>docs/fundraising/vc/investor-pipeline.md</code> (Tier 1 row 1 cross-references this chain)</li>
+<li><code>docs/fundraising/accelerators/suffolk-technologies-app.md</code> (BOOST application — backup path C)</li>
+<li><code>docs/pitch/sherpa-pros-deck-v1.md</code> (canonical narrative for the 30-min meeting)</li>
+</ul>
+<p><strong>Voice:</strong> plainspoken founder voice. 8th-grade reading level. No marketing-speak. No jargon. Spell out abbreviations on first use. "Wiseman" never appears externally — use "code-aware quote validation."</p>
+<hr>
+<h2 id="how-to-read-this-doc">How to read this doc</h2>
+<p>This is a five-hop warm-intro chain. Each hop is a real human at a real organization. The chain leverages relationships Phyrom already has (HJD Builders), well-known trade-association links (NHHBA → BRAGB → AGC MA), and the Boston construction-tech ecosystem's structural overlap (Suffolk Construction → Suffolk Technologies → Building Ventures).</p>
+<p>The chain is the <em>primary</em> path. Section 4 lists three backup paths if any link breaks. Section 5 is the brief Phyrom reads on the plane the morning of the meeting. Section 6 tells Phyrom how to read the meeting in real time.</p>
+<hr>
+<h2 id="1-building-ventures-partner-profiles-research-current-to-2026-04-22">1. Building Ventures partner profiles (research, current to 2026-04-22)</h2>
+<h3 id="11-firm-summary">1.1 Firm summary</h3>
+<p>Building Ventures is a Boston- and San-Francisco-based venture capital firm founded in 2017 by the former Borealis Ventures built-environment team. Fund II closed September 2022 at $95 million. As of August 2025, the firm has 36 portfolio companies. Top sectors are real estate / construction technology (23 investments) and enterprise applications (20). The firm is a "sapling stage" investor — meaning seed and Series A, but not strictly bound by either label. Stated check size is $100K to $10M, sweet spot $1M. [^bv-team] [^bv-tracxn] [^bv-approach] [^bv-fund2]</p>
+<p><strong>Investment thesis (firm's own words, paraphrased):</strong> "Big and important problems, solved by visionary founders, with unique technology paired with innovative business models, that can achieve transformational impact and market-scale wins in the built environment." [^bv-approach]</p>
+<p>The firm publishes a quarterly newsletter that documents priorities in plain language. Reading the most recent four (Spring, Summer, Fall, Winter 2025) is the cheapest way to understand what they want next. [^bv-newsletter-summer]</p>
+<h3 id="12-current-2026-team--every-partner-with-research-derived-best-target-recommendation">1.2 Current 2026 team — every partner, with research-derived "best target" recommendation</h3>
+<p>Source for entire roster: Building Ventures team page, accessed 2026-04-22. [^bv-team]</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Name</th>
+<th>Title</th>
+<th>Office</th>
+<th>Best for Sherpa Pros?</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td><strong>Jesse Devitte</strong></td>
+<td>Co-founder &amp; General Partner</td>
+<td>Boston</td>
+<td>⭐ <strong>PRIMARY TARGET.</strong> Boston-based. Profiled in the 2022 Boston Globe piece "Boston VC firm wants to take the waste out of building trades" — language directly maps to Sherpa Pros' "jobs not leads" thesis. Manages firm's published thesis content.</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>Travis Connors</strong></td>
+<td>Co-founder &amp; General Partner</td>
+<td>San Francisco</td>
+<td>Backup if Devitte is unavailable. Same firm, same conviction will travel internally.</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>Matt Rightmire</strong></td>
+<td>Venture Partner / General Partner</td>
+<td>Boston-area (NH roots — long-time Borealis Ventures partner in Hanover NH)</td>
+<td>⭐ <strong>NH ANGLE.</strong> Rightmire built his career at Borealis Ventures (Hanover NH); he has the deepest NH ties of any BV partner. If the chain originates in NHHBA, Rightmire is the warmest landing. [^rightmire]</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>Heather Widman</strong></td>
+<td>Partner</td>
+<td>Boston</td>
+<td>Investment Committee member; leads PropTech investments with sustainability focus. Board-level on Adaptis, Faura, Work&amp;, Elephant Energy. Closely involved with Aeroseal, Canoa, Dandelion, Join Digital, Measurabl, <strong>UpCodes</strong>. The UpCodes board involvement is the closest analog to Sherpa Pros' code-aware quote validation — she will <em>get</em> the code-intelligence layer immediately. [^widman]</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>Allen Preger</strong></td>
+<td>Partner</td>
+<td>San Francisco</td>
+<td>Co-founder of Newforma; ex-Autodesk BIM PM; ex-Operating Partner at Borealis. Runs the Building Ventures Innovators Network (BVIN), 100+ industry-leader community. Invested in Parspec. West-coast lead — secondary to Devitte for a NE-based founder. [^preger]</td>
+</tr>
+<tr>
+<td>6</td>
+<td><strong>Lucas Turner-Owens</strong></td>
+<td>Principal</td>
+<td>Boston</td>
+<td>Covers ConstructionTech and PropTech verticals; supports Adaptis, Joist AI, Faura, Station A at the board level. Wesleyan undergrad, Georgetown MBA. <strong>Possible secondary entry:</strong> principals often run the first-call screen before involving the GP. Phyrom can ask the warm contact to copy Turner-Owens on the intro to Devitte. [^lto]</td>
+</tr>
+<tr>
+<td>7</td>
+<td><strong>Mayra Arntz</strong></td>
+<td>Principal (promoted 2025)</td>
+<td>Boston</td>
+<td>Hands-on construction-operations background (project controls on real jobsites), ex-Stanley X, ex-HoloBuilder. Supports BuildFactory and other ConstructionTech portfolio. <strong>Strongest tactical fit</strong> of any BV team member with Phyrom's "GC who built the platform" identity — she has been on jobsites herself. Loop her in early. [^arntz]</td>
+</tr>
+<tr>
+<td>8</td>
+<td><strong>Ceillie Clark-Keane</strong></td>
+<td>Head of Marketing &amp; Communications</td>
+<td>Boston</td>
+<td>Not an investment decision-maker; valuable if and only if Sherpa Pros becomes a portfolio company (she runs the firm's external storytelling). Skip for outreach.</td>
+</tr>
+</tbody></table>
+<p><strong>Recommended target rank:</strong></p>
+<ol>
+<li><strong>Jesse Devitte</strong> — primary. Boston. Public thesis matches.</li>
+<li><strong>Mayra Arntz</strong> — early CC. Closest operational understanding.</li>
+<li><strong>Heather Widman</strong> — early CC. UpCodes parallel.</li>
+<li><strong>Matt Rightmire</strong> — backup primary if NHHBA chain originator has Rightmire-direct connection (likely via Borealis Hanover roots).</li>
+</ol>
+<h3 id="13-2025-investments--pattern-analysis">1.3 2025 investments — pattern analysis</h3>
+<p>Building Ventures' confirmed 2025 portfolio additions: [^bv-newsletter-spring] [^bv-newsletter-summer] [^bv-newsletter-winter]</p>
+<table>
+<thead>
+<tr>
+<th>Company</th>
+<th>Round</th>
+<th>Sector</th>
+<th>What they do</th>
+<th>Why it matters for Sherpa Pros pitch</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Adaptis</strong></td>
+<td>$4M Series Seed (BV led)</td>
+<td>ConstructionTech / sustainability</td>
+<td>Cost-benefit + carbon optimization for buildings</td>
+<td>BV likes leading at the seed stage.</td>
+</tr>
+<tr>
+<td><strong>Faura</strong></td>
+<td>$3.5M Seed (BV co-led with Harlem Capital)</td>
+<td>InsureTech / climate-resilience</td>
+<td>Helps insurers and real-estate professionals find profitable opportunities in disaster-prone areas</td>
+<td>BV co-leads. They underwrite verticalized data products.</td>
+</tr>
+<tr>
+<td><strong>Joist AI</strong></td>
+<td>$4M Series Seed (BV co-led with SignalFire)</td>
+<td>AEC SaaS</td>
+<td>AI-drafted proposals for AEC marketing teams</td>
+<td>BV co-leads with brand-name marketplace investors (SignalFire). They will syndicate with NFX / Pear / Bessemer-types.</td>
+</tr>
+<tr>
+<td><strong>BuildFactory</strong></td>
+<td>(Seed; led 2025)</td>
+<td>Construction marketplace</td>
+<td>Marketplace for offsite (prefab) construction</td>
+<td>⭐ <strong>THIS IS THE TELL.</strong> BV's most recent investment is a <em>construction marketplace</em>. The thesis door for "marketplace + built environment" is open right now. Sherpa Pros is the residential-trade analog to BuildFactory's prefab marketplace.</td>
+</tr>
+</tbody></table>
+<p><strong>Pattern:</strong> BV is leading or co-leading at the $3–4M seed level, on the AI-native side of the built environment, with a clear shift in late 2024 / 2025 toward marketplace structures (Joist AI for proposals, BuildFactory for prefab). Sherpa Pros is the residential-licensed-trade marketplace they have not yet placed.</p>
+<h3 id="14-portfolio-gap-analysis">1.4 Portfolio gap analysis</h3>
+<p>What Building Ventures <strong>has</strong> invested in: AEC software (Newforma-pedigreed Allen Preger; Joist AI), robotics (Built Robotics), residential energy (Dandelion Energy geothermal, Copper induction range, Elephant Energy), commercial real-estate operations (Measurabl, Work&amp;), code-compliance reference (UpCodes — closest cousin), prefab marketplace (BuildFactory).</p>
+<p>What Building Ventures has <strong>not</strong> publicly announced an investment in:</p>
+<ul>
+<li>A residential <strong>dispatch marketplace</strong> for licensed trades (the Sherpa Pros lane)</li>
+<li>A <strong>homeowner-facing service-procurement platform</strong> with code intelligence</li>
+<li>A <strong>NH-based</strong> founder-led startup (Rightmire's NH roots notwithstanding — recent investments cluster in Boston, Bay Area, San Diego)</li>
+</ul>
+<p><strong>This is the gap. Plant the flag.</strong></p>
+<h3 id="15-stated-thesis-cite-verbatim-in-the-opener">1.5 Stated thesis (cite verbatim in the opener)</h3>
+<p>From the firm's "Approach" page: BV looks for "visionary founders" with "passion, tenacity and fortitude" who are "solving big and important problems" with "unique technology paired with innovative business models" to deliver "transformational impact" and "market-scale wins" in the built environment. [^bv-approach]</p>
+<p>From Devitte's 2022 Boston Globe profile (still the cleanest single-source statement of his thesis): the firm wants to "take the waste out of the building trades." The waste in residential trades is the lead-gen tax — Angi takes $400-$800 per closed job. Sherpa Pros takes 5% during beta, 10% at scale. That is roughly half. [^bv-globe]</p>
+<hr>
+<h2 id="2-the-five-hop-warm-intro-chain--named-humans-at-each-hop">2. The five-hop warm-intro chain — named humans at each hop</h2>
+<blockquote>
+<p><strong>Why this chain works:</strong> Each link is a real, named person reachable by the previous link via a public, professional context (board service, association membership, job title). The chain ends inside Building Ventures' deal flow. Phyrom's job is to start the first email correctly and let the chain do the work.</p>
+</blockquote>
+<h3 id="hop-1-hjd-builders-network-→-nhhba-leadership">Hop 1: HJD Builders network → NHHBA leadership</h3>
+<p><strong>Phyrom is already an NHHBA member firm.</strong> The chain <em>begins</em> inside HJD's existing trust circle. The fastest first hop is from a sub, vendor, or peer GC who already serves on an NHHBA committee or has a direct working relationship with an NHHBA officer.</p>
+<p>Phyrom must fill in the four template rows below with <em>real</em> HJD-network people. The structure of who-to-pick is given, not the names — only Phyrom knows his book.</p>
+<p><strong>Template — "Phyrom's first-hop candidates" (Phyrom fills in):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Slot</th>
+<th>Who to pick (criteria)</th>
+<th>Example slots Phyrom should consider</th>
+<th>Phyrom's name (fill in)</th>
+<th>Their NHHBA-adjacent tie</th>
+<th>Last touch</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1A</td>
+<td>An HJD subcontractor whose firm sponsors NHHBA events or sits on an NHHBA committee</td>
+<td>(e.g., a top-volume electrician, plumber, or HVAC sub Phyrom has paid 6 figures to in the last 24 months)</td>
+<td>_____________</td>
+<td>_____________</td>
+<td>_____________</td>
+</tr>
+<tr>
+<td>1B</td>
+<td>An HJD vendor / supply-house rep whose company is an NHHBA Associate Member</td>
+<td>(e.g., FW Webb, US LBM, 84 Lumber, Curtis Lumber, Erie Materials, Beacon Roofing rep)</td>
+<td>_____________</td>
+<td>_____________</td>
+<td>_____________</td>
+</tr>
+<tr>
+<td>1C</td>
+<td>A peer GC Phyrom is on first-name terms with who has held an NHHBA officer role</td>
+<td>(e.g., a past NHHBA board member or local chapter chair)</td>
+<td>_____________</td>
+<td>_____________</td>
+<td>_____________</td>
+</tr>
+<tr>
+<td>1D</td>
+<td>An HJD lender / banker whose institution sponsors NHHBA events</td>
+<td>(e.g., NH Mutual Bancorp — note: Kenneth Paul of NH Mutual is current VP of Associates on the NHHBA exec committee — perfect bridge if HJD banks there)</td>
+<td>_____________</td>
+<td>_____________</td>
+<td>_____________</td>
+</tr>
+</tbody></table>
+<p><strong>Action:</strong> Phyrom picks the <em>one</em> warmest candidate from the four slots above and sends Email 1 (Section 3 below).</p>
+<p><strong>The cleanest single bridge if all else is cold:</strong> Kenneth Paul, <strong>VP of Associates, NHHBA Executive Committee</strong>, NH Mutual Bancorp. If HJD has any banking relationship with NH Mutual Bancorp, Paul is reachable as a <em>customer</em> asking a banker for a board introduction. [^nhhba-exec]</p>
+<h3 id="hop-2-nhhba-leadership-→-ma-agc--bragb">Hop 2: NHHBA leadership → MA AGC / BRAGB</h3>
+<p>Sources: NHHBA Executive Committee page (accessed 2026-04-22) and NHHBA Staff page (same). [^nhhba-exec] [^nhhba-staff]</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Name</th>
+<th>Role at NHHBA</th>
+<th>Firm</th>
+<th>Why they open the next door</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>2A</td>
+<td><strong>Eric Jackson</strong></td>
+<td><strong>President</strong> (current 2026)</td>
+<td>The Stabile Companies</td>
+<td>Sets the agenda. The president-to-president call is the most natural next move (NHHBA president → AGC MA chair).</td>
+</tr>
+<tr>
+<td>2B</td>
+<td><strong>Matt Mayberry</strong></td>
+<td><strong>Chief Executive Officer</strong></td>
+<td>NHHBA (staff)</td>
+<td>Mayberry is the day-to-day association head. State HBA executives are in regular contact with neighboring-state HBA and AGC executives via NAHB's regional structure. He is the highest-leverage staff bridge.</td>
+</tr>
+<tr>
+<td>2C</td>
+<td><strong>Brittany Dube</strong></td>
+<td>Vice President</td>
+<td>DubePlus Construction</td>
+<td>Operating GC; peer-level bridge for Phyrom.</td>
+</tr>
+<tr>
+<td>2D</td>
+<td><strong>Tara Saxton</strong></td>
+<td>Treasurer</td>
+<td>KTM Modular</td>
+<td>Modular is BuildFactory-adjacent — could become a separate BV-relevant talking point.</td>
+</tr>
+<tr>
+<td>2E</td>
+<td><strong>Alexx Monastiero</strong></td>
+<td>Secretary + Government Affairs Chair</td>
+<td>The Gove Group</td>
+<td>Government Affairs Chair has cross-state association contacts via housing-policy work; lower-friction bridge to BRAGB / MA AGC.</td>
+</tr>
+<tr>
+<td>2F</td>
+<td><strong>Rand Hinman</strong></td>
+<td>NAHB State Representative</td>
+<td>Ed Os Manufacturer's Rep</td>
+<td>Sits at NAHB national-level meetings; has direct contact with peer state-rep equivalents in MA.</td>
+</tr>
+<tr>
+<td>2G</td>
+<td><strong>Matt Menning</strong></td>
+<td>Immediate Past President</td>
+<td>Elm Grove Companies</td>
+<td>One year ago he was #2A. Past presidents stay active in cross-state HBA networking. Public LinkedIn profile is high-credibility. [^menning]</td>
+</tr>
+<tr>
+<td>2H</td>
+<td><strong>Karen LaMontagne</strong></td>
+<td>Past Presidents' Council</td>
+<td>LaMontagne Builders</td>
+<td>Long-tenured NHHBA leader with cross-association memory.</td>
+</tr>
+</tbody></table>
+<p><strong>Recommended Hop 2 target:</strong> <strong>Matt Mayberry (CEO)</strong> for the cross-association bridge to AGC MA / BRAGB; <strong>or</strong> <strong>Eric Jackson (President)</strong> if Phyrom's Hop-1 contact is peer-level to a sitting president.</p>
+<p><strong>What Phyrom is asking from Hop 2:</strong> A warm intro to a <strong>named MA AGC board member</strong> (Hop 3) or BRAGB exec board member, framed as "fellow New England GC who built a tool for our trade — would love 15 min."</p>
+<h3 id="hop-3-ma-agc-leadership-→-suffolk-construction">Hop 3: MA AGC leadership → Suffolk Construction</h3>
+<p>Source: AGC MA Board of Directors (accessed 2026-04-22). [^agcma-board]</p>
+<p><strong>Important finding: no current Suffolk Construction representative sits on the AGC MA board.</strong> The chain therefore routes through one of two adjacent paths:</p>
+<p><strong>Path 3-A (preferred): Through Suffolk's competitive peers who serve with Suffolk leadership on other Boston construction-industry boards.</strong></p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Name</th>
+<th>AGC MA Role</th>
+<th>Firm</th>
+<th>Why this person is the bridge to Suffolk</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>3A.1</td>
+<td><strong>Jeffrey Navin</strong></td>
+<td>Chair</td>
+<td>Consigli Construction</td>
+<td>Top-of-house at AGC MA. Consigli is Suffolk's #1 competitor in Boston commercial — they sit across from each other at every Boston Chamber, ABC of MA, BSA event. Navin has Patrick Lucey's cell phone number.</td>
+</tr>
+<tr>
+<td>3A.2</td>
+<td><strong>Brad Forrest</strong></td>
+<td>Vice Chair</td>
+<td>Walsh Brothers</td>
+<td>NE GC peer. Same logic.</td>
+</tr>
+<tr>
+<td>3A.3</td>
+<td><strong>Mike Kearns</strong></td>
+<td>Labor Relations Division Rep</td>
+<td>Shawmut Design and Construction</td>
+<td>Shawmut + Suffolk co-sit on the <strong>Construction Institute</strong> and <strong>Greater Boston Real Estate Board</strong>. Operating relationship.</td>
+</tr>
+<tr>
+<td>3A.4</td>
+<td><strong>Bryan Northrop</strong></td>
+<td>Member</td>
+<td>Skanska USA Building</td>
+<td>National peer. Same logic.</td>
+</tr>
+<tr>
+<td>3A.5</td>
+<td><strong>Craig Skurka</strong></td>
+<td>Member</td>
+<td>Gilbane Building</td>
+<td>National peer. Same logic.</td>
+</tr>
+<tr>
+<td>3A.6</td>
+<td><strong>Bill Aalerud</strong></td>
+<td>Immediate Past Chair</td>
+<td>Columbia</td>
+<td>Past chair — broadest cross-firm rolodex.</td>
+</tr>
+</tbody></table>
+<p><strong>Path 3-B (backup): Through AGC MA staff + Builders &amp; Remodelers Association of Greater Boston (BRAGB) — adjacent residential association.</strong></p>
+<p>If MA AGC board members cool on the request, NHHBA → BRAGB is a sister-association move that has its own residential-licensed-trade context (much closer to Sherpa Pros' actual category than commercial AGC). NHHBA CEO Matt Mayberry is the natural bridge to BRAGB's executive director [VERIFY: BRAGB ED 2026 — not surfaced in this research pass; check bragb.com or call (781) 935-1500].</p>
+<p><strong>Recommended Hop 3 target (Path 3-A):</strong> <strong>Jeffrey Navin (Consigli, AGC MA Chair).</strong> Highest position, most-likely-to-have-Lucey-on-speed-dial.</p>
+<p><strong>What Phyrom is asking from Hop 3:</strong> A warm intro to a <strong>named Suffolk Construction senior leader</strong> (Patrick Lucey is the named target) framed as "fellow GC, NH-based, built a tool you'll find interesting given Suffolk's BOOST work."</p>
+<h3 id="hop-4-suffolk-construction-senior-leaders-→-building-ventures">Hop 4: Suffolk Construction senior leaders → Building Ventures</h3>
+<p>Source: Suffolk Construction Executive Leadership page (accessed 2026-04-22). [^suffolk-leadership] Suffolk Technologies team page. [^suffolktech-team]</p>
+<p><strong>Critical finding: Suffolk Construction and Suffolk Technologies share a CFO (Puneet Mahajan) and a CTO/Co-founder (Jit Kee Chin). The Building-Ventures-Suffolk-Construction connection is <em>not</em> through a co-investment relationship in deal X — it is through the <em>people</em> who sit on both sides.</strong></p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Name</th>
+<th>Role at Suffolk Construction</th>
+<th>Role at Suffolk Technologies</th>
+<th>Why they're the bridge to Building Ventures</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>4A</td>
+<td><strong>Patrick Lucey</strong></td>
+<td>President, Northeast and National Centers of Excellence (promoted March 2025)</td>
+<td>(Operates Northeast region — internally champions BOOST cohort relationships)</td>
+<td>⭐ <strong>PRIMARY HOP-4 TARGET.</strong> Lucey runs Suffolk's largest operating region. He is the named operating sponsor most likely to take a "fellow NE GC" intro. He is on the inside of every Suffolk Tech BOOST cohort review — including Demo Day, where Building Ventures partners attend. [^lucey] [^lucey-promotion]</td>
+</tr>
+<tr>
+<td>4B</td>
+<td><strong>Jit Kee Chin</strong></td>
+<td>EVP, Chief Technology Officer</td>
+<td>Co-founder &amp; Managing Partner, Suffolk Technologies</td>
+<td>The cleanest direct bridge to BV. She is in the same Boston construction-tech VC syndicate ecosystem as Devitte — they are at every BuiltWorlds Boston event, every BSA innovation panel, every Greentown Labs ConTech mixer. [^suffolktech-team]</td>
+</tr>
+<tr>
+<td>4C</td>
+<td><strong>Puneet Mahajan</strong></td>
+<td>EVP &amp; Chief Financial Officer</td>
+<td>Managing Partner, Suffolk Technologies</td>
+<td>Same ecosystem as Chin. CFO-level credibility for the financial side of the pitch (take-rate model, GMV trajectory).</td>
+</tr>
+<tr>
+<td>4D</td>
+<td><strong>Parker Mundt</strong></td>
+<td>(Part of Suffolk Construction operations history)</td>
+<td>Partner, Platform — runs <strong>BOOST accelerator</strong></td>
+<td>⭐ <strong>DIRECT PATH IF BOOST IS THE BACKUP.</strong> Mundt runs the BOOST application + cohort process. He is the gatekeeper for the accelerator that itself functions as a Building Ventures deal-flow funnel. [^suffolktech-team]</td>
+</tr>
+<tr>
+<td>4E</td>
+<td><strong>Darin Hart</strong></td>
+<td>SVP, Advanced Technology</td>
+<td>(Innovation collaborator with Suffolk Tech)</td>
+<td>Tech-leadership cross-pollination. Lower-priority bridge.</td>
+</tr>
+<tr>
+<td>4F</td>
+<td><strong>John Fish</strong></td>
+<td>Chairman &amp; CEO</td>
+<td>(Founder-sponsor of Suffolk Tech)</td>
+<td>Highest-credibility name in Boston construction. Reach only via a peer-level intro (NHHBA chair → Fish is too cold without a chain warmer).</td>
+</tr>
+</tbody></table>
+<p><strong>Recommended Hop 4 target:</strong> <strong>Patrick Lucey first</strong>, <strong>Jit Kee Chin second</strong> (or copied on the email to Lucey), <strong>Parker Mundt</strong> if the path pivots to BOOST-as-on-ramp.</p>
+<p><strong>What Phyrom is asking from Hop 4:</strong> A warm intro to <strong>Jesse Devitte (Building Ventures)</strong> — or, equivalently, an invitation into the BOOST application process if Mundt is the responder. Either ends in BV deal flow.</p>
+<h3 id="hop-5-building-ventures-partner--the-destination">Hop 5: Building Ventures partner — the destination</h3>
+<p>Per Section 1.2: <strong>Jesse Devitte</strong> is the primary target, with <strong>Mayra Arntz</strong> and <strong>Heather Widman</strong> as warm CCs.</p>
+<p><strong>The intro request that lands at Devitte's inbox is the email already drafted in <code>building-ventures-warm-intro.md</code> Section "The actual forward email."</strong> This chain doc supplies the <em>path</em> to that email. The single-hop playbook supplies the <em>content</em> of that email.</p>
+<hr>
+<h2 id="3-email-templates-per-hop-5-emails">3. Email templates per hop (5 emails)</h2>
+<blockquote>
+<p><strong>Voice rules across all five:</strong> plainspoken, founder-voiced, 8th-grade reading level, no jargon abbreviations, no marketing-speak. Spell out abbreviations on first use (Commercial General Liability, Gross Merchandise Value, Massachusetts Associated General Contractors). Always lead with the founder hook ("working NH GC who built…"). Always offer mutual value, not just an ask. Always make the email forward-able as-is.</p>
+</blockquote>
+<h3 id="email-1--phyrom-→-hjd-network-contact-hop-1">Email 1 — Phyrom → HJD-network contact (Hop 1)</h3>
+<p><strong>Subject (pick one):</strong></p>
+<ol>
+<li>Quick favor — would you intro me to someone at NHHBA?</li>
+<li>Need a hand — NH Home Builders board introduction</li>
+<li>Asking a small favor — NHHBA intro on the platform I built</li>
+</ol>
+<p><strong>Body:</strong></p>
+<blockquote>
+<p>[First name],</p>
+<p>Quick favor. You know I run HJD Builders. What you may not know is I spent the last two years building a platform on the side — Sherpa Pros — to fix the lead-gen problem every contractor I know complains about. It's live now: <a href="http://www.thesherpapros.com">www.thesherpapros.com</a>. Jobs, not leads. Licensed only. Built by a working contractor.</p>
+<p>I'm raising a small first round to hire two people and run paid ads in Portsmouth, Manchester, Portland, and Boston. The cleanest path to the right Boston investor (Building Ventures) runs through the NH Home Builders Association → Massachusetts AGC → Suffolk Construction → Building Ventures. Four people, four warm intros.</p>
+<p>The first hop is the one I need help with. Would you be willing to send a one-paragraph intro on my behalf to [Eric Jackson at Stabile Companies / Matt Mayberry at NHHBA / whoever you know best on the NHHBA executive committee]? I drafted what I'd want them to read — pasted below. Send as-is or rewrite however you want.</p>
+<p>Mutual value: anyone you intro me to gets a working demo of the platform any of their members can use right now. NH-built, NH-owned, NH-loyal. That's worth a coffee at the next NHHBA event.</p>
+<p>Either way — appreciate the years of working together on HJD jobs. Real talk, no pressure.</p>
+<p>Phyrom
+HJD Builders LLC · Sherpa Pros
+<a href="http://www.thesherpapros.com">www.thesherpapros.com</a>
+[phone] · [email]</p>
+<hr>
+<p><em>Suggested forward text (edit freely):</em></p>
+<p>[NHHBA contact's first name],</p>
+<p>Wanted to introduce Phyrom from HJD Builders. He's a licensed NH GC who built a platform called Sherpa Pros to give NH and ME contractors a real alternative to Angi and Thumbtack. Live software, NH-built. He's raising a small round and would benefit hugely from one introduction at the Boston level. Worth 10 minutes if you have it.</p>
+<p>[Sender]</p>
+</blockquote>
+<hr>
+<h3 id="email-2--hjd-contact-→-nhhba-officer-hop-1-→-hop-2">Email 2 — HJD contact → NHHBA officer (Hop 1 → Hop 2)</h3>
+<p>This is the email the HJD contact actually sends. The body of Email 1 already drafts the forward text. The HJD contact pastes it (or rewrites it) and sends from their address.</p>
+<p><strong>Subject (HJD contact picks):</strong></p>
+<ol>
+<li>Intro — Phyrom of HJD Builders / Sherpa Pros</li>
+<li>NH GC built a contractor platform — worth 10 min?</li>
+<li>Quick intro on a NH-built tool worth seeing</li>
+</ol>
+<p><strong>Body (the version Phyrom drafts and the HJD contact sends):</strong></p>
+<blockquote>
+<p>[NHHBA officer first name],</p>
+<p>Wanted to introduce you to Phyrom. He runs HJD Builders here in NH and just built a platform called Sherpa Pros — <a href="http://www.thesherpapros.com">www.thesherpapros.com</a> — that does what every member at our last chapter meeting was complaining Angi and Thumbtack don't: licensed only, code-aware, and pays the contractor for the <em>job</em>, not for the chance to bid.</p>
+<p>He's raising a small first round of money to hire and run ads. The cleanest path to the right Boston investor for him runs through NHHBA → MA AGC → Suffolk Construction. He needs one warm intro per hop. He'd love 15 minutes to walk you through what he built and ask if you'd consider passing him to your contact at MA AGC (or BRAGB).</p>
+<p>Mutual value: every NHHBA member firm that joins his pro network gets early-mover positioning before he opens to the public. The platform is built by a working NH contractor — which is exactly the angle we need more of in this state.</p>
+<p>Phyrom is at [phone / email]. Worth a call.</p>
+<p>Thanks,
+[Sender name]</p>
+</blockquote>
+<hr>
+<h3 id="email-3--phyrom-→-nhhba-officer-asking-for-ma-agc-intro-hop-2-→-hop-3">Email 3 — Phyrom → NHHBA officer asking for MA AGC intro (Hop 2 → Hop 3)</h3>
+<p>Sent by Phyrom <em>after</em> Email 2 has been received by the NHHBA officer and the officer has agreed to a 15-min call. This is the follow-up after that call lands well.</p>
+<p><strong>Subject (pick one):</strong></p>
+<ol>
+<li>Thank-you + one ask — MA AGC intro</li>
+<li>Following up — would you intro me to Jeffrey Navin at AGC MA?</li>
+<li>NH → MA next hop — small ask</li>
+</ol>
+<p><strong>Body:</strong></p>
+<blockquote>
+<p>[NHHBA officer first name],</p>
+<p>Thank you for the 15 minutes yesterday. The platform demo is at <a href="http://www.thesherpapros.com">www.thesherpapros.com</a> any time you want to share it with the next chapter meeting.</p>
+<p>The next hop in the path I sketched out: I'm hoping to land one warm intro at the Massachusetts Associated General Contractors (AGC MA). The reason is that AGC MA's chair (Jeffrey Navin of Consigli Construction) sits with Suffolk Construction's senior team on every Boston Chamber and Building Owners and Managers Association (BOMA) board. Suffolk Construction runs an accelerator (BOOST) that feeds into Building Ventures — the Boston VC firm I'm raising from.</p>
+<p>Would you be willing to send Jeffrey Navin a short forward — same one I sent you, with a sentence or two of context from your side? I drafted what you might paste, below. Edit anything. Or send your own.</p>
+<p>Mutual value: Sherpa Pros is positioned to give NHHBA and AGC MA member firms a shared digital roster of licensed pros across NE — a platform-level deliverable our state associations have not been able to build alone. That's a story you can tell at the next NAHB regional.</p>
+<p>Thanks for opening this door.</p>
+<p>Phyrom</p>
+<hr>
+<p><em>Suggested forward text (edit freely):</em></p>
+<p>Jeffrey,</p>
+<p>Wanted to put Phyrom in front of you. He's a licensed NH GC (HJD Builders) who built a platform called Sherpa Pros — jobs, not leads, code-aware, licensed only. Live at <a href="http://www.thesherpapros.com">www.thesherpapros.com</a>. He is raising a small first round of investment. The Boston VC he's targeting (Building Ventures) is closest to him via Suffolk Construction's BOOST accelerator. Worth 15 min if you have it; he'd appreciate a thought on whether anyone on your side is the natural intro to Patrick Lucey or Jit Kee Chin at Suffolk.</p>
+<p>[Sender]</p>
+</blockquote>
+<hr>
+<h3 id="email-4--ma-agc-contact-→-suffolk-construction-hop-3-→-hop-4">Email 4 — MA AGC contact → Suffolk Construction (Hop 3 → Hop 4)</h3>
+<p>This is what Jeffrey Navin (or whichever AGC MA board member responds) sends to Patrick Lucey (or Jit Kee Chin) at Suffolk. Phyrom drafts; Navin sends.</p>
+<p><strong>Subject (Navin picks):</strong></p>
+<ol>
+<li>Intro — Phyrom of Sherpa Pros (NH GC, worth 15 min)</li>
+<li>NH-built licensed-trade marketplace — relevant for Suffolk Tech / BOOST</li>
+<li>Founder intro — Sherpa Pros (NH/ME/MA, live platform)</li>
+</ol>
+<p><strong>Body:</strong></p>
+<blockquote>
+<p>Patrick (cc Jit Kee, Parker),</p>
+<p>Wanted to put Phyrom in front of you. He's a working New Hampshire general contractor (HJD Builders) who built a marketplace called Sherpa Pros for the licensed residential trades in New England. Live web at <a href="http://www.thesherpapros.com">www.thesherpapros.com</a>, mobile in TestFlight, beta cohort onboarding now in Portsmouth, Manchester, Portland, and Boston specialty lanes (Mass Save heat pumps, EV chargers, electrical panel upgrades, old-house specialists, triple-decker exteriors).</p>
+<p>Two reasons I think this is worth a Suffolk Tech / BOOST conversation:</p>
+<ol>
+<li><p>Massachusetts has the largest construction labor shortage in the nation — 2.5% unemployment, project times stretched from 7 to 11 months. Sherpa Pros is the dispatch-and-vetting layer for the residential side of that shortage. BOOST's mandate covers exactly this gap.</p>
+</li>
+<li><p>The platform is built by a working contractor. Suffolk's BOOST cohort has a strong AI-native bias for 2025 — Phyrom's code-aware quote validation engine (NEC, IRC, MA Electrical, NH RSA) is the kind of vertical AI that BOOST's operating partners can pilot on real jobsites.</p>
+</li>
+</ol>
+<p>If BOOST is full or off-cycle, the natural follow is Building Ventures (Jesse Devitte). They invested in BuildFactory (prefab construction marketplace) in late 2025 — Sherpa Pros is the residential-trade analog and would slot cleanly between that, Built Robotics, and Dandelion in their portfolio.</p>
+<p>Worth 20 min on Phyrom's calendar?</p>
+<p>[Jeffrey Navin / Consigli Construction / AGC MA Chair]</p>
+</blockquote>
+<hr>
+<h3 id="email-5--suffolk-contact-→-building-ventures-partner-hop-4-→-hop-5">Email 5 — Suffolk contact → Building Ventures partner (Hop 4 → Hop 5)</h3>
+<p>This is what Patrick Lucey (or Jit Kee Chin) sends to Jesse Devitte at Building Ventures. Phyrom drafts; Lucey/Chin sends.</p>
+<p><strong>Subject (Lucey/Chin picks):</strong></p>
+<ol>
+<li>Intro — Phyrom of Sherpa Pros (NH GC, residential-trade marketplace)</li>
+<li>NH founder built the residential analog to BuildFactory — worth 15 min?</li>
+<li>Sherpa Pros — code-aware licensed-trade marketplace, live in NH/ME/MA</li>
+</ol>
+<p><strong>Body:</strong></p>
+<blockquote>
+<p>Jesse (cc Mayra, Heather),</p>
+<p>Wanted to put Phyrom in front of you. He's a working New Hampshire general contractor (HJD Builders) who built a licensed-trade marketplace called Sherpa Pros — the platform he wished existed every time Angi or Thumbtack pitched his crew leads they couldn't afford. Live at <a href="http://www.thesherpapros.com">www.thesherpapros.com</a>. Mobile in TestFlight. Beta cohort onboarding now in Portsmouth, Manchester, Portland, and Boston specialty lanes (Mass Save heat pumps, EV chargers, electrical panel upgrades, old-house specialists, triple-decker exteriors).</p>
+<p>Three reasons we think this fits Building Ventures specifically:</p>
+<ol>
+<li><p><strong>Marketplace structure, residential side.</strong> Your investment in BuildFactory in late 2025 plants the marketplace flag in offsite/prefab. Sherpa Pros is the residential-licensed-trade analog. Same business model shape, opposite end of the supply chain.</p>
+</li>
+<li><p><strong>Code intelligence as the moat.</strong> Heather knows UpCodes well — Sherpa Pros' code-aware quote validation engine reads NEC, IRC, MA Electrical, and NH RSA in real time and is the structural feature lead-gen platforms cannot copy. This is not a feature; it is the entire defensibility argument.</p>
+</li>
+<li><p><strong>Founder-built, not founder-imagined.</strong> Mayra spent time on jobsites at HoloBuilder; she'll recognize the pattern — Phyrom is the working GC who built the platform he needed. That's the founder profile that ships product the day-1 user actually uses.</p>
+</li>
+</ol>
+<p>The ask is 15 min on Jesse's calendar. Phyrom is in NH and can drive to Boston any day next week. Deck and 1-pager ready.</p>
+<p>[Patrick Lucey / President, Northeast / Suffolk Construction]
+<em>(or Jit Kee Chin, Suffolk Technologies)</em></p>
+</blockquote>
+<hr>
+<h2 id="4-backup-paths-if-any-chain-link-breaks">4. Backup paths if any chain link breaks</h2>
+<blockquote>
+<p>Run <em>all four</em> of these in parallel with the warm chain, on the assumption that any single chain link can stall for 2–3 weeks at a time. Parallel paths reduce the mean time to a Devitte-direct conversation.</p>
+</blockquote>
+<h3 id="41-backup-a-direct-cold-to-building-ventures-use-existing-template">4.1 Backup A: Direct cold to Building Ventures (use existing template)</h3>
+<p>The cold-backup template is already drafted in <code>building-ventures-warm-intro.md</code> Section "Backup cold email." Use that body verbatim, with two upgrades from this research:</p>
+<ul>
+<li>Reference <strong>BuildFactory Nov 2024 / 2025 investment</strong> explicitly in line 1 of the body. ("I saw your BuildFactory investment in late 2025 — Sherpa Pros is the residential-trade marketplace analog…")</li>
+<li>CC <strong>Mayra Arntz</strong> and <strong>Lucas Turner-Owens</strong> on the cold email to Devitte. Principals often run the first-call screen; copying them gives the email two reads instead of one.</li>
+</ul>
+<p><strong>Trigger to fire Backup A:</strong> No movement on the warm chain by <strong>Day 14</strong> of the chain (W4 D5 of the spec §6.6 send sequence).</p>
+<h3 id="42-backup-b-boost-application-suffolk-technologies-accelerator">4.2 Backup B: BOOST application (Suffolk Technologies accelerator)</h3>
+<p>Per <code>docs/fundraising/accelerators/suffolk-technologies-app.md</code>. BOOST is structurally a Building Ventures deal-flow funnel:</p>
+<ul>
+<li>BOOST receives 200+ applications per cohort, accepts ~8.</li>
+<li>Suffolk Tech invests $150K via post-money SAFE for 4.5%.</li>
+<li>8-week program, two mandatory in-person sessions in Boston.</li>
+<li>Demo Day attended by Building Ventures partners every cohort. [^suffolktech-boost]</li>
+<li>BOOST 6 (2025) cohort and BOOST 7 (2026) cohort timing: applications open early May, deadline early June, cohort announced early September, Demo Day mid-November.</li>
+</ul>
+<p><strong>If accepted into BOOST 7 (2026 cohort), Phyrom is in Building Ventures' active deal flow automatically — no warm intro required.</strong> Devitte and the BV principals attend Suffolk Tech Demo Day. This is the surest single backup.</p>
+<p><strong>Trigger to fire Backup B:</strong> Apply by <strong>June 5, 2026 deadline</strong> regardless of warm chain status. BOOST is the highest-leverage non-dilutive backup. (Caveat: 4.5% equity dilution from the Suffolk Tech $150K SAFE.)</p>
+<h3 id="43-backup-c-shared-portfolio-companies--the-upcodes-path">4.3 Backup C: Shared portfolio companies — the UpCodes path</h3>
+<p>Building Ventures portfolio company <strong>UpCodes</strong> (Heather Widman board involvement) is the closest existing-portfolio analog to Sherpa Pros' code-aware quote validation. Phyrom should:</p>
+<ul>
+<li>Sign up as an UpCodes user (free tier exists for individual contractors).</li>
+<li>Engage UpCodes founders / customer success on Twitter or LinkedIn ("we use UpCodes for our jobsite reference; here's a use-case from our marketplace").</li>
+<li>Ask for an intro to Heather Widman <em>as a customer</em> of one of her portfolio companies.</li>
+</ul>
+<p>This is a subtler ask than the warm chain but nearly impossible to refuse — VCs love hearing "your portfolio company's customer thinks you should look at us."</p>
+<p><strong>Other Building Ventures portfolio companies HJD has likely transacted with:</strong> Phyrom should check whether HJD Builders has used <strong>Dandelion Energy</strong> (geothermal heat pumps), <strong>Aeroseal</strong> (duct sealing), <strong>Copper</strong> (induction ranges), or <strong>Measurabl</strong>-tied properties on any jobsite. Each is a customer-introduction lever.</p>
+<p><strong>Trigger to fire Backup C:</strong> Run in parallel with the chain — start UpCodes engagement Week 1, low effort, slow burn.</p>
+<h3 id="44-backup-d-shared-lp--co-investor-overlap">4.4 Backup D: Shared LP / co-investor overlap</h3>
+<p>Building Ventures syndicates with named co-investors. Recent: SignalFire (Joist AI), Harlem Capital (Faura). The 2025 Joist AI co-lead with <strong>SignalFire</strong> is a particularly useful syndicate breadcrumb — SignalFire has its own marketplace thesis and is reachable through NFX-pipeline relationships (per Tier 2 row 9, NFX sits adjacent).</p>
+<p><strong>Less likely but worth checking:</strong> Phyrom should ask his HJD high-net-worth client list whether any are LPs in Boston-area family offices that backed Building Ventures Fund II ($95M close, Sept 2022 — public LPs not disclosed but several Boston family offices are known co-LPs of similar Boston VC funds). The Wefunder pre-launch interest list (per spec §6.4) is the natural surface for this question.</p>
+<p><strong>Trigger to fire Backup D:</strong> Add to Wefunder pre-launch outreach script — "do you know of any Boston VC LPs in your network?" — Week 3.</p>
+<hr>
+<h2 id="5-pre-meeting-research-brief--for-the-30-min-building-ventures-meeting">5. Pre-meeting research brief — for the 30-min Building Ventures meeting</h2>
+<blockquote>
+<p><strong>Read this on the plane to Boston the morning of the meeting.</strong></p>
+</blockquote>
+<h3 id="51-top-3-questions-bv-partner-is-likely-to-ask">5.1 Top 3 questions BV partner is likely to ask</h3>
+<p>Based on Devitte's stated thesis, recent Building Ventures investments, and the standard pre-seed VC due-diligence pattern:</p>
+<ol>
+<li><p><strong>"What's the unfair advantage that makes this defensible against Angi and Thumbtack catching up?"</strong>
+<em>Answer:</em> Three layers. (a) The code-intelligence engine — built over three years by a working GC, not licensable, requires constant code-revision tracking. (b) The licensed-only verification at onboarding — Angi cannot retrofit this without losing 80% of their pro side. (c) The founder identity — every contractor I onboard says "this was built by a guy who actually does the work" within their first 60 seconds. None of that is in a software roadmap; it's in a relationship.</p>
+</li>
+<li><p><strong>"What's your founding-team story and why are you the only one who can build this?"</strong>
+<em>Answer:</em> I'm Phyrom, working NH GC (HJD Builders), 12 years buying leads, 2 years building this on nights and weekends. Built the entire stack myself initially — Next.js 16, Stripe Connect, PostGIS, Clerk, Twilio. Now hiring two people with the first round. The platform's code-aware quote validation only works because I knew which line items to check. Nobody from a non-construction background would have built it this way.</p>
+</li>
+<li><p><strong>"What are the unit economics and what's the path to a real Series A?"</strong>
+<em>Answer:</em> 5% take during beta, 10% at scale (per spec §5.2). Average residential job is $4,800; a heat-pump install is $14,000+. Pro subscription $49/mo at scale. PM tier $4 per unit per month decreasing to $1.50 with volume. 10-pro beta cohort hitting roughly 200 jobs/month by month 6 = $96K-$192K Gross Merchandise Value per month at 5% take = $4.8K-$9.6K monthly platform revenue. Series A trigger is ~$1M annual recurring revenue across all three lines + 4-metro coverage + 1,000+ verified pros.</p>
+</li>
+</ol>
+<h3 id="52-top-3-questions-phyrom-should-ask-devitte">5.2 Top 3 questions Phyrom should ask Devitte</h3>
+<p>This qualifies BV as the right partner — not just signing the first term sheet.</p>
+<ol>
+<li><p><strong>"How do you think about co-investors at the seed stage? Specifically, who would you naturally syndicate with on a residential-marketplace deal — and would you lead or follow?"</strong>
+<em>Why ask:</em> Devitte's recent investments co-lead with SignalFire (Joist AI) and Harlem Capital (Faura). If he says "we'd lead and bring NFX or Pear in" that signals a $1.5M+ round structure. If he says "we'd follow another lead" that signals a smaller commitment and Phyrom should keep talking to other firms.</p>
+</li>
+<li><p><strong>"Of your portfolio companies, which one was the worst-performing in year 1 that you stuck with anyway, and what made you stick?"</strong>
+<em>Why ask:</em> This question reveals Devitte's actual founder-support behavior under stress. The answer separates "VCs who ghost when traction stalls" from "VCs who add value in the trough." If he can't name one or his answer is generic, that's a red flag.</p>
+</li>
+<li><p><strong>"If we close at $500K-$1M now, what does the bridge look like to a $3M Series A in 12-18 months — what milestones matter most to you?"</strong>
+<em>Why ask:</em> This is the test of whether Devitte will sign first and disappear, or actually own the runway plan. Specific milestone callouts (GMV, take-rate, cohort retention, geography expansion) signal he has a real plan. Vague answers signal he's deal-spraying.</p>
+</li>
+</ol>
+<h3 id="53-specific-bv-portfolio-companies-to-reference-for-credibility">5.3 Specific BV portfolio companies to reference for credibility</h3>
+<p>Drop these names naturally in the conversation — proves Phyrom did the homework:</p>
+<ul>
+<li><strong>BuildFactory</strong> (Nov 2024–2025 investment) — "Your most recent marketplace bet. Sherpa Pros is the residential-side analog."</li>
+<li><strong>Joist AI</strong> (2025 SignalFire co-lead) — "Joist solves AEC marketing's proposal pain. Sherpa Pros solves the residential trade's job-acquisition pain. Same vertical-AI shape, different end of the customer."</li>
+<li><strong>UpCodes</strong> (Heather Widman board) — "We use UpCodes the same way our pros do — as the cited code reference our quote validator runs against."</li>
+<li><strong>Dandelion Energy</strong> (Phyrom mentioned in cold-email backup) — "Dandelion is a residential-energy install play; we are the dispatch layer that finds the licensed installer for that exact heat pump."</li>
+<li><strong>Built Robotics</strong> — "Labor-augmentation on the supply side; we're labor-allocation on the marketplace side. Same labor shortage, different solution surface."</li>
+</ul>
+<h3 id="54-the-single-anchor-narrative-for-the-meeting">5.4 The single anchor narrative for the meeting</h3>
+<blockquote>
+<p>"I'm a working NH GC who built the platform my crew needed. We're at 200 jobs/month and growing across NH, ME, and Boston specialty lanes. We need a Boston-anchored built-world partner who'll help us scale across New England first, then nationally. You're the one I want as our anchor seed investor — because you've placed the prefab marketplace bet (BuildFactory), the code-intelligence bet (UpCodes), the residential-energy bet (Dandelion), and the labor-augmentation bet (Built Robotics). Sherpa Pros is the missing residential-trade marketplace that connects all four of those theses on a single platform."</p>
+</blockquote>
+<p>Memorize this. Open with it. Close with it. Everything in between is supporting evidence.</p>
+<hr>
+<h2 id="6-decision-criteria-for-phyrom--how-to-read-the-meeting-in-real-time">6. Decision criteria for Phyrom — how to read the meeting in real time</h2>
+<h3 id="61-signals-that-bv-is-the-right-anchor-move-fast-prepare-term-sheet-conversation">6.1 Signals that BV is the right anchor (move fast, prepare term sheet conversation)</h3>
+<p>Watch for any <strong>two or more</strong> of these in a single 30-min meeting:</p>
+<ul>
+<li><strong>Devitte (or whoever takes the meeting) returned the meeting request inside 48 hours of the warm intro landing.</strong> (Speed is signal.)</li>
+<li><strong>He references a <em>specific</em> Sherpa Pros feature during the meeting</strong> — e.g., "the code-checked badge on the homeowner-facing quote" or "the Mass Save heat-pump specialty lane." This means he visited <a href="http://www.thesherpapros.com">www.thesherpapros.com</a> before the call.</li>
+<li><strong>He brings up a portfolio company <em>unprompted</em> as an analog.</strong> ("This reminds me of how BuildFactory thinks about prefab.") Means he's already pattern-matched.</li>
+<li><strong>He asks about co-investors <em>during</em> the meeting.</strong> ("Have you talked to NFX yet?") Means he's mentally syndicating.</li>
+<li><strong>He offers a follow-up <em>during</em> the meeting</strong> — second call, partner team intro, customer reference. Means he's moving inside his fund.</li>
+<li><strong>He asks for the deck <em>after</em> the meeting.</strong> Means he plans to circulate it internally — the most reliable diligence signal at the seed stage.</li>
+<li><strong>He volunteers a timeline.</strong> ("If we move on this, what's your close date?") Means he's pricing the deal already.</li>
+</ul>
+<h3 id="62-signals-bv-is-interested-but-not-the-lead-run-them-in-parallel-dont-anchor">6.2 Signals BV is interested but not the lead (run them in parallel; don't anchor)</h3>
+<ul>
+<li><strong>60-day delay to follow-up.</strong> Means partner team has not converged on conviction.</li>
+<li><strong>Requests for "more data" without specifying what data.</strong> Means the partner is unsure what would change his mind — which usually means it won't change.</li>
+<li><strong>"Would love to see this with co-investors lined up"</strong> = he wants someone else to lead. Means he'll write a follow check, not a lead check.</li>
+<li><strong>Generic LinkedIn engagement post-meeting</strong> ("nice to chat, stay in touch") with no specific next step. Means it's a "maintain optionality" not a "we're moving."</li>
+<li><strong>Asks Phyrom to re-pitch to a non-investing partner</strong> (the Head of Marketing, the Venture Partner, etc.) — means the GP isn't yet championing internally.</li>
+</ul>
+<p>If two or more of these appear: keep BV warm, but accelerate Brick &amp; Mortar (Tier 1 #2) and Foundamental (Tier 1 #3) immediately.</p>
+<h3 id="63-signals-to-pass--move-on-to-brick--mortar--foundamental-immediately">6.3 Signals to pass — move on to Brick &amp; Mortar / Foundamental immediately</h3>
+<ul>
+<li><strong>Questions focus on flaws not opportunity.</strong> ("How will you handle 1099 vs W-2 misclassification risk?" "What about insurance liability for unlicensed pros slipping through?") Note: these are valid questions, but if they consume more than 50% of the meeting, the partner is hunting reasons to pass, not reasons to invest.</li>
+<li><strong>No follow-up within 2 weeks of meeting</strong>, despite Phyrom sending the deck and 1-pager promptly afterward.</li>
+<li><strong>Generic "stay in touch" close</strong> with no specific calendar follow-up offered.</li>
+<li><strong>He references a competing portfolio company as a <em>direct competitor</em></strong>, not an analog. ("We already have BuildFactory in the marketplace lane; we're concentrated.") Means BV believes its marketplace bet is placed.</li>
+<li><strong>He suggests Phyrom is "too early"</strong> without specifying what milestone would make him "ready." Means it's a polite no.</li>
+</ul>
+<p>If two or more of these appear: write a clean follow-up email thanking Devitte, ask for one introduction to a peer firm (this is a low-cost ask he'll usually grant), and move on. Do not chase. Do not re-pitch in 90 days. The window is open or closed, not stuck.</p>
+<hr>
+<h2 id="7-send-sequencing-chain-specific-overlay-on-top-of-building-ventures-warm-intromd-send-sequencing">7. Send sequencing (chain-specific overlay on top of <code>building-ventures-warm-intro.md</code> Send Sequencing)</h2>
+<table>
+<thead>
+<tr>
+<th>Day</th>
+<th>Action</th>
+<th>Owner</th>
+<th>Source doc reference</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>W3 D1</td>
+<td>Phyrom fills in Hop 1 template (Section 2.1, slots 1A–1D) with real HJD-network names.</td>
+<td>Phyrom</td>
+<td>This doc §2 Hop 1</td>
+</tr>
+<tr>
+<td>W3 D2</td>
+<td>Phyrom sends Email 1 to top HJD-network candidate.</td>
+<td>Phyrom</td>
+<td>This doc §3 Email 1</td>
+</tr>
+<tr>
+<td>W3 D3</td>
+<td>Phyrom posts a public LinkedIn thread (per spec §8) re: "the platform a NH GC built for licensed trades" — pulls passive interest while chain works.</td>
+<td>Phyrom</td>
+<td>spec §8</td>
+</tr>
+<tr>
+<td>W3 D4</td>
+<td>Apply to BOOST 7 (2026 cohort) — application form opens early May per Suffolk Tech timeline.</td>
+<td>Phyrom + advisor</td>
+<td>accelerators/suffolk-technologies-app.md</td>
+</tr>
+<tr>
+<td>W3 D5</td>
+<td>If no Email 1 response by EOW Friday: send to HJD-network candidate #2.</td>
+<td>Phyrom</td>
+<td>This doc §3 Email 1</td>
+</tr>
+<tr>
+<td>W4 D1</td>
+<td>If Email 1 forward sent, Phyrom 15-min call with NHHBA officer (Hop 2).</td>
+<td>Phyrom</td>
+<td>This doc §2 Hop 2</td>
+</tr>
+<tr>
+<td>W4 D3</td>
+<td>Phyrom sends Email 3 to NHHBA officer requesting AGC MA intro.</td>
+<td>Phyrom</td>
+<td>This doc §3 Email 3</td>
+</tr>
+<tr>
+<td>W4 D5</td>
+<td>If no Email 3 response: pivot to NHHBA officer #2 <em>or</em> fire Backup A (direct cold to Devitte).</td>
+<td>Phyrom</td>
+<td>This doc §4.1</td>
+</tr>
+<tr>
+<td>W5 D1</td>
+<td>If Email 4 (AGC MA → Suffolk) sent: 15-min Patrick Lucey call.</td>
+<td>Phyrom</td>
+<td>This doc §2 Hop 4</td>
+</tr>
+<tr>
+<td>W5 D3</td>
+<td>Phyrom drafts Email 5 (Lucey → Devitte) and sends to Lucey for him to forward.</td>
+<td>Phyrom</td>
+<td>This doc §3 Email 5</td>
+</tr>
+<tr>
+<td>W5 D5</td>
+<td>If Email 5 not sent by Lucey: re-engage Lucey with one specific reason (e.g., "Demo Day is in 2 weeks; would value being on the BV deal-flow list before then").</td>
+<td>Phyrom</td>
+<td>This doc §6.1</td>
+</tr>
+<tr>
+<td>W6 D1</td>
+<td>First Devitte meeting (target).</td>
+<td>Phyrom</td>
+<td>This doc §5</td>
+</tr>
+<tr>
+<td>W6 D3</td>
+<td>Read meeting against Section 6 criteria. Either pursue or pivot to Brick &amp; Mortar.</td>
+<td>Phyrom</td>
+<td>This doc §6</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="footnotes--sources">Footnotes / sources</h2>
+<p>[^bv-team]: <a href="https://buildingventures.com/team/">Building Ventures — Our Team</a> (accessed 2026-04-22)</p>
+<p>[^bv-tracxn]: <a href="https://tracxn.com/d/venture-capital/building-ventures/__HoRUJGqokeTg0HCWfzNKkpKsKZbBy7at0rOuxFiLOwM">Building Ventures — Tracxn investor profile</a></p>
+<p>[^bv-approach]: <a href="https://buildingventures.com/approach/">Building Ventures — Our Approach</a></p>
+<p>[^bv-fund2]: <a href="https://www.businesswire.com/news/home/20220906005206/en/Building-Ventures-Launches-$95-Million-Fund-II-to-Continue-Driving-Built-Environment-Innovation">Building Ventures Launches $95 Million Fund II — BusinessWire 2022</a></p>
+<p>[^bv-globe]: <a href="https://www.bostonglobe.com/2022/09/13/business/boston-vc-firm-wants-take-waste-out-building-trades/">Boston VC firm wants to take the waste out of building trades — Boston Globe, Sept 2022</a></p>
+<p>[^bv-newsletter-spring]: <a href="https://buildingventures.com/newsletters/spring-2025-newsletter/">Building Ventures — Spring 2025 Newsletter</a> — announces Adaptis, Faura, Joist AI investments</p>
+<p>[^bv-newsletter-summer]: <a href="https://buildingventures.com/newsletters/summer-2025-newsletter/">Building Ventures — Summer 2025 Newsletter</a></p>
+<p>[^bv-newsletter-winter]: <a href="https://buildingventures.com/newsletters/winter-2025-newsletter/">Building Ventures — Winter 2025 Newsletter</a> — BuildFactory investment + Mortenson CEO infrastructure-acceleration thesis</p>
+<p>[^widman]: <a href="https://buildingventures.com/heather-widman/">Heather Widman — Building Ventures</a> | <a href="https://www.linkedin.com/in/hnwidman/">LinkedIn</a> | <a href="https://signal.nfx.com/investors/heather-widman">NFX Signal profile</a></p>
+<p>[^preger]: <a href="https://buildingventures.com/allen-preger/">Allen Preger — Building Ventures</a> | <a href="https://www.linkedin.com/in/allen-preger-2316974/">LinkedIn</a> | <a href="https://signal.nfx.com/investors/allen-preger">NFX Signal profile</a> | <a href="https://www.linkedin.com/posts/allen-preger-2316974_our-investment-in-parspec-building-ventures-activity-7168668964594671616-WYaC">Parspec investment announcement</a></p>
+<p>[^lto]: <a href="https://buildingventures.com/lucas-turner-owens/">Lucas Turner-Owens — Building Ventures</a> | <a href="https://buildingventures.com/building-ventures-updates/lucas-turner-owens-joins-bv/">Welcome announcement</a></p>
+<p>[^arntz]: <a href="https://buildingventures.com/building-ventures-updates/mayra-arntz-promoted-to-principal/">Mayra Arntz promotion announcement — Building Ventures</a></p>
+<p>[^rightmire]: <a href="https://buildingventures.com/matt-rightmire/">Matt Rightmire — Building Ventures</a> | <a href="https://www.linkedin.com/in/matt-rightmire-60a63155/">LinkedIn</a> | <a href="https://www.crunchbase.com/person/matt-rightmire">Crunchbase profile</a></p>
+<p>[^nhhba-exec]: <a href="https://nhhba.com/about/executive-committee/">NHHBA Executive Committee</a> (accessed 2026-04-22)</p>
+<p>[^nhhba-staff]: <a href="https://nhhba.com/about/meet-the-staff/">NHHBA Meet The Staff</a> (accessed 2026-04-22)</p>
+<p>[^menning]: <a href="https://www.elmgrovecompanies.com/post/nh-cornerstone-awards-matt-menning-named-president-of-the-new-hampshire-home-builders-association">Matt Menning named NHHBA President — Elm Grove Companies</a> | <a href="https://www.linkedin.com/in/matthewmenning/">Matt Menning LinkedIn</a></p>
+<p>[^agcma-board]: <a href="https://members.agcmass.org/groups/grouproster/board-of-directors-10">AGC MA Board of Directors</a> (accessed 2026-04-22)</p>
+<p>[^suffolk-leadership]: <a href="https://suffolk.com/about/executive-leadership/">Suffolk Construction — Executive Leadership</a> (accessed 2026-04-22)</p>
+<p>[^lucey]: <a href="https://www.suffolk.com/about/our-team/patrick-lucey/">Patrick Lucey — Suffolk Construction</a> | <a href="https://www.linkedin.com/in/patrick-l-lucey/">LinkedIn</a></p>
+<p>[^lucey-promotion]: <a href="https://www.businesswire.com/news/home/20250331072323/en/Suffolk-Promotes-Patrick-Lucey-to-General-Manager-of-Northeast-Responsible-for-Boosting-Operational-Excellence-Reinforcing-Culture-and-Capturing-Marketshare-in-High-Growth-Sectors">Suffolk Promotes Patrick Lucey to General Manager of Northeast — BusinessWire, March 2025</a> | <a href="https://www.bostonglobe.com/2025/03/28/business/suffolk-construction-john-fish-pat-lucey/">Boston Globe coverage</a></p>
+<p>[^suffolktech-team]: <a href="https://suffolktech.com/team/">Suffolk Technologies — Team</a> (accessed 2026-04-22)</p>
+<p>[^suffolktech-boost]: <a href="https://suffolktech.com/boost/">Suffolk Technologies — BOOST</a> | <a href="https://www.businesswire.com/news/home/20250909142674/en/Suffolk-Technologies-BOOST-6-Cohort-Redefines-Whats-Next-for-the-Built-World">BOOST 6 Cohort announcement (Sept 2025) — BusinessWire</a> | <a href="https://bostonrealestatetimes.com/suffolk-technologies-named-top-construction-tech-investor-in-2025-by-agc-partners/">Suffolk Technologies named Top Construction Tech Investor 2025 — Boston Real Estate Times</a></p>
+
+	
+
+
+</body>
+</html>

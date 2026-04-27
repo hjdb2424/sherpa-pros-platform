@@ -1,0 +1,1184 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>metrics dashboard design — Sherpa Pros</title>
+<link rel="icon" href="../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="metrics-dashboard-design.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="sherpa-pros--investor-metrics-dashboard-design">Sherpa Pros — Investor Metrics Dashboard Design</h1>
+<p><strong>Date:</strong> 2026-04-22
+<strong>Owner:</strong> Phyrom (data-analytics-reporter agent draft)
+<strong>Audience:</strong> Investors (data room link), Phyrom (operating dashboard), beta-cohort review
+<strong>Route:</strong> <code>/admin/investor-metrics</code> (file: <code>src/app/(dashboard)/admin/investor-metrics/page.tsx</code>)
+<strong>Status:</strong> v1 — Phase 0. Most metrics surface mocked / extrapolated values until beta cohort data flows. Each widget has a clear <code>// TODO</code> swap point.</p>
+<hr>
+<h2 id="1-purpose">1. Purpose</h2>
+<p>This dashboard is the <strong>live-traction artifact</strong> referenced in spec §6.7 ("Live-metrics dashboard link" — Nice to have by W8) and the source of truth for every metric named in spec §5.5 (Traction metrics for pitch deck) and §12 (Phase gates).</p>
+<p>It serves three stakeholders simultaneously:</p>
+<ol>
+<li><strong>Investors</strong> — link in the data room; updates in real time as beta cohort transacts. Removes the "trust-me-bro" smell from the deck.</li>
+<li><strong>Phyrom</strong> — operating dashboard; spot trends, react to liquidity dips, time outreach campaigns.</li>
+<li><strong>Beta-cohort review</strong> — single page Phyrom can screen-share on weekly 10-min beta calls.</li>
+</ol>
+<p>Constraints baked in:</p>
+<ul>
+<li><strong>No "Wiseman" branding externally</strong> — but this is internal admin, so internal name allowed (per CLAUDE.md and spec §3.3).</li>
+<li><strong>Spell out abbreviations</strong> (per <code>feedback_no_contractor_jargon.md</code>) — GMV → "Gross Merchandise Value", NPS → "Net Promoter Score" on first hover/legend.</li>
+<li><strong>Mobile-first</strong> but investor view assumed desktop-primary; responsive breakpoints from Tailwind defaults.</li>
+</ul>
+<hr>
+<h2 id="2-tech-stack">2. Tech stack</h2>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Choice</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Framework</td>
+<td>Next.js 16 App Router (Server Component default)</td>
+<td>Matches CLAUDE.md convention; lets queries run server-side; no client bundle bloat for static numbers.</td>
+</tr>
+<tr>
+<td>Charts</td>
+<td><strong>Tremor</strong> (<code>@tremor/react</code>)</td>
+<td>Purpose-built for dashboards. Comes with <code>AreaChart</code>, <code>BarChart</code>, <code>LineChart</code>, <code>DonutChart</code>, <code>Tracker</code>, <code>Metric</code>, <code>BadgeDelta</code>, <code>ProgressBar</code>, sparklines. Works with Tailwind 4.</td>
+</tr>
+<tr>
+<td>Tables</td>
+<td><strong>TanStack Table</strong> (<code>@tanstack/react-table</code>)</td>
+<td>Headless; pairs with shadcn for styling; needed for per-metro / per-trade breakouts.</td>
+</tr>
+<tr>
+<td>Layout primitives</td>
+<td><strong>shadcn/ui</strong> (Card, Tabs, Badge, Separator)</td>
+<td>Gives Tremor a consistent surrounding shell that matches the rest of the admin.</td>
+</tr>
+<tr>
+<td>Data</td>
+<td>Drizzle ORM + Neon Postgres via <code>src/db/connection.ts</code> <code>query()</code> and <code>sql</code> helpers</td>
+<td>Same pattern as every other admin page.</td>
+</tr>
+<tr>
+<td>Auth</td>
+<td><code>requireRole('client' | 'pro' | 'pm' | 'tenant')</code> — <strong>need a <code>requireAdmin()</code> helper later</strong>. For Phase 0, gate on Phyrom's specific Clerk user ID via env <code>ADMIN_USER_IDS</code> (comma-separated).</td>
+<td></td>
+</tr>
+</tbody></table>
+<h3 id="install-commands-needed">Install commands needed</h3>
+<pre><code class="hljs bash">npm install @tremor/react @tanstack/react-table
+npm install class-variance-authority clsx tailwind-merge lucide-react tailwindcss-animate
+<span class="hljs-comment"># shadcn/ui — initialize in repo root, choose "default" style, "neutral" base color</span>
+npx shadcn@latest init
+npx shadcn@latest add card tabs badge separator
+</code></pre>
+<p>Tremor v3 also requires a small Tailwind config addition (color tokens). With Tailwind 4's CSS-first config, those tokens go into <code>src/app/globals.css</code> under <code>@theme</code> — coordinator should verify post-install.</p>
+<hr>
+<h2 id="3-page-layout">3. Page layout</h2>
+<pre><code>┌─────────────────────────────────────────────────────────────────────┐
+│  Header: "Sherpa Pros — Live Traction"                              │
+│  Sub: "Beta cohort metrics. Updates every 5 min. As of {timestamp}" │
+│  Cohort phase pill: "PHASE 0 · BETA · {n} active pros"              │
+├─────────────────────────────────────────────────────────────────────┤
+│  Row 1 — Headline metrics (4-up grid, KPI cards)                    │
+│  [GMV total]  [Take-rate $]  [Active pros]  [NPS pro / client]      │
+├─────────────────────────────────────────────────────────────────────┤
+│  Row 2 — Tabs: 7d / 30d / 90d window selector (shared across row 3) │
+│  Row 3 — Charts (2-up)                                              │
+│  [GMV time-series, area chart]   [Take-rate capture, line chart]    │
+├─────────────────────────────────────────────────────────────────────┤
+│  Row 4 — Liquidity &amp; speed                                          │
+│  [Pro liquidity ratio bar by metro] [Avg bids per job + sparkline]  │
+├─────────────────────────────────────────────────────────────────────┤
+│  Row 5 — Cohort &amp; retention                                         │
+│  [Pro retention cohort table]      [Client repeat rate progress]    │
+├─────────────────────────────────────────────────────────────────────┤
+│  Row 6 — NPS time series (full-width line)                          │
+├─────────────────────────────────────────────────────────────────────┤
+│  Row 7 — Wiseman usage (3-up sparkline cards)                       │
+│  [Quote validations] [Code checks] [Scope approvals]                │
+├─────────────────────────────────────────────────────────────────────┤
+│  Row 8 — Funnel (full-width, stepped horizontal bar)                │
+│  posted → matched → bid → accepted → completed → paid → reviewed    │
+├─────────────────────────────────────────────────────────────────────┤
+│  Footer: "Phase 0 gate progress: $250K non-dilutive committed       │
+│           OR $500K Wefunder + angels OR Tier-1 accelerator. {%}"    │
+└─────────────────────────────────────────────────────────────────────┘
+</code></pre>
+<hr>
+<h2 id="4-widgets">4. Widgets</h2>
+<p>For each: source tables + query sketch · mock data shape · chart · target value · why it matters.</p>
+<h3 id="41-gmv-gross-merchandise-value">4.1 GMV (Gross Merchandise Value)</h3>
+<ul>
+<li><strong>Source:</strong> <code>payments</code> table (status='succeeded' OR 'released'), grouped by <code>created_at::date</code>. Filtered to <strong>completed</strong> jobs only — <code>payments.status IN ('released')</code> is the canonical "money actually changed hands" event.</li>
+<li><strong>Per-metro:</strong> join <code>payments → job_milestones → jobs → hubs.region</code> for metro slice.</li>
+<li><strong>Per-trade:</strong> join <code>payments → jobs → ... → pro_trades.tradeCategory</code> (LATERAL on accepted bid → pro).</li>
+<li><strong>Query sketch (totals window):</strong><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> date_trunc(<span class="hljs-string">'day'</span>, released_at) <span class="hljs-keyword">AS</span> <span class="hljs-keyword">day</span>,
+       <span class="hljs-built_in">SUM</span>(amount_cents) <span class="hljs-keyword">AS</span> gmv_cents
+  <span class="hljs-keyword">FROM</span> payments
+ <span class="hljs-keyword">WHERE</span> status <span class="hljs-operator">=</span> <span class="hljs-string">'released'</span>
+   <span class="hljs-keyword">AND</span> released_at <span class="hljs-operator">&gt;=</span> NOW() <span class="hljs-operator">-</span> <span class="hljs-type">INTERVAL</span> <span class="hljs-string">'90 days'</span>
+ <span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> <span class="hljs-number">1</span> <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> <span class="hljs-number">1</span>;
+</code></pre>
+</li>
+<li><strong>Mock shape:</strong> <code>[{ day: '2026-04-22', gmv: 12450, metro: 'Portsmouth', trade: 'Electrical' }, ...]</code></li>
+<li><strong>Chart:</strong> Tremor <code>AreaChart</code> with stacked metro layers; window selector tabs (7d/30d/90d) re-fetches.</li>
+<li><strong>Target investor wants to see:</strong><ul>
+<li>Phase 0 exit: any non-zero, ideally <strong>$10K+ in beta GMV by W12</strong></li>
+<li>Phase 1 exit: <strong>$200K+ GMV</strong> (per spec §12)</li>
+<li>Phase 2 exit: <strong>$1M+ annualized</strong></li>
+</ul>
+</li>
+<li><strong>Why it matters:</strong> GMV is the single most-asked-for marketplace number. Without GMV the deck is theory. With even small GMV the deck becomes a traction story.</li>
+</ul>
+<h3 id="42-take-rate-capture">4.2 Take-rate capture</h3>
+<ul>
+<li><strong>Source:</strong> <code>payments.commissionCents</code> summed over <code>released_at</code> window.</li>
+<li><strong>Beta vs standard split:</strong> beta cohort pros are flagged via <code>pros.badgeTier = 'founding'</code> (proposed — see §6 assumptions) OR a new <code>pros.is_founding_pro</code> boolean (preferred). For Phase 0, mock a hard-coded list of beta pro IDs.</li>
+<li><strong>Query sketch:</strong><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> date_trunc(<span class="hljs-string">'week'</span>, released_at) <span class="hljs-keyword">AS</span> week,
+       <span class="hljs-built_in">SUM</span>(commission_cents) <span class="hljs-keyword">FILTER</span> (<span class="hljs-keyword">WHERE</span> p.is_founding) <span class="hljs-keyword">AS</span> beta_take_cents,
+       <span class="hljs-built_in">SUM</span>(commission_cents) <span class="hljs-keyword">FILTER</span> (<span class="hljs-keyword">WHERE</span> <span class="hljs-keyword">NOT</span> p.is_founding) <span class="hljs-keyword">AS</span> standard_take_cents
+  <span class="hljs-keyword">FROM</span> payments pay
+  <span class="hljs-keyword">JOIN</span> bids b <span class="hljs-keyword">ON</span> b.job_id <span class="hljs-operator">=</span> pay.job_id <span class="hljs-keyword">AND</span> b.status <span class="hljs-operator">=</span> <span class="hljs-string">'accepted'</span>
+  <span class="hljs-keyword">JOIN</span> pros p <span class="hljs-keyword">ON</span> p.id <span class="hljs-operator">=</span> b.pro_id
+ <span class="hljs-keyword">WHERE</span> pay.status <span class="hljs-operator">=</span> <span class="hljs-string">'released'</span>
+   <span class="hljs-keyword">AND</span> pay.released_at <span class="hljs-operator">&gt;=</span> NOW() <span class="hljs-operator">-</span> <span class="hljs-type">INTERVAL</span> <span class="hljs-string">'90 days'</span>
+ <span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> <span class="hljs-number">1</span> <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> <span class="hljs-number">1</span>;
+</code></pre>
+</li>
+<li><strong>Mock shape:</strong> <code>[{ week: '2026-W17', betaTake: 250, standardTake: 0 }]</code></li>
+<li><strong>Chart:</strong> Tremor <code>LineChart</code> two series, $ on Y axis.</li>
+<li><strong>Target investor wants to see:</strong> beta line growing; standard line appearing post-beta (M4+) without a take-rate-cap collapse.</li>
+<li><strong>Why it matters:</strong> Proves the unit economics. 5% × $200K Phase 1 GMV = $10K commission — small in absolute, big as proof of mechanism. Take-rate is the durability metric for the Series A.</li>
+</ul>
+<h3 id="43-pro-liquidity-ratio--jobs-matched-2hr">4.3 Pro liquidity ratio (% jobs matched &lt;2hr)</h3>
+<ul>
+<li><strong>Source:</strong> <code>jobs.created_at</code> vs first <code>dispatch_attempts.notified_at</code> per job; "matched" = <code>dispatch_attempts.response = 'accept'</code>.</li>
+<li><strong>Per-metro:</strong> join via <code>jobs.hubId → hubs.region</code>.</li>
+<li><strong>Query sketch:</strong><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> h.region <span class="hljs-keyword">AS</span> metro,
+       <span class="hljs-built_in">COUNT</span>(<span class="hljs-operator">*</span>) <span class="hljs-keyword">FILTER</span> (
+         <span class="hljs-keyword">WHERE</span> <span class="hljs-built_in">EXTRACT</span>(EPOCH <span class="hljs-keyword">FROM</span> (first_accept.notified_at <span class="hljs-operator">-</span> j.created_at)) <span class="hljs-operator">&lt;=</span> <span class="hljs-number">7200</span>
+       )::<span class="hljs-type">float</span> <span class="hljs-operator">/</span> <span class="hljs-built_in">NULLIF</span>(<span class="hljs-built_in">COUNT</span>(<span class="hljs-operator">*</span>), <span class="hljs-number">0</span>) <span class="hljs-keyword">AS</span> pct_matched_2hr
+  <span class="hljs-keyword">FROM</span> jobs j
+  <span class="hljs-keyword">LEFT</span> <span class="hljs-keyword">JOIN</span> hubs h <span class="hljs-keyword">ON</span> h.id <span class="hljs-operator">=</span> j.hub_id
+  <span class="hljs-keyword">LEFT</span> <span class="hljs-keyword">JOIN</span> <span class="hljs-keyword">LATERAL</span> (
+    <span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">MIN</span>(notified_at) <span class="hljs-keyword">AS</span> notified_at
+      <span class="hljs-keyword">FROM</span> dispatch_attempts da
+     <span class="hljs-keyword">WHERE</span> da.job_id <span class="hljs-operator">=</span> j.id <span class="hljs-keyword">AND</span> da.response <span class="hljs-operator">=</span> <span class="hljs-string">'accept'</span>
+  ) first_accept <span class="hljs-keyword">ON</span> <span class="hljs-literal">TRUE</span>
+ <span class="hljs-keyword">WHERE</span> j.created_at <span class="hljs-operator">&gt;=</span> NOW() <span class="hljs-operator">-</span> <span class="hljs-type">INTERVAL</span> <span class="hljs-string">'30 days'</span>
+ <span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> h.region;
+</code></pre>
+</li>
+<li><strong>Mock shape:</strong> <code>[{ metro: 'Portsmouth', pct: 0.71 }, { metro: 'Manchester', pct: 0.55 }, ...]</code></li>
+<li><strong>Chart:</strong> Tremor <code>BarChart</code> horizontal, with a dashed reference line at 80% (target).</li>
+<li><strong>Target investor wants to see:</strong> <strong>80%+</strong> (Phase 1 gate per spec §12: "&lt;2hr match time"). Below 50% = supply problem, above 90% = demand problem.</li>
+<li><strong>Why it matters:</strong> Liquidity is the thing every marketplace investor (NFX especially) asks about by minute 8 of the call. &lt;2hr is the contractual promise of "Uber for trades."</li>
+</ul>
+<h3 id="44-avg-bids-per-job">4.4 Avg bids per job</h3>
+<ul>
+<li><strong>Source:</strong> <code>bids</code> joined to <code>jobs</code>. Compute mean <code>COUNT(bids)</code> per job over rolling 30 days; trailing 30-day single number + sparkline.</li>
+<li><strong>Query sketch:</strong><pre><code class="hljs sql"><span class="hljs-keyword">WITH</span> per_job <span class="hljs-keyword">AS</span> (
+  <span class="hljs-keyword">SELECT</span> j.id, <span class="hljs-built_in">COUNT</span>(b.id) <span class="hljs-keyword">AS</span> bid_count, j.created_at::<span class="hljs-type">date</span> <span class="hljs-keyword">AS</span> <span class="hljs-keyword">day</span>
+    <span class="hljs-keyword">FROM</span> jobs j
+    <span class="hljs-keyword">LEFT</span> <span class="hljs-keyword">JOIN</span> bids b <span class="hljs-keyword">ON</span> b.job_id <span class="hljs-operator">=</span> j.id
+   <span class="hljs-keyword">WHERE</span> j.created_at <span class="hljs-operator">&gt;=</span> NOW() <span class="hljs-operator">-</span> <span class="hljs-type">INTERVAL</span> <span class="hljs-string">'60 days'</span>
+     <span class="hljs-keyword">AND</span> j.status <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">IN</span> (<span class="hljs-string">'draft'</span>, <span class="hljs-string">'cancelled'</span>)
+   <span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> j.id, j.created_at
+)
+<span class="hljs-keyword">SELECT</span> <span class="hljs-keyword">day</span>, <span class="hljs-built_in">AVG</span>(bid_count) <span class="hljs-keyword">AS</span> avg_bids
+  <span class="hljs-keyword">FROM</span> per_job
+ <span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> <span class="hljs-keyword">day</span> <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> <span class="hljs-keyword">day</span>;
+</code></pre>
+</li>
+<li><strong>Mock shape:</strong> <code>[{ day, avgBids: 2.4 }, ...]</code> plus headline scalar <code>2.7</code>.</li>
+<li><strong>Chart:</strong> Tremor <code>Metric</code> + <code>SparkAreaChart</code>.</li>
+<li><strong>Target investor wants to see:</strong> <strong>3–5 bids per job</strong>. &lt;2 = thin supply; &gt;7 = pros wasting time / signal of low close-rate.</li>
+<li><strong>Why it matters:</strong> It is the customer-perceived value moment. A homeowner posts a job and sees 4 bids in an hour — that is the platform working.</li>
+</ul>
+<h3 id="45-pro-retention-cohort-curve">4.5 Pro retention cohort curve</h3>
+<ul>
+<li><strong>Source:</strong> <code>pros.joinedAt</code> for cohort assignment (week of signup); "active in week N" = pro had ≥1 <code>bid</code> OR ≥1 <code>dispatch_attempt</code> response in calendar week N relative to joinedAt.</li>
+<li><strong>Query sketch (W4 cohort retention — repeat for W8, W12):</strong><pre><code class="hljs sql"><span class="hljs-keyword">WITH</span> cohorts <span class="hljs-keyword">AS</span> (
+  <span class="hljs-keyword">SELECT</span> id, date_trunc(<span class="hljs-string">'week'</span>, joined_at) <span class="hljs-keyword">AS</span> cohort_week <span class="hljs-keyword">FROM</span> pros
+),
+activity <span class="hljs-keyword">AS</span> (
+  <span class="hljs-keyword">SELECT</span> b.pro_id, date_trunc(<span class="hljs-string">'week'</span>, b.created_at) <span class="hljs-keyword">AS</span> active_week <span class="hljs-keyword">FROM</span> bids b
+  <span class="hljs-keyword">UNION</span>
+  <span class="hljs-keyword">SELECT</span> da.pro_id, date_trunc(<span class="hljs-string">'week'</span>, da.notified_at) <span class="hljs-keyword">FROM</span> dispatch_attempts da <span class="hljs-keyword">WHERE</span> da.response <span class="hljs-keyword">IS</span> <span class="hljs-keyword">NOT NULL</span>
+)
+<span class="hljs-keyword">SELECT</span> c.cohort_week,
+       <span class="hljs-built_in">COUNT</span>(<span class="hljs-keyword">DISTINCT</span> c.id) <span class="hljs-keyword">AS</span> cohort_size,
+       <span class="hljs-built_in">COUNT</span>(<span class="hljs-keyword">DISTINCT</span> a.pro_id) <span class="hljs-keyword">FILTER</span> (
+         <span class="hljs-keyword">WHERE</span> a.active_week <span class="hljs-operator">=</span> c.cohort_week <span class="hljs-operator">+</span> <span class="hljs-type">INTERVAL</span> <span class="hljs-string">'4 weeks'</span>
+       ) <span class="hljs-keyword">AS</span> active_w4
+  <span class="hljs-keyword">FROM</span> cohorts c
+  <span class="hljs-keyword">LEFT</span> <span class="hljs-keyword">JOIN</span> activity a <span class="hljs-keyword">ON</span> a.pro_id <span class="hljs-operator">=</span> c.id
+ <span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> c.cohort_week <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> c.cohort_week;
+</code></pre>
+</li>
+<li><strong>Mock shape:</strong> <code>[{ cohort: '2026-W12', size: 5, w4: 5, w8: 4, w12: 4 }, ...]</code></li>
+<li><strong>Chart:</strong> TanStack Table (cohort × week grid) with conditional color-fill (Tremor <code>Tracker</code> reuse) — cells color from red (0%) → emerald (100%).</li>
+<li><strong>Target investor wants to see:</strong> <strong>&gt;80% pro retention</strong> at W4–W12 (Phase 1+2 gate per spec §12). Below 60% = pricing/value-prop problem.</li>
+<li><strong>Why it matters:</strong> Pro retention is the Series A gating number. If pros churn, the marketplace dies. One number, one gate.</li>
+</ul>
+<h3 id="46-client-repeat-rate">4.6 Client repeat rate</h3>
+<ul>
+<li><strong>Source:</strong> <code>jobs.clientUserId</code> grouped; count clients whose 2nd job posted within 90 days of their 1st.</li>
+<li><strong>Query sketch:</strong><pre><code class="hljs sql"><span class="hljs-keyword">WITH</span> client_jobs <span class="hljs-keyword">AS</span> (
+  <span class="hljs-keyword">SELECT</span> client_user_id, created_at,
+         <span class="hljs-built_in">ROW_NUMBER</span>() <span class="hljs-keyword">OVER</span> (<span class="hljs-keyword">PARTITION</span> <span class="hljs-keyword">BY</span> client_user_id <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> created_at) <span class="hljs-keyword">AS</span> job_num
+    <span class="hljs-keyword">FROM</span> jobs <span class="hljs-keyword">WHERE</span> status <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">IN</span> (<span class="hljs-string">'draft'</span>, <span class="hljs-string">'cancelled'</span>)
+)
+<span class="hljs-keyword">SELECT</span>
+  <span class="hljs-built_in">COUNT</span>(<span class="hljs-keyword">DISTINCT</span> cj1.client_user_id) <span class="hljs-keyword">AS</span> clients_with_one,
+  <span class="hljs-built_in">COUNT</span>(<span class="hljs-keyword">DISTINCT</span> cj2.client_user_id) <span class="hljs-keyword">AS</span> clients_with_two_in_90d
+<span class="hljs-keyword">FROM</span> client_jobs cj1
+<span class="hljs-keyword">LEFT</span> <span class="hljs-keyword">JOIN</span> client_jobs cj2
+  <span class="hljs-keyword">ON</span> cj2.client_user_id <span class="hljs-operator">=</span> cj1.client_user_id
+ <span class="hljs-keyword">AND</span> cj2.job_num <span class="hljs-operator">=</span> <span class="hljs-number">2</span>
+ <span class="hljs-keyword">AND</span> cj2.created_at <span class="hljs-operator">&lt;=</span> cj1.created_at <span class="hljs-operator">+</span> <span class="hljs-type">INTERVAL</span> <span class="hljs-string">'90 days'</span>
+<span class="hljs-keyword">WHERE</span> cj1.job_num <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;
+</code></pre>
+</li>
+<li><strong>Mock shape:</strong> scalar <code>0.34</code> (34%).</li>
+<li><strong>Chart:</strong> Tremor <code>ProgressBar</code> to a 40% target, <code>BadgeDelta</code> for week-over-week change.</li>
+<li><strong>Target investor wants to see:</strong> <strong>30%+ within 6 months of launch</strong>. Repeat clients are 5× cheaper to serve and the prerequisite for any LTV story.</li>
+<li><strong>Why it matters:</strong> The competitive moat. Angi/Thumbtack actively suppress repeat (they want to keep selling leads). Sherpa Pros' thesis is to <em>encourage</em> repeat — this metric proves the model is pulling.</li>
+</ul>
+<h3 id="47-nps-pro--client">4.7 NPS (Pro + Client)</h3>
+<ul>
+<li><strong>Source:</strong> Currently NO NPS table. Need to add <code>nps_responses</code> table (proposed in §6 assumptions). For Phase 0, hand-entered weekly numbers from the 10-minute beta call go into a JSON file or a single-row admin form.</li>
+<li><strong>Mock shape:</strong> <code>[{ week: '2026-W12', proNps: 60, clientNps: 45 }, ...]</code></li>
+<li><strong>Chart:</strong> Tremor <code>LineChart</code> two series, Y axis -100 to +100, reference line at 50 (Phase 1 gate).</li>
+<li><strong>Target investor wants to see:</strong> <strong>NPS &gt;50</strong> for both sides (Phase 1 gate, spec §12). Pro NPS lagging client NPS = supply-side neglect; the inverse = pricing too cheap.</li>
+<li><strong>Why it matters:</strong> NPS is the only qualitative-style metric investors trust at low N. Two numbers, weekly, no excuses.</li>
+</ul>
+<h3 id="48-wiseman-usage-telemetry">4.8 Wiseman usage telemetry</h3>
+<ul>
+<li><strong>Source:</strong> Currently NO usage events table. The Wiseman calls happen in <code>src/lib/wiseman-bridge/client.ts</code> and downstream in <code>src/lib/dispatch-wiseman/</code>. Need a <code>wiseman_events</code> table (proposed in §6 assumptions) capturing <code>{event_type, user_id, job_id, latency_ms, created_at}</code>.</li>
+<li><strong>Event types tracked:</strong> <code>quote_validation</code> (bid vs. Wiseman estimate deviation check), <code>code_check</code> (NEC/IRC/MA Electrical / NH RSA validation), <code>scope_approval</code> (homeowner accepted Wiseman-generated scope of work).</li>
+<li><strong>Query sketch:</strong><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> date_trunc(<span class="hljs-string">'day'</span>, created_at) <span class="hljs-keyword">AS</span> <span class="hljs-keyword">day</span>,
+       event_type,
+       <span class="hljs-built_in">COUNT</span>(<span class="hljs-operator">*</span>) <span class="hljs-keyword">AS</span> events
+  <span class="hljs-keyword">FROM</span> wiseman_events
+ <span class="hljs-keyword">WHERE</span> created_at <span class="hljs-operator">&gt;=</span> NOW() <span class="hljs-operator">-</span> <span class="hljs-type">INTERVAL</span> <span class="hljs-string">'30 days'</span>
+ <span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> <span class="hljs-number">1</span>, <span class="hljs-number">2</span> <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> <span class="hljs-number">1</span>;
+</code></pre>
+</li>
+<li><strong>Mock shape:</strong> 3 series, 30 daily points each.</li>
+<li><strong>Chart:</strong> Three Tremor <code>SparkLineChart</code> cards side-by-side. Each card: today's value + 7d delta + 30d sparkline.</li>
+<li><strong>Target investor wants to see:</strong> <strong>growing daily volume</strong> + a healthy ratio (1 quote-validation per bid, 1 code-check per electrical/plumbing job, 1 scope-approval per accepted job).</li>
+<li><strong>Why it matters:</strong> Wiseman is the moat (per spec §10 R7). Telemetry proves it isn't vaporware — every job actually routes through the AI layer.</li>
+</ul>
+<h3 id="49-funnel-posted-→-reviewed">4.9 Funnel (posted → reviewed)</h3>
+<ul>
+<li><strong>Source:</strong> All from <code>jobs</code>, <code>dispatch_attempts</code>, <code>bids</code>, <code>payments</code>, <code>ratings</code>.</li>
+<li><strong>Stages:</strong><ol>
+<li><strong>Posted:</strong> <code>jobs.status != 'draft'</code>, in 30d window</li>
+<li><strong>Matched:</strong> has ≥1 <code>dispatch_attempts</code> for that job</li>
+<li><strong>Bid:</strong> has ≥1 <code>bids</code> for that job</li>
+<li><strong>Accepted:</strong> has ≥1 <code>bids.status = 'accepted'</code></li>
+<li><strong>Completed:</strong> <code>jobs.status = 'completed'</code></li>
+<li><strong>Paid:</strong> has <code>payments.status = 'released'</code></li>
+<li><strong>Reviewed:</strong> has <code>ratings</code> row</li>
+</ol>
+</li>
+<li><strong>Query sketch:</strong> 7 separate <code>COUNT(DISTINCT job_id)</code> queries <code>UNION ALL</code>-ed, or one CTE chain. Order matters: each stage's denominator is the prior stage's numerator.</li>
+<li><strong>Mock shape:</strong> <code>[{ stage: 'Posted', count: 30 }, { stage: 'Matched', count: 28 }, ..., { stage: 'Reviewed', count: 14 }]</code></li>
+<li><strong>Chart:</strong> Tremor <code>BarList</code> (horizontal stepped bars; built-in decreasing visualization). Stretch goal: replace with proper Sankey post-Phase-1 using <code>react-flow</code> or <code>@nivo/sankey</code>.</li>
+<li><strong>Target investor wants to see:</strong> <strong>monotonic decline</strong> with no drop &gt;40% at any single stage. Cliff at "Bid → Accepted" = pricing/quality issue. Cliff at "Completed → Paid" = Stripe Connect issue. Cliff at "Paid → Reviewed" = review prompt friction.</li>
+<li><strong>Why it matters:</strong> Funnel is where investors locate operating leverage. "Where do you lose people?" is question 11 of every marketplace pitch.</li>
+</ul>
+<hr>
+<h2 id="5-headline-kpi-strip-row-1">5. Headline KPI strip (Row 1)</h2>
+<table>
+<thead>
+<tr>
+<th>Card</th>
+<th>Metric</th>
+<th>Source</th>
+<th>Target</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>GMV (90d)</td>
+<td>$X total</td>
+<td>sum payments.amountCents released_at &gt;= NOW() - 90d</td>
+<td>Phase 1 = $200K cumulative</td>
+</tr>
+<tr>
+<td>Take-rate captured (90d)</td>
+<td>$X commission</td>
+<td>sum payments.commissionCents</td>
+<td>5% of GMV (beta)</td>
+</tr>
+<tr>
+<td>Active pros</td>
+<td>count pros where onboardingStatus='active'</td>
+<td>pros table</td>
+<td>Phase 0 = 10+, Phase 1 = 50+</td>
+</tr>
+<tr>
+<td>NPS (latest week)</td>
+<td>Pro X / Client Y</td>
+<td>latest nps_responses row</td>
+<td>&gt;50</td>
+</tr>
+</tbody></table>
+<p>Each uses Tremor <code>Metric</code> + <code>BadgeDelta</code> for week-over-week. Sparkline beneath via <code>SparkAreaChart</code>.</p>
+<hr>
+<h2 id="6-schema-fields-assumed-not-in-current-drizzle-schemats">6. Schema fields assumed (NOT in current <code>drizzle-schema.ts</code>)</h2>
+<p>The current schema is sufficient for ~60% of the dashboard. The following additions are needed for the rest. <strong>Coordinator: please verify and add migrations before live data flows.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field / Table</th>
+<th>Used by widget(s)</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>pros.is_founding_pro: boolean</code> (or extend <code>badgeTier</code> enum to include <code>'founding'</code>)</td>
+<td>4.2 Take-rate split</td>
+<td>Identifies the beta-cohort 5% take-rate pros vs. standard 10% pros.</td>
+</tr>
+<tr>
+<td><code>nps_responses</code> table: <code>id, user_id, role ('pro'|'client'), score (0-10), comment, created_at</code></td>
+<td>4.7 NPS, Row 1 KPI</td>
+<td>NPS data has nowhere to live today.</td>
+</tr>
+<tr>
+<td><code>wiseman_events</code> table: <code>id, event_type, user_id, job_id, latency_ms, payload jsonb, created_at</code></td>
+<td>4.8 Wiseman telemetry</td>
+<td>No telemetry capture exists today.</td>
+</tr>
+<tr>
+<td><code>jobs.matched_at: timestamp</code> (denormalization) — convenience column set when first <code>dispatch_attempts.response='accept'</code> lands</td>
+<td>4.3 liquidity, 4.9 funnel</td>
+<td>Avoids LATERAL joins on every dashboard refresh. Optional.</td>
+</tr>
+<tr>
+<td><code>hubs.metro_label: varchar</code> — human-readable metro name (current <code>region</code> is short code like 'NH')</td>
+<td>All per-metro breakouts</td>
+<td>"Portsmouth", "Manchester", "Portland", "Boston" labels for charts.</td>
+</tr>
+</tbody></table>
+<p>The implementation page below uses the schema as-is, with TODO comments at every spot where these additions would replace the mock.</p>
+<hr>
+<h2 id="7-auth-gate">7. Auth gate</h2>
+<p><code>requireRole()</code> only supports <code>pro | client | pm | tenant</code>. There is no "admin" role yet. Two options:</p>
+<ol>
+<li><strong>Quick (Phase 0):</strong> Hard-code Phyrom's Clerk user ID in env <code>ADMIN_USER_IDS</code> (comma-separated) and gate via a small <code>requireAdmin()</code> helper that wraps <code>currentUser()</code> and checks <code>userId IN ADMIN_USER_IDS</code>. Implementation includes this helper inline in the page (so we don't modify files outside the allowed scope).</li>
+<li><strong>Proper (Phase 1+):</strong> Add <code>'admin'</code> to <code>UserRole</code> union and wire through <code>roles.ts</code>, <code>require-role.ts</code>. Defer.</li>
+</ol>
+<p>Implementation uses option 1, with a TODO note for the coordinator.</p>
+<hr>
+<h2 id="8-refresh--caching">8. Refresh &amp; caching</h2>
+<ul>
+<li>Server Component default — re-renders on each request.</li>
+<li>Add <code>export const revalidate = 300;</code> (5-min ISR) so investor link doesn't hammer the DB.</li>
+<li>Manual refresh button in header (forces <code>router.refresh()</code>).</li>
+<li>Heavy queries can be wrapped in <code>unstable_cache</code> later if needed.</li>
+</ul>
+<hr>
+<h2 id="9-phased-rollout--recommended-priority-order-for-replacing-mock-with-live-data">9. Phased rollout — recommended priority order for replacing mock with live data</h2>
+<p>As beta cohort data starts flowing, swap mocks in this order (highest signal first):</p>
+<ol>
+<li><strong>GMV time-series</strong> (4.1) — first dollar through Stripe Connect = first real chart. Day-1 demand from investors.</li>
+<li><strong>Active pros count</strong> (Row 1) — already queryable from <code>pros</code> today; trivial to wire live.</li>
+<li><strong>Funnel</strong> (4.9) — purely derived from existing tables; biggest "is this real" signal for investors.</li>
+<li><strong>Avg bids per job</strong> (4.4) — also queryable today; small N is fine, the trendline matters.</li>
+<li><strong>Pro liquidity ratio</strong> (4.3) — needs <code>dispatch_attempts</code> data, which flows the moment real jobs route.</li>
+<li><strong>Take-rate capture</strong> (4.2) — needs <code>pros.is_founding_pro</code> migration first; then trivial.</li>
+<li><strong>Client repeat rate</strong> (4.6) — meaningful only at N&gt;30 jobs. Mock until M2.</li>
+<li><strong>Pro retention cohort</strong> (4.5) — meaningful only at N&gt;4 weekly cohorts. Mock until M2.</li>
+<li><strong>NPS time series</strong> (4.7) — needs <code>nps_responses</code> table + weekly survey send (Resend or Twilio). Migration first.</li>
+<li><strong>Wiseman usage telemetry</strong> (4.8) — needs <code>wiseman_events</code> table + instrumentation in <code>src/lib/wiseman-bridge/</code>. Migration + dev work — defer to Phase 1.</li>
+</ol>
+<hr>
+<h2 id="10-open-questions-for-phyrom">10. Open questions for Phyrom</h2>
+<ol>
+<li>Should the dashboard be <strong>public</strong> (link in data room, anyone with URL can view) or <strong>gated</strong> (Clerk-authed admin only)? Implementation defaults to <strong>gated</strong>; if public, strip admin-layout chrome and add a <code>/public-traction</code> route variant.</li>
+<li><strong>Per-trade breakout</strong> — granularity? Group by 7-category bucket (Plumbing/Electrical/HVAC/Carpentry/etc.) or by full 37-trade list?</li>
+<li><strong>Investor-friendly currency formatting</strong> — show $1.2K, $12.4K, $1.2M short form? Implementation uses short form (more skim-able).</li>
+<li><strong>Phase 0 gate progress widget</strong> — should the footer literally show "$X of $250K committed" with a progress bar? Implementation includes a placeholder; needs real funding-tracker data source.</li>
+</ol>
+<hr>
+<h2 id="appendix-a--file-map">Appendix A — File map</h2>
+<ul>
+<li>Page: <code>src/app/(dashboard)/admin/investor-metrics/page.tsx</code></li>
+<li>Mock generators (inline in page, top of file)</li>
+<li>Live queries (inline; will migrate to <code>src/db/queries/investor-metrics.ts</code> once data flows)</li>
+<li>This design doc: <code>docs/pitch/metrics-dashboard-design.md</code></li>
+</ul>
+
+	
+
+
+</body>
+</html>

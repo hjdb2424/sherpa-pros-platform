@@ -1,0 +1,1383 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2026 04 25 production launch hub architecture design — Sherpa Pros</title>
+<link rel="icon" href="../../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="2026-04-25-production-launch-hub-architecture-design.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="sherpa-pros--production-launch--hub-beta--migration-architecture">Sherpa Pros — Production Launch + Hub Beta + Migration Architecture</h1>
+<p><strong>Date:</strong> 2026-04-25
+<strong>Status:</strong> Approved</p>
+<h2 id="overview">Overview</h2>
+<p>Single combined spec to take Sherpa Pros from beta-with-mock-data to production-with-real-money. Three pillars built simultaneously:</p>
+<ol>
+<li><strong>Production integrations</strong> — real Stripe payments, real Twilio messaging, real file storage</li>
+<li><strong>Sherpa Hub beta</strong> — warehouse inventory with QR scanning, RFID access, pick-list workflow</li>
+<li><strong>Migration-ready architecture</strong> — service abstraction layer so Vercel → containers is a config change</li>
+</ol>
+<h2 id="current-state-from-audit">Current State (from audit)</h2>
+<table>
+<thead>
+<tr>
+<th>Integration</th>
+<th>Status</th>
+<th>Gap</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Neon PostgreSQL</td>
+<td>LIVE</td>
+<td>Production ready</td>
+</tr>
+<tr>
+<td>Google Maps</td>
+<td>LIVE</td>
+<td>Production ready</td>
+</tr>
+<tr>
+<td>Google OAuth</td>
+<td>LIVE</td>
+<td>Working with mock fallback</td>
+</tr>
+<tr>
+<td>Dispatch Wiseman</td>
+<td>LIVE</td>
+<td>7-factor algorithm active</td>
+</tr>
+<tr>
+<td>Zinc API (Home Depot)</td>
+<td>LIVE</td>
+<td>zn_live_ key configured</td>
+</tr>
+<tr>
+<td>Stripe</td>
+<td>TEST MODE</td>
+<td>Placeholders, no real capture/payout</td>
+</tr>
+<tr>
+<td>Twilio</td>
+<td>CREDENTIALS SET</td>
+<td>SDK not installed, mock service only</td>
+</tr>
+<tr>
+<td>Uber Connect</td>
+<td>CREDENTIALS SET</td>
+<td>All API calls return mock</td>
+</tr>
+<tr>
+<td>File Storage</td>
+<td>NONE</td>
+<td>No S3/R2/Blob configured</td>
+</tr>
+<tr>
+<td>Clerk Auth</td>
+<td>NOT WIRED</td>
+<td>Package installed, not active</td>
+</tr>
+<tr>
+<td>Tremendous</td>
+<td>PENDING</td>
+<td>Awaiting API approval</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="1-service-abstraction-layer">1. Service Abstraction Layer</h2>
+<h3 id="pattern">Pattern</h3>
+<p>Every external integration follows the same pattern:</p>
+<pre><code class="hljs typescript"><span class="hljs-comment">// src/lib/services/interfaces.ts</span>
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">PaymentService</span> {
+  <span class="hljs-title function_">createConnectedAccount</span>(<span class="hljs-attr">userId</span>: <span class="hljs-built_in">string</span>, <span class="hljs-attr">email</span>: <span class="hljs-built_in">string</span>): <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-title class_">ConnectAccount</span>&gt;;
+  <span class="hljs-title function_">capturePayment</span>(<span class="hljs-attr">jobId</span>: <span class="hljs-built_in">string</span>, <span class="hljs-attr">amountCents</span>: <span class="hljs-built_in">number</span>): <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-title class_">PaymentResult</span>&gt;;
+  <span class="hljs-title function_">releasePayout</span>(<span class="hljs-attr">paymentId</span>: <span class="hljs-built_in">string</span>, <span class="hljs-attr">proAccountId</span>: <span class="hljs-built_in">string</span>, <span class="hljs-attr">commissionRate</span>: <span class="hljs-built_in">number</span>): <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-title class_">PayoutResult</span>&gt;;
+  <span class="hljs-comment">// ...</span>
+}
+
+<span class="hljs-comment">// src/lib/services/payments/index.ts</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">getPaymentService</span>(<span class="hljs-params"></span>): <span class="hljs-title class_">PaymentService</span> {
+  <span class="hljs-keyword">if</span> (process.<span class="hljs-property">env</span>.<span class="hljs-property">STRIPE_SECRET_KEY</span>?.<span class="hljs-title function_">startsWith</span>(<span class="hljs-string">'sk_live'</span>) || process.<span class="hljs-property">env</span>.<span class="hljs-property">STRIPE_SECRET_KEY</span>?.<span class="hljs-title function_">startsWith</span>(<span class="hljs-string">'sk_test'</span>)) {
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StripePaymentService</span>();
+  }
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">MockPaymentService</span>();
+}
+</code></pre>
+<h3 id="service-directory">Service Directory</h3>
+<pre><code>src/lib/services/
+  interfaces.ts              # All service interfaces in one file
+  payments/
+    index.ts                 # getPaymentService()
+    stripe-service.ts        # Real Stripe Connect implementation
+    mock-service.ts          # Dev/test mock
+  messaging/
+    index.ts                 # getMessagingService()
+    twilio-service.ts        # Real Twilio Conversations
+    mock-service.ts          # In-memory mock (existing)
+  delivery/
+    index.ts                 # getDeliveryService()
+    uber-service.ts          # Real Uber Connect
+    doordash-service.ts      # Real DoorDash Drive
+    mock-service.ts          # Mock estimates
+  storage/
+    index.ts                 # getStorageService()
+    r2-service.ts            # Cloudflare R2 (S3-compatible)
+    mock-service.ts          # Local filesystem mock
+  hub/
+    index.ts                 # getHubService()
+    inventory-service.ts     # Inventory CRUD + QR validation
+    access-service.ts        # RFID/QR entry/exit logging
+    equipment-service.ts     # Rental tracking
+  queue/
+    index.ts                 # getQueueService()
+    in-process-queue.ts      # Current: runs in-process
+    qstash-queue.ts          # Future: Upstash QStash
+</code></pre>
+<h3 id="migration-rules-enforced-now">Migration Rules (enforced now)</h3>
+<ol>
+<li><strong>No direct DB imports in pages/components.</strong> All data through services or <code>src/db/queries/</code>.</li>
+<li><strong>Environment-based service selection.</strong> Each <code>getXService()</code> reads env vars to pick implementation.</li>
+<li><strong>Stateless API routes.</strong> No in-memory session state. Neon + cookies only.</li>
+<li><strong>Queue-ready operations.</strong> Long tasks (order placement, delivery polling, notifications) go through <code>src/lib/services/queue/</code> — runs in-process now, becomes QStash/BullMQ when containerized.</li>
+<li><strong>Health check.</strong> <code>/api/health</code> returns status of every service. Becomes container health probe later.</li>
+</ol>
+<hr>
+<h2 id="2-real-payments-stripe-connect">2. Real Payments (Stripe Connect)</h2>
+<h3 id="dependencies">Dependencies</h3>
+<ul>
+<li><code>stripe</code> package (already in package.json v22.0.1)</li>
+<li>Environment: switch <code>sk_test_</code> → <code>sk_live_</code> when ready (one env var)</li>
+</ul>
+<h3 id="connect-onboarding-flow">Connect Onboarding Flow</h3>
+<pre><code>Pro signs up → Platform creates Stripe Connected Account (Standard type)
+  → Pro completes Stripe onboarding (hosted form)
+  → Webhook: account.updated → mark pro.stripe_account_id + stripe_onboarded = true
+  → Pro can now receive payouts
+</code></pre>
+<h3 id="payment-flow-per-job-milestone">Payment Flow (per job milestone)</h3>
+<pre><code>Client funds milestone
+  → PaymentIntent created (amount = milestone + service_fee)
+  → Stripe holds funds
+  → Pro completes work + client approves
+  → Platform creates Transfer to pro's connected account
+  → Transfer amount = milestone - commission
+  → Commission stays in platform Stripe balance
+</code></pre>
+<h3 id="commission-rates-already-in-commissionts">Commission Rates (already in commission.ts)</h3>
+<ul>
+<li>Pro Standard: 12%</li>
+<li>Pro Flex: 18% (includes insurance allocation)</li>
+<li>Pro Gold: 8%</li>
+<li>Pro Silver: 12%</li>
+<li>Pro Bronze: 12%</li>
+</ul>
+<h3 id="database-changes">Database Changes</h3>
+<ul>
+<li><code>users.stripe_account_id</code> — VARCHAR, nullable</li>
+<li><code>users.stripe_onboarded</code> — BOOLEAN, default false</li>
+<li><code>payments</code> table already exists — add <code>stripe_payment_intent_id</code>, <code>stripe_transfer_id</code></li>
+</ul>
+<h3 id="api-endpoints">API Endpoints</h3>
+<ul>
+<li><code>POST /api/stripe/connect</code> — create connected account, return onboarding URL</li>
+<li><code>POST /api/stripe/webhooks</code> — handle payment_intent.succeeded, account.updated, transfer.created, charge.dispute.created</li>
+<li><code>POST /api/payments/capture</code> — capture payment for milestone</li>
+<li><code>POST /api/payments/release</code> — release payout to pro</li>
+</ul>
+<h3 id="webhook-events-to-handle">Webhook Events to Handle</h3>
+<ul>
+<li><code>account.updated</code> — pro onboarding complete</li>
+<li><code>payment_intent.succeeded</code> — client payment captured</li>
+<li><code>transfer.created</code> — pro payout confirmed</li>
+<li><code>charge.dispute.created</code> — flag for manual review</li>
+<li><code>payout.failed</code> — alert pro, retry</li>
+</ul>
+<hr>
+<h2 id="3-real-messaging-twilio">3. Real Messaging (Twilio)</h2>
+<h3 id="dependencies-1">Dependencies</h3>
+<ul>
+<li>Install <code>twilio</code> package (not currently in package.json)</li>
+</ul>
+<h3 id="implementation">Implementation</h3>
+<ul>
+<li>Wire <code>twilioService</code> in <code>src/lib/communication/twilio-service.ts</code></li>
+<li>Replace TODO stubs with real Conversations API calls:<ul>
+<li><code>createConversation(jobId, proPhone, clientPhone)</code> → Twilio Conversation</li>
+<li><code>sendMessage(conversationSid, body, senderRole)</code> → Message</li>
+<li><code>getMessages(conversationSid)</code> → Message[]</li>
+</ul>
+</li>
+<li>SMS sync: when client sends in-app message, pro gets SMS and vice versa</li>
+<li>Webhook: <code>/api/chat/twilio-webhook</code> for incoming SMS → route to conversation</li>
+</ul>
+<h3 id="existing-pattern">Existing Pattern</h3>
+<p>The mock/real fallback already exists in <code>src/lib/communication/index.ts</code>. Just need to implement the real service.</p>
+<hr>
+<h2 id="4-file-storage-cloudflare-r2">4. File Storage (Cloudflare R2)</h2>
+<h3 id="why-r2">Why R2</h3>
+<ul>
+<li>S3-compatible API (zero code changes to migrate to AWS S3 or DO Spaces)</li>
+<li>Free egress (saves money on image-heavy app)</li>
+<li>Works with any provider later</li>
+<li>Presigned URLs for direct client upload (no server bottleneck)</li>
+</ul>
+<h3 id="implementation-1">Implementation</h3>
+<ul>
+<li>Bucket: <code>sherpa-pros-uploads</code></li>
+<li>Path convention: <code>{type}/{userId}/{timestamp}-{filename}</code><ul>
+<li>Types: <code>verification-photos</code>, <code>job-photos</code>, <code>receipts</code>, <code>documents</code>, <code>profile-photos</code></li>
+</ul>
+</li>
+<li>Presigned upload URL generation in <code>/api/uploads/presign</code></li>
+<li>Store resulting URL in Neon (not the file itself)</li>
+</ul>
+<h3 id="used-by">Used By</h3>
+<ul>
+<li>Pro verification (3-5 work photos during onboarding)</li>
+<li>OCR Smart Scan (receipt/document uploads)</li>
+<li>Job photos (before/during/after)</li>
+<li>Pro profile photos</li>
+<li>Hub shipment documentation</li>
+</ul>
+<hr>
+<h2 id="5-sherpa-hub-beta--warehouse-system">5. Sherpa Hub Beta — Warehouse System</h2>
+<h3 id="core-concept">Core Concept</h3>
+<p>Pros have warehouse access. They arrive, badge in, pick materials for their job using the app + QR codes, and leave. Inventory is tracked in real-time. End of day, a laborer reconciles counts.</p>
+<h3 id="the-pick-flow">The Pick Flow</h3>
+<pre><code>1. PRO ARRIVES
+   └── Taps RFID badge at door reader
+   └── System logs entry: pro_id, hub_id, timestamp, method: "rfid"
+   └── Door unlocks (future: automated; now: manual unlock after badge tap)
+
+2. PRO OPENS APP → "Pick Materials"
+   └── Selects active job from list
+   └── Sees pick list (from job_materials table)
+   └── Each item shows: name, quantity needed, bin location, QR code to scan
+
+3. PRO PICKS ITEMS
+   └── Walks to bin location (e.g., "Aisle 3, Shelf B, Bin 12")
+   └── Scans QR code on bin/item with phone camera
+   └── App validates: correct item? correct quantity?
+   └── App deducts from hub_inventory.quantity_on_hand
+   └── Creates hub_inventory_transaction (type: "picked", reference: job_id)
+
+4. PRO CHECKS OUT
+   └── App shows summary: "Picked 5 items for Job #1234"
+   └── Pro confirms → items assigned to job
+   └── Pro exits warehouse
+   └── RFID logs exit: pro_id, hub_id, timestamp
+
+5. END OF DAY RECONCILIATION
+   └── Laborer opens admin app → "Inventory Count"
+   └── Walks aisles, counts items, enters actual counts
+   └── System compares: expected vs actual
+   └── Discrepancies flagged for review
+   └── Reconciliation report generated
+</code></pre>
+<h3 id="qr-code-system">QR Code System</h3>
+<p>Each inventory item/bin gets a QR code containing:</p>
+<pre><code class="hljs json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">"type"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"hub_item"</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">"hub_id"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"hub-001"</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">"item_id"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"item-uuid"</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">"sku"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"HD-12345"</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">"bin"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"A3-B-12"</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<p>QR codes are generated server-side, printed on labels. The app's camera scanner reads them and validates against the pick list.</p>
+<h3 id="database--migration-011">Database — Migration 011</h3>
+<pre><code class="hljs sql"><span class="hljs-comment">-- Hub locations</span>
+<span class="hljs-keyword">CREATE TABLE</span> hub_locations (
+  id UUID <span class="hljs-keyword">PRIMARY KEY</span> <span class="hljs-keyword">DEFAULT</span> gen_random_uuid(),
+  hub_id UUID <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">REFERENCES</span> hubs(id),
+  name <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">100</span>) <span class="hljs-keyword">NOT NULL</span>,
+  address TEXT <span class="hljs-keyword">NOT NULL</span>,
+  type <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">20</span>) <span class="hljs-keyword">DEFAULT</span> <span class="hljs-string">'warehouse'</span>,
+  operating_hours JSONB,
+  is_active <span class="hljs-type">BOOLEAN</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-literal">true</span>,
+  created_at TIMESTAMPTZ <span class="hljs-keyword">DEFAULT</span> now()
+);
+
+<span class="hljs-comment">-- Inventory items</span>
+<span class="hljs-keyword">CREATE TABLE</span> hub_inventory (
+  id UUID <span class="hljs-keyword">PRIMARY KEY</span> <span class="hljs-keyword">DEFAULT</span> gen_random_uuid(),
+  hub_id UUID <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">REFERENCES</span> hubs(id),
+  sku <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">50</span>) <span class="hljs-keyword">NOT NULL</span>,
+  name <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">200</span>) <span class="hljs-keyword">NOT NULL</span>,
+  category <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">60</span>),
+  description TEXT,
+  unit <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">20</span>) <span class="hljs-keyword">DEFAULT</span> <span class="hljs-string">'each'</span>,
+  quantity_on_hand <span class="hljs-type">INTEGER</span> <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-number">0</span>,
+  reorder_point <span class="hljs-type">INTEGER</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-number">5</span>,
+  reorder_quantity <span class="hljs-type">INTEGER</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-number">20</span>,
+  bin_location <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">30</span>),
+  unit_cost_cents <span class="hljs-type">INTEGER</span>,
+  supplier <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">100</span>),
+  supplier_sku <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">50</span>),
+  qr_code_data TEXT,
+  last_counted_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ <span class="hljs-keyword">DEFAULT</span> now(),
+  updated_at TIMESTAMPTZ <span class="hljs-keyword">DEFAULT</span> now(),
+  <span class="hljs-keyword">UNIQUE</span>(hub_id, sku)
+);
+<span class="hljs-keyword">CREATE</span> INDEX idx_hub_inventory_hub <span class="hljs-keyword">ON</span> hub_inventory(hub_id);
+<span class="hljs-keyword">CREATE</span> INDEX idx_hub_inventory_sku <span class="hljs-keyword">ON</span> hub_inventory(sku);
+<span class="hljs-keyword">CREATE</span> INDEX idx_hub_inventory_bin <span class="hljs-keyword">ON</span> hub_inventory(bin_location);
+<span class="hljs-keyword">CREATE</span> INDEX idx_hub_inventory_low_stock <span class="hljs-keyword">ON</span> hub_inventory(hub_id) 
+  <span class="hljs-keyword">WHERE</span> quantity_on_hand <span class="hljs-operator">&lt;=</span> reorder_point;
+
+<span class="hljs-comment">-- Inventory transactions (immutable ledger)</span>
+<span class="hljs-keyword">CREATE TABLE</span> hub_inventory_transactions (
+  id UUID <span class="hljs-keyword">PRIMARY KEY</span> <span class="hljs-keyword">DEFAULT</span> gen_random_uuid(),
+  hub_id UUID <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">REFERENCES</span> hubs(id),
+  item_id UUID <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">REFERENCES</span> hub_inventory(id),
+  type <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">20</span>) <span class="hljs-keyword">NOT NULL</span>,
+    <span class="hljs-comment">-- received, picked, returned, adjusted, kitted, counted, damaged, scrapped</span>
+  quantity <span class="hljs-type">INTEGER</span> <span class="hljs-keyword">NOT NULL</span>,
+    <span class="hljs-comment">-- positive = add, negative = remove</span>
+  reference_type <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">20</span>),
+    <span class="hljs-comment">-- job, shipment, count, manual</span>
+  reference_id UUID,
+  user_id UUID <span class="hljs-keyword">REFERENCES</span> users(id),
+  notes TEXT,
+  created_at TIMESTAMPTZ <span class="hljs-keyword">DEFAULT</span> now()
+);
+<span class="hljs-keyword">CREATE</span> INDEX idx_hub_txn_item <span class="hljs-keyword">ON</span> hub_inventory_transactions(item_id);
+<span class="hljs-keyword">CREATE</span> INDEX idx_hub_txn_type <span class="hljs-keyword">ON</span> hub_inventory_transactions(type);
+<span class="hljs-keyword">CREATE</span> INDEX idx_hub_txn_created <span class="hljs-keyword">ON</span> hub_inventory_transactions(created_at <span class="hljs-keyword">DESC</span>);
+
+<span class="hljs-comment">-- Access control log</span>
+<span class="hljs-keyword">CREATE TABLE</span> hub_access_log (
+  id UUID <span class="hljs-keyword">PRIMARY KEY</span> <span class="hljs-keyword">DEFAULT</span> gen_random_uuid(),
+  hub_id UUID <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">REFERENCES</span> hubs(id),
+  user_id UUID <span class="hljs-keyword">REFERENCES</span> users(id),
+  visitor_name <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">100</span>),
+  action <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">10</span>) <span class="hljs-keyword">NOT NULL</span>,
+    <span class="hljs-comment">-- entry, exit</span>
+  <span class="hljs-keyword">method</span> <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">20</span>) <span class="hljs-keyword">NOT NULL</span>,
+    <span class="hljs-comment">-- rfid, qr, manual, visitor_badge</span>
+  badge_id <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">50</span>),
+  <span class="hljs-type">timestamp</span> TIMESTAMPTZ <span class="hljs-keyword">DEFAULT</span> now()
+);
+<span class="hljs-keyword">CREATE</span> INDEX idx_hub_access_hub <span class="hljs-keyword">ON</span> hub_access_log(hub_id);
+<span class="hljs-keyword">CREATE</span> INDEX idx_hub_access_user <span class="hljs-keyword">ON</span> hub_access_log(user_id);
+<span class="hljs-keyword">CREATE</span> INDEX idx_hub_access_time <span class="hljs-keyword">ON</span> hub_access_log(<span class="hljs-type">timestamp</span> <span class="hljs-keyword">DESC</span>);
+
+<span class="hljs-comment">-- Equipment inventory</span>
+<span class="hljs-keyword">CREATE TABLE</span> hub_equipment (
+  id UUID <span class="hljs-keyword">PRIMARY KEY</span> <span class="hljs-keyword">DEFAULT</span> gen_random_uuid(),
+  hub_id UUID <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">REFERENCES</span> hubs(id),
+  name <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">200</span>) <span class="hljs-keyword">NOT NULL</span>,
+  category <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">60</span>),
+  serial_number <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">100</span>),
+  <span class="hljs-keyword">condition</span> <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">20</span>) <span class="hljs-keyword">DEFAULT</span> <span class="hljs-string">'good'</span>,
+    <span class="hljs-comment">-- new, good, fair, needs_repair, retired</span>
+  status <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">20</span>) <span class="hljs-keyword">DEFAULT</span> <span class="hljs-string">'available'</span>,
+    <span class="hljs-comment">-- available, rented, maintenance, retired</span>
+  daily_rate_cents <span class="hljs-type">INTEGER</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-number">0</span>,
+  replacement_value_cents <span class="hljs-type">INTEGER</span>,
+  last_maintenance_at TIMESTAMPTZ,
+  notes TEXT,
+  created_at TIMESTAMPTZ <span class="hljs-keyword">DEFAULT</span> now()
+);
+
+<span class="hljs-comment">-- Equipment rentals</span>
+<span class="hljs-keyword">CREATE TABLE</span> hub_rentals (
+  id UUID <span class="hljs-keyword">PRIMARY KEY</span> <span class="hljs-keyword">DEFAULT</span> gen_random_uuid(),
+  equipment_id UUID <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">REFERENCES</span> hub_equipment(id),
+  pro_id UUID <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">REFERENCES</span> users(id),
+  job_id UUID <span class="hljs-keyword">REFERENCES</span> jobs(id),
+  checkout_at TIMESTAMPTZ <span class="hljs-keyword">DEFAULT</span> now(),
+  expected_return TIMESTAMPTZ <span class="hljs-keyword">NOT NULL</span>,
+  actual_return TIMESTAMPTZ,
+  condition_out <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">20</span>),
+  condition_in <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">20</span>),
+  daily_rate_cents <span class="hljs-type">INTEGER</span> <span class="hljs-keyword">NOT NULL</span>,
+  total_charged_cents <span class="hljs-type">INTEGER</span>,
+  notes TEXT,
+  created_at TIMESTAMPTZ <span class="hljs-keyword">DEFAULT</span> now()
+);
+<span class="hljs-keyword">CREATE</span> INDEX idx_hub_rentals_equipment <span class="hljs-keyword">ON</span> hub_rentals(equipment_id);
+<span class="hljs-keyword">CREATE</span> INDEX idx_hub_rentals_pro <span class="hljs-keyword">ON</span> hub_rentals(pro_id);
+
+<span class="hljs-comment">-- Shipments (inbound receiving + outbound shipping)</span>
+<span class="hljs-keyword">CREATE TABLE</span> hub_shipments (
+  id UUID <span class="hljs-keyword">PRIMARY KEY</span> <span class="hljs-keyword">DEFAULT</span> gen_random_uuid(),
+  hub_id UUID <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">REFERENCES</span> hubs(id),
+  type <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">10</span>) <span class="hljs-keyword">NOT NULL</span>,
+    <span class="hljs-comment">-- inbound, outbound</span>
+  carrier <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">50</span>),
+  tracking_number <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">100</span>),
+  status <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">20</span>) <span class="hljs-keyword">DEFAULT</span> <span class="hljs-string">'pending'</span>,
+    <span class="hljs-comment">-- pending, in_transit, received, shipped, delivered</span>
+  items JSONB <span class="hljs-keyword">DEFAULT</span> <span class="hljs-string">'[]'</span>,
+    <span class="hljs-comment">-- [{item_id, sku, quantity_expected, quantity_received}]</span>
+  job_id UUID <span class="hljs-keyword">REFERENCES</span> jobs(id),
+  supplier_order_id UUID <span class="hljs-keyword">REFERENCES</span> material_orders(id),
+  received_by UUID <span class="hljs-keyword">REFERENCES</span> users(id),
+  shipped_by UUID <span class="hljs-keyword">REFERENCES</span> users(id),
+  notes TEXT,
+  created_at TIMESTAMPTZ <span class="hljs-keyword">DEFAULT</span> now(),
+  updated_at TIMESTAMPTZ <span class="hljs-keyword">DEFAULT</span> now()
+);
+<span class="hljs-keyword">CREATE</span> INDEX idx_hub_shipments_hub <span class="hljs-keyword">ON</span> hub_shipments(hub_id);
+<span class="hljs-keyword">CREATE</span> INDEX idx_hub_shipments_tracking <span class="hljs-keyword">ON</span> hub_shipments(tracking_number);
+
+<span class="hljs-comment">-- Inventory count sessions (reconciliation)</span>
+<span class="hljs-keyword">CREATE TABLE</span> hub_count_sessions (
+  id UUID <span class="hljs-keyword">PRIMARY KEY</span> <span class="hljs-keyword">DEFAULT</span> gen_random_uuid(),
+  hub_id UUID <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">REFERENCES</span> hubs(id),
+  counted_by UUID <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">REFERENCES</span> users(id),
+  status <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">20</span>) <span class="hljs-keyword">DEFAULT</span> <span class="hljs-string">'in_progress'</span>,
+    <span class="hljs-comment">-- in_progress, completed, reviewed</span>
+  started_at TIMESTAMPTZ <span class="hljs-keyword">DEFAULT</span> now(),
+  completed_at TIMESTAMPTZ,
+  total_items_counted <span class="hljs-type">INTEGER</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-number">0</span>,
+  discrepancies_found <span class="hljs-type">INTEGER</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-number">0</span>,
+  notes TEXT
+);
+
+<span class="hljs-comment">-- Individual count entries</span>
+<span class="hljs-keyword">CREATE TABLE</span> hub_count_entries (
+  id UUID <span class="hljs-keyword">PRIMARY KEY</span> <span class="hljs-keyword">DEFAULT</span> gen_random_uuid(),
+  session_id UUID <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">REFERENCES</span> hub_count_sessions(id),
+  item_id UUID <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">REFERENCES</span> hub_inventory(id),
+  expected_quantity <span class="hljs-type">INTEGER</span> <span class="hljs-keyword">NOT NULL</span>,
+  counted_quantity <span class="hljs-type">INTEGER</span> <span class="hljs-keyword">NOT NULL</span>,
+  discrepancy <span class="hljs-type">INTEGER</span> GENERATED ALWAYS <span class="hljs-keyword">AS</span> (counted_quantity <span class="hljs-operator">-</span> expected_quantity) STORED,
+  notes TEXT,
+  counted_at TIMESTAMPTZ <span class="hljs-keyword">DEFAULT</span> now()
+);
+</code></pre>
+<h3 id="hub-api-endpoints">Hub API Endpoints</h3>
+<pre><code>Inventory:
+  GET    /api/hub/inventory              — list items (filterable by category, low-stock)
+  GET    /api/hub/inventory/:id          — item detail
+  POST   /api/hub/inventory              — add new item
+  PATCH  /api/hub/inventory/:id          — update item
+  POST   /api/hub/inventory/scan         — QR scan → validate + return item info
+  GET    /api/hub/inventory/low-stock    — items below reorder point
+
+Pick Flow:
+  GET    /api/hub/pick/:jobId            — get pick list for job
+  POST   /api/hub/pick/:jobId/scan       — scan item QR, validate against pick list
+  POST   /api/hub/pick/:jobId/confirm    — confirm all items picked, deduct inventory
+
+Access Control:
+  POST   /api/hub/access/entry           — log RFID/QR entry
+  POST   /api/hub/access/exit            — log exit
+  GET    /api/hub/access/log             — access history (filterable)
+  GET    /api/hub/access/active          — who's in the warehouse right now
+
+Equipment:
+  GET    /api/hub/equipment              — list available equipment
+  POST   /api/hub/equipment/checkout     — rent equipment to pro
+  POST   /api/hub/equipment/return       — return equipment
+  GET    /api/hub/equipment/overdue      — overdue rentals
+
+Receiving:
+  POST   /api/hub/receiving/scan         — scan incoming shipment
+  POST   /api/hub/receiving/confirm      — confirm received quantities
+  GET    /api/hub/shipments              — shipment history
+
+Reconciliation:
+  POST   /api/hub/count/start            — begin count session
+  POST   /api/hub/count/:sessionId/entry — record item count
+  POST   /api/hub/count/:sessionId/complete — finish session, generate report
+  GET    /api/hub/count/:sessionId       — view count results + discrepancies
+</code></pre>
+<h3 id="hub-ui-pages">Hub UI Pages</h3>
+<pre><code>Pro App (mobile-first):
+  /pro/hub/pick/:jobId       — pick list with QR scanner
+  /pro/hub/equipment         — browse/checkout equipment
+
+Admin:
+  /admin/hub/inventory       — full inventory management
+  /admin/hub/access          — access log + who's in warehouse
+  /admin/hub/receiving       — inbound shipment processing
+  /admin/hub/equipment       — equipment status + overdue
+  /admin/hub/count           — start/view reconciliation sessions
+  /admin/hub/count/:id       — discrepancy report
+</code></pre>
+<h3 id="qr-code-generation">QR Code Generation</h3>
+<ul>
+<li>Server generates QR containing JSON payload (hub_id, item_id, sku, bin)</li>
+<li>Printed on adhesive labels for bins/shelves</li>
+<li>App reads QR via phone camera (no special hardware needed)</li>
+<li>Validation: QR data matched against pick list in real-time</li>
+</ul>
+<h3 id="site-access--ubiquiti-unifi-access-phase-1">Site Access — Ubiquiti UniFi Access (Phase 1)</h3>
+<p>Hardware stack:</p>
+<ul>
+<li><strong>UniFi Access Hub</strong> — controller for door locks + readers</li>
+<li><strong>UniFi Access Reader Pro</strong> — NFC/RFID at warehouse entry (supports badges + phone tap)</li>
+<li><strong>UniFi Access Lock</strong> — electric door lock (auto-unlock on valid badge)</li>
+<li><strong>UniFi Protect cameras</strong> — entry/exit + warehouse floor coverage</li>
+<li><strong>UniFi Network</strong> — Dream Machine Pro for networking, PoE switches for cameras/readers</li>
+</ul>
+<p>Integration approach:</p>
+<ul>
+<li>UniFi Access has a <strong>local API</strong> (REST) for door events, user management, access policies</li>
+<li><code>/api/hub/access/unifi-webhook</code> — receives door open/close events from UniFi Access Hub</li>
+<li>When pro badges in: UniFi sends event → our webhook logs entry → door unlocks automatically</li>
+<li>When pro exits: same flow in reverse</li>
+<li><strong>Access policies:</strong> set per-pro schedules (e.g., warehouse open 6am-6pm, no weekend access for Flex pros)</li>
+<li>Pro badges: NFC cards provisioned through UniFi Access admin, linked to pro's user_id in our DB</li>
+<li>Phone tap: UniFi Access Reader Pro supports NFC from iPhone/Android — pros can use phone instead of badge</li>
+</ul>
+<p>Camera integration (Protect API):</p>
+<ul>
+<li>Entry/exit cameras capture face + timestamp on every door event</li>
+<li>Tied to access_log entry for visual verification</li>
+<li>Floor cameras: manual review now, AI object detection later (count items on shelves)</li>
+<li>Protect API provides snapshot URLs that we store as references in hub_access_log</li>
+</ul>
+<p>Network segmentation:</p>
+<ul>
+<li>VLAN 1: Hub operations (POS, tablets, kiosks)</li>
+<li>VLAN 2: IoT devices (cameras, readers, sensors)</li>
+<li>VLAN 3: Guest Wi-Fi (pros in warehouse)</li>
+<li>Firewall rules: IoT VLAN can only talk to UniFi controller + our API webhook endpoint</li>
+</ul>
+<p>Estimated hardware cost (1 warehouse):</p>
+<ul>
+<li>Dream Machine Pro: $379</li>
+<li>Access Hub: $99</li>
+<li>Access Reader Pro x2 (entry + exit): $598</li>
+<li>Access Lock x2: $598</li>
+<li>Protect G5 Bullet cameras x4: $796</li>
+<li>PoE switch (USW-Lite-16-PoE): $199</li>
+<li>NFC badges (50 pack): ~$50</li>
+<li><strong>Total: ~$2,700</strong></li>
+</ul>
+<h3 id="cameraai-upgrade-path-phase-2--later">Camera/AI Upgrade Path (Phase 2 — Later)</h3>
+<ul>
+<li>Cameras at entry/exit for visual verification</li>
+<li>Shelf cameras for real-time inventory monitoring</li>
+<li>Computer vision: detect item removal, count stock levels</li>
+<li>This is a future module — QR + manual count is the MVP</li>
+</ul>
+<hr>
+<h2 id="6-database-changes-summary">6. Database Changes Summary</h2>
+<p><strong>Migration 011:</strong> Hub tables (hub_locations, hub_inventory, hub_inventory_transactions, hub_access_log, hub_equipment, hub_rentals, hub_shipments, hub_count_sessions, hub_count_entries)</p>
+<p><strong>Migration 012:</strong> Stripe fields (users.stripe_account_id, users.stripe_onboarded, payments.stripe_transfer_id updates)</p>
+<hr>
+<h2 id="7-controlled-rollout-plan">7. Controlled Rollout Plan</h2>
+<h3 id="beta-cohort">Beta Cohort</h3>
+<ul>
+<li>10-15 pros (from recruiting kit — 55 named NE contractors)</li>
+<li>5-10 clients (NH residential, invited)</li>
+<li>1 hub location (your warehouse)</li>
+<li>Geography: NH only (expand to NE after 30 days)</li>
+</ul>
+<h3 id="feature-gates">Feature Gates</h3>
+<ul>
+<li>Stripe: live mode but with $500 max job limit during beta</li>
+<li>Hub: your warehouse only, you control physical access</li>
+<li>Dispatch: Zinc live for Home Depot ordering, Uber Connect for delivery</li>
+<li>All actions audit-logged</li>
+</ul>
+<h3 id="rollout-sequence">Rollout Sequence</h3>
+<ol>
+<li>Week 1: Invite pros, onboard to platform + Stripe Connect</li>
+<li>Week 2: Invite clients, first real jobs posted</li>
+<li>Week 3: First real payments processed, first Hub pick-ups</li>
+<li>Week 4: Review metrics, fix issues, expand cohort</li>
+</ol>
+<hr>
+<h2 id="8-health-check--monitoring">8. Health Check + Monitoring</h2>
+<h3 id="apihealth-endpoint">/api/health Endpoint</h3>
+<p>Returns status of every service:</p>
+<pre><code class="hljs json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">"status"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"healthy"</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">"timestamp"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"2026-04-25T22:00:00Z"</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">"services"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">"database"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">"status"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"up"</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">"latency_ms"</span><span class="hljs-punctuation">:</span> <span class="hljs-number">12</span> <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"stripe"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">"status"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"up"</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">"mode"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"live"</span> <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"twilio"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">"status"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"up"</span> <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"zinc"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">"status"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"up"</span> <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"uber"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">"status"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"up"</span> <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"storage"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">"status"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"up"</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">"provider"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"r2"</span> <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">"hub"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">"status"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"up"</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">"items_tracked"</span><span class="hljs-punctuation">:</span> <span class="hljs-number">156</span> <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<p>This becomes the container health probe when migrated.</p>
+<h3 id="audit-trail">Audit Trail</h3>
+<p>Every financial transaction, access event, and inventory change is logged to <code>audit_logs</code> (already built tonight). No data flow happens without a trace.</p>
+<hr>
+<h2 id="9-migration-path-vercel-→-containers">9. Migration Path (Vercel → Containers)</h2>
+<p>When traffic warrants it, the migration is:</p>
+<ol>
+<li><strong>Extract services to standalone Node.js apps</strong> — each <code>src/lib/services/X</code> becomes its own container. The interface stays identical.</li>
+<li><strong>API gateway</strong> — Vercel becomes a thin proxy to backend services (already using proxy.ts pattern).</li>
+<li><strong>Database</strong> — Neon supports connection pooling. Add read replicas when needed. No schema changes.</li>
+<li><strong>Queue</strong> — Swap <code>in-process-queue.ts</code> for <code>qstash-queue.ts</code> or BullMQ. Same interface.</li>
+<li><strong>Storage</strong> — R2 is S3-compatible. Works from any host.</li>
+</ol>
+<p><strong>Estimated migration effort:</strong> 2-3 days for a clean cutover with zero downtime (blue-green deployment). The service abstraction layer makes this possible because no business logic touches infrastructure directly.</p>
+
+	
+
+
+</body>
+</html>

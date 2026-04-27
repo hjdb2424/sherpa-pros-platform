@@ -1,0 +1,1917 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>beta cohort recruiting kit — Sherpa Pros</title>
+<link rel="icon" href="../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="beta-cohort-recruiting-kit.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="sherpa-pros--beta-cohort-recruiting-kit">Sherpa Pros — Beta Cohort Recruiting Kit</h1>
+<p><strong>Date:</strong> 2026-04-22
+<strong>Owner:</strong> Phyrom (founder), supported by SDR (Upwork US)
+<strong>Status:</strong> Ready to execute Monday morning, Week 1 of Phase 0
+<strong>Source spec:</strong> <code>docs/superpowers/specs/2026-04-22-gtm-marketing-design.md</code> §5
+<strong>Source plan:</strong> <code>docs/superpowers/plans/2026-04-22-phase-0-fundraise-and-beta.md</code> Workstream B (B1–B4)
+<strong>Companion docs:</strong></p>
+<ul>
+<li><code>docs/operations/quick-job-lane.md</code> (cohort expansion 10 → 15+, §9)</li>
+<li><code>docs/marketing/email-sequences/pro-recruiting.md</code> (5-email cold sequence — reuse)</li>
+<li><code>docs/pitch/sherpa-pros-onepager-v1.md</code> (canonical narrative)</li>
+</ul>
+<p><strong>Goal:</strong> 15+ active Founding Pros across NH, ME, MA — onboarded, Stripe Connect complete, license/insurance verified, first job posted within 7 days. Mix of Project mode (10–12 pros) and Quick Job mode (4–5 pros).</p>
+<p><strong>Brand bible (every word must comply):</strong></p>
+<ul>
+<li>Plainspoken, direct, 8th-grade reading level</li>
+<li>ALWAYS say: Licensed · Verified · Code-aware · Built by a contractor · Local · Jobs, not leads</li>
+<li>NEVER say: Wiseman externally · Gig · Task · "Uber for X" externally · "AI-powered" as headline · Disrupt · Revolutionize · jargon abbreviations</li>
+<li>Phyrom is the founder voice — surname unknown, never invent one. Use "Phyrom" or "P" only.</li>
+</ul>
+<hr>
+<h2 id="1-ideal-customer-profile-15-pros">1. Ideal Customer Profile (15+ pros)</h2>
+<h3 id="11-project-mode-1012-pros--code-aware-multi-bid-1500-jobs">1.1 Project mode (10–12 pros) — code-aware, multi-bid, $1,500+ jobs</h3>
+<h4 id="111-general-contractor-1-nh-seacoast">1.1.1 General Contractor #1 (NH Seacoast)</h4>
+<ul>
+<li><strong>License:</strong> NH does not require a state GC license; instead requires a town-level building permit + (if working &gt;$1K residential) a written contract per RSA 358-Q. Verified by HJD network reputation.</li>
+<li><strong>Insurance:</strong> $1M general liability minimum, $500K workers' comp (if W-2 staff)</li>
+<li><strong>Years in business:</strong> 5+ years</li>
+<li><strong>Avg ticket:</strong> $25K–$150K (kitchen, addition, basement, full renovation)</li>
+<li><strong>Personality signals (recruit-friendly):</strong> complains about Angi/Thumbtack lead waste, has a sub network they manage themselves, mid-career (10–25 yrs in trade), already runs QBO, has a website but isn't slick</li>
+<li><strong>Why they sign:</strong> Tired of paying for leads that go nowhere. Wants jobs, not bid sheets.</li>
+</ul>
+<h4 id="112-general-contractor-2-nh-manchester--greater-manchester">1.1.2 General Contractor #2 (NH Manchester / Greater Manchester)</h4>
+<ul>
+<li>Same as 1.1.1 but Greater Manchester / Concord / Nashua metro</li>
+<li>Greater Manchester/Nashua/Concord Area Home Builders Association (GMNHBRA) member preferred</li>
+<li>Bonus signal: NHHBA member badge</li>
+</ul>
+<h4 id="113-plumber-1-nh-seacoast--master-license">1.1.3 Plumber #1 (NH Seacoast — master license)</h4>
+<ul>
+<li><strong>License:</strong> NH Master Plumber License (NH OPLC Mechanical Safety &amp; Licensing Board, 6+ months as journeyman + exam, $330 fee). Look for license # on truck, website footer, or NH OPLC lookup.</li>
+<li><strong>Insurance:</strong> $1M general liability, $1M auto, workers' comp</li>
+<li><strong>Years in business:</strong> 5+ years</li>
+<li><strong>Avg ticket:</strong> $200–$8K (small repair to full re-pipe). 70% jobs &lt;$2K.</li>
+<li><strong>Personality signals:</strong> Owner-operator or 1–3 trucks. Answers his own phone. Has a Bill Trombly-style "License #1 in NH" pride angle. Active on local Facebook contractor groups.</li>
+<li><strong>Why they sign:</strong> Drain cleaning is volume game; small-job lead-gen costs $40–$75 per lead with 1-in-5 close rate on Angi.</li>
+</ul>
+<h4 id="114-plumber-2-nh-manchester--concord--master-license">1.1.4 Plumber #2 (NH Manchester / Concord — master license)</h4>
+<ul>
+<li>Same as 1.1.3 but Manchester/Concord metro</li>
+<li>Will likely cover BOTH Project + Quick Job lanes (toilet installs, valve replacements)</li>
+</ul>
+<h4 id="115-hvac--heat-pump-specialist-nh-or-ma--mass-save-hpin-certified">1.1.5 HVAC / Heat Pump Specialist (NH or MA — Mass Save HPIN certified)</h4>
+<ul>
+<li><strong>License:</strong> NH or MA HVAC license + EPA 608 cert + Mass Save Heat Pump Installer Network (HPIN) certification (the gold ticket — $10K+ rebates per home)</li>
+<li><strong>Insurance:</strong> $1M general liability, $1M auto, $500K workers' comp</li>
+<li><strong>Years in business:</strong> 5+ years</li>
+<li><strong>Avg ticket:</strong> $12K–$25K (mini-split or whole-home heat pump install)</li>
+<li><strong>Personality signals:</strong> Mitsubishi Diamond Elite or Rheem Pro Partner badge. Active Mass Save listing. Talks about rebates fluently.</li>
+<li><strong>Why they sign:</strong> Mass Save lead pipeline is 3–6 month wait — they need a faster funnel for ready-to-buy homeowners.</li>
+</ul>
+<h4 id="116-painter-full-project-me-portland-metro">1.1.6 Painter (full-project, ME Portland metro)</h4>
+<ul>
+<li><strong>License:</strong> ME doesn't require painter license, but lead-paint-certified (EPA RRP) for pre-1978 homes — almost mandatory in Portland's old housing stock</li>
+<li><strong>Insurance:</strong> $1M general liability, $500K workers' comp</li>
+<li><strong>Years in business:</strong> 5+ years</li>
+<li><strong>Avg ticket:</strong> $4K–$25K (full-house repaint, exterior, multi-room interior). Project mode only — won't take single-wall work.</li>
+<li><strong>Personality signals:</strong> Has portfolio website, posts before/afters on Instagram, charges by the project (not hourly), references-on-request</li>
+<li><strong>Why they sign:</strong> Project-mode painters lose to low-bid hacks who skip prep — code-aware quote validation defends their bid.</li>
+</ul>
+<h4 id="117-landscaper-me-portland-or-nh-seacoast">1.1.7 Landscaper (ME Portland or NH Seacoast)</h4>
+<ul>
+<li><strong>License:</strong> ME doesn't require landscaper license; NH same. Pesticide applicator license if spraying. ICPI / NCMA paver cert is a strong signal.</li>
+<li><strong>Insurance:</strong> $1M general liability, $1M auto, workers' comp</li>
+<li><strong>Years in business:</strong> 5+ years</li>
+<li><strong>Avg ticket:</strong> $5K–$50K (design-build, hardscape, irrigation install). Seasonal — Apr–Nov peak.</li>
+<li><strong>Personality signals:</strong> Family-owned, multi-generational, has a yard/equipment lot. Doesn't do mowing-only.</li>
+<li><strong>Why they sign:</strong> Seasonal pipeline pressure — need a steady January–March booking funnel for spring start.</li>
+</ul>
+<h4 id="118-licensed-electrician-ma-boston-metro--mass-save--ev--panel">1.1.8 Licensed Electrician (MA Boston metro — Mass Save / EV / panel)</h4>
+<ul>
+<li><strong>License:</strong> MA Master Electrician (Class A) or Journeyman (Class B). Mass Save HPIN-affiliated electrician is gold (panel upgrades for heat pumps).</li>
+<li><strong>Insurance:</strong> $1M general liability, $1M auto, workers' comp</li>
+<li><strong>Years in business:</strong> 5+ years</li>
+<li><strong>Avg ticket:</strong> $1.5K–$8K (panel upgrade, EV Level 2 charger, knob-and-tube replacement)</li>
+<li><strong>Personality signals:</strong> Tesla certified installer badge, Charge Home Solutions-style EV focus, has done Newton/Brookline panel upgrades before, knows the Boston ISD permit dance</li>
+<li><strong>Why they sign:</strong> EV + panel + Mass Save backlog is enormous in Boston — they're turning work away because their lead pipeline is chaotic.</li>
+</ul>
+<h4 id="119-old-house-specialist-ma-boston--brookline">1.1.9 Old-House Specialist (MA Boston / Brookline)</h4>
+<ul>
+<li><strong>License:</strong> MA Construction Supervisor License (CSL) — Unrestricted (1–4 family) or Restricted. CSL # is public via mass.gov/dpl lookup.</li>
+<li><strong>Insurance:</strong> $1M general liability, $1M auto, workers' comp</li>
+<li><strong>Years in business:</strong> 10+ years (hard requirement — old-house work needs scarred experience)</li>
+<li><strong>Avg ticket:</strong> $15K–$200K (plaster restoration, slate roof, brownstone repointing, historic kitchen)</li>
+<li><strong>Personality signals:</strong> Talks about horsehair plaster, calcimine ceilings, ship-lap clapboards without prompting. Has Brookline/Cambridge/Back Bay project portfolio.</li>
+<li><strong>Why they sign:</strong> No platform filters for old-house work. Their leads are word-of-mouth — slow, lumpy, hard to scale.</li>
+</ul>
+<h4 id="1110-roofer-ma-boston--newton--slate--asphalt">1.1.10 Roofer (MA Boston / Newton — slate + asphalt)</h4>
+<ul>
+<li><strong>License:</strong> MA Home Improvement Contractor (HIC) registration + MA CSL. Slate work needs the experienced kind.</li>
+<li><strong>Insurance:</strong> $1M general liability, $1M auto, workers' comp</li>
+<li><strong>Years in business:</strong> 10+ years</li>
+<li><strong>Avg ticket:</strong> $8K–$45K (asphalt re-roof) or $20K–$120K (slate restoration)</li>
+<li><strong>Personality signals:</strong> Family-owned 30+ years, NRCA member, OSHA-trained crew, slate or copper portfolio</li>
+<li><strong>Why they sign:</strong> Slate work is high-margin but rare leads — old-house specialty filter unlocks consistent pipeline.</li>
+</ul>
+<h3 id="12-quick-job-mode-45-pros--pre-priced-fast-match-2001500-jobs">1.2 Quick Job mode (4–5 pros) — pre-priced, fast-match, $200–$1,500 jobs</h3>
+<h4 id="121-dedicated-handyman-ma-boston">1.2.1 Dedicated Handyman (MA Boston)</h4>
+<ul>
+<li><strong>License:</strong> MA HIC registration (required &gt;$1K). General handyman license not required for non-trade work.</li>
+<li><strong>Insurance:</strong> $500K general liability minimum (Quick Job CGL threshold per <code>quick-job-lane.md</code> §8)</li>
+<li><strong>Years in business:</strong> 3+ years</li>
+<li><strong>Avg ticket:</strong> $150–$600 (TV mount, drywall patch, door knob, smoke detector)</li>
+<li><strong>Personality signals:</strong> Same-day response, Yelp 4.5+, owner-operator, takes credit cards, phone-first</li>
+<li><strong>Why they sign:</strong> TaskRabbit takes 35% — Sherpa Pros at 5% beta is a 7× better deal.</li>
+</ul>
+<h4 id="122-small-project-painter-nh-seacoast-or-me">1.2.2 Small-Project Painter (NH Seacoast or ME)</h4>
+<ul>
+<li><strong>License:</strong> EPA RRP lead cert if working pre-1978 homes</li>
+<li><strong>Insurance:</strong> $500K general liability</li>
+<li><strong>Years in business:</strong> 3+ years</li>
+<li><strong>Avg ticket:</strong> $200–$900 (single accent wall, single room, touch-ups)</li>
+<li><strong>Personality signals:</strong> Works alone or with one helper, prices per job (not hourly), lives near service area</li>
+<li><strong>Why they sign:</strong> Volume play — small jobs are 5–10× more frequent than full repaints, and Quick Job dispatch fills slow weeks.</li>
+</ul>
+<h4 id="123-light-plumber-nh-manchester-or-portsmouth">1.2.3 Light Plumber (NH Manchester or Portsmouth)</h4>
+<ul>
+<li><strong>License:</strong> NH Master or Journeyman Plumber (small jobs still need the license per RSA 153)</li>
+<li><strong>Insurance:</strong> $500K general liability minimum (Quick Job tier); $1M preferred</li>
+<li><strong>Years in business:</strong> 3+ years</li>
+<li><strong>Avg ticket:</strong> $150–$500 (faucet swap, valve replacement, garbage disposal install, fill valve repair)</li>
+<li><strong>Personality signals:</strong> Owner-operator, single truck, "no job too small" tagline, fast emergency response, 24/7 availability</li>
+<li><strong>Why they sign:</strong> Service-call work is bread-and-butter; Sherpa Pros pre-priced flat-rate menu eliminates haggling and same-day pay (24-hr Stripe hold) beats Net 30.</li>
+</ul>
+<h4 id="124-light-electrician-ma-boston-suburbs--newton--brookline--somerville">1.2.4 Light Electrician (MA Boston suburbs — Newton / Brookline / Somerville)</h4>
+<ul>
+<li><strong>License:</strong> MA Journeyman or Master Electrician</li>
+<li><strong>Insurance:</strong> $500K general liability minimum; $1M preferred</li>
+<li><strong>Years in business:</strong> 3+ years</li>
+<li><strong>Avg ticket:</strong> $125–$400 (ceiling fan, GFCI outlet, light fixture swap, smart switch install)</li>
+<li><strong>Personality signals:</strong> Sole-prop or 2-person shop, takes 1–3 jobs/day, prefers small fast work over big project chaos</li>
+<li><strong>Why they sign:</strong> Small electrical work has near-zero advertising — they survive on referrals. Sherpa Pros gives them a steady pre-qualified queue.</li>
+</ul>
+<h4 id="125-move-in-ready-handyman-pm-tier-crossover-boston-or-portsmouth">1.2.5 Move-In-Ready Handyman (PM tier crossover, Boston or Portsmouth)</h4>
+<ul>
+<li><strong>License:</strong> MA HIC or NH equivalent (per state)</li>
+<li><strong>Insurance:</strong> $500K general liability minimum; $1M if PM work</li>
+<li><strong>Years in business:</strong> 5+ years</li>
+<li><strong>Avg ticket:</strong> $300–$1,200 per turn (paint touch-up, drywall patch, smoke/CO replacement, faucet, lock change)</li>
+<li><strong>Personality signals:</strong> Already does turnover work for 1–3 small property managers, can do 2–3 turns/day, has a small van and crew of 1</li>
+<li><strong>Why they sign:</strong> PM tier ($4 → $1.50/unit) is the play — wants to be the "preferred vendor" for a 200-unit PM portfolio without juggling 40 spreadsheets.</li>
+</ul>
+<hr>
+<h2 id="2-outreach-scripts-3-versions-per-channel">2. Outreach Scripts (3 versions per channel)</h2>
+<p>Every script ends with the same close (do not modify):</p>
+<blockquote>
+<p><strong>THE CLOSE:</strong> <em>"5% take rate during beta. Half-price forever if you stay. 90-day commitment. Full platform access. Want to see it?"</em></p>
+</blockquote>
+<h3 id="21-hjd-warm--phone-or-in-person">2.1 HJD Warm — Phone or in-person</h3>
+<blockquote>
+<p>Hey {{first_name}}, Phyrom from HJD. Got 90 seconds?</p>
+<p>So you and I have worked the same jobs over the years, and you know I have been losing my mind over Angi and Thumbtack — paying $400 a month for leads that go nowhere, half of them already booked, half of them tire-kickers.</p>
+<p>So I built something. It is called Sherpa Pros. I am putting it in front of fifteen pros I trust before anyone else sees it. You are on that list.</p>
+<p>THE CLOSE.</p>
+</blockquote>
+<h3 id="22-cold-supply-house-referral--in-person-fw-webb-lowes-pro-rockler">2.2 Cold Supply-House Referral — In person (FW Webb, Lowe's Pro, Rockler)</h3>
+<blockquote>
+<p>Hey, you a {{trade}}? Saw your truck out front. Phyrom — I run HJD Builders out of [town].</p>
+<p>I am building a marketplace for our crowd — pros only, license-verified, code-aware, no leads-for-sale. I am looking at fifteen founding pros across NH, ME, and MA before I open it up.</p>
+<p>THE CLOSE.</p>
+</blockquote>
+<h3 id="23-linkedin-cold-dm--founder-to-pro">2.3 LinkedIn Cold DM — Founder-to-pro</h3>
+<blockquote>
+<p>Hey {{first_name}} — Phyrom here. I run HJD Builders LLC out of NH.</p>
+<p>I built a licensed-trade marketplace for New England because Angi and Thumbtack were wasting my time and money, and I figured they were wasting yours too.</p>
+<p>Looking at fifteen founding pros. Saw your work in [city] — your {{trade}} chops fit.</p>
+<p>THE CLOSE. Reply yes and I send you a 3-min Loom.</p>
+</blockquote>
+<h3 id="24-voicemail-script--when-call-goes-to-vm">2.4 Voicemail Script — When call goes to VM</h3>
+<blockquote>
+<p>Hey {{first_name}}, this is Phyrom from HJD Builders, NH-based GC. I am building a marketplace for licensed pros across New England — jobs, not leads. Looking at fifteen founding pros. Wanted to see if you might be one of them.</p>
+<p>THE CLOSE.</p>
+<p>Call me back at {{phone}}, or text — text is fine. I will read it. Phyrom, HJD Builders.</p>
+</blockquote>
+<h3 id="25-text-message--high-open-rate-low-cost-professional">2.5 Text Message — High open rate, low cost, professional</h3>
+<blockquote>
+<p>{{first_name}} — Phyrom (HJD Builders, NH). Building a licensed-trade marketplace for NE pros. 15 founding spots. THE CLOSE. Loom link if interested: [URL]</p>
+</blockquote>
+<p>(One message, one shot. If they reply yes, send Loom + apply link. If no reply in 48hr, do NOT chase via text — pivot to email.)</p>
+<h3 id="26-email-cold-open--subject--body">2.6 Email Cold Open — Subject + body</h3>
+<p><strong>Subject:</strong> I am a NH GC. I built a thing for us.</p>
+<p><strong>Preview text:</strong> 5% take rate. Paid when you get paid. 15 founding spots — yours if you want one.</p>
+<p><strong>Body:</strong></p>
+<p>Hey {{first_name}},</p>
+<p>Phyrom from HJD Builders here. Working GC, NH-based, same as you.</p>
+<p>I built Sherpa Pros because I got tired of paying Angi $400 a month for leads that went nowhere. It is a marketplace for licensed trades across New England — jobs you actually get paid for, license + insurance verified, every quote checked against your state and town building codes before it goes out. No subscription. No lead fees.</p>
+<p>I am putting fifteen pros into the founding cohort across NH, ME, and MA before I open it up to anyone else. Founding pros lock the 5% take rate forever. After that the rate doubles to 10% plus a $49 monthly subscription. I am writing to you because your {{trade}} work in {{city}} fits the profile.</p>
+<p>THE CLOSE.</p>
+<p>Reply yes and I will send a 3-min Loom plus the apply link. Five minutes to apply, I read every one myself.</p>
+<p>Phyrom
+HJD Builders LLC
+{{phone}}</p>
+<p>(Note: this email is the D0 send of the existing 5-email sequence at <code>docs/marketing/email-sequences/pro-recruiting.md</code>. Do not duplicate that sequence. Reuse it for D0/D2/D5/D9/D14 cadence.)</p>
+<hr>
+<h2 id="3-named-target-contractors-50">3. Named Target Contractors (50+)</h2>
+<p><strong>How to read this list:</strong> Each row is a real, researched contractor matching a specific ICP slot. Where direct contact info is unverified or pulled from third-party listings, it is marked <code>[VERIFY]</code>. SDR must verify license number against state board lookup (NH OPLC, ME OPL, MA mass.gov/dpl) and confirm phone/email before first outreach. Do NOT invent names — escalate to Phyrom if a target cannot be reached.</p>
+<h3 id="31-nh-seacoast--portsmouth--dover--hampton--exeter--stratham-15-targets">3.1 NH Seacoast — Portsmouth / Dover / Hampton / Exeter / Stratham (15 targets)</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Name</th>
+<th>Business</th>
+<th>Trade</th>
+<th>License #</th>
+<th>Phone</th>
+<th>Email</th>
+<th>Website</th>
+<th>Why fit</th>
+<th>Approach</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>Owner [VERIFY]</td>
+<td>Oxland Builders</td>
+<td>GC / Design-Build Remodel</td>
+<td>NH (no state GC license) [VERIFY]</td>
+<td>[VERIFY]</td>
+<td>[VERIFY]</td>
+<td>oxlandbuilders.com</td>
+<td>Stratham-based, design-build for Seacoast + S. ME — exact ICP 1.1.1 fit</td>
+<td>HJD warm if known; else cold via website contact form</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Steve Ricci [VERIFY]</td>
+<td>Ricci Construction</td>
+<td>GC</td>
+<td>NH [VERIFY]</td>
+<td>[VERIFY]</td>
+<td>[VERIFY]</td>
+<td>ricciconstruction.com</td>
+<td>Family-owned since 1935, multi-generational, Portsmouth</td>
+<td>HJD warm — Phyrom checks if HJD has crossed paths</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Owner [VERIFY]</td>
+<td>Driftwood Builders LLC</td>
+<td>GC custom homes</td>
+<td>NH [VERIFY]</td>
+<td>[VERIFY]</td>
+<td>[VERIFY]</td>
+<td>driftwoodnh.com</td>
+<td>20+ yrs custom homes Portsmouth</td>
+<td>Cold — website contact form</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Owner [VERIFY]</td>
+<td>River Birch Builders</td>
+<td>GC remodel + new build</td>
+<td>NH [VERIFY]</td>
+<td>[VERIFY]</td>
+<td>[VERIFY]</td>
+<td>riverbirchbuilders.com</td>
+<td>Custom remodel Seacoast NH</td>
+<td>Cold</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Owner [VERIFY]</td>
+<td>Generation Homes</td>
+<td>GC custom + addition</td>
+<td>NH [VERIFY]</td>
+<td>[VERIFY]</td>
+<td>[VERIFY]</td>
+<td>generationhomes207.com</td>
+<td>Seacoast NH + S. ME crossover — covers two metros</td>
+<td>Cold</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Owner [VERIFY]</td>
+<td>Dockham Builders</td>
+<td>GC</td>
+<td>NH [VERIFY] (since 1988)</td>
+<td>[VERIFY]</td>
+<td>[VERIFY]</td>
+<td>dockhambuilders.com</td>
+<td>NH + ME, 35+ yrs</td>
+<td>Cold</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Owner [VERIFY]</td>
+<td>Brush With Color</td>
+<td>Painter (residential interior)</td>
+<td>NH (no painter license)</td>
+<td>[VERIFY]</td>
+<td>[VERIFY]</td>
+<td>brushwithcolor.com</td>
+<td>Portsmouth + S. ME, 20+ yrs interior, "no job too small" — Quick Job painter slot 1.2.2</td>
+<td>Cold — perfect Quick Job fit</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Owner [VERIFY]</td>
+<td>Top Field Construction</td>
+<td>Painter + light remodel</td>
+<td>NH [VERIFY]</td>
+<td>[VERIFY]</td>
+<td>[VERIFY]</td>
+<td>topfieldconstruction.com</td>
+<td>Stratham-based, residential interior since 2007</td>
+<td>Cold</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Owner [VERIFY]</td>
+<td>Bonds Painting</td>
+<td>Painter full-project</td>
+<td>NH [VERIFY]</td>
+<td>[VERIFY]</td>
+<td>[VERIFY]</td>
+<td>bondspainting.com</td>
+<td>Stratham — full-service, project-mode painter slot 1.1.6 alt</td>
+<td>Cold</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Owner [VERIFY]</td>
+<td>Seacoast NH Painters</td>
+<td>Painter</td>
+<td>NH [VERIFY]</td>
+<td>[VERIFY]</td>
+<td>[VERIFY]</td>
+<td>seacoastnhpainters.com</td>
+<td>Hampton/Exeter/Portsmouth coverage</td>
+<td>Cold</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Owner [VERIFY]</td>
+<td>New England Painting</td>
+<td>Painter</td>
+<td>NH [VERIFY]</td>
+<td>(603) 793-3611</td>
+<td>[VERIFY]</td>
+<td>newenglandpainting.com</td>
+<td>Hampton + Exeter local presence</td>
+<td>Cold — phone available</td>
+</tr>
+<tr>
+<td>12</td>
+<td>Owner [VERIFY]</td>
+<td>I Know Jack Handyman Services</td>
+<td>Handyman small-medium</td>
+<td>NH [VERIFY]</td>
+<td>[VERIFY]</td>
+<td>[VERIFY]</td>
+<td>iknowjackhandymanservices.com</td>
+<td>Dover-based, covers Seacoast + York County ME — Quick Job handyman slot crossover</td>
+<td>Cold — perfect Quick Job fit</td>
+</tr>
+<tr>
+<td>13</td>
+<td>Owner / Franchisee [VERIFY]</td>
+<td>My Handyman of Dover, Portsmouth and Rochester</td>
+<td>Handyman</td>
+<td>NH [VERIFY]</td>
+<td>(603) 605-8363</td>
+<td>[VERIFY]</td>
+<td>mrhandyman.com/dover-portsmouth-rochester</td>
+<td>Multi-truck handyman covering Seacoast — Quick Job dense</td>
+<td>Cold — phone in hand</td>
+</tr>
+<tr>
+<td>14</td>
+<td>Owner [VERIFY]</td>
+<td>East Coast HVAC</td>
+<td>HVAC + heat pump</td>
+<td>NH [VERIFY], EPA 608, Mitsubishi Diamond Elite</td>
+<td>[VERIFY]</td>
+<td>[VERIFY]</td>
+<td>eastcoasthvac.com</td>
+<td>Seacoast NH heat pump installer, Rheem Pro Partner — slot 1.1.5</td>
+<td>Cold — confirm Mass Save HPIN status before pitch</td>
+</tr>
+<tr>
+<td>15</td>
+<td>Owner [VERIFY]</td>
+<td>Heritage Home Service</td>
+<td>HVAC + plumbing + electrical</td>
+<td>NH [VERIFY]</td>
+<td>[VERIFY]</td>
+<td>[VERIFY]</td>
+<td>justcallheritage.com</td>
+<td>Portsmouth → MA crossover, multi-trade</td>
+<td>Cold — multi-trade so good for Quick Job + Project crossover</td>
+</tr>
+</tbody></table>
+<h3 id="32-nh-manchester--concord--nashua-10-targets">3.2 NH Manchester / Concord / Nashua (10 targets)</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Name</th>
+<th>Business</th>
+<th>Trade</th>
+<th>License #</th>
+<th>Phone</th>
+<th>Email</th>
+<th>Website</th>
+<th>Why fit</th>
+<th>Approach</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>16</td>
+<td>Will [VERIFY surname]</td>
+<td>Will's Construction LLC</td>
+<td>GC remodel + framing</td>
+<td>NH [VERIFY]</td>
+<td>[VERIFY]</td>
+<td>[VERIFY]</td>
+<td>willsconstructionnh.com</td>
+<td>Manchester-based, kitchen + bath + framing — slot 1.1.2</td>
+<td>Cold</td>
+</tr>
+<tr>
+<td>17</td>
+<td>Owner [VERIFY]</td>
+<td>Blackdog Builders</td>
+<td>GC kitchen + addition since 1989</td>
+<td>NH [VERIFY]</td>
+<td>[VERIFY]</td>
+<td>[VERIFY]</td>
+<td>(search "blackdog builders nh") [VERIFY URL]</td>
+<td>Manchester-area design-build</td>
+<td>HJD warm if Phyrom knows; else NHHBA intro</td>
+</tr>
+<tr>
+<td>18</td>
+<td>Dan Delorey [VERIFY surname]</td>
+<td>Dan Delorey Construction</td>
+<td>GC remodel + new construction</td>
+<td>NH [VERIFY]</td>
+<td>[VERIFY]</td>
+<td>[VERIFY]</td>
+<td>(search) [VERIFY URL]</td>
+<td>Nashua-based — covers third Manchester-metro corner</td>
+<td>Cold</td>
+</tr>
+<tr>
+<td>19</td>
+<td>Bill Trombly</td>
+<td>Bill Trombly Plumbing</td>
+<td>Master Plumber</td>
+<td>NH Master License #1 (per website)</td>
+<td>[VERIFY]</td>
+<td>[VERIFY]</td>
+<td>billtrombly.com</td>
+<td>License #1 in NH — pride angle, Manchester/Concord/Nashua coverage — slot 1.1.4</td>
+<td>HJD warm — high-status pro, Phyrom personal call</td>
+</tr>
+<tr>
+<td>20</td>
+<td>Owner [VERIFY]</td>
+<td>Braydin Plumbing and Heating LLC</td>
+<td>Master Plumber + Gas</td>
+<td>NH Master #4818, Gas #GF1106421</td>
+<td>[VERIFY]</td>
+<td>[VERIFY]</td>
+<td>braydinph.com</td>
+<td>Concord — "no job too small" tagline, Quick Job + Project slot</td>
+<td>Cold — license # publicly verified</td>
+</tr>
+<tr>
+<td>21</td>
+<td>Tim [VERIFY surname]</td>
+<td>Tooky Plumbing</td>
+<td>Master Plumber</td>
+<td>NH Master [VERIFY]</td>
+<td>(603) 919-9000</td>
+<td>[VERIFY]</td>
+<td>(search) [VERIFY URL]</td>
+<td>Henniker, 15 yrs experience — Quick Job light-plumber slot 1.2.3</td>
+<td>Cold — phone in hand</td>
+</tr>
+<tr>
+<td>22</td>
+<td>Owner [VERIFY]</td>
+<td>Moynihan Plumbing &amp; Heating</td>
+<td>Master Plumber</td>
+<td>NH Master [VERIFY]</td>
+<td>(603) 216-2574</td>
+<td>[VERIFY]</td>
+<td>moynihanplumbing.com</td>
+<td>Henniker/Concord, 24/7 emergency, residential focus</td>
+<td>Cold — phone in hand</td>
+</tr>
+<tr>
+<td>23</td>
+<td>Owner [VERIFY]</td>
+<td>Flow Pro Plumbing and Drain Cleaning</td>
+<td>Plumber</td>
+<td>NH [VERIFY]</td>
+<td>[VERIFY]</td>
+<td>[VERIFY]</td>
+<td>flowproplumbingnh.com</td>
+<td>Manchester-area, 6+ yrs, drain-cleaning focus — Quick Job dense</td>
+<td>Cold</td>
+</tr>
+<tr>
+<td>24</td>
+<td>Owner [VERIFY]</td>
+<td>LHR Plumbing &amp; Heating</td>
+<td>Heat pump installer + plumber</td>
+<td>NH [VERIFY]</td>
+<td>[VERIFY]</td>
+<td>[VERIFY]</td>
+<td>lhrph.com</td>
+<td>Manchester certified heat pump installer — slot 1.1.5 alt</td>
+<td>Cold — confirm Mass Save HPIN</td>
+</tr>
+<tr>
+<td>25</td>
+<td>Owner [VERIFY]</td>
+<td>MASI Plumbing, Heating &amp; A/C</td>
+<td>HVAC + heat pump</td>
+<td>NH [VERIFY]</td>
+<td>[VERIFY]</td>
+<td>[VERIFY]</td>
+<td>masiplumbing.com</td>
+<td>Nashua/Hudson/Merrimack/Milford/Amherst — heat pump installer</td>
+<td>Cold</td>
+</tr>
+</tbody></table>
+<h3 id="33-me-portland--westbrook--saco-8-targets">3.3 ME Portland / Westbrook / Saco (8 targets)</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Name</th>
+<th>Business</th>
+<th>Trade</th>
+<th>License #</th>
+<th>Phone</th>
+<th>Email</th>
+<th>Website</th>
+<th>Why fit</th>
+<th>Approach</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>26</td>
+<td>Owner [VERIFY]</td>
+<td>All About Paint</td>
+<td>Painter (interior + exterior)</td>
+<td>ME (no painter license required)</td>
+<td>[VERIFY]</td>
+<td>[VERIFY]</td>
+<td>allaboutpaintne.com</td>
+<td>15+ yrs Greater Portland, Falmouth, Yarmouth — slot 1.1.6</td>
+<td>Cold</td>
+</tr>
+<tr>
+<td>27</td>
+<td>Owner [VERIFY]</td>
+<td>Innovation Painting &amp; Remodeling</td>
+<td>Painter + light remodel</td>
+<td>ME [VERIFY]</td>
+<td>[VERIFY]</td>
+<td>[VERIFY]</td>
+<td>innovationpaintingremodeling.com</td>
+<td>Portland + Bangor reach</td>
+<td>Cold</td>
+</tr>
+<tr>
+<td>28</td>
+<td>Owner [VERIFY]</td>
+<td>Clarke Painting</td>
+<td>Painter (since 2002)</td>
+<td>ME [VERIFY]</td>
+<td>[VERIFY]</td>
+<td>[VERIFY]</td>
+<td>clarkepaint.com</td>
+<td>Westbrook-based, residential + commercial</td>
+<td>Cold</td>
+</tr>
+<tr>
+<td>29</td>
+<td>Owner [VERIFY]</td>
+<td>TG Painters</td>
+<td>Painter + carpentry</td>
+<td>ME [VERIFY]</td>
+<td>[VERIFY]</td>
+<td>[VERIFY]</td>
+<td>tgpainters.com</td>
+<td>Portland, painter + light handyman crossover — Quick Job slot 1.2.2</td>
+<td>Cold</td>
+</tr>
+<tr>
+<td>30</td>
+<td>Owner [VERIFY]</td>
+<td>CP Property Services</td>
+<td>Landscaper + hardscape + excavation</td>
+<td>ME [VERIFY]</td>
+<td>[VERIFY]</td>
+<td>[VERIFY]</td>
+<td>cppropertyservice.com</td>
+<td>Westbrook + Portland service area — slot 1.1.7</td>
+<td>Cold</td>
+</tr>
+<tr>
+<td>31</td>
+<td>Owner [VERIFY]</td>
+<td>LST Landscaping Inc.</td>
+<td>Landscaper</td>
+<td>ME [VERIFY] (since 1969)</td>
+<td>[VERIFY]</td>
+<td>[VERIFY]</td>
+<td>lstlandscapinginc.com</td>
+<td>Multi-generational since 1969 — strong recruit-ready signal</td>
+<td>HJD warm if MEHBA-connected; else cold</td>
+</tr>
+<tr>
+<td>32</td>
+<td>Owner [VERIFY]</td>
+<td>Piscataqua Landscaping and Tree Service</td>
+<td>Landscaper + tree</td>
+<td>ME + NH [VERIFY]</td>
+<td>[VERIFY]</td>
+<td>[VERIFY]</td>
+<td>piscataqualandscaping.com</td>
+<td>45+ yrs, covers Saco/Westbrook/Portland AND NH Seacoast — bonus: cross-state</td>
+<td>HJD warm — they likely know HJD or HJD subs</td>
+</tr>
+<tr>
+<td>33</td>
+<td>Owner [VERIFY]</td>
+<td>Horch Roofing</td>
+<td>Roofer (asphalt + metal)</td>
+<td>ME [VERIFY], NRCA member</td>
+<td>[VERIFY]</td>
+<td>[VERIFY]</td>
+<td>horchroofing.com</td>
+<td>Since 2003, S/Mid/Down East ME, OSHA-certified</td>
+<td>Cold — high-quality signal</td>
+</tr>
+</tbody></table>
+<h3 id="34-ma-boston--cambridge--somerville--newton--brookline-15-targets">3.4 MA Boston / Cambridge / Somerville / Newton / Brookline (15 targets)</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Name</th>
+<th>Business</th>
+<th>Trade</th>
+<th>License #</th>
+<th>Phone</th>
+<th>Email</th>
+<th>Website</th>
+<th>Why fit</th>
+<th>Approach</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>34</td>
+<td>Owner [VERIFY]</td>
+<td>S+H Construction</td>
+<td>GC + historic restoration</td>
+<td>MA CSL [VERIFY], HIC [VERIFY]</td>
+<td>[VERIFY]</td>
+<td>[VERIFY]</td>
+<td>shconstruction.com</td>
+<td>Cambridge-based, integrates HVAC/electrical without compromising plaster — slot 1.1.9</td>
+<td>Cold — perfect Old-House Verified pilot</td>
+</tr>
+<tr>
+<td>35</td>
+<td>Owner [VERIFY]</td>
+<td>Catchlight Painting</td>
+<td>Historic restoration painter</td>
+<td>MA HIC [VERIFY], EPA RRP</td>
+<td>[VERIFY]</td>
+<td>[VERIFY]</td>
+<td>catchlightpainting.com</td>
+<td>30+ yrs Greater Boston historic homes, lath + horsehair plaster + calcimine ceilings</td>
+<td>Cold — slot 1.1.9 painter crossover</td>
+</tr>
+<tr>
+<td>36</td>
+<td>Owner [VERIFY]</td>
+<td>Landmark Services</td>
+<td>Historic restoration GC</td>
+<td>MA CSL [VERIFY]</td>
+<td>[VERIFY]</td>
+<td>[VERIFY]</td>
+<td>landmarkservices.com</td>
+<td>Greater Boston historic restoration specialists</td>
+<td>Cold</td>
+</tr>
+<tr>
+<td>37</td>
+<td>Owner [VERIFY]</td>
+<td>Knollmeyer Building Corp</td>
+<td>Historic restoration GC</td>
+<td>MA CSL [VERIFY]</td>
+<td>[VERIFY]</td>
+<td>[VERIFY]</td>
+<td>knollmeyerbuildingcorp.com</td>
+<td>Licensed MA historic preservation specialists</td>
+<td>Cold</td>
+</tr>
+<tr>
+<td>38</td>
+<td>Owner [VERIFY]</td>
+<td>M.F. Reynolds, Inc.</td>
+<td>Historic preservation</td>
+<td>MA CSL [VERIFY]</td>
+<td>[VERIFY]</td>
+<td>[VERIFY]</td>
+<td>mfreynolds.com</td>
+<td>Boston historic home preservation</td>
+<td>Cold</td>
+</tr>
+<tr>
+<td>39</td>
+<td>Owner [VERIFY]</td>
+<td>Newton Roofing Residential</td>
+<td>Roofer (asphalt + slate + copper)</td>
+<td>MA HIC [VERIFY]</td>
+<td>[VERIFY]</td>
+<td>[VERIFY]</td>
+<td>newtonroofing.com</td>
+<td>30+ yrs, woman-owned, Boston area, all materials — slot 1.1.10</td>
+<td>Cold</td>
+</tr>
+<tr>
+<td>40</td>
+<td>Owner [VERIFY]</td>
+<td>Art Slate Roofing</td>
+<td>Slate + copper roofer</td>
+<td>MA HIC [VERIFY]</td>
+<td>[VERIFY]</td>
+<td>[VERIFY]</td>
+<td>artslateroofing.com</td>
+<td>Family-owned, Greater Boston, NE architectural heritage focus</td>
+<td>Cold — Old-House Verified Roofer</td>
+</tr>
+<tr>
+<td>41</td>
+<td>Owner [VERIFY]</td>
+<td>Duffy Roofing Co., Inc.</td>
+<td>Roofer (asphalt + flat + slate)</td>
+<td>MA HIC [VERIFY] (since 1958)</td>
+<td>[VERIFY]</td>
+<td>[VERIFY]</td>
+<td>duffyroofing.com</td>
+<td>Family-owned 60+ yrs, Newton + Greater Boston</td>
+<td>Cold</td>
+</tr>
+<tr>
+<td>42</td>
+<td>Daniel Fox [VERIFY]</td>
+<td>Daniel M. Fox Roof Restoration</td>
+<td>Roof restoration (slate + asphalt)</td>
+<td>MA HIC [VERIFY] (since 1992)</td>
+<td>[VERIFY]</td>
+<td>[VERIFY]</td>
+<td>foxroofinginc.com</td>
+<td>Newton, slate restoration specialty</td>
+<td>Cold</td>
+</tr>
+<tr>
+<td>43</td>
+<td>Owner [VERIFY]</td>
+<td>Endless Energy</td>
+<td>HVAC + heat pump + plumber</td>
+<td>MA HVAC [VERIFY], Mass Save HPIN certified</td>
+<td>[VERIFY]</td>
+<td>[VERIFY]</td>
+<td>goendlessenergy.com</td>
+<td>Mass Save certified, 220+ MA towns, in-house electricians + plumbers — slot 1.1.5 prime</td>
+<td>Cold — flagship Mass Save target</td>
+</tr>
+<tr>
+<td>44</td>
+<td>Owner [VERIFY]</td>
+<td>Chilli Willie Mechanical</td>
+<td>HVAC + heat pump</td>
+<td>MA HVAC [VERIFY], Mass Save HPIN</td>
+<td>[VERIFY]</td>
+<td>[VERIFY]</td>
+<td>chilliwilliemechanical.com</td>
+<td>Boston/Brookline/Newton/Cambridge/Arlington Mass Save certified</td>
+<td>Cold</td>
+</tr>
+<tr>
+<td>45</td>
+<td>Owner [VERIFY]</td>
+<td>SumZero Energy Systems</td>
+<td>Heat pump specialist</td>
+<td>MA Mass Save HPIN [VERIFY]</td>
+<td>[VERIFY]</td>
+<td>[VERIFY]</td>
+<td>sumzeroenergysystems.com</td>
+<td>Licensed MA HPIN installer, design + install</td>
+<td>Cold</td>
+</tr>
+<tr>
+<td>46</td>
+<td>Owner [VERIFY]</td>
+<td>Motha Electric</td>
+<td>Master Electrician (panel + EV)</td>
+<td>MA Master [VERIFY]</td>
+<td>[VERIFY]</td>
+<td>[VERIFY]</td>
+<td>mothaelectric.com</td>
+<td>46+ yrs, Newton, panel + EV charger — slot 1.1.8</td>
+<td>Cold</td>
+</tr>
+<tr>
+<td>47</td>
+<td>Owner [VERIFY]</td>
+<td>Sylvester Electric</td>
+<td>Licensed Electrician (residential)</td>
+<td>MA Master [VERIFY]</td>
+<td>[VERIFY]</td>
+<td>[VERIFY]</td>
+<td>sylvesterelectric.com</td>
+<td>30+ yrs Newton residential, panel + EV + small jobs — slot 1.1.8 + 1.2.4 crossover</td>
+<td>Cold</td>
+</tr>
+<tr>
+<td>48</td>
+<td>Owner [VERIFY]</td>
+<td>Charge Home Solutions</td>
+<td>Tesla-certified electrician</td>
+<td>MA Master [VERIFY], Tesla certified</td>
+<td>[VERIFY]</td>
+<td>[VERIFY]</td>
+<td>chargehomesolutions.com</td>
+<td>Newton, EV-charger specialist, Level 2 install — slot 1.1.8</td>
+<td>Cold — niche specialty</td>
+</tr>
+</tbody></table>
+<h3 id="35-ma-quick-job--handyman-crossover-boston-metro-4-targets">3.5 MA Quick Job + handyman crossover (Boston metro) (4 targets)</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Name</th>
+<th>Business</th>
+<th>Trade</th>
+<th>License #</th>
+<th>Phone</th>
+<th>Email</th>
+<th>Website</th>
+<th>Why fit</th>
+<th>Approach</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>49</td>
+<td>Owner [VERIFY]</td>
+<td>Best Handyman Boston</td>
+<td>Handyman (licensed + insured)</td>
+<td>MA HIC [VERIFY]</td>
+<td>[VERIFY]</td>
+<td>[VERIFY]</td>
+<td>besthandymanboston.com</td>
+<td>Boston/Brookline/Cambridge — slot 1.2.1 prime</td>
+<td>Cold</td>
+</tr>
+<tr>
+<td>50</td>
+<td>Owner [VERIFY]</td>
+<td>Elite Handyman 911</td>
+<td>Handyman + light electrical + plumbing</td>
+<td>MA HIC [VERIFY], 15+ yrs</td>
+<td>[VERIFY]</td>
+<td>[VERIFY]</td>
+<td>ehm911.com</td>
+<td>Cambridge/Brookline, multi-trade light work — slot 1.2.1 + 1.2.5 crossover</td>
+<td>Cold</td>
+</tr>
+<tr>
+<td>51</td>
+<td>Owner [VERIFY]</td>
+<td>Hired Hands by The Remodeling Company</td>
+<td>Handyman (full-service brand)</td>
+<td>MA HIC [VERIFY]</td>
+<td>[VERIFY]</td>
+<td>[VERIFY]</td>
+<td>theremodelingco.com/handyman-services</td>
+<td>Newton/Wellesley/Brookline/Cambridge — turnkey handyman, PM crossover — slot 1.2.5</td>
+<td>Cold</td>
+</tr>
+<tr>
+<td>52</td>
+<td>Owner [VERIFY]</td>
+<td>M&amp;M Premier Handyman Services, Inc.</td>
+<td>Handyman (multi-town)</td>
+<td>MA HIC [VERIFY]</td>
+<td>[VERIFY]</td>
+<td>[VERIFY]</td>
+<td>mmhandymaninc.com</td>
+<td>Boston/Cambridge/Chelsea/Somerville/Brookline + 10 more towns — Quick Job density</td>
+<td>Cold</td>
+</tr>
+<tr>
+<td>53</td>
+<td>Owner [VERIFY]</td>
+<td>Kuhlman Electric</td>
+<td>Licensed Electrician (residential)</td>
+<td>MA Master [VERIFY]</td>
+<td>[VERIFY]</td>
+<td>[VERIFY]</td>
+<td>kuhlmanelectricalservices.com</td>
+<td>Somerville, EV charger Level 1+2 — slot 1.2.4</td>
+<td>Cold</td>
+</tr>
+<tr>
+<td>54</td>
+<td>Owner [VERIFY]</td>
+<td>JDO Electric</td>
+<td>Licensed Electrician (small jobs)</td>
+<td>MA Master [VERIFY]</td>
+<td>(617) 438-5773</td>
+<td>[VERIFY]</td>
+<td>jdoelectric.com</td>
+<td>Somerville, ceiling fans + outlets + dimmers — slot 1.2.4 prime</td>
+<td>Cold — phone in hand</td>
+</tr>
+<tr>
+<td>55</td>
+<td>Stephen Braley</td>
+<td>(sole-prop)</td>
+<td>Journeyman Electrician (small jobs)</td>
+<td>MA Journeyman [VERIFY]</td>
+<td>[VERIFY]</td>
+<td>[VERIFY]</td>
+<td>(no website — Yelp/Angi listed)</td>
+<td>15 yrs experience, sole-prop, looking for small service work — Quick Job slot 1.2.4 prime</td>
+<td>Cold — perfect Quick Job match</td>
+</tr>
+</tbody></table>
+<p><strong>Total: 55 named targets across NH, ME, MA. Quick-Job-mode-eligible: 18 of 55. Project-mode-eligible: 41 of 55. Multi-mode (both lanes): 14 of 55.</strong></p>
+<p><strong>SDR action before first outreach:</strong> verify license # via state board lookup, confirm phone via website / Google Business, confirm email via website contact page. Replace <code>[VERIFY]</code> with real data. Escalate any contact who cannot be reached after 3 channels (call, email, LinkedIn) to Phyrom.</p>
+<hr>
+<h2 id="4-pipeline-tracker-template">4. Pipeline Tracker Template</h2>
+<p>T5 copies this schema to <code>docs/operations/beta-cohort-pipeline.md</code> and updates every Monday during the Workstream B weekly cadence.</p>
+<pre><code class="hljs markdown"><span class="hljs-section"># Beta Cohort Pipeline Tracker</span>
+
+<span class="hljs-strong">**Last updated:**</span> {{date}}
+<span class="hljs-strong">**Owner:**</span> SDR (P closes high-value warm leads)
+<span class="hljs-strong">**Target:**</span> 15+ active pros by Week 6 of Phase 0
+
+<span class="hljs-section">## Active pipeline</span>
+
+| Name | Business | Trade | Metro | Mode | Status | Last touch | Next action | Notes |
+|---|---|---|---|---|---|---|---|---|
+| | | | | Project / Quick Job / Both | cold / contacted / demo booked / demo done / agreement sent / onboarding / active / declined | YYYY-MM-DD | | |
+
+<span class="hljs-section">## Status definitions</span>
+
+<span class="hljs-bullet">-</span> <span class="hljs-strong">**cold:**</span> in target list, no contact attempted yet
+<span class="hljs-bullet">-</span> <span class="hljs-strong">**contacted:**</span> at least one outreach sent (call / email / DM / text), no reply yet
+<span class="hljs-bullet">-</span> <span class="hljs-strong">**demo booked:**</span> Zoom or in-person demo scheduled
+<span class="hljs-bullet">-</span> <span class="hljs-strong">**demo done:**</span> demo completed, awaiting decision
+<span class="hljs-bullet">-</span> <span class="hljs-strong">**agreement sent:**</span> OpenSign Founding Pro Agreement sent, awaiting signature
+<span class="hljs-bullet">-</span> <span class="hljs-strong">**onboarding:**</span> agreement signed, working through 72-hr onboarding checklist (§6 below)
+<span class="hljs-bullet">-</span> <span class="hljs-strong">**active:**</span> Stripe Connect complete + license/insurance verified + first job posted within 7 days
+<span class="hljs-bullet">-</span> <span class="hljs-strong">**declined:**</span> said no — record reason in Notes for cohort 2 outreach
+
+<span class="hljs-section">## Weekly snapshot</span>
+
+| Week | Cold | Contacted | Demo booked | Demo done | Onboarding | Active | Declined | Cumulative active |
+|---|---|---|---|---|---|---|---|---|
+| W1 | | | | | | | | |
+| W2 | | | | | | | | |
+| W3 | | | | | | | | |
+| W4 | | | | | | | | |
+| W5 | | | | | | | | |
+| W6 | | | | | | | | |
+</code></pre>
+<hr>
+<h2 id="5-week-by-week-recruiting-plan">5. Week-by-Week Recruiting Plan</h2>
+<h3 id="week-1--hjd-warm-leads">Week 1 — HJD Warm Leads</h3>
+<ul>
+<li><strong>Target:</strong> 6 demos booked, 3 demos done</li>
+<li><strong>Channels:</strong> Phyrom personal phone calls + in-person at HJD job sites + LinkedIn DM</li>
+<li><strong>Daily outreach volume:</strong> Phyrom 5 calls/day Mon–Fri (25/wk total)</li>
+<li><strong>Expected conversion:</strong> 60%+ (warm) — 25 calls → 15 conversations → 9 interested → 6 demos booked</li>
+<li><strong>Escalation trigger:</strong> None — Phyrom owns this week personally</li>
+<li><strong>Targets to call Monday morning:</strong> #2 Ricci Construction, #19 Bill Trombly, #31 LST Landscaping, #32 Piscataqua, #17 Blackdog Builders</li>
+</ul>
+<h3 id="week-2--nh-supply-house-referrals">Week 2 — NH Supply-House Referrals</h3>
+<ul>
+<li><strong>Target:</strong> 8 demos booked</li>
+<li><strong>Channels:</strong> SDR + P walk supply houses Tues + Thurs (FW Webb Portsmouth + Manchester, Lowe's Pro Portsmouth + Manchester + Nashua, Rockler Cambridge MA, Best Tile Portsmouth)</li>
+<li><strong>Daily outreach volume:</strong> SDR 30 cold contacts/wk via supply-house in-person + email/text follow-up</li>
+<li><strong>Expected conversion:</strong> 25–30% (cold + warm-by-association) — 30 contacts → 12 conversations → 8 demos</li>
+<li><strong>Escalation trigger:</strong> if Tues + Thurs supply-house yield &lt;4 conversations, P joins Wed in person at top supply house</li>
+<li><strong>Targets:</strong> #14 East Coast HVAC, #15 Heritage Home Service, #20 Braydin, #22 Moynihan, #23 Flow Pro</li>
+</ul>
+<h3 id="week-3--me-supply-house--nhhba--mehba-outreach">Week 3 — ME Supply-House + NHHBA / MEHBA Outreach</h3>
+<ul>
+<li><strong>Target:</strong> 6 demos booked</li>
+<li><strong>Channels:</strong> SDR drives to Portland Tues (FW Webb Portland, Lowe's Pro Westbrook), MEHBA membership outreach via ED + board, NHHBA member directory cold email batch</li>
+<li><strong>Daily outreach volume:</strong> SDR 25 contacts/wk + 1 P-led MEHBA call to ED</li>
+<li><strong>Expected conversion:</strong> 25% — 25 → 10 → 6 demos</li>
+<li><strong>Escalation trigger:</strong> if MEHBA ED has not responded by Thurs, P personally calls</li>
+<li><strong>Targets:</strong> #26 All About Paint, #28 Clarke Painting, #30 CP Property Services, #33 Horch Roofing, plus 4 more ME/NH from list</li>
+</ul>
+<h3 id="week-4--ma-boston-specialty">Week 4 — MA Boston Specialty</h3>
+<ul>
+<li><strong>Target:</strong> 8 demos booked</li>
+<li><strong>Channels:</strong> Mass Save HPIN listings, NECA member directory, MA Roofing Contractors Association, Boston ISD permit-puller list (public records)</li>
+<li><strong>Daily outreach volume:</strong> SDR 30 cold/wk + P Wed in-person Cambridge / Brookline</li>
+<li><strong>Expected conversion:</strong> 25% — 30 → 12 → 8 demos</li>
+<li><strong>Escalation trigger:</strong> if HPIN-certified target ignores 3 emails, P drives to job site (specialty pros respond to in-person)</li>
+<li><strong>Targets:</strong> #34 S+H Construction, #43 Endless Energy, #44 Chilli Willie, #46 Motha Electric, #39 Newton Roofing</li>
+</ul>
+<h3 id="week-5--quick-job-pro-recruitment">Week 5 — Quick Job Pro Recruitment</h3>
+<ul>
+<li><strong>Target:</strong> 6 demos booked (Quick Job pros: handyman, painter, light-trade)</li>
+<li><strong>Channels:</strong> Yelp + Google Business outreach, Facebook contractor groups (Boston Handyman Network, NH Tradesman Group), Craigslist services-offered scraping</li>
+<li><strong>Daily outreach volume:</strong> SDR 35 cold/wk (Quick Job pros are easier to reach but lower-status — volume play)</li>
+<li><strong>Expected conversion:</strong> 20% — 35 → 12 → 6 demos</li>
+<li><strong>Escalation trigger:</strong> none unless conversion &lt;15% (then P writes a custom Quick-Job-only Loom video)</li>
+<li><strong>Targets:</strong> #7 Brush With Color, #12 I Know Jack, #29 TG Painters, #49 Best Handyman Boston, #54 JDO Electric, #55 Stephen Braley</li>
+</ul>
+<h3 id="week-6--close-to-15-active-pros--recruit-overflow-waitlist">Week 6 — Close to 15+ Active Pros + Recruit Overflow Waitlist</h3>
+<ul>
+<li><strong>Target:</strong> 15+ active pros, 10+ on cohort-2 waitlist</li>
+<li><strong>Channels:</strong> P closes outstanding demos personally, SDR builds cohort-2 waitlist landing page, send Email 5 of cold sequence (waitlist invite) to all unconverted contacts</li>
+<li><strong>Daily outreach volume:</strong> P 5 close-calls/day, SDR maintenance + waitlist inbound</li>
+<li><strong>Expected conversion:</strong> 80%+ on outstanding demos (already qualified)</li>
+<li><strong>Escalation trigger:</strong> if active count &lt;12 by Wed of W6, P calls top 5 untouched HJD network contacts personally</li>
+</ul>
+<p><strong>Cumulative target:</strong> 6 (W1) + 8 (W2) + 6 (W3) + 8 (W4) + 6 (W5) = 34 demos booked → ~17 active pros by W6 (50% demo-to-active conversion).</p>
+<hr>
+<h2 id="6-demo-flow-checklist-30-min-zoom-or-in-person">6. Demo Flow Checklist (30-min Zoom or in-person)</h2>
+<p>Phyrom runs every demo personally per Workstream B Task B2 Step 3.</p>
+<p><strong>Pre-demo (Phyrom prep, 5 min):</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> Confirm pro's trade, metro, license type</li>
+<li><input disabled="" type="checkbox"> Pull up sample job in their trade in their metro (use mock data if no live job yet)</li>
+<li><input disabled="" type="checkbox"> Pin Stripe Connect onboarding URL ready to share</li>
+</ul>
+<p><strong>Demo flow (30 min):</strong></p>
+<ul>
+<li><p><input disabled="" type="checkbox"> 
+<strong>(2 min) Founder hook:</strong> "Hi, I'm Phyrom. I run HJD Builders out of NH. I built this because Angi was wasting our time. I am looking at fifteen pros to be the founding cohort. Today I want to show you what I built and ask if you want one of those spots."</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>(5 min) Post a job:</strong> Share screen, walk through the client side. "Here is what your client sees. They post the job, the system already knows the building code for their address."</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>(5 min) Match:</strong> Show Dispatch matching the job to the pro in &lt;2 minutes. "Within 2 hours, every job gets matched to 3 licensed pros. You are one of them. No paying for leads. The job comes to you."</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>(5 min) Bid + quote:</strong> Pro views the job, submits a bid. Show the code-aware quote validation flag a missing scope item. "This is the part Angi cannot do. Every quote is checked against your state and town code before the client sees it. So you stop losing jobs to a guy who left half the work out of his bid."</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>(5 min) Close + Stripe payout:</strong> Show client accepting bid → escrow → completion → Stripe payout in 24–48 hr (Quick Job) or 7 day (Project). "Money hits your bank in days, not Net 30."</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>(3 min) Founding Pro benefits:</strong> Half-price forever (5%), no $49 sub, direct line to me, marketing exposure, 90-day commitment with mutual termination.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>(5 min) Q&amp;A + close:</strong> Answer trade-specific questions. Then: <strong>"Sign the agreement now and I will have you live by Friday."</strong></p>
+</li>
+</ul>
+<p><strong>Demo deliverables:</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> Send OpenSign Founding Pro Agreement within 1 hour of demo close</li>
+<li><input disabled="" type="checkbox"> Send onboarding checklist link</li>
+<li><input disabled="" type="checkbox"> Send 3-min Loom recap (in case pro wants to share with partner / spouse)</li>
+<li><input disabled="" type="checkbox"> Update pipeline tracker — move to "agreement sent"</li>
+</ul>
+<hr>
+<h2 id="7-onboarding-completion-checklist-72-hour-sla">7. Onboarding Completion Checklist (72-hour SLA)</h2>
+<p>Per Workstream B Task B2 Step 4. From "agreement signed" to "active" status in 72 hours max.</p>
+<h3 id="hour-024-verification--profile">Hour 0–24: Verification + profile</h3>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>License verified</strong> — SDR runs state board lookup (NH OPLC, ME OPL, MA mass.gov/dpl) and confirms license # is active, current, and matches name on Founding Pro Agreement</li>
+<li><input disabled="" type="checkbox"> <strong>Insurance certificate uploaded</strong> — General liability $500K (Quick Job) or $1M (Project), workers' comp if W-2 staff, auto $1M for any pro with vehicle. Pro emails ACORD certificate or uploads PDF.</li>
+<li><input disabled="" type="checkbox"> <strong>Profile completed:</strong><ul>
+<li>Photo (headshot + 1 on-job-site)</li>
+<li>Bio (3 sentences — who, trade, metro)</li>
+<li>Services (selected from category list)</li>
+<li>Service area (zip code radius)</li>
+<li>Trade-specific certifications (Mass Save HPIN, EPA RRP, ICPI, etc.)</li>
+</ul>
+</li>
+</ul>
+<h3 id="hour-2448-stripe-connect--payment-readiness">Hour 24–48: Stripe Connect + payment readiness</h3>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Stripe Connect Express onboarding complete</strong> — pro receives email from Stripe, completes flow, returns to platform with <code>account.updated</code> webhook firing</li>
+<li><input disabled="" type="checkbox"> <strong>Bank account connected</strong> for payouts (instant or 2-day standard)</li>
+<li><input disabled="" type="checkbox"> <strong>W-9 submitted</strong> (1099-NEC reporting &gt;$600/yr)</li>
+</ul>
+<h3 id="hour-4872-first-job--go-live">Hour 48–72: First job + go-live</h3>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>First job posted to them within 7 days</strong> — Phyrom drives demand from HJD client list if needed (per Task B3). Acceptable: real promo job at $150–$500 from HJD friends/family acting as founding clients.</li>
+<li><input disabled="" type="checkbox"> <strong>First payout processed</strong> within 7 days of first job completion (Quick Job mode: 24-hr release)</li>
+<li><input disabled="" type="checkbox"> <strong>Founding Pro badge enabled</strong> in profile (permanent)</li>
+<li><input disabled="" type="checkbox"> <strong>Welcome SMS from Phyrom personally</strong> within 72 hours</li>
+<li><input disabled="" type="checkbox"> <strong>Pro added to weekly NPS feedback flow</strong> (per Task B4)</li>
+<li><input disabled="" type="checkbox"> <strong>Status flipped to "active" in pipeline tracker</strong></li>
+</ul>
+<p><strong>SLA enforcement:</strong> if any step exceeds the 72-hr window, P personally calls the pro to unblock — most blockers are KYC delays at Stripe (covered by R2 in spec §10) or missing insurance certificate (request directly from pro's insurance broker).</p>
+<hr>
+<h2 id="8-key-risks--mitigations-specific-to-recruiting">8. Key Risks &amp; Mitigations (specific to recruiting)</h2>
+<p><strong>R1 — Beta pros sign up but don't transact</strong> (per spec §10 R1): Phyrom drives demand from HJD client list, free promo video per beta pro, friends-and-family seed jobs at $150–$500 to break the ice.</p>
+<p><strong>R2 — Stripe Connect KYC delays &gt;48hr</strong> (per spec §10 R2): backup rails Tilled / Bridgepay; Mercury for banking. P notifies pro of delay personally — never let pro think the platform forgot them.</p>
+<p><strong>R5 — 1099 vs W-2 worker classification challenge</strong> (per spec §10 R5): pros are independently licensed contractors with own insurance, own tools, set own prices, accept/decline jobs. Defensible. Legal opinion in flight (Task A7).</p>
+<p><strong>Recruiting-specific risk: HJD warm list yields fewer conversions than expected.</strong> Mitigation: SDR pivots earlier to supply-house + Mass Save channels, P personally reaches out to NHHBA + MEHBA EDs in Week 2 (not Week 3) to compress timeline.</p>
+<hr>
+<h2 id="9-last-updated">9. Last Updated</h2>
+<p><strong>2026-04-22</strong> — Draft v1 by Claude (Wave 4). Awaiting Phyrom approval. T5 takes ownership of <code>docs/operations/beta-cohort-pipeline.md</code> weekly updates from Week 1 onward.</p>
+<hr>
+<h2 id="appendix-a--sources-cited-contractor-research">Appendix A — Sources Cited (Contractor Research)</h2>
+<p>NH Seacoast: Oxland Builders, Generation Homes, Driftwood Builders, River Birch Builders, Ricci Construction, Dockham Builders (via BBB Portsmouth NH category, Houzz Portsmouth NH professionals listings).</p>
+<p>NHHBA + Greater Manchester/Nashua/Concord: nhhba.com, business.nhhba.com (member directory), gmnhbra.com.</p>
+<p>NH plumbing: NH OPLC Mechanical Safety &amp; Licensing Board (oplc.nh.gov/mechanical-safety-and-licensing-board), Bill Trombly Plumbing (License #1), Braydin Plumbing (Master #4818, Gas #GF1106421), Tooky Plumbing, Moynihan Plumbing, Flow Pro Plumbing.</p>
+<p>NH HVAC / heat pump: East Coast HVAC, Heritage Home Service, LHR Plumbing &amp; Heating, MASI Plumbing/Heating/AC. Mass Save HPIN cross-reference at masssave.com/residential/find-a-contractor/find-a-heat-pump-installer.</p>
+<p>ME Portland metro: All About Paint, Innovation Painting &amp; Remodeling, Clarke Painting (Westbrook, since 2002), TG Painters, CP Property Services, LST Landscaping (since 1969), Piscataqua Landscaping, Horch Roofing (NRCA).</p>
+<p>MA Boston specialty: S+H Construction (Cambridge historic), Catchlight Painting, Landmark Services, Knollmeyer Building Corp, M.F. Reynolds, Newton Roofing Residential, Art Slate Roofing, Duffy Roofing (since 1958), Daniel M. Fox Roof Restoration, Endless Energy (Mass Save HPIN), Chilli Willie Mechanical (Mass Save certified Boston/Brookline/Newton/Cambridge), SumZero Energy Systems, Motha Electric (Newton, EV+panel), Sylvester Electric, Charge Home Solutions (Tesla certified Newton).</p>
+<p>MA handyman + Quick Job: Best Handyman Boston, Elite Handyman 911, Hired Hands by The Remodeling Company, M&amp;M Premier Handyman Services, Kuhlman Electric (Somerville), JDO Electric (Somerville 617-438-5773), Stephen Braley (sole-prop journeyman, small jobs).</p>
+<p>License-board lookup URLs to be embedded in pipeline tracker:</p>
+<ul>
+<li>NH: oplc.nh.gov (Mechanical Safety + Licensing for plumber/HVAC; town-level for GC)</li>
+<li>ME: maine.gov/pfr/professionallicensing</li>
+<li>MA: mass.gov/dpl (DPL search for CSL, HIC, electrician, plumber)</li>
+</ul>
+
+	
+
+
+</body>
+</html>

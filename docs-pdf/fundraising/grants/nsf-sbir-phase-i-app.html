@@ -1,0 +1,1135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>nsf sbir phase i app — Sherpa Pros</title>
+<link rel="icon" href="../../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="nsf-sbir-phase-i-app.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="nsf-sbir-phase-i--sherpa-pros-application-draft">NSF SBIR Phase I — Sherpa Pros Application Draft</h1>
+<p><strong>Program:</strong> National Science Foundation Small Business Innovation Research (SBIR) Phase I — America's Seed Fund
+<strong>Award size:</strong> Up to $305,000 (Phase I); Phase II up to $1.5M follow-on
+<strong>Sponsor URL:</strong> <a href="https://seedfund.nsf.gov/">https://seedfund.nsf.gov/</a>
+<strong>Applicant:</strong> Sherpa Pros LLC (Phyrom, Founder)
+<strong>Draft date:</strong> 2026-04-22
+<strong>Status:</strong> DRAFT — Project Pitch first (≤3 pages, rolling), full proposal if invited (15-page structure included)</p>
+<hr>
+<h2 id="1-program-at-a-glance">1. Program at a Glance</h2>
+<p>The NSF SBIR program funds high-risk, high-impact deep-tech R&amp;D at US small businesses. The two-stage gating model is <strong>Project Pitch first</strong> (≤3 pages, free, rolling submission, ~30-day NSF feedback) — and only if invited does the company file the full proposal. This is structurally favorable for Sherpa Pros: the Project Pitch is a low-effort screen that either confirms NSF interest in the AI/ML research commercialization angle or returns clear "not a fit" feedback in weeks.</p>
+<p><strong>Why Sherpa Pros qualifies for NSF SBIR (and NOT for general "small business marketplace" funding):</strong></p>
+<p>The eligible NSF SBIR research thread is the <strong>code-aware quote-validation engine</strong> — specifically, the NLP/ML problem of mapping unstructured contractor quote text and homeowner job descriptions onto structured building-code requirements (NEC, IRC, MA Electrical Code, NH RSA) and program-eligibility rules (Mass Save, IRA § 25C/25D, utility programs) in real time, at scale, with explainable validation outputs. This is <strong>deep tech</strong>, not a marketplace UI play. NSF reviewers fund research, not GTM.</p>
+<p><strong>Wiseman is the internal name for the code-aware engine; this proposal calls it the "code-aware quote-validation system" or "platform code intelligence" externally</strong> (per Sherpa Pros brand bible / GTM spec §3.3).</p>
+<hr>
+<h2 id="2-required-documents-checklist">2. Required Documents Checklist</h2>
+<h3 id="stage-1--project-pitch-≤3-pages">Stage 1 — Project Pitch (≤3 pages)</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Project Pitch document (3 pages max — see §5)</li>
+<li><input disabled="" type="checkbox"> Company information (legal name, EIN, DUNS, SAM.gov registration)</li>
+<li><input disabled="" type="checkbox"> Founder bio + technical lead bio (Phyrom)</li>
+<li><input disabled="" type="checkbox"> No budget required at Project Pitch stage</li>
+</ul>
+<h3 id="stage-2--full-proposal-only-if-invited-15-page-project-description-max">Stage 2 — Full Proposal (only if invited; 15-page Project Description max)</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Project Summary (1 page)</li>
+<li><input disabled="" type="checkbox"> Project Description (15 pages max — Intellectual Merit, Broader Impacts, R&amp;D Plan, Commercialization Plan)</li>
+<li><input disabled="" type="checkbox"> References Cited</li>
+<li><input disabled="" type="checkbox"> Biographical Sketches (PI + Co-PIs)</li>
+<li><input disabled="" type="checkbox"> Budget (NSF-approved categories)</li>
+<li><input disabled="" type="checkbox"> Budget Justification</li>
+<li><input disabled="" type="checkbox"> Current and Pending Support</li>
+<li><input disabled="" type="checkbox"> Facilities, Equipment, and Other Resources</li>
+<li><input disabled="" type="checkbox"> Letters of Support (commercial validation; recommended: Mass Save HPIN contractor + property-management firm + utility CVC informal letter)</li>
+<li><input disabled="" type="checkbox"> Commercialization Plan (separate; explicit market path post-Phase I)</li>
+<li><input disabled="" type="checkbox"> Data Management Plan</li>
+<li><input disabled="" type="checkbox"> Postdoctoral Researcher Mentoring Plan (if applicable — likely N/A)</li>
+<li><input disabled="" type="checkbox"> Letters of Commitment for any subawardees or consultants</li>
+</ul>
+<h3 id="pre-submission-registrations-do-these-immediately--they-take-time">Pre-submission registrations (do these immediately — they take time)</h3>
+<ul>
+<li><input disabled="" type="checkbox"> SAM.gov entity registration (active and current — <strong>2–4 weeks first time</strong>, must be done before Project Pitch acceptance)</li>
+<li><input disabled="" type="checkbox"> NSF Research.gov account for Phyrom as PI</li>
+<li><input disabled="" type="checkbox"> DUNS / UEI number assigned to Sherpa Pros LLC</li>
+</ul>
+<hr>
+<h2 id="3-eligibility-verification">3. Eligibility Verification</h2>
+<table>
+<thead>
+<tr>
+<th>Criterion</th>
+<th>Sherpa Pros status</th>
+<th>Cite</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>US small business (≤500 employees, &gt;50% US-owned)</td>
+<td>Yes — 1 founder</td>
+<td>NSF SBIR rules</td>
+</tr>
+<tr>
+<td>For-profit</td>
+<td>Yes — Sherpa Pros LLC</td>
+<td>—</td>
+</tr>
+<tr>
+<td>US-based research</td>
+<td>Yes — code-corpus + R&amp;D in NH/MA</td>
+<td>GTM spec §1</td>
+</tr>
+<tr>
+<td>PI (Phyrom) employed by company ≥51% time</td>
+<td>Yes — Phyrom is full-time founder</td>
+<td>GTM spec §7</td>
+</tr>
+<tr>
+<td>Project is research-based (not just product development)</td>
+<td>Yes — AI/ML for code mapping + program eligibility inference is genuine research; explainability of code-validation outputs is an open problem</td>
+<td>This document §5</td>
+</tr>
+<tr>
+<td>SAM.gov registration active</td>
+<td><strong>Action item — register if not done.</strong> 2–4 weeks lead time.</td>
+<td>sam.gov</td>
+</tr>
+<tr>
+<td>NSF Research.gov PI account</td>
+<td><strong>Action item</strong></td>
+<td>research.gov</td>
+</tr>
+</tbody></table>
+<p><strong>Verdict:</strong> Eligible. Register SAM.gov and Research.gov <strong>immediately</strong> — these are the long-lead items that gate everything.</p>
+<hr>
+<h2 id="4-project-title">4. Project Title</h2>
+<p><strong>"Code-Aware Quote Validation: Real-Time NLP/ML Mapping of Contractor Estimates to Multi-Jurisdictional Building Codes and Program-Eligibility Rules for Residential Construction"</strong></p>
+<hr>
+<h2 id="5-stage-1--project-pitch-≤3-pages-draft">5. STAGE 1 — Project Pitch (≤3 Pages, Draft)</h2>
+<blockquote>
+<p><em>NSF Project Pitch format: ≤3 pages total. Standard sections: Technology Innovation, Technical Objectives &amp; Challenges, Market Opportunity, Company &amp; Team. Submit at <a href="https://seedfund.nsf.gov/project-pitch/">https://seedfund.nsf.gov/project-pitch/</a>.</em></p>
+</blockquote>
+<h3 id="51-technology-innovation-≈1-page">5.1 Technology Innovation (≈1 page)</h3>
+<p>Residential construction in the United States is governed by a tangled, jurisdiction-specific web of building codes (National Electrical Code, International Residential Code, state-specific overlays such as Massachusetts Electrical Code 527 CMR 12.00 and New Hampshire RSA 155-A) and incentive program rules (Mass Save, IRA § 25C/25D, Eversource/National Grid utility programs, and 50+ state-level rebate programs). A single residential project — a heat-pump install, an electrical panel upgrade, an EV-charger install — can span 3–6 of these regulatory frames simultaneously.</p>
+<p>Today, contractors author quotes manually in unstructured text (PDFs, spreadsheets, emails); homeowners receive them; neither party has any tractable way to validate that the quoted scope is code-compliant, that the quoted materials meet program-eligibility rules, or that all available rebates are stacked. The result: estimated 40%+ of residential heat-pump quotes in MA fail first-pass program eligibility check at the rebate-paperwork stage [MA EEAC 2025 contractor survey, citation pending verification — but consistent with field-reported rework rates].</p>
+<p><strong>Sherpa Pros' proposed innovation:</strong> A real-time NLP/ML system that ingests an unstructured contractor quote and an unstructured homeowner job description, parses both onto a structured intermediate representation, and validates them against (a) jurisdiction-specific building-code rule libraries, (b) federal and state incentive program eligibility rules, and (c) permit-requirement matrices — producing an <strong>explainable validation output</strong> (specific code citation, specific rule, specific gap) that both contractor and homeowner can act on.</p>
+<p>This is not a static rule engine. It requires:</p>
+<ol>
+<li><strong>Code corpus parsing</strong> at scale (192 codes, 480K entries currently cataloged across NEC + IRC + state + 284 NH municipal jurisdictions — work to date is foundational; SBIR funds the MA + ME + RI + CT extension and the federal incentive layer)</li>
+<li><strong>NLP entity extraction</strong> from contractor quotes that frequently lack structure (line-item descriptions, materials specs, labor categories)</li>
+<li><strong>ML-driven rule-applicability inference</strong> — given a job's location, scope, and existing conditions, which subset of the corpus applies? (open research problem at the intersection of legal NLP and construction informatics)</li>
+<li><strong>Explainability layer</strong> — the output must cite specific code subsections in plain language so both contractor and homeowner can verify and learn (open research problem in explainable NLP)</li>
+</ol>
+<h3 id="52-technical-objectives--challenges-≈1-page">5.2 Technical Objectives &amp; Challenges (≈1 page)</h3>
+<p><strong>Phase I R&amp;D objectives (12 months, $305K):</strong></p>
+<ol>
+<li><p><strong>Object 1 — Multi-jurisdiction code corpus pipeline.</strong> Extend the cataloged code corpus to cover MA Electrical Code (527 CMR 12.00), MA State Building Code (780 CMR), Mass Save program rules, Eversource and National Grid utility-program rules, IRA § 25C/25D, and at least 50 MA municipal overlays. Validate corpus completeness against a held-out test set of 100 historical MA quotes.</p>
+</li>
+<li><p><strong>Object 2 — Quote-to-structured-IR NLP pipeline.</strong> Build a quote-parsing pipeline that ingests unstructured contractor quotes (PDF, image-OCR, plaintext) and outputs a structured intermediate representation (line items, quantities, materials specs, labor categories, jurisdiction tags). Target: F1 ≥ 0.85 on entity extraction against human-annotated test set.</p>
+</li>
+<li><p><strong>Object 3 — Rule-applicability inference engine.</strong> Given a structured job representation, infer the applicable rule subset from the corpus. Use retrieval-augmented generation (RAG) with embedded code subsections + LLM reasoning over jurisdictional precedence (federal → state → municipal). Target: precision ≥ 0.90 / recall ≥ 0.80 on rule-applicability against expert-annotated test cases.</p>
+</li>
+<li><p><strong>Object 4 — Explainable validation output.</strong> Produce contractor-facing and homeowner-facing validation reports that cite specific code subsections, specific rule violations, specific missing program-eligibility line items, in plain 8th-grade-reading-level English with the underlying code citation as a clickable footnote. Target: 80%+ contractor + homeowner satisfaction with explainability (NPS-style measurement on a 5-point scale).</p>
+</li>
+</ol>
+<p><strong>Technical challenges:</strong></p>
+<ul>
+<li><strong>Legal NLP at the intersection of code corpora and construction informatics is an under-researched domain.</strong> Academic NLP work on legal-text retrieval is mostly contracts and litigation; building codes have specific structural properties (cross-references, jurisdictional overrides, version drift) that require new approaches.</li>
+<li><strong>Hallucination control in incentive-program rule application is high-stakes</strong> — incorrectly stacking a rebate that is not actually claimable creates real financial exposure for the homeowner. Phase I will design and validate hallucination-reduction techniques specific to this domain (code-grounded RAG with citation enforcement; refusal-to-answer when confidence is below threshold).</li>
+<li><strong>Real-time latency at the dispatch step.</strong> A homeowner-facing quote review must validate in under 3 seconds end-to-end. This is non-trivial for retrieval over a 480K-entry-and-growing corpus with multi-jurisdictional rule chaining.</li>
+</ul>
+<h3 id="53-market-opportunity-≈05-page">5.3 Market Opportunity (≈0.5 page)</h3>
+<p>US residential remodeling + repair = <strong>$524B/year</strong> (Harvard JCHS LIRA 2025) [tam-sam-som §2.1]. Even capturing 1 basis point (0.01%) of TAM = $52M GMV. New England 6-state residential SAM = ~$17–23B/year [tam-sam-som §3.1]. Boston metro alone produces 10,000–14,000 small-residential building permits per year (Boston ISD Open Data).</p>
+<p>Sherpa Pros' commercialization vehicle is the operational marketplace — <a href="http://www.thesherpapros.com">www.thesherpapros.com</a>, live, built on Next.js 16 + Stripe Connect + Neon Postgres + PostGIS — at a 5%–10% take rate vs. lead-gen platforms' effective $400–$800 per closed job. <strong>The code-aware quote-validation system is the moat that makes the marketplace defensible.</strong> Without it, Sherpa Pros is a thinner competitor to Angi. With it, Sherpa Pros plants a flag in the empty "licensed + code-aware + true marketplace" quadrant (per competitive analysis matrix).</p>
+<h3 id="54-company--team-≈05-page">5.4 Company &amp; Team (≈0.5 page)</h3>
+<p><strong>Sherpa Pros LLC</strong> is a Delaware/NH-domiciled small business; founder and PI Phyrom is a 12+ year working New Hampshire general contractor and the founder of HJD Builders LLC. The platform is built and operational. Phyrom holds the dual position of (a) the operator who knows the code-validation problem from the contractor side daily, and (b) the technical founder who has architected and shipped the live platform. Phase I funding hires a senior ML engineer + part-time NLP research consultant for the 12-month R&amp;D program.</p>
+<hr>
+<h2 id="6-stage-2--full-proposal-outline-15-pages-if-invited">6. STAGE 2 — Full Proposal Outline (15 Pages, If Invited)</h2>
+<blockquote>
+<p><em>Use only if NSF invites the full proposal after Project Pitch acceptance. The 15-page Project Description is the central artifact; supporting documents are uploaded separately. Below is the section-by-section outline Phyrom should fill in over 4–6 weeks of writing.</em></p>
+</blockquote>
+<h3 id="61-project-summary-1-page-separate-from-15-page-limit">6.1 Project Summary (1 page, separate from 15-page limit)</h3>
+<ul>
+<li><strong>Overview:</strong> 1 paragraph — the code-aware quote-validation problem and the proposed innovation.</li>
+<li><strong>Intellectual Merit:</strong> 1 paragraph — the NLP/ML research contributions (legal-text retrieval over building codes; explainable rule-applicability inference; hallucination control in incentive-program reasoning).</li>
+<li><strong>Broader Impacts:</strong> 1 paragraph — accelerated MA decarbonization (Mass Save HP throughput); reduced consumer harm from lead-gen-platform deposit theft; defensive moat for licensed-trade workers vs. lead-gen platforms.</li>
+</ul>
+<h3 id="62-project-description-15-pages-max-nsf-order">6.2 Project Description (15 pages max, NSF order)</h3>
+<p><strong>Section 1 — Significance and Innovation (≈3 pages)</strong></p>
+<ul>
+<li>The labor-shortage / decarbonization-rebate / AI-now convergence (per investor deck slide 3 + GTM spec §2.1)</li>
+<li>The empty quadrant: licensed + code-aware + marketplace (competitive analysis §1)</li>
+<li>Why now (NLP/RAG state of the art is 2025-mature; codes are increasingly digitized; rebate programs are at peak funding)</li>
+<li>Why this team (founder = working GC who lived the problem)</li>
+</ul>
+<p><strong>Section 2 — Technical Discussion and R&amp;D Plan (≈7 pages)</strong></p>
+<ul>
+<li>2.1 Overview of the four research objectives (per Project Pitch §5.2)</li>
+<li>2.2 Object 1 detailed plan — corpus pipeline, jurisdictional overlay handling, version-drift management, validation methodology</li>
+<li>2.3 Object 2 detailed plan — quote-parsing NLP architecture, training data strategy (synthesize from HJD historical quotes + crowdsource via beta cohort), evaluation framework</li>
+<li>2.4 Object 3 detailed plan — RAG architecture with code-citation enforcement, jurisdictional-precedence resolution, evaluation against expert-annotated test cases</li>
+<li>2.5 Object 4 detailed plan — explainability layer, plain-language generation with citation backing, user-study validation (n=30 contractor + n=30 homeowner)</li>
+<li>2.6 Risks and mitigations table</li>
+</ul>
+<p><strong>Section 3 — Commercialization Plan (≈3 pages — or move to separate doc per NSF format)</strong></p>
+<ul>
+<li>Live operational marketplace (<a href="http://www.thesherpapros.com">www.thesherpapros.com</a>) is the commercialization vehicle</li>
+<li>5%–10% take rate, $49/mo subscription, $4–$1.50/unit PM tier</li>
+<li>Phase 1 → 2 → 3 → 4 GTM trajectory (per GTM spec §4)</li>
+<li>Customer pipeline: HJD Builders network (founding pros), Mass Save Network application, NHHBA + MEHBA, Boston supply-house partnerships</li>
+<li>Competitive moat (per competitive analysis §6 defensibility)</li>
+<li>Anticipated Phase II R&amp;D (Wiseman federation across all 50 states; insurance-claim integration; PM CapEx/OpEx integration; offline mobile inference)</li>
+</ul>
+<p><strong>Section 4 — Company and Team (≈1 page)</strong></p>
+<ul>
+<li>Phyrom bio + 12 years GC + technical lead role</li>
+<li>Phase I hires (Senior ML Engineer + part-time NLP consultant)</li>
+<li>Advisor pipeline (NFX-shaped marketplace operator; NE trades veteran; construction tech VC partner)</li>
+</ul>
+<p><strong>Section 5 — Facilities, Equipment, and Other Resources (≈1 page)</strong></p>
+<ul>
+<li>Cloud infra (Vercel, Neon, AWS for ML training)</li>
+<li>Code corpus (192 codes, 480K entries already assembled)</li>
+<li>Beta cohort access (real-world quote data with consent)</li>
+<li>HJD Builders historical quote archive (training data)</li>
+</ul>
+<h3 id="63-references-cited-separate-no-page-limit">6.3 References Cited (separate, no page limit)</h3>
+<ul>
+<li>NSF SBIR review pays attention to references. Cite legal-NLP, RAG, explainable-AI, construction-informatics, building-code-research, and marketplace-economics literature.</li>
+</ul>
+<h3 id="64-budget-separate-excel-workbook">6.4 Budget (Separate Excel Workbook)</h3>
+<p><strong>Phase I total: $305,000 over 12 months (NSF SBIR Phase I cap is $305,000 — confirm current cap with NSF program officer; historically has stepped from $275K → $305K in recent years).</strong></p>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Detail</th>
+<th>Phase I ask</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Senior Personnel</strong></td>
+<td>Phyrom (PI, 50% effort × 12 mo)</td>
+<td>$90,000</td>
+</tr>
+<tr>
+<td><strong>Other Personnel</strong></td>
+<td>Senior ML/NLP Engineer (1.0 FTE × 12 mo loaded $130K/yr)</td>
+<td>$130,000</td>
+</tr>
+<tr>
+<td></td>
+<td>Part-time NLP research consultant (200 hr × $200/hr)</td>
+<td>$40,000</td>
+</tr>
+<tr>
+<td><strong>Fringe Benefits</strong></td>
+<td>22% on personnel</td>
+<td>(rolled into loaded rates above)</td>
+</tr>
+<tr>
+<td><strong>Equipment</strong></td>
+<td>(None — cloud-based)</td>
+<td>$0</td>
+</tr>
+<tr>
+<td><strong>Travel</strong></td>
+<td>NSF program officer site visit + NeurIPS or ACL travel + MA pro recruitment</td>
+<td>$5,000</td>
+</tr>
+<tr>
+<td><strong>Other Direct Costs</strong></td>
+<td>Cloud compute (training + inference)</td>
+<td>$10,000</td>
+</tr>
+<tr>
+<td></td>
+<td>Annotation labor (code-corpus expert annotators, ~400 hr × $40/hr)</td>
+<td>$16,000</td>
+</tr>
+<tr>
+<td></td>
+<td>NSF participant compensation (user studies, n=60 × $50)</td>
+<td>$3,000</td>
+</tr>
+<tr>
+<td><strong>Subawards</strong></td>
+<td>(None planned at Phase I)</td>
+<td>$0</td>
+</tr>
+<tr>
+<td><strong>Indirect Costs</strong></td>
+<td>NSF Phase I de minimis 10%</td>
+<td>$11,000</td>
+</tr>
+<tr>
+<td><strong>TOTAL</strong></td>
+<td></td>
+<td><strong>$305,000</strong></td>
+</tr>
+</tbody></table>
+<h3 id="65-data-management-plan">6.5 Data Management Plan</h3>
+<ul>
+<li>Code corpus: NSF-aligned open-access publication of derived rule-applicability test sets (anonymized) at end of Phase I</li>
+<li>Quote training data: anonymized + consented; not openly published; available to NSF reviewers under NDA on request</li>
+<li>Model weights: proprietary; not openly published</li>
+</ul>
+<hr>
+<h2 id="7-milestone-schedule-phase-i-12-months">7. Milestone Schedule (Phase I, 12 months)</h2>
+<table>
+<thead>
+<tr>
+<th>Milestone</th>
+<th>Target</th>
+<th>Success criterion</th>
+<th>Deliverable</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>SAM.gov + Research.gov registrations active</td>
+<td>Pre-submission</td>
+<td>Active</td>
+<td>Registration confirmation</td>
+</tr>
+<tr>
+<td>Project Pitch submitted</td>
+<td>Month 0</td>
+<td>Acknowledged</td>
+<td>Pitch acceptance/rejection email</td>
+</tr>
+<tr>
+<td>Project Pitch invited; full proposal submission</td>
+<td>Month 2</td>
+<td>If invited</td>
+<td>Full 15-page proposal</td>
+</tr>
+<tr>
+<td>Award decision</td>
+<td>Month 6 (typical NSF cycle)</td>
+<td>Award signed</td>
+<td>Grant agreement</td>
+</tr>
+<tr>
+<td>Object 1 — MA + NE corpus complete</td>
+<td>Month 9 (3 mo post-award)</td>
+<td>Corpus passes 100-quote held-out validation</td>
+<td>Internal validation report</td>
+</tr>
+<tr>
+<td>Object 2 — quote-parsing NLP F1 ≥ 0.85</td>
+<td>Month 12</td>
+<td>Held-out test set</td>
+<td>Technical report</td>
+</tr>
+<tr>
+<td>Object 3 — rule-applicability precision ≥ 0.90 / recall ≥ 0.80</td>
+<td>Month 15</td>
+<td>Expert-annotated test cases</td>
+<td>Technical report</td>
+</tr>
+<tr>
+<td>Object 4 — explainability satisfaction ≥ 80%</td>
+<td>Month 17</td>
+<td>n=60 user study</td>
+<td>Technical report + user-study findings</td>
+</tr>
+<tr>
+<td>Phase I final report + Phase II proposal submission</td>
+<td>Month 18</td>
+<td>NSF Phase I final report submitted; Phase II proposal in flight</td>
+<td>Final report + Phase II application</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="8-submission-instructions">8. Submission Instructions</h2>
+<ul>
+<li><strong>Project Pitch portal:</strong> <a href="https://seedfund.nsf.gov/project-pitch/">https://seedfund.nsf.gov/project-pitch/</a> — rolling submission (no deadline)</li>
+<li><strong>Project Pitch turnaround:</strong> NSF aims for 30 days to invite/decline; in practice 4–8 weeks</li>
+<li><strong>Full proposal portal:</strong> Research.gov (PI account required)</li>
+<li><strong>Full proposal deadlines:</strong> NSF SBIR Phase I has approximately 2 windows per year (typically March and September). Invited proposals must be submitted at the next applicable window.</li>
+<li><strong>Contact:</strong> NSF SBIR Program Director assigned by topic area at Project Pitch acceptance; for general inquiries: <a href="mailto:sbir@nsf.gov">sbir@nsf.gov</a></li>
+<li><strong>Pre-submission outreach:</strong> Encouraged. Email a 1-paragraph proposal summary to <a href="mailto:sbir@nsf.gov">sbir@nsf.gov</a> asking for the Program Director assignment for the relevant topic. Build relationship before Project Pitch.</li>
+</ul>
+<hr>
+<h2 id="9-tips--gotchas">9. Tips &amp; Gotchas</h2>
+<ol>
+<li><strong>SAM.gov registration is the gating long-lead item.</strong> First-time registration takes 2–4 weeks. Start immediately. Without it, NSF cannot disburse funds even if awarded.</li>
+<li><strong>The Project Pitch is your screen.</strong> Don't bury the research-novelty claim. NSF funds research, not GTM. Lead the Project Pitch with the legal-NLP-over-codes innovation and the explainable-AI hallucination-control problem. Save the marketplace TAM for the Commercialization Plan.</li>
+<li><strong>NSF SBIR is research-grade. The full proposal must read like a research proposal</strong>, not a startup deck. Cite academic literature. Define test sets and evaluation metrics. Discuss prior art honestly.</li>
+<li><strong>Commercial validation matters in Phase I.</strong> Letters of support from a Mass Save HPIN contractor, a property-management firm, and (informally) a utility CVC strengthen the Commercialization Plan.</li>
+<li><strong>Phase II eligibility flows from Phase I performance.</strong> A clean Phase I final report unlocks the $1.5M Phase II application — which is the real prize. Treat Phase I as the on-ramp.</li>
+<li><strong>Phase I cap has stepped up over time.</strong> Confirm current cap with NSF program officer before locking budget. Recent years: $275K → $305K.</li>
+<li><strong>NSF accepts modular proposals where parts of the work are subcontracted to academic labs.</strong> If an NLP lab at MIT or Northeastern wants to collaborate, that's a positive signal. Phyrom should explore this in Phase I planning.</li>
+<li><strong>Avoid "Wiseman" externally</strong> — call it "code-aware quote validation system" or "platform code intelligence" (per Sherpa Pros brand bible / GTM spec §3.3). This is a hard rule even in a research proposal.</li>
+<li><strong>MA START Grant stacks with NSF SBIR</strong> ($100K → $500K R3 per GTM spec §6.1). Plan to file MA START immediately upon NSF Phase I award notification.</li>
+</ol>
+<hr>
+<h2 id="10-eligibility-blocker--phyrom-confirmation-required">10. Eligibility Blocker — Phyrom Confirmation Required</h2>
+<p><strong>SAM.gov registration must be active before submission can convert to award.</strong> Confirm registration status at sam.gov; if not registered, initiate immediately (2–4 weeks first time).</p>
+<p><strong>Research.gov PI account for Phyrom</strong> must be created before full proposal submission. ~1 hour to set up; do this in week 1.</p>
+<p>Beyond the registration items, the only structural question is whether Phyrom is comfortable framing the code-aware engine as primarily R&amp;D (rather than as production software). The NSF reviewer wants to see open research problems and proposed methods, not a polished product. The framing in §5 above leans into the research angle while acknowledging the live-platform commercialization vehicle. <strong>Phyrom should review §5 carefully and confirm comfort with the research-first framing before submission.</strong></p>
+<hr>
+<p><strong>End of draft. Phyrom: register SAM.gov today, confirm research-first framing, and submit Project Pitch within 30 days. Full proposal effort begins only if invited.</strong></p>
+
+	
+
+
+</body>
+</html>

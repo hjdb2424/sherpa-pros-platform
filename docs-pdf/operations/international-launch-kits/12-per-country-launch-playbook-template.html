@@ -1,0 +1,1217 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>12 per country launch playbook template — Sherpa Pros</title>
+<link rel="icon" href="../../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="12-per-country-launch-playbook-template.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="per-country-launch-playbook--template">Per-Country Launch Playbook — Template</h1>
+<blockquote>
+<p>Reusable per-country launch playbook, parameterized for any country. Mirrors the Sherpa Pros United States Phase 0 / Phase 1 / Phase 2 launch model. Each country General Manager (GM) instantiates this template with country-specific values and operates against it.</p>
+</blockquote>
+<h2 id="merge-fields">Merge fields</h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+<th>Example (Canada Y1)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>{{country}}</code></td>
+<td>Country full name</td>
+<td>Canada</td>
+</tr>
+<tr>
+<td><code>{{country_short}}</code></td>
+<td>Country short / ISO</td>
+<td>CA</td>
+</tr>
+<tr>
+<td><code>{{currency}}</code></td>
+<td>ISO 4217 currency code</td>
+<td>CAD</td>
+</tr>
+<tr>
+<td><code>{{primary_metro}}</code></td>
+<td>Phase 1 launch metro</td>
+<td>Toronto</td>
+</tr>
+<tr>
+<td><code>{{secondary_metros}}</code></td>
+<td>Phase 2 expansion metros</td>
+<td>Vancouver, Montreal, Calgary</td>
+</tr>
+<tr>
+<td><code>{{language_primary}}</code></td>
+<td>Day-1 operating language</td>
+<td>English</td>
+</tr>
+<tr>
+<td><code>{{language_addon}}</code></td>
+<td>Year-2 add-on language</td>
+<td>French (Quebec)</td>
+</tr>
+<tr>
+<td><code>{{trade_assoc_majors}}</code></td>
+<td>Major trade associations</td>
+<td>CHBA, OHBA, CCA</td>
+</tr>
+<tr>
+<td><code>{{master_franchise_status}}</code></td>
+<td>Direct-operate or master-franchisee</td>
+<td>Direct-operate Y1; reassess Y2</td>
+</tr>
+<tr>
+<td><code>{{crowdfunding_platform}}</code></td>
+<td>Local equity-crowdfunding platform</td>
+<td>FrontFundr, Equivesto</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="phase-shape-mirrors-us-phase-012">Phase shape (mirrors US Phase 0/1/2)</h2>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Window</th>
+<th>Focus</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Phase 0</td>
+<td>Months -6 to 0 (pre-launch)</td>
+<td>Country GM hire, entity, payments, codes, trademark, insurance, regulatory readiness, founding partners</td>
+</tr>
+<tr>
+<td>Phase 1</td>
+<td>Months 0 to 6</td>
+<td>Beta launch in <code>{{primary_metro}}</code>, founding-pro + founding-client cohorts</td>
+</tr>
+<tr>
+<td>Phase 2</td>
+<td>Months 6 to 12</td>
+<td>Scaled launch across 3-4 metros, paid acquisition, partnerships, seed-equivalent funding</td>
+</tr>
+<tr>
+<td>Phase 3+</td>
+<td>Month 12+</td>
+<td>Sustained growth + master-franchisee development (where applicable) + secondary-country planning (in EU pilot case)</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="phase-0--pre-launch-month--6-to-0">Phase 0 — Pre-launch (Month -6 to 0)</h2>
+<h3 id="country-gm-hire">Country GM hire</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Search firm engaged per <code>06-recruiting-search-firm-engagement.md</code>.</li>
+<li><input disabled="" type="checkbox"> 4-round interview process completed.</li>
+<li><input disabled="" type="checkbox"> GM in seat <strong>6 months before launch</strong>.</li>
+</ul>
+<h3 id="entity-formation">Entity formation</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Local operating entity stood up per <code>10-canada-entity-formation-and-compliance.md</code> (template; country-specific runbook for <code>{{country}}</code>).</li>
+<li><input disabled="" type="checkbox"> Director slate confirmed (note: Canada CBCA requires 25% Canadian-resident; Germany strongly prefers local Geschäftsführer; UK + AU have no statutory residency rule).</li>
+<li><input disabled="" type="checkbox"> Counsel + tax accountant + insurance broker engaged.</li>
+</ul>
+<h3 id="payment-rails">Payment rails</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Stripe Connect platform in <code>{{country}}</code> per <code>09-stripe-connect-per-country-setup-and-fx.md</code>.</li>
+<li><input disabled="" type="checkbox"> Local bank account opened.</li>
+<li><input disabled="" type="checkbox"> Foreign Exchange (FX) vendor engaged (Wise Business Phase 1 default).</li>
+<li><input disabled="" type="checkbox"> Tax registrations (Value-Added Tax (VAT) / Goods and Services Tax (GST) / Harmonized Sales Tax (HST) / Provincial Sales Tax (PST) per country).</li>
+</ul>
+<h3 id="codes-ingestion">Codes ingestion</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Codes vendor selected per <code>07-codes-vendor-evaluation-framework.md</code>.</li>
+<li><input disabled="" type="checkbox"> Federal codes ingested before launch (Phase 1 of country's codes runbook — Canada: CSA Group, UK: BSI + Approved Documents, AU: ABCB, EU pilot: DIN).</li>
+<li><input disabled="" type="checkbox"> Validation test set ≥ 50 lookups passing at ≥ 95%.</li>
+</ul>
+<h3 id="trademark-filings">Trademark filings</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Sherpa Pros wordmark + logo + Sherpa Marketplace + Sherpa Hub filed per <code>11-localization-spec-currency-language-units-dates.md</code>.</li>
+<li><input disabled="" type="checkbox"> Local domain (.ca / .co.uk / .com.au / .de) secured.</li>
+</ul>
+<h3 id="insurance-broker">Insurance broker</h3>
+<ul>
+<li><input disabled="" type="checkbox"> In-country broker engaged (Marsh / Aon / Hub or country specialist).</li>
+<li><input disabled="" type="checkbox"> All policies bound: Commercial General Liability (CGL), Professional Liability / Errors &amp; Omissions (E&amp;O), Cyber / Privacy, Directors &amp; Officers (D&amp;O), Employment Practices Liability (EPL), Workers' Comp per region.</li>
+</ul>
+<h3 id="regulatory-readiness">Regulatory readiness</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Privacy program in place (Personal Information Protection and Electronic Documents Act (PIPEDA) / United Kingdom General Data Protection Regulation (UK GDPR) / Privacy Act 1988 / GDPR-BDSG depending on country).</li>
+<li><input disabled="" type="checkbox"> Worker classification counsel memo issued.</li>
+<li><input disabled="" type="checkbox"> Trade-licensing-per-jurisdiction matrix documented.</li>
+<li><input disabled="" type="checkbox"> Building-codes engine localized.</li>
+</ul>
+<h3 id="master-franchisee-identification-if-applicable">Master-franchisee identification (if applicable)</h3>
+<ul>
+<li><input disabled="" type="checkbox"> For markets where master-franchisee is leading hypothesis (Australia + EU pilot), identify candidate partners.</li>
+<li><input disabled="" type="checkbox"> Specialist franchise counsel engaged.</li>
+<li><input disabled="" type="checkbox"> Franchise Disclosure Document (FDD) / equivalent prepared per country (mandatory in Australia under Franchising Code of Conduct; mandatory in 5 Canadian provinces under provincial Franchise Acts; voluntary in UK + Germany).</li>
+</ul>
+<h3 id="local-advisor--board-member-recruitment">Local advisor + board member recruitment</h3>
+<ul>
+<li><input disabled="" type="checkbox"> 1-2 in-country advisors recruited (paid USD $10,000 – $25,000 advisor honorarium).</li>
+<li><input disabled="" type="checkbox"> Optional: 1 in-country board member recruited (especially valuable for Canada + UK).</li>
+</ul>
+<hr>
+<h2 id="phase-1--beta-launch-month-0-to-6">Phase 1 — Beta launch (Month 0 to 6)</h2>
+<h3 id="beta-cohort-10-15-founding-pros-in-primary_metro">Beta cohort: 10-15 founding pros in <code>{{primary_metro}}</code></h3>
+<ul>
+<li><input disabled="" type="checkbox"> Mirror US Phase 1 cohort design (10-pro beta).</li>
+<li><input disabled="" type="checkbox"> Sourcing channels:<ul>
+<li>Country GM personal trade-supply network (e.g., Toronto Country GM leverages Home Depot Canada Pro Desk + RONA + Patrick Morin warm intros).</li>
+<li>Trade-association partnership outreach (<code>{{trade_assoc_majors}}</code>).</li>
+<li>Local trade-show presence (Canadian Construction Expo, UK Specifi, AU Sydney Build, EU pilot BAU München).</li>
+<li>Founder-voice content: Phyrom + Country GM joint LinkedIn + local trade-press.</li>
+</ul>
+</li>
+</ul>
+<h3 id="localization-launch">Localization launch</h3>
+<ul>
+<li><input disabled="" type="checkbox"> All Phase 0 localization deliverables live:<ul>
+<li>Currency display (<code>{{currency}}</code>).</li>
+<li>Language (<code>{{language_primary}}</code>).</li>
+<li>Trade nomenclature glossary signed off.</li>
+<li>Date format + units.</li>
+</ul>
+</li>
+</ul>
+<h3 id="founding-client-recruiting">Founding-client recruiting</h3>
+<ul>
+<li><input disabled="" type="checkbox"> 50+ founding clients matched in <code>{{primary_metro}}</code>.</li>
+<li><input disabled="" type="checkbox"> Sourcing channels:<ul>
+<li>Local press placements (real-estate + design + home-improvement publications).</li>
+<li>LinkedIn founder-voice content (Phyrom + Country GM).</li>
+<li>Local realtor + interior-designer partnerships.</li>
+<li>Beta referral incentive program.</li>
+</ul>
+</li>
+</ul>
+<h3 id="beta-govt-grant-applications-per-country">Beta gov't grant applications (per country)</h3>
+<table>
+<thead>
+<tr>
+<th>Country</th>
+<th>Candidate grants</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Canada</td>
+<td>Industrial Research Assistance Program (IRAP), Strategic Innovation Fund (SIF), Canadian Digital Adoption Program (CDAP), provincial innovation grants (e.g., Ontario's OCI Innovation Grants)</td>
+</tr>
+<tr>
+<td>UK</td>
+<td>Innovate UK Smart Grants, Help to Grow: Digital, regional growth hubs</td>
+</tr>
+<tr>
+<td>Australia</td>
+<td>Research and Development (R&amp;D) Tax Incentive, Export Market Development Grants (EMDG), state-level innovation grants</td>
+</tr>
+<tr>
+<td>EU pilot Germany</td>
+<td>EXIST Forschungstransfer, Bundesministerium für Wirtschaft und Klimaschutz (BMWK) digital grants, EU Horizon Europe</td>
+</tr>
+</tbody></table>
+<ul>
+<li><input disabled="" type="checkbox"> Country GM submits ≥ 1 grant application within 90 days of launch.</li>
+</ul>
+<h3 id="local-equity-crowdfunding-where-applicable">Local equity-crowdfunding (where applicable)</h3>
+<table>
+<thead>
+<tr>
+<th>Country</th>
+<th>Platform</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Canada</td>
+<td><strong>FrontFundr</strong> or <strong>Equivesto</strong> (Canadian Securities Administrators (CSA)-regulated equity crowdfunding)</td>
+</tr>
+<tr>
+<td>UK</td>
+<td><strong>Seedrs</strong> or <strong>Crowdcube</strong> (Financial Conduct Authority (FCA)-regulated)</td>
+</tr>
+<tr>
+<td>Australia</td>
+<td><strong>Birchal</strong> or <strong>OnMarket</strong> (Crowd-Sourced Funding (CSF) regime under Australian Securities and Investments Commission (ASIC))</td>
+</tr>
+<tr>
+<td>EU pilot Germany</td>
+<td><strong>Companisto</strong> or <strong>Seedmatch</strong> (EU Crowdfunding Service Providers Regulation (ECSP))</td>
+</tr>
+</tbody></table>
+<ul>
+<li><input disabled="" type="checkbox"> Country GM evaluates local crowdfunding; if pursued, registration + offering complete within Phase 1.</li>
+</ul>
+<h3 id="phase-1-success-criteria">Phase 1 success criteria</h3>
+<ul>
+<li><input disabled="" type="checkbox"> 10-15 founding pros active.</li>
+<li><input disabled="" type="checkbox"> 50+ founding clients matched, jobs completed.</li>
+<li><input disabled="" type="checkbox"> Net Promoter Score (NPS) ≥ 60.</li>
+<li><input disabled="" type="checkbox"> First Letter of Intent (LOI) with <code>{{trade_assoc_majors}}</code> partnership.</li>
+</ul>
+<hr>
+<h2 id="phase-2--scaled-launch-month-6-to-12">Phase 2 — Scaled launch (Month 6 to 12)</h2>
+<h3 id="multi-metro-expansion">Multi-metro expansion</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Expand from <code>{{primary_metro}}</code> to 2-3 of <code>{{secondary_metros}}</code>.</li>
+<li><input disabled="" type="checkbox"> Per-metro beta cohort design replays Phase 1 (10-15 pros each).</li>
+</ul>
+<h3 id="paid-acquisition">Paid acquisition</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Channels live: Meta (Facebook + Instagram) ads, TikTok ads, Google Search / Performance Max, country-specific channels (e.g., AU prefers Domain.com.au + RealEstate.com.au + hipages display; UK adds Checkatrade-equivalent display).</li>
+<li><input disabled="" type="checkbox"> Initial Phase 2 paid acquisition budget: USD $200,000 – $500,000 per country across 6-month Phase 2 window.</li>
+</ul>
+<h3 id="local-pr">Local PR</h3>
+<ul>
+<li><input disabled="" type="checkbox"> In-country PR firm engaged (Edelman / Weber Shandwick / FleishmanHillard country office, or boutique).</li>
+<li><input disabled="" type="checkbox"> Phyrom + Country GM media tour at Phase 2 launch.</li>
+</ul>
+<h3 id="partnerships">Partnerships</h3>
+<ul>
+<li><input disabled="" type="checkbox"> National trade-association partnership signed (<code>{{trade_assoc_majors}}</code> lead).</li>
+<li><input disabled="" type="checkbox"> National training-institution partnership (e.g., Canadian Apprenticeship Forum, UK Construction Industry Training Board (CITB), Master Builders Australia training arm, German Handwerkskammer).</li>
+<li><input disabled="" type="checkbox"> Supplier-network partnerships (e.g., Home Depot Canada Pro, Travis Perkins UK, Bunnings Trade AU, Bauhaus / Hornbach EU pilot).</li>
+</ul>
+<h3 id="seed-equivalent-funding">Seed-equivalent funding</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Country-level seed round (where applicable) — typical USD $1M – $5M-equivalent per country.</li>
+<li><input disabled="" type="checkbox"> Investor base: country-specific construction-tech and B2B SaaS investors.<ul>
+<li>Canada: Real Ventures, Inovia Capital, BDC Capital</li>
+<li>UK: Octopus Ventures, Northzone, LocalGlobe</li>
+<li>AU: Blackbird Ventures, Square Peg, AirTree</li>
+<li>EU pilot Germany: Earlybird, Cherry Ventures, Holtzbrinck</li>
+</ul>
+</li>
+</ul>
+<h3 id="phase-2-success-criteria">Phase 2 success criteria</h3>
+<ul>
+<li><input disabled="" type="checkbox"> 3-4 metros live.</li>
+<li><input disabled="" type="checkbox"> 100+ active pros across country.</li>
+<li><input disabled="" type="checkbox"> 500+ jobs completed cumulative.</li>
+<li><input disabled="" type="checkbox"> Country Gross Merchandise Value (GMV) ≥ <code>{{currency}}</code> 5M annualized (varies per country — Canada CAD $7M, UK GBP £4M, AU AUD $7M, EU pilot EUR €4M).</li>
+<li><input disabled="" type="checkbox"> Country contribution margin ≥ break-even.</li>
+</ul>
+<hr>
+<h2 id="per-country-adaptations-not-one-size-fits-all">Per-country adaptations (NOT one-size-fits-all)</h2>
+<h3 id="tax--payment--regulatory-specifics">Tax + payment + regulatory specifics</h3>
+<ul>
+<li>Per <code>09-stripe-connect-per-country-setup-and-fx.md</code>, <code>10-canada-entity-formation-and-compliance.md</code>, and country-specific runbooks.</li>
+</ul>
+<h3 id="language-localization">Language localization</h3>
+<ul>
+<li>Per <code>11-localization-spec-currency-language-units-dates.md</code>. Note Quebec carve-out (Canada Year 2 fr-CA add-on); German Day 1 for EU pilot.</li>
+</ul>
+<h3 id="local-brand-marketing-voice">Local brand-marketing voice</h3>
+<ul>
+<li>AU prefers <strong>direct, casual, dry-humor tone</strong>; ex-Bunnings + ex-hipages voice models.</li>
+<li>UK prefers <strong>formal-but-warm tone</strong>; ex-FMB + ex-MyBuilder voice models.</li>
+<li>Canada English mostly mirrors US with slight dial-down on superlatives; Canada French (Quebec Year 2) is a distinct voice.</li>
+<li>EU pilot Germany prefers <strong>formal "Sie" pronoun by default</strong>; switches to informal "du" only for younger pro audiences (TikTok, Instagram Stories).</li>
+</ul>
+<h3 id="master-franchisee-model-decision-per-country">Master-franchisee model decision per country</h3>
+<table>
+<thead>
+<tr>
+<th>Country</th>
+<th>Initial direction</th>
+<th>Rationale</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Canada</td>
+<td><strong>Direct-operate Y1; reassess Y2</strong></td>
+<td>Geographically + culturally close to US; HQ direct ops viable</td>
+</tr>
+<tr>
+<td>UK</td>
+<td><strong>Direct-operate Y1; reassess Y2</strong></td>
+<td>Single-time-zone country; mature trade-tech ecosystem; HQ direct ops viable</td>
+</tr>
+<tr>
+<td>Australia</td>
+<td><strong>Master-franchisee leading hypothesis</strong></td>
+<td>Geographic distance + state-fragmentation make master-franchisee compelling</td>
+</tr>
+<tr>
+<td>EU pilot Germany</td>
+<td><strong>Master-franchisee leading hypothesis for EU rollout</strong> (direct-operate Berlin Y1)</td>
+<td>German Day 1 direct; EU rollout (France / Netherlands / Austria Y2-3) via master-franchisee</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="per-country-traction-metric-dashboard">Per-country traction-metric dashboard</h2>
+<p>Standard Sherpa Pros metrics, surfaced per country and aggregated to global Sherpa Pros HQ dashboard:</p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Pro count</td>
+<td>Active pros (matched ≥ 1 job in last 90 days)</td>
+</tr>
+<tr>
+<td>Job count</td>
+<td>Jobs completed (cumulative + monthly)</td>
+</tr>
+<tr>
+<td>Gross Merchandise Value (GMV)</td>
+<td>Total transaction value through marketplace</td>
+</tr>
+<tr>
+<td>Take rate</td>
+<td>Sherpa Pros revenue / GMV</td>
+</tr>
+<tr>
+<td>Net Promoter Score (NPS)</td>
+<td>Pro NPS + Client NPS, separately reported</td>
+</tr>
+<tr>
+<td>Time-to-match</td>
+<td>Median minutes from client request to first pro response</td>
+</tr>
+<tr>
+<td>Match rate</td>
+<td>% of client requests matched within 24 hours</td>
+</tr>
+<tr>
+<td>Repeat-client rate</td>
+<td>% of clients with ≥ 2 completed jobs</td>
+</tr>
+<tr>
+<td>Pro retention</td>
+<td>% of pros active after 6 / 12 months</td>
+</tr>
+<tr>
+<td>Country contribution margin</td>
+<td>Country revenue – country direct costs</td>
+</tr>
+</tbody></table>
+<h3 id="reporting-cadence">Reporting cadence</h3>
+<ul>
+<li>Daily ops dashboard (Country GM + HQ COO).</li>
+<li>Weekly metric review (Country GM + HQ COO).</li>
+<li>Monthly Country Council read-out (all Country GMs + COO + CEO).</li>
+<li>Quarterly Board update.</li>
+</ul>
+<hr>
+<h2 id="phase-3--sustained-growth-month-12">Phase 3+ — Sustained growth (Month 12+)</h2>
+<ul>
+<li><input disabled="" type="checkbox"> Continued multi-metro expansion.</li>
+<li><input disabled="" type="checkbox"> Master-franchisee operationalization (where applicable).</li>
+<li><input disabled="" type="checkbox"> Secondary-country planning (specifically EU pilot Country GM scopes second EU country in Year 2 of EU pilot).</li>
+<li><input disabled="" type="checkbox"> Country product-feedback loops back into Sherpa Pros HQ product roadmap via Country Council.</li>
+</ul>
+<hr>
+<h2 id="risks--mitigations-per-country-instantiation">Risks + mitigations (per-country instantiation)</h2>
+<table>
+<thead>
+<tr>
+<th>Risk (template)</th>
+<th>Country GM mitigation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Country GM washes out in Year 1</td>
+<td>90 / 180 / 365-day performance gates, monthly Phyrom 1:1 Year 1, Board check-in 90 days</td>
+</tr>
+<tr>
+<td>Local trade-association partnership fails to materialize</td>
+<td>Backup: secondary trade-association (e.g., if CHBA fails for Canada, pivot to Canadian Construction Association (CCA))</td>
+</tr>
+<tr>
+<td>Codes ingestion delayed past launch</td>
+<td>Phase delivery (federal Day 1, provincial / state in Phase 1, municipal in Phase 2); soft-launch in primary metro only with federal coverage</td>
+</tr>
+<tr>
+<td>Stripe Connect platform onboarding rejected</td>
+<td>Engaged Stripe Partnerships team 12+ months ahead; pre-cleared use case in writing</td>
+</tr>
+<tr>
+<td>Insurance program gap discovered post-launch</td>
+<td>Quarterly insurance program review; broker accountability + monthly claims dashboard</td>
+</tr>
+<tr>
+<td>Master-franchisee underperforms or breaches contract</td>
+<td>FDD-equivalent disclosure + clear performance termination clauses in country-specific franchise agreements</td>
+</tr>
+<tr>
+<td>Country fails to hit Phase 2 funding round</td>
+<td>Bridge from Sherpa Pros HQ + extend Phase 2 by 6 months; reassess country GM + market thesis</td>
+</tr>
+</tbody></table>
+<hr>
+<p><em>This template is instantiated per country at Phase 0 kickoff. Country GM owns instantiation; COO signs off.</em></p>
+
+	
+
+
+</body>
+</html>

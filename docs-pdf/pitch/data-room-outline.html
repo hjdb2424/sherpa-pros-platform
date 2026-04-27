@@ -1,0 +1,943 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>data room outline — Sherpa Pros</title>
+<link rel="icon" href="../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="data-room-outline.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="sherpa-pros--investor-data-room-outline-v1">Sherpa Pros — Investor Data Room Outline (v1)</h1>
+<p><strong>Owner:</strong> Phyrom
+<strong>Use:</strong> Weekend-walkable checklist. Build out before Series A meetings open.
+<strong>Status:</strong> Draft — items marked TODO require Phyrom attention.</p>
+<hr>
+<h2 id="1-cap-table--409a">1. Cap Table + 409a</h2>
+<p><strong>What investors will ask for:</strong> Current cap table (clean), 409a valuation, prior round terms (Wefunder + angels), option pool status, vesting schedule for founder + early hires.</p>
+<p><strong>What to put in the room:</strong></p>
+<ul>
+<li>Current cap table spreadsheet (founder %, Wefunder investor list, angels, option pool reserved).</li>
+<li>Wefunder round documents (subscription agreement, terms, closing schedule).</li>
+<li>409a valuation report (most recent, pre-Series-A).</li>
+<li>Founder vesting schedule + IP assignment.</li>
+<li>Pro-forma cap table at $12M Series A close (target).</li>
+</ul>
+<p><strong>Where it lives today:</strong></p>
+<ul>
+<li>Cap table: TODO — not formalized in a spreadsheet yet. Carta or Pulley account to be opened pre-Series-A.</li>
+<li>Wefunder docs: live on Wefunder platform, downloadable.</li>
+<li>409a: TODO — not commissioned. ~$2K-$4K through Carta/Eqvista. Order in Week 1.</li>
+</ul>
+<p><strong>Still missing:</strong> 409a, formalized cap-table tool (Carta), pro-forma post-Series-A cap table.</p>
+<hr>
+<h2 id="2-financials--current--projections">2. Financials — Current + Projections</h2>
+<p><strong>What investors will ask for:</strong> P&amp;L (last 6-12 months), balance sheet, cash position, burn rate, revenue/GMV by month, financial projections Y1-Y3 + Y4-Y5 sketch.</p>
+<p><strong>What to put in the room:</strong></p>
+<ul>
+<li>P&amp;L monthly (last 6+ months) — beta cohort revenue, Stripe fees, Twilio costs, hosting, Phyrom comp.</li>
+<li>Balance sheet (current).</li>
+<li>Cash position + burn rate (12-month rolling forward).</li>
+<li>Y1-Y3 financial model (per Slide 17 of v2 deck).</li>
+<li>Y4-Y5 sketch (Phase 4 directional, see Series C deck appendix).</li>
+<li>Hub Item 19 economics workbook.</li>
+<li>Beta finance model (ties to Slide 13 unit economics).</li>
+</ul>
+<p><strong>Where it lives today:</strong></p>
+<ul>
+<li>QuickBooks (HJD Builders ledger — separate, not Sherpa Pros).</li>
+<li>Beta finance model: ~/sherpa-pros-platform/docs/finance/ (TODO confirm path).</li>
+<li>Hub Item 19 workbook: ~/sherpa-pros-platform/docs/finance/hub-item-19-economics.xlsx (TODO confirm).</li>
+</ul>
+<p><strong>Still missing:</strong> Standalone Sherpa Pros P&amp;L (separate from HJD Builders), formalized cash flow statement, Y4-Y5 sketch deliverable.</p>
+<hr>
+<h2 id="3-customer-cohort-metrics">3. Customer Cohort Metrics</h2>
+<p><strong>What investors will ask for:</strong> Pro cohort retention curves, homeowner cohort retention, GMV per pro by cohort, take rate by job category, NPS, churn, repeat-job rate.</p>
+<p><strong>What to put in the room:</strong></p>
+<ul>
+<li>Pro cohort table — month of signup × retention % × jobs completed × GMV.</li>
+<li>Homeowner cohort table — same shape.</li>
+<li>NPS survey results (founding pros NPS 71 — confirmed Phase 0).</li>
+<li>Take rate by job type (electrical, HVAC, plumbing, multi-trade).</li>
+<li>Repeat-job and referral rates.</li>
+<li>Code Intelligence Layer telemetry (1,200+ live validations, 78% auto-fix acceptance — per Slide 10).</li>
+</ul>
+<p><strong>Where it lives today:</strong></p>
+<ul>
+<li>Production Postgres (Neon) + Mixpanel/PostHog if installed.</li>
+<li>Migration 005 telemetry: ~/sherpa-pros-platform/db/migrations/005_*.sql — confirm.</li>
+</ul>
+<p><strong>Still missing:</strong> Formalized cohort dashboard (Mode/Hex/Metabase), NPS results documented in PDF, take-rate breakdown by category exported.</p>
+<hr>
+<h2 id="4-tech-architecture">4. Tech Architecture</h2>
+<p><strong>What investors will ask for:</strong> Architecture diagram, tech stack, scalability plan, security posture, AI/ML approach, code repo access (read-only with NDA).</p>
+<p><strong>What to put in the room:</strong></p>
+<ul>
+<li>Architecture diagram (one-page, all 14 surfaces + 8 capabilities).</li>
+<li>Tech stack rundown (Next.js 16, Stripe Connect, Neon Postgres + PostGIS, Clerk, Twilio, Vercel — per CLAUDE.md).</li>
+<li>AI/ML roadmap doc (<code>docs/superpowers/specs/2026-04-26-ai-ml-roadmap-design.md</code>).</li>
+<li>Code repo read-only access (GitHub, post-NDA).</li>
+<li>Security architecture (auth, RBAC, payment compliance, license verification).</li>
+<li>Scalability + disaster recovery plan.</li>
+</ul>
+<p><strong>Where it lives today:</strong></p>
+<ul>
+<li>CLAUDE.md (tech stack summary).</li>
+<li>AI/ML roadmap doc — exists.</li>
+<li>Architecture diagram: TODO — not drawn yet. ~1 day of work.</li>
+<li>Code repo: github.com/hjdb2424/sherpa-pros-platform (private).</li>
+</ul>
+<p><strong>Still missing:</strong> One-page architecture diagram for non-engineering investor audience, formal security writeup, scalability plan in PDF.</p>
+<hr>
+<h2 id="5-legal--incorporation--ip--contracts">5. Legal — Incorporation + IP + Contracts</h2>
+<p><strong>What investors will ask for:</strong> Cert of incorporation, bylaws, founder IP assignment, key contracts (FW Webb LOI, commercial PM pilot, Stripe Connect terms), trademark filings.</p>
+<p><strong>What to put in the room:</strong></p>
+<ul>
+<li>Delaware Cert of Incorporation (or current state if not yet flipped — flip before Series A).</li>
+<li>Bylaws.</li>
+<li>Founder IP assignment (full Sherpa Pros codebase + IP transferred from Phyrom personal/HJD Builders to Sherpa Pros entity).</li>
+<li>FW Webb Hub #1 LOI.</li>
+<li>Commercial PM pilot agreement (NDA-protected).</li>
+<li>Stripe Connect platform agreement.</li>
+<li>Twilio + Clerk + Neon vendor agreements.</li>
+<li>"Sherpa Pros" trademark filing (USPTO).</li>
+</ul>
+<p><strong>Where it lives today:</strong></p>
+<ul>
+<li>Incorporation: TODO — confirm Delaware C-Corp filed. If not, do this Week 1.</li>
+<li>IP assignment: TODO — required for Series A.</li>
+<li>Trademark: TODO — file pre-Series-A.</li>
+<li>LOIs and contracts: in personal email + Drive — needs consolidation.</li>
+</ul>
+<p><strong>Still missing:</strong> Almost everything is in personal email or local files. Consolidate into a "Legal" folder in the data room. Engage a startup-experienced attorney (Cooley, Wilson Sonsini, Gunderson, or NH-local startup counsel) by Week 2.</p>
+<hr>
+<h2 id="6-team--resumes--bios">6. Team — Resumes + Bios</h2>
+<p><strong>What investors will ask for:</strong> Founder resume + bio, advisor list, planned first 6-8 hires with role specs, any signed offer letters.</p>
+<p><strong>What to put in the room:</strong></p>
+<ul>
+<li>Phyrom resume + 1-page founder bio.</li>
+<li>Phyrom GC license + insurance documentation.</li>
+<li>Advisor list (target 3-5 by Series A) with bios.</li>
+<li>Job specs for first 6 Series-A hires (per Slide 16).</li>
+<li>Any signed offer letters or LOIs from candidate hires.</li>
+</ul>
+<p><strong>Where it lives today:</strong></p>
+<ul>
+<li>Resume: TODO — not in canonical form. Draft this weekend.</li>
+<li>Advisor list: TODO — empty. Begin recruiting in Week 1.</li>
+<li>Job specs: partial in Phase 4 org-design doc. Adapt for Series A scope.</li>
+</ul>
+<p><strong>Still missing:</strong> Formal resume PDF, advisor bench, job specs for first 6 hires.</p>
+<hr>
+<h2 id="7-gtm--this-deck--supporting">7. GTM — This Deck + Supporting</h2>
+<p><strong>What investors will ask for:</strong> Pitch deck (this v2), one-pager, market analysis, competitive landscape, customer testimonials, demo video.</p>
+<p><strong>What to put in the room:</strong></p>
+<ul>
+<li>Sherpa Pros Deck v2 (this document).</li>
+<li>Sherpa Pros One-Pager v1 (<code>docs/pitch/sherpa-pros-onepager-v1.md</code>).</li>
+<li>TAM-SAM-SOM analysis (<code>docs/pitch/tam-sam-som.md</code>).</li>
+<li>Competitive analysis (<code>docs/pitch/competitive-analysis.md</code>).</li>
+<li>Brand audit (<code>docs/pitch/brand-audit.md</code>).</li>
+<li>2-3 founding-pro testimonial quotes (with permission).</li>
+<li>60-90s product demo video (TODO — record on Sherpa Mobile + Sherpa Home).</li>
+</ul>
+<p><strong>Where it lives today:</strong></p>
+<ul>
+<li>All textual GTM docs: <code>~/sherpa-pros-platform/docs/pitch/</code>.</li>
+<li>One-pager: exists.</li>
+<li>Demo video: TODO — record this week.</li>
+</ul>
+<p><strong>Still missing:</strong> Demo video, founding-pro testimonial quotes (with sign-off), distributor (FW Webb) testimonial.</p>
+<hr>
+<h2 id="8-compliance--insurance--soc-2--fdd-prep">8. Compliance — Insurance + SOC 2 + FDD Prep</h2>
+<p><strong>What investors will ask for:</strong> Current insurance (general liability, E&amp;O, cyber), SOC 2 status (Phase 4 target), franchise disclosure document (FDD) prep status (Phase 4), any regulatory filings.</p>
+<p><strong>What to put in the room:</strong></p>
+<ul>
+<li>General liability + E&amp;O + cyber insurance policy summaries.</li>
+<li>SOC 2 readiness assessment (target: Type 2 by M30).</li>
+<li>FDD prep timeline (target: Phase 4 M24+).</li>
+<li>License verification API vendor agreements.</li>
+<li>Stripe + Twilio + Clerk subprocessor agreements.</li>
+</ul>
+<p><strong>Where it lives today:</strong></p>
+<ul>
+<li>Insurance: HJD Builders has GL — TODO confirm Sherpa Pros entity has its own.</li>
+<li>SOC 2: not started — engage Vanta or Drata in Phase 1.</li>
+<li>FDD: not started — Phase 4 trigger.</li>
+</ul>
+<p><strong>Still missing:</strong> Sherpa-Pros-entity-specific insurance, SOC 2 readiness gap analysis, vendor subprocessor map.</p>
+<hr>
+<h2 id="weekend-execution-order-phyrom-action-list">Weekend execution order (Phyrom action list)</h2>
+<ol>
+<li><strong>Day 1 (highest leverage):</strong> Cap table draft in Carta + commission 409a + Delaware incorporation confirmation + IP assignment.</li>
+<li><strong>Day 1 PM:</strong> Architecture diagram (one-page) + founder resume PDF + advisor target list (5 names + outreach drafts).</li>
+<li><strong>Day 2 AM:</strong> Standalone Sherpa Pros P&amp;L from QuickBooks + Y1-Y3 financial model (lift from v2 deck Slide 17).</li>
+<li><strong>Day 2 PM:</strong> Demo video recording (Sherpa Mobile + Sherpa Home) + founding-pro testimonial outreach.</li>
+<li><strong>Week 1 Monday:</strong> Engage startup attorney + Vanta SOC 2 readiness scoping call + trademark filing.</li>
+</ol>
+<p>Total weekend lift: ~14 hours focused work to get the data room from 30% complete to 80% complete. The remaining 20% comes in the first two weeks of Series A conversations as investors request specific items.</p>
+
+	
+
+
+</body>
+</html>

@@ -1,0 +1,1281 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>liability insurance framework — Sherpa Pros</title>
+<link rel="icon" href="../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="liability-insurance-framework.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="sherpa-pros--liability-insurance-claims--customer-satisfaction-framework">Sherpa Pros — Liability, Insurance, Claims &amp; Customer Satisfaction Framework</h1>
+<p><strong>Date:</strong> 2026-04-24
+<strong>Status:</strong> Draft v1 — needs attorney + broker review before publishing
+<strong>Source spec:</strong> <code>docs/superpowers/specs/2026-04-22-gtm-marketing-design.md</code> (this fills a gap in §10 R5/R6 + §5.4 tech gates)</p>
+<hr>
+<h2 id="1-why-sherpa-pros-≠-uber--doordash">1. Why Sherpa Pros ≠ Uber / DoorDash</h2>
+<p>Uber and DoorDash invented the modern gig-marketplace insurance playbook, but Sherpa Pros' risk profile is structurally different. Don't copy their model wholesale.</p>
+<table>
+<thead>
+<tr>
+<th>Dimension</th>
+<th>Uber / DoorDash</th>
+<th>Sherpa Pros</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Worker type</strong></td>
+<td>Unskilled gig drivers, no required license</td>
+<td>Licensed contractors (EPA, NEC, IRC, state-board)</td>
+</tr>
+<tr>
+<td><strong>Worker carries own insurance?</strong></td>
+<td>Personal auto only (no liability requirement beyond DMV)</td>
+<td><strong>Required</strong> — General Liability + Workers' Comp + Commercial Auto + state surety bond</td>
+</tr>
+<tr>
+<td><strong>Primary risk type</strong></td>
+<td>Bodily injury (auto accidents, food allergens)</td>
+<td><strong>Property damage</strong> (a wrong panel install can flood a $500K home) + bodily injury + code/regulatory violation</td>
+</tr>
+<tr>
+<td><strong>Severity per claim</strong></td>
+<td>$25K avg auto bodily injury</td>
+<td>$5K–$500K+ per construction defect or property damage</td>
+</tr>
+<tr>
+<td><strong>Frequency per gig</strong></td>
+<td>Very low (millions of rides per accident)</td>
+<td>Higher (any job touching gas/water/electrical/structure has real exposure)</td>
+</tr>
+<tr>
+<td><strong>Regulatory exposure</strong></td>
+<td>State PUC + DMV</td>
+<td>Building codes (NEC, IRC, MA Electrical, NH RSA) + permits + Mass Save program rules</td>
+</tr>
+<tr>
+<td><strong>Pre-job risk reduction</strong></td>
+<td>None — driver skill/luck</td>
+<td><strong>Code-aware quote validation</strong> flags issues before work starts (this is our moat AND a liability-reducer)</td>
+</tr>
+</tbody></table>
+<p><strong>Implication:</strong> Sherpa Pros' insurance + dispute model can lean MORE on the pro's own coverage (which is mandatory for licensed trades anyway) and LESS on platform-funded coverage. But platform-funded <strong>professional liability / errors &amp; omissions</strong> matters more (because we're matching, scoping, and validating — those are E&amp;O exposures).</p>
+<hr>
+<h2 id="2-how-uber-and-doordash-actually-cover-it-2026-reference">2. How Uber and DoorDash Actually Cover It (2026 Reference)</h2>
+<h3 id="uber-current-2026-coverage">Uber (current 2026 coverage)</h3>
+<ul>
+<li><strong>Period 1</strong> (app on, no ride accepted): state minimums only — $50K/$100K/$25K</li>
+<li><strong>Period 2</strong> (ride accepted, en route): $1M auto liability + contingent comp/collision</li>
+<li><strong>Period 3</strong> (passenger on board): $1M liability + UM/UIM + contingent comp/collision ($2,500 deductible)</li>
+<li><strong>Driver carries</strong> personal auto + optional rideshare endorsement ($15–$30/mo)</li>
+<li><strong>Uber's coverage is excess</strong> to driver's personal coverage</li>
+<li><strong>Disputes:</strong> in-app refund, may withhold from driver earnings if at fault</li>
+<li><strong>Quality control:</strong> rating floor (typically 4.6★) → deactivation</li>
+<li><strong>Tort defense:</strong> Uber defends platform-named claims; driver-named claims go to driver's personal insurance first</li>
+</ul>
+<h3 id="doordash-current-2026-coverage">DoorDash (current 2026 coverage)</h3>
+<ul>
+<li><strong>$1M excess auto liability</strong> during active delivery (accept → mark delivered)</li>
+<li><strong>$1M occupational accident insurance</strong> (no premium/deductible to dasher) — covers medical, disability ($500/wk), survivors ($150K)</li>
+<li><strong>No coverage for dasher's vehicle damage</strong></li>
+<li><strong>Excess</strong> to driver's personal insurance</li>
+<li><strong>Disputes:</strong> in-app refund, may charge back dasher</li>
+</ul>
+<h3 id="taskrabbit--thumbtack--angi-home-services-peers">TaskRabbit / Thumbtack / Angi (home services peers)</h3>
+<ul>
+<li><strong>TaskRabbit:</strong> <strong>No insurance for taskers.</strong> Tasker is personally responsible. Customer "Happiness Pledge" = $10K guarantee (limited).</li>
+<li><strong>Thumbtack:</strong> $100K property damage guarantee + $1K refund-of-fee guarantee.</li>
+<li><strong>Angi:</strong> Contractor verification only. No platform-level customer guarantee.</li>
+</ul>
+<p><strong>The gap we exploit:</strong> Angi/Thumbtack/TaskRabbit verify weakly and underwrite weakly because their margins are thin and their pros are heterogeneous (mix of licensed and unlicensed). Sherpa Pros only takes licensed pros — meaning every pro we list ALREADY carries the insurance their customers need. Our job is to <strong>verify + monitor + bridge gaps + handle disputes well</strong>.</p>
+<p>Sources: <a href="https://www.uber.com/us/en/drive/insurance/">Uber Insurance 2026</a> · <a href="https://therideshareguy.com/doordash-insurance/">DoorDash Insurance 2026</a> · <a href="https://checkthat.ai/brands/taskrabbit/alternatives">Marketplace Comparison Guide 2026</a> · <a href="https://gritinsurance.com/blog/2026-construction-insurance-market-outlook">Construction Insurance Market 2026</a> · <a href="https://www.professionalliabilityinsurancecost.com/">Professional Liability Pricing 2026</a></p>
+<hr>
+<h2 id="3-the-four-layer-sherpa-pros-liability-stack">3. The Four-Layer Sherpa Pros Liability Stack</h2>
+<pre><code>┌─────────────────────────────────────────────────────────────┐
+│ Layer 4 — Dispute Resolution Workflow                       │
+│ (in-app dispute → Concierge mediates → escalation tiers)    │
+└──────────────────────────┬──────────────────────────────────┘
+                           ▲
+┌──────────────────────────┴──────────────────────────────────┐
+│ Layer 3 — Customer Satisfaction Guarantee                   │
+│ (Stripe 7-day hold + Sherpa work guarantee, $-capped)       │
+└──────────────────────────┬──────────────────────────────────┘
+                           ▲
+┌──────────────────────────┴──────────────────────────────────┐
+│ Layer 2 — Sherpa Pros Platform Insurance (excess/contingent)│
+│ (CGL + Tech E&amp;O + Cyber + Marketplace Endorsement)          │
+└──────────────────────────┬──────────────────────────────────┘
+                           ▲ (kicks in only when Layer 1 exhausted)
+┌──────────────────────────┴──────────────────────────────────┐
+│ Layer 1 — Pro's Own Insurance (PRIMARY, mandatory)          │
+│ (CGL + WC + Commercial Auto + Surety Bond)                  │
+└─────────────────────────────────────────────────────────────┘
+</code></pre>
+<p><strong>Default rule:</strong> Layer 1 is always first. The pro is the liable party — they did the work. Sherpa Pros' Layer 2/3/4 only kicks in when (a) pro's coverage exhausted, (b) Sherpa Pros is named directly (matching error, scope error, platform negligence), or (c) we've made an explicit work guarantee.</p>
+<hr>
+<h2 id="4-layer-1--pros-own-insurance-mandatory-at-onboarding">4. Layer 1 — Pro's Own Insurance (Mandatory at Onboarding)</h2>
+<p><strong>Required from every Founding Pro before they take a single job:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Coverage</th>
+<th>Minimum Limit</th>
+<th>Why</th>
+<th>Evidence</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Commercial General Liability (CGL)</strong></td>
+<td>$1M per occurrence / $2M aggregate</td>
+<td>Property damage + bodily injury at the jobsite</td>
+<td>Certificate of Insurance (COI) naming Sherpa Pros LLC as Additional Insured</td>
+</tr>
+<tr>
+<td><strong>Workers' Compensation</strong></td>
+<td>Statutory state minimums</td>
+<td>Required if pro has employees; even sole proprietors should consider for major work</td>
+<td>COI or sole-proprietor exemption form (NH/ME/MA forms differ)</td>
+</tr>
+<tr>
+<td><strong>Commercial Auto</strong></td>
+<td>$1M combined single limit</td>
+<td>Required for any trucks/vans used for job site travel + tool transport</td>
+<td>COI</td>
+</tr>
+<tr>
+<td><strong>State Surety Bond</strong></td>
+<td>State-specific (NH: varies by trade; MA: $5K-$25K typical for home improvement contractors per CSL; ME: home construction registration)</td>
+<td>Required by state to operate as a licensed contractor</td>
+<td>Bond certificate or state license verification</td>
+</tr>
+<tr>
+<td><strong>Tools &amp; Equipment</strong> <em>(optional but recommended)</em></td>
+<td>Pro's choice</td>
+<td>Pro's own tool theft/damage</td>
+<td>Self-attest</td>
+</tr>
+</tbody></table>
+<p><strong>Verification process (per plan §A4 OpenSign beta agreement):</strong></p>
+<ol>
+<li><strong>At onboarding:</strong> Upload all required COIs to profile. Sherpa Pros LLC named as Additional Insured on CGL. Manual verify by ops team in Phase 0; auto-verify via API integration (e.g., NEXT Insurance, Vouch) in Phase 2+.</li>
+<li><strong>At job acceptance:</strong> Real-time check that COI hasn't expired (system blocks job acceptance if expired).</li>
+<li><strong>Annually:</strong> Auto-reminder 60 days + 30 days + 7 days before expiry. Pro is paused (cannot accept new jobs) if expiry hits without renewal.</li>
+<li><strong>State board verification:</strong> Quarterly check that license is still active (auto-revocation by state = auto-pause on Sherpa Pros).</li>
+</ol>
+<p><strong>Insurance Certificate Tracking — implementation surface:</strong></p>
+<ul>
+<li>New table needed: <code>pro_insurance_certificates</code> (proId, type, carrier, policyNumber, effectiveDate, expiryDate, coiUrl, additionalInsuredVerified, lastCheckedAt)</li>
+<li>Background job: nightly expiry-check + email/SMS reminder cadence</li>
+<li>Profile UI: "Insurance" tab showing all current COIs + expiry countdown</li>
+</ul>
+<hr>
+<h2 id="5-layer-2--sherpa-pros-platform-insurance">5. Layer 2 — Sherpa Pros Platform Insurance</h2>
+<p><strong>Platform-level coverage that Sherpa Pros LLC carries.</strong> This is what plan §A5 references but underestimates ($800/yr is way too low — accurate range is $5K–$15K/yr in Phase 0/1).</p>
+<table>
+<thead>
+<tr>
+<th>Coverage</th>
+<th>Recommended Limit</th>
+<th>2026 Estimated Annual Cost</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Commercial General Liability (CGL)</strong></td>
+<td>$1M/$2M</td>
+<td>$800–$1,500</td>
+<td>Slip-and-fall at any Sherpa Pros office, advertising injury, basic business liability</td>
+</tr>
+<tr>
+<td><strong>Tech Errors &amp; Omissions (E&amp;O) / Professional Liability</strong></td>
+<td>$1M/$2M</td>
+<td>$2,000–$5,000</td>
+<td><strong>The big one for us.</strong> Covers claims that the platform's matching, scope generation, or quote validation was wrong → caused harm. Tied to Wiseman's code-aware claim.</td>
+</tr>
+<tr>
+<td><strong>Cyber Liability</strong></td>
+<td>$500K–$1M</td>
+<td>$1,000–$2,500</td>
+<td>Data breach (pro/client PII), ransomware, regulatory notification costs</td>
+</tr>
+<tr>
+<td><strong>Marketplace Endorsement</strong> <em>(carve-out, not standalone)</em></td>
+<td>Embedded</td>
+<td>+$500–$1,500</td>
+<td>Specific carve-out that the platform isn't liable as the contractor — pro is. Vouch, Embroker, Newfront all sell this for marketplace startups.</td>
+</tr>
+<tr>
+<td><strong>Directors &amp; Officers (D&amp;O)</strong> <em>(when board/investors join)</em></td>
+<td>$1M</td>
+<td>$2,000–$5,000</td>
+<td>Defends Phyrom + future board against shareholder/investor suits. <strong>Required at Series A.</strong></td>
+</tr>
+<tr>
+<td><strong>Employment Practices Liability (EPLI)</strong> <em>(post first hire)</em></td>
+<td>$500K–$1M</td>
+<td>$800–$2,000</td>
+<td>Defends against wrongful termination, discrimination, harassment claims. Not needed in Phase 0 (no employees).</td>
+</tr>
+</tbody></table>
+<p><strong>Phase 0 minimum stack (estimated annual cost: $4K–$9K):</strong></p>
+<ul>
+<li>CGL $1M/$2M</li>
+<li>Tech E&amp;O $1M/$2M (THIS IS NON-NEGOTIABLE — it's our biggest exposure)</li>
+<li>Cyber $500K</li>
+<li>Marketplace endorsement</li>
+<li><em>Skip</em> D&amp;O until Series A</li>
+<li><em>Skip</em> EPLI until first FT hire</li>
+</ul>
+<p><strong>Brokers who specialize in tech/marketplace startups (not generic small business brokers):</strong></p>
+<ul>
+<li>⭐ <strong>Vouch Insurance</strong> (<a href="https://www.vouch.us">vouch.us</a>) — built specifically for tech/marketplace startups, all-in-one packages, Founders Fund / Y Combinator partner</li>
+<li><strong>Embroker</strong> (<a href="https://www.embroker.com">embroker.com</a>) — tech/startup focused, strong on E&amp;O</li>
+<li><strong>Newfront</strong> (<a href="https://www.newfront.com">newfront.com</a>) — tech-broker hybrid, larger client base</li>
+<li><strong>Hiscox Small Business</strong> — general but solid CGL pricing</li>
+<li><strong>Acrisure / Founder Shield</strong> — specialty in venture-backed startups</li>
+</ul>
+<p><strong>Phyrom action:</strong> Engage Vouch (or 2 of the above for quotes) in Plan Task A5. Replace the placeholder ~$800/yr with $4K–$9K/yr realistic figure. Update R6 mitigation accordingly.</p>
+<p><strong>Important construction-marketplace nuance:</strong> because pros carry their own CGL + WC + auto, Sherpa Pros' Layer 2 is structurally CHEAPER than a similar marketplace with unlicensed/unverified workers (e.g., TaskRabbit). The pros' coverage is the big buffer.</p>
+<hr>
+<h2 id="6-layer-3--customer-satisfaction-guarantee">6. Layer 3 — Customer Satisfaction Guarantee</h2>
+<p><strong>The Sherpa Pros Work Guarantee</strong> (recommended structure — needs attorney sign-off):</p>
+<blockquote>
+<p>If a Founding Pro completes a job through Sherpa Pros and the work fails inspection, doesn't match the agreed scope, or has a code defect within 30 days of completion, we will: (1) re-match you with another verified pro to fix it at no additional platform fee, OR (2) refund your platform-paid amount up to <strong>$5,000 per job, $25,000 per customer per year</strong>.</p>
+</blockquote>
+<p><strong>Why these caps:</strong></p>
+<ul>
+<li>$5K matches Thumbtack's similar "happiness pledge" (Sherpa Pros' is wider scope: covers code defects, not just dissatisfaction)</li>
+<li>$25K customer-year cap protects against repeat-claim abuse</li>
+<li>Above the cap: claim falls back to the pro's CGL ($1M+) — which is the appropriate carrier</li>
+<li>Beyond pro's CGL: lawsuit territory, our Tech E&amp;O kicks in if Sherpa Pros named</li>
+</ul>
+<p><strong>What the guarantee does NOT cover:</strong></p>
+<ul>
+<li>Pre-existing conditions homeowner failed to disclose</li>
+<li>Damage caused by homeowner's own actions (turning off water valve, etc.)</li>
+<li>Acts of nature (storm during install)</li>
+<li>Work outside of agreed scope (homeowner asked for "more")</li>
+<li>Cosmetic preferences ("I don't like the color") — matching color must be in scope</li>
+</ul>
+<p><strong>Stripe Connect 7-day hold = the escrow mechanism:</strong></p>
+<ul>
+<li>Customer pays at job completion → funds held by Stripe for 7 days</li>
+<li>Pro can request earlier release via in-app button (waives dispute window)</li>
+<li>During 7-day window, customer can file dispute → funds frozen until resolved</li>
+<li>After 7 days with no dispute → auto-release to pro, guarantee window narrows but doesn't close (30-day guarantee still applies, but funded from Sherpa Pros reserve, not from holdback)</li>
+</ul>
+<hr>
+<h2 id="7-layer-4--dispute-resolution-workflow">7. Layer 4 — Dispute Resolution Workflow</h2>
+<p><strong>Two-track resolution.</strong> Customer files in-app dispute. Sherpa Pros Concierge triages within 24 hours.</p>
+<h3 id="track-a--quality-complaints-workmanship-code-defect-scope-mismatch">Track A — Quality complaints (workmanship, code defect, scope mismatch)</h3>
+<pre><code>Customer files dispute (in-app, during 7-day hold or up to 30 days post-completion)
+    │
+    ▼
+Concierge triage within 24hr — gather: photos, code-validation log, original scope, communication log
+    │
+    ▼
+Tier 1 — Refund/credit (≤$500 platform-paid)
+    Auto-approve if Wiseman code-check flagged the issue OR if pro response time &gt;48hr
+    │ (resolves in 48hr)
+    │
+    ▼
+Tier 2 — Re-match with replacement pro at no platform fee (claim $500–$5,000)
+    Sherpa Pros covers replacement pro's first $250 mobilization
+    │ (resolves in 5-10 days)
+    │
+    ▼
+Tier 3 — Sherpa Pros work guarantee invocation ($5K cap per job)
+    Sherpa Pros pays customer up to $5K from reserve
+    Original pro's rating drops + strike issued
+    Original pro pays back via deduction from future earnings
+    │ (resolves in 14-30 days)
+    │
+    ▼
+Beyond cap — Direct claim against pro's CGL
+    Customer files claim with pro's insurer (info from pro profile)
+    Sherpa Pros provides Wiseman validation log + scope + communication record as evidence
+    Sherpa Pros NOT named in claim (Layer 2 marketplace endorsement protects)
+    │
+    ▼
+If Sherpa Pros named — Tech E&amp;O kicks in
+    Sherpa Pros' attorney handles defense
+    Argument: code-aware validation reduced not eliminated risk; pro is independent contractor
+</code></pre>
+<h3 id="track-b--safety-incidents-injury-major-property-damage-regulatory-violation">Track B — Safety incidents (injury, major property damage, regulatory violation)</h3>
+<ul>
+<li><strong>Immediate:</strong> pause pro from accepting new jobs (pending investigation)</li>
+<li><strong>Within 4hr:</strong> Phyrom + attorney notified</li>
+<li><strong>Within 24hr:</strong> customer connected to pro's CGL + WC carriers (info from profile)</li>
+<li><strong>Within 48hr:</strong> internal incident report filed (preserves attorney-client privilege)</li>
+<li><strong>Within 7 days:</strong> decision on pro deactivation, public statement (if needed), regulatory disclosure (if required by state)</li>
+</ul>
+<p><strong>Evidence chain (mandatory for every job — already partially in product):</strong></p>
+<ul>
+<li>Wiseman code-validation log (timestamped, signed)</li>
+<li>Original scope of work</li>
+<li>Photos pre/during/post (already in product)</li>
+<li>Permit numbers + inspector approvals (where applicable)</li>
+<li>Communication log (Twilio messages — already encrypted)</li>
+<li>Stripe payment record</li>
+<li>Pro's COI on file at time of job</li>
+<li>License verification on file at time of job</li>
+</ul>
+<hr>
+<h2 id="8-customer-satisfaction-nps-framework">8. Customer Satisfaction (NPS) Framework</h2>
+<p><strong>The proactive layer — most disputes get prevented, not resolved.</strong></p>
+<h3 id="scoring--monitoring">Scoring + monitoring</h3>
+<ul>
+<li><strong>Weekly NPS survey</strong> (already in plan §B4 — schema migration 005 added <code>nps_responses</code> table)</li>
+<li><strong>Per-job rating</strong> (1-5 stars + open text, in product today)</li>
+<li><strong>Pro-side rating threshold:</strong><ul>
+<li><strong>&lt;4.5★ rolling 90-day average</strong> → automated warning + Pro Success Manager outreach</li>
+<li><strong>&lt;4.0★ rolling 90-day</strong> → temporary pause (cannot accept new jobs), human review, possible coaching</li>
+<li><strong>&lt;3.5★ rolling 90-day</strong> → deactivation, final payout processed</li>
+</ul>
+</li>
+<li><strong>Single-job catastrophic floor:</strong> any 1★ rating with property damage flag → manual incident review within 24hr (regardless of overall rating)</li>
+</ul>
+<h3 id="concierge-proactive-outreach">Concierge proactive outreach</h3>
+<ul>
+<li><strong>High-value job (&gt;$10K):</strong> Concierge proactively check-in with client at job start, mid-point, completion</li>
+<li><strong>High-risk trade (heat pump, electrical panel, structural):</strong> Concierge proactively confirms permit pulled + inspection scheduled</li>
+<li><strong>First-time client:</strong> Concierge sends welcome message, shares dispute process upfront ("if anything goes wrong here's what we do")</li>
+<li><strong>Repeat client (3+ jobs):</strong> Concierge sends thank-you + asks for referral</li>
+</ul>
+<h3 id="investor-facing-health-metrics-already-on-the-dashboard--admininvestor-metrics">Investor-facing health metrics (already on the dashboard — <code>/admin/investor-metrics</code>)</h3>
+<ul>
+<li>NPS time series (pro + client)</li>
+<li>Pro retention cohort (quality control proxy)</li>
+<li>Client repeat rate (satisfaction proxy)</li>
+<li>% jobs matched &lt;2hr (liquidity, drives satisfaction)</li>
+<li>Funnel completion rate (posted → reviewed)</li>
+</ul>
+<hr>
+<h2 id="9-terms-of-service--arbitration-clause--indemnification">9. Terms of Service + Arbitration Clause + Indemnification</h2>
+<p><strong>Phase 0 attorney engagement (plan §A7) must produce these documents:</strong></p>
+<ol>
+<li><p><strong>Terms of Service (ToS) for clients</strong></p>
+<ul>
+<li>Defines Sherpa Pros' role as a marketplace, NOT the contractor</li>
+<li>Limits Sherpa Pros' liability to platform-paid amount</li>
+<li>Includes the work guarantee structure (Layer 3) with explicit caps + exclusions</li>
+<li><strong>Mandatory binding arbitration clause</strong> (avoids class actions — critical given construction's litigation pattern)</li>
+<li>Class-action waiver</li>
+<li>30-day dispute window for non-safety claims</li>
+<li>Choice of law: Delaware (standard for tech) or NH (Sherpa Pros LLC home state)</li>
+</ul>
+</li>
+<li><p><strong>Pro Service Agreement</strong> (per plan §A4 OpenSign template)</p>
+<ul>
+<li>Independent contractor classification (per plan §A7 attorney memo on 1099 vs W2)</li>
+<li>Pro indemnifies Sherpa Pros for jobsite incidents</li>
+<li>Pro carries the required insurance (Layer 1)</li>
+<li>Sherpa Pros may withhold earnings to pay valid customer disputes</li>
+<li>Mandatory binding arbitration for disputes between Sherpa Pros and pro</li>
+<li>Beta-pricing grandfathering language (5% take forever for Founding Pros)</li>
+</ul>
+</li>
+<li><p><strong>Work Order Terms</strong> (per job, accepted at bid acceptance)</p>
+<ul>
+<li>Defines the job scope (auto-generated from Wiseman scope + pro's bid)</li>
+<li>Code-validation acknowledgment (customer + pro both confirm code-aware quote)</li>
+<li>Permit responsibility allocation (pro pulls; client signs)</li>
+<li>Payment terms (Stripe Connect, 7-day hold)</li>
+<li>30-day work guarantee invocation procedure</li>
+</ul>
+</li>
+</ol>
+<p><strong>Cost estimate for attorney work (plan §A7):</strong></p>
+<ul>
+<li>1099 classification opinion memo: $1,500–$3,000</li>
+<li>Full ToS + Pro Agreement + Work Order template package: $5,000–$10,000</li>
+<li>SAFE template review (Wefunder): $1,000–$2,000</li>
+<li><strong>Total Phase 0 attorney spend: ~$10K–$15K</strong> (currently understated in plan)</li>
+</ul>
+<hr>
+<h2 id="10-what-this-changes-in-the-phase-0-plan">10. What This Changes in the Phase 0 Plan</h2>
+<p><strong>Plan amendments needed (to be reflected in next spec/plan revision):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Plan reference</th>
+<th>Current</th>
+<th>Should be</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>§A5 platform liability insurance</td>
+<td>"~$800/yr"</td>
+<td>"$4K–$9K/yr (CGL + Tech E&amp;O + Cyber + Marketplace endorsement, via Vouch/Embroker)"</td>
+</tr>
+<tr>
+<td>§A7 attorney engagement</td>
+<td>"$1,500–$3,000 flat fee for opinion memo"</td>
+<td>"$10K–$15K for full Phase 0 attorney package (1099 memo + ToS + Pro Agreement + Work Order + SAFE review)"</td>
+</tr>
+<tr>
+<td>§10 R6 mitigation</td>
+<td>"Platform liability insurance (~$800/yr); 4.5★ floor; 7-day Stripe hold"</td>
+<td>"Layered model — Layer 1 pro CGL + Layer 2 Sherpa Pros CGL/E&amp;O/Cyber + Layer 3 work guarantee ($5K/job, $25K/customer/year cap) + Layer 4 dispute workflow with 24hr triage SLA"</td>
+</tr>
+<tr>
+<td>§B (beta cohort)</td>
+<td>Insurance certificate uploaded as agreement requirement</td>
+<td>Add: COI must name Sherpa Pros LLC as Additional Insured + auto-expiry monitoring + state license cross-check</td>
+</tr>
+<tr>
+<td>§10 R5 mitigation</td>
+<td>"Pros are independently licensed contractors w/ own insurance"</td>
+<td>Add: "Layer 1 Layer 2 model documented in <code>docs/operations/liability-insurance-framework.md</code>; Tech E&amp;O is the platform's primary exposure not 1099 classification per se"</td>
+</tr>
+<tr>
+<td>New §13 Phase 0 next steps</td>
+<td>(existing)</td>
+<td>Add: "Engage Vouch + attorney by W4; verify pros' insurance + state license at every onboarding"</td>
+</tr>
+</tbody></table>
+<p><strong>New code work added to Plan §A:</strong></p>
+<ul>
+<li><p><strong>Task A8 (NEW):</strong> Insurance Certificate Tracking</p>
+<ul>
+<li>Add <code>pro_insurance_certificates</code> table (migration 006)</li>
+<li>Add nightly expiry-check background job</li>
+<li>Add "Insurance" tab to pro profile</li>
+<li>Add real-time COI check at job acceptance (block if expired)</li>
+<li>Add Concierge admin view of expiring COIs (60/30/7 day alerts)</li>
+</ul>
+</li>
+<li><p><strong>Task A9 (NEW):</strong> Dispute Resolution Workflow</p>
+<ul>
+<li>Add <code>disputes</code> table (jobId, customerId, type, tier, status, resolution, payoutCents, evidenceUrls, createdAt)</li>
+<li>Add <code>/api/disputes</code> POST (customer files), GET (Concierge views), PUT (Concierge resolves)</li>
+<li>Add in-app dispute form on job-completion screen + 30-day post-completion access</li>
+<li>Add Concierge admin view at <code>/admin/disputes</code> with triage queue</li>
+</ul>
+</li>
+<li><p><strong>Task A10 (NEW):</strong> Insurance verification API integration</p>
+<ul>
+<li>Phase 0: manual COI upload + ops team verifies</li>
+<li>Phase 1: integrate with Trust Layer / Evident / Certificial for automated COI verification</li>
+<li>Phase 2: integrate with state license boards (NH OPLC, MA Office of Consumer Affairs, ME OPR) for real-time license verification</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="11-implementation-checklist-for-phase-0-next-4-weeks">11. Implementation Checklist for Phase 0 (next 4 weeks)</h2>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Week 1:</strong> Engage Vouch (or 2 brokers) for Phase 0 insurance quote — CGL + Tech E&amp;O + Cyber + Marketplace endorsement. Target bind by W3.</li>
+<li><input disabled="" type="checkbox"> <strong>Week 1–2:</strong> Engage attorney (per plan §A7) for FULL package — not just 1099 memo. Scope: 1099 memo + ToS + Pro Service Agreement + Work Order template + Wefunder SAFE review. Budget: $10K–$15K.</li>
+<li><input disabled="" type="checkbox"> <strong>Week 2:</strong> Build <code>pro_insurance_certificates</code> table + COI upload UI + Sherpa Pros LLC Additional Insured language template (give to pros to share with their broker).</li>
+<li><input disabled="" type="checkbox"> <strong>Week 2–3:</strong> Build <code>disputes</code> table + Concierge admin view + customer in-app dispute form.</li>
+<li><input disabled="" type="checkbox"> <strong>Week 3:</strong> Update <code>docs/legal/founding-pro-agreement.md</code> with Layer 1 insurance requirements (COI naming Sherpa Pros LLC as AI, expiry monitoring consent, license re-verification consent).</li>
+<li><input disabled="" type="checkbox"> <strong>Week 4:</strong> Publish customer-facing "Sherpa Pros Work Guarantee" page (<code>/guarantee</code>) explaining caps + exclusions. Cross-reference from homeowner landing page + ToS.</li>
+<li><input disabled="" type="checkbox"> <strong>Week 4:</strong> Train Concierge (Phyrom + 1 Upwork US contractor) on the Track A + Track B dispute workflow.</li>
+<li><input disabled="" type="checkbox"> <strong>Week 4–6:</strong> Pilot with first 5 beta pros — actually verify their COIs, run a mock dispute end-to-end before any real customer dispute happens.</li>
+</ul>
+<hr>
+<h2 id="12-open-questions-for-phyrom--attorney--broker">12. Open Questions for Phyrom + Attorney + Broker</h2>
+<ol>
+<li><strong>Work guarantee cap:</strong> $5K/job + $25K/customer/year — too low? Too high? Compare against industry (Thumbtack $100K, TaskRabbit $10K).</li>
+<li><strong>Reserve fund:</strong> how much should Sherpa Pros hold in reserve to fund Layer 3 guarantees before Tech E&amp;O kicks in? Suggest 2% of trailing-90-day GMV.</li>
+<li><strong>Cross-state coverage:</strong> Sherpa Pros LLC operates in NH/ME/MA initially. Do we need separate state-level licensing as a "home improvement contractor referral service"? <strong>MA in particular</strong> — the MA Office of Consumer Affairs regulates contractor referral platforms differently than non-MA.</li>
+<li><strong>PM tier liability:</strong> when Sherpa Pros sends a pro to a property manager's unit, who's the customer of record for liability? PM, owner, or tenant? This affects guarantee mechanics.</li>
+<li><strong>Specialty lane risk concentration:</strong> Boston specialty lanes (heat pump, EV, panel) have higher per-job stakes ($10K–$50K jobs) and more code complexity. Should the work guarantee cap be different for specialty lanes?</li>
+<li><strong>Mass Save / National Grid partnership:</strong> if we're a referenced installer-finder, do those programs require us to carry specific limits? (Likely yes — confirm with their legal teams during partnership outreach.)</li>
+<li><strong>Mandatory arbitration enforceability:</strong> ME and MA courts have been increasingly skeptical of mandatory arbitration in consumer contracts. Confirm enforceability with attorney.</li>
+<li><strong>Class-action waiver:</strong> same enforceability question. Especially with the AB5-style worker classification environment — pros may try to bring class actions for misclassification.</li>
+</ol>
+<hr>
+<h2 id="13-references">13. References</h2>
+<p><strong>Insurance / coverage:</strong></p>
+<ul>
+<li><a href="https://www.uber.com/us/en/drive/insurance/">Uber Driver Insurance (current coverage tables)</a></li>
+<li><a href="https://gridwise.io/blog/uber-driver-insurance">Uber 2026 Insurance Coverage Guide — Gridwise</a></li>
+<li><a href="https://therideshareguy.com/doordash-insurance/">DoorDash 2026 Insurance Guide — RideshareGuy</a></li>
+<li><a href="https://help.doordash.com/dashers/s/article/Understanding-Auto-Insurance-Maintained-by-DoorDash">DoorDash Auto Insurance (official)</a></li>
+<li><a href="https://checkthat.ai/brands/taskrabbit/alternatives">Marketplace platform comparison — TaskRabbit/Thumbtack/Angi</a></li>
+<li><a href="https://help.thimble.com/hc/en-us/articles/4401805596307-CGL-I-am-doing-a-job-for-a-marketplace-like-Handy-Thumbtack-Amazon-Home-Services-HomeAdvisor-TaskRabbit-or-Yelp-what-do-I-do-">Marketplace insurance guidance — Thimble</a></li>
+<li><a href="https://gritinsurance.com/blog/2026-construction-insurance-market-outlook">2026 Construction Insurance Market Outlook — Grit Insurance</a></li>
+<li><a href="https://www.professionalliabilityinsurancecost.com/">Professional Liability Insurance Pricing 2026</a></li>
+<li><a href="https://contractorsliability.com/blog/what-does-contractors-liability-insurance-actually-cover-2026-complete-guide/">Contractor Liability Insurance Complete Guide 2026</a></li>
+</ul>
+<p><strong>Brokers / carriers:</strong></p>
+<ul>
+<li><a href="https://www.vouch.us">Vouch Insurance — tech/marketplace startup specialist</a></li>
+<li><a href="https://www.embroker.com">Embroker — tech-focused broker</a></li>
+<li><a href="https://www.newfront.com">Newfront — tech broker hybrid</a></li>
+</ul>
+<p><strong>Compliance / verification services (Phase 1+):</strong></p>
+<ul>
+<li><a href="https://www.evidentid.com">Evident — automated COI verification</a></li>
+<li><a href="https://www.certificial.com">Certificial — COI tracking for marketplaces</a></li>
+<li><a href="https://www.trustlayer.io">Trust Layer — insurance verification API</a></li>
+</ul>
+<hr>
+<h2 id="14-last-updated">14. Last Updated</h2>
+<p><strong>2026-04-24</strong> — Draft v1 by Claude. Needs attorney + broker review before publishing customer-facing parts. Phyrom should add this as a parallel workstream (call it Workstream J) to the Phase 0 handoff doc and assign to T1 (Engineering for code) + himself (broker + attorney engagement).</p>
+
+	
+
+
+</body>
+</html>

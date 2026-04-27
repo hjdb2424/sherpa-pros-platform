@@ -1,0 +1,1198 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>masscec innovatemass app — Sherpa Pros</title>
+<link rel="icon" href="../../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="masscec-innovatemass-app.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="masscec-innovatemass--sherpa-pros-application-draft">MassCEC InnovateMass — Sherpa Pros Application Draft</h1>
+<p><strong>Program:</strong> Massachusetts Clean Energy Center (MassCEC) — InnovateMass
+<strong>Award size:</strong> Up to $350,000 (matching cost-share required, typically 25% applicant)
+<strong>Sponsor URL:</strong> <a href="https://www.masscec.com/program/innovatemass">https://www.masscec.com/program/innovatemass</a>
+<strong>Applicant:</strong> Sherpa Pros LLC (Phyrom, Founder — operating in MA via Boston specialty deployment; HJD Builders LLC parent operations in NH)
+<strong>Draft date:</strong> 2026-04-22
+<strong>Status:</strong> DRAFT — for Phyrom review prior to submission</p>
+<hr>
+<h2 id="1-program-at-a-glance">1. Program at a Glance</h2>
+<p>InnovateMass funds Massachusetts-based clean energy technology demonstrations that have moved past prototype but require funding to install and operate at a real-world site in Massachusetts. The program targets technologies that "validate technical and business merit at a Massachusetts site." Sherpa Pros fits the <strong>enabling-technology / market-acceleration</strong> track: a software platform that materially accelerates the install-throughput of Mass Save heat pumps, electric panel upgrades, and EV chargers — the exact program scope that funds Massachusetts decarbonization.</p>
+<p><strong>Why we win:</strong> MA has the largest construction labor shortage in the nation (2.5% construction unemployment, lowest in 17+ years; 30% of MA residential construction workers are 55+). Heat-pump install velocity is rebate-bound on the demand side and labor-bound on the supply side. Our platform unblocks the labor-side bottleneck by matching homeowners to certified installers, validating quotes against MA Electrical Code and program eligibility before scheduling, and surfacing rebate stacking automatically. Every additional install we route is a measurable decarbonization unit MassCEC can attribute to its grant dollar.</p>
+<hr>
+<h2 id="2-required-documents-checklist">2. Required Documents Checklist</h2>
+<ul>
+<li><input disabled="" type="checkbox"> Project narrative (≤8 pages, NSF-style structure: Executive Summary, Project Description, Workplan, Team, Commercialization, Climate Impact)</li>
+<li><input disabled="" type="checkbox"> Detailed budget (Excel template from MassCEC; categories: Personnel, Subcontracts, Materials, Site, Travel, Indirect)</li>
+<li><input disabled="" type="checkbox"> Budget justification (1–2 pages, narrative pairing each line item to project tasks)</li>
+<li><input disabled="" type="checkbox"> Cost-share commitment letter (25% minimum; can be in-kind founder time at fully loaded rate, or matched dollars from Wefunder / VC / accelerator close)</li>
+<li><input disabled="" type="checkbox"> Massachusetts site/host letter of support (Boston-area beta pro or Mass Save HPC contractor)</li>
+<li><input disabled="" type="checkbox"> Two letters of support from MA stakeholders (recommended: a Mass Save HPC contractor + an MA homeowner who completed a heat-pump install)</li>
+<li><input disabled="" type="checkbox"> Resumes / bios for Phyrom and any technical contributors (≤2 pages each)</li>
+<li><input disabled="" type="checkbox"> MA business registration (if Sherpa Pros LLC is registered in NH only, file MA foreign-LLC registration before submit — <strong>eligibility blocker, see §11</strong>)</li>
+<li><input disabled="" type="checkbox"> Technology demonstration plan (separate doc, ≤4 pages — see §6)</li>
+<li><input disabled="" type="checkbox"> Key milestones with measurable success criteria (90-day, 6-month, 12-month — see §7)</li>
+<li><input disabled="" type="checkbox"> Form W-9 for Sherpa Pros LLC</li>
+<li><input disabled="" type="checkbox"> Conflict-of-interest disclosure</li>
+<li><input disabled="" type="checkbox"> Recent financial statements or projections (NSF-comparable; year 1 projection acceptable for early-stage)</li>
+</ul>
+<hr>
+<h2 id="3-eligibility-verification">3. Eligibility Verification</h2>
+<table>
+<thead>
+<tr>
+<th>Criterion</th>
+<th>Sherpa Pros status</th>
+<th>Cite</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Massachusetts entity OR registered to do business in MA</td>
+<td><strong>Action item.</strong> Sherpa Pros LLC currently registered in NH. MA foreign-LLC registration required before submission. ~$500 fee, 5–7 business days.</td>
+<td>MA Secretary of the Commonwealth filing portal</td>
+</tr>
+<tr>
+<td>Project demonstrates clean energy technology in MA</td>
+<td>Yes — Mass Save heat-pump install acceleration platform</td>
+<td>Program scope</td>
+</tr>
+<tr>
+<td>Technology past prototype stage</td>
+<td>Yes — platform live at <a href="http://www.thesherpapros.com">www.thesherpapros.com</a>, mobile via TestFlight + PWA, Stripe Connect operational</td>
+<td>CLAUDE.md tech stack</td>
+</tr>
+<tr>
+<td>Real-world demonstration at MA site</td>
+<td>Yes — Boston specialty deployment plan with Mass Save HPC contractors</td>
+<td>GTM spec §2.3, §4.3</td>
+</tr>
+<tr>
+<td>25% cost-share available</td>
+<td>Yes — combination of (a) founder loaded labor in-kind, (b) committed Wefunder soft-circle, (c) HJD Builders match</td>
+<td>GTM spec §6.4</td>
+</tr>
+<tr>
+<td>Project completion ≤24 months</td>
+<td>Yes — 12-month deployment + 6-month measurement period</td>
+<td>This document §7</td>
+</tr>
+</tbody></table>
+<p><strong>Verdict:</strong> Eligible upon completion of MA foreign-LLC registration. No other structural blockers identified.</p>
+<hr>
+<h2 id="4-project-title">4. Project Title</h2>
+<p><strong>"Code-Aware Installer Throughput Acceleration for Massachusetts Heat-Pump and EV-Charger Decarbonization"</strong></p>
+<hr>
+<h2 id="5-application-narrative-≤8-pages--draft">5. Application Narrative (≤8 Pages — Draft)</h2>
+<h3 id="51-executive-summary-≤1-page">5.1 Executive Summary (≤1 page)</h3>
+<p>Massachusetts has set the most aggressive residential decarbonization goals in the United States, anchored by the Mass Save program (75,000+ heat pumps installed since 2019, 2026 rebates of $2,650/ton capped at $8,500/whole-home install) and the National Grid Turnkey EV Charging Installation Program. These programs are demand-funded — homeowner rebates are abundant — but they are <strong>supply-bottlenecked</strong>: Massachusetts has the largest construction labor shortage in the nation (2.5% construction unemployment, lowest in 17+ years), 30% of MA residential construction workers are 55+, and project completion times have stretched from 7 to 11 months [WBJournal; Bisnow Boston; cited in Sherpa Pros GTM spec §2.1]. Every dollar of Mass Save rebate sits in a queue waiting for a certified installer with capacity.</p>
+<p>Sherpa Pros is the licensed-trade marketplace built by a working New Hampshire general contractor (Phyrom, HJD Builders LLC) to address exactly this bottleneck. The platform is already operational — web at <a href="http://www.thesherpapros.com">www.thesherpapros.com</a>, mobile via TestFlight/PWA, Stripe Connect for marketplace splits, Neon Postgres + PostGIS for geo-matching, Clerk for verified pro/client roles, and a proprietary code-aware quote-validation layer that reads NEC, IRC, MA Electrical Code, and NH RSA in real time.</p>
+<p><strong>InnovateMass funding will deploy Sherpa Pros across the Boston metro for three Mass Save and utility-program-aligned use cases — heat-pump installs, EV-charger installs, and electric-panel upgrades — and measure throughput improvement (installs/week per certified contractor), quote accuracy (% of quotes passing first-pass program-eligibility check), and rebate-stacking capture (% of eligible installs claiming all available federal + state + utility incentives).</strong> The cost-share match comes from founder labor (in-kind, at fully loaded $185/hr rate), parallel non-dilutive raises (Wefunder Reg CF, MassDev Biz-M-Power), and HJD Builders bridge capital.</p>
+<p>The funding ask is <strong>$350,000</strong> over 18 months. Projected outcomes by month 18: <strong>200+ certified MA installer pros active on platform</strong>, <strong>400+ Mass Save / National Grid Turnkey installs routed</strong>, <strong>measurable installer-throughput lift</strong> (target: 25%+ vs. status-quo lead-gen platforms), and <strong>a published case study</strong> documenting platform-attributable decarbonization tonnage that MassCEC can use in program reporting.</p>
+<h3 id="52-problem-statement--climate-thesis-≈15-pages">5.2 Problem Statement &amp; Climate Thesis (≈1.5 pages)</h3>
+<p><strong>Heat-pump install velocity is decarbonization velocity.</strong> A Mass Save air-source heat pump replacing oil or gas heat eliminates approximately 4–6 metric tons of CO2-equivalent emissions per year per household over its 15-year lifetime [MA EEAC modeling]. The 2026 Mass Save rebate structure ($8,500 cap per whole-home install) is the most generous in the country. The bottleneck is not money. The bottleneck is <strong>labor</strong> — specifically, the throughput of EPA-certified, NEC-compliant, MA Electrical Code-fluent contractors capable of completing the install and the often-required electrical panel upgrade.</p>
+<p>Existing matching infrastructure is inadequate:</p>
+<ol>
+<li><strong>Mass Save Find-an-Installer</strong> is a static contractor listing — no dispatch, no scheduling, no quote validation, no escrow, no in-app messaging, no permit assist, no rebate calculator. A homeowner finds names and phone numbers and is on their own [Mass Save Trade Partners directory].</li>
+<li><strong>Lead-gen platforms (Angi, Thumbtack, HomeAdvisor)</strong> charge contractors $30–$100 per shared lead, do not verify EPA Heat Pump Installer Network (HPIN) status, do not validate quotes against MA Electrical Code, and do not surface rebate eligibility. The MA AG and Vermont AG have publicly settled on misleading "Certified Pro" terminology with these platforms [Vermont AG Oct 2025 settlement; Sherpa Pros competitive analysis §2].</li>
+<li><strong>National Grid Turnkey EV</strong> publishes program rules but routes installer matching to the homeowner's own search effort; the program does not currently have a software layer that sequences panel-upgrade + EV-charger install into a single contractor dispatch.</li>
+</ol>
+<p><strong>Sherpa Pros' code-aware quote-validation layer</strong> (the proprietary intelligence layer the Sherpa Pros platform runs internally) addresses each of these gaps:</p>
+<ul>
+<li><strong>Verified license + EPA cert + Mass Save HPIN status</strong> is checked at pro onboarding and re-checked on annual renewal.</li>
+<li><strong>Quotes are validated against NEC 2023, MA Electrical Code (527 CMR 12.00), IRC, and Mass Save program eligibility rules</strong> in real time before the homeowner sees them. Missing line items, wrong materials, code violations, and rebate-eligibility gaps surface with explanatory text the homeowner can read.</li>
+<li><strong>Permit assist</strong> identifies which jobs require ISD permits in Boston and which trigger 1-year electrical inspection follow-ups under MA practice.</li>
+<li><strong>Rebate stacking</strong> auto-checks Mass Save + Inflation Reduction Act § 25C / 25D federal credits + Eversource / National Grid utility-specific bonuses + low-income enhancements (HEAT Loan, EBE) and presents the post-rebate net cost to the homeowner during the bid review.</li>
+<li><strong>Single-contractor dispatch</strong> (not lead-blast) means one matched installer gets the job exclusively at a 5–10% take rate vs. paying $30–$100 per shared lead.</li>
+</ul>
+<p><strong>Climate thesis (one sentence):</strong> <em>Every Mass Save heat-pump install Sherpa Pros routes that would not have happened without the platform — or that happens 30 days sooner because the platform compressed the contractor-search and quote-validation cycle — is decarbonization tonnage attributable to MassCEC's grant dollar.</em></p>
+<h3 id="53-technology-description-≈15-pages">5.3 Technology Description (≈1.5 pages)</h3>
+<p><strong>Platform architecture (live, demonstrable):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Technology</th>
+<th>Function</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Frontend (web)</td>
+<td>Next.js 16 (App Router), Tailwind CSS 4, deployed on Vercel</td>
+<td>Homeowner job posting, pro dashboard, code-checked quote review</td>
+</tr>
+<tr>
+<td>Frontend (mobile)</td>
+<td>PWA + iOS TestFlight (Expo wrapper)</td>
+<td>Field-pro mobile workflow</td>
+</tr>
+<tr>
+<td>Auth</td>
+<td>Clerk (Pro/Client role separation)</td>
+<td>License verification, insurance verification, EPA cert tracking</td>
+</tr>
+<tr>
+<td>Payments</td>
+<td>Stripe Connect</td>
+<td>Marketplace splits, 7-day escrow hold, 1099-NEC reporting for pros &gt;$600/yr</td>
+</tr>
+<tr>
+<td>Database</td>
+<td>Neon PostgreSQL + PostGIS (Drizzle ORM)</td>
+<td>Geo-matching, 20-table marketplace schema</td>
+</tr>
+<tr>
+<td>Maps</td>
+<td>Google Maps JavaScript API (@vis.gl/react-google-maps)</td>
+<td>Uber-style dispatch UX</td>
+</tr>
+<tr>
+<td>Communication</td>
+<td>Twilio (masked phone + SMS)</td>
+<td>Privacy-preserving contractor-homeowner messaging</td>
+</tr>
+<tr>
+<td>Code intelligence</td>
+<td>Proprietary code-aware quote-validation layer</td>
+<td>NEC, IRC, MA Electrical Code, NH RSA — 192 codes, 480K entries, 284 NH municipalities cataloged; MA municipal layer expanding under InnovateMass scope</td>
+</tr>
+<tr>
+<td>Dispatch</td>
+<td>Single-pro matching (not lead-blast)</td>
+<td>7-factor scoring algorithm: license fit, geo, cert, capacity, rating, response time, anti-gaming</td>
+</tr>
+</tbody></table>
+<p><strong>Innovation claim (defensible):</strong></p>
+<p>The combination of (a) license + cert verification at the directory layer, (b) code-validated quoting in real time, (c) program-eligibility checking against Mass Save / National Grid program rules, and (d) single-contractor dispatch with marketplace economics is <strong>not currently offered by any other platform serving MA homeowners</strong>. National lead-gen platforms (Angi, Thumbtack, HomeAdvisor, Houzz Pro) have no incentive to build this — their P&amp;L runs on lead-share volume, not install completion. Mass Save's Find-an-Installer is a static directory by design. The "licensed + code-aware + marketplace" quadrant is empty (per Sherpa Pros competitive-analysis matrix, slide 2 of investor deck).</p>
+<p>The code-intelligence layer is the moat. It required a working general contractor + a 3-year codebase to assemble. Replicating it would require a competitor to (i) acquire the cataloged code corpus, (ii) build the validation engine that maps quote line items to code requirements, and (iii) maintain it as codes update. None of these are licensable shortcuts.</p>
+<h3 id="54-massachusetts-demonstration-plan-≈15-pages">5.4 Massachusetts Demonstration Plan (≈1.5 pages)</h3>
+<p><strong>Phase 1 — Boston Specialty Cohort Onboarding (Months 0–3 of grant period):</strong></p>
+<p>Recruit <strong>20 EPA-certified Mass Save HPIN contractors</strong> + <strong>15 licensed electricians</strong> + <strong>10 old-house specialists</strong> (panel upgrades on pre-1950 housing — 50%+ of Boston housing pre-dates 1950 per Boston Smart Plastering data) into the platform. Recruitment channels: Mass Save Network application, Eversource HPC Network referrals, NESEA / NAREE conference outreach, supply-house partnerships (Granite Group, FW Webb, City Electric Supply Boston).</p>
+<p><strong>Phase 2 — Live Job Routing (Months 3–9):</strong></p>
+<p>Route real jobs through the platform across three program-aligned use cases:</p>
+<ol>
+<li><strong>Mass Save whole-home heat-pump installs</strong> — full retrofit, $15K average ticket pre-rebate, $2,650/ton incentive, $8,500 max</li>
+<li><strong>Electric panel upgrades</strong> — gateway trade for HP + EV + solar; $3,500–$7,000 ticket; often required precondition for HP install</li>
+<li><strong>National Grid Turnkey EV charger installs</strong> — Level 2 hard-wired; up-front rebate covers most install costs for eligible MA customers</li>
+</ol>
+<p><strong>Phase 3 — Measurement &amp; Case Study (Months 9–18):</strong></p>
+<p>Quantify and publish:</p>
+<ul>
+<li>Installs routed (count + GMV)</li>
+<li>Installer throughput lift vs. control (compare same-pro install velocity pre-platform vs. on-platform)</li>
+<li>Quote-validation accuracy (% of quotes passing first-pass code/program-eligibility check; % flagged for missing rebate-stack)</li>
+<li>Rebate-stack capture rate (% of installs claiming Mass Save + IRA + utility bonuses)</li>
+<li>CO2-equivalent decarbonization tonnage attributable to platform-routed installs (using MA EEAC standard emissions factors)</li>
+<li>Homeowner NPS, contractor NPS, dispute rate</li>
+</ul>
+<p><strong>Demonstration site:</strong> Boston metro (Suffolk + Middlesex + Norfolk counties initially). Sherpa Pros LLC will register as a foreign LLC in MA; MA-resident contractors do MA work.</p>
+<h3 id="55-workplan--milestones-cross-reference-§7">5.5 Workplan &amp; Milestones (Cross-Reference §7)</h3>
+<p>See §7 below for 90-day, 6-month, and 12-month milestone schedule with measurable success criteria.</p>
+<h3 id="56-team">5.6 Team</h3>
+<p><strong>Phyrom</strong> (Founder &amp; CEO, Sherpa Pros LLC; Founder, HJD Builders LLC) — 12+ years as a working general contractor in New Hampshire. Operates a multi-project residential GC business. Built and maintains Sherpa Pros, the broader BldSync platform that powers the code-aware layer, and the underlying code corpus (192 codes, 480K entries, 284 NH municipalities). Lived the Mass Save / Eversource / National Grid program-rule landscape from the contractor side daily.</p>
+<p><strong>Phase 1 Hires (post-grant award, per GTM spec §4.3):</strong></p>
+<ul>
+<li><strong>Pro Success Manager</strong> (covers MA + NH/ME) — onboarding, retention, weekly contractor check-ins, Mass Save Network application liaison</li>
+<li><strong>Client Concierge</strong> (part-time, remote NE) — proactive homeowner support, dispute triage, rebate-paperwork assist</li>
+<li><strong>Boston BD lead</strong> (engaged month 4 of grant) — supply-house partnerships, NHHBA + MEHBA + AGC MA introductions</li>
+</ul>
+<p><strong>Advisor slots (open — actively recruiting):</strong> New England trades veteran (NHHBA / MEHBA / AGC MA board); Mass Save program advisor (former Eversource or National Grid program manager); marketplace operator (NFX-shaped two-sided platform veteran).</p>
+<h3 id="57-commercialization-plan">5.7 Commercialization Plan</h3>
+<p>Sherpa Pros' business model is operational and revenue-generating from beta day one:</p>
+<ul>
+<li><strong>Marketplace take rate</strong>: 5% beta → 10% standard</li>
+<li><strong>Pro subscription</strong>: $0 beta → $49/month standard</li>
+<li><strong>Property Manager tier</strong>: $4 → $1.50/unit/month (recurring multi-year contracts)</li>
+</ul>
+<p>Per GTM spec §4.4, Phase 2 (Months 6–12) projects 200+ active pros, 1,000+ completed jobs, $1M+ annualized GMV, with Series A conversations opening Month 10–11. The InnovateMass grant runway carries the platform through this Phase 2 window with a non-dilutive cushion that strengthens both the metro density and the economic case for follow-on Series A.</p>
+<p><strong>Long-term commercialization:</strong> White-label partnerships with utility programs nationally (Eversource Ventures and National Grid Partners are named CVC targets in GTM spec §6.3). The MA demonstration becomes the case study that opens conversations with Connecticut, Rhode Island, and New York utility-program administrators.</p>
+<h3 id="58-climate-impact-≈05-page">5.8 Climate Impact (≈0.5 page)</h3>
+<p>Using MA EEAC standard factors (4–6 tCO2e per heat-pump install per year over 15-year life), and a target of 200 platform-routed Mass Save heat-pump installs over 18 months:</p>
+<ul>
+<li><strong>Direct attributable tonnage (low end):</strong> 200 installs × 4 tCO2e/yr × 15 yr = <strong>12,000 tCO2e lifecycle</strong></li>
+<li><strong>Direct attributable tonnage (high end):</strong> 200 × 6 × 15 = <strong>18,000 tCO2e lifecycle</strong></li>
+<li><strong>Throughput-multiplier tonnage</strong> (installs that happen 30 days sooner because platform compressed the dispatch cycle): not separately attributable, but is the durable mechanism of impact</li>
+</ul>
+<p>Per dollar of grant: $350K / <del>$15K average install ÷ 200 installs implies **</del>$1,750 of grant per attributable install**, or <strong>~$15–25 per lifecycle ton avoided</strong> — favorable vs. typical decarbonization $/ton benchmarks ($50–$200/ton for utility-side energy efficiency).</p>
+<hr>
+<h2 id="6-technology-demonstration-plan-separate-doc-≤4-pages--outline">6. Technology Demonstration Plan (Separate Doc, ≤4 Pages — Outline)</h2>
+<ol>
+<li><strong>Demonstration objectives</strong> — measurable lift in installer throughput, quote accuracy, rebate-stack capture</li>
+<li><strong>Site description</strong> — Boston metro (Suffolk, Middlesex, Norfolk counties), virtual platform with field deployment</li>
+<li><strong>Test cohorts</strong> — control (baseline pre-platform installer velocity) vs. treatment (post-platform installer velocity, same contractors)</li>
+<li><strong>Data collection plan</strong> — Stripe Connect transaction logs, dispatch matching logs, weekly contractor + homeowner NPS surveys, code-validation engine telemetry</li>
+<li><strong>Metric definitions and baselines</strong> — installs/week/contractor (baseline ~1.2 from Mass Save HPIN data extrapolation, target 1.5+); first-pass quote accuracy (baseline unknown, target 85%+); rebate-stack capture (baseline ~50% per MA EEAC homeowner survey, target 90%+)</li>
+<li><strong>Analysis and reporting cadence</strong> — monthly internal, quarterly to MassCEC, public case study at month 18</li>
+</ol>
+<hr>
+<h2 id="7-milestone-schedule">7. Milestone Schedule</h2>
+<table>
+<thead>
+<tr>
+<th>Milestone</th>
+<th>Target date</th>
+<th>Measurable success criterion</th>
+<th>Deliverable to MassCEC</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Award + MA foreign-LLC registration complete</td>
+<td>Month 1</td>
+<td>LLC registered, grant agreement signed</td>
+<td>Filing receipt</td>
+</tr>
+<tr>
+<td>Mass Save Network application submitted</td>
+<td>Month 1</td>
+<td>Application acknowledged</td>
+<td>Confirmation email</td>
+</tr>
+<tr>
+<td>20 MA HPIN contractors onboarded</td>
+<td>Month 3</td>
+<td>20 verified profiles live on platform</td>
+<td>Onboarding log + sample profiles</td>
+</tr>
+<tr>
+<td>First 25 MA installs routed</td>
+<td>Month 6</td>
+<td>$375K+ GMV in MA; 25 installs with code-validated quotes</td>
+<td>Stripe Connect MA-segment dashboard export</td>
+</tr>
+<tr>
+<td>First public Sherpa Pros + Mass Save case-study draft</td>
+<td>Month 9</td>
+<td>Draft published to MassCEC for review</td>
+<td>Case study PDF</td>
+</tr>
+<tr>
+<td>100 MA installs routed</td>
+<td>Month 12</td>
+<td>$1.5M+ MA GMV; throughput-lift measurement complete</td>
+<td>Quarterly report + measurement appendix</td>
+</tr>
+<tr>
+<td>200 MA installs routed</td>
+<td>Month 15</td>
+<td>$3M+ MA GMV; rebate-stack capture rate &gt;85%</td>
+<td>Quarterly report</td>
+</tr>
+<tr>
+<td>400 MA installs + final case study</td>
+<td>Month 18</td>
+<td>Final report; public case study with attributed tonnage</td>
+<td>Final report + MassCEC-co-branded case study</td>
+</tr>
+</tbody></table>
+<p><strong>Hard 90-day measurable:</strong> 20 MA HPIN contractors verified and onboarded, Mass Save Network application submitted, MA foreign-LLC registration complete, first 5 platform-routed Mass Save jobs in flight.</p>
+<hr>
+<h2 id="8-budget-allocation">8. Budget Allocation</h2>
+<p><strong>Total project cost: $466,667 ($350,000 MassCEC + $116,667 cost-share at 25%)</strong></p>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Detail</th>
+<th>MassCEC ask</th>
+<th>Cost-share</th>
+<th>Total</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Personnel</strong></td>
+<td>Pro Success Manager (1.0 FTE × 18 mo loaded $90K/yr)</td>
+<td>$135,000</td>
+<td>$0</td>
+<td>$135,000</td>
+</tr>
+<tr>
+<td></td>
+<td>Client Concierge (0.5 FTE × 18 mo loaded $50K/yr)</td>
+<td>$37,500</td>
+<td>$0</td>
+<td>$37,500</td>
+</tr>
+<tr>
+<td></td>
+<td>Boston BD lead (0.75 FTE × 12 mo loaded $80K/yr)</td>
+<td>$60,000</td>
+<td>$0</td>
+<td>$60,000</td>
+</tr>
+<tr>
+<td></td>
+<td>Founder time (in-kind, fully loaded $185/hr × 600 hr)</td>
+<td>$0</td>
+<td>$111,000</td>
+<td>$111,000</td>
+</tr>
+<tr>
+<td><strong>Subcontracts</strong></td>
+<td>MA legal — foreign-LLC, contracts, 1099 opinion</td>
+<td>$5,000</td>
+<td>$0</td>
+<td>$5,000</td>
+</tr>
+<tr>
+<td></td>
+<td>Code-corpus expansion — MA municipal codes (Boston ISD, Cambridge, Brookline, Newton)</td>
+<td>$25,000</td>
+<td>$0</td>
+<td>$25,000</td>
+</tr>
+<tr>
+<td></td>
+<td>Mass Save Network application + utility partnerships consulting</td>
+<td>$10,000</td>
+<td>$0</td>
+<td>$10,000</td>
+</tr>
+<tr>
+<td><strong>Materials</strong></td>
+<td>Cloud infra (Vercel, Neon, Clerk, Stripe, Twilio) — 18 months</td>
+<td>$18,000</td>
+<td>$0</td>
+<td>$18,000</td>
+</tr>
+<tr>
+<td></td>
+<td>Apple Developer + Google Play + USPTO Old-House Verified filing</td>
+<td>$2,500</td>
+<td>$0</td>
+<td>$2,500</td>
+</tr>
+<tr>
+<td><strong>Site / Travel</strong></td>
+<td>MA pro recruitment travel + field calls (Phyrom + BD lead)</td>
+<td>$8,000</td>
+<td>$0</td>
+<td>$8,000</td>
+</tr>
+<tr>
+<td></td>
+<td>Trade show: NESEA Boston, JLC Live New England</td>
+<td>$5,000</td>
+<td>$0</td>
+<td>$5,000</td>
+</tr>
+<tr>
+<td><strong>Other Direct</strong></td>
+<td>Platform liability insurance (~$800/yr × 1.5 yr)</td>
+<td>$1,200</td>
+<td>$0</td>
+<td>$1,200</td>
+</tr>
+<tr>
+<td></td>
+<td>Marketing collateral, video case-study production</td>
+<td>$15,000</td>
+<td>$0</td>
+<td>$15,000</td>
+</tr>
+<tr>
+<td><strong>Indirect (10%)</strong></td>
+<td>De minimis indirect rate</td>
+<td>$27,800</td>
+<td>$5,667</td>
+<td>$33,467</td>
+</tr>
+<tr>
+<td><strong>TOTAL</strong></td>
+<td></td>
+<td><strong>$350,000</strong></td>
+<td><strong>$116,667</strong></td>
+<td><strong>$466,667</strong></td>
+</tr>
+</tbody></table>
+<p><strong>Cost-share narrative:</strong> The $116,667 match comprises (a) founder time in-kind at $111,000 (600 hours × $185/hr fully loaded), and (b) HJD Builders LLC indirect support ($5,667 — office, equipment, parent-entity admin support). No monetary co-funding from outside investors is required at submission; if MassCEC requires hardened co-funding, parallel Wefunder + MassDev raises (per GTM spec §6.4) supply matching cash within the grant period.</p>
+<hr>
+<h2 id="9-submission-instructions">9. Submission Instructions</h2>
+<ul>
+<li><strong>Portal:</strong> MassCEC online application portal at <a href="https://www.masscec.com/program/innovatemass">https://www.masscec.com/program/innovatemass</a> — verify current open round before submit (program runs spring/fall cycles)</li>
+<li><strong>Deadlines:</strong> Spring round typically closes April–May; Fall round typically closes September–October. <strong>Phyrom should confirm next-round close date with MassCEC program staff (<a href="mailto:innovatemass@masscec.com">innovatemass@masscec.com</a>) before finalizing budget and timeline.</strong></li>
+<li><strong>Format:</strong> Project narrative as PDF, budget as Excel template (download from program page), all letters of support as separate PDFs</li>
+<li><strong>Contact:</strong> MassCEC Innovation team — <a href="mailto:innovatemass@masscec.com">innovatemass@masscec.com</a> (general); program officer assigned upon application opening</li>
+<li><strong>Pre-submission call recommended:</strong> MassCEC program officers will take a 30-minute call to scope fit and answer questions before submission. Phyrom should request this call at least 3 weeks before deadline.</li>
+</ul>
+<hr>
+<h2 id="10-tips--gotchas">10. Tips &amp; Gotchas</h2>
+<ol>
+<li><strong>MA presence is mandatory.</strong> Sherpa Pros LLC must be MA-registered (foreign-LLC filing is sufficient if NH-domiciled). File this 2 weeks before submission. Reviewers will check.</li>
+<li><strong>InnovateMass favors demonstrable hardware/software validated at MA sites.</strong> Lead with the live platform URL and offer a live walkthrough to the program officer before submission.</li>
+<li><strong>Climate impact must be quantified.</strong> Use MA EEAC published emissions factors. Don't extrapolate freely — cite the source.</li>
+<li><strong>25% cost-share can be in-kind founder time</strong> at fully loaded rate (industry-standard $150–$200/hr for senior technical founder). Document the rate basis (W-2 equivalent + benefits + overhead). Avoid claiming founder time at investor-deck $/share rates.</li>
+<li><strong>Letters of support matter.</strong> Two MA stakeholder letters carry weight: one from a Mass Save HPIN contractor confirming intent to onboard, one from an MA homeowner who completed an HP install describing the dispatch-friction problem.</li>
+<li><strong>Avoid the word "Wiseman"</strong> in any external-facing document — call it "code-aware quote validation" or "platform code intelligence." (Per Sherpa Pros brand bible / GTM spec §3.3.)</li>
+<li><strong>MassCEC prefers projects that lead to follow-on commercial revenue, not academic publication.</strong> Lead the Commercialization section with the 5% take-rate revenue model and the Series A trajectory, not with white papers.</li>
+<li><strong>Pre-submission call with MassCEC is the highest-ROI hour you can spend</strong> on this application. Use it to test the framing and surface any program-fit concerns before writing the final narrative.</li>
+</ol>
+<hr>
+<h2 id="11-eligibility-blocker--phyrom-confirmation-required">11. Eligibility Blocker — Phyrom Confirmation Required</h2>
+<p><strong>The single open eligibility item is MA foreign-LLC registration for Sherpa Pros LLC.</strong> If Sherpa Pros LLC is currently registered only in NH (per founder records), MassCEC requires a Massachusetts business presence — foreign-LLC registration with the MA Secretary of the Commonwealth is sufficient (~$500 fee, 5–7 business days). Phyrom should confirm current registration status and initiate MA filing before submission.</p>
+<p>If for strategic reasons a separate "Sherpa Pros Massachusetts LLC" or DBA is preferred over foreign-LLC registration, that pathway also satisfies eligibility but adds 2–4 weeks of legal lead time.</p>
+<hr>
+<p><strong>End of draft. Phyrom: review §11 eligibility blocker, confirm MA registration status, and request the MassCEC pre-submission call before finalizing.</strong></p>
+
+	
+
+
+</body>
+</html>

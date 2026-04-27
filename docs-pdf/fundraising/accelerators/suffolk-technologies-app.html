@@ -1,0 +1,937 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>suffolk technologies app — Sherpa Pros</title>
+<link rel="icon" href="../../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="suffolk-technologies-app.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="suffolk-technologies--boost-accelerator-application-draft">Suffolk Technologies — BOOST Accelerator Application Draft</h1>
+<p><strong>Status:</strong> DRAFT — Phyrom edit pass required before submission
+<strong>Drafted:</strong> 2026-04-22
+<strong>Priority:</strong> ⭐ TOP PRIORITY (bullseye fit per GTM spec §6.2)</p>
+<hr>
+<h2 id="1-application-url--open-status">1. Application URL &amp; Open Status</h2>
+<ul>
+<li><strong>Program page:</strong> <a href="https://www.suffolktechnologies.com/boost">https://www.suffolktechnologies.com/boost</a></li>
+<li><strong>Apply page:</strong> <a href="https://www.suffolktechnologies.com/apply">https://www.suffolktechnologies.com/apply</a> (verify at submission)</li>
+<li><strong>Cycle:</strong> Cohorts run roughly twice yearly (spring + fall). 8-week structured program. <strong>VERIFY current cohort window before submitting</strong> — Suffolk historically opens applications ~2 months before cohort kickoff. If between cycles, send a "founder intro + early-look" email to the BOOST team and ask to be notified when applications reopen.</li>
+<li><strong>Format:</strong> Online application + intro video + optional warm intro from a Suffolk Construction exec or BOOST alum.</li>
+<li><strong>Decision timeline:</strong> ~6–10 weeks from submission to cohort acceptance.</li>
+</ul>
+<hr>
+<h2 id="2-required-materials-checklist">2. Required Materials Checklist</h2>
+<ul>
+<li><input disabled="" type="checkbox"> Online application narrative (this doc)</li>
+<li><input disabled="" type="checkbox"> Pitch deck (link to <code>docs/pitch/sherpa-pros-deck-v1.md</code> — convert to PDF / Google Slides)</li>
+<li><input disabled="" type="checkbox"> One-pager (Brand Guardian-reviewed — produce W4 of Phase 0)</li>
+<li><input disabled="" type="checkbox"> 2–3 minute founder intro video (Phyrom on a real NH jobsite, not a Loom of slides — see §6 below for biases)</li>
+<li><input disabled="" type="checkbox"> Live demo link: <a href="https://www.thesherpapros.com">https://www.thesherpapros.com</a></li>
+<li><input disabled="" type="checkbox"> Founder bio + headshot</li>
+<li><input disabled="" type="checkbox"> Cap table (clean — Phyrom 100%, no SAFEs outstanding pre-Suffolk)</li>
+<li><input disabled="" type="checkbox"> Beta cohort traction snapshot: <code>[X beta pros, $Y GMV, NPS Z]</code> — date-stamped within 7 days of submission</li>
+<li><input disabled="" type="checkbox"> Two reference contacts (1 from HJD network = client testimonial, 1 from beta cohort = pro testimonial)</li>
+</ul>
+<hr>
+<h2 id="3-application-narrative">3. Application Narrative</h2>
+<h3 id="q-company-name--one-line-description">Q: Company name + one-line description</h3>
+<p><strong>Sherpa Pros</strong> — the national licensed-trade marketplace (international roadmap), launching first in NH, ME, and MA, built by a working general contractor. Boston is the Phase 1 specialty-lane wedge — the playbook we'll template into every metro after.</p>
+<h3 id="q-what-does-sherpa-pros-do">Q: What does Sherpa Pros do?</h3>
+<p>We connect homeowners and property managers with verified licensed pros — electricians, plumbers, HVAC, roofers, GCs, specialty trades — and we do two things that lead-gen platforms (Angi, Thumbtack, TaskRabbit, Handy) structurally cannot:</p>
+<ol>
+<li><strong>Verify the license and the work.</strong> Every pro is license-checked and insurance-verified before they list, and re-checked on renewal. No "find a guy" matchmaking.</li>
+<li><strong>Validate the quote against code.</strong> Every quote runs through a code-aware validator (NEC, IRC, MA Electrical, NH RSA, 284 NH municipal codes). The homeowner sees a "code-checked" badge on the bid before they accept it. We catch missing permits, wrong materials, and quotes that fall below code-compliant minimums.</li>
+</ol>
+<p>Pros pay 5% of completed jobs (10% post-beta). Homeowners pay nothing. Property managers pay $1.50/unit/month for the PM tier — about a third of what they pay incumbent vendor-management tools today.</p>
+<h3 id="q-what-problem-are-you-solving">Q: What problem are you solving?</h3>
+<p>Massachusetts has the <strong>largest construction labor shortage in the nation</strong>: 2.5% construction unemployment (lowest in 17+ years), 30% of MA residential construction workers are 55+ vs. 26% nationally, and project completion times have stretched from 7 to 11 months. Homeowners can't get jobs done. Pros can't afford to keep paying for leads that go to four other bidders.</p>
+<p>The platforms that should solve this are structurally broken. Angi sells the same lead to up to 40 contractors. Thumbtack has documented deposit-theft complaints in the $300–$1,600 range per incident. TaskRabbit takes 22.5% effective and doesn't cover licensed trades at all. Houzz Pro has 1.03★ on the BBB across 500+ complaints, with contractors reporting $5K+ spend and zero leads. None of these platforms can verify a license, validate a quote against code, or pull a permit — and none of them ever will, because their P&amp;L runs on lead-share, not completed work.</p>
+<p>The "licensed + code-aware + true marketplace" quadrant of this market is empty. We plant the flag there.</p>
+<h3 id="q-how-big-is-the-market">Q: How big is the market?</h3>
+<ul>
+<li><strong>TAM:</strong> ~$731B/year (US residential remodeling + repair $524B per JCHS LIRA 2026 + US commercial property maintenance $207.5B per Market Research Future).</li>
+<li><strong>SAM:</strong> ~$32B/year across the New England 6-state footprint; ~$8.5B/year across our four Phase 1–2 metros (Boston MA, Manchester NH, Portsmouth NH, Portland ME).</li>
+<li><strong>SOM (18 months):</strong> $5M+ GMV across the four-metro footprint (Phase 2 exit gate). This is &lt; 0.06% of four-metro SAM — we deliberately set targets below 1 basis point of SAM to keep the trajectory defensible.</li>
+<li><strong>Sub-vertical pull:</strong> Mass Save heat-pump installs alone are ~$300M GMV/year of MA pipeline. National Grid Turnkey EV charger installs add ~$17.5M/year. We capture a fraction of these and we hit Phase 2 numbers from one sub-vertical.</li>
+</ul>
+<h3 id="q-why-now">Q: Why now?</h3>
+<p>Three tailwinds converging in the same 12-month window:</p>
+<ol>
+<li><strong>Mass Save 2026 heat-pump rebates are hitting the street.</strong> $10K+ per home. National platforms cannot filter for "Mass Save certified." We can.</li>
+<li><strong>30% of MA residential construction workers are 55+ and retiring this decade.</strong> The contractors homeowners trust are aging out, and the replacement cohort needs jobs, not pay-to-bid noise.</li>
+<li><strong>AI is finally good enough to do the code work.</strong> A code-aware quote validator that reads NEC + IRC + MA Electrical in real time was a research paper in 2022. It's a working product on our platform today.</li>
+</ol>
+<p>Miss this window and somebody else will fill the licensed-marketplace quadrant in 24 months. Probably someone with worse founder-market fit.</p>
+<h3 id="q-whats-your-traction">Q: What's your traction?</h3>
+<ul>
+<li><strong>Platform:</strong> Live at <a href="https://www.thesherpapros.com">https://www.thesherpapros.com</a>. Mobile via TestFlight (iOS) + PWA (Android). Built on Next.js 16, Stripe Connect, Neon Postgres + PostGIS, Clerk, Twilio.</li>
+<li><strong>Beta cohort:</strong> <code>[X beta pros]</code> active across 9 trade categories in 3 states (NH, ME, MA). <code>[Y jobs]</code> posted in first 60 days. <code>[$Z GMV]</code> transacted. <code>[N%]</code> of jobs matched in under 2 hours. Pro NPS <code>[score]</code>. Code-aware validations run: <code>[count]</code>. Code violations caught before homeowner saw the quote: <code>[count]</code>.</li>
+<li><strong>Founder pipeline:</strong> HJD Builders' direct client network + NHHBA + MEHBA introductions = warm-side recruiting and demand pre-seeded for Phase 1.</li>
+<li><strong>Mass Save Network application:</strong> in flight. Old-House Verified USPTO trademark filing in Phase 0 W4.</li>
+</ul>
+<h3 id="q-whos-on-the-team">Q: Who's on the team?</h3>
+<p><strong>Phyrom — Founder.</strong> 12+ years as a working licensed general contractor in New Hampshire (HJD Builders LLC). Lived the lead-gen problem from the buy side every single day for a decade. Built the platform he wished existed. Single founder at present, with Phase 1 hires (Pro Success Manager, Client Concierge, BD) lined up to start at first close.</p>
+<p><strong>Why a single working-GC founder is a feature, not a bug:</strong> capital efficiency. The product is built. The code-aware engine took three years and a contractor's daily problem-set to design. No one out-builds it without that combination.</p>
+<h3 id="q-whats-your-ask-and-what-would-suffolk-technologies-bring">Q: What's your ask, and what would Suffolk Technologies bring?</h3>
+<p><strong>Ask:</strong> A spot in the next BOOST cohort.</p>
+<p><strong>What we want from Suffolk specifically (the things YC and Techstars cannot give us):</strong></p>
+<ol>
+<li><strong>Suffolk Construction enterprise pilots.</strong> Sherpa Pros' PM tier has been built but not yet anchor-validated. A Suffolk-mediated pilot with a Suffolk-managed property or a Suffolk preferred-vendor reroute through Sherpa Pros is the single highest-leverage proof point we can carry into a Seed raise.</li>
+<li><strong>Built-environment mentor access.</strong> The classes of advice we need most — large-GC operations, commercial real-estate vendor management, insurance/risk dynamics on multi-family portfolios — sit in the Suffolk operator network in a way they sit nowhere else.</li>
+<li><strong>Built-environment VC introductions.</strong> Suffolk's VC arm + portfolio overlap with Building Ventures, Brick &amp; Mortar Ventures, Foundamental, Zacua, Schematic, Nine Four. We have a tier-1 NE-VC list (<code>docs/fundraising/...</code>) but warm intros from BOOST partners convert at a different rate than cold.</li>
+<li><strong>Boston enterprise cred for the Mass Save / National Grid lane.</strong> Suffolk's Boston gravitas accelerates the utility-partnership conversations we are otherwise grinding for in Phase 1–2.</li>
+</ol>
+<p><strong>Use of the BOOST stipend / ongoing investment terms:</strong> Phase 1 hires (1 Pro Success Manager + 1 part-time Client Concierge), paid acquisition test on Boston specialty keywords ($5–8K/month), and platform liability insurance + 1099 worker-classification legal opinion (~$15K one-time).</p>
+<h3 id="q-anything-else-we-should-know">Q: Anything else we should know?</h3>
+<p>I'm a working contractor. I built this because I needed it. I'm still building on jobsites in NH while Sherpa Pros is in beta. The day I take a Suffolk meeting, I'm coming straight from a project — that's the founder you're funding. The product is real, the founder-market fit is unforgeable, and the single thing that turns a strong NE marketplace play into a generational built-environment company is what BOOST gives access to: enterprise pilots, large-GC operator wisdom, and Boston gravitas. That's exactly the wrap I'm asking for.</p>
+<hr>
+<h2 id="4-founder-story-angle-suffolk-specific">4. Founder-Story Angle (Suffolk-Specific)</h2>
+<p>Suffolk Technologies' thesis is <strong>operator-led built-environment startups</strong>. Their reviewers respond to (a) founders who lived the problem on a jobsite, (b) products that fit into a real GC's workflow, and (c) startups that would benefit specifically from large-GC distribution.</p>
+<p><strong>Lead with the GC angle in every sentence.</strong> Phyrom is not a "tech founder who learned construction" or a "construction-tech consultant who built a tool." He is a working New Hampshire general contractor whose crew gets pitched these broken lead-gen platforms every week. Suffolk wants exactly that founder. Do not soften this — it is the entire moat.</p>
+<p><strong>Founder video should be shot on a real jobsite.</strong> Tools in hand. No "studio." No slide deck on screen. Suffolk's reviewers see 100s of polished VC-style pitch videos a year and almost no legitimate site videos. This is the differentiator.</p>
+<hr>
+<h2 id="5-equity--dilution-analysis">5. Equity / Dilution Analysis</h2>
+<p>Suffolk Technologies BOOST historically takes a <strong>modest equity stake</strong> for the cohort (terms vary by cohort and are not always publicly disclosed; estimate <strong>~3–6% on a $50K–$200K-equivalent value of program + potential follow-on</strong>). <strong>VERIFY current cohort terms in the BOOST application packet</strong> before signing.</p>
+<p><strong>Post-Suffolk cap table assuming ~5% Suffolk + 7% YC (if both accepted) + 7.5% Wefunder fee on $250K Reg CF + 10% reserved option pool:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Stakeholder</th>
+<th>Pre-Suffolk</th>
+<th>Post-Suffolk only</th>
+<th>Post-Suffolk + YC + Wefunder + pool</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Phyrom (founder)</td>
+<td>100%</td>
+<td>95%</td>
+<td>~76%</td>
+</tr>
+<tr>
+<td>Suffolk Technologies</td>
+<td>0%</td>
+<td>5%</td>
+<td>~5%</td>
+</tr>
+<tr>
+<td>Y Combinator</td>
+<td>0%</td>
+<td>0%</td>
+<td>~7%</td>
+</tr>
+<tr>
+<td>Wefunder community</td>
+<td>0%</td>
+<td>0%</td>
+<td>~2%</td>
+</tr>
+<tr>
+<td>Option pool (employees)</td>
+<td>0%</td>
+<td>0%</td>
+<td>10%</td>
+</tr>
+</tbody></table>
+<p><strong>Key takeaway:</strong> Suffolk equity dilution is modest relative to the strategic upside of (a) Suffolk Construction enterprise pilots and (b) Built-environment VC warm intros. <strong>The strategic value of the BOOST cohort exceeds the equity cost by an order of magnitude</strong> for a built-environment startup. This is the easiest "yes" on the accelerator slate if accepted.</p>
+<p><strong>Conflict to manage:</strong> if Sherpa Pros also accepts YC ($500K @ 7%) in the same window, the combined Suffolk + YC dilution still leaves Phyrom &gt; 75% pre-Seed — well within healthy founder-control bounds for a Seed conversation 4–6 months later. Stack both if both are offered.</p>
+<hr>
+<h2 id="6-reviewer-bias-tips-for-suffolk-technologies">6. Reviewer-Bias Tips for Suffolk Technologies</h2>
+<ol>
+<li><p><strong>Operator-first, not technology-first.</strong> Suffolk reviewers were construction operators before they were VCs. Lead every paragraph with the jobsite reality, not the AI/ML stack. Mention the code-aware quote validation engine only after the operator narrative is established.</p>
+</li>
+<li><p><strong>Built-environment specificity wins over horizontal sweep.</strong> Do not pitch "marketplace for everything." Pitch "the national licensed-trade marketplace, launching in our Phase 1 metros (Portsmouth, Manchester, Portland) plus the Boston specialty wedge." Suffolk has explicitly funded vertical specialists and rejected horizontal me-toos.</p>
+</li>
+<li><p><strong>Suffolk Construction itself is a customer prospect.</strong> Frame slide-7 PM tier as "this works for the Suffolk Construction-managed property portfolio" — not in those exact words, but the implication should be visible to the reviewer. They will run the math themselves.</p>
+</li>
+<li><p><strong>Mention Suffolk by name in the application.</strong> Do not be coy. "We are applying to Suffolk Technologies specifically because we need (a) Suffolk Construction enterprise pilot access, (b) operator-mentor depth that sits inside the Suffolk network, (c) built-environment VC warm intros." Show you did the homework.</p>
+</li>
+<li><p><strong>Code-aware validation is the moat — not the AI.</strong> Suffolk reviewers have heard "AI-powered" 1,000 times. They have not heard "we read NEC, IRC, MA Electrical, and 284 NH municipal codes in real time and catch quote violations before the homeowner sees them." Lead with the latter every time.</p>
+</li>
+<li><p><strong>Capital efficiency is a positive signal.</strong> Single founder + built product + beta cohort transacting on $0 of investor capital is exactly the profile Suffolk respects. Do not apologize for the small team — frame it as discipline.</p>
+</li>
+<li><p><strong>The MassCEC + Mass Save story doubles your Boston credibility.</strong> Mention the in-flight Mass Save Network application + MassCEC InnovateMass / Catalyst submissions. Suffolk reviewers know these programs by name and will treat their adoption as third-party validation.</p>
+</li>
+<li><p><strong>The "what we don't compete on" discipline (per <code>docs/pitch/competitive-analysis.md</code> §5) impresses sophisticated reviewers.</strong> Mention 2–3 of these explicitly: we do not build TaskRabbit-style assembly, we do not build Houzz-style designer portfolios, we do not pursue insurance-restoration networks (Servpro / Belfor) at this stage. This is rare in pre-seed pitches and Suffolk reviewers will notice.</p>
+</li>
+</ol>
+<hr>
+<h2 id="7-submission-checklist-before-hitting-send">7. Submission Checklist Before Hitting Send</h2>
+<ul>
+<li><input disabled="" type="checkbox"> Phyrom personally rewrites Q1, Q4, Q9 in his own voice (this draft is scaffolding only)</li>
+<li><input disabled="" type="checkbox"> Real beta numbers replace <code>[X / Y / Z]</code> placeholders (date-stamped within 7 days)</li>
+<li><input disabled="" type="checkbox"> Founder video shot on a real NH jobsite (not a Loom of slides)</li>
+<li><input disabled="" type="checkbox"> Pitch deck PDF exported and linked</li>
+<li><input disabled="" type="checkbox"> One-pager PDF Brand-Guardian-reviewed</li>
+<li><input disabled="" type="checkbox"> No instance of the internal product name (see CLAUDE.md) anywhere in the application narrative or video — externally always "code-aware quote validation" or "code intelligence layer"</li>
+<li><input disabled="" type="checkbox"> Cap table attached (Phyrom 100% pre-investment, no outstanding SAFEs)</li>
+<li><input disabled="" type="checkbox"> Cycle window verified at <a href="https://www.suffolktechnologies.com/boost">https://www.suffolktechnologies.com/boost</a></li>
+<li><input disabled="" type="checkbox"> Suffolk-affiliated warm intro requested before submission if available (BOOST alumni in HJD/NHHBA/MEHBA network)</li>
+</ul>
+
+	
+
+
+</body>
+</html>

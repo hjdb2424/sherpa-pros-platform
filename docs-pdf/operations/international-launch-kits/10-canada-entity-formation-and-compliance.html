@@ -1,0 +1,1229 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>10 canada entity formation and compliance — Sherpa Pros</title>
+<link rel="icon" href="../../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="10-canada-entity-formation-and-compliance.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="canada-entity-formation--compliance-runbook">Canada Entity Formation + Compliance Runbook</h1>
+<blockquote>
+<p>Detailed runbook for standing up the Canadian operating entity, regulatory + tax registrations, insurance, and trademark filings ahead of Canada Year 1 launch. Canada is the <strong>first international country</strong> — this runbook is the deepest, and serves as the template for UK / AU / EU pilot.</p>
+</blockquote>
+<h2 id="goal">Goal</h2>
+<p>By Phase 4 Month 18 (6 months before Canada Year 1 launch at Month 19), have <strong>Sherpa Pros Canada Inc.</strong> fully formed, registered, banked, insured, tax-registered, and trademarked.</p>
+<h2 id="phase-plan">Phase plan</h2>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Window</th>
+<th>Scope</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Phase 0</td>
+<td>Phase 4 Month 12 → 14</td>
+<td>Entity choice + counsel engagement</td>
+</tr>
+<tr>
+<td>Phase 1</td>
+<td>Phase 4 Month 14 → 16</td>
+<td>Federal incorporation + extra-provincial registration</td>
+</tr>
+<tr>
+<td>Phase 2</td>
+<td>Phase 4 Month 16 → 18</td>
+<td>Tax registrations + bank + insurance</td>
+</tr>
+<tr>
+<td>Phase 3</td>
+<td>Phase 4 Month 18 → 22</td>
+<td>Trademark filings + trade-licensing research</td>
+</tr>
+<tr>
+<td>Phase 4</td>
+<td>Phase 4 Month 22 → 30</td>
+<td>Post-launch ongoing compliance</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="phase-0-entity-choice--counsel-engagement-m12-to-m14">Phase 0: Entity choice + counsel engagement (M12 to M14)</h2>
+<h3 id="entity-choice-analysis">Entity choice analysis</h3>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Pros</th>
+<th>Cons</th>
+<th>Recommendation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Federal incorporation under Canada Business Corporations Act (CBCA)</strong></td>
+<td>Operate in any province / territory under one charter; federal name protection; flexibility</td>
+<td>25% Canadian-resident director requirement</td>
+<td><strong>Recommended</strong></td>
+</tr>
+<tr>
+<td><strong>Ontario incorporation under Ontario Business Corporations Act (OBCA)</strong></td>
+<td>No resident director rule (since 2021 amendment); cheaper than federal at small scale</td>
+<td>Ontario-only name protection; need extra-provincial registration to operate elsewhere</td>
+<td>Backup</td>
+</tr>
+<tr>
+<td><strong>Branch of Sherpa Pros (US) parent</strong></td>
+<td>No new entity</td>
+<td>Tax + liability complexity; not generally recommended</td>
+<td>Avoid</td>
+</tr>
+<tr>
+<td><strong>Quebec incorporation</strong></td>
+<td>Quebec presence</td>
+<td>Quebec linguistic + governance complexity</td>
+<td>Avoid for primary entity</td>
+</tr>
+</tbody></table>
+<p><strong>Locked decision: federal CBCA numbered company, named "Sherpa Pros Canada Inc."</strong> Director residency requirement met by Phyrom (if Canadian-resident) + 1 Canadian-resident advisor / board member + Canada Country GM (if Canadian-resident).</p>
+<h3 id="counsel-engagement">Counsel engagement</h3>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Recommended firms</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Corporate / commercial counsel</td>
+<td><strong>Stikeman Elliott LLP</strong> (Toronto), <strong>Osler, Hoskin &amp; Harcourt LLP</strong> (Toronto), <strong>Bennett Jones LLP</strong> (Toronto / Calgary), or boutique alternative <strong>Kalfa Law Firm</strong> (cost-conscious option)</td>
+</tr>
+<tr>
+<td>Tax counsel</td>
+<td><strong>KPMG Canada</strong> or <strong>Deloitte Canada</strong> tax practice</td>
+</tr>
+<tr>
+<td>Privacy / data counsel</td>
+<td><strong>Stikeman Elliott</strong> privacy practice or <strong>Osler</strong> privacy</td>
+</tr>
+<tr>
+<td>Employment / worker classification</td>
+<td><strong>Hicks Morley</strong> (national employment specialist)</td>
+</tr>
+<tr>
+<td>Franchise counsel (if master-franchisee model adopted Canada)</td>
+<td><strong>Cassels Brock &amp; Blackwell LLP</strong> franchise practice</td>
+</tr>
+</tbody></table>
+<p><strong>Counsel engagement budget:</strong> CAD $40,000 – $80,000 for entity formation + initial regulatory readiness.</p>
+<h3 id="activities">Activities</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Engage Stikeman Elliott (or equivalent) as primary corporate counsel.</li>
+<li><input disabled="" type="checkbox"> Confirm director slate (Phyrom + ≥ 1 Canadian-resident).</li>
+<li><input disabled="" type="checkbox"> Reserve "Sherpa Pros Canada Inc." name through Corporations Canada NUANS (Newly Updated Automated Name Search) report.</li>
+</ul>
+<hr>
+<h2 id="phase-1-incorporation--extra-provincial-registration-m14-to-m16">Phase 1: Incorporation + extra-provincial registration (M14 to M16)</h2>
+<h3 id="activities-1">Activities</h3>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Federal incorporation</strong> under CBCA via Corporations Canada online filing.<ul>
+<li>Articles of Incorporation drafted by counsel.</li>
+<li>Statutory minimum CAD ~$200 federal incorporation fee (DIY base fee).</li>
+</ul>
+</li>
+<li><input disabled="" type="checkbox"> <strong>Registered office</strong> established in Toronto (or Ottawa as alternative).</li>
+<li><input disabled="" type="checkbox"> <strong>First Directors Resolution</strong> + <strong>Bylaws</strong> adopted.</li>
+<li><input disabled="" type="checkbox"> <strong>Initial Return</strong> filed with Corporations Canada within 60 days.</li>
+<li><input disabled="" type="checkbox"> <strong>Extra-provincial registration</strong> in each province where Sherpa Pros Canada will operate:<ul>
+<li>Ontario: Ontario Business Registry</li>
+<li>British Columbia: BC Registries</li>
+<li>Alberta: Alberta Corporate Registry</li>
+<li>Quebec: Registraire des entreprises du Québec (REQ)</li>
+<li>Each province imposes annual filing + small fee; <strong>register in metro launch provinces first</strong> (Ontario at Day 1; BC + QC + AB by Year 2 metro launches).</li>
+</ul>
+</li>
+<li><input disabled="" type="checkbox"> <strong>Minute book</strong> maintained by counsel from Day 1.</li>
+</ul>
+<h3 id="cost-phase-1">Cost (Phase 1)</h3>
+<table>
+<thead>
+<tr>
+<th>Line item</th>
+<th>Budget (CAD)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Federal CBCA incorporation fee</td>
+<td>$200</td>
+</tr>
+<tr>
+<td>Counsel time (incorporation + initial governance)</td>
+<td>$15,000 – $25,000</td>
+</tr>
+<tr>
+<td>Extra-provincial registration (4 provinces)</td>
+<td>$2,000 – $4,000</td>
+</tr>
+<tr>
+<td>Registered office (year 1 if leased through service)</td>
+<td>$1,500 – $3,000</td>
+</tr>
+<tr>
+<td><strong>Phase 1 subtotal</strong></td>
+<td><strong>CAD $19,000 – $32,000</strong></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="phase-2-tax--bank--insurance-m16-to-m18">Phase 2: Tax + bank + insurance (M16 to M18)</h2>
+<h3 id="tax-registrations">Tax registrations</h3>
+<table>
+<thead>
+<tr>
+<th>Registration</th>
+<th>Issuer</th>
+<th>Required when</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Business Number (BN)</strong></td>
+<td>Canada Revenue Agency (CRA)</td>
+<td>Day 1</td>
+</tr>
+<tr>
+<td><strong>GST/HST account (RT)</strong></td>
+<td>CRA</td>
+<td>Mandatory once revenue &gt; CAD $30,000/year (we register voluntarily Day 1)</td>
+</tr>
+<tr>
+<td><strong>Provincial Sales Tax (PST)</strong> registration</td>
+<td>Per-province (BC: PST online; SK; MB)</td>
+<td>Per-province Day 1 of metro launch in that province</td>
+</tr>
+<tr>
+<td><strong>Quebec Sales Tax (QST)</strong> registration</td>
+<td>Revenu Québec (separate from CRA)</td>
+<td>When Quebec metro launches (Year 2 Canada)</td>
+</tr>
+<tr>
+<td><strong>Payroll account (RP)</strong></td>
+<td>CRA</td>
+<td>When first Canadian employee hired (Country GM Day 1)</td>
+</tr>
+<tr>
+<td><strong>Import-export account (RM)</strong></td>
+<td>CRA</td>
+<td>If physical materials cross borders (likely not for marketplace platform; placeholder)</td>
+</tr>
+<tr>
+<td><strong>WSIB (Workplace Safety and Insurance Board) Ontario account</strong></td>
+<td>WSIB</td>
+<td>Day 1 of any Ontario employee work</td>
+</tr>
+<tr>
+<td><strong>WorkSafeBC account</strong></td>
+<td>WorkSafeBC</td>
+<td>When first BC employee hired</td>
+</tr>
+<tr>
+<td><strong>WCB Alberta account</strong></td>
+<td>WCB Alberta</td>
+<td>When first AB employee hired</td>
+</tr>
+<tr>
+<td><strong>CNESST account</strong> (Quebec)</td>
+<td>Commission des normes, de l'équité, de la santé et de la sécurité du travail</td>
+<td>When first Quebec employee hired</td>
+</tr>
+</tbody></table>
+<h3 id="bank-account">Bank account</h3>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Primary operating account</strong> opened with one of: Royal Bank of Canada (RBC), Toronto-Dominion Bank (TD), Bank of Montreal (BMO), Scotiabank, or fintech alternative <strong>Wise Business</strong> (lower fees, multi-currency native; recommended for Phase 1).</li>
+<li><input disabled="" type="checkbox"> <strong>Stripe Canada Connect platform bank link</strong> completed (see <code>09-stripe-connect-per-country-setup-and-fx.md</code>).</li>
+<li><input disabled="" type="checkbox"> <strong>Corporate credit card</strong> (Brex Canada, Float, or bank-issued).</li>
+</ul>
+<h3 id="insurance-broker-engagement">Insurance broker engagement</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Engage <strong>Marsh Canada</strong> or <strong>Aon Canada</strong> or <strong>Hub International Canada</strong> as primary commercial insurance broker.</li>
+<li><input disabled="" type="checkbox"> <strong>Canada-specific policies bound</strong> before launch:<ul>
+<li>Commercial General Liability (CGL) — CAD $5M limits</li>
+<li>Professional Liability / Errors &amp; Omissions (E&amp;O) — CAD $5M limits</li>
+<li>Cyber Liability + Privacy Breach — CAD $5M limits (PIPEDA-driven)</li>
+<li>Directors &amp; Officers (D&amp;O) — CAD $3M – $5M limits</li>
+<li>Employment Practices Liability (EPL) — CAD $2M limits</li>
+<li>Workers' compensation per province (WSIB / WorkSafeBC / WCB / CNESST) — statutory coverage</li>
+</ul>
+</li>
+<li><input disabled="" type="checkbox"> Insurance broker briefed on Sherpa Pros pro / client liability framework (cross-reference <code>liability-insurance-framework.md</code> in repo).</li>
+</ul>
+<h3 id="cost-phase-2">Cost (Phase 2)</h3>
+<table>
+<thead>
+<tr>
+<th>Line item</th>
+<th>Budget (CAD)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Tax counsel + accounting setup (KPMG / Deloitte)</td>
+<td>$20,000 – $40,000</td>
+</tr>
+<tr>
+<td>Bank account opening + corporate credit</td>
+<td>$1,000 – $3,000</td>
+</tr>
+<tr>
+<td>Insurance broker fees + first-year premiums</td>
+<td>$40,000 – $80,000</td>
+</tr>
+<tr>
+<td><strong>Phase 2 subtotal</strong></td>
+<td><strong>CAD $61,000 – $123,000</strong></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="phase-3-trademark-filings--trade-licensing-research-m18-to-m22">Phase 3: Trademark filings + trade-licensing research (M18 to M22)</h2>
+<h3 id="trademark-filings">Trademark filings</h3>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Sherpa Pros wordmark</strong> filed at <strong>Canadian Intellectual Property Office (CIPO)</strong>.<ul>
+<li>Classes: 35 (advertising, business services), 36 (insurance, financial), 37 (construction services), 42 (computer software), 45 (legal/regulatory).</li>
+</ul>
+</li>
+<li><input disabled="" type="checkbox"> <strong>Sherpa Pros logo (figurative mark)</strong> filed at CIPO — same classes.</li>
+<li><input disabled="" type="checkbox"> <strong>Sherpa Marketplace, Sherpa Hub, Sherpa Materials, Sherpa codes engine</strong> subordinate marks evaluated for filing (recommend file Sherpa Marketplace + Sherpa Hub at minimum; Materials + codes engine internal-only enough to skip).</li>
+<li><input disabled="" type="checkbox"> <strong>Domain defense</strong>: secure sherpapros.ca, sherpapros.com.ca redirects.</li>
+<li><input disabled="" type="checkbox"> CIPO filing budget: <strong>CAD $5,000 – $12,000</strong> for 3-5 marks across all classes (filing fees + counsel).</li>
+</ul>
+<h3 id="trade-licensing-research">Trade-licensing research</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Per-province trade certification regime documented in operations playbook:<ul>
+<li>Ontario: <strong>Skilled Trades Ontario</strong> (replaced dissolved Ontario College of Trades 2019)</li>
+<li>British Columbia: <strong>Industry Training Authority (ITA)</strong></li>
+<li>Alberta: <strong>Apprenticeship and Industry Training</strong></li>
+<li>Quebec: <strong>Commission de la construction du Québec (CCQ)</strong></li>
+</ul>
+</li>
+<li><input disabled="" type="checkbox"> Per-trade certification mapping for top 10 Canadian trades on Sherpa Pros marketplace (electrician, plumber, carpenter, drywall, framer, roofer, HVAC technician, mason, painter, general contractor).</li>
+<li><input disabled="" type="checkbox"> Pro vetting pipeline integration: API or document-upload verification of trade ticket / certificate of qualification per pro per province.</li>
+</ul>
+<h3 id="worker-classification">Worker classification</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Counsel-issued memo on Canada Revenue Agency (CRA) common-law tests for <strong>independent contractor vs employee</strong> for Sherpa Pros pros.</li>
+<li><input disabled="" type="checkbox"> <strong>Phase 1 default: pros are independent contractors</strong> (mirrors US Phase 1 model).</li>
+<li><input disabled="" type="checkbox"> CRA control + integration + financial-risk + ownership-of-tools tests applied; counsel-validated playbook.</li>
+<li><input disabled="" type="checkbox"> <strong>Quebec note:</strong> distinct Quebec Civil Code worker-classification regime + CCQ registration may apply for certain Quebec construction trades. Specialist Quebec counsel engaged before Quebec metro launch.</li>
+</ul>
+<h3 id="cost-phase-3">Cost (Phase 3)</h3>
+<table>
+<thead>
+<tr>
+<th>Line item</th>
+<th>Budget (CAD)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Trademark filing fees + counsel (CIPO)</td>
+<td>$5,000 – $12,000</td>
+</tr>
+<tr>
+<td>Trade-licensing research + integration counsel</td>
+<td>$15,000 – $30,000</td>
+</tr>
+<tr>
+<td>Worker-classification counsel memo</td>
+<td>$8,000 – $15,000</td>
+</tr>
+<tr>
+<td>Quebec specialist counsel (Year 2 prep)</td>
+<td>$10,000 – $20,000</td>
+</tr>
+<tr>
+<td><strong>Phase 3 subtotal</strong></td>
+<td><strong>CAD $38,000 – $77,000</strong></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="phase-4-post-launch-ongoing-compliance-m22-onward">Phase 4: Post-launch ongoing compliance (M22 onward)</h2>
+<h3 id="ongoing-obligations">Ongoing obligations</h3>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Annual return</strong> to Corporations Canada (filed within 60 days of anniversary).</li>
+<li><input disabled="" type="checkbox"> <strong>Annual extra-provincial returns</strong> per registered province.</li>
+<li><input disabled="" type="checkbox"> <strong>Quarterly GST/HST filings</strong> to CRA.</li>
+<li><input disabled="" type="checkbox"> <strong>Quarterly per-province PST / QST filings</strong> as applicable.</li>
+<li><input disabled="" type="checkbox"> <strong>Annual T2 Corporation Income Tax Return</strong> to CRA.</li>
+<li><input disabled="" type="checkbox"> <strong>WSIB / WorkSafeBC / WCB / CNESST quarterly premium reporting</strong>.</li>
+<li><input disabled="" type="checkbox"> <strong>PIPEDA breach reporting</strong> within 24 hours of any reportable breach.</li>
+<li><input disabled="" type="checkbox"> <strong>Annual D&amp;O renewal</strong> + insurance program renewal.</li>
+<li><input disabled="" type="checkbox"> <strong>Annual trademark renewals</strong> at CIPO (10-year cycle but use-status review annually).</li>
+</ul>
+<h3 id="cost-phase-4--annual">Cost (Phase 4 — annual)</h3>
+<table>
+<thead>
+<tr>
+<th>Line item</th>
+<th>Budget (CAD per year)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Counsel (general retainer + ad-hoc)</td>
+<td>$40,000 – $80,000</td>
+</tr>
+<tr>
+<td>Tax accounting + filing</td>
+<td>$30,000 – $60,000</td>
+</tr>
+<tr>
+<td>Insurance program renewal</td>
+<td>$40,000 – $90,000</td>
+</tr>
+<tr>
+<td>Compliance software (privacy + tax + payroll)</td>
+<td>$15,000 – $25,000</td>
+</tr>
+<tr>
+<td><strong>Phase 4 annual ongoing</strong></td>
+<td><strong>CAD $125,000 – $255,000 / year</strong></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="total-canada-entity--compliance-investment">Total Canada entity + compliance investment</h2>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>One-time (CAD)</th>
+<th>Year-1 ongoing (CAD)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Phase 0</td>
+<td>counsel scoping (in Phase 1 budget)</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Phase 1</td>
+<td>$19,000 – $32,000</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Phase 2</td>
+<td>$61,000 – $123,000</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Phase 3</td>
+<td>$38,000 – $77,000</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Phase 4 ongoing</td>
+<td>—</td>
+<td>$125,000 – $255,000</td>
+</tr>
+<tr>
+<td><strong>Total Year 1</strong></td>
+<td><strong>CAD $118,000 – $232,000</strong> one-time + <strong>$125,000 – $255,000</strong> ongoing</td>
+<td><strong>CAD $243,000 – $487,000 Year 1 all-in</strong></td>
+</tr>
+</tbody></table>
+<p>USD-equivalent ≈ <strong>$180,000 – $360,000 Canada Year 1 entity + compliance</strong>.</p>
+<h2 id="risks--mitigations">Risks + mitigations</h2>
+<table>
+<thead>
+<tr>
+<th>Risk</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>25% Canadian-resident director requirement triggers governance complexity</td>
+<td>Recruit Canadian board member / advisor early; or use OBCA Ontario incorporation as fallback (no resident-director rule)</td>
+</tr>
+<tr>
+<td>Quebec linguistic obligations (Charter of the French Language / Bill 101) trigger French-language requirements</td>
+<td>Engage Quebec counsel before Quebec launch; budget for full French localization in Year 2</td>
+</tr>
+<tr>
+<td>WSIB / per-province workers' comp gap</td>
+<td>Provincial WCB registrations completed before any in-province employee work</td>
+</tr>
+<tr>
+<td>PIPEDA / Quebec Law 25 breach = significant penalty</td>
+<td>Privacy program + breach response plan in place from Day 1; cyber insurance bound</td>
+</tr>
+<tr>
+<td>Pro classification challenged by CRA</td>
+<td>Counsel-validated playbook; written pro contracts mirror US 1099 model</td>
+</tr>
+<tr>
+<td>Trademark squatting in Canada</td>
+<td>File at CIPO 6-12 months before launch; secure .ca domain + key social handles</td>
+</tr>
+</tbody></table>
+<hr>
+<p><em>This runbook is the template for UK, AU, EU pilot entity formation. Each country's legal structure differs but the phase shape (entity choice → incorporation → tax/bank/insurance → trademark/licensing → ongoing) is reusable.</em></p>
+
+	
+
+
+</body>
+</html>

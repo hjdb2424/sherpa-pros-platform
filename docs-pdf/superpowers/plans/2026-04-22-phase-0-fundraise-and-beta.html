@@ -1,0 +1,2317 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2026 04 22 phase 0 fundraise and beta — Sherpa Pros</title>
+<link rel="icon" href="../../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="2026-04-22-phase-0-fundraise-and-beta.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="sherpa-pros-phase-0--fundraise--beta--implementation-plan">Sherpa Pros Phase 0 — Fundraise &amp; Beta — Implementation Plan</h1>
+<blockquote>
+<p><strong>For agentic workers:</strong> REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (<code>- [ ]</code>) syntax for tracking.</p>
+</blockquote>
+<p><strong>Goal:</strong> Execute the first 90 days of the Sherpa Pros GTM plan — launch a 10+ pro live-transacting beta cohort, produce all pitch materials, and trigger Phase 1 by closing on any one of: $250K+ non-dilutive, $500K+ Wefunder+angel soft-circled, or Tier-1 accelerator acceptance.</p>
+<p><strong>Architecture:</strong> Nine parallel workstreams (A through I) executed concurrently by Phyrom + 2 Upwork US contractors + Claude sub-agents. Each workstream has its own owner and weekly cadence. Critical-path dependencies: Stripe Connect (gates beta), Pitch Deck v1 (gates VC), Wefunder soft-commit (gates public launch). Workstream review happens every Monday with traction metrics, fundraise pipeline, and risk-register update.</p>
+<p><strong>Tech Stack:</strong> Next.js 16, Tailwind 4, Drizzle/Neon Postgres, Stripe Connect, Twilio, QBO, Apple Developer + TestFlight, OpenSign, Wefunder, Notion (data room), Loom (demo video), Claude Agent catalog (Executive Summary Generator, marketing-content-creator, marketing-social-media-strategist, marketing-growth-hacker, product-trend-researcher, data-analytics-reporter, Brand Guardian, App Store Optimizer).</p>
+<p><strong>Source spec:</strong> <code>docs/superpowers/specs/2026-04-22-gtm-marketing-design.md</code></p>
+<p><strong>Owners:</strong></p>
+<ul>
+<li><strong>P</strong> = Phyrom (founder, all-in, 60-hr/wk hard cap)</li>
+<li><strong>SDR</strong> = Upwork US contractor #1 (~15 hr/wk, sales/recruiting)</li>
+<li><strong>CONTENT</strong> = Upwork US contractor #2 (~10 hr/wk, content/deck polish)</li>
+<li><strong>AI</strong> = Claude sub-agent dispatch (parallelized in waves)</li>
+</ul>
+<hr>
+<h2 id="workstream-a--tech--legal-foundation-weeks-12">Workstream A — Tech &amp; Legal Foundation (Weeks 1–2)</h2>
+<p><strong>Goal:</strong> Unblock everything downstream. Stripe Connect, Apple Dev, data-scoping fixes, beta agreement, insurance, IP, legal opinion.</p>
+<h3 id="task-a1-stripe-connect-live-for-sherpa-pros-llc">Task A1: Stripe Connect live for Sherpa Pros LLC</h3>
+<p><strong>Owner:</strong> P
+<strong>Files:</strong></p>
+<ul>
+<li><p>Modify: <code>src/lib/payments/stripe.ts</code> (replace test keys with live keys via env)</p>
+</li>
+<li><p>Modify: <code>.env.local</code> (NEW Sherpa Pros LLC live keys — never commit)</p>
+</li>
+<li><p>Modify: <code>.env.example</code> (document required env vars without values)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Create Sherpa Pros LLC Stripe Connect account</strong></p>
+</li>
+</ul>
+<p>Open <a href="https://dashboard.stripe.com/register">https://dashboard.stripe.com/register</a>. Use Sherpa Pros LLC EIN (DBA Cranston Holdings). Submit:</p>
+<ul>
+<li>Business name: Sherpa Pros LLC</li>
+<li>Business type: LLC, single-member</li>
+<li>Industry: Online marketplaces (MCC 7372 software platform)</li>
+<li>Tax ID: Sherpa Pros LLC EIN</li>
+<li>Bank account: BlueVine business account</li>
+<li>Owner ID: Phyrom NH driver's license + SSN</li>
+<li>Expected volume: $5K/mo (beta)</li>
+</ul>
+<p>Expected: Stripe approval within 24–48 hours. Reach test-mode dashboard immediately.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Enable Stripe Connect (Express)</strong></li>
+</ul>
+<p>In Stripe Dashboard → Connect → Get Started. Choose <strong>Express</strong> (not Standard, not Custom — Express is right for marketplace pros).</p>
+<ul>
+<li><p>Country: US</p>
+</li>
+<li><p>Connect type: Express</p>
+</li>
+<li><p>Business model: Marketplace</p>
+</li>
+<li><p>Funds flow: We collect from clients, payout to pros</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3: Get live keys + webhook secret</strong></p>
+</li>
+</ul>
+<p>Dashboard → Developers → API keys → Reveal live secret key.
+Dashboard → Developers → Webhooks → Add endpoint:</p>
+<ul>
+<li>URL: <code>https://www.thesherpapros.com/api/stripe/webhook</code></li>
+<li>Events: <code>account.updated</code>, <code>payout.created</code>, <code>payment_intent.succeeded</code>, <code>transfer.created</code>, <code>charge.dispute.created</code></li>
+</ul>
+<p>Copy webhook signing secret.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 4: Add live keys to Vercel project</strong></li>
+</ul>
+<pre><code class="hljs bash"><span class="hljs-built_in">cd</span> /Users/poum/sherpa-pros-platform
+vercel <span class="hljs-built_in">env</span> add STRIPE_SECRET_KEY production
+<span class="hljs-comment"># paste live secret</span>
+vercel <span class="hljs-built_in">env</span> add STRIPE_WEBHOOK_SECRET production
+<span class="hljs-comment"># paste webhook secret</span>
+vercel <span class="hljs-built_in">env</span> add NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY production
+<span class="hljs-comment"># paste publishable key</span>
+</code></pre>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 5: Verify lazy initialization still works</strong></li>
+</ul>
+<p>Read <code>src/lib/payments/stripe.ts</code>. Confirm getStripe() pattern (no module-level <code>new Stripe()</code>). Build must pass without env vars. If module-level init exists, refactor to getter.</p>
+<pre><code class="hljs bash">npm run build
+</code></pre>
+<p>Expected: build succeeds.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 6: Test Connect onboarding flow with one fake pro</strong></li>
+</ul>
+<pre><code class="hljs bash">npm run dev
+</code></pre>
+<p>Open <a href="http://localhost:3000/onboarding/pro">http://localhost:3000/onboarding/pro</a> → trigger Stripe Connect onboarding. Complete the test account flow with Stripe's test SSN <code>000-00-0000</code>. Confirm redirect back to platform with <code>account.updated</code> webhook firing.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 7: Commit</strong></li>
+</ul>
+<pre><code class="hljs bash">git add .env.example src/lib/payments/stripe.ts
+git commit -m <span class="hljs-string">"chore(payments): switch Stripe to live keys, document env vars"</span>
+</code></pre>
+<hr>
+<h3 id="task-a2-apple-developer-account--testflight-setup">Task A2: Apple Developer account + TestFlight setup</h3>
+<p><strong>Owner:</strong> P
+<strong>Files:</strong></p>
+<ul>
+<li><p>Modify: <code>mobile/app.json</code> (bundle identifier, version)</p>
+</li>
+<li><p>Create: <code>mobile/eas.json</code> (EAS Build config if not present)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Enroll in Apple Developer Program</strong></p>
+</li>
+</ul>
+<p><a href="https://developer.apple.com/programs/enroll/">https://developer.apple.com/programs/enroll/</a> → Individual or Organization (Sherpa Pros LLC if D-U-N-S obtained, else Individual under Phyrom). $99/yr.
+Expected: approval within 24–48 hours.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Create App ID + provisioning profile</strong></li>
+</ul>
+<p>Apple Developer → Certificates, IDs &amp; Profiles → Identifiers → App IDs → New.</p>
+<ul>
+<li><p>Bundle ID: <code>com.sherpapros.app</code></p>
+</li>
+<li><p>Capabilities: Push Notifications (off — not paying for APNS yet), Associated Domains (for deep links)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3: Update mobile bundle identifier</strong></p>
+</li>
+</ul>
+<p>Read <code>mobile/app.json</code>. Update <code>expo.ios.bundleIdentifier</code> to <code>com.sherpapros.app</code>. Bump <code>expo.version</code> to <code>1.0.0-beta.1</code>.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 4: Build release for TestFlight</strong></li>
+</ul>
+<pre><code class="hljs bash"><span class="hljs-built_in">cd</span> /Users/poum/sherpa-pros-platform/mobile
+npx expo prebuild --platform ios
+eas build --platform ios --profile production
+</code></pre>
+<p>Expected: EAS Build queues; ~20-min wait; outputs .ipa.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 5: Upload to TestFlight</strong></li>
+</ul>
+<pre><code class="hljs bash">eas submit --platform ios --latest
+</code></pre>
+<p>Expected: Build appears in TestFlight within 30 minutes after Apple processing.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 6: Create internal TestFlight group "Founding Pros"</strong></li>
+</ul>
+<p>App Store Connect → TestFlight → Internal Testing → New Group → "Founding Pros". Add Phyrom + first 3 HJD beta pros' Apple IDs.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 7: Commit</strong></li>
+</ul>
+<pre><code class="hljs bash">git add mobile/app.json mobile/eas.json
+git commit -m <span class="hljs-string">"feat(mobile): production bundle id + TestFlight beta build config"</span>
+</code></pre>
+<hr>
+<h3 id="task-a3-todo-mvp-data-scoping-fixes">Task A3: TODO-MVP data scoping fixes</h3>
+<p><strong>Owner:</strong> P
+<strong>Files:</strong></p>
+<ul>
+<li><p>Read first: <code>docs/TODO-MVP-FIXES.md</code> (the existing TODO checklist)</p>
+</li>
+<li><p>Modify: API routes in <code>src/app/api/jobs/</code>, <code>src/app/api/pros/</code>, <code>src/app/api/payments/</code> (per checklist)</p>
+</li>
+<li><p>Test: <code>tests/api/scoping.test.ts</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Read the TODO checklist</strong></p>
+</li>
+</ul>
+<pre><code class="hljs bash"><span class="hljs-built_in">cat</span> /Users/poum/sherpa-pros-platform/docs/TODO-MVP-FIXES.md
+</code></pre>
+<p>Expected: list of unscoped API routes that leak cross-account data.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Write a failing scoping test for jobs API</strong></li>
+</ul>
+<p>Create <code>tests/api/scoping.test.ts</code>:</p>
+<pre><code class="hljs typescript"><span class="hljs-keyword">import</span> { describe, it, expect } <span class="hljs-keyword">from</span> <span class="hljs-string">'vitest'</span>;
+<span class="hljs-keyword">import</span> { <span class="hljs-variable constant_">GET</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">'@/app/api/jobs/route'</span>;
+
+<span class="hljs-title function_">describe</span>(<span class="hljs-string">'GET /api/jobs scoping'</span>, <span class="hljs-function">() =&gt;</span> {
+  <span class="hljs-title function_">it</span>(<span class="hljs-string">'returns only jobs owned by the requesting user'</span>, <span class="hljs-title function_">async</span> () =&gt; {
+    <span class="hljs-keyword">const</span> userAJobs = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetchJobsAs</span>(<span class="hljs-string">'user-a-clerk-id'</span>);
+    <span class="hljs-keyword">const</span> userBJobs = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetchJobsAs</span>(<span class="hljs-string">'user-b-clerk-id'</span>);
+
+    <span class="hljs-title function_">expect</span>(userAJobs.<span class="hljs-title function_">every</span>(<span class="hljs-function"><span class="hljs-params">j</span> =&gt;</span> j.<span class="hljs-property">client_id</span> === <span class="hljs-string">'user-a-clerk-id'</span>)).<span class="hljs-title function_">toBe</span>(<span class="hljs-literal">true</span>);
+    <span class="hljs-title function_">expect</span>(userBJobs.<span class="hljs-title function_">every</span>(<span class="hljs-function"><span class="hljs-params">j</span> =&gt;</span> j.<span class="hljs-property">client_id</span> === <span class="hljs-string">'user-b-clerk-id'</span>)).<span class="hljs-title function_">toBe</span>(<span class="hljs-literal">true</span>);
+    <span class="hljs-title function_">expect</span>(userAJobs.<span class="hljs-title function_">find</span>(<span class="hljs-function"><span class="hljs-params">j</span> =&gt;</span> j.<span class="hljs-property">client_id</span> === <span class="hljs-string">'user-b-clerk-id'</span>)).<span class="hljs-title function_">toBeUndefined</span>();
+  });
+});
+</code></pre>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 3: Run the failing test</strong></li>
+</ul>
+<pre><code class="hljs bash">npx vitest run tests/api/scoping.test.ts
+</code></pre>
+<p>Expected: FAIL — currently returns all jobs.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 4: Add scoping in <code>src/app/api/jobs/route.ts</code></strong></li>
+</ul>
+<p>Modify GET handler to require Clerk userId and filter <code>db.jobs.where(eq(jobs.clientId, userId))</code>.</p>
+<pre><code class="hljs typescript"><span class="hljs-keyword">import</span> { auth } <span class="hljs-keyword">from</span> <span class="hljs-string">'@clerk/nextjs/server'</span>;
+<span class="hljs-keyword">import</span> { <span class="hljs-title class_">NextResponse</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">'next/server'</span>;
+<span class="hljs-keyword">import</span> { db } <span class="hljs-keyword">from</span> <span class="hljs-string">'@/db'</span>;
+<span class="hljs-keyword">import</span> { jobs } <span class="hljs-keyword">from</span> <span class="hljs-string">'@/db/drizzle-schema'</span>;
+<span class="hljs-keyword">import</span> { eq } <span class="hljs-keyword">from</span> <span class="hljs-string">'drizzle-orm'</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">GET</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> { userId } = <span class="hljs-keyword">await</span> <span class="hljs-title function_">auth</span>();
+  <span class="hljs-keyword">if</span> (!userId) <span class="hljs-keyword">return</span> <span class="hljs-title class_">NextResponse</span>.<span class="hljs-title function_">json</span>({ <span class="hljs-attr">error</span>: <span class="hljs-string">'unauthorized'</span> }, { <span class="hljs-attr">status</span>: <span class="hljs-number">401</span> });
+
+  <span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> db.<span class="hljs-title function_">select</span>().<span class="hljs-title function_">from</span>(jobs).<span class="hljs-title function_">where</span>(<span class="hljs-title function_">eq</span>(jobs.<span class="hljs-property">clientId</span>, userId));
+  <span class="hljs-keyword">return</span> <span class="hljs-title class_">NextResponse</span>.<span class="hljs-title function_">json</span>({ <span class="hljs-attr">jobs</span>: result });
+}
+</code></pre>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 5: Run test to verify pass</strong></li>
+</ul>
+<pre><code class="hljs bash">npx vitest run tests/api/scoping.test.ts
+</code></pre>
+<p>Expected: PASS.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 6: Repeat for each route in <code>docs/TODO-MVP-FIXES.md</code></strong></li>
+</ul>
+<p>For each unscoped endpoint, write failing test → fix → green test. One commit per route.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 7: Commit</strong></li>
+</ul>
+<pre><code class="hljs bash">git add src/app/api tests/api
+git commit -m <span class="hljs-string">"fix(api): scope all queries to authenticated user (closes data leak)"</span>
+</code></pre>
+<hr>
+<h3 id="task-a4-opensign-beta-agreement-template">Task A4: OpenSign beta agreement template</h3>
+<p><strong>Owner:</strong> P + CONTENT
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/legal/founding-pro-agreement.md</code> (source markdown)</p>
+</li>
+<li><p>Create: OpenSign template (external — record template ID)</p>
+</li>
+<li><p>Modify: <code>src/app/onboarding/pro/page.tsx</code> (insert OpenSign embed after profile completion)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Draft the Founding Pro Agreement</strong></p>
+</li>
+</ul>
+<p>Create <code>docs/legal/founding-pro-agreement.md</code> containing the beta terms from spec §5.3:</p>
+<ul>
+<li><p>90-day beta minimum</p>
+</li>
+<li><p>Real work only (no simulated jobs)</p>
+</li>
+<li><p>Weekly 10-min in-app feedback</p>
+</li>
+<li><p>1 video testimonial + logo use rights</p>
+</li>
+<li><p>&lt;24-hour client inquiry response</p>
+</li>
+<li><p>Verified license + insurance uploaded</p>
+</li>
+<li><p>Founding Pro badge (permanent)</p>
+</li>
+<li><p>Half-price (5% take) grandfathered forever if pro stays past beta</p>
+</li>
+<li><p>Mutual termination right</p>
+</li>
+<li><p>1099 contractor classification (not employee)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2: Run draft through legal review (Task A7 attorney)</strong></p>
+</li>
+</ul>
+<p>Send to attorney (see Task A7) for review. Budget: 1 hr @ $250–400/hr = ~$300.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 3: Build OpenSign template</strong></li>
+</ul>
+<p>Open <a href="https://opensignlabs.com">https://opensignlabs.com</a> → New Template → upload PDF version of approved agreement. Add signature fields, date, license number, insurance certificate upload field. Save template ID to env var <code>OPENSIGN_FOUNDING_PRO_TEMPLATE_ID</code>.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 4: Embed OpenSign in pro onboarding flow</strong></li>
+</ul>
+<p>Read <code>src/app/onboarding/pro/page.tsx</code>. Add a step after profile-completion that triggers OpenSign signature request via API, blocks pro from "go live" status until signed.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 5: Commit</strong></li>
+</ul>
+<pre><code class="hljs bash">git add docs/legal/founding-pro-agreement.md src/app/onboarding/pro
+git commit -m <span class="hljs-string">"feat(onboarding): require Founding Pro Agreement signature via OpenSign"</span>
+</code></pre>
+<hr>
+<h3 id="task-a5-platform-liability-insurance">Task A5: Platform liability insurance</h3>
+<p><strong>Owner:</strong> P
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/operations/insurance-policy.md</code> (record carrier, policy #, coverage, renewal date)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Get 3 quotes for platform liability</strong></p>
+</li>
+</ul>
+<p>Carriers to quote:</p>
+<ul>
+<li>Hiscox Small Business</li>
+<li>Next Insurance</li>
+<li>The Hartford</li>
+</ul>
+<p>Coverage spec:</p>
+<ul>
+<li>General liability: $1M per occurrence / $2M aggregate</li>
+<li>Professional liability / E&amp;O: $1M</li>
+<li>Cyber liability: $500K (data breach for pro/client PII)</li>
+<li>Marketplace endorsement (third-party-contractor exposure carve-out)</li>
+</ul>
+<p>Expected: $700–$1,200/yr.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Bind policy with chosen carrier</strong></li>
+</ul>
+<p>Pick best price + marketplace-endorsement coverage. Pay annually. Save policy PDF in <code>docs/operations/</code>.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 3: Commit policy summary</strong></li>
+</ul>
+<pre><code class="hljs bash">git add docs/operations/insurance-policy.md
+git commit -m <span class="hljs-string">"docs(ops): record platform liability insurance policy"</span>
+</code></pre>
+<hr>
+<h3 id="task-a6-old-house-verified-uspto-trademark-filing">Task A6: Old-House Verified USPTO trademark filing</h3>
+<p><strong>Owner:</strong> P
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/legal/trademark-old-house-verified.md</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: USPTO TESS clearance search</strong></p>
+</li>
+</ul>
+<p>Open <a href="https://tmsearch.uspto.gov/">https://tmsearch.uspto.gov/</a> → search exact phrase "OLD-HOUSE VERIFIED" and "OLD HOUSE VERIFIED". Verify no live registrations. Save screenshot.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: File TEAS Plus application</strong></li>
+</ul>
+<p>Open <a href="https://www.uspto.gov/trademarks/apply">https://www.uspto.gov/trademarks/apply</a> → TEAS Plus ($250 per class).</p>
+<ul>
+<li>Mark: OLD-HOUSE VERIFIED</li>
+<li>Class 35: Online marketplace services for licensed contractors</li>
+<li>Class 42: Software platform for matching homeowners with verified contractors</li>
+<li>Specimen: screenshot of in-app badge from Sherpa Pros</li>
+<li>Owner: Sherpa Pros LLC</li>
+<li>Filing basis: 1(b) Intent-to-Use (since beta hasn't shipped Old-House Verified yet)</li>
+</ul>
+<p>Total cost: $500 (2 classes).</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 3: Record application serial number</strong></li>
+</ul>
+<p>Write to <code>docs/legal/trademark-old-house-verified.md</code>: serial number, filing date, classes, specimen URL.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 4: Commit</strong></li>
+</ul>
+<pre><code class="hljs bash">git add docs/legal/trademark-old-house-verified.md
+git commit -m <span class="hljs-string">"docs(legal): file Old-House Verified trademark (USPTO Class 35 + 42)"</span>
+</code></pre>
+<hr>
+<h3 id="task-a7-1099-vs-w-2-worker-classification-legal-opinion">Task A7: 1099 vs W-2 worker-classification legal opinion</h3>
+<p><strong>Owner:</strong> P
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/legal/1099-classification-opinion.md</code> (final attorney memo)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Identify MA + NH employment attorney</strong></p>
+</li>
+</ul>
+<p>Search for MA/NH-licensed attorney with marketplace/gig-economy experience. Recommended firms: Foley Hoag (Boston), Devine Millimet (NH), Pierce Atwood (ME). Budget: $1,500–3,000 flat fee for opinion memo.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Engage attorney with brief</strong></li>
+</ul>
+<p>Send Sherpa Pros pro classification facts:</p>
+<ul>
+<li>Pros are independently licensed by their state</li>
+<li>Pros carry their own general liability + workers' comp insurance</li>
+<li>Pros own their own tools and vehicles</li>
+<li>Pros set their own bid prices and accept/decline jobs</li>
+<li>Sherpa Pros provides matching, payment processing, and dispute resolution only</li>
+<li>Sherpa Pros does not direct work hours, work location, or work methods</li>
+<li>Pros may use other platforms simultaneously</li>
+</ul>
+<p>Ask: 1099 contractor classification defensible under (a) MA AB-style ABC test, (b) NH employment law, (c) IRS 20-factor test.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 3: Receive + file memo</strong></li>
+</ul>
+<p>Save attorney opinion as <code>docs/legal/1099-classification-opinion.md</code>. This document is the defensive artifact in case of state action.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 4: Commit</strong></li>
+</ul>
+<pre><code class="hljs bash">git add docs/legal/1099-classification-opinion.md
+git commit -m <span class="hljs-string">"docs(legal): attorney memo on 1099 contractor classification (MA + NH + IRS)"</span>
+</code></pre>
+<hr>
+<h2 id="workstream-b--beta-cohort-recruiting--activation-weeks-212">Workstream B — Beta Cohort Recruiting &amp; Activation (Weeks 2–12)</h2>
+<p><strong>Goal:</strong> 10+ pros active and transacting by Week 6. 30+ jobs and $24K+ GMV by Week 12.</p>
+<h3 id="task-b1-define-icp--outreach-script">Task B1: Define ICP + outreach script</h3>
+<p><strong>Owner:</strong> P + SDR
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/operations/beta-pro-icp.md</code></p>
+</li>
+<li><p>Create: <code>docs/operations/beta-outreach-script.md</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Write the ICP (Ideal Customer Profile)</strong></p>
+</li>
+</ul>
+<p>Per spec §5.1, document the cohort composition:</p>
+<ul>
+<li>NH/Seacoast (6–7): 2 GCs, 2 handymen, 1 plumber, 1 HVAC/heat-pump</li>
+<li>ME/Portland (1–2): 1 painter, 1 landscaper</li>
+<li>MA/Boston specialty (2–3): 1 licensed electrician, 1 old-house specialist, 1 roofer</li>
+</ul>
+<p>For each, document: license type required, insurance threshold, years in business minimum (2+), avg ticket range, willingness to test new platform.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Write outreach script (call + email + DM versions)</strong></li>
+</ul>
+<p>Script must lead with founder story ("I'm Phyrom, I run HJD Builders here in NH, I built this platform because Angi was wasting our time"). Three variants:</p>
+<ul>
+<li>(A) HJD network warm: "You've worked with HJD — I'm building something for our crowd"</li>
+<li>(B) Cold supply-house: "Saw you at FW Webb — got 30 seconds for what I'm doing?"</li>
+<li>(C) LinkedIn DM: short, direct, link to founder LinkedIn post</li>
+</ul>
+<p>Each version must end with: "5% take rate during beta. Half-price forever if you stay. 90-day commitment. Full platform access. Want to see it?"</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 3: Commit</strong></li>
+</ul>
+<pre><code class="hljs bash">git add docs/operations/beta-pro-icp.md docs/operations/beta-outreach-script.md
+git commit -m <span class="hljs-string">"docs(ops): beta pro ICP + outreach script (3 variants)"</span>
+</code></pre>
+<hr>
+<h3 id="task-b2-recruit-10-beta-pros-rolling-weeks-26">Task B2: Recruit 10 beta pros (rolling Weeks 2–6)</h3>
+<p><strong>Owner:</strong> SDR (P closes high-value warm leads personally)
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/operations/beta-cohort-pipeline.md</code> (pipeline tracker)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Seed pipeline with HJD warm contacts</strong></p>
+</li>
+</ul>
+<p>P provides SDR with list of 20+ HJD network contractors meeting ICP. SDR enters into <code>beta-cohort-pipeline.md</code> table with columns: Name, Trade, Metro, Status (cold/contacted/demo/onboarding/active), Last touch, Notes.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: 30 cold outreach contacts/week from W2–W5</strong></li>
+</ul>
+<p>SDR runs script B1 against:</p>
+<ul>
+<li><p>W2: HJD warm (target: 6 demos booked)</p>
+</li>
+<li><p>W3: NH/ME supply-house referrals (FW Webb, Lowe's Pro, Rockler) (target: 8 demos)</p>
+</li>
+<li><p>W4: MA Boston specialty (Mass Save Network listings, NECA member directory, MA Roofing Contractors Assoc) (target: 8 demos)</p>
+</li>
+<li><p>W5: NHHBA + MEHBA member outreach (target: 6 demos)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3: P runs every demo personally</strong></p>
+</li>
+</ul>
+<p>30-min Zoom or in-person. Walk through: post a job → match → bid → quote → close → payout. Show Wiseman code-check. Show Stripe payout. Close with: "Sign the agreement now and I'll have you live by Friday."</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 4: Onboard each pro in &lt;72 hours of agreement signed</strong></li>
+</ul>
+<p>Pro-side checklist:</p>
+<ul>
+<li><p>License verified via state board API or manual</p>
+</li>
+<li><p>Insurance certificate uploaded</p>
+</li>
+<li><p>Profile completed (photo, bio, services, service area)</p>
+</li>
+<li><p>Stripe Connect Express onboarding complete</p>
+</li>
+<li><p>First job posted to them within 7 days (P drives demand from HJD client list if needed)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 5: Track to 10+ active pros by W6</strong></p>
+</li>
+</ul>
+<p>"Active" = signed agreement + Stripe Connect complete + ≥1 job in pipeline. If short by W5, P personally calls 5 more HJD warm contacts.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 6: Update pipeline weekly + commit</strong></li>
+</ul>
+<p>Every Monday SDR updates <code>beta-cohort-pipeline.md</code>.</p>
+<pre><code class="hljs bash">git add docs/operations/beta-cohort-pipeline.md
+git commit -m <span class="hljs-string">"docs(ops): beta cohort weekly pipeline update — W&lt;N&gt;"</span>
+</code></pre>
+<hr>
+<h3 id="task-b3-drive-first-job-per-pro-within-14-days-of-activation">Task B3: Drive first job per pro within 14 days of activation</h3>
+<p><strong>Owner:</strong> P
+<strong>Files:</strong> None (operational)</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 1: Identify demand source per pro</strong></li>
+</ul>
+<p>For each newly active pro, identify which HJD client or contact has a relevant job. P personally connects them ("Bob, posted your job to a guy I trust on a new platform — Mike will call you tomorrow").</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: If no warm demand, post a placeholder job from a friendly client</strong></li>
+</ul>
+<p>P recruits 5 HJD friends/family to be "founding clients" who post real (not simulated) small jobs ($150–500). Real money flows; testimonials built.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 3: Hand-hold first transaction end-to-end</strong></li>
+</ul>
+<p>P shadows first job: post → match → bid → accept → schedule → completion → payout → review. Captures pain points in <code>docs/operations/beta-friction-log.md</code>.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 4: Commit friction log weekly</strong></li>
+</ul>
+<pre><code class="hljs bash">git add docs/operations/beta-friction-log.md
+git commit -m <span class="hljs-string">"docs(ops): beta friction log W&lt;N&gt;"</span>
+</code></pre>
+<hr>
+<h3 id="task-b4-weekly-nps--structured-feedback-survey">Task B4: Weekly NPS + structured feedback survey</h3>
+<p><strong>Owner:</strong> P
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>src/app/api/beta-feedback/route.ts</code> (POST endpoint)</p>
+</li>
+<li><p>Create: <code>src/app/(dashboard)/pro/feedback/page.tsx</code> (in-app weekly form)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Write failing test for feedback POST</strong></p>
+</li>
+</ul>
+<p>Create <code>tests/api/beta-feedback.test.ts</code>:</p>
+<pre><code class="hljs typescript"><span class="hljs-keyword">import</span> { describe, it, expect } <span class="hljs-keyword">from</span> <span class="hljs-string">'vitest'</span>;
+<span class="hljs-keyword">import</span> { <span class="hljs-variable constant_">POST</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">'@/app/api/beta-feedback/route'</span>;
+
+<span class="hljs-title function_">describe</span>(<span class="hljs-string">'POST /api/beta-feedback'</span>, <span class="hljs-function">() =&gt;</span> {
+  <span class="hljs-title function_">it</span>(<span class="hljs-string">'records nps, friction, ask_for from authenticated pro'</span>, <span class="hljs-title function_">async</span> () =&gt; {
+    <span class="hljs-keyword">const</span> req = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Request</span>(<span class="hljs-string">'http://test/api/beta-feedback'</span>, {
+      <span class="hljs-attr">method</span>: <span class="hljs-string">'POST'</span>,
+      <span class="hljs-attr">body</span>: <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>({ <span class="hljs-attr">nps</span>: <span class="hljs-number">9</span>, <span class="hljs-attr">friction</span>: <span class="hljs-string">'slow payouts'</span>, <span class="hljs-attr">ask_for</span>: <span class="hljs-string">'PWA push'</span> }),
+    });
+    <span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> <span class="hljs-title function_">POST</span>(req);
+    <span class="hljs-title function_">expect</span>(res.<span class="hljs-property">status</span>).<span class="hljs-title function_">toBe</span>(<span class="hljs-number">200</span>);
+  });
+});
+</code></pre>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Run test, see it fail</strong></li>
+</ul>
+<pre><code class="hljs bash">npx vitest run tests/api/beta-feedback.test.ts
+</code></pre>
+<p>Expected: FAIL.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 3: Implement POST route</strong></li>
+</ul>
+<pre><code class="hljs typescript"><span class="hljs-keyword">import</span> { auth } <span class="hljs-keyword">from</span> <span class="hljs-string">'@clerk/nextjs/server'</span>;
+<span class="hljs-keyword">import</span> { <span class="hljs-title class_">NextResponse</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">'next/server'</span>;
+<span class="hljs-keyword">import</span> { db } <span class="hljs-keyword">from</span> <span class="hljs-string">'@/db'</span>;
+<span class="hljs-keyword">import</span> { betaFeedback } <span class="hljs-keyword">from</span> <span class="hljs-string">'@/db/drizzle-schema'</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">POST</span>(<span class="hljs-params"><span class="hljs-attr">req</span>: <span class="hljs-title class_">Request</span></span>) {
+  <span class="hljs-keyword">const</span> { userId } = <span class="hljs-keyword">await</span> <span class="hljs-title function_">auth</span>();
+  <span class="hljs-keyword">if</span> (!userId) <span class="hljs-keyword">return</span> <span class="hljs-title class_">NextResponse</span>.<span class="hljs-title function_">json</span>({ <span class="hljs-attr">error</span>: <span class="hljs-string">'unauthorized'</span> }, { <span class="hljs-attr">status</span>: <span class="hljs-number">401</span> });
+
+  <span class="hljs-keyword">const</span> body = <span class="hljs-keyword">await</span> req.<span class="hljs-title function_">json</span>();
+  <span class="hljs-keyword">await</span> db.<span class="hljs-title function_">insert</span>(betaFeedback).<span class="hljs-title function_">values</span>({
+    userId,
+    <span class="hljs-attr">nps</span>: body.<span class="hljs-property">nps</span>,
+    <span class="hljs-attr">friction</span>: body.<span class="hljs-property">friction</span>,
+    <span class="hljs-attr">askFor</span>: body.<span class="hljs-property">ask_for</span>,
+    <span class="hljs-attr">weekOf</span>: <span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>().<span class="hljs-title function_">toISOString</span>().<span class="hljs-title function_">slice</span>(<span class="hljs-number">0</span>, <span class="hljs-number">10</span>),
+  });
+
+  <span class="hljs-keyword">return</span> <span class="hljs-title class_">NextResponse</span>.<span class="hljs-title function_">json</span>({ <span class="hljs-attr">ok</span>: <span class="hljs-literal">true</span> });
+}
+</code></pre>
+<p>Add <code>betaFeedback</code> table to <code>src/db/drizzle-schema.ts</code>:</p>
+<pre><code class="hljs typescript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> betaFeedback = <span class="hljs-title function_">pgTable</span>(<span class="hljs-string">'beta_feedback'</span>, {
+  <span class="hljs-attr">id</span>: <span class="hljs-title function_">serial</span>(<span class="hljs-string">'id'</span>).<span class="hljs-title function_">primaryKey</span>(),
+  <span class="hljs-attr">userId</span>: <span class="hljs-title function_">text</span>(<span class="hljs-string">'user_id'</span>).<span class="hljs-title function_">notNull</span>(),
+  <span class="hljs-attr">nps</span>: <span class="hljs-title function_">integer</span>(<span class="hljs-string">'nps'</span>).<span class="hljs-title function_">notNull</span>(),
+  <span class="hljs-attr">friction</span>: <span class="hljs-title function_">text</span>(<span class="hljs-string">'friction'</span>),
+  <span class="hljs-attr">askFor</span>: <span class="hljs-title function_">text</span>(<span class="hljs-string">'ask_for'</span>),
+  <span class="hljs-attr">weekOf</span>: <span class="hljs-title function_">date</span>(<span class="hljs-string">'week_of'</span>).<span class="hljs-title function_">notNull</span>(),
+  <span class="hljs-attr">createdAt</span>: <span class="hljs-title function_">timestamp</span>(<span class="hljs-string">'created_at'</span>).<span class="hljs-title function_">defaultNow</span>().<span class="hljs-title function_">notNull</span>(),
+});
+</code></pre>
+<p>Generate migration:</p>
+<pre><code class="hljs bash">npx drizzle-kit generate
+npx drizzle-kit push
+</code></pre>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 4: Run test to verify pass</strong></li>
+</ul>
+<pre><code class="hljs bash">npx vitest run tests/api/beta-feedback.test.ts
+</code></pre>
+<p>Expected: PASS.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 5: Build the in-app weekly form</strong></li>
+</ul>
+<p>Create <code>src/app/(dashboard)/pro/feedback/page.tsx</code> — simple 3-question form (NPS slider, "biggest friction this week" textarea, "what would you ask me to build" textarea). POSTs to <code>/api/beta-feedback</code>.</p>
+<p>Send weekly Twilio SMS reminder every Monday morning to active beta pros: "Quick 3-question check-in: [link]. Takes 90 seconds."</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 6: Commit</strong></li>
+</ul>
+<pre><code class="hljs bash">git add tests/api/beta-feedback.test.ts src/app/api/beta-feedback src/app/\(dashboard\)/pro/feedback src/db/drizzle-schema.ts src/db/migrations
+git commit -m <span class="hljs-string">"feat(beta): weekly NPS + friction feedback API and in-app form"</span>
+</code></pre>
+<hr>
+<h2 id="workstream-c--pitch-materials-weeks-14">Workstream C — Pitch Materials (Weeks 1–4)</h2>
+<p><strong>Goal:</strong> Investor-ready deck, one-pager, demo video, founder bio, data room — all in 4 weeks.</p>
+<h3 id="task-c1-dispatch-executive-summary-generator-agent-for-pitch-deck">Task C1: Dispatch Executive Summary Generator agent for pitch deck</h3>
+<p><strong>Owner:</strong> AI (P reviews)
+<strong>Files:</strong></p>
+<ul>
+<li><p>Output: <code>docs/pitch/sherpa-pros-deck-v1.md</code> (markdown deck draft)</p>
+</li>
+<li><p>Output: <code>docs/pitch/sherpa-pros-onepager-v1.md</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Dispatch the agent with full context</strong></p>
+</li>
+</ul>
+<p>Use <code>Agent</code> tool with <code>subagent_type: "Executive Summary Generator"</code>. Prompt:</p>
+<blockquote>
+<p>Build a 10-slide investor pitch deck and 1-page executive summary for Sherpa Pros — the national licensed-trade marketplace (international roadmap), launching in NH/ME/MA Phase 1, built by a working GC. Read the full GTM design at <code>docs/superpowers/specs/2026-04-22-gtm-marketing-design.md</code> for context (especially §3.4 — geographic brand rules).</p>
+<p>Use SCQA (Situation-Complication-Question-Answer) for the deck arc and BCG Pyramid Principle for the one-pager. Slides:</p>
+<ol>
+<li>Hero / founder hook (Phyrom built it for himself)</li>
+<li>Problem (lead-gen platforms, MA labor shortage, code-aware gap)</li>
+<li>Why now (Mass Save tailwind, contractor retirements, AI moment)</li>
+<li>Solution (jobs not leads, Wiseman code intelligence)</li>
+<li>Product demo (live platform screenshots, Wiseman, mobile)</li>
+<li>Market (TAM = national US, Phase 1–2 SAM = NE + four-metro launch, SOM by phase)</li>
+<li>Business model (5%→10% take + $49 sub, PM tier $4–$1.50/unit)</li>
+<li>Traction (beta cohort numbers — placeholder for live metrics)</li>
+<li>Team + advisors (Phyrom + planned hires)</li>
+<li>Ask + use of funds + 90-day milestones</li>
+</ol>
+<p>Output as markdown to <code>docs/pitch/sherpa-pros-deck-v1.md</code> and <code>docs/pitch/sherpa-pros-onepager-v1.md</code>. Plain prose for now — design comes later.</p>
+</blockquote>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: P reviews + iterates with agent</strong></li>
+</ul>
+<p>Read agent output. Mark issues. Re-prompt agent with specific revisions until satisfied.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 3: Hand to CONTENT for design polish</strong></li>
+</ul>
+<p>Once language is locked, CONTENT contractor uses Pitch.com / Slidebean / Figma to produce visual deck. Final outputs: <code>docs/pitch/sherpa-pros-deck-v1.pdf</code> + <code>.pptx</code>.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 4: Commit drafts</strong></li>
+</ul>
+<pre><code class="hljs bash">git add docs/pitch/
+git commit -m <span class="hljs-string">"docs(pitch): v1 investor deck + one-pager (text drafts via Executive Summary Generator)"</span>
+</code></pre>
+<hr>
+<h3 id="task-c2-dispatch-product-trend-researcher-for-competitive-deep-dive--market-sizing">Task C2: Dispatch product-trend-researcher for competitive deep-dive + market sizing</h3>
+<p><strong>Owner:</strong> AI (P reviews)
+<strong>Files:</strong></p>
+<ul>
+<li><p>Output: <code>docs/pitch/competitive-analysis.md</code></p>
+</li>
+<li><p>Output: <code>docs/pitch/tam-sam-som.md</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Dispatch the agent</strong></p>
+</li>
+</ul>
+<p>Use <code>Agent</code> tool with <code>subagent_type: "product-trend-researcher"</code>. Prompt:</p>
+<blockquote>
+<p>Produce two artifacts for the Sherpa Pros pitch:</p>
+<ol>
+<li>Competitive analysis matrix — Angi (ANGI ticker, public financials), Thumbtack (private, latest valuation), TaskRabbit (IKEA-owned, segment data), Handy (ANGI-owned). For each: revenue, take-rate model, market share in our Phase 1 launch metros (NH/ME/MA + Boston), weaknesses, our advantage.</li>
+<li>TAM (national US) / Phase 1–2 SAM (New England + Boston metro) / SOM sizing for licensed home services. Use US Census construction spending, NAHB residential remodeling expenditure data, and Mass Save / National Grid heat pump install pipeline data (cite sources). Frame SAM as the slice we capture first, not the brand ceiling.</li>
+</ol>
+<p>Read context at <code>docs/superpowers/specs/2026-04-22-gtm-marketing-design.md</code>. Output to <code>docs/pitch/competitive-analysis.md</code> and <code>docs/pitch/tam-sam-som.md</code>.</p>
+</blockquote>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: P reviews + commits</strong></li>
+</ul>
+<pre><code class="hljs bash">git add docs/pitch/competitive-analysis.md docs/pitch/tam-sam-som.md
+git commit -m <span class="hljs-string">"docs(pitch): competitive analysis + TAM/SAM/SOM sizing"</span>
+</code></pre>
+<hr>
+<h3 id="task-c3-dispatch-data-analytics-reporter-for-investor-metrics-dashboard">Task C3: Dispatch data-analytics-reporter for investor metrics dashboard</h3>
+<p><strong>Owner:</strong> AI (P reviews)
+<strong>Files:</strong></p>
+<ul>
+<li><p>Output: <code>docs/pitch/metrics-dashboard-design.md</code></p>
+</li>
+<li><p>Output: implementation in <code>src/app/(dashboard)/admin/investor-metrics/page.tsx</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Dispatch the agent</strong></p>
+</li>
+</ul>
+<p>Use <code>Agent</code> tool with <code>subagent_type: "data-analytics-reporter"</code>. Prompt:</p>
+<blockquote>
+<p>Design the investor-facing metrics dashboard for Sherpa Pros admin panel. Required metrics:</p>
+<ul>
+<li>GMV (total + by-metro + by-trade, 7d/30d/90d windows)</li>
+<li>Take-rate capture (5% beta vs 10% standard)</li>
+<li>Pro liquidity ratio (matched-to-posted within 2 hours, by metro)</li>
+<li>Avg bids per job</li>
+<li>Pro retention cohort curve (% active at week 4, 8, 12)</li>
+<li>Client repeat rate</li>
+<li>NPS time series (pro + client)</li>
+<li>Wiseman usage (validations / day, code checks / day)</li>
+<li>Funnel: posted → matched → bid → accepted → completed → paid → reviewed</li>
+</ul>
+<p>Existing: Neon Postgres, Drizzle ORM, the schema in <code>src/db/drizzle-schema.ts</code>. Output: a design doc at <code>docs/pitch/metrics-dashboard-design.md</code> (mock data + chart specs) and an implementation at <code>src/app/(dashboard)/admin/investor-metrics/page.tsx</code> using Tremor + TanStack Table + shadcn/ui.</p>
+</blockquote>
+<ul>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2: P reviews; CONTENT polishes if needed</strong></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3: Commit</strong></p>
+</li>
+</ul>
+<pre><code class="hljs bash">git add docs/pitch/metrics-dashboard-design.md src/app/\(dashboard\)/admin/investor-metrics
+git commit -m <span class="hljs-string">"feat(admin): investor metrics dashboard (live + mock data fallback)"</span>
+</code></pre>
+<hr>
+<h3 id="task-c4-founder-bio--headshot--photo">Task C4: Founder bio + headshot + photo</h3>
+<p><strong>Owner:</strong> P
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/pitch/founder-bio.md</code></p>
+</li>
+<li><p>Create: <code>public/founder/phyrom-headshot.jpg</code> + <code>phyrom-on-site.jpg</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Write 3 bio versions (50w, 150w, 300w)</strong></p>
+</li>
+</ul>
+<p>Tagline format: "Working GC, NH-based, founder of HJD Builders since [year]. Built Sherpa Pros after [N] years of fighting Angi for leads."</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Get pro photos</strong></li>
+</ul>
+<p>Hire NH photographer (~$300, 2-hour session). Two shots required:</p>
+<ul>
+<li><p>Headshot: Phyrom in clean shirt, neutral background</p>
+</li>
+<li><p>On-site: Phyrom on a job site in HJD branded gear, tools visible</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3: Commit</strong></p>
+</li>
+</ul>
+<pre><code class="hljs bash">git add docs/pitch/founder-bio.md public/founder
+git commit -m <span class="hljs-string">"docs(pitch): founder bio (3 lengths) + headshot + on-site photo"</span>
+</code></pre>
+<hr>
+<h3 id="task-c5-3-min-demo-video-loom">Task C5: 3-min demo video (Loom)</h3>
+<p><strong>Owner:</strong> P
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/pitch/demo-video.md</code> (script + Loom URL)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Write 90-second script</strong></p>
+</li>
+</ul>
+<p>Show:</p>
+<ol>
+<li>(10s) Phyrom intro — "Hi, I'm Phyrom, I run HJD Builders. Here's the platform I built."</li>
+<li>(30s) Client posts job → matched in 90 seconds → 3 bids returned with Wiseman code-validated quotes</li>
+<li>(30s) Pro perspective — accepts job, schedules, completes, instant Stripe payout</li>
+<li>(10s) Mass Save / Old-House Verified specialty filter demo</li>
+<li>(10s) "If you're a contractor or homeowner, [URL]. If you're an investor, [URL]."</li>
+</ol>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Record via Loom</strong></li>
+</ul>
+<p>Use Loom desktop app. Screen-record + webcam picture-in-picture. Re-take until under 3 minutes.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 3: Save URL + commit script</strong></li>
+</ul>
+<pre><code class="hljs bash">git add docs/pitch/demo-video.md
+git commit -m <span class="hljs-string">"docs(pitch): 3-min Loom demo video script + URL"</span>
+</code></pre>
+<hr>
+<h3 id="task-c6-data-room-notion-or-docsend">Task C6: Data room (Notion or DocSend)</h3>
+<p><strong>Owner:</strong> P
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/pitch/data-room-index.md</code> (manifest of what's in the data room)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Set up Notion data-room workspace</strong></p>
+</li>
+</ul>
+<p>Create new Notion workspace "Sherpa Pros Investors". Required pages:</p>
+<ul>
+<li>Cover (logo, one-line, founder photo)</li>
+<li>Pitch deck (linked PDF)</li>
+<li>One-pager</li>
+<li>Demo video (Loom embed)</li>
+<li>Live metrics dashboard (link)</li>
+<li>Cap table</li>
+<li>Financial model (5-year)</li>
+<li>Founder bio + LinkedIn</li>
+<li>Beta cohort progress</li>
+<li>Press / media kit</li>
+<li>Legal (incorporation cert, EIN, IP filings)</li>
+<li>Contact</li>
+</ul>
+<p>Set permissions: link-only, view-only, password-protected. Track who opens what via DocSend if budget allows ($60/mo).</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Document the index</strong></li>
+</ul>
+<p>Write <code>docs/pitch/data-room-index.md</code> listing every page + Notion URL.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 3: Commit</strong></li>
+</ul>
+<pre><code class="hljs bash">git add docs/pitch/data-room-index.md
+git commit -m <span class="hljs-string">"docs(pitch): data room index (Notion link-only)"</span>
+</code></pre>
+<hr>
+<h3 id="task-c7-brand-guardian-consistency-audit">Task C7: Brand Guardian consistency audit</h3>
+<p><strong>Owner:</strong> AI (P reviews)
+<strong>Files:</strong></p>
+<ul>
+<li><p>Output: <code>docs/pitch/brand-audit.md</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Dispatch Brand Guardian agent</strong></p>
+</li>
+</ul>
+<p>Use <code>Agent</code> tool with <code>subagent_type: "Brand Guardian"</code>. Prompt:</p>
+<blockquote>
+<p>Audit brand consistency across these Sherpa Pros artifacts. Read each, then write a punch list of inconsistencies in voice, visual, and message:</p>
+<ul>
+<li><code>docs/pitch/sherpa-pros-deck-v1.md</code></li>
+<li><code>docs/pitch/sherpa-pros-onepager-v1.md</code></li>
+<li><code>docs/pitch/founder-bio.md</code></li>
+<li><code>src/app/page.tsx</code> (landing page)</li>
+<li><code>mobile/app.json</code> (mobile app description)</li>
+<li><code>README.md</code></li>
+</ul>
+<p>Brand bible (from spec §3): Hero is "The licensed-trade marketplace that thinks like a contractor." Voice is plainspoken, 8th-grade reading level. Always say: Licensed, Verified, Code-aware, Built by a contractor, Local, Jobs not leads. Never say: Wiseman externally, Gig, Task, Uber for X externally, AI-powered as headline, Disrupt, Revolutionize. Spell out abbreviations.</p>
+<p>Output to <code>docs/pitch/brand-audit.md</code> with prioritized fixes.</p>
+</blockquote>
+<ul>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2: P applies the fixes</strong></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3: Commit</strong></p>
+</li>
+</ul>
+<pre><code class="hljs bash">git add docs/pitch/brand-audit.md
+git commit -m <span class="hljs-string">"docs(pitch): Brand Guardian audit + applied fixes"</span>
+</code></pre>
+<hr>
+<h2 id="workstream-d--marketing--content-weeks-212">Workstream D — Marketing &amp; Content (Weeks 2–12)</h2>
+<p><strong>Goal:</strong> Founder LinkedIn presence + landing page conversion + pro recruiting copy. AI agents draft, Phyrom is the voice.</p>
+<h3 id="task-d1-dispatch-marketing-content-creator-agent-for-landing-copy--email-sequences">Task D1: Dispatch marketing-content-creator agent for landing copy + email sequences</h3>
+<p><strong>Owner:</strong> AI (P reviews)
+<strong>Files:</strong></p>
+<ul>
+<li><p>Modify: <code>src/app/page.tsx</code> (homeowner landing)</p>
+</li>
+<li><p>Modify: <code>src/app/for-pros/page.tsx</code> (pro landing)</p>
+</li>
+<li><p>Output: <code>docs/marketing/email-sequences/</code> (drafts)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Dispatch the agent</strong></p>
+</li>
+</ul>
+<p>Use <code>Agent</code> tool with <code>subagent_type: "marketing-content-creator"</code>. Prompt:</p>
+<blockquote>
+<p>Write Sherpa Pros copy for:</p>
+<ol>
+<li>Homeowner landing page — convert visitors into job-posters. Hero, 3-section value prop, social proof slot, trust signals (license verification, Wiseman code-check, real reviews), CTA "Post a job free."</li>
+<li>Pro landing page — convert contractors into Founding Pros. Hero, "5% take vs Angi's effective 30%" comparison table, Founding Pro benefits, founder Phyrom quote, CTA "Apply for the beta."</li>
+<li>Pro recruiting email sequence (5 emails over 14 days for cold contractors who didn't respond to first outreach)</li>
+<li>Client recruiting email sequence (3 emails for HJD clients onboarding to Sherpa Pros)</li>
+</ol>
+<p>Brand bible attached: spec §3.3. Voice is plainspoken, 8th-grade reading level. Always say "Jobs. Not leads."</p>
+<p>Read existing landing at <code>src/app/page.tsx</code>. Output landing TSX changes inline; output email sequences to <code>docs/marketing/email-sequences/</code>.</p>
+</blockquote>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: P reviews + commits</strong></li>
+</ul>
+<pre><code class="hljs bash">git add src/app/page.tsx src/app/for-pros docs/marketing
+git commit -m <span class="hljs-string">"feat(marketing): landing copy refresh + 4 email sequences (via marketing-content-creator)"</span>
+</code></pre>
+<hr>
+<h3 id="task-d2-dispatch-marketing-social-media-strategist-for-linkedin-90-day-editorial">Task D2: Dispatch marketing-social-media-strategist for LinkedIn 90-day editorial</h3>
+<p><strong>Owner:</strong> AI (P reviews + posts)
+<strong>Files:</strong></p>
+<ul>
+<li><p>Output: <code>docs/marketing/linkedin-editorial.md</code> (90-day calendar with topics + hooks)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Dispatch agent</strong></p>
+</li>
+</ul>
+<p>Use <code>Agent</code> tool with <code>subagent_type: "marketing-social-media-strategist"</code>. Prompt:</p>
+<blockquote>
+<p>Build a 90-day LinkedIn editorial calendar for Phyrom (founder of Sherpa Pros, NH-based GC). Cadence: 3 posts/week (Mon/Wed/Fri).</p>
+<p>Themes:</p>
+<ul>
+<li>"Jobs. Not leads." narrative — call out Angi/Thumbtack pain points contractors share</li>
+<li>Founder build-in-public — daily progress on Sherpa Pros + beta cohort</li>
+<li>Construction labor shortage commentary (cite stats)</li>
+<li>Wiseman moments — show code-aware matching (without naming Wiseman externally)</li>
+<li>Beta pro spotlights (with their permission)</li>
+<li>Mass Save / EV charger / heat pump "education" content</li>
+</ul>
+<p>Output: <code>docs/marketing/linkedin-editorial.md</code> — table with date, theme, hook, suggested first 2 lines, suggested CTA.</p>
+</blockquote>
+<ul>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2: P posts daily; SDR drafts when P is slammed</strong></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3: Commit calendar + weekly cadence updates</strong></p>
+</li>
+</ul>
+<pre><code class="hljs bash">git add docs/marketing/linkedin-editorial.md
+git commit -m <span class="hljs-string">"docs(marketing): 90-day Phyrom LinkedIn editorial calendar"</span>
+</code></pre>
+<hr>
+<h3 id="task-d3-dispatch-marketing-growth-hacker-for-referral-mechanics">Task D3: Dispatch marketing-growth-hacker for referral mechanics</h3>
+<p><strong>Owner:</strong> AI (P reviews; engineering implements)
+<strong>Files:</strong></p>
+<ul>
+<li><p>Output: <code>docs/marketing/referral-mechanics-design.md</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Dispatch agent</strong></p>
+</li>
+</ul>
+<p>Use <code>Agent</code> tool with <code>subagent_type: "marketing-growth-hacker"</code>. Prompt:</p>
+<blockquote>
+<p>Design two-sided referral mechanics for Sherpa Pros marketplace.</p>
+<p>Loops to design:</p>
+<ol>
+<li>Pro → Pro (Founding Pro refers another contractor; both get [reward])</li>
+<li>Client → Client (homeowner refers neighbor; both get [reward])</li>
+<li>Pro → Client (pro brings their existing client onto the platform)</li>
+<li>Client → PM (homeowner refers a property manager — high-value referral)</li>
+</ol>
+<p>Constraints: Must work with existing Stripe Connect payout flow. Cannot offer cash directly (Reg CF / SEC concerns during fundraise). Use platform credits or fee waivers instead. Design for fraud-resistance (one referrer per signup, must complete first job).</p>
+<p>Output to <code>docs/marketing/referral-mechanics-design.md</code> with: reward structure, fraud controls, attribution method, copy for in-app + email, success metrics.</p>
+</blockquote>
+<ul>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2: P reviews; engineering implements in Phase 1 (deferred)</strong></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3: Commit design</strong></p>
+</li>
+</ul>
+<pre><code class="hljs bash">git add docs/marketing/referral-mechanics-design.md
+git commit -m <span class="hljs-string">"docs(marketing): two-sided referral mechanics design (implementation in Phase 1)"</span>
+</code></pre>
+<hr>
+<h3 id="task-d4-supply-house-flyer-design--distribution">Task D4: Supply-house flyer design + distribution</h3>
+<p><strong>Owner:</strong> CONTENT (design) + SDR (distribution)
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/marketing/supply-house-flyer.pdf</code> + source</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: CONTENT designs flyer</strong></p>
+</li>
+</ul>
+<p>8.5×11 single-sided. Hero: "Jobs. Not leads. 5% when you get paid. Built by a NH GC." QR code → for-pros landing. Phyrom photo on site. Sherpa Pros logo. Founding Pro CTA.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: SDR distributes to 20 supply houses</strong></li>
+</ul>
+<p>Target list:</p>
+<ul>
+<li>FW Webb (Portsmouth, Manchester, Portland, Boston)</li>
+<li>Lowe's Pro Desk (4 NH/MA stores)</li>
+<li>Rockler (Cambridge MA)</li>
+<li>Best Tile (multiple)</li>
+<li>Local independent supply (e.g., Riverhead Building Supply)</li>
+</ul>
+<p>Get manager permission, leave 25 flyers per location, return weekly to refill.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 3: Commit design</strong></li>
+</ul>
+<pre><code class="hljs bash">git add docs/marketing/supply-house-flyer.pdf
+git commit -m <span class="hljs-string">"docs(marketing): supply-house flyer (Founding Pro recruit)"</span>
+</code></pre>
+<hr>
+<h3 id="task-d5-nhhba--mehba-partnership-pitches">Task D5: NHHBA + MEHBA partnership pitches</h3>
+<p><strong>Owner:</strong> P
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/marketing/trade-association-outreach.md</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Identify board members + executive directors</strong></p>
+</li>
+</ul>
+<p>NH Home Builders Association: <a href="https://www.nhhba.com/">https://www.nhhba.com/</a>
+ME Home Builders &amp; Remodelers: <a href="https://www.mehba.com/">https://www.mehba.com/</a></p>
+<p>Find ED + board chair. Add to outreach tracker.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Send custom pitch — "free Founding Pro for any member"</strong></li>
+</ul>
+<p>Offer: any NHHBA/MEHBA member who joins as Founding Pro gets the 5% lifetime rate AND the association gets co-branded marketing. Ask for: featured in member newsletter, table at next member meeting, intro to top 10 active members.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 3: Track responses + close partnerships</strong></li>
+</ul>
+<pre><code class="hljs bash">git add docs/marketing/trade-association-outreach.md
+git commit -m <span class="hljs-string">"docs(marketing): NHHBA + MEHBA partnership pitch and outreach tracker"</span>
+</code></pre>
+<hr>
+<h2 id="workstream-e--fundraising-non-dilutive-weeks-210">Workstream E — Fundraising: Non-Dilutive (Weeks 2–10)</h2>
+<p><strong>Goal:</strong> Submit 6+ grant applications. Target: $525K confirmed stack + $1.18M in pipeline.</p>
+<h3 id="task-e1-masscec-innovatemass-application-up-to-350k">Task E1: MassCEC InnovateMass application (up to $350K)</h3>
+<p><strong>Owner:</strong> P + CONTENT
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/fundraising/grants/masscec-innovatemass-app.md</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Confirm next application round</strong></p>
+</li>
+</ul>
+<p>Open <a href="https://www.masscec.com/program/innovatemass">https://www.masscec.com/program/innovatemass</a>. March 2026 round was March 9 deadline. Next round typically September. Confirm exact dates.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Prepare required documents</strong></li>
+</ul>
+<p>Per program: project narrative (≤8 pages), budget (≤$350K matching grant), MA-deployment plan, technology demonstration plan, milestones, team bios.</p>
+<p>Frame: "Sherpa Pros + Wiseman accelerates Mass Save heat-pump installation throughput by matching homeowners to certified installers, validating quotes against MA Electrical Code, and surfacing rebate eligibility — addressing the documented MA installer-supply bottleneck."</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 3: Submit + record confirmation</strong></li>
+</ul>
+<pre><code class="hljs bash">git add docs/fundraising/grants/masscec-innovatemass-app.md
+git commit -m <span class="hljs-string">"docs(fundraising): MassCEC InnovateMass application submitted"</span>
+</code></pre>
+<hr>
+<h3 id="task-e2-masscec-catalyst-application-up-to-75k">Task E2: MassCEC Catalyst application (up to $75K)</h3>
+<p><strong>Owner:</strong> P + CONTENT
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/fundraising/grants/masscec-catalyst-app.md</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Confirm fall 2026 round dates</strong></p>
+</li>
+</ul>
+<p><a href="https://www.masscec.com/program/catalyst-and-dices">https://www.masscec.com/program/catalyst-and-dices</a></p>
+<p>Spring 2026 closed March 13. Fall round typically Aug–Oct.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Prepare prototype demo brief</strong></li>
+</ul>
+<p>Per program: prototype demonstration grant for ≤4 FTE MA-based climatetech early-stage. Sherpa Pros qualifies (≤4 FTE). Frame: Wiseman matching engine + Mass Save lane prototype.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 3: Submit + commit</strong></li>
+</ul>
+<pre><code class="hljs bash">git add docs/fundraising/grants/masscec-catalyst-app.md
+git commit -m <span class="hljs-string">"docs(fundraising): MassCEC Catalyst application submitted"</span>
+</code></pre>
+<hr>
+<h3 id="task-e3-massdev-biz-m-power-application-up-to-50k-crowdfund-match">Task E3: MassDev Biz-M-Power application (up to $50K crowdfund match)</h3>
+<p><strong>Owner:</strong> P
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/fundraising/grants/massdev-biz-m-power-app.md</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Verify eligibility + match formula</strong></p>
+</li>
+</ul>
+<p><a href="https://www.massdevelopment.com/products-and-services/funding-and-tools/grant-programs/">https://www.massdevelopment.com/products-and-services/funding-and-tools/grant-programs/</a></p>
+<p>Confirm: Sherpa Pros LLC must be MA-registered or operating in MA (Boston deployment qualifies). Match $1-for-$1 up to $50K of Wefunder raised.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Submit application</strong></li>
+</ul>
+<p>Run in parallel with Wefunder pre-launch (Workstream H). Application typically requires: business plan, crowdfund campaign URL, projected raise, MA jobs created.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 3: Commit</strong></li>
+</ul>
+<pre><code class="hljs bash">git add docs/fundraising/grants/massdev-biz-m-power-app.md
+git commit -m <span class="hljs-string">"docs(fundraising): MassDev Biz-M-Power crowdfund-match application submitted"</span>
+</code></pre>
+<hr>
+<h3 id="task-e4-nsf-sbir-phase-i-application-up-to-305k">Task E4: NSF SBIR Phase I application (up to $305K)</h3>
+<p><strong>Owner:</strong> P + CONTENT
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/fundraising/grants/nsf-sbir-phase-i-app.md</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Submit Project Pitch</strong></p>
+</li>
+</ul>
+<p>NSF SBIR has a free Project Pitch step before full proposal. <a href="https://seedfund.nsf.gov/">https://seedfund.nsf.gov/</a>. Frame: Wiseman as AI/ML research commercialization — building code intelligence + matching algorithms for residential construction.</p>
+<p>Wait for invitation to submit full proposal (~3 weeks).</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Full proposal if invited</strong></li>
+</ul>
+<p>If invited: 15-page proposal, technical R&amp;D plan, commercialization plan, budget. Engage NSF SBIR consultant if needed (~$5K, often worth it for first-time applicants).</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 3: Commit submission record</strong></li>
+</ul>
+<pre><code class="hljs bash">git add docs/fundraising/grants/nsf-sbir-phase-i-app.md
+git commit -m <span class="hljs-string">"docs(fundraising): NSF SBIR Phase I Project Pitch submitted"</span>
+</code></pre>
+<hr>
+<h3 id="task-e5-ma-sbta-via-nonprofit-partner-up-to-150k">Task E5: MA SBTA via nonprofit partner (up to $150K)</h3>
+<p><strong>Owner:</strong> P
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/fundraising/grants/ma-sbta-app.md</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Identify SBTA nonprofit partner</strong></p>
+</li>
+</ul>
+<p><a href="https://www.empoweringsmallbusiness.org/sbta">https://www.empoweringsmallbusiness.org/sbta</a> — list of 73 funded nonprofits providing technical assistance. Find Boston-area or NH-MA-region SBTA grantee that supports tech startups (e.g., CommonWealth Kitchen, EforAll Boston, Black Economic Council MA).</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Apply through partner</strong></li>
+</ul>
+<p>Sherpa Pros applies to the nonprofit partner for SBTA-funded technical assistance. Partner provides services (legal, accounting, marketing) up to grant cap.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 3: Commit</strong></li>
+</ul>
+<pre><code class="hljs bash">git add docs/fundraising/grants/ma-sbta-app.md
+git commit -m <span class="hljs-string">"docs(fundraising): MA SBTA partner identified + application initiated"</span>
+</code></pre>
+<hr>
+<h3 id="task-e6-nh-innovation-voucher--nh-bfa-microloan">Task E6: NH Innovation Voucher + NH BFA microloan</h3>
+<p><strong>Owner:</strong> P
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/fundraising/grants/nh-bfa-app.md</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: NH Innovation Voucher application</strong></p>
+</li>
+</ul>
+<p><a href="https://www.nheconomy.com/working-here/innovation-research/innovation-research-and-development-voucher-program">https://www.nheconomy.com/working-here/innovation-research/innovation-research-and-development-voucher-program</a> — up to $15K matching grant for innovative R&amp;D.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: NH BFA microloan inquiry</strong></li>
+</ul>
+<p>NH Business Finance Authority — small-business loan up to $25K. Cheap capital if VC route slow.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 3: Commit</strong></li>
+</ul>
+<pre><code class="hljs bash">git add docs/fundraising/grants/nh-bfa-app.md
+git commit -m <span class="hljs-string">"docs(fundraising): NH Innovation Voucher + NH BFA applications submitted"</span>
+</code></pre>
+<hr>
+<h2 id="workstream-f--fundraising-accelerators-weeks-38">Workstream F — Fundraising: Accelerators (Weeks 3–8)</h2>
+<p><strong>Goal:</strong> Apply to 5 high-fit accelerators. Target: 1+ acceptance.</p>
+<h3 id="task-f1-suffolk-technologies-application">Task F1: Suffolk Technologies application</h3>
+<p><strong>Owner:</strong> P
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/fundraising/accelerators/suffolk-technologies-app.md</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Apply</strong></p>
+</li>
+</ul>
+<p><a href="https://www.suffolktechnologies.com/">https://www.suffolktechnologies.com/</a>. Boston-based, Built Environment, 8-week accelerator + VC arm. Target #1 fit.</p>
+<p>Application typically: company overview, problem/solution, traction, team, ask. Submit with deck v1 + demo video.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Commit</strong></li>
+</ul>
+<pre><code class="hljs bash">git add docs/fundraising/accelerators/suffolk-technologies-app.md
+git commit -m <span class="hljs-string">"docs(fundraising): Suffolk Technologies accelerator application"</span>
+</code></pre>
+<hr>
+<h3 id="task-f2-techstars-constructiontech-application">Task F2: Techstars ConstructionTech application</h3>
+<p><strong>Owner:</strong> P
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/fundraising/accelerators/techstars-constructiontech-app.md</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Apply</strong></p>
+</li>
+</ul>
+<p><a href="https://www.techstars.com/accelerators">https://www.techstars.com/accelerators</a> — find ConstructionTech vertical. $220K @ 5%. Application is rolling for some cohorts.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Commit</strong></li>
+</ul>
+<pre><code class="hljs bash">git add docs/fundraising/accelerators/techstars-constructiontech-app.md
+git commit -m <span class="hljs-string">"docs(fundraising): Techstars ConstructionTech application"</span>
+</code></pre>
+<hr>
+<h3 id="task-f3-masschallenge-application-zero-equity-up-to-1m-cash-prize">Task F3: MassChallenge application (zero-equity, up to $1M cash prize)</h3>
+<p><strong>Owner:</strong> P
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/fundraising/accelerators/masschallenge-app.md</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Apply</strong></p>
+</li>
+</ul>
+<p><a href="https://masschallenge.org/programs">https://masschallenge.org/programs</a>. Boston-based, zero equity, no-brainer for any MA-deploying startup.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Commit</strong></li>
+</ul>
+<pre><code class="hljs bash">git add docs/fundraising/accelerators/masschallenge-app.md
+git commit -m <span class="hljs-string">"docs(fundraising): MassChallenge application (zero equity)"</span>
+</code></pre>
+<hr>
+<h3 id="task-f4-y-combinator-application-rolling">Task F4: Y Combinator application (rolling)</h3>
+<p><strong>Owner:</strong> P
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/fundraising/accelerators/yc-app.md</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Apply via YC application form</strong></p>
+</li>
+</ul>
+<p><a href="https://www.ycombinator.com/apply">https://www.ycombinator.com/apply</a>. $500K @ 7%. Cheap to apply, high signal value if accepted.</p>
+<p>YC's questions are short — focus on founder story, problem, traction. Phyrom-as-working-GC is the differentiator vs. typical YC marketplace founders.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Commit</strong></li>
+</ul>
+<pre><code class="hljs bash">git add docs/fundraising/accelerators/yc-app.md
+git commit -m <span class="hljs-string">"docs(fundraising): Y Combinator application (rolling)"</span>
+</code></pre>
+<hr>
+<h3 id="task-f5-greentown-labs-membership-inquiry">Task F5: Greentown Labs membership inquiry</h3>
+<p><strong>Owner:</strong> P
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/fundraising/accelerators/greentown-labs-inquiry.md</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Inquire about membership</strong></p>
+</li>
+</ul>
+<p><a href="https://greentownlabs.com/membership/">https://greentownlabs.com/membership/</a>. Somerville climate-tech incubator. Membership-based (not equity). Mass Save lane fits.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Commit</strong></li>
+</ul>
+<pre><code class="hljs bash">git add docs/fundraising/accelerators/greentown-labs-inquiry.md
+git commit -m <span class="hljs-string">"docs(fundraising): Greentown Labs membership inquiry"</span>
+</code></pre>
+<hr>
+<h2 id="workstream-g--fundraising-vc-pipeline-weeks-212">Workstream G — Fundraising: VC Pipeline (Weeks 2–12)</h2>
+<p><strong>Goal:</strong> 50-firm investor pipeline, 5+ active conversations, 1+ term sheet by W12.</p>
+<h3 id="task-g1-build-50-firm-investor-list">Task G1: Build 50-firm investor list</h3>
+<p><strong>Owner:</strong> P + SDR
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/fundraising/vc/investor-pipeline.md</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Compile from spec §6.3 + supplementary research</strong></p>
+</li>
+</ul>
+<p>Pipeline schema: Firm, Stage, Sector fit, Lead partner, Connection (cold/warm), Status, Last touch, Notes.</p>
+<p>Tier 1 (Built World): Building Ventures, Brick &amp; Mortar Ventures, Foundamental, Zacua Ventures, Schematic Ventures, Nine Four Ventures.</p>
+<p>Tier 2 (Marketplace): NFX, Version One, Hustle Fund, Pear VC, Forum Ventures, Precursor.</p>
+<p>Tier 3 (CVC): Eversource Ventures, National Grid Partners, Home Depot Ventures, Lowe's Ventures, Travelers Ventures.</p>
+<p>Tier 0 (NE Angels): HJD network HNW (Phyrom names), NHHBA/MEHBA board, Boston angels via AngelList.</p>
+<p>SDR enriches each row with partner name, LinkedIn, recent investments, warm-intro path.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Commit</strong></li>
+</ul>
+<pre><code class="hljs bash">git add docs/fundraising/vc/investor-pipeline.md
+git commit -m <span class="hljs-string">"docs(fundraising): 50-firm VC investor pipeline"</span>
+</code></pre>
+<hr>
+<h3 id="task-g2-building-ventures-warm-intro-request-first-call">Task G2: Building Ventures warm intro request (FIRST CALL)</h3>
+<p><strong>Owner:</strong> P
+<strong>Files:</strong></p>
+<ul>
+<li><p>Modify: <code>docs/fundraising/vc/investor-pipeline.md</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Identify warm-intro path to Building Ventures</strong></p>
+</li>
+</ul>
+<p>Building Ventures partners: research who has connections to Phyrom's HJD network, NHHBA, Suffolk Construction (Suffolk Tech parent — possible bridge).</p>
+<p>If no warm path: cold email Building Ventures via partner email + LinkedIn DM. Subject: "NH GC built a marketplace investors keep saying doesn't exist."</p>
+<ul>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2: Send the email + book the meeting</strong></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3: Update pipeline + commit</strong></p>
+</li>
+</ul>
+<hr>
+<h3 id="task-g3-first-5-vc-meetings-weeks-56">Task G3: First 5 VC meetings (Weeks 5–6)</h3>
+<p><strong>Owner:</strong> P
+<strong>Files:</strong></p>
+<ul>
+<li><p>Modify: <code>docs/fundraising/vc/investor-pipeline.md</code> (notes per meeting)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Book 5 meetings via warm intros + cold from pipeline</strong></p>
+</li>
+</ul>
+<p>Targets: Building Ventures, Brick &amp; Mortar, Foundamental, NFX, one CVC (Eversource preferred).</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Run meetings — 30 min each, deck-led</strong></li>
+</ul>
+<p>Bring deck v1 + live demo. Capture meeting notes + asks per investor.</p>
+<ul>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3: Send follow-up within 24hr</strong> with requested materials.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4: Update pipeline + commit weekly</strong></p>
+</li>
+</ul>
+<hr>
+<h3 id="task-g4-tier-1--tier-2-outreach-batch-weeks-710">Task G4: Tier-1 + Tier-2 outreach batch (Weeks 7–10)</h3>
+<p><strong>Owner:</strong> P + SDR
+<strong>Files:</strong></p>
+<ul>
+<li><p>Modify: <code>docs/fundraising/vc/investor-pipeline.md</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: SDR sends warm-intro requests to remaining Tier-1/2 firms</strong></p>
+</li>
+</ul>
+<p>Use Phyrom's network + LinkedIn first-degree. Soften with "founder is a working GC" hook.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: P runs 10–15 meetings over 4 weeks</strong></li>
+</ul>
+<p>Target conversion: 1–2 term sheet conversations.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 3: Update pipeline + commit weekly</strong></li>
+</ul>
+<hr>
+<h3 id="task-g5-strategic-cvc-outreach--eversource-ventures-national-grid-partners">Task G5: Strategic CVC outreach — Eversource Ventures, National Grid Partners</h3>
+<p><strong>Owner:</strong> P
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/fundraising/vc/cvc-outreach.md</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Customize pitch for utility CVCs</strong></p>
+</li>
+</ul>
+<p>Lead with: "Mass Save heat-pump installer wait times are 3–6 months. We solve that. We can become your installer-acceleration layer."</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Cold email + LinkedIn outreach</strong></li>
+</ul>
+<p>Eversource Ventures: identify investing partner. Same for National Grid Partners.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 3: Commit</strong></li>
+</ul>
+<pre><code class="hljs bash">git add docs/fundraising/vc/cvc-outreach.md
+git commit -m <span class="hljs-string">"docs(fundraising): utility CVC outreach to Eversource + National Grid Partners"</span>
+</code></pre>
+<hr>
+<h2 id="workstream-h--wefunder-community-round-weeks-112">Workstream H — Wefunder Community Round (Weeks 1–12)</h2>
+<p><strong>Goal:</strong> $250K+ Wefunder raised by W12, $50K MassDev match secured.</p>
+<h3 id="task-h1-wefunder-researcher--faq">Task H1: Wefunder researcher + FAQ</h3>
+<p><strong>Owner:</strong> P + CONTENT
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/fundraising/wefunder/faq.md</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Read Wefunder docs</strong></p>
+</li>
+</ul>
+<p><a href="https://wefunder.com/start">https://wefunder.com/start</a>. Understand SAFE structure, 7.5% platform fee, Reg CF $5M cap, KYC/AML requirements.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Draft FAQ for community investors</strong></li>
+</ul>
+<p>Q&amp;A: who can invest, minimum check, SAFE explanation, timeline, what happens if you fail to close, conversion to equity event.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 3: Commit</strong></li>
+</ul>
+<pre><code class="hljs bash">git add docs/fundraising/wefunder/faq.md
+git commit -m <span class="hljs-string">"docs(fundraising): Wefunder community-round FAQ"</span>
+</code></pre>
+<hr>
+<h3 id="task-h2-wefunder-page-builder--safe-legal-review">Task H2: Wefunder page builder + SAFE legal review</h3>
+<p><strong>Owner:</strong> P + CONTENT + attorney
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/fundraising/wefunder/page-content.md</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Draft Wefunder page content</strong></p>
+</li>
+</ul>
+<p>Sections: Hero (founder hook), Problem, Solution, Traction (beta cohort numbers), Team, Use of funds, Q&amp;A. Reuse pitch deck content.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: SAFE template review by attorney</strong></li>
+</ul>
+<p>Wefunder provides SAFE templates. Attorney (~$1K, 2hr review) confirms valuation cap, discount, MFN clauses, conversion mechanics.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 3: Build the page in Wefunder admin</strong></li>
+</ul>
+<p>Upload videos, photos, content. Submit to Wefunder for compliance review (typically 5–10 business days).</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 4: Commit page content</strong></li>
+</ul>
+<pre><code class="hljs bash">git add docs/fundraising/wefunder/page-content.md
+git commit -m <span class="hljs-string">"docs(fundraising): Wefunder page content + SAFE legal review"</span>
+</code></pre>
+<hr>
+<h3 id="task-h3-pre-launch-list-build-100-interested">Task H3: Pre-launch list build (100+ interested)</h3>
+<p><strong>Owner:</strong> P + SDR
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/fundraising/wefunder/prelaunch-list.md</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Outreach to HJD client network</strong></p>
+</li>
+</ul>
+<p>HJD has [N] active clients. SDR sends personal note from Phyrom: "Building something new — would mean a lot if you'd be among the first to look at it. No commitment yet."</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Outreach to beta pros + their clients</strong></li>
+</ul>
+<p>Pros may forward to their own clients. Permissioned only.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 3: Outreach to local press readers</strong></li>
+</ul>
+<p>Seacoast Online, NHPR, NHBR — invite editors to soft-launch preview.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 4: Track pre-launch sign-ups + commit weekly</strong></li>
+</ul>
+<pre><code class="hljs bash">git add docs/fundraising/wefunder/prelaunch-list.md
+git commit -m <span class="hljs-string">"docs(fundraising): Wefunder pre-launch list update W&lt;N&gt;"</span>
+</code></pre>
+<hr>
+<h3 id="task-h4-soft-launch-signal-gather-no-public">Task H4: Soft-launch (signal-gather, no public)</h3>
+<p><strong>Owner:</strong> P
+<strong>Files:</strong> None (operational)</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 1: Activate Wefunder page in private mode</strong></li>
+</ul>
+<p>Share link only with pre-launch list. Goal: $100K+ soft-committed before public launch.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Track conversion rate from list-to-commit</strong></li>
+</ul>
+<p>If &lt;10% of list converts, revisit page content + run feedback survey.</p>
+<hr>
+<h3 id="task-h5-public-launch--pr-push-weeks-78">Task H5: Public launch + PR push (Weeks 7–8)</h3>
+<p><strong>Owner:</strong> P + CONTENT
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/fundraising/wefunder/pr-launch-plan.md</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Activate public Wefunder page</strong></p>
+</li>
+</ul>
+<p>When $100K+ soft-committed, flip to public. Wefunder badges $100K+ committed automatically.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: PR push</strong></li>
+</ul>
+<p>Press releases to: Seacoast Online, NHPR, NH Business Review, Boston Globe Real Estate, Banker &amp; Tradesman, NHBR.</p>
+<p>Phyrom does podcast interviews — NH Business Review podcast, The Contractor Fight, JLC Live podcast.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 3: Commit launch plan</strong></li>
+</ul>
+<pre><code class="hljs bash">git add docs/fundraising/wefunder/pr-launch-plan.md
+git commit -m <span class="hljs-string">"docs(fundraising): Wefunder public launch + PR plan"</span>
+</code></pre>
+<hr>
+<h3 id="task-h6-drive-to-250k-committed-by-w12">Task H6: Drive to $250K+ committed by W12</h3>
+<p><strong>Owner:</strong> P
+<strong>Files:</strong> None (operational)</p>
+<ul>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Daily LinkedIn cadence highlighting raise progress</strong></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2: Weekly investor update emails to commit-watchers</strong></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3: Close Reg CF campaign at W12 (90-day max)</strong></p>
+</li>
+</ul>
+<p>Convert pledges to wires. If short of $250K, extend if Wefunder permits, or close with what's raised.</p>
+<hr>
+<h2 id="workstream-i--mass-save--strategic-partnerships-weeks-312">Workstream I — Mass Save &amp; Strategic Partnerships (Weeks 3–12)</h2>
+<p><strong>Goal:</strong> Submit Mass Save Network application, National Grid Turnkey inquiry, NHHBA/MEHBA partnerships (overlap with D5).</p>
+<h3 id="task-i1-mass-save-heat-pump-installer-network-application">Task I1: Mass Save Heat Pump Installer Network application</h3>
+<p><strong>Owner:</strong> P
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/partnerships/mass-save-application.md</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Apply for Sherpa Pros to be a Mass Save Network platform</strong></p>
+</li>
+</ul>
+<p><a href="https://www.masssave.com/residential/find-a-contractor/find-a-heat-pump-installer">https://www.masssave.com/residential/find-a-contractor/find-a-heat-pump-installer</a></p>
+<p>Mass Save typically lists individual contractors, not platforms. Frame: Sherpa Pros is the <em>platform that connects homeowners to Mass Save Network installers</em> — request listing as "find a Mass Save installer through Sherpa Pros."</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Verify our beta heat-pump pro is Mass Save certified</strong></li>
+</ul>
+<p>Beta cohort includes 1 HVAC / heat-pump specialist. Confirm their Mass Save Network status. Sherpa Pros leverages their cert for the partnership pitch.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 3: Commit</strong></li>
+</ul>
+<pre><code class="hljs bash">git add docs/partnerships/mass-save-application.md
+git commit -m <span class="hljs-string">"docs(partnerships): Mass Save Heat Pump Installer Network application"</span>
+</code></pre>
+<hr>
+<h3 id="task-i2-national-grid-turnkey-ev-charging-program">Task I2: National Grid Turnkey EV Charging program</h3>
+<p><strong>Owner:</strong> P
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/partnerships/national-grid-turnkey.md</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Inquire about partnership</strong></p>
+</li>
+</ul>
+<p><a href="https://www.nationalgridus.com/electric-vehicle-hub/Programs/Massachusetts/Turnkey-EV-Charging-Installation-Program">https://www.nationalgridus.com/electric-vehicle-hub/Programs/Massachusetts/Turnkey-EV-Charging-Installation-Program</a></p>
+<p>Frame: Sherpa Pros provides the homeowner-facing UX + installer matching. National Grid provides the rebate + utility coordination.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Commit</strong></li>
+</ul>
+<pre><code class="hljs bash">git add docs/partnerships/national-grid-turnkey.md
+git commit -m <span class="hljs-string">"docs(partnerships): National Grid Turnkey EV charging program inquiry"</span>
+</code></pre>
+<hr>
+<h2 id="weekly-operating-cadence">Weekly Operating Cadence</h2>
+<p>Every Monday, P runs a 60-min review:</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Beta cohort:</strong> active count, jobs in pipeline, GMV WoW, NPS, friction log</li>
+<li><input disabled="" type="checkbox"> <strong>Fundraise pipeline:</strong> new conversations, advancing conversations, decisions due, dollar-weighted close-probability total</li>
+<li><input disabled="" type="checkbox"> <strong>Workstream blockers:</strong> anything not on track gets a re-plan</li>
+<li><input disabled="" type="checkbox"> <strong>Risk register:</strong> any R1–R10 signals tripped this week (per spec §10)</li>
+<li><input disabled="" type="checkbox"> <strong>Update tasks:</strong> TaskUpdate / TaskCreate for newly-discovered work</li>
+</ul>
+<p>Commit a weekly snapshot to <code>docs/operations/weekly-status/2026-WW-NN.md</code>.</p>
+<hr>
+<h2 id="phase-0-exit-criteria-per-spec-§12">Phase 0 Exit Criteria (per spec §12)</h2>
+<p><strong>Phase 1 triggers when ANY ONE of:</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> $250K+ non-dilutive committed (any combination of: MassCEC InnovateMass + Catalyst + MassDev + NSF SBIR + NH BFA), OR</li>
+<li><input disabled="" type="checkbox"> $500K+ Wefunder + angel soft-circled, OR</li>
+<li><input disabled="" type="checkbox"> Tier-1 accelerator acceptance (YC / Techstars ConstructionTech / Suffolk Technologies / Building Ventures Studio)</li>
+</ul>
+<p><strong>On trigger:</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> Open new spec + plan: <code>docs/superpowers/specs/&lt;date&gt;-phase-1-lean-launch-design.md</code> and corresponding plan file</li>
+<li><input disabled="" type="checkbox"> Begin Phase 1 hires (PSM NH/ME, PT Client Concierge)</li>
+<li><input disabled="" type="checkbox"> Convert beta cohort to founding paying customers (5% take grandfathered forever)</li>
+<li><input disabled="" type="checkbox"> Public launch in Phase 1 launch metros (Portsmouth, Manchester, Portland) + Boston specialty</li>
+</ul>
+
+	
+
+
+</body>
+</html>

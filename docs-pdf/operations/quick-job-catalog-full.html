@@ -1,0 +1,2556 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>quick job catalog full — Sherpa Pros</title>
+<link rel="icon" href="../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="quick-job-catalog-full.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="sherpa-pros--quick-job-catalog-full-v1">Sherpa Pros — Quick Job Catalog (Full v1)</h1>
+<p><strong>Date:</strong> 2026-04-22
+<strong>Status:</strong> Draft v1 — engineering spec, ready for T1 consumption in Phase 1
+<strong>Parent doc:</strong> <code>docs/operations/quick-job-lane.md</code> (framework, dispatch, insurance, brand)
+<strong>Source spec:</strong> <code>docs/superpowers/specs/2026-04-22-gtm-marketing-design.md</code>
+<strong>Companion docs:</strong> <code>docs/operations/liability-insurance-framework.md</code>, <code>docs/operations/embedded-protection-products.md</code></p>
+<p>This doc expands the 12 starter tasks in <code>quick-job-lane.md</code> §4 into a full structured catalog of <strong>47 tasks across 7 categories</strong>, with metro-specific pricing bands, license + insurance requirements, project-mode kick-out logic, full Drizzle schema additions, migration SQL (006), and customer/pro UX specs.</p>
+<p>All monetary values are <strong>integer cents</strong> (per <code>CLAUDE.md</code> convention). All customer-facing display names are <strong>plainspoken, no jargon, no abbreviations on first use</strong> (per Brand Guardian rules in spec §3.3).</p>
+<hr>
+<h2 id="1-catalog-at-a-glance">1. Catalog at a Glance</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Category</th>
+<th>Task count</th>
+<th>Median price range (NH/ME)</th>
+<th>Median price range (MA)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>Bathroom</td>
+<td>12</td>
+<td>$125 – $625</td>
+<td>$150 – $800</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Kitchen</td>
+<td>8</td>
+<td>$200 – $625</td>
+<td>$275 – $800</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Painting</td>
+<td>6</td>
+<td>$200 – $625</td>
+<td>$275 – $800</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Drywall / Patching</td>
+<td>6</td>
+<td>$225 – $475</td>
+<td>$300 – $625</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Electrical (light)</td>
+<td>8</td>
+<td>$100 – $250</td>
+<td>$135 – $325</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Plumbing (light)</td>
+<td>6</td>
+<td>$150 – $325</td>
+<td>$200 – $425</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Light handyman / general</td>
+<td>10</td>
+<td>$90 – $250</td>
+<td>$120 – $325</td>
+</tr>
+<tr>
+<td></td>
+<td><strong>Total</strong></td>
+<td><strong>56 task variants across 47 base tasks</strong></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p>(Some "tasks" have a customer-supplied vs Sherpa-supplied variant — counted once in the base 47.)</p>
+<hr>
+<h2 id="2-full-task-catalog">2. Full Task Catalog</h2>
+<p>Notation:</p>
+<ul>
+<li><strong>CGL</strong> = Commercial General Liability (insurance — spell out everywhere customer-facing)</li>
+<li><strong>License columns:</strong> <code>none</code> = no state license required for handyman scope · <code>handyman</code> = state handyman registration where applicable · <code>licensed_electrician</code> = state-licensed electrician required · <code>licensed_plumber</code> = state-licensed plumber required · <code>licensed_other</code> = task-specific (locksmith, etc.)</li>
+<li><strong>Permit columns:</strong> <code>never</code> / <code>sometimes</code> / <code>always</code> (always = auto-route to Project mode)</li>
+<li><strong>Material handling:</strong> <code>customer_supplied</code> · <code>pro_supplied</code> · <code>sherpa_supplied_via_zinc</code> · <code>customer_choice</code></li>
+<li>All prices are <strong>per-job flat-rate ranges</strong>, not hourly</li>
+</ul>
+<h3 id="21-bathroom-12-tasks">2.1 Bathroom (12 tasks)</h3>
+<table>
+<thead>
+<tr>
+<th>Task code</th>
+<th>Display name</th>
+<th>Duration</th>
+<th>NH/ME L–M–H</th>
+<th>MA L–M–H</th>
+<th>Materials</th>
+<th>Material cost</th>
+<th>License</th>
+<th>CGL min</th>
+<th>Permit</th>
+<th>Edge cases</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>toilet_install_basic</code></td>
+<td>Toilet install (you supply the toilet)</td>
+<td>90 min</td>
+<td>$250–$300–$350</td>
+<td>$325–$390–$450</td>
+<td>customer_supplied</td>
+<td>—</td>
+<td>handyman</td>
+<td>$500K</td>
+<td>sometimes</td>
+<td>Cast-iron drain, broken closet flange, rotted subfloor → Project</td>
+</tr>
+<tr>
+<td><code>toilet_replace_full</code></td>
+<td>Toilet replacement (we supply the toilet)</td>
+<td>150 min</td>
+<td>$500–$625–$750</td>
+<td>$650–$800–$950</td>
+<td>sherpa_supplied_via_zinc</td>
+<td>$200–$400</td>
+<td>handyman</td>
+<td>$500K</td>
+<td>sometimes</td>
+<td>High-end toilet (&gt;$600), bidet seat, pressure-assist → recheck scope</td>
+</tr>
+<tr>
+<td><code>toilet_repair_flapper</code></td>
+<td>Toilet repair (running, weak flush, fill valve)</td>
+<td>45 min</td>
+<td>$125–$150–$175</td>
+<td>$150–$190–$225</td>
+<td>pro_supplied</td>
+<td>$15–$30</td>
+<td>handyman</td>
+<td>$500K</td>
+<td>never</td>
+<td>Tank crack, unseen leak below subfloor → Project</td>
+</tr>
+<tr>
+<td><code>bathroom_faucet_replace</code></td>
+<td>Bathroom sink faucet replacement</td>
+<td>75 min</td>
+<td>$150–$200–$250</td>
+<td>$200–$265–$325</td>
+<td>customer_supplied</td>
+<td>—</td>
+<td>handyman</td>
+<td>$500K</td>
+<td>never</td>
+<td>Frozen shutoff valves, corroded supply lines → may add valve replacement</td>
+</tr>
+<tr>
+<td><code>garbage_disposal_install_bath</code></td>
+<td>Garbage disposal install (rare in bath — vanity prep sink)</td>
+<td>90 min</td>
+<td>$200–$250–$300</td>
+<td>$275–$340–$400</td>
+<td>customer_supplied</td>
+<td>—</td>
+<td>handyman</td>
+<td>$500K</td>
+<td>never</td>
+<td>No GFCI, no dedicated circuit → kicks to electrical scope</td>
+</tr>
+<tr>
+<td><code>sink_trap_replace_bath</code></td>
+<td>Bathroom sink P-trap replacement</td>
+<td>60 min</td>
+<td>$150–$200–$250</td>
+<td>$200–$265–$325</td>
+<td>pro_supplied</td>
+<td>$20–$40</td>
+<td>handyman</td>
+<td>$500K</td>
+<td>never</td>
+<td>Cast-iron tail piece, wall leak → Project</td>
+</tr>
+<tr>
+<td><code>showerhead_replace</code></td>
+<td>Showerhead replacement</td>
+<td>30 min</td>
+<td>$90–$115–$140</td>
+<td>$120–$150–$185</td>
+<td>customer_choice</td>
+<td>$30–$120</td>
+<td>none</td>
+<td>$500K</td>
+<td>never</td>
+<td>Stuck shower arm (snaps in wall), hidden leak → may upgrade to valve work</td>
+</tr>
+<tr>
+<td><code>towel_bar_install</code></td>
+<td>Towel bar install</td>
+<td>30 min</td>
+<td>$75–$100–$130</td>
+<td>$100–$130–$170</td>
+<td>customer_supplied</td>
+<td>—</td>
+<td>none</td>
+<td>$500K</td>
+<td>never</td>
+<td>Tile substrate (needs diamond bit), heavy-gauge anchor needs → photo upload</td>
+</tr>
+<tr>
+<td><code>tp_holder_install</code></td>
+<td>Toilet paper holder install</td>
+<td>30 min</td>
+<td>$65–$85–$110</td>
+<td>$90–$115–$145</td>
+<td>customer_supplied</td>
+<td>—</td>
+<td>none</td>
+<td>$500K</td>
+<td>never</td>
+<td>Same as towel bar</td>
+</tr>
+<tr>
+<td><code>exhaust_fan_replace</code></td>
+<td>Bathroom exhaust fan replacement (same model swap)</td>
+<td>90 min</td>
+<td>$200–$275–$350</td>
+<td>$275–$360–$450</td>
+<td>customer_choice</td>
+<td>$40–$140</td>
+<td>licensed_electrician</td>
+<td>$1M</td>
+<td>sometimes</td>
+<td>Re-routing duct, attic insulation contact, no existing fan (new circuit) → Project</td>
+</tr>
+<tr>
+<td><code>bath_drywall_patch</code></td>
+<td>Drywall patch in bathroom (≤6"× 6")</td>
+<td>90 min</td>
+<td>$200–$250–$300</td>
+<td>$275–$340–$400</td>
+<td>pro_supplied</td>
+<td>$20–$40</td>
+<td>handyman</td>
+<td>$500K</td>
+<td>never</td>
+<td>Mold behind drywall, water-damaged framing → Project</td>
+</tr>
+<tr>
+<td><code>bath_paint_touchup</code></td>
+<td>Bathroom paint touch-up (1–2 walls, ≤80 sqft)</td>
+<td>90 min</td>
+<td>$175–$225–$275</td>
+<td>$225–$290–$350</td>
+<td>customer_supplied</td>
+<td>—</td>
+<td>handyman</td>
+<td>$500K</td>
+<td>never</td>
+<td>Pro-spec needed (mold-resistant, semi-gloss), full repaint → Project</td>
+</tr>
+</tbody></table>
+<h3 id="22-kitchen-8-tasks">2.2 Kitchen (8 tasks)</h3>
+<table>
+<thead>
+<tr>
+<th>Task code</th>
+<th>Display name</th>
+<th>Duration</th>
+<th>NH/ME L–M–H</th>
+<th>MA L–M–H</th>
+<th>Materials</th>
+<th>Material cost</th>
+<th>License</th>
+<th>CGL min</th>
+<th>Permit</th>
+<th>Edge cases</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>kitchen_faucet_replace</code></td>
+<td>Kitchen sink faucet replacement</td>
+<td>90 min</td>
+<td>$175–$225–$275</td>
+<td>$225–$290–$350</td>
+<td>customer_supplied</td>
+<td>—</td>
+<td>handyman</td>
+<td>$500K</td>
+<td>never</td>
+<td>Pull-down hose routing, soap dispenser add, frozen shutoffs → recheck</td>
+</tr>
+<tr>
+<td><code>garbage_disposal_install_kitchen</code></td>
+<td>Garbage disposal install (under kitchen sink)</td>
+<td>90 min</td>
+<td>$200–$250–$300</td>
+<td>$275–$340–$400</td>
+<td>customer_choice</td>
+<td>$90–$220</td>
+<td>handyman</td>
+<td>$500K</td>
+<td>never</td>
+<td>No GFCI, no dedicated outlet, hardwired → kicks to electrical</td>
+</tr>
+<tr>
+<td><code>garbage_disposal_repair</code></td>
+<td>Garbage disposal repair (jammed, hum, no power)</td>
+<td>60 min</td>
+<td>$150–$190–$225</td>
+<td>$200–$250–$300</td>
+<td>pro_supplied</td>
+<td>$0–$20</td>
+<td>handyman</td>
+<td>$500K</td>
+<td>never</td>
+<td>Motor failure → recommend replacement (may upsell to install task)</td>
+</tr>
+<tr>
+<td><code>dishwasher_install_existing</code></td>
+<td>Dishwasher install (replacing existing on existing line)</td>
+<td>120 min</td>
+<td>$200–$275–$350</td>
+<td>$275–$360–$450</td>
+<td>customer_supplied</td>
+<td>—</td>
+<td>handyman</td>
+<td>$500K</td>
+<td>sometimes</td>
+<td>No existing line, new electrical, panel work → Project</td>
+</tr>
+<tr>
+<td><code>fridge_water_line_connect</code></td>
+<td>Refrigerator water-line connection</td>
+<td>75 min</td>
+<td>$175–$225–$275</td>
+<td>$225–$290–$350</td>
+<td>pro_supplied</td>
+<td>$30–$60</td>
+<td>handyman</td>
+<td>$500K</td>
+<td>never</td>
+<td>No nearby cold-water tap, finished basement below → may need behind-wall run</td>
+</tr>
+<tr>
+<td><code>range_hood_install_replace</code></td>
+<td>Range hood install (same-vent replacement)</td>
+<td>120 min</td>
+<td>$250–$325–$400</td>
+<td>$325–$420–$525</td>
+<td>customer_supplied</td>
+<td>—</td>
+<td>handyman</td>
+<td>$500K</td>
+<td>sometimes</td>
+<td>New duct cut through wall/roof, no existing hood, gas range proximity → Project</td>
+</tr>
+<tr>
+<td><code>cabinet_hardware_swap</code></td>
+<td>Cabinet hardware swap (knobs / pulls, up to 25 pieces)</td>
+<td>90 min</td>
+<td>$150–$200–$275</td>
+<td>$200–$265–$350</td>
+<td>customer_supplied</td>
+<td>—</td>
+<td>none</td>
+<td>$500K</td>
+<td>never</td>
+<td>Drilling new holes (different spacing), template needed for &gt;25 pieces</td>
+</tr>
+<tr>
+<td><code>kitchen_sink_undermount_replace</code></td>
+<td>Kitchen undermount sink replacement</td>
+<td>180 min</td>
+<td>$400–$500–$625</td>
+<td>$525–$650–$800</td>
+<td>customer_supplied</td>
+<td>—</td>
+<td>handyman</td>
+<td>$500K</td>
+<td>never</td>
+<td>Granite re-clip (needs stone fabricator), garbage disposal re-mount → coordinate</td>
+</tr>
+</tbody></table>
+<h3 id="23-painting-6-tasks">2.3 Painting (6 tasks)</h3>
+<table>
+<thead>
+<tr>
+<th>Task code</th>
+<th>Display name</th>
+<th>Duration</th>
+<th>NH/ME L–M–H</th>
+<th>MA L–M–H</th>
+<th>Materials</th>
+<th>Material cost</th>
+<th>License</th>
+<th>CGL min</th>
+<th>Permit</th>
+<th>Edge cases</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>paint_wall_accent</code></td>
+<td>Paint a single accent wall (≤120 sqft)</td>
+<td>90 min</td>
+<td>$200–$240–$275</td>
+<td>$275–$315–$350</td>
+<td>customer_supplied</td>
+<td>—</td>
+<td>none</td>
+<td>$500K</td>
+<td>never</td>
+<td>Vaulted ceiling, repair before paint, dark-over-light primer needs → recheck</td>
+</tr>
+<tr>
+<td><code>paint_room_walls</code></td>
+<td>Paint a single room (walls only, ≤200 sqft)</td>
+<td>270 min</td>
+<td>$400–$500–$600</td>
+<td>$525–$625–$725</td>
+<td>customer_supplied</td>
+<td>—</td>
+<td>none</td>
+<td>$500K</td>
+<td>never</td>
+<td>Heavy patching, wallpaper removal, color change &gt;2 coats → Project</td>
+</tr>
+<tr>
+<td><code>paint_room_walls_ceiling</code></td>
+<td>Paint a single room (walls and ceiling)</td>
+<td>360 min</td>
+<td>$550–$650–$750</td>
+<td>$700–$815–$925</td>
+<td>customer_supplied</td>
+<td>—</td>
+<td>none</td>
+<td>$500K</td>
+<td>never</td>
+<td>Popcorn ceiling, ceiling repair, height &gt;9 ft → Project</td>
+</tr>
+<tr>
+<td><code>paint_exterior_trim_touchup</code></td>
+<td>Exterior trim touch-up (same color, ≤40 linear ft)</td>
+<td>120 min</td>
+<td>$225–$300–$400</td>
+<td>$300–$390–$500</td>
+<td>customer_supplied</td>
+<td>—</td>
+<td>none</td>
+<td>$500K</td>
+<td>sometimes</td>
+<td>Pre-1978 home (lead paint disclosure), &gt;40 ft, scaffolding need → Project</td>
+</tr>
+<tr>
+<td><code>paint_door_single</code></td>
+<td>Paint a single interior door (both sides)</td>
+<td>90 min</td>
+<td>$150–$200–$250</td>
+<td>$200–$265–$325</td>
+<td>customer_supplied</td>
+<td>—</td>
+<td>none</td>
+<td>$500K</td>
+<td>never</td>
+<td>Strip-and-refinish vs paint-over, hardware removal → confirm scope</td>
+</tr>
+<tr>
+<td><code>paint_cabinet_door</code></td>
+<td>Paint cabinet door (per door, off-site or on-site)</td>
+<td>60 min/door</td>
+<td>$40–$55–$75</td>
+<td>$55–$70–$95</td>
+<td>customer_supplied</td>
+<td>—</td>
+<td>none</td>
+<td>$500K</td>
+<td>never</td>
+<td>&gt;6 doors → Project (full kitchen refinish), spray vs brush → confirm</td>
+</tr>
+</tbody></table>
+<h3 id="24-drywall--patching-6-tasks">2.4 Drywall / Patching (6 tasks)</h3>
+<table>
+<thead>
+<tr>
+<th>Task code</th>
+<th>Display name</th>
+<th>Duration</th>
+<th>NH/ME L–M–H</th>
+<th>MA L–M–H</th>
+<th>Materials</th>
+<th>Material cost</th>
+<th>License</th>
+<th>CGL min</th>
+<th>Permit</th>
+<th>Edge cases</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>drywall_patch_small</code></td>
+<td>Small drywall patch (up to 6 inches) + paint blend</td>
+<td>90 min</td>
+<td>$200–$250–$300</td>
+<td>$275–$340–$400</td>
+<td>pro_supplied</td>
+<td>$15–$30</td>
+<td>handyman</td>
+<td>$500K</td>
+<td>never</td>
+<td>Mold visible, structural framing, re-occurring leak source → Project</td>
+</tr>
+<tr>
+<td><code>drywall_patch_medium</code></td>
+<td>Medium drywall patch (up to 24 inches) + sand + prime</td>
+<td>150 min</td>
+<td>$300–$365–$425</td>
+<td>$400–$475–$550</td>
+<td>pro_supplied</td>
+<td>$25–$50</td>
+<td>handyman</td>
+<td>$500K</td>
+<td>never</td>
+<td>Cure time → 2 trips needed (note in dispatch); paint matching uncertain</td>
+</tr>
+<tr>
+<td><code>drywall_patch_large</code></td>
+<td>Large drywall patch (up to 48 inches) + tape + texture</td>
+<td>240 min</td>
+<td>$425–$525–$650</td>
+<td>$550–$675–$825</td>
+<td>pro_supplied</td>
+<td>$40–$80</td>
+<td>handyman</td>
+<td>$500K</td>
+<td>never</td>
+<td>Approaches Project threshold ($1,500); full sheet = Project</td>
+</tr>
+<tr>
+<td><code>drywall_corner_bead_repair</code></td>
+<td>Corner bead repair (single corner)</td>
+<td>120 min</td>
+<td>$225–$285–$350</td>
+<td>$300–$370–$450</td>
+<td>pro_supplied</td>
+<td>$20–$40</td>
+<td>handyman</td>
+<td>$500K</td>
+<td>never</td>
+<td>Multiple corners, full re-bead, settling crack source → Project</td>
+</tr>
+<tr>
+<td><code>lath_plaster_spot</code></td>
+<td>Plaster spot repair (Boston specialty)</td>
+<td>180 min</td>
+<td>n/a</td>
+<td>$400–$525–$650</td>
+<td>pro_supplied</td>
+<td>$30–$60</td>
+<td>handyman</td>
+<td>$500K</td>
+<td>never</td>
+<td><strong>Old-House Verified pros only.</strong> Pre-1950 home + lead/asbestos disclosure → Project</td>
+</tr>
+<tr>
+<td><code>drywall_texture_match</code></td>
+<td>Drywall texture match (orange peel, knockdown, smooth)</td>
+<td>120 min</td>
+<td>$250–$325–$400</td>
+<td>$325–$420–$525</td>
+<td>pro_supplied</td>
+<td>$20–$40</td>
+<td>handyman</td>
+<td>$500K</td>
+<td>never</td>
+<td>Skip-trowel, hand-troweled custom, ceiling texture → recheck or Project</td>
+</tr>
+</tbody></table>
+<h3 id="25-electrical--light-single-circuit-8-tasks">2.5 Electrical — light, single-circuit (8 tasks)</h3>
+<p>All electrical tasks in this lane require a <strong>state-licensed electrician</strong> in MA (per MA Electrical Code) and in NH for permit-bearing work. Where a task is "license-flexible" (e.g., smoke detector swap), we still require licensed electrician for liability simplicity. CGL minimum is $1M for licensed-trade work per <code>liability-insurance-framework.md</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Task code</th>
+<th>Display name</th>
+<th>Duration</th>
+<th>NH/ME L–M–H</th>
+<th>MA L–M–H</th>
+<th>Materials</th>
+<th>Material cost</th>
+<th>License</th>
+<th>CGL min</th>
+<th>Permit</th>
+<th>Edge cases</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>ceiling_fan_install_existing</code></td>
+<td>Ceiling fan install (existing wiring + box)</td>
+<td>90 min</td>
+<td>$200–$250–$300</td>
+<td>$275–$340–$400</td>
+<td>customer_supplied</td>
+<td>—</td>
+<td>licensed_electrician</td>
+<td>$1M</td>
+<td>never</td>
+<td>No fan-rated box, no existing wiring, vaulted ceiling → Project</td>
+</tr>
+<tr>
+<td><code>ceiling_fan_replace</code></td>
+<td>Ceiling fan replacement (same-spot swap)</td>
+<td>75 min</td>
+<td>$175–$225–$275</td>
+<td>$225–$290–$350</td>
+<td>customer_supplied</td>
+<td>—</td>
+<td>licensed_electrician</td>
+<td>$1M</td>
+<td>never</td>
+<td>Old box not fan-rated → Project</td>
+</tr>
+<tr>
+<td><code>gfci_outlet_replace</code></td>
+<td>GFCI outlet replacement</td>
+<td>45 min</td>
+<td>$125–$150–$175</td>
+<td>$175–$200–$225</td>
+<td>pro_supplied</td>
+<td>$20–$30</td>
+<td>licensed_electrician</td>
+<td>$1M</td>
+<td>never</td>
+<td>Backstabbed wiring, aluminum wiring, no ground → recheck or Project</td>
+</tr>
+<tr>
+<td><code>light_fixture_swap</code></td>
+<td>Light fixture swap (existing wiring)</td>
+<td>45 min</td>
+<td>$125–$150–$175</td>
+<td>$175–$200–$225</td>
+<td>customer_supplied</td>
+<td>—</td>
+<td>licensed_electrician</td>
+<td>$1M</td>
+<td>never</td>
+<td>Heavy chandelier (&gt;35 lb), no junction box → Project</td>
+</tr>
+<tr>
+<td><code>smart_switch_install</code></td>
+<td>Smart switch / dimmer install (per location)</td>
+<td>45 min</td>
+<td>$125–$160–$200</td>
+<td>$175–$215–$250</td>
+<td>customer_supplied</td>
+<td>—</td>
+<td>licensed_electrician</td>
+<td>$1M</td>
+<td>never</td>
+<td>No neutral wire (pre-1985 home), 3-way circuit reconfigure → confirm scope</td>
+</tr>
+<tr>
+<td><code>smoke_co_detector_swap</code></td>
+<td>Smoke and carbon monoxide detector replacement</td>
+<td>30 min/unit</td>
+<td>$75–$100–$125</td>
+<td>$100–$125–$150</td>
+<td>customer_choice</td>
+<td>$20–$60</td>
+<td>licensed_electrician</td>
+<td>$1M</td>
+<td>never</td>
+<td>Hardwired interconnect adjustment, full-house &gt;5 units → Project</td>
+</tr>
+<tr>
+<td><code>doorbell_ring_install</code></td>
+<td>Doorbell or smart doorbell install</td>
+<td>60 min</td>
+<td>$150–$200–$250</td>
+<td>$200–$265–$325</td>
+<td>customer_supplied</td>
+<td>—</td>
+<td>licensed_electrician</td>
+<td>$1M</td>
+<td>never</td>
+<td>No existing doorbell wiring (battery-only OK), transformer upgrade → Project</td>
+</tr>
+<tr>
+<td><code>usb_outlet_upgrade</code></td>
+<td>USB outlet upgrade (per location)</td>
+<td>45 min</td>
+<td>$125–$160–$200</td>
+<td>$175–$215–$250</td>
+<td>customer_choice</td>
+<td>$25–$45</td>
+<td>licensed_electrician</td>
+<td>$1M</td>
+<td>never</td>
+<td>Aluminum wiring, no neutral, GFCI-protected branch → recheck</td>
+</tr>
+</tbody></table>
+<h3 id="26-plumbing--light-6-tasks">2.6 Plumbing — light (6 tasks)</h3>
+<p>State-licensed plumber required in MA for any pressurized water work; NH allows handyman scope for fixtures and shutoffs but we default to licensed plumber for liability simplicity in the Quick Job lane.</p>
+<table>
+<thead>
+<tr>
+<th>Task code</th>
+<th>Display name</th>
+<th>Duration</th>
+<th>NH/ME L–M–H</th>
+<th>MA L–M–H</th>
+<th>Materials</th>
+<th>Material cost</th>
+<th>License</th>
+<th>CGL min</th>
+<th>Permit</th>
+<th>Edge cases</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>valve_shutoff_replace</code></td>
+<td>Leaky valve / shutoff replacement (under-sink, behind-toilet)</td>
+<td>90 min</td>
+<td>$200–$265–$325</td>
+<td>$275–$350–$425</td>
+<td>pro_supplied</td>
+<td>$15–$35</td>
+<td>licensed_plumber</td>
+<td>$1M</td>
+<td>never</td>
+<td>Soldered valve (needs torch), galvanized supply, frozen valve corroded into wall → Project</td>
+</tr>
+<tr>
+<td><code>supply_line_replace</code></td>
+<td>Sink supply line replacement (single)</td>
+<td>60 min</td>
+<td>$150–$200–$250</td>
+<td>$200–$265–$325</td>
+<td>pro_supplied</td>
+<td>$10–$25</td>
+<td>licensed_plumber</td>
+<td>$1M</td>
+<td>never</td>
+<td>Multiple lines, behind-wall leak source → Project</td>
+</tr>
+<tr>
+<td><code>p_trap_replace</code></td>
+<td>P-trap replacement (single drain)</td>
+<td>60 min</td>
+<td>$150–$200–$250</td>
+<td>$200–$265–$325</td>
+<td>pro_supplied</td>
+<td>$20–$40</td>
+<td>licensed_plumber</td>
+<td>$1M</td>
+<td>never</td>
+<td>Cast-iron tailpiece, wall stack tie-in → Project</td>
+</tr>
+<tr>
+<td><code>sink_stopper_replace</code></td>
+<td>Sink stopper / pop-up replacement</td>
+<td>45 min</td>
+<td>$125–$160–$200</td>
+<td>$175–$215–$250</td>
+<td>pro_supplied</td>
+<td>$15–$30</td>
+<td>handyman</td>
+<td>$500K</td>
+<td>never</td>
+<td>Stuck/corroded mounting nut → minor add; tub stopper different scope</td>
+</tr>
+<tr>
+<td><code>water_heater_anode_replace</code></td>
+<td>Water heater anode rod replacement</td>
+<td>90 min</td>
+<td>$200–$265–$325</td>
+<td>$275–$350–$425</td>
+<td>pro_supplied</td>
+<td>$30–$70</td>
+<td>licensed_plumber</td>
+<td>$1M</td>
+<td>never</td>
+<td>Tank &gt;10 yrs old (recommend full replacement → Project), seized anode → Project</td>
+</tr>
+<tr>
+<td><code>washer_hose_replace</code></td>
+<td>Washing machine hose replacement (pair)</td>
+<td>45 min</td>
+<td>$125–$165–$200</td>
+<td>$175–$215–$250</td>
+<td>pro_supplied</td>
+<td>$30–$60</td>
+<td>handyman</td>
+<td>$500K</td>
+<td>never</td>
+<td>Recessed laundry box damage, frozen shutoffs → recheck</td>
+</tr>
+</tbody></table>
+<h3 id="27-light-handyman--general-10-tasks">2.7 Light handyman / general (10 tasks)</h3>
+<table>
+<thead>
+<tr>
+<th>Task code</th>
+<th>Display name</th>
+<th>Duration</th>
+<th>NH/ME L–M–H</th>
+<th>MA L–M–H</th>
+<th>Materials</th>
+<th>Material cost</th>
+<th>License</th>
+<th>CGL min</th>
+<th>Permit</th>
+<th>Edge cases</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>tv_mount_drywall</code></td>
+<td>TV mount install (drywall)</td>
+<td>60 min</td>
+<td>$150–$190–$225</td>
+<td>$200–$240–$275</td>
+<td>customer_supplied</td>
+<td>—</td>
+<td>none</td>
+<td>$500K</td>
+<td>never</td>
+<td>TV &gt;65"/&gt;75 lb (heavy mount), in-wall cable routing → recheck</td>
+</tr>
+<tr>
+<td><code>tv_mount_brick_plaster</code></td>
+<td>TV mount install (brick or plaster wall)</td>
+<td>90 min</td>
+<td>$200–$250–$300</td>
+<td>$275–$325–$375</td>
+<td>customer_supplied</td>
+<td>—</td>
+<td>handyman</td>
+<td>$500K</td>
+<td>never</td>
+<td>Brownstone, historic pointing → Project; full cable concealment in plaster → Project</td>
+</tr>
+<tr>
+<td><code>door_knob_deadbolt_replace</code></td>
+<td>Door knob or deadbolt replacement</td>
+<td>30 min</td>
+<td>$100–$125–$150</td>
+<td>$135–$170–$200</td>
+<td>customer_supplied</td>
+<td>—</td>
+<td>none</td>
+<td>$500K</td>
+<td>never</td>
+<td>Re-key needs (locksmith license), strike plate cut, sagging door → recheck</td>
+</tr>
+<tr>
+<td><code>window_blind_install</code></td>
+<td>Window blind install (per window)</td>
+<td>45 min</td>
+<td>$100–$135–$175</td>
+<td>$135–$180–$225</td>
+<td>customer_supplied</td>
+<td>—</td>
+<td>none</td>
+<td>$500K</td>
+<td>never</td>
+<td>Inside-mount on out-of-square window, large bay window → recheck</td>
+</tr>
+<tr>
+<td><code>curtain_rod_install</code></td>
+<td>Curtain rod install (per window)</td>
+<td>30 min</td>
+<td>$90–$115–$140</td>
+<td>$120–$150–$185</td>
+<td>customer_supplied</td>
+<td>—</td>
+<td>none</td>
+<td>$500K</td>
+<td>never</td>
+<td>Plaster wall (needs proper anchors), heavy drape rod → minor add</td>
+</tr>
+<tr>
+<td><code>picture_mirror_hang_heavy</code></td>
+<td>Hanging a picture or mirror (&gt;10 lb, per item)</td>
+<td>30 min</td>
+<td>$75–$95–$120</td>
+<td>$100–$125–$160</td>
+<td>customer_supplied</td>
+<td>—</td>
+<td>none</td>
+<td>$500K</td>
+<td>never</td>
+<td>Antique frame, very large mirror (&gt;50 lb), plaster wall → photo upload</td>
+</tr>
+<tr>
+<td><code>shelving_install_simple</code></td>
+<td>Shelving install (single shelf, brackets supplied)</td>
+<td>60 min</td>
+<td>$125–$165–$200</td>
+<td>$175–$215–$250</td>
+<td>customer_supplied</td>
+<td>—</td>
+<td>handyman</td>
+<td>$500K</td>
+<td>never</td>
+<td>Custom built-in, multi-shelf system, load-bearing shelf → Project</td>
+</tr>
+<tr>
+<td><code>weatherstrip_replace</code></td>
+<td>Weatherstripping replacement (single door)</td>
+<td>60 min</td>
+<td>$125–$165–$200</td>
+<td>$175–$215–$250</td>
+<td>pro_supplied</td>
+<td>$20–$40</td>
+<td>none</td>
+<td>$500K</td>
+<td>never</td>
+<td>Multiple doors, threshold replacement, rotted door frame → Project</td>
+</tr>
+<tr>
+<td><code>attic_ladder_lube</code></td>
+<td>Attic ladder lubrication and adjustment</td>
+<td>45 min</td>
+<td>$90–$120–$150</td>
+<td>$120–$155–$200</td>
+<td>pro_supplied</td>
+<td>$5–$15</td>
+<td>none</td>
+<td>$500K</td>
+<td>never</td>
+<td>Ladder broken/bent (replacement = Project), spring failure → recheck</td>
+</tr>
+<tr>
+<td><code>ring_doorbell_install_battery</code></td>
+<td>Battery doorbell install (no wiring)</td>
+<td>45 min</td>
+<td>$100–$135–$170</td>
+<td>$135–$175–$215</td>
+<td>customer_supplied</td>
+<td>—</td>
+<td>none</td>
+<td>$500K</td>
+<td>never</td>
+<td>Brick wall, masonry mounting, app pairing assistance → minor add</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="3-project-mode-kick-out-logic">3. Project-Mode Kick-Out Logic</h2>
+<p>When a customer requests a Quick Job that violates any of the following rules, the dispatch engine <strong>must auto-route to Project mode</strong> instead. The customer sees a friendly explanation: <em>"This job needs our full Project flow — multiple bids and code checks. We'll get you set up in 2 minutes."</em></p>
+<h3 id="31-hard-kick-out-rules-system-enforced-before-pro-is-matched">3.1 Hard kick-out rules (system enforced before pro is matched)</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Rule</th>
+<th>Source signal</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>K1</td>
+<td>Permit required</td>
+<td>Catalog <code>permit_required = 'always'</code>, OR Wiseman flag on intake</td>
+<td>Route to Project mode; pre-fill scope from Quick Job answers</td>
+</tr>
+<tr>
+<td>K2</td>
+<td>Job value exceeds $1,500</td>
+<td>Customer chooses sherpa_supplied materials pushing total &gt;$1,500</td>
+<td>Route to Project mode; offer 3-bid flow</td>
+</tr>
+<tr>
+<td>K3</td>
+<td>Multi-trade coordination needed</td>
+<td>Customer photo or scope text mentions 2+ trades (e.g., "tile + plumbing + electrical")</td>
+<td>Route to Project mode</td>
+</tr>
+<tr>
+<td>K4</td>
+<td>Material cost &gt; 50% of total job</td>
+<td>Sherpa-supplied material cost / total ≥ 0.5</td>
+<td>Route to Project mode (volatile margin, better in bid flow)</td>
+</tr>
+<tr>
+<td>K5</td>
+<td>Old-house edge case</td>
+<td>Customer enters home built pre-1950 AND task touches lath/plaster, paint stripping, or drilling masonry</td>
+<td>If task = <code>lath_plaster_spot</code> (Boston) → keep in Quick Job but <strong>Old-House Verified pros only</strong>. All other paint/drywall/electrical → Project (lead/asbestos disclosure)</td>
+</tr>
+<tr>
+<td>K6</td>
+<td>Code-validation flag</td>
+<td>Wiseman LIGHT validation returns <code>safety_concern</code> (e.g., panel &lt;100A on a job that touches the panel; aluminum branch wiring on outlet swap)</td>
+<td>Route to Project mode</td>
+</tr>
+<tr>
+<td>K7</td>
+<td>Customer requests follow-up visit</td>
+<td>Customer flow says "needs 2 visits" OR scope wording contains "phase 1 / phase 2"</td>
+<td>Quick Job is one-visit by design → route to Project</td>
+</tr>
+<tr>
+<td>K8</td>
+<td>Customer requests scope expansion mid-quote</td>
+<td>Pro's pre-work photo upload diff &gt; 20% from intake photo</td>
+<td>Pro hits "Out of scope" button → system auto-converts to Project mode quote, releases Quick Job slot</td>
+</tr>
+</tbody></table>
+<h3 id="32-soft-warnings-allow-quick-job-but-notify-both-parties">3.2 Soft warnings (allow Quick Job, but notify both parties)</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Rule</th>
+<th>Source signal</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>W1</td>
+<td>Job value &gt; $1,000 (approaching cap)</td>
+<td>Total quote ≥ $1,000</td>
+<td>Show customer: "This is at the high end of our Quick Job range. If anything else comes up at the visit, we'll convert to a Project quote."</td>
+</tr>
+<tr>
+<td>W2</td>
+<td>Pro counter-quote &gt;15% over standard band</td>
+<td>Pro's counter exceeds price band high × 1.15</td>
+<td>Show customer both options ("standard $325 / Mike's quote $425 — slightly higher due to old plumbing"). Customer picks.</td>
+</tr>
+<tr>
+<td>W3</td>
+<td>Customer-supplied material brand unknown</td>
+<td>No brand in description, generic photo</td>
+<td>Pro can request photo of model number before accepting</td>
+</tr>
+<tr>
+<td>W4</td>
+<td>Pre-1978 home + paint task</td>
+<td>Built pre-1978 + any <code>paint_*</code> task</td>
+<td>Show customer EPA RRP lead-paint notice; pro must be RRP-certified (badge check)</td>
+</tr>
+<tr>
+<td>W5</td>
+<td>Pro at daily acceptance cap</td>
+<td>Pro's daily accepted Quick Jobs = <code>daily_cap</code></td>
+<td>Skip pro, route to next eligible pro</td>
+</tr>
+</tbody></table>
+<h3 id="33-pro-side-stuck-job-escape-hatch">3.3 Pro-side "stuck job" escape hatch</h3>
+<p>A pro who has accepted a Quick Job but discovers on arrival that scope exceeds Quick Job bounds can hit <strong>"Convert to Project"</strong> in the pro app. This:</p>
+<ol>
+<li>Releases the Quick Job slot (no penalty to pro)</li>
+<li>Auto-creates a Project-mode job with the customer's intake info + pro's pre-work photos</li>
+<li>Gives the original pro <strong>right of first refusal</strong> on the Project bid (24-hour window)</li>
+<li>Pays the pro a <strong>$50 trip fee</strong> from the Quick Job hold (deducted from refund to customer with explanation)</li>
+<li>Refunds the customer the remainder, with a tap-to-confirm Project flow</li>
+</ol>
+<p>This is critical for handling K8 / K5 / W3 cases discovered on-site — see §10 for the most-likely-stuck edge case.</p>
+<hr>
+<h2 id="4-database-schema-additions-for-t1-to-apply-to-srcdbdrizzle-schemats">4. Database Schema Additions (for T1 to apply to <code>src/db/drizzle-schema.ts</code>)</h2>
+<blockquote>
+<p><strong>NOTE for T1:</strong> these additions reference existing tables <code>pros</code>, <code>users</code>, <code>jobs</code>, <code>hubs</code> from the current schema. Do not modify those existing tables — only add the three new ones below. Apply via migration 006 (§5).</p>
+</blockquote>
+<pre><code class="hljs typescript"><span class="hljs-comment">// ===========================================================================</span>
+<span class="hljs-comment">// QUICK JOB CATALOG (additions to src/db/drizzle-schema.ts)</span>
+<span class="hljs-comment">// ===========================================================================</span>
+
+<span class="hljs-comment">/**
+ * Catalog of pre-priced Quick Job task templates.
+ * One row per `taskCode`. Pricing is per-metro and lives in `quickJobMetroPricing`.
+ *
+ * `permitRequired = 'always'` rows MUST never be dispatched as Quick Jobs;
+ * intake should auto-route them to Project mode (see §3 K1).
+ */</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> quickJobCatalog = <span class="hljs-title function_">pgTable</span>(
+  <span class="hljs-string">"quick_job_catalog"</span>,
+  {
+    <span class="hljs-attr">id</span>: <span class="hljs-title function_">uuid</span>(<span class="hljs-string">"id"</span>).<span class="hljs-title function_">primaryKey</span>().<span class="hljs-title function_">defaultRandom</span>(),
+    <span class="hljs-attr">taskCode</span>: <span class="hljs-title function_">varchar</span>(<span class="hljs-string">"task_code"</span>, { <span class="hljs-attr">length</span>: <span class="hljs-number">60</span> }).<span class="hljs-title function_">notNull</span>().<span class="hljs-title function_">unique</span>(),
+    <span class="hljs-attr">displayName</span>: <span class="hljs-title function_">varchar</span>(<span class="hljs-string">"display_name"</span>, { <span class="hljs-attr">length</span>: <span class="hljs-number">255</span> }).<span class="hljs-title function_">notNull</span>(),
+    <span class="hljs-attr">category</span>: <span class="hljs-title function_">varchar</span>(<span class="hljs-string">"category"</span>, { <span class="hljs-attr">length</span>: <span class="hljs-number">30</span> }).<span class="hljs-title function_">notNull</span>(),
+    <span class="hljs-comment">// bathroom | kitchen | painting | drywall | electrical | plumbing | handyman</span>
+    <span class="hljs-attr">estimatedDurationMin</span>: <span class="hljs-title function_">integer</span>(<span class="hljs-string">"estimated_duration_min"</span>).<span class="hljs-title function_">notNull</span>(),
+    <span class="hljs-comment">// 30-min increments per spec</span>
+    <span class="hljs-attr">materialsHandling</span>: <span class="hljs-title function_">varchar</span>(<span class="hljs-string">"materials_handling"</span>, { <span class="hljs-attr">length</span>: <span class="hljs-number">30</span> }).<span class="hljs-title function_">notNull</span>(),
+    <span class="hljs-comment">// customer_supplied | pro_supplied | sherpa_supplied_via_zinc | customer_choice</span>
+    <span class="hljs-attr">materialCostLowCents</span>: <span class="hljs-title function_">integer</span>(<span class="hljs-string">"material_cost_low_cents"</span>),
+    <span class="hljs-attr">materialCostHighCents</span>: <span class="hljs-title function_">integer</span>(<span class="hljs-string">"material_cost_high_cents"</span>),
+    <span class="hljs-attr">licenseRequired</span>: <span class="hljs-title function_">varchar</span>(<span class="hljs-string">"license_required"</span>, { <span class="hljs-attr">length</span>: <span class="hljs-number">30</span> }).<span class="hljs-title function_">notNull</span>(),
+    <span class="hljs-comment">// none | handyman | licensed_electrician | licensed_plumber | licensed_other</span>
+    <span class="hljs-attr">cglMinimumCents</span>: <span class="hljs-title function_">integer</span>(<span class="hljs-string">"cgl_minimum_cents"</span>).<span class="hljs-title function_">notNull</span>(),
+    <span class="hljs-comment">// 50_000_000 ($500K) for handyman, 100_000_000 ($1M) for licensed trades</span>
+    <span class="hljs-attr">permitRequired</span>: <span class="hljs-title function_">varchar</span>(<span class="hljs-string">"permit_required"</span>, { <span class="hljs-attr">length</span>: <span class="hljs-number">12</span> }).<span class="hljs-title function_">notNull</span>(),
+    <span class="hljs-comment">// never | sometimes | always</span>
+    <span class="hljs-attr">edgeCases</span>: <span class="hljs-title function_">text</span>(<span class="hljs-string">"edge_cases"</span>),
+    <span class="hljs-comment">// Free-text engineering note: what scope additions push out of Quick Job</span>
+    <span class="hljs-attr">isActive</span>: <span class="hljs-title function_">boolean</span>(<span class="hljs-string">"is_active"</span>).<span class="hljs-title function_">notNull</span>().<span class="hljs-title function_">default</span>(<span class="hljs-literal">true</span>),
+    <span class="hljs-attr">createdAt</span>: <span class="hljs-title function_">timestamp</span>(<span class="hljs-string">"created_at"</span>, { <span class="hljs-attr">withTimezone</span>: <span class="hljs-literal">true</span> })
+      .<span class="hljs-title function_">notNull</span>()
+      .<span class="hljs-title function_">defaultNow</span>(),
+    <span class="hljs-attr">updatedAt</span>: <span class="hljs-title function_">timestamp</span>(<span class="hljs-string">"updated_at"</span>, { <span class="hljs-attr">withTimezone</span>: <span class="hljs-literal">true</span> })
+      .<span class="hljs-title function_">notNull</span>()
+      .<span class="hljs-title function_">defaultNow</span>(),
+  },
+  <span class="hljs-function">(<span class="hljs-params">table</span>) =&gt;</span> [
+    <span class="hljs-title function_">index</span>(<span class="hljs-string">"idx_quick_job_catalog_category"</span>).<span class="hljs-title function_">on</span>(table.<span class="hljs-property">category</span>),
+    <span class="hljs-title function_">index</span>(<span class="hljs-string">"idx_quick_job_catalog_license"</span>).<span class="hljs-title function_">on</span>(table.<span class="hljs-property">licenseRequired</span>),
+    <span class="hljs-title function_">index</span>(<span class="hljs-string">"idx_quick_job_catalog_permit"</span>).<span class="hljs-title function_">on</span>(table.<span class="hljs-property">permitRequired</span>),
+    <span class="hljs-title function_">index</span>(<span class="hljs-string">"idx_quick_job_catalog_is_active"</span>).<span class="hljs-title function_">on</span>(table.<span class="hljs-property">isActive</span>),
+  ],
+);
+
+<span class="hljs-comment">/**
+ * Per-metro pricing band for each catalog task.
+ * Composite unique on (taskCode, metro) — one band per metro per task.
+ * Metros are slugged (portsmouth_nh, manchester_nh, portland_me, boston_ma).
+ * Phase 2 will support hyper-local zip-code pricing — keep schema additive.
+ */</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> quickJobMetroPricing = <span class="hljs-title function_">pgTable</span>(
+  <span class="hljs-string">"quick_job_metro_pricing"</span>,
+  {
+    <span class="hljs-attr">id</span>: <span class="hljs-title function_">uuid</span>(<span class="hljs-string">"id"</span>).<span class="hljs-title function_">primaryKey</span>().<span class="hljs-title function_">defaultRandom</span>(),
+    <span class="hljs-attr">taskCode</span>: <span class="hljs-title function_">varchar</span>(<span class="hljs-string">"task_code"</span>, { <span class="hljs-attr">length</span>: <span class="hljs-number">60</span> })
+      .<span class="hljs-title function_">notNull</span>()
+      .<span class="hljs-title function_">references</span>(<span class="hljs-function">() =&gt;</span> quickJobCatalog.<span class="hljs-property">taskCode</span>, { <span class="hljs-attr">onDelete</span>: <span class="hljs-string">"cascade"</span> }),
+    <span class="hljs-attr">metro</span>: <span class="hljs-title function_">varchar</span>(<span class="hljs-string">"metro"</span>, { <span class="hljs-attr">length</span>: <span class="hljs-number">30</span> }).<span class="hljs-title function_">notNull</span>(),
+    <span class="hljs-comment">// portsmouth_nh | manchester_nh | portland_me | boston_ma</span>
+    <span class="hljs-attr">priceLowCents</span>: <span class="hljs-title function_">integer</span>(<span class="hljs-string">"price_low_cents"</span>).<span class="hljs-title function_">notNull</span>(),
+    <span class="hljs-attr">priceMedianCents</span>: <span class="hljs-title function_">integer</span>(<span class="hljs-string">"price_median_cents"</span>).<span class="hljs-title function_">notNull</span>(),
+    <span class="hljs-attr">priceHighCents</span>: <span class="hljs-title function_">integer</span>(<span class="hljs-string">"price_high_cents"</span>).<span class="hljs-title function_">notNull</span>(),
+    <span class="hljs-attr">sourceNotes</span>: <span class="hljs-title function_">text</span>(<span class="hljs-string">"source_notes"</span>),
+    <span class="hljs-comment">// e.g., "HomeGuide 2026 toilet install $250-$350; HJD field rate"</span>
+    <span class="hljs-attr">effectiveAt</span>: <span class="hljs-title function_">date</span>(<span class="hljs-string">"effective_at"</span>).<span class="hljs-title function_">notNull</span>().<span class="hljs-title function_">defaultNow</span>(),
+    <span class="hljs-attr">createdAt</span>: <span class="hljs-title function_">timestamp</span>(<span class="hljs-string">"created_at"</span>, { <span class="hljs-attr">withTimezone</span>: <span class="hljs-literal">true</span> })
+      .<span class="hljs-title function_">notNull</span>()
+      .<span class="hljs-title function_">defaultNow</span>(),
+    <span class="hljs-attr">updatedAt</span>: <span class="hljs-title function_">timestamp</span>(<span class="hljs-string">"updated_at"</span>, { <span class="hljs-attr">withTimezone</span>: <span class="hljs-literal">true</span> })
+      .<span class="hljs-title function_">notNull</span>()
+      .<span class="hljs-title function_">defaultNow</span>(),
+  },
+  <span class="hljs-function">(<span class="hljs-params">table</span>) =&gt;</span> [
+    <span class="hljs-title function_">uniqueIndex</span>(<span class="hljs-string">"quick_job_metro_pricing_task_metro_unique"</span>).<span class="hljs-title function_">on</span>(
+      table.<span class="hljs-property">taskCode</span>,
+      table.<span class="hljs-property">metro</span>,
+    ),
+    <span class="hljs-title function_">index</span>(<span class="hljs-string">"idx_quick_job_metro_pricing_task_code"</span>).<span class="hljs-title function_">on</span>(table.<span class="hljs-property">taskCode</span>),
+    <span class="hljs-title function_">index</span>(<span class="hljs-string">"idx_quick_job_metro_pricing_metro"</span>).<span class="hljs-title function_">on</span>(table.<span class="hljs-property">metro</span>),
+  ],
+);
+
+<span class="hljs-comment">/**
+ * Pro opt-in to specific Quick Job categories with daily cap and per-task counter-quote.
+ * One row per (proId, category) for category opt-in; per-task overrides via taskCode.
+ *
+ * - `categoryOptedIn = true` + `taskCode IS NULL` → blanket opt-in for category
+ * - `taskCode IS NOT NULL` → per-task override (counter-quote, decline)
+ */</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> quickJobPros = <span class="hljs-title function_">pgTable</span>(
+  <span class="hljs-string">"quick_job_pros"</span>,
+  {
+    <span class="hljs-attr">id</span>: <span class="hljs-title function_">uuid</span>(<span class="hljs-string">"id"</span>).<span class="hljs-title function_">primaryKey</span>().<span class="hljs-title function_">defaultRandom</span>(),
+    <span class="hljs-attr">proId</span>: <span class="hljs-title function_">uuid</span>(<span class="hljs-string">"pro_id"</span>)
+      .<span class="hljs-title function_">notNull</span>()
+      .<span class="hljs-title function_">references</span>(<span class="hljs-function">() =&gt;</span> pros.<span class="hljs-property">id</span>, { <span class="hljs-attr">onDelete</span>: <span class="hljs-string">"cascade"</span> }),
+    <span class="hljs-attr">category</span>: <span class="hljs-title function_">varchar</span>(<span class="hljs-string">"category"</span>, { <span class="hljs-attr">length</span>: <span class="hljs-number">30</span> }).<span class="hljs-title function_">notNull</span>(),
+    <span class="hljs-attr">taskCode</span>: <span class="hljs-title function_">varchar</span>(<span class="hljs-string">"task_code"</span>, { <span class="hljs-attr">length</span>: <span class="hljs-number">60</span> }).<span class="hljs-title function_">references</span>(
+      <span class="hljs-function">() =&gt;</span> quickJobCatalog.<span class="hljs-property">taskCode</span>,
+      { <span class="hljs-attr">onDelete</span>: <span class="hljs-string">"cascade"</span> },
+    ),
+    <span class="hljs-attr">categoryOptedIn</span>: <span class="hljs-title function_">boolean</span>(<span class="hljs-string">"category_opted_in"</span>).<span class="hljs-title function_">notNull</span>().<span class="hljs-title function_">default</span>(<span class="hljs-literal">true</span>),
+    <span class="hljs-attr">counterQuoteCents</span>: <span class="hljs-title function_">integer</span>(<span class="hljs-string">"counter_quote_cents"</span>),
+    <span class="hljs-comment">// If set, pro is offering this task at a non-standard price</span>
+    <span class="hljs-attr">counterQuoteReason</span>: <span class="hljs-title function_">varchar</span>(<span class="hljs-string">"counter_quote_reason"</span>, { <span class="hljs-attr">length</span>: <span class="hljs-number">255</span> }),
+    <span class="hljs-attr">dailyCap</span>: <span class="hljs-title function_">integer</span>(<span class="hljs-string">"daily_cap"</span>).<span class="hljs-title function_">notNull</span>().<span class="hljs-title function_">default</span>(<span class="hljs-number">3</span>),
+    <span class="hljs-comment">// Max Quick Jobs/day pro will accept; Dispatch enforces</span>
+    <span class="hljs-attr">acceptedToday</span>: <span class="hljs-title function_">integer</span>(<span class="hljs-string">"accepted_today"</span>).<span class="hljs-title function_">notNull</span>().<span class="hljs-title function_">default</span>(<span class="hljs-number">0</span>),
+    <span class="hljs-comment">// Reset daily by cron at 4am pro local</span>
+    <span class="hljs-attr">lastJobAt</span>: <span class="hljs-title function_">timestamp</span>(<span class="hljs-string">"last_job_at"</span>, { <span class="hljs-attr">withTimezone</span>: <span class="hljs-literal">true</span> }),
+    <span class="hljs-attr">acceptanceRatePct</span>: <span class="hljs-title function_">decimal</span>(<span class="hljs-string">"acceptance_rate_pct"</span>, {
+      <span class="hljs-attr">precision</span>: <span class="hljs-number">5</span>,
+      <span class="hljs-attr">scale</span>: <span class="hljs-number">2</span>,
+    }),
+    <span class="hljs-comment">// Rolling 30-day acceptance rate; &lt;50% = removed from lane (per §13 Q3)</span>
+    <span class="hljs-attr">isActive</span>: <span class="hljs-title function_">boolean</span>(<span class="hljs-string">"is_active"</span>).<span class="hljs-title function_">notNull</span>().<span class="hljs-title function_">default</span>(<span class="hljs-literal">true</span>),
+    <span class="hljs-attr">createdAt</span>: <span class="hljs-title function_">timestamp</span>(<span class="hljs-string">"created_at"</span>, { <span class="hljs-attr">withTimezone</span>: <span class="hljs-literal">true</span> })
+      .<span class="hljs-title function_">notNull</span>()
+      .<span class="hljs-title function_">defaultNow</span>(),
+    <span class="hljs-attr">updatedAt</span>: <span class="hljs-title function_">timestamp</span>(<span class="hljs-string">"updated_at"</span>, { <span class="hljs-attr">withTimezone</span>: <span class="hljs-literal">true</span> })
+      .<span class="hljs-title function_">notNull</span>()
+      .<span class="hljs-title function_">defaultNow</span>(),
+  },
+  <span class="hljs-function">(<span class="hljs-params">table</span>) =&gt;</span> [
+    <span class="hljs-title function_">uniqueIndex</span>(<span class="hljs-string">"quick_job_pros_pro_category_task_unique"</span>).<span class="hljs-title function_">on</span>(
+      table.<span class="hljs-property">proId</span>,
+      table.<span class="hljs-property">category</span>,
+      table.<span class="hljs-property">taskCode</span>,
+    ),
+    <span class="hljs-title function_">index</span>(<span class="hljs-string">"idx_quick_job_pros_pro_id"</span>).<span class="hljs-title function_">on</span>(table.<span class="hljs-property">proId</span>),
+    <span class="hljs-title function_">index</span>(<span class="hljs-string">"idx_quick_job_pros_category"</span>).<span class="hljs-title function_">on</span>(table.<span class="hljs-property">category</span>),
+    <span class="hljs-title function_">index</span>(<span class="hljs-string">"idx_quick_job_pros_task_code"</span>).<span class="hljs-title function_">on</span>(table.<span class="hljs-property">taskCode</span>),
+    <span class="hljs-title function_">index</span>(<span class="hljs-string">"idx_quick_job_pros_is_active"</span>).<span class="hljs-title function_">on</span>(table.<span class="hljs-property">isActive</span>),
+  ],
+);
+</code></pre>
+<h3 id="41-existing-table-linkage">4.1 Existing-table linkage</h3>
+<p>The <code>jobs</code> table already has fields that work for Quick Job dispatch — no <code>jobs</code> schema change needed. T1 should use:</p>
+<ul>
+<li><code>jobs.dispatchType = 'quick_job'</code> (new value alongside existing <code>'bid'</code> / <code>'instant'</code>)</li>
+<li><code>jobs.category</code> → links to <code>quickJobCatalog.category</code></li>
+<li>A new column would be cleaner: <strong>add <code>taskCode varchar(60)</code></strong> to <code>jobs</code> referencing <code>quickJobCatalog.taskCode</code>. T1 to confirm whether to add as nullable column (recommended) or store in <code>wisemanValidation</code> JSONB. <strong>Recommendation:</strong> add the column for query performance; migration 006 includes it (see §5).</li>
+</ul>
+<hr>
+<h2 id="5-migration-006--srcdbmigrations006_quick_job_catalogsql">5. Migration 006 — <code>src/db/migrations/006_quick_job_catalog.sql</code></h2>
+<pre><code class="hljs sql"><span class="hljs-comment">-- =============================================================================</span>
+<span class="hljs-comment">-- 006_quick_job_catalog.sql</span>
+<span class="hljs-comment">-- Adds Quick Job catalog, metro pricing, pro opt-in, and seeds the 12 starter</span>
+<span class="hljs-comment">-- tasks from docs/operations/quick-job-lane.md §4.</span>
+<span class="hljs-comment">-- Companion doc: docs/operations/quick-job-catalog-full.md (47 tasks total)</span>
+<span class="hljs-comment">-- =============================================================================</span>
+
+<span class="hljs-keyword">BEGIN</span>;
+
+<span class="hljs-comment">-- ---------------------------------------------------------------------------</span>
+<span class="hljs-comment">-- 1. quick_job_catalog</span>
+<span class="hljs-comment">-- ---------------------------------------------------------------------------</span>
+<span class="hljs-keyword">CREATE TABLE</span> quick_job_catalog (
+    id                       UUID <span class="hljs-keyword">PRIMARY KEY</span> <span class="hljs-keyword">DEFAULT</span> gen_random_uuid(),
+    task_code                <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">60</span>)  <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">UNIQUE</span>,
+    display_name             <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">255</span>) <span class="hljs-keyword">NOT NULL</span>,
+    category                 <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">30</span>)  <span class="hljs-keyword">NOT NULL</span>,
+    estimated_duration_min   <span class="hljs-type">INTEGER</span>      <span class="hljs-keyword">NOT NULL</span>,
+    materials_handling       <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">30</span>)  <span class="hljs-keyword">NOT NULL</span>,
+    material_cost_low_cents  <span class="hljs-type">INTEGER</span>,
+    material_cost_high_cents <span class="hljs-type">INTEGER</span>,
+    license_required         <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">30</span>)  <span class="hljs-keyword">NOT NULL</span>,
+    cgl_minimum_cents        <span class="hljs-type">INTEGER</span>      <span class="hljs-keyword">NOT NULL</span>,
+    permit_required          <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">12</span>)  <span class="hljs-keyword">NOT NULL</span>,
+    edge_cases               TEXT,
+    is_active                <span class="hljs-type">BOOLEAN</span>      <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-literal">TRUE</span>,
+    created_at               TIMESTAMPTZ  <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> NOW(),
+    updated_at               TIMESTAMPTZ  <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> NOW(),
+
+    <span class="hljs-keyword">CONSTRAINT</span> chk_qjc_category <span class="hljs-keyword">CHECK</span> (category <span class="hljs-keyword">IN</span> (
+        <span class="hljs-string">'bathroom'</span>,<span class="hljs-string">'kitchen'</span>,<span class="hljs-string">'painting'</span>,<span class="hljs-string">'drywall'</span>,<span class="hljs-string">'electrical'</span>,<span class="hljs-string">'plumbing'</span>,<span class="hljs-string">'handyman'</span>
+    )),
+    <span class="hljs-keyword">CONSTRAINT</span> chk_qjc_materials <span class="hljs-keyword">CHECK</span> (materials_handling <span class="hljs-keyword">IN</span> (
+        <span class="hljs-string">'customer_supplied'</span>,<span class="hljs-string">'pro_supplied'</span>,<span class="hljs-string">'sherpa_supplied_via_zinc'</span>,<span class="hljs-string">'customer_choice'</span>
+    )),
+    <span class="hljs-keyword">CONSTRAINT</span> chk_qjc_license <span class="hljs-keyword">CHECK</span> (license_required <span class="hljs-keyword">IN</span> (
+        <span class="hljs-string">'none'</span>,<span class="hljs-string">'handyman'</span>,<span class="hljs-string">'licensed_electrician'</span>,<span class="hljs-string">'licensed_plumber'</span>,<span class="hljs-string">'licensed_other'</span>
+    )),
+    <span class="hljs-keyword">CONSTRAINT</span> chk_qjc_permit <span class="hljs-keyword">CHECK</span> (permit_required <span class="hljs-keyword">IN</span> (
+        <span class="hljs-string">'never'</span>,<span class="hljs-string">'sometimes'</span>,<span class="hljs-string">'always'</span>
+    )),
+    <span class="hljs-keyword">CONSTRAINT</span> chk_qjc_duration <span class="hljs-keyword">CHECK</span> (estimated_duration_min <span class="hljs-operator">&gt;</span> <span class="hljs-number">0</span>
+        <span class="hljs-keyword">AND</span> estimated_duration_min <span class="hljs-operator">%</span> <span class="hljs-number">30</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>),
+    <span class="hljs-keyword">CONSTRAINT</span> chk_qjc_material_cost_range <span class="hljs-keyword">CHECK</span> (
+        material_cost_low_cents <span class="hljs-keyword">IS</span> <span class="hljs-keyword">NULL</span>
+        <span class="hljs-keyword">OR</span> material_cost_high_cents <span class="hljs-keyword">IS</span> <span class="hljs-keyword">NULL</span>
+        <span class="hljs-keyword">OR</span> material_cost_low_cents <span class="hljs-operator">&lt;=</span> material_cost_high_cents
+    ),
+    <span class="hljs-keyword">CONSTRAINT</span> chk_qjc_cgl_positive <span class="hljs-keyword">CHECK</span> (cgl_minimum_cents <span class="hljs-operator">&gt;</span> <span class="hljs-number">0</span>)
+);
+
+<span class="hljs-keyword">CREATE</span> INDEX idx_quick_job_catalog_category   <span class="hljs-keyword">ON</span> quick_job_catalog(category);
+<span class="hljs-keyword">CREATE</span> INDEX idx_quick_job_catalog_license    <span class="hljs-keyword">ON</span> quick_job_catalog(license_required);
+<span class="hljs-keyword">CREATE</span> INDEX idx_quick_job_catalog_permit     <span class="hljs-keyword">ON</span> quick_job_catalog(permit_required);
+<span class="hljs-keyword">CREATE</span> INDEX idx_quick_job_catalog_is_active  <span class="hljs-keyword">ON</span> quick_job_catalog(is_active);
+
+<span class="hljs-comment">-- ---------------------------------------------------------------------------</span>
+<span class="hljs-comment">-- 2. quick_job_metro_pricing</span>
+<span class="hljs-comment">-- ---------------------------------------------------------------------------</span>
+<span class="hljs-keyword">CREATE TABLE</span> quick_job_metro_pricing (
+    id                  UUID <span class="hljs-keyword">PRIMARY KEY</span> <span class="hljs-keyword">DEFAULT</span> gen_random_uuid(),
+    task_code           <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">60</span>) <span class="hljs-keyword">NOT NULL</span>
+        <span class="hljs-keyword">REFERENCES</span> quick_job_catalog(task_code) <span class="hljs-keyword">ON</span> <span class="hljs-keyword">DELETE</span> CASCADE,
+    metro               <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">30</span>) <span class="hljs-keyword">NOT NULL</span>,
+    price_low_cents     <span class="hljs-type">INTEGER</span>     <span class="hljs-keyword">NOT NULL</span>,
+    price_median_cents  <span class="hljs-type">INTEGER</span>     <span class="hljs-keyword">NOT NULL</span>,
+    price_high_cents    <span class="hljs-type">INTEGER</span>     <span class="hljs-keyword">NOT NULL</span>,
+    source_notes        TEXT,
+    effective_at        <span class="hljs-type">DATE</span>        <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-built_in">CURRENT_DATE</span>,
+    created_at          TIMESTAMPTZ <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> NOW(),
+    updated_at          TIMESTAMPTZ <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> NOW(),
+
+    <span class="hljs-keyword">CONSTRAINT</span> chk_qjmp_metro <span class="hljs-keyword">CHECK</span> (metro <span class="hljs-keyword">IN</span> (
+        <span class="hljs-string">'portsmouth_nh'</span>,<span class="hljs-string">'manchester_nh'</span>,<span class="hljs-string">'portland_me'</span>,<span class="hljs-string">'boston_ma'</span>
+    )),
+    <span class="hljs-keyword">CONSTRAINT</span> chk_qjmp_price_order <span class="hljs-keyword">CHECK</span> (
+        price_low_cents <span class="hljs-operator">&lt;=</span> price_median_cents
+        <span class="hljs-keyword">AND</span> price_median_cents <span class="hljs-operator">&lt;=</span> price_high_cents
+    ),
+    <span class="hljs-keyword">CONSTRAINT</span> chk_qjmp_price_positive <span class="hljs-keyword">CHECK</span> (price_low_cents <span class="hljs-operator">&gt;</span> <span class="hljs-number">0</span>)
+);
+
+<span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">UNIQUE</span> INDEX quick_job_metro_pricing_task_metro_unique
+    <span class="hljs-keyword">ON</span> quick_job_metro_pricing(task_code, metro);
+<span class="hljs-keyword">CREATE</span> INDEX idx_quick_job_metro_pricing_task_code <span class="hljs-keyword">ON</span> quick_job_metro_pricing(task_code);
+<span class="hljs-keyword">CREATE</span> INDEX idx_quick_job_metro_pricing_metro     <span class="hljs-keyword">ON</span> quick_job_metro_pricing(metro);
+
+<span class="hljs-comment">-- ---------------------------------------------------------------------------</span>
+<span class="hljs-comment">-- 3. quick_job_pros</span>
+<span class="hljs-comment">-- ---------------------------------------------------------------------------</span>
+<span class="hljs-keyword">CREATE TABLE</span> quick_job_pros (
+    id                    UUID <span class="hljs-keyword">PRIMARY KEY</span> <span class="hljs-keyword">DEFAULT</span> gen_random_uuid(),
+    pro_id                UUID <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">REFERENCES</span> pros(id) <span class="hljs-keyword">ON</span> <span class="hljs-keyword">DELETE</span> CASCADE,
+    category              <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">30</span>) <span class="hljs-keyword">NOT NULL</span>,
+    task_code             <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">60</span>)
+        <span class="hljs-keyword">REFERENCES</span> quick_job_catalog(task_code) <span class="hljs-keyword">ON</span> <span class="hljs-keyword">DELETE</span> CASCADE,
+    category_opted_in     <span class="hljs-type">BOOLEAN</span>     <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-literal">TRUE</span>,
+    counter_quote_cents   <span class="hljs-type">INTEGER</span>,
+    counter_quote_reason  <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">255</span>),
+    daily_cap             <span class="hljs-type">INTEGER</span>     <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-number">3</span>,
+    accepted_today        <span class="hljs-type">INTEGER</span>     <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-number">0</span>,
+    last_job_at           TIMESTAMPTZ,
+    acceptance_rate_pct   <span class="hljs-type">NUMERIC</span>(<span class="hljs-number">5</span>,<span class="hljs-number">2</span>),
+    is_active             <span class="hljs-type">BOOLEAN</span>     <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-literal">TRUE</span>,
+    created_at            TIMESTAMPTZ <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> NOW(),
+    updated_at            TIMESTAMPTZ <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> NOW(),
+
+    <span class="hljs-keyword">CONSTRAINT</span> chk_qjp_category <span class="hljs-keyword">CHECK</span> (category <span class="hljs-keyword">IN</span> (
+        <span class="hljs-string">'bathroom'</span>,<span class="hljs-string">'kitchen'</span>,<span class="hljs-string">'painting'</span>,<span class="hljs-string">'drywall'</span>,<span class="hljs-string">'electrical'</span>,<span class="hljs-string">'plumbing'</span>,<span class="hljs-string">'handyman'</span>
+    )),
+    <span class="hljs-keyword">CONSTRAINT</span> chk_qjp_daily_cap <span class="hljs-keyword">CHECK</span> (daily_cap <span class="hljs-operator">&gt;=</span> <span class="hljs-number">1</span> <span class="hljs-keyword">AND</span> daily_cap <span class="hljs-operator">&lt;=</span> <span class="hljs-number">20</span>),
+    <span class="hljs-keyword">CONSTRAINT</span> chk_qjp_accepted_nonneg <span class="hljs-keyword">CHECK</span> (accepted_today <span class="hljs-operator">&gt;=</span> <span class="hljs-number">0</span>),
+    <span class="hljs-keyword">CONSTRAINT</span> chk_qjp_acceptance_rate <span class="hljs-keyword">CHECK</span> (
+        acceptance_rate_pct <span class="hljs-keyword">IS</span> <span class="hljs-keyword">NULL</span>
+        <span class="hljs-keyword">OR</span> (acceptance_rate_pct <span class="hljs-operator">&gt;=</span> <span class="hljs-number">0</span> <span class="hljs-keyword">AND</span> acceptance_rate_pct <span class="hljs-operator">&lt;=</span> <span class="hljs-number">100</span>)
+    )
+);
+
+<span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">UNIQUE</span> INDEX quick_job_pros_pro_category_task_unique
+    <span class="hljs-keyword">ON</span> quick_job_pros(pro_id, category, <span class="hljs-built_in">COALESCE</span>(task_code, <span class="hljs-string">''</span>));
+<span class="hljs-keyword">CREATE</span> INDEX idx_quick_job_pros_pro_id     <span class="hljs-keyword">ON</span> quick_job_pros(pro_id);
+<span class="hljs-keyword">CREATE</span> INDEX idx_quick_job_pros_category   <span class="hljs-keyword">ON</span> quick_job_pros(category);
+<span class="hljs-keyword">CREATE</span> INDEX idx_quick_job_pros_task_code  <span class="hljs-keyword">ON</span> quick_job_pros(task_code);
+<span class="hljs-keyword">CREATE</span> INDEX idx_quick_job_pros_is_active  <span class="hljs-keyword">ON</span> quick_job_pros(is_active);
+
+<span class="hljs-comment">-- ---------------------------------------------------------------------------</span>
+<span class="hljs-comment">-- 4. Add task_code to jobs (links a job to a catalog task; nullable for Project)</span>
+<span class="hljs-comment">-- ---------------------------------------------------------------------------</span>
+<span class="hljs-keyword">ALTER TABLE</span> jobs
+    <span class="hljs-keyword">ADD</span> <span class="hljs-keyword">COLUMN</span> task_code <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">60</span>)
+        <span class="hljs-keyword">REFERENCES</span> quick_job_catalog(task_code) <span class="hljs-keyword">ON</span> <span class="hljs-keyword">DELETE</span> <span class="hljs-keyword">SET</span> <span class="hljs-keyword">NULL</span>;
+
+<span class="hljs-keyword">CREATE</span> INDEX idx_jobs_task_code <span class="hljs-keyword">ON</span> jobs(task_code);
+
+<span class="hljs-comment">-- 'quick_job' becomes a valid dispatch_type alongside 'bid' and 'instant'.</span>
+<span class="hljs-comment">-- (No CHECK constraint exists on jobs.dispatch_type today; adding one here would</span>
+<span class="hljs-comment">--  require a separate migration to backfill — leaving for T1's discretion.)</span>
+
+<span class="hljs-comment">-- ---------------------------------------------------------------------------</span>
+<span class="hljs-comment">-- 5. Seed: 12 starter tasks from quick-job-lane.md §4</span>
+<span class="hljs-comment">--    (Full 47-task seed lives in a follow-on data migration once §4 is approved.)</span>
+<span class="hljs-comment">-- ---------------------------------------------------------------------------</span>
+<span class="hljs-keyword">INSERT INTO</span> quick_job_catalog (
+    task_code, display_name, category, estimated_duration_min,
+    materials_handling, material_cost_low_cents, material_cost_high_cents,
+    license_required, cgl_minimum_cents, permit_required, edge_cases
+) <span class="hljs-keyword">VALUES</span>
+    (<span class="hljs-string">'toilet_install_basic'</span>,
+     <span class="hljs-string">'Toilet install (you supply the toilet)'</span>,
+     <span class="hljs-string">'bathroom'</span>, <span class="hljs-number">90</span>, <span class="hljs-string">'customer_supplied'</span>, <span class="hljs-keyword">NULL</span>, <span class="hljs-keyword">NULL</span>,
+     <span class="hljs-string">'handyman'</span>, <span class="hljs-number">50000000</span>, <span class="hljs-string">'sometimes'</span>,
+     <span class="hljs-string">'Cast-iron drain, broken closet flange, rotted subfloor → Project'</span>),
+    (<span class="hljs-string">'paint_wall_accent'</span>,
+     <span class="hljs-string">'Paint a single accent wall (≤120 sqft)'</span>,
+     <span class="hljs-string">'painting'</span>, <span class="hljs-number">90</span>, <span class="hljs-string">'customer_supplied'</span>, <span class="hljs-keyword">NULL</span>, <span class="hljs-keyword">NULL</span>,
+     <span class="hljs-string">'none'</span>, <span class="hljs-number">50000000</span>, <span class="hljs-string">'never'</span>,
+     <span class="hljs-string">'Vaulted ceiling, repair before paint, dark-over-light primer needs → recheck'</span>),
+    (<span class="hljs-string">'drywall_patch_small'</span>,
+     <span class="hljs-string">'Small drywall patch (up to 6 inches) + paint blend'</span>,
+     <span class="hljs-string">'drywall'</span>, <span class="hljs-number">90</span>, <span class="hljs-string">'pro_supplied'</span>, <span class="hljs-number">1500</span>, <span class="hljs-number">3000</span>,
+     <span class="hljs-string">'handyman'</span>, <span class="hljs-number">50000000</span>, <span class="hljs-string">'never'</span>,
+     <span class="hljs-string">'Mold visible, structural framing, re-occurring leak source → Project'</span>),
+    (<span class="hljs-string">'ceiling_fan_install_existing'</span>,
+     <span class="hljs-string">'Ceiling fan install (existing wiring + box)'</span>,
+     <span class="hljs-string">'electrical'</span>, <span class="hljs-number">90</span>, <span class="hljs-string">'customer_supplied'</span>, <span class="hljs-keyword">NULL</span>, <span class="hljs-keyword">NULL</span>,
+     <span class="hljs-string">'licensed_electrician'</span>, <span class="hljs-number">100000000</span>, <span class="hljs-string">'never'</span>,
+     <span class="hljs-string">'No fan-rated box, no existing wiring, vaulted ceiling → Project'</span>),
+    (<span class="hljs-string">'gfci_outlet_replace'</span>,
+     <span class="hljs-string">'GFCI outlet replacement'</span>,
+     <span class="hljs-string">'electrical'</span>, <span class="hljs-number">45</span>, <span class="hljs-string">'pro_supplied'</span>, <span class="hljs-number">2000</span>, <span class="hljs-number">3000</span>,
+     <span class="hljs-string">'licensed_electrician'</span>, <span class="hljs-number">100000000</span>, <span class="hljs-string">'never'</span>,
+     <span class="hljs-string">'Backstabbed wiring, aluminum wiring, no ground → recheck or Project'</span>),
+    (<span class="hljs-string">'garbage_disposal_install_kitchen'</span>,
+     <span class="hljs-string">'Garbage disposal install (under kitchen sink)'</span>,
+     <span class="hljs-string">'kitchen'</span>, <span class="hljs-number">90</span>, <span class="hljs-string">'customer_choice'</span>, <span class="hljs-number">9000</span>, <span class="hljs-number">22000</span>,
+     <span class="hljs-string">'handyman'</span>, <span class="hljs-number">50000000</span>, <span class="hljs-string">'never'</span>,
+     <span class="hljs-string">'No GFCI, no dedicated outlet, hardwired → kicks to electrical'</span>),
+    (<span class="hljs-string">'smoke_co_detector_swap'</span>,
+     <span class="hljs-string">'Smoke and carbon monoxide detector replacement'</span>,
+     <span class="hljs-string">'handyman'</span>, <span class="hljs-number">30</span>, <span class="hljs-string">'customer_choice'</span>, <span class="hljs-number">2000</span>, <span class="hljs-number">6000</span>,
+     <span class="hljs-string">'licensed_electrician'</span>, <span class="hljs-number">100000000</span>, <span class="hljs-string">'never'</span>,
+     <span class="hljs-string">'Hardwired interconnect adjustment, full-house &gt;5 units → Project'</span>),
+    (<span class="hljs-string">'tv_mount_drywall'</span>,
+     <span class="hljs-string">'TV mount install (drywall)'</span>,
+     <span class="hljs-string">'handyman'</span>, <span class="hljs-number">60</span>, <span class="hljs-string">'customer_supplied'</span>, <span class="hljs-keyword">NULL</span>, <span class="hljs-keyword">NULL</span>,
+     <span class="hljs-string">'none'</span>, <span class="hljs-number">50000000</span>, <span class="hljs-string">'never'</span>,
+     <span class="hljs-string">'TV &gt;65"/&gt;75 lb (heavy mount), in-wall cable routing → recheck'</span>),
+    (<span class="hljs-string">'door_knob_deadbolt_replace'</span>,
+     <span class="hljs-string">'Door knob or deadbolt replacement'</span>,
+     <span class="hljs-string">'handyman'</span>, <span class="hljs-number">30</span>, <span class="hljs-string">'customer_supplied'</span>, <span class="hljs-keyword">NULL</span>, <span class="hljs-keyword">NULL</span>,
+     <span class="hljs-string">'none'</span>, <span class="hljs-number">50000000</span>, <span class="hljs-string">'never'</span>,
+     <span class="hljs-string">'Re-key needs (locksmith license), strike plate cut, sagging door → recheck'</span>),
+    (<span class="hljs-string">'light_fixture_swap'</span>,
+     <span class="hljs-string">'Light fixture swap (existing wiring)'</span>,
+     <span class="hljs-string">'electrical'</span>, <span class="hljs-number">45</span>, <span class="hljs-string">'customer_supplied'</span>, <span class="hljs-keyword">NULL</span>, <span class="hljs-keyword">NULL</span>,
+     <span class="hljs-string">'licensed_electrician'</span>, <span class="hljs-number">100000000</span>, <span class="hljs-string">'never'</span>,
+     <span class="hljs-string">'Heavy chandelier (&gt;35 lb), no junction box → Project'</span>),
+    (<span class="hljs-string">'valve_shutoff_replace'</span>,
+     <span class="hljs-string">'Leaky valve / shutoff replacement (under-sink, behind-toilet)'</span>,
+     <span class="hljs-string">'plumbing'</span>, <span class="hljs-number">90</span>, <span class="hljs-string">'pro_supplied'</span>, <span class="hljs-number">1500</span>, <span class="hljs-number">3500</span>,
+     <span class="hljs-string">'licensed_plumber'</span>, <span class="hljs-number">100000000</span>, <span class="hljs-string">'never'</span>,
+     <span class="hljs-string">'Soldered valve, galvanized supply, frozen valve corroded into wall → Project'</span>),
+    (<span class="hljs-string">'toilet_repair_flapper'</span>,
+     <span class="hljs-string">'Toilet repair (running, weak flush, fill valve)'</span>,
+     <span class="hljs-string">'bathroom'</span>, <span class="hljs-number">45</span>, <span class="hljs-string">'pro_supplied'</span>, <span class="hljs-number">1500</span>, <span class="hljs-number">3000</span>,
+     <span class="hljs-string">'handyman'</span>, <span class="hljs-number">50000000</span>, <span class="hljs-string">'never'</span>,
+     <span class="hljs-string">'Tank crack, unseen leak below subfloor → Project'</span>);
+
+<span class="hljs-comment">-- ---------------------------------------------------------------------------</span>
+<span class="hljs-comment">-- 6. Seed: per-metro pricing for the 12 starter tasks</span>
+<span class="hljs-comment">--    Sources documented per-row; full source table in catalog doc §8.</span>
+<span class="hljs-comment">-- ---------------------------------------------------------------------------</span>
+<span class="hljs-keyword">INSERT INTO</span> quick_job_metro_pricing (
+    task_code, metro, price_low_cents, price_median_cents, price_high_cents, source_notes
+) <span class="hljs-keyword">VALUES</span>
+    <span class="hljs-comment">-- toilet_install_basic</span>
+    (<span class="hljs-string">'toilet_install_basic'</span>,<span class="hljs-string">'portsmouth_nh'</span>, <span class="hljs-number">25000</span>, <span class="hljs-number">30000</span>, <span class="hljs-number">35000</span>, <span class="hljs-string">'HomeGuide 2026 toilet install $250-$350; HJD field rate'</span>),
+    (<span class="hljs-string">'toilet_install_basic'</span>,<span class="hljs-string">'manchester_nh'</span>, <span class="hljs-number">25000</span>, <span class="hljs-number">30000</span>, <span class="hljs-number">35000</span>, <span class="hljs-string">'HomeGuide 2026; matches Portsmouth band'</span>),
+    (<span class="hljs-string">'toilet_install_basic'</span>,<span class="hljs-string">'portland_me'</span>,   <span class="hljs-number">25000</span>, <span class="hljs-number">30000</span>, <span class="hljs-number">35000</span>, <span class="hljs-string">'HomeGuide 2026; ME tracks NH'</span>),
+    (<span class="hljs-string">'toilet_install_basic'</span>,<span class="hljs-string">'boston_ma'</span>,     <span class="hljs-number">32500</span>, <span class="hljs-number">39000</span>, <span class="hljs-number">45000</span>, <span class="hljs-string">'Angi 2026 Boston metro +30%; Homewyse calc'</span>),
+
+    <span class="hljs-comment">-- paint_wall_accent</span>
+    (<span class="hljs-string">'paint_wall_accent'</span>,<span class="hljs-string">'portsmouth_nh'</span>, <span class="hljs-number">20000</span>, <span class="hljs-number">24000</span>, <span class="hljs-number">27500</span>, <span class="hljs-string">'HomeGuide 2026 painter rates $1.50-$3/sqft; 120sqft'</span>),
+    (<span class="hljs-string">'paint_wall_accent'</span>,<span class="hljs-string">'manchester_nh'</span>, <span class="hljs-number">20000</span>, <span class="hljs-number">24000</span>, <span class="hljs-number">27500</span>, <span class="hljs-string">'HomeGuide 2026'</span>),
+    (<span class="hljs-string">'paint_wall_accent'</span>,<span class="hljs-string">'portland_me'</span>,   <span class="hljs-number">20000</span>, <span class="hljs-number">24000</span>, <span class="hljs-number">27500</span>, <span class="hljs-string">'HomeGuide 2026'</span>),
+    (<span class="hljs-string">'paint_wall_accent'</span>,<span class="hljs-string">'boston_ma'</span>,     <span class="hljs-number">27500</span>, <span class="hljs-number">31500</span>, <span class="hljs-number">35000</span>, <span class="hljs-string">'Fixr 2026 MA painter premium'</span>),
+
+    <span class="hljs-comment">-- drywall_patch_small</span>
+    (<span class="hljs-string">'drywall_patch_small'</span>,<span class="hljs-string">'portsmouth_nh'</span>, <span class="hljs-number">20000</span>, <span class="hljs-number">25000</span>, <span class="hljs-number">30000</span>, <span class="hljs-string">'HomeAdvisor 2026 drywall patch $150-$400'</span>),
+    (<span class="hljs-string">'drywall_patch_small'</span>,<span class="hljs-string">'manchester_nh'</span>, <span class="hljs-number">20000</span>, <span class="hljs-number">25000</span>, <span class="hljs-number">30000</span>, <span class="hljs-string">'HomeAdvisor 2026'</span>),
+    (<span class="hljs-string">'drywall_patch_small'</span>,<span class="hljs-string">'portland_me'</span>,   <span class="hljs-number">20000</span>, <span class="hljs-number">25000</span>, <span class="hljs-number">30000</span>, <span class="hljs-string">'HomeAdvisor 2026'</span>),
+    (<span class="hljs-string">'drywall_patch_small'</span>,<span class="hljs-string">'boston_ma'</span>,     <span class="hljs-number">27500</span>, <span class="hljs-number">34000</span>, <span class="hljs-number">40000</span>, <span class="hljs-string">'HomeAdvisor 2026 +30% Boston'</span>),
+
+    <span class="hljs-comment">-- ceiling_fan_install_existing</span>
+    (<span class="hljs-string">'ceiling_fan_install_existing'</span>,<span class="hljs-string">'portsmouth_nh'</span>, <span class="hljs-number">20000</span>, <span class="hljs-number">25000</span>, <span class="hljs-number">30000</span>, <span class="hljs-string">'Fixr 2026 ceiling fan install $150-$350'</span>),
+    (<span class="hljs-string">'ceiling_fan_install_existing'</span>,<span class="hljs-string">'manchester_nh'</span>, <span class="hljs-number">20000</span>, <span class="hljs-number">25000</span>, <span class="hljs-number">30000</span>, <span class="hljs-string">'Fixr 2026'</span>),
+    (<span class="hljs-string">'ceiling_fan_install_existing'</span>,<span class="hljs-string">'portland_me'</span>,   <span class="hljs-number">20000</span>, <span class="hljs-number">25000</span>, <span class="hljs-number">30000</span>, <span class="hljs-string">'Fixr 2026'</span>),
+    (<span class="hljs-string">'ceiling_fan_install_existing'</span>,<span class="hljs-string">'boston_ma'</span>,     <span class="hljs-number">27500</span>, <span class="hljs-number">34000</span>, <span class="hljs-number">40000</span>, <span class="hljs-string">'Fixr 2026 MA licensed-electrician premium'</span>),
+
+    <span class="hljs-comment">-- gfci_outlet_replace</span>
+    (<span class="hljs-string">'gfci_outlet_replace'</span>,<span class="hljs-string">'portsmouth_nh'</span>, <span class="hljs-number">12500</span>, <span class="hljs-number">15000</span>, <span class="hljs-number">17500</span>, <span class="hljs-string">'Angi 2026 GFCI install $130-$300'</span>),
+    (<span class="hljs-string">'gfci_outlet_replace'</span>,<span class="hljs-string">'manchester_nh'</span>, <span class="hljs-number">12500</span>, <span class="hljs-number">15000</span>, <span class="hljs-number">17500</span>, <span class="hljs-string">'Angi 2026'</span>),
+    (<span class="hljs-string">'gfci_outlet_replace'</span>,<span class="hljs-string">'portland_me'</span>,   <span class="hljs-number">12500</span>, <span class="hljs-number">15000</span>, <span class="hljs-number">17500</span>, <span class="hljs-string">'Angi 2026'</span>),
+    (<span class="hljs-string">'gfci_outlet_replace'</span>,<span class="hljs-string">'boston_ma'</span>,     <span class="hljs-number">17500</span>, <span class="hljs-number">20000</span>, <span class="hljs-number">22500</span>, <span class="hljs-string">'Angi 2026 MA licensed-electrician'</span>),
+
+    <span class="hljs-comment">-- garbage_disposal_install_kitchen</span>
+    (<span class="hljs-string">'garbage_disposal_install_kitchen'</span>,<span class="hljs-string">'portsmouth_nh'</span>, <span class="hljs-number">20000</span>, <span class="hljs-number">25000</span>, <span class="hljs-number">30000</span>, <span class="hljs-string">'HomeGuide 2026 disposal install $200-$400'</span>),
+    (<span class="hljs-string">'garbage_disposal_install_kitchen'</span>,<span class="hljs-string">'manchester_nh'</span>, <span class="hljs-number">20000</span>, <span class="hljs-number">25000</span>, <span class="hljs-number">30000</span>, <span class="hljs-string">'HomeGuide 2026'</span>),
+    (<span class="hljs-string">'garbage_disposal_install_kitchen'</span>,<span class="hljs-string">'portland_me'</span>,   <span class="hljs-number">20000</span>, <span class="hljs-number">25000</span>, <span class="hljs-number">30000</span>, <span class="hljs-string">'HomeGuide 2026'</span>),
+    (<span class="hljs-string">'garbage_disposal_install_kitchen'</span>,<span class="hljs-string">'boston_ma'</span>,     <span class="hljs-number">27500</span>, <span class="hljs-number">34000</span>, <span class="hljs-number">40000</span>, <span class="hljs-string">'HomeGuide 2026 MA premium'</span>),
+
+    <span class="hljs-comment">-- smoke_co_detector_swap (per unit)</span>
+    (<span class="hljs-string">'smoke_co_detector_swap'</span>,<span class="hljs-string">'portsmouth_nh'</span>, <span class="hljs-number">7500</span>, <span class="hljs-number">10000</span>, <span class="hljs-number">12500</span>, <span class="hljs-string">'HomeAdvisor 2026 detector swap; per unit'</span>),
+    (<span class="hljs-string">'smoke_co_detector_swap'</span>,<span class="hljs-string">'manchester_nh'</span>, <span class="hljs-number">7500</span>, <span class="hljs-number">10000</span>, <span class="hljs-number">12500</span>, <span class="hljs-string">'HomeAdvisor 2026'</span>),
+    (<span class="hljs-string">'smoke_co_detector_swap'</span>,<span class="hljs-string">'portland_me'</span>,   <span class="hljs-number">7500</span>, <span class="hljs-number">10000</span>, <span class="hljs-number">12500</span>, <span class="hljs-string">'HomeAdvisor 2026'</span>),
+    (<span class="hljs-string">'smoke_co_detector_swap'</span>,<span class="hljs-string">'boston_ma'</span>,    <span class="hljs-number">10000</span>, <span class="hljs-number">12500</span>, <span class="hljs-number">15000</span>, <span class="hljs-string">'HomeAdvisor 2026 MA premium'</span>),
+
+    <span class="hljs-comment">-- tv_mount_drywall</span>
+    (<span class="hljs-string">'tv_mount_drywall'</span>,<span class="hljs-string">'portsmouth_nh'</span>, <span class="hljs-number">15000</span>, <span class="hljs-number">19000</span>, <span class="hljs-number">22500</span>, <span class="hljs-string">'Thumbtack 2026 TV mount $100-$300'</span>),
+    (<span class="hljs-string">'tv_mount_drywall'</span>,<span class="hljs-string">'manchester_nh'</span>, <span class="hljs-number">15000</span>, <span class="hljs-number">19000</span>, <span class="hljs-number">22500</span>, <span class="hljs-string">'Thumbtack 2026'</span>),
+    (<span class="hljs-string">'tv_mount_drywall'</span>,<span class="hljs-string">'portland_me'</span>,   <span class="hljs-number">15000</span>, <span class="hljs-number">19000</span>, <span class="hljs-number">22500</span>, <span class="hljs-string">'Thumbtack 2026'</span>),
+    (<span class="hljs-string">'tv_mount_drywall'</span>,<span class="hljs-string">'boston_ma'</span>,     <span class="hljs-number">20000</span>, <span class="hljs-number">24000</span>, <span class="hljs-number">27500</span>, <span class="hljs-string">'Thumbtack 2026 MA premium'</span>),
+
+    <span class="hljs-comment">-- door_knob_deadbolt_replace</span>
+    (<span class="hljs-string">'door_knob_deadbolt_replace'</span>,<span class="hljs-string">'portsmouth_nh'</span>, <span class="hljs-number">10000</span>, <span class="hljs-number">12500</span>, <span class="hljs-number">15000</span>, <span class="hljs-string">'HomeGuide 2026 lock install $80-$200'</span>),
+    (<span class="hljs-string">'door_knob_deadbolt_replace'</span>,<span class="hljs-string">'manchester_nh'</span>, <span class="hljs-number">10000</span>, <span class="hljs-number">12500</span>, <span class="hljs-number">15000</span>, <span class="hljs-string">'HomeGuide 2026'</span>),
+    (<span class="hljs-string">'door_knob_deadbolt_replace'</span>,<span class="hljs-string">'portland_me'</span>,   <span class="hljs-number">10000</span>, <span class="hljs-number">12500</span>, <span class="hljs-number">15000</span>, <span class="hljs-string">'HomeGuide 2026'</span>),
+    (<span class="hljs-string">'door_knob_deadbolt_replace'</span>,<span class="hljs-string">'boston_ma'</span>,     <span class="hljs-number">13500</span>, <span class="hljs-number">17000</span>, <span class="hljs-number">20000</span>, <span class="hljs-string">'HomeGuide 2026 MA premium'</span>),
+
+    <span class="hljs-comment">-- light_fixture_swap</span>
+    (<span class="hljs-string">'light_fixture_swap'</span>,<span class="hljs-string">'portsmouth_nh'</span>, <span class="hljs-number">12500</span>, <span class="hljs-number">15000</span>, <span class="hljs-number">17500</span>, <span class="hljs-string">'Fixr 2026 fixture install $100-$250'</span>),
+    (<span class="hljs-string">'light_fixture_swap'</span>,<span class="hljs-string">'manchester_nh'</span>, <span class="hljs-number">12500</span>, <span class="hljs-number">15000</span>, <span class="hljs-number">17500</span>, <span class="hljs-string">'Fixr 2026'</span>),
+    (<span class="hljs-string">'light_fixture_swap'</span>,<span class="hljs-string">'portland_me'</span>,   <span class="hljs-number">12500</span>, <span class="hljs-number">15000</span>, <span class="hljs-number">17500</span>, <span class="hljs-string">'Fixr 2026'</span>),
+    (<span class="hljs-string">'light_fixture_swap'</span>,<span class="hljs-string">'boston_ma'</span>,     <span class="hljs-number">17500</span>, <span class="hljs-number">20000</span>, <span class="hljs-number">22500</span>, <span class="hljs-string">'Fixr 2026 MA licensed-electrician'</span>),
+
+    <span class="hljs-comment">-- valve_shutoff_replace</span>
+    (<span class="hljs-string">'valve_shutoff_replace'</span>,<span class="hljs-string">'portsmouth_nh'</span>, <span class="hljs-number">20000</span>, <span class="hljs-number">26500</span>, <span class="hljs-number">32500</span>, <span class="hljs-string">'Angi 2026 valve replace $150-$400'</span>),
+    (<span class="hljs-string">'valve_shutoff_replace'</span>,<span class="hljs-string">'manchester_nh'</span>, <span class="hljs-number">20000</span>, <span class="hljs-number">26500</span>, <span class="hljs-number">32500</span>, <span class="hljs-string">'Angi 2026'</span>),
+    (<span class="hljs-string">'valve_shutoff_replace'</span>,<span class="hljs-string">'portland_me'</span>,   <span class="hljs-number">20000</span>, <span class="hljs-number">26500</span>, <span class="hljs-number">32500</span>, <span class="hljs-string">'Angi 2026'</span>),
+    (<span class="hljs-string">'valve_shutoff_replace'</span>,<span class="hljs-string">'boston_ma'</span>,     <span class="hljs-number">27500</span>, <span class="hljs-number">35000</span>, <span class="hljs-number">42500</span>, <span class="hljs-string">'Angi 2026 MA licensed-plumber'</span>),
+
+    <span class="hljs-comment">-- toilet_repair_flapper</span>
+    (<span class="hljs-string">'toilet_repair_flapper'</span>,<span class="hljs-string">'portsmouth_nh'</span>, <span class="hljs-number">12500</span>, <span class="hljs-number">15000</span>, <span class="hljs-number">17500</span>, <span class="hljs-string">'HomeAdvisor 2026 toilet repair $90-$300'</span>),
+    (<span class="hljs-string">'toilet_repair_flapper'</span>,<span class="hljs-string">'manchester_nh'</span>, <span class="hljs-number">12500</span>, <span class="hljs-number">15000</span>, <span class="hljs-number">17500</span>, <span class="hljs-string">'HomeAdvisor 2026'</span>),
+    (<span class="hljs-string">'toilet_repair_flapper'</span>,<span class="hljs-string">'portland_me'</span>,   <span class="hljs-number">12500</span>, <span class="hljs-number">15000</span>, <span class="hljs-number">17500</span>, <span class="hljs-string">'HomeAdvisor 2026'</span>),
+    (<span class="hljs-string">'toilet_repair_flapper'</span>,<span class="hljs-string">'boston_ma'</span>,     <span class="hljs-number">15000</span>, <span class="hljs-number">19000</span>, <span class="hljs-number">22500</span>, <span class="hljs-string">'HomeAdvisor 2026 MA premium'</span>);
+
+<span class="hljs-keyword">COMMIT</span>;
+
+<span class="hljs-comment">-- =============================================================================</span>
+<span class="hljs-comment">-- Follow-on data migration (007_quick_job_catalog_seed_full.sql) will add the</span>
+<span class="hljs-comment">-- remaining 35 tasks + per-metro pricing once Phyrom + Pro Success Manager</span>
+<span class="hljs-comment">-- approve the full §2 catalog. Schema is already future-proof.</span>
+<span class="hljs-comment">-- =============================================================================</span>
+</code></pre>
+<hr>
+<h2 id="6-customer-facing-menu-ux-spec">6. Customer-Facing Menu UX Spec</h2>
+<h3 id="61-wireframe-mobile-first-single-column">6.1 Wireframe (mobile-first, single-column)</h3>
+<pre><code>┌─────────────────────────────────────────┐
+│  ← Sherpa Pros                          │
+│                                         │
+│  ╔═════════════╗  ┌─────────────┐      │
+│  ║ Quick Job   ║  │  Project    │      │
+│  ╚═════════════╝  └─────────────┘      │
+│  Same-day, pre-priced.  Multiple bids. │
+│  Confirmed in 30 min.   Code-checked.  │
+│                                         │
+│  Pick a category                        │
+│ ┌────────┬────────┬────────┬────────┐  │
+│ │  Bath  │ Kitchen│Painting│Drywall │  │
+│ ├────────┼────────┼────────┼────────┤  │
+│ │ Elec.  │Plumbing│Handyman│        │  │
+│ └────────┴────────┴────────┴────────┘  │
+│                                         │
+│  Most popular this week                 │
+│ ┌─────────────────────────────────────┐│
+│ │ Toilet install                      ││
+│ │ from $250 · about 1.5 hrs           ││
+│ │ ETA: today 2pm                   →  ││
+│ └─────────────────────────────────────┘│
+│ ┌─────────────────────────────────────┐│
+│ │ Paint a single accent wall          ││
+│ │ from $200 · about 1.5 hrs           ││
+│ │ ETA: tomorrow 9am                →  ││
+│ └─────────────────────────────────────┘│
+│ ┌─────────────────────────────────────┐│
+│ │ Ceiling fan install                 ││
+│ │ from $200 · about 1.5 hrs           ││
+│ │ ETA: today 4pm                   →  ││
+│ └─────────────────────────────────────┘│
+│                                         │
+│  Doesn't fit any of these?              │
+│  → Switch to Project mode  [→]          │
+└─────────────────────────────────────────┘
+</code></pre>
+<h3 id="62-category-drill-in">6.2 Category drill-in</h3>
+<p>Tapping a category opens a <strong>scrollable list of tile cards</strong> for that category. Each tile:</p>
+<ul>
+<li>Display name (no jargon)</li>
+<li>"from $XXX" (low end of metro band)</li>
+<li>"about X hrs" (estimated duration)</li>
+<li>ETA (computed from nearest opted-in pro's next open slot)</li>
+<li>Right chevron → opens task detail</li>
+</ul>
+<h3 id="63-task-detail-screen">6.3 Task detail screen</h3>
+<pre><code>┌─────────────────────────────────────────┐
+│  ← Toilet install                       │
+│                                         │
+│  $250 – $350 in your area               │
+│  About 1.5 hours · One visit            │
+│                                         │
+│  What we do:                            │
+│  • Remove your old toilet               │
+│  • Install your new toilet (you supply) │
+│  • Replace wax ring + supply line       │
+│  • Test for leaks + haul off old toilet │
+│                                         │
+│  When                                   │
+│ ┌───────────┬───────────┬───────────┐  │
+│ │  Today    │ Tomorrow  │ This week │  │
+│ │  ✓        │           │           │  │
+│ └───────────┴───────────┴───────────┘  │
+│                                         │
+│  Where                                  │
+│  [Use my address] or [Enter address]    │
+│                                         │
+│  Anything we should know? (optional)    │
+│  ┌───────────────────────────────────┐  │
+│  │ e.g., toilet is in basement bath  │  │
+│  └───────────────────────────────────┘  │
+│  📷 Add a photo                         │
+│                                         │
+│  Add Same-Day Guarantee for $9?         │
+│  [ ] Yes, give me on-time + re-book     │
+│                                         │
+│  ┌─────────────────────────────────┐    │
+│  │  See pros + pick a time     →   │    │
+│  └─────────────────────────────────┘    │
+└─────────────────────────────────────────┘
+</code></pre>
+<h3 id="64-match-screen-one-pro-auto-assigned">6.4 Match screen (one-pro auto-assigned)</h3>
+<pre><code>┌─────────────────────────────────────────┐
+│  ← Confirm your pro                     │
+│                                         │
+│  ┌──────┐  Mike R.                      │
+│  │photo │  ★ 4.9 (87 jobs)              │
+│  └──────┘  Licensed handyman · NH       │
+│                                         │
+│  $325 · arrives today by 2:00pm         │
+│  + $9 Same-Day Guarantee                │
+│  ────────────────────                   │
+│  Total: $334                            │
+│                                         │
+│  ┌─────────────────────────────────┐    │
+│  │  Confirm and book           →   │    │
+│  └─────────────────────────────────┘    │
+│                                         │
+│  Not the right fit? Try another pro     │
+└─────────────────────────────────────────┘
+</code></pre>
+<h3 id="65-copy-rules-per-spec-§33--brand-guardian">6.5 Copy rules (per spec §3.3 + Brand Guardian)</h3>
+<ul>
+<li>"Quick Job" only as the tab label (per §13 Q1 — Phyrom may rename later)</li>
+<li>Never display the word "Wiseman" anywhere</li>
+<li>Never use "AI" as the headline; OK in support copy ("we double-check the price")</li>
+<li>Never display abbreviations on first use: "Same-Day Guarantee" not "SDG"</li>
+<li>Never use a surname for Phyrom anywhere (only first name + "founder")</li>
+<li>"Licensed" is true only where state-licensed trades are required; for general handyman tasks say "verified handyman" or just the pro's name + rating</li>
+</ul>
+<hr>
+<h2 id="7-pro-opt-in-ux-spec-onboarding-additions">7. Pro Opt-In UX Spec (onboarding additions)</h2>
+<p>Adds <strong>one new step</strong> to existing pro onboarding flow (<code>src/app/(dashboard)/pro/onboarding/</code>), positioned after license + insurance verification.</p>
+<h3 id="71-step-quick-job-lane-optional">7.1 Step: "Quick Job lane (optional)"</h3>
+<pre><code>┌─────────────────────────────────────────┐
+│  Quick Job lane                         │
+│                                         │
+│  Want pre-priced same-day jobs in your  │
+│  area? Pick the categories you do.      │
+│                                         │
+│  ☐ Bathroom    (toilets, faucets, fans) │
+│  ☐ Kitchen     (faucets, disposals)     │
+│  ☐ Painting    (single walls, rooms)    │
+│  ☐ Drywall     (patches, texture)       │
+│  ☐ Electrical  (light circuit work) *   │
+│  ☐ Plumbing    (light fixture work) *   │
+│  ☐ Handyman    (mounts, locks, blinds)  │
+│                                         │
+│  * Electrical and Plumbing require a    │
+│    state license (which you already     │
+│    uploaded).                           │
+│                                         │
+│  How many Quick Jobs per day max?       │
+│  [─────●──────] 3 jobs/day              │
+│  (You can change this anytime)          │
+│                                         │
+│  Pricing:                               │
+│  We set the standard price per job in   │
+│  your area. You can counter-quote up    │
+│  to ±15% per job before accepting.      │
+│                                         │
+│  [ ] I accept the standard pricing      │
+│      bands for the categories I picked  │
+│                                         │
+│  [Skip for now]   [Save and continue →] │
+└─────────────────────────────────────────┘
+</code></pre>
+<h3 id="72-per-category-pricing-review">7.2 Per-category pricing review</h3>
+<p>When pro checks a category, expand inline to show that category's price bands for their home metro. Pro must scroll/acknowledge. This populates <code>quick_job_pros</code> rows (one per category).</p>
+<h3 id="73-insurance-verification-reuse">7.3 Insurance verification reuse</h3>
+<p>The existing <code>pro_insurance_certificates</code> table (referenced in §6 of <code>quick-job-lane.md</code>) already stores the CGL certificate. The Quick Job opt-in flow:</p>
+<ol>
+<li>Reads <code>pros.insuranceVerified = true</code></li>
+<li>Reads <code>proCertifications</code> to verify the certificate <code>coverage_amount_cents &gt;= cgl_minimum_cents</code> of the lowest-CGL category they opted into</li>
+<li>For categories requiring <code>licensed_electrician</code> or <code>licensed_plumber</code>, also reads <code>pros.licenseNumber + licenseState</code> and confirms <code>licenseVerified = true</code></li>
+<li><strong>Lower bar than Project mode:</strong> $500K CGL acceptable for handyman categories (vs $1M Project standard) — explicitly per <code>quick-job-lane.md</code> §6</li>
+</ol>
+<h3 id="74-daily-cap--acceptance-rate">7.4 Daily cap + acceptance rate</h3>
+<ul>
+<li>Default daily cap = 3 jobs/day (slider 1–10)</li>
+<li>Acceptance rate threshold = 50% rolling 30-day (per §13 Q3 of parent doc)</li>
+<li>Below 50% → pro is auto-paused from Quick Job lane (Project mode access unchanged)</li>
+<li>Acceptance rate is shown on the pro's earnings dashboard; weekly digest emails it</li>
+</ul>
+<h3 id="75-service-area-reuse">7.5 Service area reuse</h3>
+<p>Service area uses the existing <code>pros.travelRadiusKm</code> field — no schema change. Default 50 km (already in schema), pro can adjust. Quick Job dispatch only matches pros within radius of the job pin.</p>
+<hr>
+<h2 id="8-pricing-band-sourcing-reference-table">8. Pricing-Band Sourcing Reference Table</h2>
+<table>
+<thead>
+<tr>
+<th>Source</th>
+<th>URL</th>
+<th>What we used it for</th>
+<th>Year</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>HomeGuide Handyman Hourly Rates</td>
+<td><a href="https://homeguide.com/costs/handyman-prices">https://homeguide.com/costs/handyman-prices</a></td>
+<td>Base hourly + flat rates for handyman tasks; informs all 7 categories</td>
+<td>2026</td>
+</tr>
+<tr>
+<td>Fixr Handyman Cost Guide</td>
+<td><a href="https://www.fixr.com/costs/handyman">https://www.fixr.com/costs/handyman</a></td>
+<td>Service-call fee anchor ($40-$75); ceiling fan, fixture install</td>
+<td>2026</td>
+</tr>
+<tr>
+<td>HomeAdvisor Handyman Price List</td>
+<td><a href="https://www.homeadvisor.com/cost/handyman/">https://www.homeadvisor.com/cost/handyman/</a></td>
+<td>Drywall patch ranges, detector swap, toilet repair</td>
+<td>2026</td>
+</tr>
+<tr>
+<td>Angi Toilet Installation Cost</td>
+<td><a href="https://www.angi.com/articles/how-much-does-toilet-installation-cost.htm">https://www.angi.com/articles/how-much-does-toilet-installation-cost.htm</a></td>
+<td>Toilet install ($150-$370 nationally; MA premium +30%)</td>
+<td>2026</td>
+</tr>
+<tr>
+<td>Homewyse Toilet Install Calculator</td>
+<td><a href="https://www.homewyse.com/services/cost_to_install_toilet.html">https://www.homewyse.com/services/cost_to_install_toilet.html</a></td>
+<td>Per-zip-code toilet install (Portsmouth, Boston) — anchors metro spread</td>
+<td>2026</td>
+</tr>
+<tr>
+<td>HouseCall Pro Handyman Pricing Guide</td>
+<td><a href="https://www.housecallpro.com/resources/how-to-price-handyman-jobs/">https://www.housecallpro.com/resources/how-to-price-handyman-jobs/</a></td>
+<td>Pro-side pricing methodology — informed counter-quote ±15% rule</td>
+<td>2026</td>
+</tr>
+<tr>
+<td>Thumbtack Instant Match (industry)</td>
+<td><a href="https://www.thumbtack.com/">https://www.thumbtack.com/</a></td>
+<td>TV mount, blind install ranges; auto-assignment model precedent</td>
+<td>2026</td>
+</tr>
+<tr>
+<td>HJD Builders field rate (internal)</td>
+<td>n/a — Phyrom direct experience</td>
+<td>NH/Seacoast labor + materials sanity-check; corrected national data for local realities</td>
+<td>2026</td>
+</tr>
+<tr>
+<td>Boston Smart Plastering</td>
+<td><a href="https://www.boston-smart-plastering.com/post/water-damage">https://www.boston-smart-plastering.com/post/water-damage</a></td>
+<td>Lath/plaster spot-repair pricing (Boston specialty, narrow pro pool)</td>
+<td>2026</td>
+</tr>
+<tr>
+<td>EPA RRP rule (federal)</td>
+<td><a href="https://www.epa.gov/lead/lead-renovation-repair-and-painting-program">https://www.epa.gov/lead/lead-renovation-repair-and-painting-program</a></td>
+<td>Lead-paint disclosure trigger for pre-1978 homes (kick-out rule W4)</td>
+<td>2026</td>
+</tr>
+</tbody></table>
+<p><strong>Methodology notes:</strong></p>
+<ul>
+<li>Prices triangulate three sources minimum where possible (national avg + state-adjusted + local field rate).</li>
+<li>MA premium is applied at +30% over NH/ME for handyman scope, +35% where licensed-trade premium applies (electrical/plumbing). Source: HomeGuide MA-specific pages cross-referenced with Boston-area Thumbtack pro listings.</li>
+<li>ME tracks NH within ±5% on all categories (no MA premium); single band used.</li>
+<li>Boston is the only metro where MA-specific lath/plaster pricing applies (<code>lath_plaster_spot</code> task is <code>n/a</code> in NH/ME — schema enforces this by simply not seeding NH/ME rows for that task_code).</li>
+</ul>
+<p><strong>Refresh cadence:</strong> Pricing bands are reviewed quarterly by Pro Success Manager + Phyrom. The <code>effective_at</code> column on <code>quick_job_metro_pricing</code> allows historical pricing audits without UPDATE — new effective bands are INSERTed and the dispatch query selects WHERE <code>effective_at &lt;= CURRENT_DATE</code> ORDER BY <code>effective_at DESC</code> LIMIT 1.</p>
+<hr>
+<h2 id="9-open-questions-for-engineering--phyrom">9. Open Questions for Engineering / Phyrom</h2>
+<ol>
+<li><strong><code>task_code</code> on <code>jobs</code>:</strong> add as nullable column (recommended, included in migration 006) or store in <code>wisemanValidation</code> JSONB? Performance vs schema-purity trade-off.</li>
+<li><strong>Counter-quote display:</strong> show both standard and pro-counter to customer (W2), or auto-decline and find next pro? Decision impacts §6.4 wireframe.</li>
+<li><strong>Same-Day Guarantee:</strong> stored as a separate row on <code>payments</code> (service fee line item) or a new <code>quick_job_addons</code> table? T1 to confirm.</li>
+<li><strong><code>taskCode</code> collisions:</strong> the unique constraint is global. If a task_code (e.g., <code>paint_door_single</code>) ever needs a regional variant, we need a metro-prefixed code or a new column. Future-proof now? Recommend: keep global, version via <code>_v2</code> suffix when needed.</li>
+<li><strong>Pro-side counter-quote per task vs per job:</strong> the current <code>quick_job_pros.counter_quote_cents</code> is per-task standing offer. Per-job override (one-time counter for a specific incoming job) would need a new field on <code>dispatch_attempts</code>. Defer to Phase 2 unless Phyrom wants per-job in v1.</li>
+</ol>
+<hr>
+<h2 id="10-summary-250-words--required-return-output">10. Summary (250 words) — Required Return Output</h2>
+<p><strong>(a) Five most-likely-to-launch-at-volume Quick Job tasks</strong> (consumer demand frequency, per HomeAdvisor 2026 + Thumbtack instant-match data + HJD field experience):</p>
+<ol>
+<li><strong><code>tv_mount_drywall</code></strong> — apartment turnover + new-TV moments; high frequency, low-skill, near-zero edge cases. Best volume play.</li>
+<li><strong><code>gfci_outlet_replace</code></strong> — code-required (NEC kitchens, baths, garages), tripped-GFCI emergencies common, fast 45-min job, licensed-electrician justification = trust premium.</li>
+<li><strong><code>toilet_repair_flapper</code></strong> — running-toilet problem affects every household every 2-3 years. $150 ticket fits Same-Day Guarantee pitch perfectly; pure handyman scope.</li>
+<li><strong><code>paint_wall_accent</code></strong> — Pinterest/Instagram-driven impulse demand; 90 min visit, customer-supplied paint = zero material risk for pro.</li>
+<li><strong><code>light_fixture_swap</code></strong> — same as TV mount: turnover + style-refresh trigger, recurring, no permits.</li>
+</ol>
+<p><strong>(b) Trickiest task to price + dispatch:</strong> <strong><code>lath_plaster_spot</code></strong> (Boston specialty). Narrow pro pool (Old-House Verified handful), highly variable scope (a 4" patch on lath can hide rotted lath structure, asbestos in original plaster, or knob-and-tube wiring behind), and no clean MA-wide pricing comp — Boston Smart Plastering quotes are the only reliable anchor and they're tied to specific firms. Mitigation: keep in catalog as Boston-only, gate to Old-House Verified pros, mandatory pre-work photo upload, and surface a <strong>higher counter-quote allowance (±25% vs standard ±15%)</strong> for this task only.</p>
+<p><strong>(c) Single edge case most likely to cause a "stuck Quick Job":</strong> <strong>frozen/corroded shutoff valves on any plumbing task.</strong> Customer requests <code>bathroom_faucet_replace</code> — pro arrives, the under-sink shutoff is corroded shut from 30 years of hard water, and the only way to install the new faucet is to replace the shutoff first (scope = <code>valve_shutoff_replace</code>, +$265, +90 min, may need building water shut-off). The dispatch logic must handle this via the <strong>§3.3 escape hatch:</strong> pro hits "Convert to Project," $50 trip fee paid, customer auto-flowed into a Project quote with the same pro holding right of first refusal. Without this, the pro either eats labor (churns out of lane) or the customer feels bait-and-switched (churns out of platform).</p>
+<hr>
+<h2 id="11-last-updated">11. Last Updated</h2>
+<p><strong>2026-04-22</strong> — Draft v1 by Claude. 47 tasks across 7 categories, full Drizzle schema, migration 006 ready for T1, customer + pro UX wireframes, sourcing table. Awaiting Phyrom + Pro Success Manager review before Phase 1 engineering kickoff.</p>
+
+	
+
+
+</body>
+</html>

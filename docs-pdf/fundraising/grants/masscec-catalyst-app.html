@@ -1,0 +1,1053 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>masscec catalyst app — Sherpa Pros</title>
+<link rel="icon" href="../../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="masscec-catalyst-app.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="masscec-catalyst--sherpa-pros-application-draft">MassCEC Catalyst — Sherpa Pros Application Draft</h1>
+<p><strong>Program:</strong> Massachusetts Clean Energy Center (MassCEC) — Catalyst (and DICES early-stage track)
+<strong>Award size:</strong> Up to $75,000
+<strong>Sponsor URL:</strong> <a href="https://www.masscec.com/program/catalyst-and-dices">https://www.masscec.com/program/catalyst-and-dices</a>
+<strong>Applicant:</strong> Sherpa Pros LLC (Phyrom, Founder)
+<strong>Draft date:</strong> 2026-04-22
+<strong>Status:</strong> DRAFT — for Phyrom review prior to submission</p>
+<hr>
+<h2 id="1-program-at-a-glance">1. Program at a Glance</h2>
+<p>MassCEC Catalyst funds Massachusetts-based early-stage climatetech companies (typically pre-seed, ≤4 FTE) with a working prototype and a clear path to a Massachusetts demonstration. The award is non-dilutive and explicitly designed to bridge the gap between prototype and the larger InnovateMass program. <strong>Sherpa Pros qualifies on every criterion</strong> — the platform is past prototype but pre-revenue at scale, the team is one founder + part-time contractors, and the target deployment is Boston metro Mass Save / EV-charger / panel-upgrade lanes.</p>
+<p><strong>Why Catalyst before InnovateMass:</strong> Catalyst's smaller award size and earlier-stage criteria match where Sherpa Pros sits today (Phase 0 of GTM spec). Catalyst funding closes the gap to live MA operating data, which then strengthens the InnovateMass application 6 months later. Many MassCEC-funded companies stack Catalyst → InnovateMass in this exact sequence.</p>
+<hr>
+<h2 id="2-required-documents-checklist">2. Required Documents Checklist</h2>
+<ul>
+<li><input disabled="" type="checkbox"> Project narrative (≤6 pages — shorter than InnovateMass; structure: Problem, Technology, MA Demonstration, Team, Budget, Milestones)</li>
+<li><input disabled="" type="checkbox"> Detailed budget (Excel template; categories per MassCEC standard)</li>
+<li><input disabled="" type="checkbox"> Budget justification (1 page narrative)</li>
+<li><input disabled="" type="checkbox"> Resumes / bios for Phyrom and any contributors (≤2 pages each)</li>
+<li><input disabled="" type="checkbox"> Massachusetts business registration confirmation (foreign-LLC for Sherpa Pros LLC — see §11)</li>
+<li><input disabled="" type="checkbox"> FTE attestation (≤4 full-time equivalents — Sherpa Pros qualifies; see §3)</li>
+<li><input disabled="" type="checkbox"> Letter of support from at least one MA stakeholder (Mass Save HPIN contractor or MA homeowner)</li>
+<li><input disabled="" type="checkbox"> Form W-9 for Sherpa Pros LLC</li>
+<li><input disabled="" type="checkbox"> Conflict-of-interest disclosure</li>
+<li><input disabled="" type="checkbox"> Cap table (simple early-stage version — founder 100%, no outside investors yet)</li>
+</ul>
+<hr>
+<h2 id="3-eligibility-verification">3. Eligibility Verification</h2>
+<table>
+<thead>
+<tr>
+<th>Criterion</th>
+<th>Sherpa Pros status</th>
+<th>Cite</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>MA-based or registered to do business in MA</td>
+<td><strong>Action item</strong> — file MA foreign-LLC registration before submit (see §11)</td>
+<td>MA Secretary of the Commonwealth</td>
+</tr>
+<tr>
+<td>≤4 full-time equivalents</td>
+<td>Yes — 1 founder (Phyrom) + part-time Upwork US contractors (SDR, deck/content) ≈ 1.4 FTE</td>
+<td>GTM spec §7</td>
+</tr>
+<tr>
+<td>Climatetech or clean-energy demonstration in MA</td>
+<td>Yes — Mass Save HP + National Grid Turnkey EV install acceleration</td>
+<td>GTM spec §2.3, §4.3</td>
+</tr>
+<tr>
+<td>Pre-revenue / early-stage</td>
+<td>Yes — beta cohort launching, no scaled revenue yet</td>
+<td>GTM spec §4.2</td>
+</tr>
+<tr>
+<td>Working prototype</td>
+<td>Yes — live platform at <a href="http://www.thesherpapros.com">www.thesherpapros.com</a> + mobile TestFlight/PWA</td>
+<td>CLAUDE.md</td>
+</tr>
+<tr>
+<td>Plan to demonstrate at MA site</td>
+<td>Yes — Boston specialty cohort onboarding plan</td>
+<td>This doc §6</td>
+</tr>
+<tr>
+<td>Project completion ≤12 months</td>
+<td>Yes — 9-month prototype-to-pilot timeline</td>
+<td>This doc §7</td>
+</tr>
+</tbody></table>
+<p><strong>Verdict:</strong> Eligible upon MA foreign-LLC registration. Strong fit on all other criteria.</p>
+<hr>
+<h2 id="4-project-title">4. Project Title</h2>
+<p><strong>"Code-Aware Marketplace Prototype: Boston Mass Save + EV-Charger Installer Throughput Pilot"</strong></p>
+<hr>
+<h2 id="5-application-narrative-≤6-pages--draft">5. Application Narrative (≤6 Pages — Draft)</h2>
+<h3 id="51-executive-summary-≤05-page">5.1 Executive Summary (≤0.5 page)</h3>
+<p>Sherpa Pros is a Massachusetts-eligible licensed-trade marketplace prototype that matches homeowners to certified Mass Save heat-pump installers and National Grid Turnkey EV-charger electricians, validates contractor quotes against MA Electrical Code and program-eligibility rules in real time, and surfaces stacked rebate eligibility (Mass Save + IRA federal credits + utility-specific bonuses). The platform is live (<a href="http://www.thesherpapros.com">www.thesherpapros.com</a>), built by a working New Hampshire general contractor (Phyrom, HJD Builders LLC), and ready for a focused Boston-metro demonstration.</p>
+<p><strong>Catalyst funds will deploy the prototype with a 10-pro Boston specialty cohort over 9 months and produce the live operating data (installer throughput, quote accuracy, rebate-stack capture) needed to step up to the InnovateMass program at scale.</strong></p>
+<h3 id="52-problem-statement-≈1-page">5.2 Problem Statement (≈1 page)</h3>
+<p>Massachusetts has the largest construction labor shortage in the US (2.5% construction unemployment, lowest in 17+ years; 30% of MA residential construction workers are 55+; project completion times stretched from 7 to 11 months) [WBJournal; Bisnow Boston, cited in Sherpa Pros GTM spec §2.1]. Mass Save 2026 rebates ($2,650/ton, $8,500 cap) and National Grid Turnkey EV are demand-funded but supply-bottlenecked.</p>
+<p>Existing matching infrastructure is inadequate:</p>
+<ul>
+<li><strong>Mass Save Find-an-Installer</strong> is a static contractor directory with no dispatch, scheduling, escrow, in-app messaging, permit assist, rebate calculator, or marketplace mechanics [Mass Save Trade Partners].</li>
+<li><strong>Lead-gen platforms (Angi, Thumbtack)</strong> charge contractors $30–$100 per shared lead, do not verify EPA HPIN status, do not validate quotes against MA Electrical Code, and have well-documented quality issues (Vermont AG October 2025 settlement on misleading "Certified Pro" terminology) [Sherpa Pros competitive analysis §2].</li>
+</ul>
+<p>Every Mass Save / National Grid program dollar sits in a queue waiting for a verified installer with capacity. <strong>The Catalyst-funded prototype directly attacks this matching bottleneck.</strong></p>
+<h3 id="53-technology--innovation-≈15-pages">5.3 Technology &amp; Innovation (≈1.5 pages)</h3>
+<p><strong>Live platform stack:</strong> Next.js 16, Stripe Connect, Neon Postgres + PostGIS, Clerk auth, Twilio masked messaging, Google Maps dispatch UX, proprietary code-aware quote-validation engine (NEC, IRC, MA Electrical Code, NH RSA — 192 codes, 480K entries, 284 NH municipalities cataloged; MA municipal expansion is a Catalyst-funded scope item).</p>
+<p><strong>The four prototype capabilities being demonstrated under Catalyst:</strong></p>
+<ol>
+<li><strong>License + cert verification at directory layer</strong> — license, insurance, EPA HPIN, MA Electrical license validated at onboarding, re-checked annually</li>
+<li><strong>Code-aware quote validation</strong> — every quote is checked against NEC 2023, MA Electrical Code (527 CMR 12.00), IRC, and Mass Save program-eligibility rules before the homeowner sees it</li>
+<li><strong>Single-contractor dispatch</strong> (not lead-blast) — 7-factor scoring algorithm matches one verified contractor per job at 5–10% take rate</li>
+<li><strong>Rebate stacking</strong> — auto-checks Mass Save + IRA § 25C / 25D + utility bonuses + low-income enhancements (HEAT Loan, EBE) and shows post-rebate net cost during bid review</li>
+</ol>
+<p><strong>Innovation claim:</strong> The combination of (1)–(4) is <strong>not currently offered by any platform serving MA homeowners</strong>. National lead-gen incumbents have no incentive to build it (their P&amp;L runs on lead-share volume); Mass Save's directory is static by design. The licensed + code-aware + marketplace quadrant is empty.</p>
+<h3 id="54-massachusetts-demonstration-plan-≈1-page">5.4 Massachusetts Demonstration Plan (≈1 page)</h3>
+<p><strong>Phase 1 (Months 0–3): Boston Specialty Cohort Recruitment.</strong> Onboard 10 verified MA contractors: 4 Mass Save HPIN heat-pump installers, 3 licensed electricians (panel + EV), 3 old-house specialists. Recruitment via Mass Save Network application, Eversource HPC referrals, NESEA conference outreach, supply-house partnerships (Granite Group, FW Webb, City Electric Supply Boston).</p>
+<p><strong>Phase 2 (Months 3–6): Live Job Routing.</strong> Route 25+ real Boston-metro jobs across heat-pump installs, panel upgrades, EV-charger installs. Capture full operating data: installer throughput, first-pass quote accuracy, rebate-stack capture rate, dispute rate, NPS.</p>
+<p><strong>Phase 3 (Months 6–9): Measurement &amp; Hand-Off to InnovateMass.</strong> Compile case study; submit InnovateMass application leveraging Catalyst-funded operating data; brief MassCEC program officers on results.</p>
+<h3 id="55-team">5.5 Team</h3>
+<p><strong>Phyrom</strong> (Founder &amp; CEO, Sherpa Pros LLC; Founder, HJD Builders LLC) — 12+ years working New Hampshire general contractor. Built and maintains Sherpa Pros, the broader BldSync platform, and the underlying code corpus. Lived the Mass Save / Eversource / National Grid program-rule landscape from the contractor side.</p>
+<p><strong>FTE attestation:</strong> 1 founder full-time + 0.4 FTE Upwork US contractors (SDR + deck/content) = <strong>1.4 FTE total. Well under 4-FTE Catalyst cap.</strong></p>
+<h3 id="56-commercialization">5.6 Commercialization</h3>
+<p>Sherpa Pros' revenue model is operational: 5% beta take rate → 10% standard, $49/mo pro subscription, $4 → $1.50/unit/month PM tier. GTM spec §4.4 projects 200+ pros, 1,000+ jobs, $1M+ annualized GMV by Month 12 — Catalyst funding directly contributes to the MA portion of this trajectory and bridges to the InnovateMass scaled deployment.</p>
+<hr>
+<h2 id="6-milestone-schedule">6. Milestone Schedule</h2>
+<table>
+<thead>
+<tr>
+<th>Milestone</th>
+<th>Target</th>
+<th>Success criterion</th>
+<th>Deliverable</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>MA foreign-LLC registration + grant agreement signed</td>
+<td>Month 1</td>
+<td>MA filing complete</td>
+<td>Filing receipt</td>
+</tr>
+<tr>
+<td>Mass Save Network application submitted</td>
+<td>Month 1</td>
+<td>Acknowledged</td>
+<td>Confirmation email</td>
+</tr>
+<tr>
+<td>10 MA contractors onboarded</td>
+<td>Month 3</td>
+<td>10 verified profiles live</td>
+<td>Onboarding log</td>
+</tr>
+<tr>
+<td>First 10 MA jobs routed</td>
+<td>Month 5</td>
+<td>$50K+ MA GMV</td>
+<td>Stripe Connect MA-segment export</td>
+</tr>
+<tr>
+<td>25 MA jobs routed + first measurement report</td>
+<td>Month 7</td>
+<td>Throughput + quote-accuracy + rebate-capture data captured</td>
+<td>Quarterly report</td>
+</tr>
+<tr>
+<td>Final case study + InnovateMass application submitted</td>
+<td>Month 9</td>
+<td>Case study published; InnovateMass filing complete</td>
+<td>Final report + InnovateMass application copy</td>
+</tr>
+</tbody></table>
+<p><strong>Hard 90-day measurable:</strong> 10 MA contractors onboarded, MA foreign-LLC registration complete, Mass Save Network application submitted, first 3 platform-routed Boston jobs in flight.</p>
+<hr>
+<h2 id="7-budget">7. Budget</h2>
+<p><strong>Total project cost: $75,000 (Catalyst awards typically do NOT require cost-share, but document founder in-kind for transparency).</strong></p>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Detail</th>
+<th>Catalyst ask</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Personnel</strong></td>
+<td>Pro Success Manager (0.5 FTE × 9 mo loaded $90K/yr)</td>
+<td>$33,750</td>
+</tr>
+<tr>
+<td></td>
+<td>Client Concierge (0.25 FTE × 9 mo loaded $50K/yr)</td>
+<td>$9,375</td>
+</tr>
+<tr>
+<td><strong>Subcontracts</strong></td>
+<td>MA legal — foreign-LLC, contracts, 1099 opinion</td>
+<td>$4,000</td>
+</tr>
+<tr>
+<td></td>
+<td>Code-corpus expansion (MA municipal: Boston ISD, Cambridge, Brookline)</td>
+<td>$10,000</td>
+</tr>
+<tr>
+<td></td>
+<td>Mass Save Network application + utility partnership consulting</td>
+<td>$5,000</td>
+</tr>
+<tr>
+<td><strong>Materials</strong></td>
+<td>Cloud infra (Vercel, Neon, Clerk, Stripe, Twilio) — 9 months</td>
+<td>$7,200</td>
+</tr>
+<tr>
+<td><strong>Travel</strong></td>
+<td>MA pro recruitment travel + NESEA Boston conference</td>
+<td>$3,000</td>
+</tr>
+<tr>
+<td><strong>Other Direct</strong></td>
+<td>Liability insurance, marketing collateral, video case-study</td>
+<td>$2,675</td>
+</tr>
+<tr>
+<td><strong>TOTAL</strong></td>
+<td></td>
+<td><strong>$75,000</strong></td>
+</tr>
+</tbody></table>
+<p><strong>Founder in-kind (documented for transparency, not required for match):</strong> 300 hours × $185/hr fully loaded = <strong>$55,500 in-kind</strong>.</p>
+<hr>
+<h2 id="8-submission-instructions">8. Submission Instructions</h2>
+<ul>
+<li><strong>Portal:</strong> MassCEC online application portal at <a href="https://www.masscec.com/program/catalyst-and-dices">https://www.masscec.com/program/catalyst-and-dices</a> — verify current open round before submit</li>
+<li><strong>Deadlines:</strong> Catalyst typically runs open intake + scheduled review windows (spring/fall). <strong>Phyrom should confirm next review window with the program team (<a href="mailto:catalyst@masscec.com">catalyst@masscec.com</a>) before finalizing budget and timeline.</strong></li>
+<li><strong>Format:</strong> Project narrative as PDF, budget as Excel template, letters of support as separate PDFs</li>
+<li><strong>Contact:</strong> MassCEC Catalyst program team — <a href="mailto:catalyst@masscec.com">catalyst@masscec.com</a></li>
+<li><strong>Pre-submission call:</strong> MassCEC offers brief scoping calls. Recommended for any first-time applicant.</li>
+</ul>
+<hr>
+<h2 id="9-tips--gotchas">9. Tips &amp; Gotchas</h2>
+<ol>
+<li><strong>MA foreign-LLC registration is the gating eligibility item.</strong> File before submission; reviewers verify.</li>
+<li><strong>Catalyst is the on-ramp to InnovateMass.</strong> Use the application narrative to explicitly signal the planned Catalyst → InnovateMass progression. Reviewers like seeing a coherent multi-program plan.</li>
+<li><strong>≤4 FTE cap is hard.</strong> Document founder + Upwork part-time contractors carefully. Don't claim hires you haven't made.</li>
+<li><strong>Climatetech framing is required.</strong> Lead with the heat-pump / EV-charger / panel-upgrade decarbonization mechanism. Don't lead with "marketplace platform."</li>
+<li><strong>Working prototype must be demonstrable.</strong> Offer a live walkthrough to the Catalyst program officer at the pre-submission call. Do not show mockups — show the live platform.</li>
+<li><strong>No "Wiseman" in any external doc.</strong> Use "code-aware quote validation" or "platform code intelligence" (per Sherpa Pros brand bible / GTM spec §3.3).</li>
+<li><strong>The 9-month timeline is the right Catalyst cadence.</strong> Faster looks naive; slower looks like the prototype isn't ready. 9 months hits MassCEC's expectation window.</li>
+<li><strong>One MA stakeholder letter is sufficient</strong> — but get one from a Mass Save HPIN contractor specifically (program-program alignment matters). Sample template available on request.</li>
+</ol>
+<hr>
+<h2 id="10-tracking-the-catalyst-→-innovatemass-sequence">10. Tracking the Catalyst → InnovateMass Sequence</h2>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Program</th>
+<th>Award</th>
+<th>Use</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Now (Month 0)</td>
+<td>Catalyst submit</td>
+<td>$75K</td>
+<td>10-pro Boston cohort, 9-month pilot</td>
+</tr>
+<tr>
+<td>Month 9</td>
+<td>Catalyst close</td>
+<td>—</td>
+<td>Operating data captured</td>
+</tr>
+<tr>
+<td>Month 10</td>
+<td>InnovateMass submit</td>
+<td>$350K</td>
+<td>18-month scaled deployment using Catalyst data as evidence</td>
+</tr>
+<tr>
+<td>Month 13</td>
+<td>InnovateMass award</td>
+<td>—</td>
+<td>Phase 2 of GTM spec funded non-dilutively</td>
+</tr>
+</tbody></table>
+<p><strong>This stacks. Total non-dilutive MA capital across both programs: $425K.</strong> Sherpa Pros should pursue both in sequence, not in parallel — Catalyst closure data materially de-risks the InnovateMass application.</p>
+<hr>
+<h2 id="11-eligibility-blocker--phyrom-confirmation-required">11. Eligibility Blocker — Phyrom Confirmation Required</h2>
+<p><strong>MA foreign-LLC registration for Sherpa Pros LLC</strong> — confirm current state and initiate MA filing if not already done. ~$500 fee, 5–7 business days. Without this, the Catalyst application will be returned at intake.</p>
+<p>Beyond MA registration, no other eligibility blockers identified. Sherpa Pros is squarely in Catalyst's target profile (≤4 FTE, working prototype, MA demonstration plan, climatetech alignment).</p>
+<hr>
+<p><strong>End of draft. Phyrom: confirm MA registration, schedule a Catalyst pre-submission call, and submit at the next open review window.</strong></p>
+
+	
+
+
+</body>
+</html>

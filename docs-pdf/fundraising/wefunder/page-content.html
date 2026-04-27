@@ -1,0 +1,1145 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>page content — Sherpa Pros</title>
+<link rel="icon" href="../../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="page-content.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="sherpa-pros--wefunder-page-content">Sherpa Pros — Wefunder Page Content</h1>
+<p><strong>Date:</strong> 2026-04-22
+<strong>Audience:</strong> Wefunder community-round investors (paste-ready into Wefunder's editor)
+<strong>Founder voice:</strong> Phyrom, working GC (HJD Builders LLC, NH)
+<strong>Tone:</strong> Plainspoken. Founder story-led. 8th-grade reading level. No marketing-speak.</p>
+<blockquote>
+<p><strong>Important disclaimer:</strong> This page is for informational purposes only. It is not legal, financial, investment, or tax advice. Investing in early-stage startups is high-risk and you can lose everything you invest. The SEC has not passed on the accuracy or adequacy of this offering. Read the SAFE document and the Form C filed with the SEC before investing. Consult your own attorney, CPA, and financial advisor.</p>
+</blockquote>
+<hr>
+<h2 id="1-page-hero">1. PAGE HERO</h2>
+<h3 id="headline-≤80-char">Headline (≤80 char)</h3>
+<p><strong>Jobs, not leads. The licensed-trade marketplace built by a contractor.</strong></p>
+<p>(78 characters with spaces)</p>
+<h3 id="subheadline-≤200-char">Subheadline (≤200 char)</h3>
+<p><strong>A working New Hampshire general contractor built the platform he wished existed: licensed pros only, code-aware quotes, and homeowners who actually get the job done. Own a piece of it.</strong></p>
+<p>(193 characters with spaces)</p>
+<h3 id="pitch-video-script--60-to-90-seconds-founder-recorded-on-loom">Pitch video script — 60 to 90 seconds, founder-recorded on Loom</h3>
+<p><strong>Format:</strong> Phone-camera selfie style. Phyrom on a real NH jobsite. Daylight. No script-reading; speak from notes. One single take preferred.</p>
+<p><strong>Shot list:</strong></p>
+<ul>
+<li>0:00–0:05 → Phyrom standing in front of an active project (frame: dwelling exterior or interior framing visible behind him; tools in shot; HJD Builders truck or signage if natural)</li>
+<li>0:05–0:15 → Phyrom speaks direct-to-camera, founder hook</li>
+<li>0:15–0:35 → Cut-in B-roll: phone screen showing the Sherpa Pros app — homeowner posting a job, pro accepting in &lt;2 minutes, code-checked badge appearing on a quote (record this separately on a steady tripod, edit in)</li>
+<li>0:35–0:55 → Phyrom back on camera, the ask</li>
+<li>0:55–1:00 → Lower-third graphic: "Sherpa Pros · Built by a contractor · <a href="http://www.thesherpapros.com">www.thesherpapros.com</a> · Invest from $100"</li>
+</ul>
+<p><strong>Script (read as notes, not verbatim):</strong></p>
+<blockquote>
+<p><em>(0:00 — to camera, jobsite behind)</em>
+Hi, I'm Phyrom. I run HJD Builders. I'm a licensed general contractor in New Hampshire and I've been doing this for 12 years.</p>
+<p><em>(0:08)</em>
+Every week the platforms that say they're going to help my crew — Angi, Thumbtack, TaskRabbit, Handy — pitch us leads we can't afford and send homeowners to people who shouldn't be touching their wiring or their gas line.</p>
+<p><em>(0:22 — B-roll: app screen, post-a-job flow, dispatch matching)</em>
+So I built the tool I wished existed. <strong>Jobs, not leads.</strong> Licensed only. Code-checked quotes. Homeowner posts a job, the right licensed pro shows up — not five contractors fighting over a lead they paid for.</p>
+<p><em>(0:42 — back to camera, slower)</em>
+The platform is live. We have a beta cohort transacting. We're raising on Wefunder so the homeowners and contractors who actually use this thing can own a piece of it.</p>
+<p><em>(0:55)</em>
+Minimum is a hundred bucks. You can lose it — startups are risky, the SEC makes me say it. But if this works, you helped build it. Link below. Thanks for watching.</p>
+</blockquote>
+<p><strong>On-screen graphics (edit in post):</strong></p>
+<ul>
+<li>Bottom-left tag throughout: <strong>Licensed · Verified · Code-aware · Built by a contractor</strong></li>
+<li>0:55 lower-third: "<strong>Invest from $100 → wefunder.com/sherpapros</strong>"</li>
+<li>Captions burned in (accessibility + autoplay-muted scrolling)</li>
+</ul>
+<hr>
+<h2 id="2-the-pitch-first-scroll">2. THE PITCH (FIRST SCROLL)</h2>
+<h3 id="why-we-exist-3-paragraphs-founder-voice">Why we exist (3 paragraphs, founder voice)</h3>
+<p>I'm Phyrom. I'm a working general contractor in New Hampshire. I started HJD Builders 12 years ago and I'm still on jobsites every week — framing dwellings, walking inspectors through panels, fielding 7am calls from homeowners about their heat pump.</p>
+<p>I built Sherpa Pros because I got tired of watching the home-services platforms — Angi, Thumbtack, TaskRabbit, Handy — sell my crew leads we couldn't afford, and send homeowners to people who shouldn't be doing licensed work. Angi has a 41% service-quality complaint rate and isn't BBB-rated. Thumbtack has documented deposit-theft cases. TaskRabbit charges 35% in fees and doesn't even cover licensed trades. The whole industry runs on "pay to play, leads not jobs," and the people getting hurt are the homeowners who don't know what they're hiring and the licensed contractors who can't afford to keep buying leads that go to ten other people.</p>
+<p>So I built the tool I wished existed. <strong>Jobs, not leads.</strong> Licensed only — license and insurance verified at onboarding, re-checked on renewal. Code-aware quote validation — every quote runs against NEC, IRC, MA Electrical, and NH state code before the homeowner sees it, catching missing line items and code violations. Built mobile-first because that's where contractors actually work. The platform is live at <a href="https://www.thesherpapros.com">www.thesherpapros.com</a>, we're transacting real jobs in beta, and we're raising on Wefunder so the homeowners and contractors who use the platform can own a piece of it.</p>
+<hr>
+<h2 id="3-the-problem">3. THE PROBLEM</h2>
+<h3 id="lead-gen-platforms-waste-contractors-money-massachusetts-has-the-worst-trades-labor-shortage-in-the-country">Lead-gen platforms waste contractors' money. Massachusetts has the worst trades labor shortage in the country.</h3>
+<p>The home-services platforms most homeowners try first are built on a broken model. Contractors pay to bid on leads. Homeowners get matched to whoever paid the most or responded fastest. Licensed work gets handled by people who shouldn't be doing it.</p>
+<p><strong>The four big platforms — what's actually wrong with them:</strong></p>
+<ul>
+<li><p><strong>Angi (NASDAQ: ANGI).</strong> $1.03B in FY2025 revenue, down 13% year-over-year. <strong>41% service-quality inconsistency</strong> in user-reported reviews. <strong>Not BBB-accredited.</strong> <strong>1,800+ BBB complaints 2023–2026.</strong> Trustpilot 2.1 out of 5. <strong>Vermont Attorney General settled with Angi in October 2025 for $100K</strong> over misleading "Certified Pro" terminology. Contractors paying $200/month for the Pro subscription plus $30–$100 per shared lead, often shared with up to 40 competitors. (<a href="https://adaptdigitalsolutions.com/articles/homeadvisor-vs-angieslist-vs-houzz-vs-porch-vs-thumbtack-vs-yelp-vs-bark/">Source: Adapt Digital 2026 platform comparison</a> · <a href="https://www.bbb.org/us/in/indianapolis/profile/contractor-referral/angi-0382-3041007/complaints">Angi BBB profile</a>)</p>
+</li>
+<li><p><strong>Thumbtack.</strong> Private company, ~$400M FY2024 revenue. <strong>Documented deposit-theft cases of $300–$6,500.</strong> <strong>BBB pattern-of-complaints review completed November 2025.</strong> Widely-reported fake leads (invalid phone numbers, non-existent customers). (<a href="https://www.bbb.org/us/ca/san-francisco/profile/internet-service/thumbtack-inc-1116-367066/complaints">Source: Thumbtack BBB Complaints page</a>)</p>
+</li>
+<li><p><strong>TaskRabbit (acquired by IKEA 2017).</strong> <strong>22.5% effective platform fee</strong> (15% service + 7.5% trust/support). Doesn't cover electrical, plumbing, HVAC, or roofing. Last-minute cancellation problems. (<a href="https://oyelabs.com/taskrabbit-business-model/">Source: TaskRabbit business model breakdown</a>)</p>
+</li>
+<li><p><strong>Handy (acquired by Angi parent for $165.5M in 2018).</strong> Limited trade coverage. No code intelligence. Strategic deprioritization since acquisition.</p>
+</li>
+</ul>
+<p><strong>And then it gets worse.</strong> Massachusetts has <strong>the largest construction labor shortage in the nation</strong> — 2.5% construction unemployment, the lowest in 17+ years. <strong>30% of MA residential construction workers are 55+</strong> (vs. 26% nationally). Project completion times have stretched from 7 to 11 months. Carpenters, electricians, and roofers are the most acute shortages — and those are exactly the licensed trades the existing platforms can't filter for. (<a href="https://wbjournal.com/article/help-needed-massachusetts-has-the-largest-construction-worker-shortage-in-the-nation/">Source: WBJournal — MA largest construction worker shortage in the nation</a> · <a href="https://www.bisnow.com/boston/news/construction-development/as-bostons-construction-labor-shortage-persists-firms-look-to-new-solutions-126075">Bisnow — Boston construction labor shortage worsens</a>)</p>
+<p>The market exists. The demand is there. The platforms aren't matching the licensed labor that's left.</p>
+<hr>
+<h2 id="4-the-solution">4. THE SOLUTION</h2>
+<h3 id="jobs-not-leads-licensed-only-code-aware-permit-aware-rebate-aware">Jobs, not leads. Licensed only. Code-aware. Permit-aware. Rebate-aware.</h3>
+<p>Sherpa Pros is the licensed-trade marketplace that thinks like a contractor. Built by a working GC. Four things no lead-gen platform does — and none of them can copy without rebuilding from scratch:</p>
+<p><strong>1. Jobs, not leads.</strong> Contractors get paid for completed work, not for the chance to bid. <strong>5% take rate during beta. 10% at scale.</strong> That's roughly half of what a contractor pays Angi all-in today. Homeowners post a job once. The platform dispatches the right licensed pro. No bidding war. No lead-share fatigue.</p>
+<p><strong>2. Licensed only.</strong> License and insurance verified at onboarding. Re-checked at renewal. No "find a guy" matchmaking. If the trade requires a license in NH, ME, or MA, the pro on the platform has it.</p>
+<p><strong>3. Code-aware quote validation.</strong> Every quote is checked against the relevant code base — NEC for electrical, IRC for general construction, MA Electrical Code, NH state code (RSA), Boston ISD permits — <strong>before the homeowner sees the quote.</strong> The platform catches missing line items, wrong materials, undersized panels, and code violations. Homeowner sees a green "code-checked" badge. The contractor saves the rework. The homeowner doesn't get burned.</p>
+<p><strong>4. Permit-aware and rebate-aware.</strong> The platform knows which jobs need a Boston ISD permit, which qualify for <strong>Mass Save heat-pump rebates</strong> ($10,000+ available in 2026), which qualify for <strong>National Grid Turnkey EV charger</strong> installation rebates, and walks both sides through the paperwork.</p>
+<p><strong>Sherpa Flex — the no-LLC entry point.</strong> Most marketplaces force tradespeople to look like a small business before they can earn a dollar. We don't. <strong>Sherpa Flex</strong> is the 5th pro tier we shipped to production this quarter — 18% take rate, $1M per-project liability insurance included in the platform fee, jobs under $5,000, background check is the only gate. It opens the platform to moonlighters, employees of GC companies who want side income, weekend warriors, and tradespeople who are testing self-employment before they form an LLC. When the income justifies the paperwork, they form the LLC, get their own insurance, and drop to Standard 12% — then climb Sherpa Score to Gold and pay 8%. One platform, three doors. The whole point: don't lose a skilled tradesperson because the on-ramp was broken. Build the on-ramp.</p>
+<p><strong>Built by a contractor — that's the moat.</strong> The code-intelligence layer required a working GC plus a 3-year codebase to build. National lead-gen platforms can't copy it without a structural rebuild. They have no incentive — their entire P&amp;L runs on lead-share fees. Ours doesn't.</p>
+<hr>
+<h2 id="45-six-platform-pillars">4.5. SIX PLATFORM PILLARS</h2>
+<h3 id="what-we-shipped-this-quarter-in-plain-english">What we shipped this quarter, in plain English.</h3>
+<p>Six new capabilities went to production this quarter. None of them are roadmap promises — they are live in the platform today. The first three closed defensibility gaps. The next three opened a whole new revenue line.</p>
+<p><strong>Sherpa Threads — in-app chat that bridges to text message.</strong> Every contractor has had this happen: the job is in the platform, but the client texts your cell phone, and by Friday nobody can prove what was promised. Sherpa Threads kills that leak. The pro, the client, and the project manager all chat in-app. The client can keep texting from their normal phone — replies land back in-app on the pro's end. They don't have to install anything. Read receipts, file attachments, every conversation attached to the work order. Audit trail when something goes wrong. The data leak that erodes every other marketplace — fixed.</p>
+<p><strong>Sherpa Smart Scan — the platform reads your paperwork for you.</strong> Three flavors of optical character recognition (the technology that turns a photo of text into editable, categorizable data). A document scanner reads permits, blueprints, and contracts. A photo analyzer reads jobsite conditions for scope checks. A receipt scanner reads vendor invoices and material spend. The receipt scanner is wired into auto-tax-categorization — for pros, scanned receipts auto-tag for Schedule C (the IRS form for self-employed business income). For property managers, the same scanner auto-tags every line as Capital Expenditure or Operating Expense at the work-order level. Most pros lose 15 to 25 percent of their deductions to lost receipts. Smart Scan eliminates that. For PMs, the bookkeeper stops hand-coding 200 receipts a month. Audit-friendly on both sides.</p>
+<p><strong>Sherpa Mobile — the platform now lives in your pocket.</strong> iOS is in TestFlight today (bundle ID <code>com.thesherpapros.app</code> deployed to App Store Connect). Android is right behind via Expo. Pros bid jobs, message clients with Sherpa Threads, scan receipts with Sherpa Smart Scan, and get paid through Stripe Connect — all from the phone in their truck. The first 50 founding pros get TestFlight invites. For property managers, site managers can intake work orders from the field instead of waiting until they are back at a desk. For investors, this is real product progress, not slide-ware — and it is a lower customer acquisition cost lever, because pros can sign up from a phone in the field instead of a laptop at the kitchen table.</p>
+<p><strong>Sherpa Guard — keeping the records straight, automatically.</strong> Every action a person takes in the platform — every job assigned, every payment released, every vendor approved — is recorded with who did it, what they did, and when. We also added Role-Based Access Control, which is the simple idea that an owner sees one thing, a property manager sees another, a pro sees only their own work, and a client sees only their own jobs. Why this matters for an everyday investor: large property-management companies and any future bank or institutional partner ask for proof that the platform tracks who does what. Sherpa Guard is that proof. It is also the first step toward a security certification called SOC 2, which institutional investors like to see before they write big checks.</p>
+<p><strong>Sherpa Dispatch — putting the trades in the right order, on one timeline.</strong> A kitchen renovation looks simple from the outside — but inside it is six or more separate trades that all have to show up in the right order. Demolition, electrical, plumbing, drywall, paint, tile, cabinetry. If one of them shows up on the wrong day, the whole project slips. Today most contractors juggle that with a paper notebook, a group text, and a lot of swearing. Sherpa Dispatch puts every trade on one timeline, owns the handoff between them, and warns everyone before a delay becomes a slip. <strong>Real-world example: an 11-week kitchen renovation that normally runs 3 weeks late finishes in 5 weeks with Sherpa Dispatch — because the trades are sequenced correctly the first time.</strong></p>
+<p><strong>Sherpa Materials — the platform orders the lumber, screws, fixtures, and gets them delivered the same day.</strong> Most contractors lose 5 to 10 hours a week driving to the supply house, picking up materials, and re-driving back when the order is wrong. Sherpa Materials lets the pro pick everything they need from a built-in catalog, the platform places the order through a service called Zinc (which connects programmatically to the major retail catalogs), and Uber Direct delivers the materials to the jobsite the same day. The platform charges a small coordination fee on each order — typically 8 to 12 percent of the materials cost. <strong>This is a brand-new revenue line for Sherpa Pros that did not exist a quarter ago. Every $10,000 labor job has roughly $15,000 of materials passing through it. Capturing even a slice of that materials flow on top of the labor commission is what changes Sherpa Pros from a single-revenue marketplace into a full trade orchestration platform.</strong></p>
+<p>These six pillars round out the platform from a desktop marketplace into the working tool a contractor (or a property manager) actually carries to the jobsite — and into a vertically integrated platform that handles labor, materials, delivery, and coordination on every job.</p>
+<hr>
+<h2 id="46-why-we-just-got-bigger">4.6. WHY WE JUST GOT BIGGER</h2>
+<h3 id="in-plain-english-what-sherpa-materials-and-sherpa-dispatch-change-about-the-company">In plain English: what Sherpa Materials and Sherpa Dispatch change about the company.</h3>
+<p>When we filed the first version of this Wefunder page, Sherpa Pros was a labor marketplace. A homeowner posted a job, a licensed pro got the work, and we took a small commission on the labor cost. That was the whole story.</p>
+<p>This quarter, the story got bigger — without taking on more risk.</p>
+<p><strong>Two changes did it:</strong></p>
+<ol>
+<li><p><strong>Sherpa Materials.</strong> We now also handle ordering the materials and getting them to the jobsite the same day. On a typical $10,000 labor job, there is roughly $15,000 of materials that the contractor used to have to source, order, and pick up themselves. We do that for them now, through a programmatic connection to the major retail catalogs and same-day delivery from Uber Direct. We charge a small coordination fee — 8 to 12 percent of the materials cost. <strong>That is a brand-new revenue line on top of every job we already had.</strong></p>
+</li>
+<li><p><strong>Sherpa Dispatch.</strong> Most home renovations involve six or more different trades that have to show up in the right order. Demolition, electrical, plumbing, drywall, paint, tile, cabinets. Today most contractors juggle that with a notebook and a group text. We now put every trade on one timeline, own the handoffs, and warn the homeowner and the pros before a slip becomes a 3-week delay. That is a feature property managers and homeowners will pay for — and it is a reason a sophisticated client (a property management company with hundreds of units) chooses Sherpa Pros over a basic lead-gen platform.</p>
+</li>
+</ol>
+<p><strong>What this means for an everyday investor.</strong></p>
+<p>The company you are investing in today is no longer just competing with Angi and Thumbtack. It is competing with the entire trade-supply-chain stack — companies like FW Webb (the old-school plumbing supply house), Grainger (the industrial-supply giant), Procore (the enterprise-grade general-contractor software platform), and the major same-day delivery services. <strong>Nobody else is putting all four of those things together for the residential and small-commercial trade.</strong> That is the wedge. That is why the valuation cap (the maximum company value at which your SAFE converts) reflects a bigger story than a labor-only marketplace would justify.</p>
+<p><strong>The math, plain and simple.</strong></p>
+<ul>
+<li>The US trade-materials market is roughly $540 billion every year.</li>
+<li>An 8 to 12 percent coordination fee on even half a percent of that market is roughly $270 million in annual revenue — on top of the labor commission we already charge.</li>
+<li>That number is not a forecast. It is the size of the opportunity. Whether Sherpa Pros captures any of it depends on execution. But the addressable market just grew by an order of magnitude.</li>
+</ul>
+<p>If you want the long technical version of this thesis, ask the founder for the investor deck — the slide titled "The Stripe Connect Moment" walks through the four-layer competitive set in detail.</p>
+<hr>
+<h2 id="5-the-product">5. THE PRODUCT</h2>
+<h3 id="live-today-real-jobs-real-money">Live today. Real jobs. Real money.</h3>
+<p><strong>Web platform:</strong> <a href="https://www.thesherpapros.com">www.thesherpapros.com</a>
+<strong>Mobile:</strong> iOS via TestFlight (request access). Android via PWA.
+<strong>Tech stack:</strong> Next.js 16 · Stripe Connect (marketplace splits + escrow) · Neon Postgres + PostGIS (location-aware matching) · Clerk (verified pro/client roles) · Twilio (masked messaging)</p>
+<p><strong>Three flows you can demo right now:</strong></p>
+<ol>
+<li><strong>Homeowner posts a job in 60 seconds.</strong> Photo, address, scope. Dispatch surfaces 2–3 licensed pros within minutes.</li>
+<li><strong>Pro receives a vetted job — not a lead.</strong> Sees scope, location, code-validated estimate range, and one-tap accept. No bidding war.</li>
+<li><strong>Code-aware quote validation runs in the background.</strong> Catches missing electrical permits, panel under-sizing, heat-pump quotes priced below code-compliant minimums. Homeowner sees a "code-checked" badge.</li>
+</ol>
+<p><strong>Screenshots — placeholders for Phyrom to drop in:</strong></p>
+<ul>
+<li><em>[SCREENSHOT 1: Mobile post-a-job flow — 3-step wizard, photo + address + scope]</em></li>
+<li><em>[SCREENSHOT 2: Pro inbox — vetted jobs visible, "Accept" button highlighted]</em></li>
+<li><em>[SCREENSHOT 3: Homeowner-facing quote with green "Code-checked" badge]</em></li>
+<li><em>[SCREENSHOT 4: Live map view — Uber-style dispatch, pro pin moving toward jobsite]</em></li>
+<li><em>[SCREENSHOT 5: Stripe Connect payout dashboard for a beta pro — actual GMV to date, blurred for privacy]</em></li>
+<li><em>[SCREENSHOT 6: Property Manager tier dashboard — work orders, vendor scorecard, NOI impact]</em></li>
+</ul>
+<p><strong>Feature highlights:</strong></p>
+<ul>
+<li>37 service categories live (residential trades, light commercial, specialty)</li>
+<li>Mobile-first PWA — installable on any phone in 10 seconds</li>
+<li>Stripe Connect marketplace splits + 7-day escrow hold (deposit-theft protection)</li>
+<li>QuickBooks Online sync for pros (one-click)</li>
+<li>Real-time Twilio masked messaging between pro and homeowner (no number sharing)</li>
+<li>Property Manager tier with multi-unit work order management</li>
+</ul>
+<hr>
+<h2 id="6-traction">6. TRACTION</h2>
+<h3 id="beta-cohort-live-numbers-are-small-but-real-slope-matters-more-than-size">Beta cohort live. Numbers are small but real. Slope matters more than size.</h3>
+<p><strong>Beta cohort (as of launch — to be updated with real Stripe + dispatch numbers within 7 days of Wefunder go-live):</strong></p>
+<ul>
+<li><strong><code>[X]</code> active pros</strong> across 9 trade categories and 3 states (NH, ME, MA)</li>
+<li><strong><code>[Y]</code> jobs</strong> posted in the first 60 days</li>
+<li><strong><code>$[Z]</code> Gross Merchandise Value</strong> (GMV) transacted</li>
+<li><strong><code>[N]%</code> of jobs matched in under 2 hours</strong></li>
+<li><strong>Pro Net Promoter Score (NPS): <code>[score]</code></strong> (target &gt;50)</li>
+<li><strong>Client NPS: <code>[score]</code></strong></li>
+<li><strong><code>[count]</code> code-aware quote validations</strong> run · <strong><code>[count]</code> code violations caught</strong></li>
+</ul>
+<p><strong>Cohort composition:</strong></p>
+<ul>
+<li>NH/Seacoast: 2 GCs (HJD network), 2 handymen, 1 plumber, 1 HVAC/heat-pump specialist</li>
+<li>ME/Portland: 1 painter, 1 landscaper</li>
+<li>MA/Boston specialty: 1 licensed electrician (EV/panel/Mass Save certified), 1 old-house specialist (plaster/masonry/slate), 1 roofer</li>
+</ul>
+<p><strong>Partnership traction:</strong></p>
+<ul>
+<li><strong>Mass Save Network application:</strong> <em>[STATUS PLACEHOLDER — submitted/in-review/accepted/etc. Update before launch.]</em> Once accepted, Sherpa Pros becomes the execution layer for Mass Save's heat-pump installer funnel.</li>
+<li><strong>NH Home Builders Association (NHHBA):</strong> introduction calls scheduled.</li>
+<li><strong>ME Home Builders Association (MEHBA):</strong> introduction calls scheduled.</li>
+<li><strong>Old-House Verified USPTO trademark:</strong> filing scheduled for Phase 0 Week 4.</li>
+<li><strong>Eversource Ventures intro:</strong> <em>[STATUS PLACEHOLDER]</em></li>
+</ul>
+<p><strong>Pro testimonials:</strong></p>
+<ul>
+<li><em>[QUOTE 1 PLACEHOLDER — beta pro, trade, metro — drop in real testimonial after W6]</em></li>
+<li><em>[QUOTE 2 PLACEHOLDER]</em></li>
+<li><em>[QUOTE 3 PLACEHOLDER]</em></li>
+</ul>
+<p><strong>Recent shipped features (build-in-public credibility):</strong></p>
+<ul>
+<li><strong>Sherpa Score</strong> — 0-to-100 quality grade for every pro on the platform. 12 metrics across 3 pillars (Quality 50% · Communication 25% · Reviews 25%). Gold-tier (80+) pros pay 8% take rate + get 4-hour early access to job postings; Silver and Bronze pay 12%. Live in production at <code>/pro/score</code>. The quality moat lead-gen platforms can't build because their P&amp;L doesn't reward it.</li>
+<li><strong>Sherpa Rewards</strong> — points-redemption store for pros, live at <code>/pro/rewards</code>. Pros earn 100 pts per job, 50 per review, 25 per photo, 25 per on-time, 50–200 per month per Sherpa Score tier, 500 per referral. 21-item catalog (branded apparel, Milwaukee + DeWalt + Festool tools, Visa gift cards, prepaid debit, charity donations, experiences). Gold Exclusive items locked behind Sherpa Score Gold. Real-world fulfillment via <strong>Tremendous API</strong> integration — gift cards, prepaid debit, and charity donations are shipped through Tremendous, not platform credits. Loyalty + retention layer.</li>
+<li><strong>Sherpa Flex</strong> — 5th pro tier, live at <code>/pro/flex</code>. 18% take rate (includes $1M per-project liability insurance), no LLC required, jobs under $5K, background check gate. Opens the addressable supply-side to moonlighters, GC-company employees, and tradespeople testing the platform before incorporating. Includes LLC formation guide, insurance quote resources, and fee comparison chart. The "no-LLC" door investors and community alike asked us about.</li>
+</ul>
+<p><strong>Founder commitment:</strong> quarterly investor updates with real numbers — pros, jobs, GMV, runway, hires, NPS, Sherpa Score distribution, Sherpa Rewards redemptions, Sherpa Flex tier conversions. The founder writes them personally.</p>
+<hr>
+<h2 id="7-team">7. TEAM</h2>
+<h3 id="phyrom--founder-sherpa-pros">Phyrom — Founder, Sherpa Pros</h3>
+<p><em>[FOUNDER BIO PLACEHOLDER — confirm against docs/pitch/founder-bio.md before publishing. If file does not exist, this placeholder is the working copy.]</em></p>
+<p><strong>Phyrom</strong> is the founder of Sherpa Pros and a working New Hampshire general contractor. He started HJD Builders LLC in [YEAR] and has run residential and light-commercial GC operations across the Seacoast region for 12+ years. He has personally framed dwellings, managed multi-trade subs, walked inspectors through panel upgrades, fielded the 7am homeowner calls, and lived the lead-gen-platform problem from the buying side every week of his GC career. He built the underlying code-intelligence layer that powers Sherpa Pros' code-aware quote validation over the past 3 years. Sherpa Pros is the consumer-facing marketplace built on top of that foundation.</p>
+<p>Phyrom is based in NH, mobile-first, and reachable directly at <a href="mailto:poum@hjd.builders">poum@hjd.builders</a>.</p>
+<h3 id="planned-hires-phase-1-post-first-close">Planned hires (Phase 1, post-first-close)</h3>
+<ul>
+<li><strong>Pro Success Manager (NH/ME)</strong> — onboarding, retention, weekly pro check-ins. Loaded ~$8K/month.</li>
+<li><strong>Client Concierge (part-time, remote NE)</strong> — proactive homeowner support, dispute triage. ~$3K/month.</li>
+<li><strong>Business Development (NH/ME first; MA at Phase 2)</strong> — supply-house partnerships, NHHBA + MEHBA intros, Mass Save Network execution.</li>
+</ul>
+<h3 id="planned-hires-phase-2-seed-funded">Planned hires (Phase 2, Seed-funded)</h3>
+<ul>
+<li><strong>+3 Pro Success Managers</strong> (one per metro: Manchester NH, Portland ME, Boston MA)</li>
+<li><strong>+2 Client Concierges</strong></li>
+<li><strong>+2 BD reps</strong> (NH/ME, MA)</li>
+<li><strong>+1 Senior Operations Lead</strong></li>
+</ul>
+<h3 id="advisor-slots--actively-recruiting">Advisor slots — actively recruiting</h3>
+<ul>
+<li>Marketplace operator (NFX-shaped, two-sided platform veteran)</li>
+<li>New England trades veteran (NHHBA / MEHBA / MA AGC board member)</li>
+<li>Construction tech VC partner (warm intros open: Building Ventures, Brick &amp; Mortar, Foundamental)</li>
+<li>Insurance and risk advisor (1099 vs. W-2 worker classification)</li>
+</ul>
+<hr>
+<h2 id="8-use-of-funds">8. USE OF FUNDS</h2>
+<h3 id="where-your-investment-goes--first-250k-to-500k">Where your investment goes — first $250K to $500K</h3>
+<p><strong><del>40% Engineering and product (</del>$100K–$200K)</strong></p>
+<ul>
+<li>Mobile build hardening (iOS App Store submission, Android PWA polish)</li>
+<li>Code-aware quote validation expansion (additional state codes; permit-assist workflow for Boston ISD)</li>
+<li>Property Manager tier feature buildout</li>
+<li>Dispute resolution + escrow refinement</li>
+</ul>
+<p><strong><del>30% New England operations and expansion (</del>$75K–$150K)</strong></p>
+<ul>
+<li>Pro Success Manager hire (NH/ME first, $8K/month loaded × ~12 months)</li>
+<li>Boston specialty-lane launch (Mass Save heat pumps, EV chargers, panel upgrades, old-house specialists, triple-decker exteriors)</li>
+<li>Supply-house partnership rollout (Lowe's Pro, Rockler, FW Webb)</li>
+<li>NHHBA + MEHBA partnership execution</li>
+</ul>
+<p><strong><del>20% Marketing and customer acquisition (</del>$50K–$100K)</strong></p>
+<ul>
+<li>Paid social testing: Meta + TikTok homeowner-targeted ($5–8K/month)</li>
+<li>Google Ads: Boston specialty keywords (Mass Save installer, EV charger Boston, plaster repair Boston)</li>
+<li>Local PR push: Seacoast Online, NHPR, Boston Globe Real Estate, Banker &amp; Tradesman, Portland Press Herald</li>
+<li>Trade show presence: JLC LIVE New England (Providence), NH Home &amp; Garden Show</li>
+</ul>
+<p><strong><del>10% Reserves, legal, insurance, compliance (</del>$25K–$50K)</strong></p>
+<ul>
+<li>Platform liability insurance (~$800/year)</li>
+<li>Legal opinion on 1099 vs. W-2 worker classification</li>
+<li>USPTO trademark filing (Old-House Verified)</li>
+<li>OpenSign templates (beta agreements, pro service agreements)</li>
+<li>Wefunder platform fee (7.5%) and SAFE legal (~$5K)</li>
+</ul>
+<p><strong>Founder salary:</strong> $0 until first close. Post-close: $90K–$120K market-floor rate, reviewed by lead Seed investor or board.</p>
+<blockquote>
+<p><strong>Pie chart placeholder for Wefunder editor: 40 / 30 / 20 / 10 split as above.</strong></p>
+</blockquote>
+<hr>
+<h2 id="9-why-community-ownership-matters">9. WHY COMMUNITY OWNERSHIP MATTERS</h2>
+<h3 id="the-homeowners-and-contractors-who-use-the-platform-should-own-a-piece-of-it">The homeowners and contractors who use the platform should own a piece of it.</h3>
+<p>Most marketplaces start with venture capital. The investors are partners at funds in San Francisco or New York. The platform gets built, scales, exits — and the people who built liquidity on the platform (the contractors who took the jobs, the homeowners who hired them) get nothing.</p>
+<p>I want to do this differently.</p>
+<p>If you're a homeowner in Portsmouth, Manchester, Portland, or Boston who hires licensed pros for your home — <strong>you can own a piece of the platform you use.</strong></p>
+<p>If you're a licensed pro in any of those metros taking jobs through Sherpa Pros — <strong>you can own a piece of the platform that pays you.</strong></p>
+<p>If you're an investor who believes the right place for the next 10 years of home-services money is <strong>back in the hands of the people doing the work and the people paying for it</strong> — this is a way to put a hundred dollars or a thousand dollars or ten thousand dollars on that thesis.</p>
+<p><strong>This is not philanthropy.</strong> You are buying a SAFE. The expected return is the same as any early-stage investment — high upside if Sherpa Pros executes, total loss if it fails. The difference is that the upside, if it comes, comes back to a community that overlaps with the platform's users.</p>
+<p><strong>What you are investing in (extended scope).</strong> When this Wefunder page first went live, Sherpa Pros was a licensed-trade labor marketplace — the platform took a commission when a homeowner hired a pro. That is still the foundation. But this quarter the company also shipped <strong>Sherpa Materials</strong> (the platform now orders the materials for the job and gets them to the site the same day) and <strong>Sherpa Dispatch</strong> (the platform now sequences six or more trades on one timeline so a kitchen renovation finishes in 5 weeks instead of 11). You are investing in a vertically integrated platform that handles <strong>labor + materials + delivery + coordination</strong> — not just a labor matching service. See Section 4.6 for the plain-English explainer.</p>
+<p>We are running four parallel funding tracks (non-dilutive grants, accelerators, VCs, and this Wefunder round) — see Section 6 of the GTM design spec. The Wefunder community round is one of four. None of the four is the company's only shot. Whichever closes first triggers Phase 1.</p>
+<p>But the Wefunder round is the one where the community gets a seat at the table. That's why we're doing it.</p>
+<hr>
+<h2 id="95-where-the-journey-goes--the-four-phase-growth-arc">9.5 WHERE THE JOURNEY GOES — THE FOUR-PHASE GROWTH ARC</h2>
+<h3 id="plain-english-what-youre-investing-in-over-the-long-run">Plain English: what you're investing in over the long run.</h3>
+<p>When you back a marketplace early, you're not just betting on what it looks like today. You're betting on the multi-year journey. So here's the journey, in four phases, in plain English.</p>
+<p><strong>Phase 1 — Lean Launch (Months 3 to 6 from first close).</strong>
+This is what your investment funds first. We take the live beta and turn it into a real public launch across four New England metros: Portsmouth New Hampshire, Manchester New Hampshire, Portland Maine, and Boston (specialty work only — heat pumps, electric vehicle chargers, electrical panel upgrades, old-house specialists, triple-decker exteriors). The founding contractors who joined during the beta keep their 5 percent take rate — forever — as a thank-you for taking the early bet. Goal: 50+ working pros, 1 commercial property-management anchor, 500+ homeowners signed up. By the end of Phase 1, the company is set up to raise a Seed round.</p>
+<p><strong>Phase 2 — Scaled Launch (Months 6 to 12).</strong>
+Seed round closes. Now we deepen all four metros instead of adding new ones. Goal: 200+ active pros, 1,000+ jobs flowing, $1M+ in total job value transacted, 3+ commercial property-management anchors signed, 5,000+ homeowners on the platform. The first physical Sherpa Hub (a small supply-and-tool-rental counter for member contractors) opens in either Portsmouth or Boston. Take rate stabilizes at 10 percent — about half what contractors pay Angi today. By the end of Phase 2, conversations open with venture capital firms about a Series A.</p>
+<p><strong>Phase 3 — Regional Expansion (Months 12 to 18).</strong>
+Series A closed. Now we add two new metros: Providence Rhode Island, then Hartford Connecticut. We also open a New York City specialty beachhead — Brooklyn brownstone restorations and Manhattan pre-war apartment work, two niches no national platform handles well. We sign our first utility partnership (the platform powers an Eversource or National Grid contractor-finder behind the scenes). Goal: 6 active metros, 3 large property-management chains, $5M+ in annualized job value. Take rate climbs to 12 to 15 percent. By Month 17, we are preparing the Series B.</p>
+<p><strong>Phase 4 — National + International + Franchise (Month 18 and beyond).</strong>
+Series B closed (target $20M to $40M). Now the platform goes national United States: Philadelphia, Washington DC, San Francisco, Chicago — specialty lanes only at first, then full coverage. International expansion follows on a one-country-per-year staircase: Canada Year 1, United Kingdom Year 2, Australia Year 3, European Union pilot Years 4 to 5. The Sherpa Hub model goes franchise from Hub #11 onwards, so local entrepreneurs can own and operate the physical pickup points. The platform earns Service Organization Control 2 Type 2 security certification by Month 30 (the standard enterprise customers and insurance carriers ask for). Around Months 27 to 30, the company is positioned for either a Series C or a strategic acquisition — the path forward depends on what the market tells us.</p>
+<p><strong>One brand. Four phases. Expanding footprint.</strong>
+The brand identity does not change as we expand. The wordmark stays the same. The voice stays the same. The founder origin story — Phyrom, working New Hampshire general contractor at HJD Builders LLC — stays the same in every phase. What expands is the operational footprint, the cohorts of customers we serve, and the product surfaces that go live. A homeowner in Toronto in Phase 4 will see the same brand a homeowner in Portsmouth saw in Phase 1, and that continuity is the long-term equity you're investing in.</p>
+<p><strong>What this means for your investment.</strong>
+You are not buying into a specific metro launch. You are buying into a multi-year platform that compounds across phases. Phase 1 proves the model. Phase 2 proves the model scales within a region. Phase 3 proves the model scales across regions. Phase 4 proves the model scales across countries. Each phase de-risks the next. Each phase opens a new capital round at a higher valuation. Your Wefunder Simple Agreement for Future Equity converts at whichever round closes first — typically the Seed (Phase 2) — meaning the Phase 3 and Phase 4 expansion happens with you already on the cap table.</p>
+<p>The standard early-stage investment risks still apply (see Section 11). The platform might not get past Phase 1. The platform might get past Phase 1 but not raise a Seed. The platform might raise a Seed but not deliver the metro density to attract a Series A. We are not promising any of these phases will close on schedule. We are showing you the road we are driving so you understand what you would be buying into for the long arc.</p>
+<hr>
+<h2 id="10-the-ask">10. THE ASK</h2>
+<h3 id="target-raise-250k500k-safe-terms-open-to-anyone">Target raise: $250K–$500K. SAFE terms. Open to anyone.</h3>
+<p><strong>Round structure:</strong> Regulation Crowdfunding (Reg CF) under the Securities Act of 1933.</p>
+<p><strong>Security:</strong> <strong>SAFE — Simple Agreement for Future Equity.</strong> A SAFE is a placeholder for shares. You invest today; the SAFE converts into shares of Sherpa Pros stock when the company raises a future priced equity round, gets acquired, or has an IPO.</p>
+<p><strong>Valuation cap:</strong> <strong>$5M–$8M</strong> (final cap to be set by the founder with attorney review before public launch — see FAQ Q23). The middle of the range — around <strong>$6M post-money</strong> — is a defensible starting point pending attorney sign-off.</p>
+<p><strong>Discount:</strong> <strong>20%.</strong> If the future priced round happens below the cap, you pay 80% of the new investor per-share price. You always get the better of the cap or the discount.</p>
+<p><strong>MFN (Most Favored Nation):</strong> <strong>Yes.</strong> If we later issue a SAFE on better terms to another investor, your SAFE auto-upgrades.</p>
+<p><strong>Voting rights:</strong> None. Standard for community rounds.</p>
+<p><strong>Minimum investment:</strong> <strong>$100.</strong></p>
+<p><strong>Maximum investment:</strong> Set by SEC Reg CF rules based on your annual income and net worth (Wefunder calculates and enforces this at checkout). Accredited investors have no Reg CF cap.</p>
+<p><strong>Target raise:</strong> <strong>$250K minimum to $500K maximum.</strong> We are deliberately not raising the Reg CF maximum (~$5M). A $250K–$500K community round signals authentic community ownership; a multi-million-dollar Reg CF raise signals "we couldn't get institutional money." If we hit the minimum within 90 days, the round closes. If we don't, all funds are returned in full.</p>
+<p><strong>Timeline:</strong> <strong>90 days max</strong> from public launch (per SEC Reg CF rules). If we hit the $250K minimum sooner, we may close early.</p>
+<p><strong>Wefunder fee:</strong> <strong>7.5%</strong> of the total raised, paid by the company (not the investor).</p>
+<p><strong>SAFE legal:</strong> ~$5K, paid by the company.</p>
+<p><strong>Use of funds:</strong> See Section 8 above.</p>
+<blockquote>
+<p><strong>Important risk reminder:</strong> SAFEs are unsecured. There is no scheduled payback date. There is no interest. <strong>You can lose 100% of your investment.</strong> Most early-stage startups fail. Only invest money you can fully afford to lose. See FAQ Q13 and Section 11 (Risks) below.</p>
+</blockquote>
+<hr>
+<h2 id="11-risks">11. RISKS</h2>
+<h3 id="required-sec-risk-disclosures--read-carefully">Required SEC risk disclosures — read carefully.</h3>
+<p>This is not the complete list. <strong>The full risk disclosures are in the Form C filed with the SEC and in the offering page footer.</strong> You should read both before investing.</p>
+<h3 id="111-risks-specific-to-early-stage-investing">11.1 Risks specific to early-stage investing</h3>
+<ul>
+<li><strong>You can lose your entire investment.</strong> Most early-stage startups fail.</li>
+<li><strong>Your investment is illiquid.</strong> You cannot sell your SAFE for at least one year (per SEC Reg CF rules), and likely much longer in practice — there is no active secondary market for unconverted SAFEs.</li>
+<li><strong>The valuation is set by the founder, not by an independent third party.</strong> The cap is based on comparables and judgment, not an audited valuation. (See FAQ Q23 for the methodology.)</li>
+<li><strong>Your SAFE could convert into a class of stock with no voting rights, no dividends, and limited information rights.</strong></li>
+<li><strong>Future fundraises will dilute your future ownership percentage.</strong> This is normal for any growing startup but should be expected.</li>
+</ul>
+<h3 id="112-risks-specific-to-marketplaces">11.2 Risks specific to marketplaces</h3>
+<ul>
+<li><strong>Marketplace liquidity risk.</strong> Two-sided marketplaces are notoriously hard to bootstrap. Both supply (licensed pros) and demand (homeowners) must scale together. If supply outpaces demand, pros leave. If demand outpaces supply, homeowners can't get matched. <strong>The founder's primary mitigation:</strong> start small with a curated 10-pro beta cohort in the Phase 1 launch metros the founder knows personally (Portsmouth, Manchester, Portland), then expand only after liquidity proves out.</li>
+<li><strong>Take-rate compression risk.</strong> Competitors could cut their effective take rate to match Sherpa Pros' 5–10% range. Angi, Thumbtack, and Houzz have entire P&amp;Ls built on lead-fee economics — they cannot easily switch — but other entrants could. <strong>Mitigation:</strong> the code-intelligence layer is the real moat, not the take rate. Take rate is the price; the code work is the product.</li>
+</ul>
+<h3 id="113-risks-specific-to-licensed-trade-work">11.3 Risks specific to licensed-trade work</h3>
+<ul>
+<li><strong>Regulatory risk on contractor classification (1099 vs. W-2).</strong> Various state attorneys general (including in MA) have challenged gig-platform contractor classifications. Sherpa Pros' pros are independently licensed contractors with their own insurance — defensible — but a regulatory action could force re-structure. <strong>Mitigation:</strong> written legal opinion on 1099 vs. W-2 commissioned in Phase 0 Week 4 (see GTM spec Risk R5).</li>
+<li><strong>Liability risk on completed work.</strong> If a pro damages a homeowner's property or causes injury, the homeowner could attempt to involve Sherpa Pros as a defendant. <strong>Mitigation:</strong> Platform liability insurance (~$800/year), 7-day Stripe escrow hold, 4.5-star rating floor, full pro license/insurance verification at onboarding.</li>
+<li><strong>Fraud risk on either side.</strong> Pro fraud (no-shows, deposit-theft, code violations) or client fraud (chargebacks, false claims) is endemic in the industry. <strong>Mitigation:</strong> Stripe Connect 7-day escrow hold, dispute resolution workflow, pro deactivation on confirmed fraud.</li>
+</ul>
+<h3 id="114-risks-specific-to-competitive-pressure">11.4 Risks specific to competitive pressure</h3>
+<ul>
+<li><strong>Incumbent response.</strong> Angi, Thumbtack, or Houzz could launch a "licensed-only" or "Mass Save certified" feature. They've shown no urgency to do so because it would require rebuilding their lead-fee model — but the risk is real. <strong>Mitigation:</strong> speed to market in NE (founder is local; competitors are corporate), USPTO trademark on "Old-House Verified," and exclusive utility partnerships (Mass Save Network application; National Grid Turnkey relationship).</li>
+<li><strong>New entrant.</strong> A well-funded new entrant could attempt the same positioning. <strong>Mitigation:</strong> the code-intelligence layer is a multi-year build, the founder-as-GC narrative is unforgeable, and the Phase 1 launch-metro beachhead is too small to attract well-funded national entrants until we're already established.</li>
+</ul>
+<h3 id="115-risks-specific-to-this-raise">11.5 Risks specific to this raise</h3>
+<ul>
+<li><strong>The Wefunder round may not hit its minimum target.</strong> If we don't hit $250K within 90 days, all investor funds are returned. The company would then rely on the other three parallel funding tracks (grants, accelerators, VCs) to trigger Phase 1.</li>
+<li><strong>The valuation cap in this offering is a starting point.</strong> Subsequent priced rounds may be at a much lower valuation in a down-market scenario, in which case the 20% discount controls — but you would still own less of a less-valuable company. (See FAQ Q18.)</li>
+<li><strong>Founder is solo with a 60-hour weekly cap.</strong> Burnout risk is real. <strong>Mitigation:</strong> AI agent leverage on lower-priority work, Upwork US contractors for offload (~10–15 hr/wk SDR + ~10 hr/wk content), hard 60-hour cap, Phase 1 hires close the gap. (See GTM spec Risk R8.)</li>
+</ul>
+<h3 id="116-the-full-list">11.6 The full list</h3>
+<p>Read the <strong>Form C filed with the SEC</strong> (linked from the Wefunder offering page once filed) and the <strong>complete risk disclosures on the offering page itself.</strong> This Wefunder page is a marketing summary; the Form C is the legal disclosure.</p>
+<hr>
+<h2 id="12-updates">12. UPDATES</h2>
+<h3 id="quarterly-investor-updates-posted-here">Quarterly investor updates posted here.</h3>
+<p>After the round closes, the founder posts quarterly updates to this section and to the Wefunder investor portal. Updates cover:</p>
+<ul>
+<li>Active pros and metros</li>
+<li>Total jobs and Gross Merchandise Value</li>
+<li>Runway in months</li>
+<li>Hires made</li>
+<li>Code-aware quote validations run</li>
+<li>Wins and misses (real talk — both)</li>
+</ul>
+<p><strong>First update:</strong> within 30 days of round close.
+<strong>Cadence after:</strong> quarterly, on the quarter (March, June, September, December).</p>
+<blockquote>
+<p><strong>Updates placeholder — to be filled in after launch.</strong></p>
+<p><em>[Q1 update — TBD]</em>
+<em>[Q2 update — TBD]</em>
+<em>[Q3 update — TBD]</em>
+<em>[Q4 update — TBD]</em></p>
+</blockquote>
+<hr>
+<h2 id="footer-block-paste-at-bottom-of-wefunder-page">Footer block (paste at bottom of Wefunder page)</h2>
+<p><strong>Sherpa Pros</strong> · Built by a working contractor for the contractors he works with every day.
+<strong>Licensed · Verified · Code-aware · Local · Jobs, not leads.</strong></p>
+<p><strong>Live platform:</strong> <a href="https://www.thesherpapros.com">www.thesherpapros.com</a>
+<strong>Founder direct:</strong> <a href="mailto:poum@hjd.builders">poum@hjd.builders</a>
+<strong>SEC Form C:</strong> [linked from offering page once filed]</p>
+<blockquote>
+<p><strong>Disclaimer:</strong> This page is a marketing summary. It is not legal, financial, investment, or tax advice. Investing in early-stage startups is high-risk. <strong>You can lose everything you invest.</strong> The U.S. Securities and Exchange Commission has not passed on the accuracy or adequacy of this offering. Securities sold under Regulation Crowdfunding are restricted from resale for one year except in limited circumstances. Read the SAFE document and the Form C before investing. Consult your own attorney, CPA, and financial advisor.</p>
+</blockquote>
+<hr>
+<h2 id="appendix--notes-for-phyrom-before-publishing">Appendix — Notes for Phyrom before publishing</h2>
+<ol>
+<li><strong>Capture three real platform screenshots</strong> from <a href="http://www.thesherpapros.com">www.thesherpapros.com</a> and replace the <code>[SCREENSHOT N]</code> placeholders in Section 5. No mockups. Real screens beat the best mockup every time.</li>
+<li><strong>Update all <code>[X]</code> <code>[Y]</code> <code>[$Z]</code> traction placeholders</strong> in Section 6 with real Stripe Connect + dispatch log + NPS survey numbers within 7 days of Wefunder go-live. Date-stamp them.</li>
+<li><strong>Confirm the valuation cap with your SAFE attorney</strong> (see Section 10 and FAQ Q23). The $5M–$8M range and $6M working-midpoint are starting points, not the final number.</li>
+<li><strong>Confirm the founder bio</strong> in Section 7 against <code>docs/pitch/founder-bio.md</code> if that file exists. If not, the placeholder text is the working copy — review it personally before publishing.</li>
+<li><strong>Update Mass Save Network application status</strong> in Section 6 (<code>[STATUS PLACEHOLDER]</code>) before going live.</li>
+<li><strong>Drop in 3 real beta-pro testimonials</strong> in Section 6 once the cohort has been transacting for 6+ weeks.</li>
+<li><strong>Record the Loom pitch video</strong> following the script in Section 1. One take. Phone camera. Real jobsite. Burned-in captions.</li>
+<li><strong>Verify all bullet citations</strong> (Angi BBB, Thumbtack BBB, MA labor shortage articles) are still live as URLs at the time of launch.</li>
+<li><strong>Have the Brand Guardian agent review the page</strong> for forbidden phrases ("Wiseman," "AI-powered" as headline, "disrupt," "revolutionize," "Uber for X") and for 8th-grade reading level before publishing.</li>
+</ol>
+
+	
+
+
+</body>
+</html>

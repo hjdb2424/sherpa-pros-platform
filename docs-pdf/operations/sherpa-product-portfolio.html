@@ -1,0 +1,1385 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>sherpa product portfolio — Sherpa Pros</title>
+<link rel="icon" href="../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="sherpa-product-portfolio.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="sherpa-pros--six-product-brand-portfolio">Sherpa Pros — Six-Product Brand Portfolio</h1>
+<p><strong>Date:</strong> 2026-04-22 (v1) · <strong>Updated 2026-04-25</strong> — expanded to six products with Sherpa Rewards + Sherpa Flex going LIVE in production (commits <code>08b1a5f</code> + <code>a4b455a</code>)
+<strong>Status:</strong> Brand-architecture spec — anchors Wave 6 GTM revisions
+<strong>Authors:</strong> Claude (Wave 6.2) + Phyrom (review)
+<strong>Companion docs:</strong></p>
+<ul>
+<li><code>docs/superpowers/specs/2026-04-22-gtm-marketing-design.md</code> (master GTM spec, §3.5 updated in parallel by Wave 6.1)</li>
+<li><code>docs/superpowers/specs/2026-04-15-sherpa-hub-model-design.md</code> (Sherpa Hub design)</li>
+<li><code>docs/operations/quick-job-lane.md</code> (Quick Job mode within Sherpa Marketplace)</li>
+<li><code>docs/operations/embedded-protection-products.md</code> (Phase 1 paid protection products)</li>
+<li><code>CLAUDE.md</code> (brand naming rules)</li>
+</ul>
+<hr>
+<h2 id="1-executive-summary">1. Executive Summary</h2>
+<p>Sherpa Pros is no longer a single marketplace — it is a <strong>six-product brand under one umbrella</strong> built by a working New Hampshire general contractor (Phyrom, HJD Builders LLC). Each product solves a distinct customer problem: <strong>Sherpa Marketplace</strong> is the dispatch + match engine that connects homeowners and property managers to licensed pros (Project mode + Quick Job mode); <strong>Sherpa Hub</strong> is the physical pickup point where pros grab kits, rent tools, and earn certifications; <strong>Sherpa Home</strong> is the homeowner subscription that converts one-time buyers into repeat members; <strong>Sherpa Success Manager</strong> is the managed-service tier where a dedicated human owns the customer relationship for PMs, multi-property owners, white-glove homeowners, and large companies; <strong>Sherpa Rewards</strong> (LIVE 2026-04-25) is the points-based loyalty layer that compounds pro retention across every tier, fulfilled in real money via the Tremendous API; and <strong>Sherpa Flex</strong> (LIVE 2026-04-25) is a 5th pro tier — 18% fee, per-project platform liability insurance included, no LLC required, jobs under $5K only — that opens a side-hustle path for skilled tradespeople who want to test the platform without forming an LLC. Together they form a flywheel: a customer enters through Marketplace, deepens through Home or Hub, and ascends to Sherpa Success Manager; a pro enters through Sherpa Flex (no LLC) or as a Standard pro, climbs the Sherpa Score ladder to Gold (8% fee), and earns Sherpa Rewards points across every job they complete — each product feeding the next, each defending a different competitor's flank, each compounding LTV.</p>
+<hr>
+<h2 id="2-product-detail">2. Product Detail</h2>
+<h3 id="21-sherpa-marketplace--the-dispatch-engine">2.1 Sherpa Marketplace — <em>the dispatch engine</em></h3>
+<p><strong>Product positioning.</strong> <em>"The licensed-trade marketplace that thinks like a contractor — Project mode for the kitchen, Quick Job mode for the toilet, both code-aware, both built by a working GC."</em></p>
+<p><strong>Primary audience.</strong> Residential homeowners (Project + Quick Job).</p>
+<p><strong>Secondary audience.</strong> Property Managers, specialty / older-home owners, light-commercial buyers, contractors (supply side).</p>
+<p><strong>What it does.</strong></p>
+<ul>
+<li>Matches verified licensed pros to homeowner jobs in two distinct lanes: <strong>Project mode</strong> (multi-bid, code-aware, $1.5K–$50K+) and <strong>Quick Job mode</strong> (pre-priced flat-rate menu, single-pro auto-assign, $200–$1,500).</li>
+<li>Validates scope, code compliance, permits, and rebates through the internal Wiseman intelligence layer (never exposed externally).</li>
+<li>Handles escrow, payouts, ratings, dispute resolution, and (Phase 1+) optional Project Protection insurance at checkout.</li>
+</ul>
+<p><strong>Pricing model.</strong> Beta: $0 subscription + 5% take rate. Standard: $49/mo subscription + 10% take rate. Founding Pros grandfathered at 5% forever. Same take rate across Project and Quick Job lanes.</p>
+<p><strong>Status.</strong> <strong>LIVE.</strong> Web + mobile + 8 APIs operational, 37 service categories nationwide, Dispatch Wiseman matching, Stripe Connect live (Phase 0 gate).</p>
+<p><strong>Phase timing.</strong></p>
+<ul>
+<li>Phase 0 (now): Marketplace beta — Project mode primary, Quick Job lane infrastructure spec'd.</li>
+<li>Phase 1: Public launch across Portsmouth, Manchester, Portland, Boston (specialty wedge). Quick Job lane launches Month 4–5.</li>
+<li>Phase 2: National pro coverage scaling, PM tier integration tightened, Quick Job hyper-local pricing.</li>
+<li>Phase 3: Multi-region expansion (Providence, Hartford, NYC specialty).</li>
+</ul>
+<p><strong>Tech / ops dependencies.</strong> Stripe Connect, Clerk auth, Neon Postgres + PostGIS, Twilio masked messaging, Dispatch Wiseman (live), Wiseman code intelligence (BldSync API).</p>
+<p><strong>Cross-product hooks.</strong></p>
+<ul>
+<li>→ <strong>Sherpa Home</strong>: post-Quick-Job nudge ("you've used Sherpa Marketplace 3 times — join Sherpa Home and save 5% on every job + skip the line").</li>
+<li>→ <strong>Sherpa Hub</strong>: pro side — pros earning &gt;$X/mo or completing &gt;Y jobs get invited to claim a Founding Pro Hub membership.</li>
+<li>→ <strong>Sherpa Manager</strong>: PM tier customer growing past 50 units automatically routed to a Sherpa Manager intake call.</li>
+</ul>
+<hr>
+<h3 id="22-sherpa-hub--the-physical-pickup-point">2.2 Sherpa Hub — <em>the physical pickup point</em></h3>
+<p><strong>Product positioning.</strong> <em>"Where your jobs get easier — pick up the kit, rent the tool, earn the cert. Built for working pros, not weekend warriors."</em></p>
+<p><strong>Primary audience.</strong> Contractors / pros (supply side).</p>
+<p><strong>Secondary audience.</strong> Property managers (kit dispatch for in-portfolio repairs), specialty pros needing rental tools or certifications.</p>
+<p><strong>What it does.</strong></p>
+<ul>
+<li>Operates physical Hub locations (3,000 sqft baseline: 60% warehouse, 20% showroom, 20% training classroom) where pros pick up job-matched kits, rent equipment, attend manufacturer-sponsored training, and earn certifications that flow back to their Sherpa Marketplace profile.</li>
+<li>Provides Sherpa-priced kits 20–30% below Home Depot retail via direct-buy supplier relationships (Schluter, Laticrete, DAP, GreenGuard).</li>
+<li>Acts as the pro community anchor — branded gear, in-person community, manufacturer partnerships, training revenue.</li>
+</ul>
+<p><strong>Pricing model.</strong> Per-transaction (kits, rentals, training) + manufacturer sponsorship revenue ($3K/event + consignment fleet at 40% off retail). Membership tier TBD (open question — could replace per-Hub fees with annual Pro Hub Membership).</p>
+<p><strong>Status.</strong> <strong>DESIGNED.</strong> Full physical layout, software modules (5), kit catalog (10 starter kits), rental fleet (20 tools), training calendar (12 events/yr), data model (7 tables), and manufacturer partnership pitch all spec'd. Not built.</p>
+<p><strong>Phase timing.</strong></p>
+<ul>
+<li>Phase 0 (now): No build. Hub is a Phase 2 capital investment.</li>
+<li>Phase 1: Hub remains designed-but-not-built; Marketplace must hit 50+ pros + 200+ jobs first.</li>
+<li>Phase 2 (Q3 2026): <strong>Hub 1 launches</strong> — Portsmouth NH OR Boston metro (open question — see §9). Capital: ~$100K (lease + inventory + buildout).</li>
+<li>Phase 3: Hubs 2–3 (Manchester NH + Portland ME, then Boston/Providence). Capital: $250K.</li>
+<li>Phase 4: 10–20 Hubs via franchise model (Northeast corridor).</li>
+</ul>
+<p><strong>Tech / ops dependencies.</strong> Extends existing <code>hubs</code> table with <code>hub_type</code> config. New tables: <code>hub_kit_templates</code>, <code>hub_inventory</code>, <code>hub_equipment</code>, <code>hub_rentals</code>, <code>hub_training_events</code>, <code>hub_training_registrations</code>, <code>hub_kit_orders</code>. Integrates Stripe Connect (deposits + kit payments), <code>pro_certifications</code> (auto-populated from training), Dispatch Wiseman (Hub-proximity scoring bonus).</p>
+<p><strong>Cross-product hooks.</strong></p>
+<ul>
+<li>← <strong>Sherpa Marketplace</strong>: pro who completes Y Marketplace jobs near a physical Hub becomes a Hub member candidate; Marketplace job triggers kit pre-order at the right Hub.</li>
+<li>→ <strong>Sherpa Marketplace</strong>: Hub-stocked + Hub-trained pros get Dispatch Wiseman scoring bonus, more matches, higher GMV — closing the loop.</li>
+<li>→ <strong>Sherpa Manager</strong>: Hub manager (the human running each physical Hub) becomes a natural local Sherpa Manager for nearby PMs.</li>
+</ul>
+<hr>
+<h3 id="23-sherpa-home--the-homeowner-membership-new">2.3 Sherpa Home — <em>the homeowner membership</em> (NEW)</h3>
+<p><strong>Product positioning.</strong> <em>"Membership that actually pays for itself — discounts, faster pros, and one free emergency call a year. Built for the homeowner who does more than one project."</em></p>
+<p><strong>Primary audience.</strong> Recurring residential homeowners (3+ jobs/year; older-home, larger-home, or premium homeowner segments).</p>
+<p><strong>Secondary audience.</strong> Single-property landlords ascending toward Multi-Property Owner status; specialty / older-home owners.</p>
+<p><strong>What it does.</strong></p>
+<ul>
+<li>Annual or monthly membership granting: priority dispatch (Founding Pros respond first), free baseline Project Protection on every job, 1 free emergency call/year, annual maintenance check-up, 5% off all completed jobs.</li>
+<li>Bundled with embedded protection product line — backed by white-label home warranty partner (Super, 2-10, Old Republic, HomeServe).</li>
+<li>Acts as the LTV engine for residential homeowners — converts one-time Marketplace buyers into recurring members.</li>
+</ul>
+<p><strong>Pricing model.</strong> <strong>Open question — see §9.</strong> Working hypothesis: $19/mo OR $199/yr (~$50/yr commission per member at 25% revenue share with home warranty partner). Could alternatively be tiered (e.g., Sherpa Home Standard $19/mo, Sherpa Home Plus $49/mo with higher discount + concierge access).</p>
+<p><strong>Status.</strong> <strong>NEW</strong> — product brief in progress (Wave 6.3 writing detailed spec). No code yet.</p>
+<p><strong>Phase timing.</strong></p>
+<ul>
+<li>Phase 0 (now): No build. Phyrom needs to lock pricing model first.</li>
+<li>Phase 1: <strong>Public launch</strong> — subscription billing built (Stripe recurring), home warranty partner signed, 500-member target by end of Phase 1.</li>
+<li>Phase 2: 5,000-member target. Tiered offerings, premium concierge add-on.</li>
+<li>Phase 3: Cross-sell into PM tier (homeowner becomes landlord becomes PM).</li>
+<li>Phase 4: National expansion alongside Marketplace.</li>
+</ul>
+<p><strong>Tech / ops dependencies.</strong> Stripe recurring billing (new — Marketplace currently per-transaction only), home warranty partner API integration, member-priority signal added to Dispatch Wiseman scoring, member dashboard added to client app.</p>
+<p><strong>Cross-product hooks.</strong></p>
+<ul>
+<li>← <strong>Sherpa Marketplace</strong>: post-job nudge after 2nd or 3rd job converts homeowner into Sherpa Home member.</li>
+<li>→ <strong>Sherpa Manager</strong>: Sherpa Home member who acquires 2+ rental properties auto-routes to a Sherpa Manager intake.</li>
+<li>→ <strong>Sherpa Marketplace</strong>: members get priority match → faster booking → higher engagement → more GMV.</li>
+</ul>
+<hr>
+<h3 id="24-sherpa-manager--the-managed-service-tier-new">2.4 Sherpa Manager — <em>the managed-service tier</em> (NEW)</h3>
+<p><strong>Product positioning.</strong> <em>"A real person who owns your account — not a chatbot, not a portal. Built for property managers, multi-property owners, large companies, and homeowners who want hands-off."</em></p>
+<p><strong>Primary audience.</strong> Property Managers (1,000+ unit chains), Multi-Property Owners (5+ rental properties), large companies (corporate facilities), white-glove residential homeowners.</p>
+<p><strong>Secondary audience.</strong> Utility partners (Mass Save, National Grid Turnkey) operating at-scale rebate programs.</p>
+<p><strong>What it does.</strong></p>
+<ul>
+<li>Assigns a dedicated human Sherpa Manager who owns the customer relationship: vendor sourcing, work-order intake, scheduling coordination, dispute mediation, monthly reporting, NOI/CapEx tracking for PMs.</li>
+<li>Layers on top of Sherpa Marketplace + Sherpa Home — the Manager USES those products on the customer's behalf, the customer doesn't have to learn the apps.</li>
+<li>Replaces the per-vendor COI/insurance/license tracking burden, the "juggling 40 contractors in spreadsheets" PM pain point identified in §3.2 of the GTM spec.</li>
+</ul>
+<p><strong>Pricing model.</strong> <strong>Open question — see §9.</strong> Two candidates:</p>
+<ol>
+<li><strong>Fixed retainer:</strong> $499–$2,499/mo depending on portfolio size + service tier.</li>
+<li><strong>% of managed portfolio GMV:</strong> 3–5% on top of standard 10% take rate (so total 13–15% effective take, but customer experience is fully managed).
+Likely answer: hybrid (small base retainer + variable component).</li>
+</ol>
+<p><strong>Status.</strong> <strong>NEW.</strong> No spec yet — this document is the first formal capture. Manager service overlaps with the existing PM tier in the GTM spec but is distinct: PM tier is a SaaS pricing tier ($4/unit → $1.50/unit at scale); Manager is the human-led service layer that PMs (and others) buy on top.</p>
+<p><strong>Phase timing.</strong></p>
+<ul>
+<li>Phase 0 (now): No build, but Phyrom acts as the <strong>Sherpa Manager prototype</strong> for the first PM anchor (signal-collecting, workflow-discovering).</li>
+<li>Phase 1: First paid Sherpa Manager engagement — the Phase 1 PM anchor becomes the alpha Sherpa Manager customer. Hire 1 dedicated Manager (Pro Success Manager role evolves).</li>
+<li>Phase 2: <strong>Full Manager service rollout</strong> — 3+ PM chain anchors, 1+ Multi-Property Owner, 1+ White Glove residential, dedicated Manager team (3–5 humans), CRM minimum-viable built (probably HubSpot or similar SaaS, not custom Phase 2).</li>
+<li>Phase 3: White-label Manager service for utility partners (Eversource, National Grid). Manager team scales to 10+.</li>
+<li>Phase 4: International product expansion.</li>
+</ul>
+<p><strong>Tech / ops dependencies.</strong> Minimum-viable CRM (HubSpot or similar — not custom build), monthly reporting templates, integration with Marketplace job-history and Sherpa Home member status, integration with QBO for PM invoicing, integration with BldSync PM module (pre-existing — already operational at HJD Builders) for the work-order intake side.</p>
+<p><strong>Cross-product hooks.</strong></p>
+<ul>
+<li>← <strong>Sherpa Marketplace</strong> (PM tier auto-flag): PM customer growing past 50 units triggers Manager intake.</li>
+<li>← <strong>Sherpa Home</strong> (Multi-Property Owner upgrade): Sherpa Home member with 2+ rentals triggers Manager intake.</li>
+<li>→ <strong>Sherpa Marketplace + Sherpa Home + Sherpa Hub</strong>: Manager runs the customer's entire Sherpa relationship across all three products. The customer experiences ONE relationship, the brand experiences three product surfaces compounding.</li>
+</ul>
+<hr>
+<h3 id="25-sherpa-rewards--the-loyalty-engine-live">2.5 Sherpa Rewards — <em>the loyalty engine</em> (LIVE)</h3>
+<p><strong>Product positioning.</strong> <em>"Every job earns points. Real points, real money — gift cards, tools, branded gear, the things working pros actually want. Loyalty that pays."</em></p>
+<p><strong>Primary audience.</strong> Trades / Pros across every tier (Founding Pro, Gold, Silver, Bronze, Sherpa Flex). Gold-tier pros maximize value via Gold-Exclusive catalog access.</p>
+<p><strong>Secondary audience.</strong> Pros considering platform-switch — Sherpa Rewards is a hard-to-copy retention moat versus Angi / Thumbtack lead-gen models.</p>
+<p><strong>What it does.</strong></p>
+<ul>
+<li>Mints points on the actions that drive marketplace quality: <strong>100 pts/job completed · 50 pts/5-star review · 25 pts/photo upload (before/after documentation) · 25 pts/on-time arrival · 50–200 pts/month Sherpa Score tier bonus (Bronze &lt; Silver &lt; Gold) · 500 pts/successful pro referral</strong>.</li>
+<li>Catalog: <strong>21 items</strong> spanning branded apparel, tools (Milwaukee, DeWalt, Festool), gift cards, personal items, experiences. <strong>Gold-Exclusive items</strong> locked behind Sherpa Score Gold tier (only Gold pros can redeem the top-shelf catalog).</li>
+<li>Backend: redemption fulfillment via the <strong>Tremendous API</strong> (<code>src/lib/services/tremendous.ts</code>) — real money payout (gift cards, prepaid debit, charity donations, etc.) with sandbox + production environments. Mock mode runs when no API key is set so dev environments still preview the redemption flow.</li>
+<li>API surface: <code>GET/POST /api/rewards</code>, <code>GET /api/rewards/products</code>, <code>POST /api/rewards/webhook</code> (handles Tremendous order created / delivered / canceled events).</li>
+<li>UX: redeem confirmation modal with three states (confirm → processing → success), live point deduction, redemption history, mock-mode banner when running locally.</li>
+</ul>
+<p><strong>Pricing model.</strong> <strong>No subscription fee for the pro.</strong> Funded by platform margin. Each redemption draws real cash against the Sherpa Pros Tremendous account balance (so unit economics are: GMV × take-rate − points-redeemed × Tremendous-cost). Phase 1 budget controls: Gold-tier monthly bonus cap, redemption cooldowns, anti-gaming rate limits (already wired into <code>src/lib/incentives/rewards</code>).</p>
+<p><strong>Status.</strong> <strong>LIVE.</strong> <code>/pro/rewards</code> shipped 2026-04-25 (commits <code>08b1a5f</code> page + sidebar + <code>a4b455a</code> Tremendous integration). Sidebar entry uses gift icon. Score detail page (<code>/pro/score</code>) integrates point balance + 3 featured rewards.</p>
+<p><strong>Phase timing.</strong></p>
+<ul>
+<li>Phase 0 (now, LIVE): Mock mode in dev; live Tremendous API in production with sandbox keys for the beta cohort. Beta pros begin earning points day-one.</li>
+<li>Phase 1: Catalog tuning based on redemption analytics; Gold-Exclusive catalog expansion; pro-referral campaign formalized as the highest-value point action.</li>
+<li>Phase 2: Tiered point-multiplier events (e.g., "double-points weekend" for capacity-fill); brand-partner co-funded catalog items (Milwaukee, DeWalt, Festool sponsorships).</li>
+<li>Phase 3: Sherpa Rewards opens to homeowner side as well (cross-product loyalty — Sherpa Home members earn points on jobs that convert to Sherpa Marketplace bookings).</li>
+</ul>
+<p><strong>Tech / ops dependencies.</strong> Tremendous API key (env-gated, lazy SDK init), <code>src/lib/incentives/rewards.ts</code> catalog + point-values, <code>src/lib/services/tremendous.ts</code> service wrapper, webhook signature verification, redemption history table, anti-gaming rate limiters.</p>
+<p><strong>Cross-product hooks.</strong></p>
+<ul>
+<li>← <strong>Sherpa Marketplace</strong>: every completed job, every 5-star review, every on-time arrival, every photo-doc upload mints points. Marketplace activity IS the points-earning engine.</li>
+<li>← <strong>Sherpa Flex</strong>: Sherpa Flex pros earn points on the same schedule as Standard pros — even before they form an LLC. Sherpa Flex + Sherpa Rewards together = the lowest-friction on-ramp for new tradespeople.</li>
+<li>↔ <strong>Sherpa Score</strong>: Sherpa Score tier (Gold/Silver/Bronze) drives the monthly point bonus and gates Gold-Exclusive catalog items. Score and Rewards are linked products — climbing Score increases the Rewards take.</li>
+<li>→ <strong>Sherpa Marketplace</strong> (retention loop): Sherpa Rewards is the hard-to-copy moat that keeps pros from drifting to Angi / Thumbtack — earned-but-unredeemed point balances are real switching cost.</li>
+</ul>
+<hr>
+<h3 id="26-sherpa-flex--the-side-hustle-on-ramp-live">2.6 Sherpa Flex — <em>the side-hustle on-ramp</em> (LIVE)</h3>
+<p><strong>Product positioning.</strong> <em>"For skilled tradespeople who do work on the side. No LLC required. No personal insurance policy required. Sherpa Pros provides per-project liability coverage built into the service fee."</em></p>
+<p><strong>Primary audience.</strong></p>
+<ul>
+<li>Skilled tradespeople with a W-2 day job — moonlighters who want side income without forming a business entity</li>
+<li>Construction-company employees with available time (slow weeks, weather days, between-project gaps) — directly addresses the <strong>"Companies with employees with available time"</strong> segment Interpretation B that was previously deferred to Phase 2 (see <code>docs/operations/companies-employee-time-segment.md</code>)</li>
+<li>Pros who want to test the Sherpa Pros platform before committing to LLC formation + insurance procurement</li>
+</ul>
+<p><strong>Secondary audience.</strong> Newly-licensed tradespeople (recent-graduate apprentices, career-switchers) who haven't yet built the financial cushion to carry their own general-liability insurance.</p>
+<p><strong>What it does.</strong></p>
+<ul>
+<li>Standard onboarding plus skills verification (photo portfolio + knowledge quiz) plus background check.</li>
+<li>Every accepted job carries <strong>per-project platform liability insurance</strong> built in — $1M general liability per occurrence / $2M aggregate, $500K property damage, personal injury protection included. Coverage is valid only during active Sherpa Pros jobs (not the pro's day-job hours).</li>
+<li>Pro is a <strong>1099 independent contractor</strong> — same legal status as every other Sherpa Pros pro. The pro picks their own jobs, sets their own schedule.</li>
+<li><strong>Eligibility constraints:</strong> jobs <strong>under $5,000 only</strong> (larger jobs require Standard insurance), pro must maintain <strong>Bronze or higher Sherpa Score</strong>, valid government ID + skills assessment + background check.</li>
+<li>Includes in-product <strong>LLC formation guide</strong>, <strong>insurance quote resources</strong> (so the pro can graduate to Standard tier when ready), and a <strong>fee comparison chart</strong> (18% Sherpa Flex vs 12% Standard vs 8% Gold).</li>
+</ul>
+<p><strong>Pricing model.</strong> <strong>18% take rate, no subscription.</strong> The 6% premium over the 12% Standard tier funds the per-project platform liability insurance. Net effective fee to a Sherpa Flex pro is <em>lower than 12% Standard once you factor in the cost of carrying their own general-liability policy</em> — Sherpa Flex bundles the insurance the pro would otherwise have to buy.</p>
+<p><strong>Status.</strong> <strong>LIVE.</strong> <code>/pro/flex</code> shipped 2026-04-25 (commit <code>08b1a5f</code>). Sidebar entry in the bottom section.</p>
+<p><strong>Phase timing.</strong></p>
+<ul>
+<li>Phase 0 (now, LIVE): Page live, eligibility flow live, insurance binder partner contracted (per-project rider).</li>
+<li>Phase 1: Outreach to construction-company HR + facilities operators whose tradesperson employees want side income (the previously-deferred Interpretation B path now ships).</li>
+<li>Phase 2: Sherpa Flex graduate cohort metric tracked — % of Flex pros who upgrade to Standard tier within 12 months becomes a key supply-side health indicator.</li>
+<li>Phase 3: Sherpa Flex tier rolls out alongside national marketplace expansion; partnership channels with trade-school career-services offices and union-apprenticeship programs.</li>
+</ul>
+<p><strong>Tech / ops dependencies.</strong> Per-project insurance binder API (carrier integration), eligibility gate (jobs &lt;$5K, background check, Sherpa Score floor), fee-engine differentiation (18% vs 12% vs 8% by tier), upgrade flow (Sherpa Flex → Standard when own insurance + LLC verified).</p>
+<p><strong>Cross-product hooks.</strong></p>
+<ul>
+<li>↔ <strong>Sherpa Marketplace</strong>: Sherpa Flex pros transact through the same dispatch + match surface as every other tier. Sherpa Flex is a <strong>fee/eligibility tier</strong>, not a parallel marketplace.</li>
+<li>→ <strong>Sherpa Score climb path</strong>: Sherpa Flex pro completes jobs → Sherpa Score grows → at any point pro can acquire own insurance + LLC and drop to Standard tier (12%) → keeps climbing Score → reaches Gold (8% + 4hr early access).</li>
+<li>↔ <strong>Sherpa Rewards</strong>: Sherpa Flex pros earn rewards points on every job, review, photo, and on-time arrival. Loyalty engine works identically across all five tiers.</li>
+<li>→ <strong>Companies-w/employee-time segment Interpretation B</strong>: Sherpa Flex's per-project platform insurance + sub-$5K ceiling + explicit independent-contractor framing dissolves the worker-classification risk that previously deferred this segment to Phase 2. Construction company HR can now point tradesperson employees at Sherpa Flex as a side-income channel without joint-employer / payroll-tax exposure (see <code>docs/operations/companies-employee-time-segment.md</code> 2026-04-25 update).</li>
+</ul>
+<hr>
+<h2 id="27-platform-capability-layer-shipped-2026-04-25">2.7 Platform Capability Layer (shipped 2026-04-25)</h2>
+<p>Underneath the six products, three platform-level capabilities span every product surface. They are <strong>not products</strong> — no separate purchase, no separate landing page — but they are <strong>load-bearing brand assets</strong> because they show up in pro and customer demos as the most-praised features. Marketing copy should reference them by name (Sherpa Threads · Sherpa Smart Scan · Sherpa Mobile) inside the relevant product story. They shipped to production in commits <code>67ccfc8</code>, <code>8933f67</code>, <code>60781c1</code>, and <code>2f1eec4</code>.</p>
+<h3 id="271-sherpa-threads--in-app-chat-with-short-message-service-sms-sync">2.7.1 Sherpa Threads — <em>in-app chat with Short Message Service (SMS) sync</em></h3>
+<p><strong>What it does.</strong> Three-role messaging surface (pro to client to Property Manager) with read receipts, conversation list, message bubbles, and file attachments. Routes live at <code>/pro/messages</code>, <code>/pm/messages</code>, and <code>/client/messages</code>. The platform sends an SMS via Twilio when the recipient hasn't opened the app; their SMS reply is parsed and lands back in-app on the original thread. Files: <code>src/lib/communication/chat-service.ts</code>, <code>src/components/chat/*</code>, <code>/api/chat/*</code>.</p>
+<p><strong>Who it's for.</strong> Every Sherpa Pros user. Pros need it because clients want to text. Clients need it because pros want to text. Property Managers need it because every work-order conversation needs an audit trail attached to the work order, not lost in a personal phone.</p>
+<p><strong>Why it's hard to copy.</strong> Lead-gen platforms (Angi, Thumbtack) hand the conversation off to the pro's personal phone — that's the leakage point that costs them all the data downstream. Threads keeps both parties on-platform without forcing the client to install anything (the SMS bridge is invisible to the client). Twilio integration is straightforward; the <em>thread-attached-to-work-order</em> model is not, because it requires the marketplace to also be the project management substrate.</p>
+<p><strong>Surfaces in.</strong> <strong>Sherpa Marketplace</strong> (pro to client, every job) · <strong>Sherpa Hub</strong> (Property Manager work-order threads, attached to specific work orders) · <strong>Sherpa Success Manager</strong> (the dedicated human owns the thread on the customer's behalf — Manager replies appear with the customer-facing voice).</p>
+<h3 id="272-sherpa-smart-scan--optical-character-recognition-ocr-for-documents-photos-and-receipts">2.7.2 Sherpa Smart Scan — <em>Optical Character Recognition (OCR) for documents, photos, and receipts</em></h3>
+<p><strong>What it does.</strong> One scanning surface at <code>/pro/scan</code> with three components: <strong>Document Scanner</strong> (permits, blueprints, contracts), <strong>Photo Analyzer</strong> (job-site photos to measurements + conditions), and <strong>Receipt Scanner</strong> (receipts + invoices). Scanned receipts are wired into <code>ExpenseAutoCategorizor.tsx</code> — they auto-categorize for tax (Schedule C lines for pros, Capital Expenditure / CapEx versus Operating Expenditure / OpEx for Property Managers). Files: <code>src/lib/services/ocr-service.ts</code>, <code>src/components/ocr/*</code>, <code>/api/ocr</code> endpoint.</p>
+<p><strong>Who it's for.</strong> Pros (instant expense capture — most pros lose 15–25% of deductions to lost receipts) · Property Managers (auto-tagging work-order spend is the #1 audit pain point and the most-praised feature in PM demos per spec §10 R5) · Homeowners (rebate paperwork, permit uploads, instant parsing) · Sherpa Success Managers (annual tax-prep handled for the customer without the customer doing the filing legwork).</p>
+<p><strong>Why it's hard to copy.</strong> OCR is commodity tech — the moat is <strong>the categorization engine</strong> and <strong>the integration to the rest of the platform</strong>. A scanned receipt is only useful if it lands on the right Schedule C line and shows up in the right work-order budget. Sherpa Smart Scan's value is the wiring, not the recognition.</p>
+<p><strong>Surfaces in.</strong> <strong>Sherpa Marketplace</strong> (pro tax tools, expense capture for the 1099 pro) · <strong>Sherpa Hub</strong> (Property Manager finance + work-order spend tagging) · <strong>Sherpa Home</strong> (homeowner uploads rebate paperwork or permits for instant parsing) · <strong>Sherpa Success Manager</strong> (annual tax-prep handled by the dedicated human, fed by year-round receipt scans).</p>
+<h3 id="273-sherpa-mobile--native-ios--android">2.7.3 Sherpa Mobile — <em>native iOS + Android</em></h3>
+<p><strong>What it does.</strong> Native mobile-app shell for Sherpa Pros. Bundle ID <code>com.thesherpapros.app</code>. iOS in TestFlight beta as of 2026-04-25, Android via Expo. App Store Connect ID configured, Expo Application Services (EAS) configured for TestFlight submission. Built with Expo so iOS + Android ship from one codebase.</p>
+<p><strong>Who it's for.</strong> Working pros (the field-first audience — pros take photos, accept jobs, message clients, and capture receipts from their phone) and Sherpa Home subscribers (homeowners reach for their phone, not their laptop, when something breaks).</p>
+<p><strong>Why it's hard to copy.</strong> The mobile-app shell is straightforward (any team can ship Expo). The moat is <strong>what the app exposes</strong> — Sherpa Threads, Sherpa Smart Scan, the Sherpa Marketplace dispatch surface, and the Sherpa Score / Sherpa Rewards loop all work natively on the phone, with camera + push + offline + biometric login. Lead-gen platforms don't have a real mobile app for pros because they don't have a real workflow for pros — just a leads inbox.</p>
+<p><strong>Surfaces in.</strong> <strong>Sherpa Marketplace</strong> (the pro app — pros work in the field) · <strong>Sherpa Home</strong> (the subscriber app — homeowners reach for their phone). <strong>Sherpa Hub Property Manager dashboards stay web-first by design</strong> — Property Managers do real reporting + financial work on a desktop, and forcing them onto mobile would be a downgrade. <strong>Sherpa Success Manager</strong> is human-led, so there is no Manager-side mobile app — the Manager works in their CRM (Customer Relationship Management) tool on desktop and communicates with the customer through Sherpa Mobile.</p>
+<p><strong>Status note.</strong> Sherpa Mobile is a real <strong>investor signal</strong> — it proves product progress beyond the web app, and TestFlight + EAS distribution mean the beta cohort can install a real native app on day one. The deck and Wefunder page should reference "Sherpa Mobile in TestFlight beta" as a Phase 0 traction milestone.</p>
+<h3 id="274-sherpa-guard--role-based-access-control-rbac-middleware--audit-logs-live">2.7.4 Sherpa Guard — <em>Role-Based Access Control (RBAC) middleware + audit logs</em> (LIVE)</h3>
+<p><strong>What it does.</strong> Two pieces working together. <strong>(a) RBAC middleware</strong> at <code>src/middleware.ts</code> intercepts every <code>/pro/*</code>, <code>/client/*</code>, <code>/pm/*</code>, and <code>/admin/*</code> route, reads the role from the active session, and routes the user to the right dashboard. Wrong role redirects to the correct dashboard with a toast notification. Unauthenticated requests redirect to <code>/sign-in</code>. The <code>/admin/*</code> routes require an admin permission flag because admin is a permission layer that overlays a role, not a role of its own. <strong>(b) Audit logs</strong> are persisted in an <code>audit_logs</code> table — every load-bearing action (sign-in, role change, access granted, access revoked, reward redeemed, pro verified, pro rejected, job created, material approved, dispatch triggered) writes a row with user identifier, email, target type and identifier, JavaScript Object Notation (JSON) metadata, IP address, and timestamp. Helper <code>logAudit(action, userId, metadata)</code> is called from API routes. Admin view at <code>/admin/logs</code> is filterable by action, user, and date range.</p>
+<p><strong>Who it's for.</strong> Every Sherpa Pros user transparently (RBAC enforces routing for them). The audit-trail consumers are <strong>Property Manager auditors</strong> (who need a paper trail attached to every work order), <strong>Sherpa Success Manager teams</strong> (who own customer relationships and need to evidence what happened on the account), <strong>the dispute-resolution function</strong> (when a $14K kitchen job goes sideways, we have receipts), and <strong>institutional-capital Limited Partners (LPs)</strong> doing diligence on an enterprise-light tier sale.</p>
+<p><strong>Why it's hard to copy.</strong> The middleware itself is straightforward Next.js. The moat is <strong>what gets logged and how it ties back to work orders</strong> — Angi and Thumbtack do not log access events against work orders because they do not own the work order. Sherpa Pros owns the work order, the thread, the materials approval, and the dispatch event in one data model, so the audit log is end-to-end across the customer journey instead of fragmented across third-party systems. That coverage is what satisfies the Service Organization Control 2 (SOC 2) audit-trail control out of the box and what makes the platform credible to a 5,000+ unit Property Manager cohort.</p>
+<p><strong>Surfaces in.</strong> <strong>All six products</strong> — Sherpa Marketplace, Sherpa Hub, Sherpa Home, Sherpa Success Manager, Sherpa Rewards, Sherpa Flex. This is platform-level by design; nothing about it is product-specific.</p>
+<h3 id="275-sherpa-flex-landing--sherpa-splash--acquisition-surface-live">2.7.5 Sherpa Flex Landing + Sherpa Splash — <em>acquisition surface</em> (LIVE)</h3>
+<p><strong>What it does.</strong> Two coordinated public surfaces. <strong>(a) Sherpa Flex Landing</strong> lives at <code>/flex</code> ("Do work on the side? We've got you covered."), the splash-page ecosystem section is updated with Flex, and invite pages now include a Flex option — together they make a dedicated front door for side-bandwidth tradespeople (W-2 employees with available time, moonlighters, construction-company employees who want to test the platform before forming a Limited Liability Company / LLC). <strong>(b) Sherpa Splash</strong> is the public capability showcase on the splash page — it now displays the full lineup: Sherpa Score, Sherpa Rewards, Sherpa Smart Scan, Sherpa Threads, Maintenance, Finance Hub, Escrow, code-verified quotes, 37 trade categories, Sherpa Success Manager, plus the new Sherpa Dispatch model and Multi-Trade Coordination.</p>
+<p><strong>Who it's for.</strong> <strong>Sherpa Flex Landing</strong> targets the side-hustle tradesperson — the audience the existing pro funnel was not built to reach. <strong>Sherpa Splash</strong> targets every prospect (homeowner, pro, Property Manager) who lands on the public site cold and needs the full value proposition in one screen, not piecemeal through the product navigation.</p>
+<p><strong>Why it's hard to copy.</strong> Most lead-gen marketplaces have one funnel for one kind of pro. Sherpa Pros now has a <strong>second purpose-built funnel</strong> for the side-hustle tier with its own pricing structure (18% service fee, no LLC, no personal insurance, jobs under $5,000) and its own insurance posture (per-project platform liability bundled in the premium fee). That two-funnel structure is hard to retrofit because it requires the underlying tier model to actually exist — Angi cannot launch a "Flex" funnel without first building a 5th pro tier and its insurance product.</p>
+<p><strong>Surfaces in.</strong> <strong>Sherpa Marketplace</strong> (pro acquisition top-of-funnel for both full-time and Sherpa Flex pros) · <strong>Sherpa Splash</strong> is the marketing front door for <strong>all six products</strong> by design.</p>
+<h3 id="276-sherpa-dispatch--multi-trade-coordination--timeline-live">2.7.6 Sherpa Dispatch — <em>multi-trade coordination + timeline</em> (LIVE)</h3>
+<p><strong>What it does.</strong> Multi-trade jobs (e.g., a kitchen renovation: demo → plumbing rough-in → electrical rough-in → drywall → cabinet → counter → trim → paint) get a dispatch timeline that auto-schedules the handoffs between trades, surfaces blocked work, and re-sequences when a trade slips. Single-trade jobs run straight through the existing Marketplace match flow. Multi-trade jobs become <strong>whole-project orchestration</strong> instead of seven uncoordinated marketplace transactions the homeowner has to coordinate themselves.</p>
+<p><strong>Who it's for.</strong> Homeowners doing a real renovation (kitchen, bathroom, addition, basement finish — anything that touches more than one trade) and Property Managers running multi-trade unit turns or capital-improvement projects. Also: Sherpa Success Manager customers who hand the whole timeline off to the dedicated human.</p>
+<p><strong>Why it's hard to copy.</strong> Lead-gen marketplaces (Angi, Thumbtack, TaskRabbit, Houzz Pro) are single-job dispatch by design — they hand the homeowner a list of pros for <em>one trade</em> and the homeowner is responsible for sequencing. Project-coordination tools (BuildBook, BuilderTrend, JobNimbus, Procore) are general-contractor SaaS — they assume the contractor already has the pros and need a tool to manage them. Sherpa Dispatch is the missing middle: marketplace dispatch <em>and</em> project orchestration in one surface. Building it requires owning both the supply side (pros across all trades) and the workflow side (timelines, handoffs, blockers) — which is why no single incumbent can ship it without acquiring across two categories.</p>
+<p><strong>Surfaces in.</strong> <strong>Sherpa Marketplace</strong> (every multi-trade job gets a dispatch timeline) · <strong>Sherpa Hub</strong> (Property Manager multi-trade work orders use the timeline as the work-order spine).</p>
+<h3 id="277-sherpa-materials--materials-orchestration-wiseman-materials--zinc--uber-direct-live">2.7.7 Sherpa Materials — <em>materials orchestration (Wiseman Materials + Zinc + Uber Direct)</em> (LIVE)</h3>
+<p><strong>What it does.</strong> A single coordinated stack: <strong>Wiseman Materials</strong> (internal name; customer-facing surface is <strong>Sherpa Materials</strong> or <strong>Smart Materials</strong> — never expose "Wiseman" externally) is the materials endpoint that auto-derives the parts list from the job specification + applicable code requirements + the assembly catalog. <strong>Zinc Application Programming Interface (API)</strong> handles programmatic procurement from Amazon Business and supplier catalogs. <strong>Uber Direct</strong> (formerly Uber Connect) drops materials at the job site same-day. The pro reviews and adjusts the auto-derived list; pro and client both approve via the approval-flow user interface (UI) before the order is placed; the job detail materials tab shows line-item visibility, status, and delivery Estimated Time of Arrival (ETA).</p>
+<p><strong>Who it's for.</strong> <strong>Pros</strong> (no more 90-minute supply-house runs in the middle of a job — materials show up while they're working the previous trade's handoff). <strong>Clients on every tier</strong> (Sherpa Home homeowners can approve materials for their own job; Sherpa Success Manager customers have the dedicated human approve on their behalf; Property Manager work orders move materials at portfolio scale). <strong>Sherpa Pros itself</strong> (this is the Stripe-Connect moment for the platform — a transparent 8-12% materials coordination fee becomes a durable per-job revenue line on top of the labor commission, with materials Total Addressable Market (TAM) of approximately $540 billion in the United States, industry estimate, residential + light-commercial trade materials).</p>
+<p><strong>Why it's hard to copy.</strong> Three pieces have to exist and integrate. <strong>(1) Wiseman Materials needs a code-aware assembly catalog</strong> — the same catalog that powers the existing code-aware quote validation (NEC, IRC, MA Electrical, NH RSA) is what auto-derives a materials list from a job specification. Building that catalog from scratch is a multi-year effort. <strong>(2) Zinc API integration needs an active Amazon Business + supplier-catalog account in good standing</strong> — onboarding takes months and requires real procurement volume to maintain. <strong>(3) Uber Direct integration needs a launched Uber business account with the right delivery volume to unlock same-day windows.</strong> Even an incumbent labor marketplace would need 12-18 months to ship the equivalent — and would also need the willingness to take 8-12% on materials instead of 100% of a lead fee. The economics shift is the bigger barrier than the engineering.</p>
+<p><strong>Surfaces in.</strong> <strong>Sherpa Marketplace</strong> (every job that requires materials — a homeowner books a panel upgrade, the platform derives the breaker, conductors, and Square D panel cabinet, the pro and homeowner approve, Zinc orders, Uber Direct delivers) · <strong>Sherpa Hub</strong> (Property Manager work-order materials lines, batched across the portfolio for volume coordination-fee discounts) · <strong>Sherpa Home</strong> (homeowners can approve materials for their own job in the subscriber app — same approval-flow UI, mobile-first).</p>
+<p><strong>Naming flag.</strong> Internal docs (this portfolio, the GTM spec, the competitive analysis) can use "Wiseman Materials" because they are internal. Any user-facing surface — splash page, app screen, marketing email, deck — must use <strong>"Sherpa Materials"</strong> or <strong>"Smart Materials"</strong>. The same rule applies as the rest of the Wiseman family per <code>docs/operations/brand-portfolio.md</code> §5.3.</p>
+<hr>
+<h2 id="3-cross-product-flywheel">3. Cross-Product Flywheel</h2>
+<pre><code>                          ┌──────────────────────────────────┐
+                          │      SHERPA PROS (umbrella)      │
+                          └──────────────────────────────────┘
+                                          │
+        ┌─────────────────────────────────┼─────────────────────────────┐
+        │                                 │                             │
+        ▼                                 ▼                             ▼
+┌────────────────┐               ┌────────────────┐           ┌──────────────────┐
+│   MARKETPLACE  │◄──────────────│      HUB       │           │  HOME (subscr.)  │
+│ (LIVE, dispatch│   pro flywheel│ (DESIGNED, P2) │           │   (NEW, P1)      │
+│  + match — both│               │                │           │                  │
+│  Project + Quick│               │ kits • rentals │           │ priority + 5% off│
+│  Job lanes)     │               │ training • cert│           │ free guarantee   │
+└────────────────┘               └────────────────┘           └──────────────────┘
+        ▲                                 ▲                             │
+        │                                 │                             │
+        │                                 │                             ▼
+        │                                 │                   ┌──────────────────┐
+        │                                 └───────────────────│ MANAGER (NEW, P1)│
+        │     PM auto-flag (&gt;50 units)                        │ dedicated human  │
+        └─────────────────────────────────────────────────────│ owns the account │
+                                                              └──────────────────┘
+</code></pre>
+<h3 id="31-homeowner-journey-marketplace-→-home-→-manager">3.1 Homeowner journey: Marketplace → Home → Manager</h3>
+<p>A homeowner posts their first $250 Quick Job (toilet install) on <strong>Sherpa Marketplace</strong>. Pro shows up in 30 minutes, fixes it, customer rates 5 stars. Two months later: $25K kitchen Project (Project mode). Six months later: post-job nudge — <em>"You've used Sherpa Marketplace 3 times. Sherpa Home members save 5% on every job + skip the line + get free emergency calls. $19/mo."</em> Customer subscribes to <strong>Sherpa Home</strong>. Two years later: customer inherits a duplex, becomes a single-property landlord, then buys a triple-decker, then a small portfolio. Auto-routed to <strong>Sherpa Manager</strong> intake — <em>"You're managing 5 properties across 2 metros. Your Sherpa Manager handles vendor sourcing, scheduling, monthly reports, dispute mediation. $1,499/mo. Want a 30-min call?"</em></p>
+<h3 id="32-pro-journey-marketplace-→-hub">3.2 Pro journey: Marketplace → Hub</h3>
+<p>A handyman signs up for <strong>Sherpa Marketplace</strong> to take Quick Jobs. After 30 days and 25 jobs, he's a top-quartile pro by NPS. System sends Hub invite — <em>"Pickup your kits 30% cheaper than Home Depot, rent the Festool track saw for $45/day, attend the free Schluter shower-system training next month. Founding Pro Hub Membership: $99/yr (or $0 if you're a Founding Marketplace Pro)."</em> Pro joins <strong>Sherpa Hub</strong>. Now he's stocked with kits, certified, equipped — Dispatch Wiseman gives him a Hub-proximity scoring bonus, he gets more matches, GMV compounds. Hub becomes the moat that competitors (Angi, Thumbtack, Handy) can't replicate without owning physical inventory.</p>
+<h3 id="33-homeowner-to-landlord-home-→-multi-property-owner-→-manager">3.3 Homeowner-to-landlord: Home → Multi-Property Owner → Manager</h3>
+<p>A <strong>Sherpa Home</strong> member buys a second property (rental) and a third (Airbnb). At property #3, system flags the account: <em>"You're managing 3+ properties. Sherpa Home doesn't fit anymore — you need Sherpa Manager. Want to talk?"</em> Manager intake call converts to a $999/mo fixed-retainer engagement. Customer's three properties stay on Marketplace + Home, but a human Manager runs them all.</p>
+<h3 id="34-pm-tier-upgrade-marketplace-pm-tier-→-manager">3.4 PM tier upgrade: Marketplace PM tier → Manager</h3>
+<p>A Property Manager signs up for the <strong>Sherpa Marketplace</strong> PM tier ($4/unit/yr → $1.50/unit at scale). At 50 units, the SaaS tier still works. At 200 units, the PM is overwhelmed coordinating vendor scheduling, COI tracking, monthly reporting. Auto-flag → <strong>Sherpa Manager</strong> intake. PM upgrades to Manager ($1,999/mo for the full service). PM tier subscription stays (it's the underlying platform); Manager is the human layer on top.</p>
+<hr>
+<h2 id="4-bundle--package-opportunities">4. Bundle / Package Opportunities</h2>
+<table>
+<thead>
+<tr>
+<th>Bundle</th>
+<th>Composition</th>
+<th>Audience</th>
+<th>Pricing strategy</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Sherpa Pros Owner Bundle</strong></td>
+<td>Marketplace (free) + Sherpa Home subscription</td>
+<td>Homeowner</td>
+<td>Sherpa Home priced standalone; Marketplace usage is free either way. Bundle is "join Home, keep using Marketplace."</td>
+</tr>
+<tr>
+<td><strong>Sherpa Pros Pro Bundle</strong></td>
+<td>Marketplace pro account + Sherpa Hub membership + <strong>Sherpa Rewards (auto-included)</strong></td>
+<td>Contractor (Standard or Gold tier)</td>
+<td>Marketplace $49/mo + Hub $99/yr + Sherpa Rewards points-from-day-one. Bundle: "Founding Pros get Hub free for year 1 + double Rewards points for first 90 days."</td>
+</tr>
+<tr>
+<td><strong>Sherpa Pros PM Bundle</strong></td>
+<td>Marketplace PM tier + Sherpa Success Manager</td>
+<td>Property Manager</td>
+<td>Marketplace PM tier ($4/unit/yr → $1.50/unit at scale) + Manager retainer ($999–$2,499/mo). Bundle: discount Manager retainer if PM has &gt;100 units on Marketplace.</td>
+</tr>
+<tr>
+<td><strong>Sherpa Pros White Glove Bundle</strong></td>
+<td>Marketplace + Sherpa Home + Sherpa Success Manager</td>
+<td>Premium homeowner / Multi-Property Owner</td>
+<td>Single quoted price ($299–$499/mo) wrapping all three. Most managed product.</td>
+</tr>
+<tr>
+<td><strong>Sherpa Pros "No LLC Starter" Bundle</strong> <em>(NEW)</em></td>
+<td><strong>Sherpa Flex</strong> + <strong>Sherpa Rewards</strong> + LLC formation guide</td>
+<td>Side-hustle / moonlighter / construction-company employee</td>
+<td>Pro joins as Sherpa Flex (18%, insurance included, no LLC), earns Sherpa Rewards points on every job. In-product LLC formation walkthrough nudges upgrade to Standard tier when ready. Entry-level acquisition bundle for the supply side.</td>
+</tr>
+<tr>
+<td><strong>Sherpa Pros "All Tiers Earn"</strong> <em>(structural)</em></td>
+<td>Every pro tier (Founding Pro · Gold · Silver · Bronze · Sherpa Flex) earns Sherpa Rewards</td>
+<td>All pros</td>
+<td>Sherpa Rewards is not a separate purchase — it's a loyalty layer that runs on every transaction. Catalog tier-locking (Gold-Exclusive items) creates the only Score-driven differentiation.</td>
+</tr>
+</tbody></table>
+<p><strong>Bundle pricing — open question.</strong> Discount the bundle vs. standalone, OR keep prices independent and let the bundle exist as a marketing wrapper only? See §9 Q5.</p>
+<hr>
+<h2 id="5-naming-conventions-locked--brand-guardian-uses-for-future-audits">5. Naming Conventions (locked — Brand Guardian uses for future audits)</h2>
+<p><strong>Always use:</strong></p>
+<ul>
+<li>"Sherpa Marketplace" (the dispatch + match product)</li>
+<li>"Sherpa Hub" (the physical pickup point)</li>
+<li>"Sherpa Home" (the homeowner membership)</li>
+<li>"Sherpa Manager" (the managed-service tier — pending §9 Q4 final naming)</li>
+<li>"Sherpa Pros" — the umbrella brand only. Never a product.</li>
+</ul>
+<p><strong>Never use:</strong></p>
+<ul>
+<li>"the Sherpa Pros app" → ambiguous (which app? Marketplace? Home?). Always say which product. <strong>NEW: BANNED.</strong></li>
+<li>"Wiseman" externally (internal code-intelligence layer; never appears in any Sherpa product name or external surface)</li>
+<li>"Dispatch Wiseman" externally (internal matching engine; user-facing surface is just "Sherpa Marketplace dispatch")</li>
+<li>"BldSync" externally (sister-brand internal platform; never appears in Sherpa product surfaces)</li>
+<li>"Uber for X" externally (internal shorthand only)</li>
+<li>"AI-powered" as a headline (the AI is the means, not the message)</li>
+<li>Region-anchored brand names ("Sherpa Pros New England" / "NE-only") — the brand is national; the launch sequence is operational</li>
+</ul>
+<p><strong>Phyrom naming rules:</strong></p>
+<ul>
+<li>Surname <strong>UNKNOWN</strong> — always "Phyrom" only.</li>
+<li>Founder origin: "working New Hampshire general contractor" / "founder of HJD Builders LLC."</li>
+<li>NH origin is real biography; brand identity is national.</li>
+</ul>
+<p><strong>Internal product names that stay internal:</strong></p>
+<ul>
+<li>Wiseman (any flavor — Code, Assembly, Architect, Pricing, Checklist, Dispatch)</li>
+<li>BldSync (the construction-management sister product; Sherpa Pros customers should never see this name)</li>
+<li>Sherpa Concierge / Sherpa Success Persona (SCP/SSP — internal AI-augmentation layer terminology)</li>
+</ul>
+<hr>
+<h2 id="6-strategic-implications">6. Strategic Implications</h2>
+<ol>
+<li><p><strong>Each product needs its own positioning + brand presence.</strong> Sherpa Home isn't a checkbox inside Marketplace — it's an audience-acquisition surface that must stand on its own. Same for Hub, same for Manager. Brand Guardian audits run per-product, not just at the umbrella level.</p>
+</li>
+<li><p><strong>Multi-product brand means multiple landing pages on thesherpapros.com.</strong> Minimum: <code>/marketplace</code>, <code>/home</code>, <code>/pros</code> (the pro side of Marketplace + Hub recruiting), <code>/managers</code> (Sherpa Manager intake). Possibly <code>/hub</code> as a separate page for the physical-location product once Hub 1 launches.</p>
+</li>
+<li><p><strong>PR + investor narrative shifts from "another marketplace" to "multi-product platform."</strong> Series A pitch (Phase 2 → Phase 3 raise) leads with the four-product flywheel, not just GMV growth. Defensibility argument upgrades: Angi can copy a marketplace UI; they cannot copy a Hub network + Home subscription + Manager service team simultaneously.</p>
+</li>
+<li><p><strong>Pricing complexity goes up sharply.</strong> Each product needs unit-economics modeling (CAC, LTV, gross margin, attach rate), and bundle pricing needs cross-product P&amp;L attribution. CFO/Controller hire (Phase 3) becomes more important earlier.</p>
+</li>
+<li><p><strong>Engineering scope increases.</strong> Phase 1 must build: Sherpa Home subscription billing (Stripe recurring) + home warranty partner integration + Manager minimum-viable CRM. These are net-new vs. the existing Marketplace codebase. Engineering capacity allocation is a real Phase 1 decision (see §8 Risk R-eng).</p>
+</li>
+<li><p><strong>Brand voice unifies; product voices specialize.</strong> Umbrella voice = founder, plainspoken, "jobs not leads." Marketplace voice = transactional + urgent. Home voice = warm + savings-focused. Hub voice = pro-to-pro, gritty, equipment-and-supplies tone. Manager voice = enterprise + trust + relationship.</p>
+</li>
+</ol>
+<hr>
+<h2 id="7-phase-by-phase-product-launch-sequence">7. Phase-by-Phase Product Launch Sequence</h2>
+<p>The table below uses three statuses per product per phase: <strong>LIVE</strong> (deployed, generating revenue or active usage), <strong>DESIGNED</strong> (spec'd / built but not yet operating at scale or in market), <strong>PIPELINE</strong> (planned for that phase, not yet started).</p>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Months</th>
+<th>Marketplace</th>
+<th>Hub</th>
+<th>Home</th>
+<th>Manager</th>
+<th>Rewards</th>
+<th>Flex</th>
+<th>Platform capabilities (Threads / Smart Scan / Mobile / Guard / Splash / Dispatch / Materials)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Phase 0</strong></td>
+<td>0–3</td>
+<td>LIVE (beta) — Project + Quick Job lane spec'd</td>
+<td>DESIGNED only</td>
+<td>DESIGNED (Wave 6.3 spec in progress)</td>
+<td>DESIGNED — Phyrom acts as prototype for first Project Manager anchor</td>
+<td>LIVE</td>
+<td>LIVE</td>
+<td>LIVE (all 7 capabilities shipped 2026-04-25)</td>
+</tr>
+<tr>
+<td><strong>Phase 1</strong></td>
+<td>3–6</td>
+<td>LIVE — public launch across 4 metros (Portsmouth, Manchester, Portland, Boston specialty) + Quick Job lane goes live Months 4 to 5</td>
+<td>DESIGNED — Hub #1 build is a Phase 2 capital investment</td>
+<td>LIVE — public launch, subscription billing built, home warranty partner signed, 500-member target</td>
+<td>LIVE — first paid Sherpa Success Manager engagement; Phase 1 Project Manager anchor becomes alpha customer; 1 dedicated Manager hired</td>
+<td>LIVE — catalog tuning, Gold-Exclusive expansion, pro-referral campaign formalized</td>
+<td>LIVE — outreach to construction-company HR + facilities operators</td>
+<td>LIVE — all 7 capabilities operational across 4-metro footprint</td>
+</tr>
+<tr>
+<td><strong>Phase 2</strong></td>
+<td>6–12</td>
+<td>LIVE — scaled 4-metro footprint, 1,000 jobs/month, $1M+ Gross Merchandise Value, take rate stable at 10 percent</td>
+<td>LIVE — Hub #1 launches Q3 2026 (Portsmouth or Boston, see §9 Q3); $100K capital expenditure; 200 registered pros, 150 kit orders/month, 60 percent tool utilization. Hubs #2 and #3 in PIPELINE (Manchester + Portland)</td>
+<td>LIVE — 5,000-member target; tiered offerings (Standard / Plus); premium concierge add-on</td>
+<td>LIVE — full Sherpa Success Manager service rollout, 3+ Project Manager chain anchors, 1+ Multi-Property Owner, 1+ White Glove residential, 3 to 5 Manager humans on staff, minimum-viable Customer Relationship Management live</td>
+<td>LIVE — tiered point-multiplier events; brand-partner co-funded catalog (Milwaukee, DeWalt, Festool sponsorships)</td>
+<td>LIVE — Sherpa Flex graduate cohort metric tracked (% of Flex pros upgrading to Standard tier within 12 months)</td>
+<td>LIVE — all 7 capabilities operational at scale across 4 metros</td>
+</tr>
+<tr>
+<td><strong>Phase 3</strong></td>
+<td>12–18</td>
+<td>LIVE — 6 metros active (Portsmouth + Manchester + Portland + Boston + Providence + Hartford) plus New York City specialty beachhead (Brooklyn brownstones + Manhattan pre-war), $5M+ annualized Gross Merchandise Value, 3 Project Manager chain anchors, 1 utility partner</td>
+<td>LIVE — Hubs #2 and #3 launch (Manchester + Portland), Hubs #4 to #6 in PIPELINE (Boston, Providence, Hartford); franchise Disclosure Document (FDD) drafting begins</td>
+<td>LIVE — cross-sell into Project Manager tier, Multi-Property Owner cohort identified</td>
+<td>LIVE — white-label Sherpa Success Manager service for utility partners (Eversource Massachusetts/Connecticut, National Grid New York); team scales to 10+</td>
+<td>LIVE — Sherpa Rewards opens to homeowner side as well (cross-product loyalty: Sherpa Home members earn points on Marketplace bookings)</td>
+<td>LIVE — Sherpa Flex tier rolls out alongside expansion metros; partnership channels with trade-school career-services + union-apprenticeship programs</td>
+<td>LIVE — all 7 capabilities scaled across 6 metros + NYC specialty</td>
+</tr>
+<tr>
+<td><strong>Phase 4</strong></td>
+<td>18+</td>
+<td>LIVE — full national United States footprint (Philadelphia + Washington DC + San Francisco + Chicago specialty lanes), international Canada (Year 1) → United Kingdom (Year 2) → Australia (Year 3) → European Union pilot (Years 4 to 5), Series B closed, take rate 12 to 15 percent</td>
+<td>LIVE — 6+ Hubs operational including franchised; Hubs #2 to #10 are FW Webb co-located, Hubs #11+ via franchise model; Northeast corridor saturated, mid-Atlantic + select international</td>
+<td>LIVE — national United States expansion alongside Marketplace, plus international cohorts in Canada / UK / Australia</td>
+<td>LIVE — international Sherpa Success Manager tier; Manager service is the exit-narrative anchor for strategic acquirer or Series C</td>
+<td>LIVE — international Rewards catalog (currency + brand-partner localization for Canada / UK / AU)</td>
+<td>LIVE — international Flex tier per market labor law (Canada Independent Contractor framework, UK IR35 considerations, AU Fair Work Act)</td>
+<td>LIVE — all 7 capabilities scaled multi-region (US-East / US-West / Canada / European Union); Service Organization Control 2 Type 2 certified by Month 30</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="71-per-phase-product-priorities-callout">7.1 Per-phase product priorities (callout)</h3>
+<p>The table above shows what is operating per phase. The list below is the prioritization order for each phase — what gets engineering, capital, and Phyrom's attention first.</p>
+<ul>
+<li><strong>Phase 1 priority order (Months 3 to 6).</strong> (1) Sherpa Marketplace public-launch reliability across 4 metros — every other product depends on Marketplace working. (2) Sherpa Home subscription billing + home warranty partner integration (small, focused build, do not over-scope). (3) First paid Sherpa Success Manager engagement with the Phase 1 Project Manager anchor. (4) Sherpa Rewards catalog tuning + Sherpa Flex outreach (both LIVE already, just optimize). Hub stays DESIGNED only — do not start the Hub #1 build until Marketplace hits 50+ pros and 200+ jobs (Phase 2 gate).</li>
+<li><strong>Phase 2 priority order (Months 6 to 12).</strong> (1) Hub #1 launch (Q3 2026) — first physical-product capital investment, make-or-break for the Hub thesis. (2) Sherpa Success Manager full service rollout (3+ Project Manager chain anchors, dedicated team of 3 to 5 Managers). (3) Sherpa Home scaling to 5,000 members. (4) Sherpa Marketplace 4-metro density deepening (no new metros yet — that is Phase 3). (5) Sherpa Rewards tiered events + brand-partner co-funded catalog.</li>
+<li><strong>Phase 3 priority order (Months 12 to 18).</strong> (1) Series A close + 2 expansion metros (Providence Months 13 to 14, Hartford Months 15 to 16). (2) New York City specialty beachhead (Brooklyn brownstones + Manhattan pre-war, Months 14 to 18). (3) Hubs #2 and #3 launch + franchise Disclosure Document drafting. (4) Utility white-label Sherpa Success Manager (Eversource Massachusetts/Connecticut or National Grid New York). (5) Series B prep (Month 17).</li>
+<li><strong>Phase 4 priority order (Months 18+).</strong> (1) Series B close + national United States rollout (Philadelphia + Washington DC + San Francisco + Chicago specialty lanes). (2) International Canada Year 1 launch (closest regulatory + cultural fit). (3) Franchise model live for Hubs #11+. (4) Service Organization Control 2 Type 2 certification by Month 30. (5) International expansion staircase: United Kingdom Year 2 → Australia Year 3 → European Union pilot Years 4 to 5. (6) Vertical Software-as-a-Service spinout consideration (the platform capability layer — Threads / Smart Scan / Mobile / Guard / Splash / Dispatch / Materials — could spin out as a vertical SaaS for non-Sherpa contractors, similar to Toast's restaurant-software model).</li>
+</ul>
+<hr>
+<h2 id="8-risk-register-additions-multi-product-specific--additive-to-gtm-spec-§10">8. Risk Register Additions (multi-product specific — additive to GTM spec §10)</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Risk</th>
+<th>Phase</th>
+<th>Severity</th>
+<th>Early signal</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>R-brand</strong></td>
+<td><strong>Brand dilution</strong> — 4 products = 4× brand surface area; messaging gets muddled, customers don't know which Sherpa product to ask about</td>
+<td>All</td>
+<td>High</td>
+<td>Customer support tickets ask "is this Sherpa Marketplace or Sherpa Home?"; landing-page bounce on <code>/home</code> because visitors expected Marketplace</td>
+<td>Brand Guardian runs per-product audits monthly; lock naming conventions in §5 above; never say "the Sherpa Pros app" — always specify the product</td>
+</tr>
+<tr>
+<td><strong>R-arb</strong></td>
+<td><strong>Pricing arbitrage</strong> — homeowner buys Sherpa Home subscription specifically to access pro discounts that are economically borne by the pro, not Sherpa Pros</td>
+<td>1/2</td>
+<td>Medium</td>
+<td>Pro complaints about Home-member discounts cutting into job margin; Home-member jobs converting at lower margin than non-member jobs</td>
+<td>Discounts on Home subscription are funded by Sherpa Pros margin (commission rebate), NOT by pros; pro take rate stays 5%/10% regardless of customer membership</td>
+</tr>
+<tr>
+<td><strong>R-channel</strong></td>
+<td><strong>Channel conflict</strong> — PM customer with a dedicated Sherpa Manager stops using Marketplace directly because "the Manager handles it"; Marketplace usage data thins for Manager-served accounts</td>
+<td>2/3</td>
+<td>Medium</td>
+<td>Manager-served accounts show &lt;50% of expected Marketplace job volume; PM never logs into Marketplace directly</td>
+<td>Manager USES Marketplace on the customer's behalf; all jobs still flow through Marketplace (it's the dispatch substrate); Manager is a relationship layer, not a parallel system</td>
+</tr>
+<tr>
+<td><strong>R-eng</strong></td>
+<td><strong>Engineering split-attention</strong> — 4 products = 4 separate roadmaps competing for finite engineering time; Marketplace velocity slows because engineers are building Home billing or Manager CRM</td>
+<td>1/2</td>
+<td>High</td>
+<td>Marketplace bug backlog grows; Phase 1 metric gates slip; engineers report burnout from context-switching</td>
+<td>Phase 1 sequencing: Marketplace stays the priority; Sherpa Home billing is a small, focused build (Stripe recurring + 1 home warranty integration); Manager CRM is OFF-THE-SHELF (HubSpot), not custom; Hub engineering stays Phase 2</td>
+</tr>
+<tr>
+<td><strong>R-cannibal</strong></td>
+<td><strong>Bundle cannibalization</strong> — White Glove bundle revenue cannibalizes higher-margin standalone Manager revenue</td>
+<td>2/3</td>
+<td>Low</td>
+<td>White Glove bundle attach &gt; standalone Manager attach by 5×; standalone Manager revenue declines</td>
+<td>Price the bundle to be a clear premium over standalone Marketplace + Home, not a discount on Manager; Manager standalone stays the highest-margin tier</td>
+</tr>
+<tr>
+<td><strong>R-warranty</strong></td>
+<td><strong>Home warranty partner failure</strong> — chosen home warranty partner (Super, 2-10, Old Republic, HomeServe) loses license, raises rates, or exits market mid-Phase 1</td>
+<td>1/2</td>
+<td>Medium</td>
+<td>Partner downgrades from A.M. Best A-rated; partner raises commission split unfavorably; partner announces exit</td>
+<td>Sign with two warranty partners minimum (primary + backup); contract Phase 1 carefully with out-clauses; design Sherpa Home so the warranty backend is swappable, not load-bearing on a single partner</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="9-open-questions-for-phyrom">9. Open Questions for Phyrom</h2>
+<ol>
+<li><p><strong>Sherpa Home subscription pricing model.</strong> Flat ($19/mo? $49/mo? $199/yr?) or % discount tier (e.g., 5% off all jobs forever for $X/mo)? Recommendation: launch with flat $19/mo (industry-standard subscription pricing, easier to communicate, easier to model unit economics); revisit tiered + % models in Phase 2 once attach data is real.</p>
+</li>
+<li><p><strong>Sherpa Manager pricing model.</strong> Fixed monthly retainer ($499–$2,499/mo by portfolio size) OR % of managed portfolio GMV (3–5% on top of standard 10% take)? Recommendation: hybrid (small base retainer covers Manager human cost + variable component aligns to value delivered), but pick a model and lock for Phase 1 rather than A/B testing.</p>
+</li>
+<li><p><strong>Hub physical location strategy.</strong> Own/lease standalone (~$100K capex per Hub) OR partner with existing supply houses (FW Webb, Lowe's Pro, Rockler) to put Sherpa Hub mini-counters inside their footprints (lower capex, faster scale, less brand control)? Recommendation: Hub 1 standalone (proves the model + brand) → Hub 2+ partner-embedded.</p>
+</li>
+<li><p><strong>Sherpa Manager naming.</strong> "Sherpa Account Manager" vs. "Sherpa Success Manager" vs. "Sherpa Manager" — pick one, lock for Brand Guardian. Recommendation: <strong>"Sherpa Manager"</strong> — shortest, parses cleanly with the other three product names (Marketplace / Hub / Home / Manager), avoids the SaaS-y "Success Manager" cliché.</p>
+</li>
+<li><p><strong>Bundle pricing logic.</strong> Discount for cross-product bundle purchase OR keep prices stand-alone (bundles are marketing wrappers only)? Recommendation: small bundle discount (10–15%) to drive cross-product attach in Phase 2; keep standalone prices clean.</p>
+</li>
+<li><p><strong>Sherpa Manager human-led or AI-augmented.</strong> Pure human-led (high cost per customer, premium positioning) OR AI-augmented using internal SCP/SSP (Sherpa Concierge Persona / Sherpa Success Persona) from BldSync, with humans escalation-only (lower cost, more scalable, risk of feeling chatbot-y)? Recommendation: <strong>human-led with AI-augmented backend</strong> — customer always talks to a human, but the human uses internal AI tools to be 5× more productive. Best of both.</p>
+</li>
+<li><p><strong>White Glove tier — homeowner only or also offered to PM/Multi-Property Owner?</strong> Currently spec'd as homeowner-side bundle (Marketplace + Home + Manager). Should it also exist as a PM-side or Multi-Property Owner bundle, or does PM Bundle cover that case? Recommendation: keep White Glove as homeowner-only branding to preserve the premium consumer-feel; PM Bundle handles the commercial-side case with different language.</p>
+</li>
+<li><p><strong>PM tier vs. Manager service — same product different label, or different products?</strong> PM tier (in current GTM spec §3.2) is a SaaS pricing tier ($4/unit → $1.50/unit at scale) on Marketplace; Manager (this doc) is a managed-service human layer. Risk: customer/sales confusion. Recommendation: <strong>two distinct products</strong> — PM tier is the SaaS substrate (any PM can self-serve), Manager is the optional human layer on top (only for PMs that want hands-off). Marketing landing page must explain the difference clearly: <em>"PM tier is the platform you use; Sherpa Manager is the person who uses it for you."</em></p>
+</li>
+</ol>
+<hr>
+<h2 id="10-brand-bible-compliance-checklist-per-product">10. Brand-Bible Compliance Checklist (per-product)</h2>
+<table>
+<thead>
+<tr>
+<th>Rule</th>
+<th>Marketplace</th>
+<th>Hub</th>
+<th>Home</th>
+<th>Manager</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Plainspoken / 8th-grade reading level</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓ (slightly more enterprise — but still no jargon)</td>
+</tr>
+<tr>
+<td>"Licensed · Verified · Code-aware · Built by a contractor · Local · Jobs, not leads · National" — at least 3 of these on every landing page</td>
+<td>✓</td>
+<td>✓ ("Built for working pros")</td>
+<td>✓</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>Never "Wiseman" externally</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>Never "Uber for X" externally</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>Never "AI-powered" as headline</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓ (esp. important for Manager — it's a HUMAN service, AI is hidden plumbing)</td>
+</tr>
+<tr>
+<td>Never region-anchored brand language</td>
+<td>✓</td>
+<td>✓ (per-Hub locations are operational, not brand-cap)</td>
+<td>✓</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>Phyrom surname stays UNKNOWN — "Phyrom" only</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>Founder origin: "working New Hampshire general contractor" / HJD Builders LLC</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>Never "the Sherpa Pros app" — always specify which product</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="11-last-updated">11. Last Updated</h2>
+<p><strong>2026-04-22</strong> — v1 by Claude (Wave 6.2). Brand-architecture spec capturing the four-product portfolio. Companion to Wave 6.1 (GTM spec §3.5 update) and Wave 6.3 (Sherpa Home product brief). Phyrom reviews and locks naming + open-question answers before Brand Guardian runs first per-product audit.</p>
+
+	
+
+
+</body>
+</html>

@@ -1,0 +1,3847 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>social content plan — Sherpa Pros</title>
+<link rel="icon" href="../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="social-content-plan.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="sherpa-pros--37-day-multi-platform-social-content-plan">Sherpa Pros — 37-Day Multi-Platform Social Content Plan</h1>
+<p><strong>Date:</strong> 2026-04-22 (Days 1–30) · 2026-04-25 (Days 31–33 added for Sherpa Threads + Smart Scan + Mobile launch sweep) · 2026-04-25 (Days 34–37 added for Sherpa Dispatch + Sherpa Materials + Sherpa Guard + /flex landing launch sweep)
+<strong>Window:</strong> Day 1 = 2026-04-22, Day 37 = 2026-05-28
+<strong>Owner:</strong> Phyrom (founder voice) + future T5 marketing terminal
+<strong>Scheduler:</strong> Metricool (Phyrom's existing scheduler)
+<strong>Channels:</strong> LinkedIn (Phyrom personal) · Instagram (brand) · TikTok (brand) · Facebook (brand) · X (Phyrom + brand) · YouTube (brand)
+<strong>Phase:</strong> Phase 0 (fundraising + 10+ pro beta) — see GTM spec §4.2
+<strong>Status:</strong> Ready to paste into Metricool. No placeholders.</p>
+<p><strong>Source documents this plan reuses / does not duplicate:</strong></p>
+<ul>
+<li><code>docs/marketing/linkedin-editorial.md</code> — 39-post LinkedIn editorial (Mon/Wed/Fri = LinkedIn track; this plan REFERENCES, does not duplicate)</li>
+<li><code>docs/superpowers/specs/2026-04-22-gtm-marketing-design.md</code> §3 — brand voice, always-say, never-say</li>
+<li><code>docs/operations/quick-job-lane.md</code> — Quick Job lane content angle</li>
+<li><code>docs/operations/sherpa-product-portfolio.md</code> — Wave 6.2 in flight (4-product brand: Sherpa Marketplace / Sherpa Hub / Sherpa Home / Sherpa Manager)</li>
+<li><code>docs/operations/sherpa-home-subscription.md</code> — Wave 6.3 in flight (Sherpa Home product)</li>
+<li><code>docs/operations/brand-asset-prompts.md</code> — Wave 6.4 in flight (visual brand language)</li>
+</ul>
+<p><strong>If Wave 6.2 / 6.3 / 6.4 specs name products differently, swap product names globally before paste — but never write "the Sherpa Pros app" (which app?). Always specify a product.</strong></p>
+<hr>
+<h2 id="1-channel-strategy--per-platform">1. Channel Strategy — Per Platform</h2>
+<h3 id="11-linkedin--phyrom-personal-account-founder-led-thought-leadership">1.1 LinkedIn — Phyrom personal account (founder-led thought leadership)</h3>
+<ul>
+<li><strong>Account:</strong> Phyrom personal LinkedIn (NOT a Sherpa Pros brand page)</li>
+<li><strong>Cadence:</strong> Mon / Wed / Fri 7:30am ET (per existing 39-post editorial)</li>
+<li><strong>Source of posts:</strong> <code>docs/marketing/linkedin-editorial.md</code> — pull weekly from the 13-week table</li>
+<li><strong>Format mix:</strong> ~50% text · 25% photo · 15% carousel PDF · 10% native video / Loom</li>
+<li><strong>No hashtags.</strong> Founder voice in 2026 doesn't need them.</li>
+<li><strong>Links in first comment, never in body.</strong></li>
+<li><strong>Phyrom replies to every comment within 60 minutes of posting</strong> (algorithm boost)</li>
+<li><strong>Goal:</strong> founder follower growth (target 5,000 by Day 90), Wefunder soft-commit, Founding Pro inbound DMs</li>
+<li><strong>This 30-day calendar</strong> assigns the existing editorial to Days 1–30 — see Section 3 below</li>
+</ul>
+<h3 id="12-instagram--sherpapros-brand-account-visual-first">1.2 Instagram — @sherpapros brand account (visual-first)</h3>
+<ul>
+<li><strong>Account:</strong> Sherpa Pros brand IG (not Phyrom personal)</li>
+<li><strong>Cadence:</strong> 5–7 posts/wk + 5–7 stories/day. Mix: 3 reels, 2 carousel, 1–2 single photo per week</li>
+<li><strong>Best post times:</strong> Tue/Wed/Thu 11am ET (homeowner browsing) + Sat 9am ET (weekend project planning)</li>
+<li><strong>Format mix:</strong> Reels (60%) · Carousel (25%) · Single photo (10%) · Static + UGC repost (5%)</li>
+<li><strong>Stories:</strong> behind-the-scenes daily — jobsite, fundraising progress, beta pro shoutouts. Use polls + question stickers.</li>
+<li><strong>Aspect ratio:</strong> Reels 9:16 with safe-zone padding for the IG bottom bar; carousels 4:5 portrait (max real estate in feed)</li>
+<li><strong>Captions:</strong> burned-in for reels (most users watch with sound off); written captions 100–150 words with light emojis only if Phyrom approves (default: no emojis per CLAUDE.md user pref)</li>
+<li><strong>Goal:</strong> Founding Pro recruiting (warm DMs from contractor accounts), homeowner brand awareness, before/after social proof</li>
+</ul>
+<h3 id="13-tiktok--sherpapros-brand-account-contractor-pov--quick-job-demos">1.3 TikTok — @sherpapros brand account (contractor-POV + Quick Job demos)</h3>
+<ul>
+<li><strong>Account:</strong> Sherpa Pros brand TikTok</li>
+<li><strong>Cadence:</strong> 4–6 posts/wk. Higher tolerance for volume than IG (TikTok rewards quantity)</li>
+<li><strong>Best post times:</strong> Tue/Wed/Thu 6–9pm ET (after-work scrolling)</li>
+<li><strong>Format:</strong> 100% vertical 9:16 video, 15–90 sec, captions burned in, trending sound where on-brand</li>
+<li><strong>Hooks:</strong> first 1.5 seconds decide everything. Lead with motion or a number on screen.</li>
+<li><strong>Voice:</strong> Phyrom on camera (50% of posts) + beta Founding Pros (40%) + screen-recording demos (10%)</li>
+<li><strong>Goal:</strong> viral-likely Quick Job demos ("watch a real toilet install in 2 min"), code-violation catch reels, Founding Pro spotlights</li>
+</ul>
+<h3 id="14-facebook--same-brand-account-simulcast-ig--longer-text">1.4 Facebook — same brand account, simulcast IG + longer text</h3>
+<ul>
+<li><strong>Account:</strong> Sherpa Pros brand Facebook page</li>
+<li><strong>Cadence:</strong> 5–7 posts/wk (matches IG schedule via Metricool simulcast) + 1–2 longer-form text posts/wk targeting older homeowner demographic (50+)</li>
+<li><strong>Format mix:</strong> Same reels + carousels + photos as IG, plus weekly long-form text posts (300–500 words) about Mass Save, EV charger rebates, code-aware quote walkthroughs</li>
+<li><strong>Best post times:</strong> Tue/Wed/Thu 8am ET (older demo morning scroll) + Sun 7pm ET (weekend project planning)</li>
+<li><strong>Goal:</strong> older homeowner reach (50+, primary home-improvement spender), Mass Save / National Grid rebate education, local NH/ME/MA community building</li>
+</ul>
+<h3 id="15-x-twitter--phyrom-personal--sherpa-pros-brand">1.5 X (Twitter) — Phyrom personal + Sherpa Pros brand</h3>
+<ul>
+<li><strong>Phyrom personal X:</strong> real-time fundraising updates, industry takes, replies to construction-tech accounts</li>
+<li><strong>Sherpa Pros brand X:</strong> product updates, Founding Pro shoutouts, customer wins (with permission)</li>
+<li><strong>Cadence:</strong> Phyrom 1–3 posts/day (X rewards volume), brand 4–7 posts/wk</li>
+<li><strong>Format:</strong> short text (under 280 chars in the hook tweet) · threads for deeper takes · 16:9 video clips for demos</li>
+<li><strong>Best post times:</strong> 7am ET, 12pm ET, 6pm ET (3-touch daily rhythm)</li>
+<li><strong>Goal:</strong> building-in-public fundraising signal, industry positioning vs Angi/Thumbtack, real-time engagement with VCs and other founders</li>
+</ul>
+<h3 id="16-youtube--sherpapros-brand-long-form-education--shorts">1.6 YouTube — @sherpapros brand (long-form education + shorts)</h3>
+<ul>
+<li><strong>Long-form (3–10 min):</strong> 1 video/wk, Wed publish, 16:9<ul>
+<li>Topics: "How to read a code-aware quote," "Mass Save heat pump rebate walkthrough," "Behind the scenes of a Founding Pro week," "What 5% take rate means vs Angi $87 lead cost"</li>
+</ul>
+</li>
+<li><strong>Shorts (15–60 sec):</strong> 3–5/wk, repurpose TikTok / IG Reels (vertical 9:16)</li>
+<li><strong>Goal:</strong> SEO-evergreen education content (long-form), top-of-funnel discovery (shorts)</li>
+</ul>
+<hr>
+<h2 id="2-content-pillars--7-day-rotation">2. Content Pillars — 7-Day Rotation</h2>
+<table>
+<thead>
+<tr>
+<th>Day</th>
+<th>Pillar</th>
+<th>Lead persona</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Mon</strong></td>
+<td>Founder voice</td>
+<td>Phyrom</td>
+<td>"Jobs not leads," industry takes, fundraising progress (LinkedIn editorial post drives the day)</td>
+</tr>
+<tr>
+<td><strong>Tue</strong></td>
+<td>Pro spotlight</td>
+<td>Founding Pros</td>
+<td>Behind-the-scenes contractor POV, beta pro feature, jobsite content</td>
+</tr>
+<tr>
+<td><strong>Wed</strong></td>
+<td>Education</td>
+<td>Brand + Phyrom</td>
+<td>Code-aware quote walkthrough, Mass Save explainer, homeowner FAQ (LinkedIn editorial post drives the day)</td>
+</tr>
+<tr>
+<td><strong>Thu</strong></td>
+<td>Product</td>
+<td>Brand</td>
+<td>Sherpa Marketplace / Sherpa Hub / Sherpa Home / Sherpa Manager feature spotlight</td>
+</tr>
+<tr>
+<td><strong>Fri</strong></td>
+<td>Community</td>
+<td>Phyrom + brand</td>
+<td>Customer story, neighborhood mention, "what we shipped this week" (LinkedIn editorial post drives the day)</td>
+</tr>
+<tr>
+<td><strong>Sat</strong></td>
+<td>Engagement</td>
+<td>Brand</td>
+<td>Polls, Q&amp;A, repost of pro/customer content, story prompts</td>
+</tr>
+<tr>
+<td><strong>Sun</strong></td>
+<td>Inspiration</td>
+<td>Brand</td>
+<td>Beautiful home photos, dream-project carousels, before/after eye-candy</td>
+</tr>
+</tbody></table>
+<p><strong>Note:</strong> LinkedIn drives Mon/Wed/Fri across all platforms via founder-voice repurpose. Tue/Thu/Sat/Sun are brand-led, primarily IG/TikTok/Facebook/YouTube, with optional X amplification.</p>
+<hr>
+<h2 id="3-37-day-calendar-day-137-all-platforms">3. 37-Day Calendar (Day 1–37, all platforms)</h2>
+<p><strong>Day 1 = 2026-04-22 (Wed). Day 30 = 2026-05-21 (Wed). Day 37 = 2026-05-28 (Wed).</strong>
+<strong>Posting time conventions:</strong> LinkedIn 7:30am ET · IG/FB 11am ET (and 6pm Story) · TikTok 7pm ET · YouTube Wed 12pm ET · X 7am/12pm/6pm ET.</p>
+<h3 id="week-1-day-17">Week 1 (Day 1–7)</h3>
+<h4 id="day-1--wed-2026-04-22--pillar-education">Day 1 — Wed 2026-04-22 — Pillar: Education</h4>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>Type</th>
+<th>Hook (first line)</th>
+<th>Caption / Script</th>
+<th>Hashtags</th>
+<th>Asset</th>
+<th>AI prompt</th>
+<th>Engagement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>LinkedIn (Phyrom)</strong></td>
+<td>Photo</td>
+<td><em>(LinkedIn Editorial Wk 1 Wed — "Day 1 of the 90-day fundraise. Stripe Connect went live this morning. Coffee #3.")</em></td>
+<td>See <code>linkedin-editorial.md</code> Wk 1 Wed row in full</td>
+<td>none</td>
+<td>Phyrom + laptop + jobsite photo</td>
+<td>Capture real photo Sun night before the week</td>
+<td>Reply 60 min</td>
+</tr>
+<tr>
+<td><strong>Instagram Reel</strong></td>
+<td>Reel</td>
+<td>"This is Day 1."</td>
+<td>30-sec selfie reel — Phyrom on jobsite, talks to camera: <em>"Day 1 of the 90-day fundraise for Sherpa Pros. The licensed-trade marketplace built by a contractor. Jobs, not leads. Follow along — we're building this in public."</em> Burned-in captions.</td>
+<td>#SherpaPros #JobsNotLeads #BuiltByAContractor #ConstructionTech #LicensedTrades</td>
+<td>Phyrom selfie reel</td>
+<td>Runway: "tradesperson silhouette walking onto jobsite, golden hour, brand colors sky blue and amber, modern editorial style, NOT corporate stock"</td>
+<td>Pin top comment with thesherpapros.com link</td>
+</tr>
+<tr>
+<td><strong>TikTok</strong></td>
+<td>Video</td>
+<td>"Day 1 of building a marketplace for licensed contractors"</td>
+<td>Same selfie reel as IG, with TikTok-trending audio bed (founder building-in-public sound). Caption: "90 days. 10 founding pros. Let's go."</td>
+<td>#SherpaPros #ConstructionTok #ContractorLife #BuildInPublic</td>
+<td>Same Phyrom selfie</td>
+<td>Same as IG</td>
+<td>Reply to first 20 comments</td>
+</tr>
+<tr>
+<td><strong>Facebook</strong></td>
+<td>Reel + text</td>
+<td>"Day 1."</td>
+<td>Simulcast IG reel + 100-word post: <em>"Phyrom here. I run a small GC out of New Hampshire. Today I started raising for Sherpa Pros — the licensed-trade marketplace I wish existed when I was paying $87 to Angi for ghosted leads. 90 days. 10 founding pros across NH, ME, and MA. If you're a homeowner who's been burned by lead-gen platforms — this is the alternative. Follow along."</em></td>
+<td>(no hashtags on FB)</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>X (Phyrom)</strong></td>
+<td>Text + photo</td>
+<td>"Day 1 of the 90-day Sherpa Pros fundraise. Stripe Connect cleared this morning. ☕️ #3."</td>
+<td>"Building the licensed-trade marketplace I wish existed when I was paying $87 to Angi for ghosted leads. 10 founding pros, 90 days. Follow along." + photo of Phyrom + laptop + jobsite. Link to thesherpapros.com in reply tweet.</td>
+<td>#JobsNotLeads</td>
+<td>Phyrom + laptop photo</td>
+<td>—</td>
+<td>Quote-RT a Building Ventures or NFX tweet</td>
+</tr>
+<tr>
+<td><strong>YouTube Long-form (publish 12pm ET)</strong></td>
+<td>Video</td>
+<td>"I'm raising $250K to build a marketplace for licensed contractors. Here's why."</td>
+<td>5-min founder explainer. Phyrom on camera (jobsite background). Walk through: (1) the $87 ghosted-lead problem, (2) what code-aware matching means, (3) the 10-pro Founding Pro program, (4) how to follow along. Description with thesherpapros.com link.</td>
+<td>n/a</td>
+<td>5-min talking head video</td>
+<td>ElevenLabs voiceover for B-roll: "Plainspoken NH GC voice, conversational, dry humor, 8th grade reading level"</td>
+<td>Reply to first 10 YT comments</td>
+</tr>
+</tbody></table>
+<h4 id="day-2--thu-2026-04-23--pillar-product">Day 2 — Thu 2026-04-23 — Pillar: Product</h4>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>Type</th>
+<th>Hook</th>
+<th>Caption / Script</th>
+<th>Hashtags</th>
+<th>Asset</th>
+<th>AI prompt</th>
+<th>Engagement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Instagram Reel</strong></td>
+<td>Reel</td>
+<td>"What does a code-aware quote actually look like?"</td>
+<td>45-sec screen recording. Phyrom voiceover walks through Sherpa Marketplace quote screen: <em>"Watch this. Boston EV charger install. The platform pulls MA Electrical 2023 codes, the National Grid Turnkey rebate of $13,000, the ISD permit fee, AND the licensed pro's certification — before the homeowner sees the bid. Try doing that on Angi."</em> Burned-in captions.</td>
+<td>#SherpaPros #ConstructionTech #PropTech #HomeServices #EVCharger #MassSave</td>
+<td>Loom screen recording 45 sec</td>
+<td>Use Sherpa Marketplace screens directly. Add motion-graphic overlays in Capcut.</td>
+<td>DM "DEMO" responders the live link</td>
+</tr>
+<tr>
+<td><strong>TikTok</strong></td>
+<td>Video</td>
+<td>"POV: you're a homeowner getting a quote that knows the code"</td>
+<td>Same screen recording, TikTok-trending audio. Faster cut. Caption: "Sherpa Marketplace catches things Angi can't. 4 checks in 18 seconds."</td>
+<td>#ConstructionTok #HomeImprovement #SmartHome #BostonHomes #EVLife</td>
+<td>Same Loom</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>Facebook</strong></td>
+<td>Reel + text</td>
+<td>"What does a code-aware quote actually look like?"</td>
+<td>Simulcast IG reel + 200-word post explaining what Mass Save / National Grid rebates mean for a Boston homeowner installing an EV charger. End: "Search Sherpa Marketplace at thesherpapros.com."</td>
+<td>n/a</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>X (brand)</strong></td>
+<td>Text + 30-sec clip</td>
+<td>"Sherpa Marketplace runs 4 code checks in 18 sec on a Boston EV install. National Grid rebate $13K. ISD permit auto-filed. Licensed pro confirmed. Watch:"</td>
+<td>Embed 30-sec horizontal cut. Link to YT long-form in reply.</td>
+<td>#PropTech #ConstructionTech</td>
+<td>30-sec clip</td>
+<td>—</td>
+<td>Quote-RT National Grid handle</td>
+</tr>
+</tbody></table>
+<h4 id="day-3--fri-2026-04-24--pillar-founder-voice-community">Day 3 — Fri 2026-04-24 — Pillar: Founder voice (Community)</h4>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>Type</th>
+<th>Hook</th>
+<th>Caption</th>
+<th>Hashtags</th>
+<th>Asset</th>
+<th>AI prompt</th>
+<th>Engagement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>LinkedIn (Phyrom)</strong></td>
+<td>Photo</td>
+<td><em>(LinkedIn Editorial Wk 1 Fri — "A homeowner called me yesterday. She'd had 3 contractors no-show in 2 weeks.")</em></td>
+<td>See <code>linkedin-editorial.md</code> Wk 1 Fri</td>
+<td>none</td>
+<td>Jobsite or front porch photo</td>
+<td>—</td>
+<td>Reply 60 min</td>
+</tr>
+<tr>
+<td><strong>Instagram Carousel (5 slides)</strong></td>
+<td>Carousel</td>
+<td>"She had 3 contractors no-show in 2 weeks."</td>
+<td>Slide 1: hook. S2: "All 3 came from a lead-gen site." S3: "Each one paid ~$80 for her contact info." S4: "$240 of contractor money for zero work." S5: "Sherpa Pros logo + 'Jobs, not leads.'"</td>
+<td>#SherpaPros #JobsNotLeads #HomeServices #LicensedTrades #ContractorLife</td>
+<td>5-slide carousel</td>
+<td>Ideogram: "Editorial 4:5 portrait, navy and amber color palette, large bold sans-serif text, jobsite photo background, NOT stock photo, NOT corporate"</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>TikTok</strong></td>
+<td>Video</td>
+<td>"3 contractors no-showed her in 2 weeks. Here's the math on why."</td>
+<td>60-sec talking-head Phyrom video on jobsite. Same numbers. Caption: "Lead-gen platforms make money when contractors lose. Marketplaces only make money when work happens."</td>
+<td>#ContractorLife #HomeImprovement #ConstructionTok #Renovation</td>
+<td>Phyrom selfie talking head</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>Facebook</strong></td>
+<td>Carousel + 250-word text</td>
+<td>"She had 3 contractors no-show in 2 weeks."</td>
+<td>Same carousel as IG + longer FB text post explaining why this is the structural problem in lead-gen platforms (older homeowner audience reads longer). End: thesherpapros.com.</td>
+<td>n/a</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>X (Phyrom)</strong></td>
+<td>Thread (5 tweets)</td>
+<td>"A homeowner called me yesterday. She'd had 3 contractors no-show in 2 weeks. Here's the math:"</td>
+<td>Thread: 5 tweets walking through the $240 wasted lead-spend math. Tweet 5: link to Wefunder.</td>
+<td>none</td>
+<td>none</td>
+<td>—</td>
+<td>Quote-RT 1 contractor account that engages</td>
+</tr>
+</tbody></table>
+<h4 id="day-4--sat-2026-04-25--pillar-engagement">Day 4 — Sat 2026-04-25 — Pillar: Engagement</h4>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>Type</th>
+<th>Hook</th>
+<th>Caption</th>
+<th>Hashtags</th>
+<th>Asset</th>
+<th>AI prompt</th>
+<th>Engagement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Instagram Story Poll (3 frames)</strong></td>
+<td>Story</td>
+<td>"What's the worst contractor experience you've had?"</td>
+<td>F1: "What's the worst contractor experience you've had?" 4 poll options: ghosted / overcharged / bad work / no-call no-show. F2: "Tap to share your story." F3: "We're building Sherpa Pros to fix this. Link in bio."</td>
+<td>n/a</td>
+<td>3 story frames</td>
+<td>Canva: "Sherpa Pros story template, 9:16, navy + amber, large white headline text, poll sticker placeholder"</td>
+<td>Reply to every story DM</td>
+</tr>
+<tr>
+<td><strong>TikTok</strong></td>
+<td>Q&amp;A video (60 sec)</td>
+<td>"Y'all asked: how does a marketplace beat lead-gen platforms?"</td>
+<td>Phyrom answers a common DM question on camera. Direct, dry, 8th grade reading level. End with: "Comment your next question."</td>
+<td>#ConstructionTok #ContractorLife #SmallBusiness #BuildInPublic</td>
+<td>Phyrom selfie</td>
+<td>—</td>
+<td>Reply to every comment</td>
+</tr>
+<tr>
+<td><strong>Facebook</strong></td>
+<td>Text + photo</td>
+<td>"Saturday question:"</td>
+<td>"Tell me about the best contractor you've ever hired. What made them great? I'm collecting stories for a piece on what 'good' actually looks like in the trades." Photo of Phyrom with pencil and notepad.</td>
+<td>n/a</td>
+<td>Photo</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>X (brand)</strong></td>
+<td>Poll</td>
+<td>"What kills more deals in residential trades?"</td>
+<td>Poll: ghosted leads / scope creep / payment delays / bad reviews</td>
+<td>n/a</td>
+<td>none</td>
+<td>—</td>
+<td>Reply with results Sunday</td>
+</tr>
+</tbody></table>
+<h4 id="day-5--sun-2026-04-26--pillar-inspiration">Day 5 — Sun 2026-04-26 — Pillar: Inspiration</h4>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>Type</th>
+<th>Hook</th>
+<th>Caption</th>
+<th>Hashtags</th>
+<th>Asset</th>
+<th>AI prompt</th>
+<th>Engagement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Instagram Carousel (8 slides)</strong></td>
+<td>Carousel</td>
+<td>"8 New England homes that taught us what 'old-house specialty' really means."</td>
+<td>S1: hook. S2-7: photos of pre-1950 NE homes (Boston brownstone, Portland Victorian, NH cape, triple-decker, slate roof, plaster wall, etc.). S8: "Old-House Verified by Sherpa Pros — coming soon. Comment OLDHOUSE for early access."</td>
+<td>#SherpaPros #OldHouseLove #BostonHomes #NewEnglandLife #HomeRenovation #VictorianHome #Brownstone</td>
+<td>8 historic-home photos</td>
+<td>Midjourney: "8 photo grid: Boston brownstone, Portland Maine Victorian house, New Hampshire cape cod, Boston triple decker, slate roof close-up, plaster wall texture, old wood floor, antique window — natural light, editorial, 4:5 portrait, sky blue and amber accents"</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>TikTok</strong></td>
+<td>Video</td>
+<td>"Most contractors won't touch these. We're building the platform that will."</td>
+<td>30-sec montage of old-NE-home shots with Phyrom voiceover: "50% of Boston housing is pre-1950. Slate roofs, plaster walls, triple-decker porches. Most platforms can't even filter for the pros who specialize in this. Sherpa Pros' Old-House Verified launches this summer."</td>
+<td>#OldHouseLove #BostonTok #NewEnglandLife #Restoration</td>
+<td>Same photo set + B-roll</td>
+<td>Runway: "Cinematic dolly shot of historic Boston brownstone exterior at golden hour, warm amber light, 9:16 vertical, NOT stock"</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>Facebook</strong></td>
+<td>Same carousel</td>
+<td>"8 New England homes that taught us what 'old-house specialty' really means."</td>
+<td>Simulcast IG + light caption. Tag any local historic preservation societies you have a relationship with.</td>
+<td>n/a</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+</tbody></table>
+<h4 id="day-6--mon-2026-04-27--pillar-founder-voice">Day 6 — Mon 2026-04-27 — Pillar: Founder voice</h4>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>Type</th>
+<th>Hook</th>
+<th>Caption</th>
+<th>Hashtags</th>
+<th>Asset</th>
+<th>AI prompt</th>
+<th>Engagement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>LinkedIn (Phyrom)</strong></td>
+<td>Text</td>
+<td><em>(LinkedIn Editorial Wk 2 Mon — "Massachusetts has the largest construction labor shortage in the country.")</em></td>
+<td>See <code>linkedin-editorial.md</code> Wk 2 Mon</td>
+<td>none</td>
+<td>Stat graphic</td>
+<td>Ideogram: "Statistic graphic, dark navy background, large white number '2.5%' with subtext 'MA construction unemployment — lowest in 17 years', minimal, editorial"</td>
+<td>Reply 60 min</td>
+</tr>
+<tr>
+<td><strong>Instagram Reel</strong></td>
+<td>Reel</td>
+<td>"MA has the worst construction labor shortage in the country. Here's what that means for your home project."</td>
+<td>45-sec data-explainer. Phyrom on camera + animated stat overlays (Capcut). End: "Sherpa Pros doesn't just send you a contractor. It matches you with the right specialist. Link in bio."</td>
+<td>#SherpaPros #ConstructionTech #BostonContractor #MassSave</td>
+<td>Selfie + animated stats</td>
+<td>Capcut text-overlay templates</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>TikTok</strong></td>
+<td>Video</td>
+<td>"There aren't enough licensed contractors in MA. Here's the data:"</td>
+<td>Same reel. Trending sound.</td>
+<td>#BostonTok #HomeImprovement #MA</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>Facebook</strong></td>
+<td>Reel + 300-word text</td>
+<td>"Why your contractor took 3 weeks to call you back: the MA labor shortage explained."</td>
+<td>Long-form text post for older homeowner demo. Cite WBJournal source. End: thesherpapros.com.</td>
+<td>n/a</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>X (Phyrom)</strong></td>
+<td>Thread</td>
+<td>"MA has the largest construction labor shortage in the country. Here's the data nobody's talking about:"</td>
+<td>6-tweet thread. Tweet 6: Wefunder link.</td>
+<td>none</td>
+<td>none</td>
+<td>—</td>
+<td>Quote-RT WBJournal handle</td>
+</tr>
+</tbody></table>
+<h4 id="day-7--tue-2026-04-28--pillar-pro-spotlight">Day 7 — Tue 2026-04-28 — Pillar: Pro spotlight</h4>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>Type</th>
+<th>Hook</th>
+<th>Caption</th>
+<th>Hashtags</th>
+<th>Asset</th>
+<th>AI prompt</th>
+<th>Engagement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Instagram Reel</strong></td>
+<td>Reel</td>
+<td>"Meet Founding Pro #1."</td>
+<td>60-sec interview cut with the first Founding Pro (HVAC tech in Dover NH, per <code>linkedin-editorial.md</code> Wk 3 Wed). Phyrom voiceover intro, pro on camera 30 sec, Phyrom outro. Burned captions.</td>
+<td>#SherpaPros #FoundingPro #NHContractor #HVAC #HeatPump #MassSave</td>
+<td>60-sec interview cut</td>
+<td>Pre-record on Sunday capture day. Get written permission to use likeness.</td>
+<td>Reply 4 hr; DM contractor accounts that comment</td>
+</tr>
+<tr>
+<td><strong>TikTok</strong></td>
+<td>Video</td>
+<td>"POV: I'm Founding Pro #1 of a marketplace built by an actual contractor"</td>
+<td>Same interview. Caption: "Mike's been on the tools 23 years. He's done with paying $90 per ghosted lead. He's Founding Pro #1."</td>
+<td>#ContractorTok #HVAC #ContractorLife</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>Facebook</strong></td>
+<td>Reel + text</td>
+<td>"Meet Founding Pro #1: Mike, an HVAC tech from Dover NH."</td>
+<td>Same content + 200-word caption explaining Founding Pro program. End: "We have 9 Founding Pro spots left for NH/ME/MA contractors. DM us."</td>
+<td>n/a</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>X (brand)</strong></td>
+<td>Photo + text</td>
+<td>"Founding Pro #1: Mike, HVAC tech, Dover NH. Mass Save certified. 23 years on the tools."</td>
+<td>"1 of 10 Founding Pro spots filled. 9 left. NH/ME/MA contractors — DM us." Photo of Mike on jobsite.</td>
+<td>none</td>
+<td>Same photo</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+</tbody></table>
+<h3 id="week-2-day-814">Week 2 (Day 8–14)</h3>
+<h4 id="day-8--wed-2026-04-29--pillar-education">Day 8 — Wed 2026-04-29 — Pillar: Education</h4>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>Type</th>
+<th>Hook</th>
+<th>Caption</th>
+<th>Hashtags</th>
+<th>Asset</th>
+<th>AI prompt</th>
+<th>Engagement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>LinkedIn (Phyrom)</strong></td>
+<td>Video (Loom)</td>
+<td><em>(LinkedIn Editorial Wk 2 Wed — "Watched the platform catch a permit miss in real time today. 18 seconds.")</em></td>
+<td>See <code>linkedin-editorial.md</code> Wk 2 Wed</td>
+<td>none</td>
+<td>30-60 sec Loom of code-aware quote</td>
+<td>Capture during real beta job; redact homeowner info</td>
+<td>Reply 60 min</td>
+</tr>
+<tr>
+<td><strong>Instagram Reel</strong></td>
+<td>Reel</td>
+<td>"Watch me catch a code violation in 18 seconds."</td>
+<td>Same Loom screen recording. Add Capcut zoom + amber highlight on each code-check moment. Burned captions.</td>
+<td>#SherpaPros #ConstructionTech #CodeAware #BostonContractor #MassSave #PropTech</td>
+<td>Loom screen recording</td>
+<td>Use real Sherpa Marketplace screens. NEVER use the word "Wiseman" externally — call it "code validation" or "permit assist"</td>
+<td>Pin top comment "Comment DEMO for the live link"</td>
+</tr>
+<tr>
+<td><strong>TikTok</strong></td>
+<td>Video</td>
+<td>"Watch me catch a code violation in 18 seconds."</td>
+<td>Same edit. Caption: "Angi can't filter for this. Thumbtack can't either."</td>
+<td>#ContractorTok #ConstructionTech #BostonTok</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>YouTube Long-form</strong></td>
+<td>Video</td>
+<td>"What does a code-aware quote actually do? Full walkthrough."</td>
+<td>7-min walkthrough video. Phyrom on camera + screen recording. Cover: NEC 2023, MA Electrical amendments, ISD permit triggers, Mass Save eligibility. End with thesherpapros.com CTA.</td>
+<td>n/a</td>
+<td>7-min video</td>
+<td>ElevenLabs voiceover for any animated B-roll</td>
+<td>Reply 10 comments</td>
+</tr>
+<tr>
+<td><strong>YouTube Shorts</strong></td>
+<td>Short</td>
+<td>"Sherpa Marketplace catches a code violation in 18 sec."</td>
+<td>60-sec vertical cut of long-form.</td>
+<td>n/a</td>
+<td>Same vertical Loom</td>
+<td>—</td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h4 id="day-9--thu-2026-04-30--pillar-product">Day 9 — Thu 2026-04-30 — Pillar: Product</h4>
+<p>Sherpa Hub spotlight (Wave 6.2 product line — pro-side ops dashboard).</p>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>Type</th>
+<th>Hook</th>
+<th>Caption</th>
+<th>Hashtags</th>
+<th>Asset</th>
+<th>AI prompt</th>
+<th>Engagement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Instagram Reel</strong></td>
+<td>Reel</td>
+<td>"What pros see when a job comes in."</td>
+<td>45-sec screen recording of Sherpa Hub (the pro-side dashboard). Phyrom voiceover: "Sherpa Hub is what your contractor sees. Job details, customer photo, materials list, ETA — all before they accept. 30-second decision. No bidding war."</td>
+<td>#SherpaPros #SherpaHub #ContractorTech #BuiltByAContractor</td>
+<td>Loom of pro app</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>TikTok</strong></td>
+<td>Video</td>
+<td>"POV: you're a contractor and a job hits your phone in 30 seconds"</td>
+<td>Same screen recording, contractor-POV framing.</td>
+<td>#ContractorTok #ConstructionTech</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>Facebook</strong></td>
+<td>Same reel + text</td>
+<td>Same hook</td>
+<td>Same caption + 150-word add: "Sherpa Hub is for pros. Sherpa Marketplace is for homeowners. Same platform, two doors. Search thesherpapros.com."</td>
+<td>n/a</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>X (brand)</strong></td>
+<td>30-sec clip</td>
+<td>"Sherpa Hub pro view: job-in to accept in 30 sec. No bidding war."</td>
+<td>Embedded 30-sec horizontal clip.</td>
+<td>#ContractorTech #PropTech</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+</tbody></table>
+<h4 id="day-10--fri-2026-05-01--pillar-founder-voice-community">Day 10 — Fri 2026-05-01 — Pillar: Founder voice (Community)</h4>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>Type</th>
+<th>Hook</th>
+<th>Caption</th>
+<th>Hashtags</th>
+<th>Asset</th>
+<th>AI prompt</th>
+<th>Engagement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>LinkedIn (Phyrom)</strong></td>
+<td>Text</td>
+<td><em>(LinkedIn Editorial Wk 2 Fri — "Houzz is a magazine. TaskRabbit is for furniture assembly. Handy is for cleanings.")</em></td>
+<td>See <code>linkedin-editorial.md</code> Wk 2 Fri</td>
+<td>none</td>
+<td>Quadrant graphic</td>
+<td>Ideogram: "Quadrant 4-box graphic, navy and amber, white text, axis labels 'lead-gen vs marketplace' and 'unskilled vs licensed', Sherpa Pros logo in upper-right empty quadrant"</td>
+<td>Reply 60 min</td>
+</tr>
+<tr>
+<td><strong>Instagram Carousel (5 slides)</strong></td>
+<td>Carousel</td>
+<td>"What category is Sherpa Pros actually in?"</td>
+<td>S1: quadrant hook. S2: "Houzz = magazine." S3: "TaskRabbit = unskilled tasks." S4: "Angi/Thumbtack = lead-gen." S5: "Sherpa Pros = licensed-trade marketplace. Empty quadrant. Built by a contractor."</td>
+<td>#SherpaPros #ConstructionTech #PropTech #JobsNotLeads</td>
+<td>Carousel</td>
+<td>Ideogram quadrant</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>TikTok</strong></td>
+<td>Video</td>
+<td>"TaskRabbit, Angi, Houzz, Handy — none of them do what we do."</td>
+<td>45-sec breakdown. Phyrom on camera comparing each to Sherpa Pros.</td>
+<td>#ContractorTok #ConstructionTech</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>Facebook</strong></td>
+<td>Same carousel</td>
+<td>Same hook</td>
+<td>Same caption.</td>
+<td>n/a</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>X (Phyrom)</strong></td>
+<td>Thread</td>
+<td>"Houzz is a magazine. TaskRabbit is for furniture. Handy is for cleanings. None of them are licensed-trade marketplaces. Here's why that gap exists:"</td>
+<td>5-tweet thread.</td>
+<td>none</td>
+<td>none</td>
+<td>—</td>
+<td>Reply to first 10</td>
+</tr>
+</tbody></table>
+<h4 id="day-11--sat-2026-05-02--pillar-engagement">Day 11 — Sat 2026-05-02 — Pillar: Engagement</h4>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>Type</th>
+<th>Hook</th>
+<th>Caption</th>
+<th>Hashtags</th>
+<th>Asset</th>
+<th>AI prompt</th>
+<th>Engagement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Instagram Story Q&amp;A</strong></td>
+<td>Story (5 frames)</td>
+<td>"AMA: anything you want to know about contractors"</td>
+<td>F1: question sticker "Ask Phyrom anything." F2-5: video answers to first 4 incoming questions.</td>
+<td>n/a</td>
+<td>Selfie video answers</td>
+<td>—</td>
+<td>Re-share answers to feed if good</td>
+</tr>
+<tr>
+<td><strong>TikTok</strong></td>
+<td>Video</td>
+<td>"I answered your top question:"</td>
+<td>Pull best DM/comment Q from the week, answer on camera 60 sec.</td>
+<td>#ContractorTok #AskAContractor</td>
+<td>Selfie</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>Facebook</strong></td>
+<td>Photo + text</td>
+<td>"Saturday at HJD Builders. Show me your weekend project."</td>
+<td>Photo of Phyrom on weekend jobsite. Ask community to share their weekend home project in comments.</td>
+<td>n/a</td>
+<td>Real photo</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>X (brand)</strong></td>
+<td>Repost / quote</td>
+<td>(Repost a Founding Pro tweet OR quote a contractor account)</td>
+<td>Amplify supply-side chatter.</td>
+<td>n/a</td>
+<td>n/a</td>
+<td>—</td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h4 id="day-12--sun-2026-05-03--pillar-inspiration">Day 12 — Sun 2026-05-03 — Pillar: Inspiration</h4>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>Type</th>
+<th>Hook</th>
+<th>Caption</th>
+<th>Hashtags</th>
+<th>Asset</th>
+<th>AI prompt</th>
+<th>Engagement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Instagram Carousel (6 slides)</strong></td>
+<td>Carousel</td>
+<td>"6 kitchens that prove a code-checked quote saves you $5K."</td>
+<td>S1: hook. S2-6: before/after kitchen photos with annotation overlays showing the spec catch (correct GFCI placement, panel upgrade needed, AFCI breaker, etc.). End slide: "Sherpa Marketplace catches these. Comment KITCHEN for examples."</td>
+<td>#SherpaPros #KitchenRemodel #HomeRenovation #BostonHomes #NewEnglandLife #DreamKitchen</td>
+<td>6-slide before/after</td>
+<td>Midjourney: "Before/after kitchen renovation, modern white shaker cabinets, brass hardware, marble counter, 4:5 portrait, natural light, NOT stock photo, editorial style"</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>TikTok</strong></td>
+<td>Video</td>
+<td>"Watch me find $5K of code mistakes in this kitchen quote"</td>
+<td>60-sec quote-walkthrough. Phyrom voiceover, real (anonymized) quote on screen.</td>
+<td>#KitchenTok #HomeImprovement #BostonTok</td>
+<td>—</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>Facebook</strong></td>
+<td>Same carousel</td>
+<td>"6 kitchens that prove a code-checked quote saves you $5K."</td>
+<td>Same caption + light add.</td>
+<td>n/a</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+</tbody></table>
+<h4 id="day-13--mon-2026-05-04--pillar-founder-voice">Day 13 — Mon 2026-05-04 — Pillar: Founder voice</h4>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>Type</th>
+<th>Hook</th>
+<th>Caption</th>
+<th>Hashtags</th>
+<th>Asset</th>
+<th>AI prompt</th>
+<th>Engagement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>LinkedIn (Phyrom)</strong></td>
+<td>Carousel (8 slides)</td>
+<td><em>(LinkedIn Editorial Wk 3 Mon — "The math on contractor lead-gen is brutal. Here's what the average GC actually pays per closed job.")</em></td>
+<td>See <code>linkedin-editorial.md</code> Wk 3 Mon (8-slide PDF)</td>
+<td>none</td>
+<td>8-slide carousel PDF</td>
+<td>Ideogram per-slide: "Editorial slide deck template, navy background, amber accent, large white sans-serif headline, single statistic per slide, 4:5 portrait"</td>
+<td>Reply 60 min</td>
+</tr>
+<tr>
+<td><strong>Instagram Carousel</strong></td>
+<td>Carousel</td>
+<td>"The math on contractor lead-gen is brutal."</td>
+<td>Repurpose LinkedIn 8-slide carousel for IG (4:5 crop). Caption: "Comment MATH and we'll send you the spreadsheet."</td>
+<td>#SherpaPros #JobsNotLeads #ContractorLife #SmallBusiness</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>TikTok</strong></td>
+<td>Video</td>
+<td>"$87 lead × 4 contractors = $348 of contractor money on a fake job"</td>
+<td>60-sec data-explainer. Phyrom on camera with stat overlays.</td>
+<td>#ContractorTok #SmallBusiness #ConstructionTok</td>
+<td>Phyrom + overlays</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>Facebook</strong></td>
+<td>Same carousel</td>
+<td>"The math on contractor lead-gen is brutal."</td>
+<td>Same.</td>
+<td>n/a</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>X (Phyrom)</strong></td>
+<td>Thread</td>
+<td>"$87 lead. Sold to 4 contractors. Homeowner never replied. Here's what that math does to a small GC:"</td>
+<td>7-tweet thread with screenshots.</td>
+<td>none</td>
+<td>none</td>
+<td>—</td>
+<td>Reply 60 min</td>
+</tr>
+</tbody></table>
+<h4 id="day-14--tue-2026-05-05--pillar-pro-spotlight--sherpa-score-launch">Day 14 — Tue 2026-05-05 — Pillar: Pro spotlight + Sherpa Score launch</h4>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>Type</th>
+<th>Hook</th>
+<th>Caption</th>
+<th>Hashtags</th>
+<th>Asset</th>
+<th>AI prompt</th>
+<th>Engagement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Instagram Reel</strong></td>
+<td>Reel</td>
+<td>"Founding Pro #3: licensed electrician, Cambridge MA. EV charger specialist."</td>
+<td>60-sec interview with FP#3 (per <code>linkedin-editorial.md</code> Wk 5 Wed). Captions burned.</td>
+<td>#SherpaPros #FoundingPro #BostonContractor #Electrician #EVCharger #MassSave</td>
+<td>Pre-recorded interview</td>
+<td>Sunday capture</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>TikTok</strong></td>
+<td>Video</td>
+<td>"I install EV chargers in Cambridge. This is why I joined Sherpa Pros:"</td>
+<td>Same.</td>
+<td>#ContractorTok #Electrician #EVCharger</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>Facebook</strong></td>
+<td>Same reel + text</td>
+<td>Same hook</td>
+<td>Same + 150-word add about Mass Save certification.</td>
+<td>n/a</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>X (brand)</strong></td>
+<td>Photo + text</td>
+<td>"Founding Pro #3: licensed electrician, Cambridge MA. Mass Save certified. EV + panel specialist. 9 spots filled, 1 left."</td>
+<td>Photo + DM CTA.</td>
+<td>none</td>
+<td>Real pro photo</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>Instagram Reel (Sherpa Score launch)</strong></td>
+<td>Reel</td>
+<td>"Watch a Sherpa Score climb from 0 to 87 in 30 seconds."</td>
+<td>30-sec animated reel. Animated SVG progress ring fills from empty to a Gold-tier 87, with the 3 pillars (Quality / Communication / Reviews) lighting up in sequence. Phyrom voiceover: <em>"Sherpa Score is the 0-to-100 quality grade for every pro on the platform. Gold pros pay 8%. Bronze and Silver pros pay 12%. Built so being a better contractor mathematically pays better. Live today."</em> Burned-in captions. End frame: "Sherpa Score · Live now · Comment SCORE for the breakdown."</td>
+<td>#SherpaPros #SherpaScore #GoldTier #ConstructionTech #JobsNotLeads #ContractorLife</td>
+<td>30-sec animated SVG progress ring + 3-pillar light-up</td>
+<td>Runway: "animated radial progress ring filling from 0 to 87 over 20 seconds, sky blue #00A9E0 ring on warm cream #FBF7EE background, three pillar bars light up in sequence below the ring labeled Quality, Communication, Reviews, end on a gold burst, 9:16 vertical, flat editorial design" — pair with locked-color reminder</td>
+<td>Pin top comment with thesherpapros.com/pro/score link</td>
+</tr>
+</tbody></table>
+<h3 id="week-3-day-1521">Week 3 (Day 15–21)</h3>
+<h4 id="day-15--wed-2026-05-06--pillar-education">Day 15 — Wed 2026-05-06 — Pillar: Education</h4>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>Type</th>
+<th>Hook</th>
+<th>Caption</th>
+<th>Hashtags</th>
+<th>Asset</th>
+<th>AI prompt</th>
+<th>Engagement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>LinkedIn (Phyrom)</strong></td>
+<td>Photo</td>
+<td><em>(LinkedIn Editorial Wk 3 Wed — Founding Pro #1 spotlight)</em></td>
+<td>See <code>linkedin-editorial.md</code> Wk 3 Wed</td>
+<td>none</td>
+<td>Pro on jobsite photo</td>
+<td>—</td>
+<td>Reply 60 min</td>
+</tr>
+<tr>
+<td><strong>Instagram Reel</strong></td>
+<td>Reel</td>
+<td>"Mass Save will pay $10K toward your heat pump install. Most homeowners don't know."</td>
+<td>45-sec animated infographic + Phyrom voiceover walking through eligibility.</td>
+<td>#SherpaPros #MassSave #HeatPump #BostonHomes #NewEnglandLife #ClimateTech</td>
+<td>Animated infographic</td>
+<td>Ideogram: "Animated infographic, navy background, amber dollar amounts, clean editorial layout, 9:16 vertical" + Capcut motion</td>
+<td>Pin "Comment MASSSAVE"</td>
+</tr>
+<tr>
+<td><strong>TikTok</strong></td>
+<td>Video</td>
+<td>"Mass Save pays $10K toward heat pumps. Here's how to claim it."</td>
+<td>Same.</td>
+<td>#MassSave #HeatPump #ClimateTok #BostonTok</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>YouTube Long-form</strong></td>
+<td>Video</td>
+<td>"Mass Save heat pump rebate: full walkthrough for Boston homeowners (2026)"</td>
+<td>8-min explainer. Phyrom + screen recording of eligibility checker.</td>
+<td>n/a</td>
+<td>8-min video</td>
+<td>—</td>
+<td>Reply 10</td>
+</tr>
+<tr>
+<td><strong>YouTube Shorts</strong></td>
+<td>Short</td>
+<td>"Mass Save pays $10K toward your heat pump."</td>
+<td>60-sec vertical cut.</td>
+<td>n/a</td>
+<td>Same</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>Facebook</strong></td>
+<td>Long-form text + reel</td>
+<td>"Boston homeowners: $10K is sitting on the table. Here's how Mass Save heat pump rebates actually work."</td>
+<td>400-word post for older demo + reel embed.</td>
+<td>n/a</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+</tbody></table>
+<h4 id="day-16--thu-2026-05-07--pillar-product-sherpa-home">Day 16 — Thu 2026-05-07 — Pillar: Product (Sherpa Home)</h4>
+<p>Sherpa Home is the homeowner subscription product (Wave 6.3 in flight per <code>docs/operations/sherpa-home-subscription.md</code>).</p>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>Type</th>
+<th>Hook</th>
+<th>Caption</th>
+<th>Hashtags</th>
+<th>Asset</th>
+<th>AI prompt</th>
+<th>Engagement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Instagram Reel</strong></td>
+<td>Reel</td>
+<td>"What if your house had a contractor on retainer?"</td>
+<td>60-sec animated explainer of Sherpa Home subscription. Phyrom voiceover: "Sherpa Home is a yearly subscription. Two priority Quick Jobs included. Maintenance reminders. Mass Save / utility rebate alerts. Permit tracking. The way your house should be managed."</td>
+<td>#SherpaPros #SherpaHome #SmartHome #HomeOwnership #HomeServices</td>
+<td>Animated screens</td>
+<td>Runway: "Animated home dashboard interface, navy + amber UI, modern editorial app preview, 9:16, NOT generic SaaS look"</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>TikTok</strong></td>
+<td>Video</td>
+<td>"Sherpa Home: your house's contractor on retainer"</td>
+<td>Same.</td>
+<td>#SmartHome #HomeImprovement #PropTech</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>Facebook</strong></td>
+<td>Reel + 250-word text</td>
+<td>"Introducing Sherpa Home — your home's contractor on retainer."</td>
+<td>Long-form for older homeowner demo. End: thesherpapros.com waitlist link.</td>
+<td>n/a</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>X (brand)</strong></td>
+<td>Photo + text</td>
+<td>"Sherpa Home subscription: 2 priority Quick Jobs/yr, maintenance reminders, rebate alerts, permit tracking. The way every home should be managed. Beta waitlist open."</td>
+<td>Animated screen GIF + thesherpapros.com link in reply.</td>
+<td>#PropTech #SmartHome</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+</tbody></table>
+<h4 id="day-17--fri-2026-05-08--pillar-founder-voice-community">Day 17 — Fri 2026-05-08 — Pillar: Founder voice (Community)</h4>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>Type</th>
+<th>Hook</th>
+<th>Caption</th>
+<th>Hashtags</th>
+<th>Asset</th>
+<th>AI prompt</th>
+<th>Engagement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>LinkedIn (Phyrom)</strong></td>
+<td>Text</td>
+<td><em>(LinkedIn Editorial Wk 3 Fri — Mass Save education text post)</em></td>
+<td>See <code>linkedin-editorial.md</code> Wk 3 Fri</td>
+<td>none</td>
+<td>Mass Save infographic</td>
+<td>—</td>
+<td>Reply 60 min</td>
+</tr>
+<tr>
+<td><strong>Instagram Reel</strong></td>
+<td>Reel</td>
+<td>"Watch a real toilet install in 2 minutes. Quick Job #1 demo."</td>
+<td>90-sec time-lapse of a real Quick Job toilet install (per <code>quick-job-lane.md</code> §4). Phyrom voiceover: "Customer-supplied toilet. $325 in MA. Pro confirmed in 30 minutes. Done in 90." Captions burned.</td>
+<td>#SherpaPros #QuickJob #Plumber #HomeServices #BostonContractor #SamedaY</td>
+<td>90-sec time-lapse</td>
+<td>Capture real install during week. Add motion-graphic price + ETA overlays in Capcut</td>
+<td>Pin "Try a Quick Job — link in bio"</td>
+</tr>
+<tr>
+<td><strong>TikTok</strong></td>
+<td>Video</td>
+<td>"Watch a real toilet install in 2 minutes"</td>
+<td>Same. THIS IS THE VIRAL-LIKELY POST — push hard on engagement first 60 min.</td>
+<td>#ContractorTok #QuickJob #PlumberLife #SatisfyingVideo</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply EVERY comment 60 min</td>
+</tr>
+<tr>
+<td><strong>Facebook</strong></td>
+<td>Reel + 200-word text</td>
+<td>"Sherpa Pros Quick Job: a real toilet install in 90 minutes, start to finish."</td>
+<td>Same content + caption explaining Quick Job lane (pre-priced, confirmed in 30 min, no bidding).</td>
+<td>n/a</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>X (Phyrom)</strong></td>
+<td>Video</td>
+<td>"Real Quick Job: toilet install, MA, $325, confirmed in 30 min, done in 90. This is what 'jobs, not leads' looks like:"</td>
+<td>30-sec horizontal cut.</td>
+<td>none</td>
+<td>Same</td>
+<td>—</td>
+<td>Quote-RT 1 plumber account</td>
+</tr>
+</tbody></table>
+<h4 id="day-18--sat-2026-05-09--pillar-engagement--sherpa-flex-side-hustle-launch">Day 18 — Sat 2026-05-09 — Pillar: Engagement + Sherpa Flex side-hustle launch</h4>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>Type</th>
+<th>Hook</th>
+<th>Caption</th>
+<th>Hashtags</th>
+<th>Asset</th>
+<th>AI prompt</th>
+<th>Engagement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Instagram Story Poll</strong></td>
+<td>Story</td>
+<td>"Quick Job lane survey: which would you book first?"</td>
+<td>F1: poll — toilet install / wall paint / ceiling fan / GFCI outlet. F2: results recap. F3: "Pre-priced, confirmed in 30 min. Live in beta now. Link in bio."</td>
+<td>n/a</td>
+<td>3 frames</td>
+<td>—</td>
+<td>Reply DMs</td>
+</tr>
+<tr>
+<td><strong>TikTok</strong></td>
+<td>Video</td>
+<td>"Y'all asked: how does a Quick Job get to me in 30 minutes?"</td>
+<td>Phyrom answers a top comment from Day 17 viral toilet reel. Walks through Dispatch matching.</td>
+<td>#ContractorTok #SmartTech</td>
+<td>Phyrom selfie</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>Facebook</strong></td>
+<td>Photo + text</td>
+<td>"Saturday: what's the smallest home project you've been putting off?"</td>
+<td>Ask the question. Replies inform Quick Job catalog priorities.</td>
+<td>n/a</td>
+<td>Phyrom photo</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>X (brand)</strong></td>
+<td>Poll</td>
+<td>"Which Quick Job would you book first?"</td>
+<td>Same options as IG.</td>
+<td>none</td>
+<td>none</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>Instagram Reel (Sherpa Flex launch)</strong></td>
+<td>Reel</td>
+<td>"Side-hustle on Sherpa Flex — your weekend, your jobs, $1M insurance included."</td>
+<td>45-sec selfie reel. Phyrom on jobsite, walks through Sherpa Flex: <em>"You don't need an LLC. You don't need your own insurance. You need a background check and a trade you're good at. 18% take rate, $1M per-project liability covered by the platform, jobs under $5K. Side-hustle door open at /pro/flex."</em> Burned-in captions. End with the [ASSET REQUIRED: Sherpa Flex tier badge — generate via <code>docs/operations/social-media-prompt-library.md</code> §10A before publishing] orange-red shield + "FLEX · 18% · INSURANCE INCLUDED" overlay.</td>
+<td>#SherpaPros #SherpaFlex #SideHustle #ContractorLife #TradeJobs #SmallBusinessOwner</td>
+<td>45-sec selfie reel + tier-badge animated overlay</td>
+<td>Capcut: animate Sherpa Flex tier badge (orange-red #FF4500 shield) sliding in over Phyrom's left shoulder at 0:38, hold 5 sec</td>
+<td>Reply DMs from anyone asking "no LLC?" — route to /pro/flex</td>
+</tr>
+</tbody></table>
+<h4 id="day-19--sun-2026-05-10--pillar-inspiration">Day 19 — Sun 2026-05-10 — Pillar: Inspiration</h4>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>Type</th>
+<th>Hook</th>
+<th>Caption</th>
+<th>Hashtags</th>
+<th>Asset</th>
+<th>AI prompt</th>
+<th>Engagement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Instagram Carousel (7 slides)</strong></td>
+<td>Carousel</td>
+<td>"7 bathrooms that started with a $325 toilet install and turned into something beautiful."</td>
+<td>S1: hook. S2-6: before/after bathroom transformations (start small → expand). S7: "Sherpa Pros: small jobs become big projects. That's the funnel."</td>
+<td>#SherpaPros #BathroomRemodel #HomeRenovation #DreamBathroom #BostonHomes</td>
+<td>7-slide before/after</td>
+<td>Midjourney: "Modern bathroom remodel before/after, marble + brass + matte black, natural light, 4:5 portrait, NOT stock, editorial"</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>TikTok</strong></td>
+<td>Video</td>
+<td>"Started as a $325 toilet swap. Ended as a full bathroom remodel."</td>
+<td>60-sec time-lapse + voiceover.</td>
+<td>#BathroomTok #HomeRenovation #SatisfyingVideo</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>Facebook</strong></td>
+<td>Same carousel</td>
+<td>Same hook</td>
+<td>Same.</td>
+<td>n/a</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+</tbody></table>
+<h4 id="day-20--mon-2026-05-11--pillar-founder-voice">Day 20 — Mon 2026-05-11 — Pillar: Founder voice</h4>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>Type</th>
+<th>Hook</th>
+<th>Caption</th>
+<th>Hashtags</th>
+<th>Asset</th>
+<th>AI prompt</th>
+<th>Engagement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>LinkedIn (Phyrom)</strong></td>
+<td>Text</td>
+<td><em>(LinkedIn Editorial Wk 4 Mon — "$1,840 in lead spend, 6 closed jobs.")</em></td>
+<td>See <code>linkedin-editorial.md</code> Wk 4 Mon</td>
+<td>none</td>
+<td>Receipts photo (redacted)</td>
+<td>—</td>
+<td>Reply 60 min</td>
+</tr>
+<tr>
+<td><strong>Instagram Reel</strong></td>
+<td>Reel</td>
+<td>"$1,840 spent on Thumbtack leads. 6 closed jobs. He was working for the platform."</td>
+<td>60-sec breakdown video. Phyrom on camera.</td>
+<td>#SherpaPros #JobsNotLeads #SmallBusiness #ContractorLife</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>TikTok</strong></td>
+<td>Video</td>
+<td>Same hook</td>
+<td>Same.</td>
+<td>#ContractorTok #SmallBusinessOwner</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>Facebook</strong></td>
+<td>Same reel + text</td>
+<td>Same hook</td>
+<td>Long-form text version for older audience.</td>
+<td>n/a</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>X (Phyrom)</strong></td>
+<td>Thread</td>
+<td>"A handyman I know paid Thumbtack $1,840 in 90 days. Closed 6 jobs. The math:"</td>
+<td>6-tweet thread.</td>
+<td>none</td>
+<td>none</td>
+<td>—</td>
+<td>Reply 60 min</td>
+</tr>
+</tbody></table>
+<h4 id="day-21--tue-2026-05-12--pillar-pro-spotlight--gold-tier-day-in-the-life">Day 21 — Tue 2026-05-12 — Pillar: Pro spotlight + Gold-tier day-in-the-life</h4>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>Type</th>
+<th>Hook</th>
+<th>Caption</th>
+<th>Hashtags</th>
+<th>Asset</th>
+<th>AI prompt</th>
+<th>Engagement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Instagram Reel</strong></td>
+<td>Reel</td>
+<td>"A weekend in the life of a Founding Pro."</td>
+<td>60-sec day-in-the-life with one of the FPs. Permission required. Show jobsite + family + truck + tools.</td>
+<td>#SherpaPros #FoundingPro #ContractorLife #SmallBusinessOwner #DayInTheLife</td>
+<td>Pre-recorded with FP</td>
+<td>Sunday capture, ride-along</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>TikTok</strong></td>
+<td>Video</td>
+<td>"POV: a weekend in the life of a Founding Pro"</td>
+<td>Same.</td>
+<td>#ContractorTok #DayInMyLife #ContractorLife</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>Facebook</strong></td>
+<td>Same reel + text</td>
+<td>Same hook</td>
+<td>Same + 150-word add about why volume + 5% take = a sustainable contractor income.</td>
+<td>n/a</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>X (brand)</strong></td>
+<td>Photo + text</td>
+<td>"Weekend in the life of FP#3: 4 jobs, $1,800 GMV, $90 to Sherpa Pros, $1,710 to him. Imagine what Angi would've taken."</td>
+<td>Photo.</td>
+<td>none</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>TikTok (Sherpa Score)</strong></td>
+<td>Video</td>
+<td>"Day in the life of a Gold-tier Sherpa Pro."</td>
+<td>60-sec ride-along with a Gold-tier Founding Pro (permission required). Show: (1) phone buzzes with a job 4 hours before any Silver/Bronze pro can see it ("4hr early access" badge), (2) score-detail screen showing 87/100 with the 3 pillars, (3) accept-and-go in 30 seconds, (4) end on the 8% take-rate vs 12% comparison line. Phyrom voiceover bookends. Trending TikTok audio.</td>
+<td>#ContractorTok #SherpaScore #GoldTier #DayInMyLife #ContractorLife #SmallBusinessOwner</td>
+<td>60-sec ride-along + on-screen score badge overlay</td>
+<td>Capcut: animate the "4hr EARLY ACCESS" badge sliding in over the job-card frame in sky blue #00A9E0 + orange-red #FF4500 accent</td>
+<td>Reply every comment 60 min — Gold-tier content drives recruit DMs</td>
+</tr>
+</tbody></table>
+<h3 id="week-4-day-2228">Week 4 (Day 22–28)</h3>
+<h4 id="day-22--wed-2026-05-13--pillar-education">Day 22 — Wed 2026-05-13 — Pillar: Education</h4>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>Type</th>
+<th>Hook</th>
+<th>Caption</th>
+<th>Hashtags</th>
+<th>Asset</th>
+<th>AI prompt</th>
+<th>Engagement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>LinkedIn (Phyrom)</strong></td>
+<td>Photo</td>
+<td><em>(LinkedIn Editorial Wk 4 Wed — "Boston triple-decker porch repair.")</em></td>
+<td>See <code>linkedin-editorial.md</code> Wk 4 Wed</td>
+<td>none</td>
+<td>Triple-decker exterior photo</td>
+<td>—</td>
+<td>Reply 60 min</td>
+</tr>
+<tr>
+<td><strong>Instagram Reel</strong></td>
+<td>Reel</td>
+<td>"Boston triple-decker repair. Lead paint disclosure required. Most platforms don't tell you that."</td>
+<td>45-sec walkthrough on a real triple-decker exterior.</td>
+<td>#SherpaPros #BostonHomes #TripleDecker #OldHouseLove #HomeRenovation #HistoricHomes</td>
+<td>Triple-decker B-roll + voiceover</td>
+<td>Runway: "Camera dolly past a Boston triple-decker exterior, golden hour, warm tone, 9:16 vertical"</td>
+<td>Pin "Comment BOSTON"</td>
+</tr>
+<tr>
+<td><strong>TikTok</strong></td>
+<td>Video</td>
+<td>Same hook</td>
+<td>Same.</td>
+<td>#BostonTok #ConstructionTok #OldHouseLove</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>YouTube Long-form</strong></td>
+<td>Video</td>
+<td>"Buying a Boston triple-decker? 7 things your contractor must check first."</td>
+<td>6-min explainer.</td>
+<td>n/a</td>
+<td>Long-form</td>
+<td>—</td>
+<td>Reply 10</td>
+</tr>
+<tr>
+<td><strong>YouTube Shorts</strong></td>
+<td>Short</td>
+<td>"7 things to check before renovating a Boston triple-decker."</td>
+<td>60-sec cut.</td>
+<td>n/a</td>
+<td>Same</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>Facebook</strong></td>
+<td>Same reel + 400-word text</td>
+<td>Same hook</td>
+<td>Long-form for older Boston homeowner audience.</td>
+<td>n/a</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>TikTok (Sherpa Rewards catalog walk-through)</strong></td>
+<td>Video</td>
+<td>"Walking through the Sherpa Rewards catalog — Festool drill for 12,000 points, here's how to earn it."</td>
+<td>60-sec catalog walk-through. Phyrom screen-records /pro/rewards on his phone, scrolls through the 21-item catalog. Voiceover: <em>"100 points per job. 50 per review. 25 per photo. 25 per on-time. Plus 50 to 200 per month based on your Sherpa Score tier. Plus 500 per pro you bring on. Festool drill at the top of the Gold Exclusive items? 12,000 points. Run the math on your week."</em> End with the Tremendous logo + line: <em>"Real-world fulfillment via Tremendous — gift cards, prepaid debit, charity donations all live."</em></td>
+<td>#SherpaPros #SherpaRewards #ContractorTok #ToolReview #ContractorLife #FoundingPro</td>
+<td>60-sec phone screen recording of /pro/rewards</td>
+<td>Capcut: pin a "+100 PTS · JOB COMPLETE" sky-blue pill that animates in every 8 sec to reinforce the math. Reference [ASSET REQUIRED: Sherpa Rewards catalog teaser — 4-up grid generated via <code>docs/operations/social-media-prompt-library.md</code> §10C] for the static end-card.</td>
+<td>Reply DMs from pros asking how to redeem · screenshot best comments for next week's content</td>
+</tr>
+<tr>
+<td>Sherpa Manager is the PM-tier product (Wave 6.2 in flight).</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>Type</th>
+<th>Hook</th>
+<th>Caption</th>
+<th>Hashtags</th>
+<th>Asset</th>
+<th>AI prompt</th>
+<th>Engagement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Instagram Reel</strong></td>
+<td>Reel</td>
+<td>"Property managers: stop juggling 40 contractors in spreadsheets."</td>
+<td>60-sec product demo of Sherpa Manager. Phyrom voiceover: "One platform for work orders, preferred vendors, unit-level finance. CapEx vs OpEx routing. Vendor scorecards. $4/unit/month."</td>
+<td>#SherpaPros #SherpaManager #PropertyManagement #PropTech #MultiFamily</td>
+<td>Loom of Sherpa Manager</td>
+<td>Real product screens</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>TikTok</strong></td>
+<td>Video</td>
+<td>"POV: you manage 200 units. This is your weekend."</td>
+<td>Same.</td>
+<td>#PropTech #PropertyManager</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>Facebook</strong></td>
+<td>Reel + text</td>
+<td>Same hook</td>
+<td>250-word text targeting NE property managers.</td>
+<td>n/a</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>X (brand)</strong></td>
+<td>30-sec clip</td>
+<td>"Sherpa Manager: PMs get one platform for work orders + vendor + finance. $4/unit. 1 PM anchor signed, more onboarding."</td>
+<td>Embed clip.</td>
+<td>#PropTech #MultiFamily</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>LinkedIn (brand page)</strong></td>
+<td>Single image + text</td>
+<td>"Property managers: Sherpa Manager is live in beta with 1 NE anchor. Learn more."</td>
+<td>200-word LinkedIn post. Note: this is brand page, not Phyrom personal.</td>
+<td>none</td>
+<td>Product screenshot</td>
+<td>—</td>
+<td>Reply 60 min</td>
+</tr>
+</tbody></table>
+<h4 id="day-24--fri-2026-05-15--pillar-founder-voice-community--bronze-to-gold-story">Day 24 — Fri 2026-05-15 — Pillar: Founder voice (Community) + Bronze-to-Gold story</h4>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>Type</th>
+<th>Hook</th>
+<th>Caption</th>
+<th>Hashtags</th>
+<th>Asset</th>
+<th>AI prompt</th>
+<th>Engagement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>LinkedIn (Phyrom)</strong></td>
+<td>Video (selfie)</td>
+<td><em>(LinkedIn Editorial Wk 4 Fri — "Quick founder update: Wefunder page went live today. 30-second story.")</em></td>
+<td>See <code>linkedin-editorial.md</code> Wk 4 Fri</td>
+<td>none</td>
+<td>30-60 sec selfie</td>
+<td>Real capture</td>
+<td>Reply 60 min</td>
+</tr>
+<tr>
+<td><strong>Instagram Reel</strong></td>
+<td>Reel</td>
+<td>"Wefunder page is live. Here's why I'm raising from the community."</td>
+<td>60-sec selfie video. Phyrom on jobsite.</td>
+<td>#SherpaPros #Wefunder #BuildInPublic #StartupLife #ConstructionTech</td>
+<td>Selfie</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>TikTok</strong></td>
+<td>Video</td>
+<td>Same</td>
+<td>Same.</td>
+<td>#ContractorTok #StartupTok #BuildInPublic</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>Facebook</strong></td>
+<td>Same reel + 300-word text</td>
+<td>Same hook</td>
+<td>Long-form story about why community ownership matters.</td>
+<td>n/a</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>X (Phyrom)</strong></td>
+<td>Video + thread</td>
+<td>"Wefunder page is live. Why community ownership matters for a contractor marketplace:"</td>
+<td>Video + 4-tweet thread. Wefunder link in last tweet.</td>
+<td>none</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply 60 min</td>
+</tr>
+<tr>
+<td><strong>Instagram Story sequence (Sherpa Score)</strong></td>
+<td>Story (5 frames)</td>
+<td>"How I went from Bronze to Gold."</td>
+<td>5-frame founder-pro progression story. F1: "Day 1 — Bronze. Score 47." Real screenshot of /pro/score detail page. F2: "Week 2 — focus on response time. Replied 30 min faster on average. +6 points → 53." F3: "Week 4 — closed 4 jobs scope-complete on first walkthrough. +14 → 67. Silver." F4: "Week 8 — 100% code-pass + 8 five-star reviews. +18 → 85. Gold." F5: "Locked in 5% forever. Comment SCORE for the playbook." Use real founding-pro footage with permission, OR Phyrom telling the story over /pro/score screen recordings.</td>
+<td>n/a</td>
+<td>5 story frames + 4 score-detail screen recordings</td>
+<td>Use template 2D.5 (Founding Pro spotlight) for F1+F5; story template 2D.7 (in-app screen recording) for F2-F4</td>
+<td>Reply DMs from any pro who asks "how"</td>
+</tr>
+</tbody></table>
+<h4 id="day-25--sat-2026-05-16--pillar-engagement">Day 25 — Sat 2026-05-16 — Pillar: Engagement</h4>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>Type</th>
+<th>Hook</th>
+<th>Caption</th>
+<th>Hashtags</th>
+<th>Asset</th>
+<th>AI prompt</th>
+<th>Engagement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Instagram Story</strong></td>
+<td>Story Q&amp;A</td>
+<td>"Wefunder AMA: what do you want to know?"</td>
+<td>F1: question sticker. F2-5: video answers.</td>
+<td>n/a</td>
+<td>Selfie</td>
+<td>—</td>
+<td>Reply DMs</td>
+</tr>
+<tr>
+<td><strong>TikTok</strong></td>
+<td>Video</td>
+<td>"I answered the top Wefunder question:"</td>
+<td>60-sec video answer.</td>
+<td>#StartupTok #BuildInPublic</td>
+<td>Selfie</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>Facebook</strong></td>
+<td>Photo + text</td>
+<td>"What questions do you have about investing in Sherpa Pros?"</td>
+<td>Direct ask.</td>
+<td>n/a</td>
+<td>Photo</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>X (brand)</strong></td>
+<td>Poll</td>
+<td>"If a marketplace lets you own equity, would you back it?"</td>
+<td>Yes / Maybe / No</td>
+<td>none</td>
+<td>none</td>
+<td>—</td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h4 id="day-26--sun-2026-05-17--pillar-inspiration--5-tier-ladder-explainer">Day 26 — Sun 2026-05-17 — Pillar: Inspiration + 5-tier ladder explainer</h4>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>Type</th>
+<th>Hook</th>
+<th>Caption</th>
+<th>Hashtags</th>
+<th>Asset</th>
+<th>AI prompt</th>
+<th>Engagement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Instagram Carousel (8 slides)</strong></td>
+<td>Carousel</td>
+<td>"8 dream NE renovations that started with a Sherpa Marketplace quote."</td>
+<td>S1: hook. S2-7: photos. S8: "Sherpa Marketplace. Code-aware quotes. Real licensed pros. Comment DREAM for early access."</td>
+<td>#SherpaPros #DreamHome #HomeRenovation #BostonHomes #NewEnglandLife</td>
+<td>8-slide carousel</td>
+<td>Midjourney: "8 dream NE home renovations: Boston brownstone interior, Portland Maine kitchen, NH timber frame, Cambridge Victorian library, Cape Cod beach house, etc., editorial 4:5, NOT stock"</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>TikTok</strong></td>
+<td>Video</td>
+<td>"8 NE dream renovations. Save for later."</td>
+<td>Same montage.</td>
+<td>#HomeRenovation #DreamHome #NewEnglandLife</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>Facebook</strong></td>
+<td>Same</td>
+<td>Same</td>
+<td>Same.</td>
+<td>n/a</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>LinkedIn carousel (Phyrom personal) — 5-tier explainer</strong></td>
+<td>Carousel (8 slides)</td>
+<td>"Sherpa Pros has 5 pro tiers — from 5% Founding Pro to 18% Sherpa Flex. Here's where you fit."</td>
+<td>S1: Hook + 5-tier table teaser. S2: Founding Pro 5% forever (beta cohort, requires Sherpa Score Gold to lock). S3: Sherpa Score Gold — 8% take + 4-hour early access. S4: Sherpa Score Silver — 12% take. S5: Sherpa Score Bronze — 12% + improvement coaching. S6: Sherpa Flex — 18% take, $1M insurance included, jobs under $5K, no LLC required. S7: How tiers move — Flex → form LLC → Standard 12% → climb Sherpa Score → Gold 8%. One ladder. S8: CTA — comment "TIER" and Phyrom DMs back which tier fits you. <strong>Mirrors <code>linkedin-editorial.md</code> Wk 21 Mon — same content, native LinkedIn carousel format.</strong></td>
+<td>none on LinkedIn</td>
+<td>8-slide PDF carousel</td>
+<td>[ASSET REQUIRED: Sherpa Pros 5-tier ladder infographic — generate via <code>docs/operations/social-media-prompt-library.md</code> §10D before publishing. <strong>This is the single most-referenced visual in the Rewards + Flex sweep — generate FIRST.</strong> Use template at 1080×1350 portrait, sky-blue #00A9E0 + orange-red #FF4500 accents on warm cream #FBF7EE.]</td>
+<td>Phyrom replies 60 min — this carousel is investor + pro recruiting in one image</td>
+</tr>
+</tbody></table>
+<h4 id="day-27--mon-2026-05-18--pillar-founder-voice">Day 27 — Mon 2026-05-18 — Pillar: Founder voice</h4>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>Type</th>
+<th>Hook</th>
+<th>Caption</th>
+<th>Hashtags</th>
+<th>Asset</th>
+<th>AI prompt</th>
+<th>Engagement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>LinkedIn (Phyrom)</strong></td>
+<td>Text</td>
+<td><em>(LinkedIn Editorial Wk 5 Mon — "Lead-gen platforms have a structural problem.")</em></td>
+<td>See <code>linkedin-editorial.md</code> Wk 5 Mon</td>
+<td>none</td>
+<td>Text post</td>
+<td>—</td>
+<td>Reply 60 min</td>
+</tr>
+<tr>
+<td><strong>Instagram Reel</strong></td>
+<td>Reel</td>
+<td>"Lead-gen platforms make money when contractors lose."</td>
+<td>45-sec breakdown. Phyrom on camera.</td>
+<td>#SherpaPros #JobsNotLeads #ConstructionTech</td>
+<td>Selfie</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>TikTok</strong></td>
+<td>Video</td>
+<td>Same</td>
+<td>Same.</td>
+<td>#ContractorTok</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>Facebook</strong></td>
+<td>Same reel + text</td>
+<td>Same</td>
+<td>Long-form.</td>
+<td>n/a</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>X (Phyrom)</strong></td>
+<td>Thread</td>
+<td>"Lead-gen platforms make money when contractors lose. Marketplaces only make money when work happens. The two incentives are opposite. Pick one:"</td>
+<td>5-tweet thread.</td>
+<td>none</td>
+<td>none</td>
+<td>—</td>
+<td>Reply 60 min</td>
+</tr>
+</tbody></table>
+<h4 id="day-28--tue-2026-05-19--pillar-pro-spotlight--sherpa-score-12-metric-explainer">Day 28 — Tue 2026-05-19 — Pillar: Pro spotlight + Sherpa Score 12-metric explainer</h4>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>Type</th>
+<th>Hook</th>
+<th>Caption</th>
+<th>Hashtags</th>
+<th>Asset</th>
+<th>AI prompt</th>
+<th>Engagement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Instagram Reel</strong></td>
+<td>Reel</td>
+<td>"Founding Pro #5: lath-and-plaster restoration specialist, Boston."</td>
+<td>60-sec interview cut (per <code>linkedin-editorial.md</code> Wk 8 Wed reference).</td>
+<td>#SherpaPros #FoundingPro #BostonContractor #OldHouseLove #PlasterRepair #Restoration</td>
+<td>Pre-recorded interview</td>
+<td>Sunday capture</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>TikTok</strong></td>
+<td>Video</td>
+<td>"I restore plaster walls in pre-1950 Boston homes. Most platforms can't even find me."</td>
+<td>Same.</td>
+<td>#ContractorTok #OldHouseLove #BostonTok</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>Facebook</strong></td>
+<td>Same</td>
+<td>Same</td>
+<td>Same.</td>
+<td>n/a</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>X (brand)</strong></td>
+<td>Photo + text</td>
+<td>"Founding Pro #5: lath-and-plaster restoration. 19 years on Boston pre-1950 homes. Old-House Verified specialty incoming."</td>
+<td>Photo.</td>
+<td>none</td>
+<td>Real pro photo</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>LinkedIn carousel (brand page) — Sherpa Score</strong></td>
+<td>Carousel (5 slides)</td>
+<td>"The 12 metrics behind Sherpa Score."</td>
+<td>S1: Hook — "Sherpa Score = 12 metrics across 3 pillars. Here's the breakdown." S2: Pillar 1 — Quality (50%): on-time arrival · scope-completion rate · code-pass rate · dispute-free rate. S3: Pillar 2 — Communication (25%): response time · message frequency · professional tone. S4: Pillar 3 — Reviews (25%): star average · review volume · review-response rate · recency. S5: CTA — "Gold (80+) pays 8%. Silver/Bronze pay 12%. Comment SCORE for the climb-to-Gold playbook."</td>
+<td>none on LinkedIn</td>
+<td>5-slide PDF carousel</td>
+<td>Use Sherpa Score visual library Section 9 — "Sherpa Score progression infographic" template + per-slide pillar overlays. Aspect 4:5 (1080×1350). Style: Design. Character ref: Sherpa Pros icon.</td>
+<td>Phyrom replies 60 min</td>
+</tr>
+</tbody></table>
+<h3 id="week-5-day-2930">Week 5 (Day 29–30)</h3>
+<h4 id="day-29--wed-2026-05-20--pillar-education">Day 29 — Wed 2026-05-20 — Pillar: Education</h4>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>Type</th>
+<th>Hook</th>
+<th>Caption</th>
+<th>Hashtags</th>
+<th>Asset</th>
+<th>AI prompt</th>
+<th>Engagement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>LinkedIn (Phyrom)</strong></td>
+<td>Video (Loom)</td>
+<td><em>(LinkedIn Editorial Wk 6 Wed — "Watch the platform check 4 things in 11 seconds.")</em></td>
+<td>See <code>linkedin-editorial.md</code> Wk 6 Wed</td>
+<td>none</td>
+<td>30-60 sec Loom</td>
+<td>Capture during real beta job</td>
+<td>Reply 60 min</td>
+</tr>
+<tr>
+<td><strong>Instagram Reel</strong></td>
+<td>Reel</td>
+<td>"Watch 4 code checks happen in 11 seconds."</td>
+<td>Same Loom + Capcut motion graphics.</td>
+<td>#SherpaPros #ConstructionTech #CodeAware #PropTech #SmartHome</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>TikTok</strong></td>
+<td>Video</td>
+<td>Same</td>
+<td>Same.</td>
+<td>#ContractorTok #ConstructionTech</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>YouTube Shorts</strong></td>
+<td>Short</td>
+<td>"4 code checks in 11 seconds. This is what code-aware matching means."</td>
+<td>60-sec vertical.</td>
+<td>n/a</td>
+<td>Same</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>Facebook</strong></td>
+<td>Same reel + text</td>
+<td>Same</td>
+<td>Long-form Mass Save / NEC explainer.</td>
+<td>n/a</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+</tbody></table>
+<h4 id="day-30--thu-2026-05-21--pillar-product-recap--30-day-milestone">Day 30 — Thu 2026-05-21 — Pillar: Product (recap + 30-day milestone)</h4>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>Type</th>
+<th>Hook</th>
+<th>Caption</th>
+<th>Hashtags</th>
+<th>Asset</th>
+<th>AI prompt</th>
+<th>Engagement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Instagram Reel</strong></td>
+<td>Reel</td>
+<td>"30 days in. Here's what we shipped."</td>
+<td>60-sec recap video. Phyrom on camera with stat overlays: founding pros signed, Wefunder soft-commits, Quick Jobs completed, code-aware quotes generated. End: "Day 31 starts tomorrow. Follow along."</td>
+<td>#SherpaPros #BuildInPublic #ConstructionTech #StartupLife #JobsNotLeads</td>
+<td>Selfie + animated stats</td>
+<td>Capcut motion-graphics</td>
+<td>Pin "What do you want to see next? Comment below."</td>
+</tr>
+<tr>
+<td><strong>TikTok</strong></td>
+<td>Video</td>
+<td>"30 days of building Sherpa Pros. The numbers:"</td>
+<td>Same.</td>
+<td>#ContractorTok #BuildInPublic #StartupTok</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>Facebook</strong></td>
+<td>Reel + 300-word recap</td>
+<td>"30 days in. Here's what we shipped at Sherpa Pros."</td>
+<td>Long-form.</td>
+<td>n/a</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>X (Phyrom)</strong></td>
+<td>Thread</td>
+<td>"30 days. Here's what shipped:"</td>
+<td>8-tweet thread with the receipts. Last tweet: Wefunder link.</td>
+<td>none</td>
+<td>none</td>
+<td>—</td>
+<td>Reply 60 min</td>
+</tr>
+<tr>
+<td><strong>LinkedIn (Phyrom)</strong></td>
+<td>Text</td>
+<td><em>(LinkedIn Editorial Wk 5 Wed — Founding Pro #3 spotlight)</em></td>
+<td>See <code>linkedin-editorial.md</code> Wk 5 Wed</td>
+<td>none</td>
+<td>Pro photo</td>
+<td>—</td>
+<td>Reply 60 min</td>
+</tr>
+<tr>
+<td><strong>Instagram Story sequence — Pro of the Month + first redemption</strong></td>
+<td>Story (5 frames)</td>
+<td>"Pro of the month — earned Gold + redeemed first reward."</td>
+<td>F1: "Pro of the month — [Pro Name], [Trade], [Metro]. Earned Gold-tier on Sherpa Score in 6 weeks." Real Founding Pro photo + permission required. F2: Score-detail screen recording showing 84/100 with Gold-tier badge. F3: "First Sherpa Rewards redemption — Milwaukee impact driver, 2,500 points." Photo of pro holding the tool. F4: Pro testimonial 1-line: <em>"First platform that pays me twice — once for the work, once for doing the work right."</em> (Get the quote in writing.) F5: "Comment GOLD — I'll send you the climb-to-Gold playbook + the Sherpa Rewards earning rules."</td>
+<td>n/a</td>
+<td>5 story frames + real pro photos + score screen recording</td>
+<td>Use template 2D.5 (Founding Pro spotlight) for F1+F4; story template 2D.7 (in-app screen recording) for F2; real pro tool-in-hand photo for F3. Reference [ASSET REQUIRED: Sherpa Rewards catalog teaser — generate via <code>docs/operations/social-media-prompt-library.md</code> §10C] for the F5 end card.</td>
+<td>Reply DMs from any pro asking "how do I earn Gold" → route to /pro/score; from any asking "how do I redeem" → route to /pro/rewards</td>
+</tr>
+</tbody></table>
+<h3 id="week-5-extension-day-3133--sherpa-threads--smart-scan--mobile-launch-sweep">Week 5 extension (Day 31–33) — Sherpa Threads + Smart Scan + Mobile launch sweep</h3>
+<h4 id="day-31--fri-2026-05-22--pillar-product-sherpa-threads-launch">Day 31 — Fri 2026-05-22 — Pillar: Product (Sherpa Threads launch)</h4>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>Type</th>
+<th>Hook</th>
+<th>Caption / Script</th>
+<th>Hashtags</th>
+<th>Asset</th>
+<th>AI prompt</th>
+<th>Engagement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>LinkedIn (Phyrom)</strong></td>
+<td>Text</td>
+<td><em>(LinkedIn Editorial Wk 22 Mon — "Every contractor has had this happen. Job in the platform on Monday. Client texts your cell on Wednesday.")</em></td>
+<td>See <code>linkedin-editorial.md</code> Wk 22 Mon — Sherpa Threads launch post</td>
+<td>none</td>
+<td>Pro side in-app + client side text bubble screen recording</td>
+<td>See <code>social-media-prompt-library.md</code> §11A (Threads visual)</td>
+<td>Reply 60 min</td>
+</tr>
+<tr>
+<td><strong>Instagram Reel</strong></td>
+<td>Reel</td>
+<td>"Watch one message land in two places — in-app for the pro, text message for the client."</td>
+<td>30-sec split-screen reel. Left: pro side, in-app Sherpa Threads conversation. Right: client side, normal text-message thread. Phyrom voiceover: <em>"Sherpa Threads is in-app chat between pro, client, and project manager. With a Twilio bridge — the client texts from their normal phone, replies land back in-app on your end. Read receipts. File attachments. Threads attached to the work order. Built so the conversation lives next to the scope, the photos, and the payment. Live now."</em> Burned-in captions. End frame: "Sherpa Threads · Live · Comment THREADS for the demo."</td>
+<td>#SherpaPros #SherpaThreads #ConstructionTech #ContractorLife #PropTech #BuiltByAContractor</td>
+<td>30-sec split-screen screen recording</td>
+<td>Capcut: split-screen template, sky-blue #00A9E0 in-app side, warm cream #FBF7EE text-bubble side, hold the message-landing animation for 3 sec</td>
+<td>Pin top comment with <code>thesherpapros.com/threads</code> link</td>
+</tr>
+<tr>
+<td><strong>TikTok</strong></td>
+<td>Video</td>
+<td>"POV: your client texts you. The platform sees it. Nobody installs anything."</td>
+<td>Same split-screen reel, TikTok-trending sound. Caption: "Sherpa Threads bridges in-app and text. The 'I'll just text you' data leak that kills marketplaces — fixed."</td>
+<td>#ContractorTok #ConstructionTech #SmallBusiness #PropTech</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply EVERY comment 60 min</td>
+</tr>
+<tr>
+<td><strong>Facebook</strong></td>
+<td>Reel + 200-word text</td>
+<td>"We shipped Sherpa Threads — in-app chat that bridges to text message."</td>
+<td>Simulcast IG reel + 200-word post: <em>"If you've ever lost an argument with a client because the conversation walked off-platform onto a text message — Sherpa Threads is for you. The platform sends a text to the client's phone. They reply like normal. Their reply lands back in-app for the pro and the project manager. Read receipts, file attachments, and the whole thread is attached to the work order. Audit trail when something goes wrong. Search <code>thesherpapros.com</code>."</em></td>
+<td>n/a</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>X (brand)</strong></td>
+<td>30-sec clip + text</td>
+<td>"Sherpa Threads is live. In-app chat for pro + client + PM. Twilio bridge — clients text from their normal phone, replies land back in-app. The 'I'll just text you' leak that kills marketplace defensibility — fixed."</td>
+<td>Embed 30-sec horizontal clip. Link to LinkedIn post in reply.</td>
+<td>none</td>
+<td>Same</td>
+<td>—</td>
+<td>Quote-RT 1 contractor account</td>
+</tr>
+</tbody></table>
+<h4 id="day-32--sat-2026-05-23--pillar-engagement--sherpa-smart-scan-launch">Day 32 — Sat 2026-05-23 — Pillar: Engagement + Sherpa Smart Scan launch</h4>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>Type</th>
+<th>Hook</th>
+<th>Caption / Script</th>
+<th>Hashtags</th>
+<th>Asset</th>
+<th>AI prompt</th>
+<th>Engagement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>LinkedIn (Phyrom)</strong></td>
+<td>Text</td>
+<td><em>(LinkedIn Editorial Wk 23 Wed — "Property managers, this one's for you. The number-one most-praised feature in our PM demos isn't dispatch and isn't the vendor scorecard. It's the receipt scanner.")</em></td>
+<td>See <code>linkedin-editorial.md</code> Wk 23 Wed — Sherpa Smart Scan post</td>
+<td>none</td>
+<td>Receipt → parsed line items → auto-tagged CapEx/OpEx screen recording</td>
+<td>See <code>social-media-prompt-library.md</code> §11B (Smart Scan visual)</td>
+<td>Reply 60 min</td>
+</tr>
+<tr>
+<td><strong>Instagram Reel</strong></td>
+<td>Reel</td>
+<td>"Snap a receipt. Watch it auto-categorize for your taxes."</td>
+<td>45-sec screen recording. Phyrom holds a Lowe's receipt up to his phone camera, taps capture, and the screen splits: left side shows the photo, right side shows parsed line items being auto-tagged. Voiceover: <em>"Sherpa Smart Scan. Three flavors — document scanner for permits and contracts, photo analyzer for jobsite conditions, receipt scanner for invoices. The receipt version auto-tags every line for Schedule C if you're a pro, or Capital Expenditure versus Operating Expense if you're a property manager. Most pros lose 15 to 25 percent of their deductions to lost receipts. Snap and forget."</em> Burned-in captions. End frame: "Sherpa Smart Scan · Live · Comment SCAN."</td>
+<td>#SherpaPros #SherpaSmartScan #ContractorLife #SmallBusiness #TaxTips #PropTech</td>
+<td>45-sec receipt-scan screen recording</td>
+<td>Capcut: animate the receipt photo sliding into the OCR pipeline, then a "+CapEx · TAGGED" pill in orange-red #FF4500 sliding in over each line item. Reference [ASSET REQUIRED: Smart Scan visual — generate via <code>docs/operations/social-media-prompt-library.md</code> §11B before publishing] for the static end-card.</td>
+<td>Pin top comment with <code>thesherpapros.com/smart-scan</code> link</td>
+</tr>
+<tr>
+<td><strong>TikTok</strong></td>
+<td>Video</td>
+<td>"Most pros lose 15-25% of their deductions to lost receipts. Watch this."</td>
+<td>Same screen recording, TikTok-trending sound. Caption: "Snap → parse → auto-tag → done. Sherpa Smart Scan reads it for you."</td>
+<td>#ContractorTok #SmallBusiness #TaxTips #ContractorLife</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply EVERY comment 60 min</td>
+</tr>
+<tr>
+<td><strong>Facebook</strong></td>
+<td>Reel + 250-word text</td>
+<td>"We shipped Sherpa Smart Scan — three optical character recognition flavors that read your paperwork for you."</td>
+<td>Simulcast IG reel + 250-word post explaining the three flavors (document scanner, photo analyzer, receipt scanner) and the auto-categorization for Schedule C and Capital Expenditure tagging. Older PM-tier audience. End: <code>thesherpapros.com</code>.</td>
+<td>n/a</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>X (Phyrom)</strong></td>
+<td>Thread (4 tweets)</td>
+<td>"Sherpa Smart Scan is live. Three flavors of optical character recognition. The receipt-scanner flavor is the one PM demos light up about. Here's why:"</td>
+<td>4-tweet thread. T1: hook. T2: Smart Scan auto-tags Capital Expenditure vs Operating Expense at the work-order level so the bookkeeper stops hand-coding. T3: Same scanner auto-categorizes for Schedule C if you're a self-employed pro. T4: Live now, demo in <code>thesherpapros.com</code>.</td>
+<td>none</td>
+<td>none</td>
+<td>—</td>
+<td>Reply 60 min</td>
+</tr>
+</tbody></table>
+<h4 id="day-33--sun-2026-05-24--pillar-inspiration--sherpa-mobile-testflight-launch">Day 33 — Sun 2026-05-24 — Pillar: Inspiration + Sherpa Mobile TestFlight launch</h4>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>Type</th>
+<th>Hook</th>
+<th>Caption / Script</th>
+<th>Hashtags</th>
+<th>Asset</th>
+<th>AI prompt</th>
+<th>Engagement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>LinkedIn (Phyrom)</strong></td>
+<td>Photo</td>
+<td><em>(LinkedIn Editorial Wk 24 Fri — "Sherpa Mobile is in TestFlight. iOS today, Android via Expo right behind it. First 50 founding pros get TestFlight invites.")</em></td>
+<td>See <code>linkedin-editorial.md</code> Wk 24 Fri — Sherpa Mobile launch post</td>
+<td>none</td>
+<td>Photo of Phyrom holding a phone with the Sherpa Mobile app open on a jobsite</td>
+<td>See <code>social-media-prompt-library.md</code> §11C and §11D (Mobile visuals)</td>
+<td>Reply 60 min — TestFlight invite DMs</td>
+</tr>
+<tr>
+<td><strong>Instagram Reel</strong></td>
+<td>Reel</td>
+<td>"Sherpa Mobile is live in TestFlight. Run your business from your phone."</td>
+<td>60-sec selfie reel. Phyrom on jobsite at dusk, holding a phone showing the Sherpa Mobile app. Voiceover: <em>"Sherpa Mobile in TestFlight today. iPhone first, Android right behind it. Bid jobs, message clients with Sherpa Threads, scan receipts with Sherpa Smart Scan, get paid through Stripe — all from the phone you already carry. First 50 founding pros get TestFlight invites. Comment MOBILE."</em> Cut-aways: real app screens (job inbox, scan receipt, message thread, payout view). End frame: "Sherpa Mobile · TestFlight · First 50 pros only."</td>
+<td>#SherpaPros #SherpaMobile #TestFlight #ContractorLife #BuiltByAContractor #ConstructionTech</td>
+<td>60-sec selfie reel + real app cut-aways</td>
+<td>Runway: "Tradesperson silhouette holding a phone on a residential framing jobsite at dusk, golden hour fading to blue, sky blue #00A9E0 phone glow lights the face from below, 9:16 vertical, documentary realism, NOT generic stock-photo energy" — pair with locked-color reminder. Reference [ASSET REQUIRED: Mobile dusk-jobsite hero — generate via <code>docs/operations/social-media-prompt-library.md</code> §11D before publishing] for the static end-card.</td>
+<td>Pin top comment with TestFlight signup link; DM TestFlight invites within 60 min</td>
+</tr>
+<tr>
+<td><strong>TikTok</strong></td>
+<td>Video</td>
+<td>"POV: you're a contractor and your whole business now lives in your back pocket"</td>
+<td>Same selfie reel + cut-aways, TikTok-trending sound. Caption: "Sherpa Mobile TestFlight is open. First 50 founding pros only. Comment MOBILE."</td>
+<td>#ContractorTok #SmallBusinessOwner #TestFlight #BuildInPublic</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply EVERY comment 60 min — TestFlight invites</td>
+</tr>
+<tr>
+<td><strong>Facebook</strong></td>
+<td>Reel + 200-word text</td>
+<td>"Sherpa Mobile is in TestFlight."</td>
+<td>Simulcast IG reel + 200-word post. Lead for older homeowner / PM-tier audience: <em>"For property managers — Sherpa Mobile means your site managers can intake work orders from the truck instead of waiting until they're back at a desk. Faster response. Fewer voicemails. iOS in TestFlight today, Android via Expo right behind."</em></td>
+<td>n/a</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>X (Phyrom)</strong></td>
+<td>Photo + text</td>
+<td>"Sherpa Mobile in TestFlight. Real product progress, not slide-ware. iOS today, Android right behind, both via Expo. First 50 founding pros get invites — comment or DM."</td>
+<td>Embed photo of Phyrom + phone on jobsite. Link to TestFlight signup in reply.</td>
+<td>none</td>
+<td>Same photo</td>
+<td>—</td>
+<td>Quote-RT one TestFlight or Expo handle</td>
+</tr>
+<tr>
+<td><strong>YouTube Shorts</strong></td>
+<td>Short</td>
+<td>"Sherpa Mobile in TestFlight — run your business from your phone."</td>
+<td>60-sec vertical cut of the IG reel.</td>
+<td>n/a</td>
+<td>Same</td>
+<td>—</td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3 id="week-6-extension-day-3437--sherpa-dispatch--sherpa-materials--sherpa-guard--flex-landing-launch-sweep">Week 6 extension (Day 34–37) — Sherpa Dispatch + Sherpa Materials + Sherpa Guard + /flex landing launch sweep</h3>
+<h4 id="day-34--mon-2026-05-25--pillar-founder-voice-sherpa-dispatch--sherpa-materials--multi-trade-kitchen-reno">Day 34 — Mon 2026-05-25 — Pillar: Founder voice (Sherpa Dispatch + Sherpa Materials — multi-trade kitchen reno)</h4>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>Type</th>
+<th>Hook</th>
+<th>Caption / Script</th>
+<th>Hashtags</th>
+<th>Asset</th>
+<th>AI prompt</th>
+<th>Engagement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>LinkedIn (Phyrom)</strong></td>
+<td>Text</td>
+<td><em>(LinkedIn Editorial Wk 25 Mon — "Six contractors. Four delivery trucks. Three reschedules. And a half-finished kitchen for 11 weeks. We just made it 5 weeks.")</em></td>
+<td>See <code>linkedin-editorial.md</code> Wk 25 Mon — Sherpa Dispatch + Sherpa Materials launch post</td>
+<td>none</td>
+<td>Photo of Phyrom on a kitchen jobsite + Capcut overlay of the 8-trade Dispatch timeline</td>
+<td>See <code>social-media-prompt-library.md</code> §12A (multi-trade dispatch timeline) and §12D (kitchen reno before/after)</td>
+<td>Reply 60 min</td>
+</tr>
+<tr>
+<td><strong>Instagram Reel</strong></td>
+<td>Reel</td>
+<td>"11 weeks of chaos vs 5 weeks of orchestration. Same kitchen. Same trades. Different platform."</td>
+<td>45-sec split-screen reel. Left: chaotic 11-week timeline (every trade fighting for the same Tuesday, materials arriving on the wrong day, dumpster restages). Right: clean 5-week timeline with Sherpa Dispatch handing each trade to the next at the right moment, Sherpa Materials arriving via Uber Direct the morning each pro shows up. Phyrom voiceover: <em>"A normal kitchen reno: 6 to 8 trades, 4 to 6 delivery trucks, the homeowner coordinating all of it. Sherpa Dispatch sequences the trades. Sherpa Materials engine builds the order list, Zinc places it, Uber Direct delivers same-day. Pro and homeowner approve the materials list before anything ships. No surprise charges. No supply runs. 11 weeks becomes 5."</em> End frame: "Sherpa Dispatch + Sherpa Materials · Live · Comment RENO."</td>
+<td>#SherpaPros #SherpaDispatch #SherpaMaterials #KitchenRenovation #ConstructionTech #BuiltByAContractor</td>
+<td>45-sec split-screen reel</td>
+<td>Capcut: side-by-side timeline animation, sky-blue #00A9E0 for the orchestrated side, dark navy #1A1A2E for the chaos side. Reference [ASSET REQUIRED: Multi-trade dispatch timeline — generate via <code>docs/operations/social-media-prompt-library.md</code> §12A] for the static end-card.</td>
+<td>Pin top comment with <code>thesherpapros.com/dispatch</code> link</td>
+</tr>
+<tr>
+<td><strong>TikTok</strong></td>
+<td>Video</td>
+<td>"POV: you're remodeling a kitchen and the materials show up the morning each pro shows up"</td>
+<td>Same split-screen reel, TikTok-trending sound. Caption: "Sherpa Dispatch sequences the trades. Sherpa Materials delivers same-day. The 11-week kitchen is dead."</td>
+<td>#ContractorTok #KitchenReno #HomeRenovation #SmallBusinessOwner</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply EVERY comment 60 min</td>
+</tr>
+<tr>
+<td><strong>Facebook</strong></td>
+<td>Reel + 300-word text</td>
+<td>"Sherpa Dispatch + Sherpa Materials are live — multi-trade orchestration for kitchens, baths, and additions."</td>
+<td>Simulcast IG reel + 300-word post for older homeowner audience. Lead with the 11-week-vs-5-week pain. Explain Sherpa Dispatch (sequencing 8 trades), Sherpa Materials (Sherpa Materials engine + Zinc API + Uber Direct, with pro and homeowner approval before order). Close with <code>thesherpapros.com</code>.</td>
+<td>n/a</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>X (Phyrom)</strong></td>
+<td>Thread (5 tweets)</td>
+<td>"We just shipped two things that change the comp set. Sherpa Dispatch and Sherpa Materials. Here's what they do:"</td>
+<td>T1: hook. T2: Sherpa Dispatch sequences 6-8 trades on a kitchen reno automatically — demo, plumbing, electric, drywall, cabinet, counter, trim, paint. T3: Sherpa Materials = Sherpa Materials engine + Zinc API ordering + Uber Direct same-day delivery. Pro and client approve the list, platform orders + delivers. T4: Multi-trade + Materials = the orchestration layer nobody else is building. T5: Live. <code>thesherpapros.com</code>.</td>
+<td>none</td>
+<td>none</td>
+<td>—</td>
+<td>Reply 60 min</td>
+</tr>
+<tr>
+<td><strong>YouTube Shorts</strong></td>
+<td>Short</td>
+<td>"11 weeks of kitchen chaos vs 5 weeks orchestrated. Watch the difference."</td>
+<td>60-sec vertical cut of the IG reel.</td>
+<td>n/a</td>
+<td>Same</td>
+<td>—</td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h4 id="day-35--tue-2026-05-26--pillar-pro-spotlight--sherpa-guard-audit-logs-for-property-managers">Day 35 — Tue 2026-05-26 — Pillar: Pro spotlight + Sherpa Guard (audit logs for property managers)</h4>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>Type</th>
+<th>Hook</th>
+<th>Caption / Script</th>
+<th>Hashtags</th>
+<th>Asset</th>
+<th>AI prompt</th>
+<th>Engagement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>LinkedIn (Phyrom)</strong></td>
+<td>Text</td>
+<td><em>(LinkedIn Editorial Wk 26 Wed — "A property manager I know has $11,000 in limbo right now. The vendor says the invoice was approved by the site manager. The site manager says it wasn't.")</em></td>
+<td>See <code>linkedin-editorial.md</code> Wk 26 Wed — Sherpa Guard audit log post</td>
+<td>none</td>
+<td>Loom screen recording of the Sherpa Guard audit log dashboard, filtered by user + date</td>
+<td>See <code>social-media-prompt-library.md</code> §12C (audit log dashboard mockup)</td>
+<td>Reply 60 min — PM-tier inbound</td>
+</tr>
+<tr>
+<td><strong>Instagram Reel</strong></td>
+<td>Reel</td>
+<td>"$11,000 in escrow. Vendor says approved. PM says no. Nobody can prove it. Watch this."</td>
+<td>30-sec screen recording. Phyrom voiceover: <em>"This is Sherpa Guard. Role-based access control plus a full audit log. Every action on the platform — every approval, every status change, every dollar moved — is logged with the user, the timestamp, and the original payload. Filterable. Exportable. Auditor-friendly. Property managers, the invoice-dispute fight goes away. The audit log is the receipt."</em> End frame: "Sherpa Guard · Live · Comment GUARD for the walkthrough."</td>
+<td>#SherpaPros #SherpaGuard #PropertyManagement #PropTech #SmallBusiness #BuiltByAContractor</td>
+<td>30-sec audit log screen recording</td>
+<td>Capcut: highlight the filter bar (user, date, work order) in emerald #10b981, then a "VERIFIED" pill on each logged action. Reference [ASSET REQUIRED: Audit log dashboard mockup — generate via <code>docs/operations/social-media-prompt-library.md</code> §12C] for the static end-card.</td>
+<td>Pin top comment with <code>thesherpapros.com/guard</code> link</td>
+</tr>
+<tr>
+<td><strong>TikTok</strong></td>
+<td>Video</td>
+<td>"POV: the invoice dispute that costs you $11K is now zero seconds long"</td>
+<td>Same audit log screen recording, TikTok-trending sound. Caption: "Sherpa Guard logs every action. Every approval is on the record. The fight is over."</td>
+<td>#PropertyManagement #SmallBusiness #PropTech #ConstructionTech</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply EVERY comment 60 min</td>
+</tr>
+<tr>
+<td><strong>Facebook</strong></td>
+<td>Reel + 250-word text</td>
+<td>"We shipped Sherpa Guard — role-based access control + full audit log for property managers."</td>
+<td>Simulcast IG reel + 250-word post explaining role-based access control (only the right people can approve, only the right people can move money), full audit log (every action logged, user + timestamp + payload), and the SOC 2 readiness signal — the same control surface enterprise vendors charge $200K a year for, baked into the $4-per-unit pricing.</td>
+<td>n/a</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>X (brand)</strong></td>
+<td>30-sec clip + text</td>
+<td>"Sherpa Guard is live. Role-based access control + audit log. Every action logged. Filterable by user/date/action. Exportable. Auditor-friendly. SOC 2 readiness signal at $4 per unit per month."</td>
+<td>Embed 30-sec clip. Link to LinkedIn post in reply.</td>
+<td>none</td>
+<td>Same</td>
+<td>—</td>
+<td>Quote-RT one PM-tech account</td>
+</tr>
+</tbody></table>
+<h4 id="day-36--wed-2026-05-27--pillar-education-the-vertical-integration-shift">Day 36 — Wed 2026-05-27 — Pillar: Education (the vertical-integration shift)</h4>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>Type</th>
+<th>Hook</th>
+<th>Caption / Script</th>
+<th>Hashtags</th>
+<th>Asset</th>
+<th>AI prompt</th>
+<th>Engagement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>LinkedIn (Phyrom)</strong></td>
+<td>Carousel (8 slides)</td>
+<td><em>(LinkedIn Editorial Wk 27 Mon — "We started as a labor marketplace. We're now a labor + materials + delivery + coordination layer. The competitive set just changed.")</em></td>
+<td>See <code>linkedin-editorial.md</code> Wk 27 Mon — vertical-integration moat post</td>
+<td>none</td>
+<td>8-slide PDF carousel</td>
+<td>S1: hook. S2: 18-month-old comp set (Angi, Thumbtack, TaskRabbit). S3: New comp set with Sherpa Materials added (FW Webb, HD Supply, ordering desks). S4: New comp set with Sherpa Dispatch added (Procore, GC project plans). S5: New comp set with Sherpa Guard added (SOC 2 readiness vendors). S6: The layered competitive map — Sherpa Pros at the center wrapping all four (see <code>social-media-prompt-library.md</code> §12F). S7: Why the moat compounds. S8: CTA — comment "MOAT" for the layered competitive map.</td>
+<td>Reply 60 min — investor inbound</td>
+</tr>
+<tr>
+<td><strong>Instagram Carousel</strong></td>
+<td>Carousel (5 slides)</td>
+<td>"We're not Angi anymore. We're not even Procore. Look at this."</td>
+<td>S1: "We started as a labor marketplace." S2: "Now we're labor + materials + delivery + coordination." S3: 4-quadrant graphic — Angi vs FW Webb vs Uber Direct vs Procore — and Sherpa Pros at the center wrapping all four. S4: "The orchestration nobody else is building because nobody else has been a contractor on a jobsite at 6 a.m. wondering why the cabinets aren't there." S5: Comment "MOAT" — I'll DM the layered competitive map.</td>
+<td>#SherpaPros #ConstructionTech #PropTech #BuildInPublic #Marketplace</td>
+<td>5-slide 4:5 carousel</td>
+<td>Reference [ASSET REQUIRED: Side-by-side competitive layer diagram — generate via <code>docs/operations/social-media-prompt-library.md</code> §12F] for slide 3.</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>TikTok</strong></td>
+<td>Video</td>
+<td>"Most marketplaces fight one fight. We just changed which fight we're in."</td>
+<td>60-sec talking-head Phyrom on jobsite. Walks through the 4-layer comp set shift in plainspoken contractor language. End: "Comment MOAT for the chart."</td>
+<td>#ContractorTok #SmallBusinessOwner #ConstructionTech #Marketplace</td>
+<td>Selfie + competitive map graphic</td>
+<td>—</td>
+<td>Reply EVERY comment 60 min</td>
+</tr>
+<tr>
+<td><strong>Facebook</strong></td>
+<td>Carousel + 300-word text</td>
+<td>"We started as a labor marketplace. Now we're labor + materials + delivery + coordination. The competitive set just changed."</td>
+<td>Simulcast IG carousel + 300-word post explaining the four layers and why the moat compounds. Investor-friendly framing. End: <code>thesherpapros.com</code>.</td>
+<td>n/a</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>X (Phyrom)</strong></td>
+<td>Thread (6 tweets)</td>
+<td>"We started as a labor marketplace. We're now labor + materials + delivery + coordination. The comp set just changed. Here's the new map:"</td>
+<td>T1: hook. T2: 18 months ago, comp set = Angi/Thumbtack/TaskRabbit. T3: + Sherpa Materials = added FW Webb / HD Supply / ordering desks. T4: + Sherpa Dispatch = added Procore / GC project plans. T5: + Sherpa Guard = added SOC 2 readiness vendors. T6: Image of the layered comp map + Wefunder link in reply.</td>
+<td>none</td>
+<td>Same competitive map graphic</td>
+<td>—</td>
+<td>Reply 60 min</td>
+</tr>
+</tbody></table>
+<h4 id="day-37--thu-2026-05-28--pillar-product-flex-landing-launch--side-bandwidth-recruiting--splash-showcase">Day 37 — Thu 2026-05-28 — Pillar: Product (/flex landing launch + side-bandwidth recruiting + splash showcase)</h4>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>Type</th>
+<th>Hook</th>
+<th>Caption / Script</th>
+<th>Hashtags</th>
+<th>Asset</th>
+<th>AI prompt</th>
+<th>Engagement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>LinkedIn (Phyrom)</strong></td>
+<td>Text</td>
+<td><em>(LinkedIn Editorial Wk 28 Mon — "Walked into a framing crew last week. Half the hands have weekend bandwidth. None of them have an LLC. We just opened the door for them — thesherpapros.com/flex.")</em></td>
+<td>See <code>linkedin-editorial.md</code> Wk 28 Mon — /flex landing launch post</td>
+<td>none</td>
+<td>/flex hero illustration</td>
+<td>See <code>social-media-prompt-library.md</code> §12E (/flex hero illustration)</td>
+<td>Reply 60 min</td>
+</tr>
+<tr>
+<td><strong>Instagram Reel</strong></td>
+<td>Reel</td>
+<td>"Day-job framer. Weekend tool belt. We just built the on-ramp."</td>
+<td>45-sec reel. Phyrom on a jobsite, splits to a tradesperson with day-job uniform + weekend tool belt visual. Voiceover: <em>"thesherpapros.com/flex is live. If you do work on the side, we've got you covered. $1M per-project liability insurance included in the platform fee. No LLC required. Jobs under $5,000. 18% take rate — but the insurance value alone is $800–$1,500 a year, so the real take rate is closer to 12% net. Earn first. Form the LLC when the income justifies it. Then drop to 12%, climb Sherpa Score to Gold, you're at 8%. One platform. Three doors."</em> End frame: "thesherpapros.com/flex · Live · Comment FLEX."</td>
+<td>#SherpaPros #SherpaFlex #SideHustle #ContractorLife #SmallBusinessOwner #BuiltByAContractor</td>
+<td>45-sec selfie + tradesperson visual</td>
+<td>Runway: "Tradesperson with day-job framing uniform on the left side of the canvas, same person in weekend tool belt on the right side, orange-red #FF4500 accent thread connecting the two halves, warm cream #FBF7EE background, 9:16 vertical, documentary realism." Reference [ASSET REQUIRED: /flex hero illustration — generate via <code>docs/operations/social-media-prompt-library.md</code> §12E] for the static end-card.</td>
+<td>Pin top comment with <code>thesherpapros.com/flex</code> link</td>
+</tr>
+<tr>
+<td><strong>TikTok</strong></td>
+<td>Video</td>
+<td>"Day job. Weekend bandwidth. No LLC. We've got you."</td>
+<td>Same reel, TikTok-trending sound. Caption: "$1M insurance included. No LLC required. Jobs under $5K. /flex is live. Comment FLEX."</td>
+<td>#ContractorTok #SideHustle #SmallBusinessOwner #ContractorLife</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply EVERY comment 60 min</td>
+</tr>
+<tr>
+<td><strong>Facebook</strong></td>
+<td>Reel + 200-word text</td>
+<td>"/flex is live — the side-bandwidth on-ramp for skilled tradespeople."</td>
+<td>Simulcast IG reel + 200-word post for older audience: who it's for (day-job framers, electricians, plumbers with weekend bandwidth), what's included ($1M per-project liability insurance, no LLC required, jobs under $5K), how to upgrade later (form LLC, drop to 12%, climb to Gold for 8%).</td>
+<td>n/a</td>
+<td>Same</td>
+<td>—</td>
+<td>Reply 4 hr</td>
+</tr>
+<tr>
+<td><strong>X (brand)</strong></td>
+<td>Photo + text</td>
+<td>"thesherpapros.com/flex is live. Do work on the side? We've got you covered. $1M per-project liability insurance included. No LLC required. Jobs under $5K. 18% take rate (≈12% net of insurance value)."</td>
+<td>Embed /flex hero illustration. Link to landing in reply.</td>
+<td>none</td>
+<td>Same</td>
+<td>—</td>
+<td>Quote-RT one tradesperson account</td>
+</tr>
+<tr>
+<td><strong>Instagram Story sequence — Splash feature showcase</strong></td>
+<td>Story (6 frames)</td>
+<td>"Every prospect now sees the full stack."</td>
+<td>F1: "We updated thesherpapros.com homepage. The full stack is now visible." F2: 12-card editorial grid showing Sherpa Score, Rewards, Smart Scan, Threads, Maintenance, Finance Hub, Escrow, Code-verified quotes, 37 trade categories, Success Manager, Dispatch, Multi-Trade. F3: "Inbound conversion is the goal. Every visitor now sees what we ship." F4: "Reference [ASSET REQUIRED: Splash feature showcase compositional layout — generate via <code>docs/operations/social-media-prompt-library.md</code> §12G]." F5: Direct visitors to <code>thesherpapros.com</code>. F6: Comment SHOWCASE — I'll DM you the homepage walkthrough.</td>
+<td>n/a</td>
+<td>6 story frames + splash showcase composite</td>
+<td>Use <code>social-media-prompt-library.md</code> §12G</td>
+<td>Reply DMs from any prospect asking "what does the platform actually include" → route to <code>thesherpapros.com</code></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="4-per-platform-rendering-rules">4. Per-Platform Rendering Rules</h2>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>Aspect ratio</th>
+<th>Length</th>
+<th>Captions</th>
+<th>Music / sound</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Instagram Reel</strong></td>
+<td>9:16 (1080×1920)</td>
+<td>15–60 sec</td>
+<td>Burned-in (CapCut auto-caption + manual review)</td>
+<td>Trending IG audio when on-brand</td>
+<td>Safe-zone padding for IG bottom bar; 4:5 (1080×1350) for carousels</td>
+</tr>
+<tr>
+<td><strong>Instagram Carousel</strong></td>
+<td>4:5 portrait (1080×1350)</td>
+<td>5–10 slides</td>
+<td>n/a</td>
+<td>n/a</td>
+<td>Slide 1 = hook, Slide last = CTA + logo</td>
+</tr>
+<tr>
+<td><strong>Instagram Story</strong></td>
+<td>9:16 (1080×1920)</td>
+<td>15 sec/frame</td>
+<td>On-screen text + stickers</td>
+<td>Optional</td>
+<td>Use polls + Q&amp;A + question stickers liberally</td>
+</tr>
+<tr>
+<td><strong>TikTok</strong></td>
+<td>9:16 (1080×1920)</td>
+<td>15–90 sec</td>
+<td>Burned-in (TikTok auto-caption + manual review)</td>
+<td>Trending TikTok sound</td>
+<td>Hook in first 1.5 sec — use motion + on-screen text</td>
+</tr>
+<tr>
+<td><strong>LinkedIn — text post</strong></td>
+<td>n/a</td>
+<td>200–800 words</td>
+<td>n/a</td>
+<td>n/a</td>
+<td>First 2 lines decide everything (truncated after ~200 chars)</td>
+</tr>
+<tr>
+<td><strong>LinkedIn — photo</strong></td>
+<td>1080×1080 square</td>
+<td>n/a</td>
+<td>n/a</td>
+<td>n/a</td>
+<td>Photo caption can run 200–500 words</td>
+</tr>
+<tr>
+<td><strong>LinkedIn — video</strong></td>
+<td>1920×1080 (16:9) or 1080×1080 (1:1)</td>
+<td>30–90 sec</td>
+<td>Auto-captioned by LinkedIn (do NOT burn in)</td>
+<td>Optional</td>
+<td>Native upload only — no YouTube links</td>
+</tr>
+<tr>
+<td><strong>LinkedIn — carousel PDF</strong></td>
+<td>4:5 portrait (1080×1350)</td>
+<td>6–12 slides</td>
+<td>n/a</td>
+<td>n/a</td>
+<td>Highest dwell time of any LinkedIn format</td>
+</tr>
+<tr>
+<td><strong>Facebook — reel</strong></td>
+<td>9:16</td>
+<td>15–60 sec</td>
+<td>Burned-in</td>
+<td>Optional</td>
+<td>Simulcast IG via Metricool</td>
+</tr>
+<tr>
+<td><strong>Facebook — text</strong></td>
+<td>n/a</td>
+<td>300–500 words</td>
+<td>n/a</td>
+<td>n/a</td>
+<td>Older homeowner demo — write longer than IG</td>
+</tr>
+<tr>
+<td><strong>X (Twitter) — text</strong></td>
+<td>n/a</td>
+<td>280 chars</td>
+<td>n/a</td>
+<td>n/a</td>
+<td>Threads outperform single tweets for substance</td>
+</tr>
+<tr>
+<td><strong>X — video</strong></td>
+<td>16:9 (1920×1080) preferred; 9:16 acceptable</td>
+<td>15–140 sec</td>
+<td>Burned-in</td>
+<td>Optional</td>
+<td>Vertical 9:16 OK for repurpose, but 16:9 reads better in timeline</td>
+</tr>
+<tr>
+<td><strong>YouTube Shorts</strong></td>
+<td>9:16 (1080×1920)</td>
+<td>15–60 sec</td>
+<td>Burned-in</td>
+<td>Trending YouTube audio</td>
+<td>Same source as IG/TikTok reels</td>
+</tr>
+<tr>
+<td><strong>YouTube Long-form</strong></td>
+<td>16:9 (1920×1080)</td>
+<td>3–10 min</td>
+<td>YouTube auto-caption + manual review</td>
+<td>Optional bed</td>
+<td>Title + thumbnail are 80% of CTR</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="5-ai-generation-prompts-master-library">5. AI-Generation Prompts (Master Library)</h2>
+<p>These are paste-ready prompts for Midjourney v6.x, Ideogram, Runway, Pika, ElevenLabs. <strong>Coordinate with Wave 6.4 (<code>brand-asset-prompts.md</code>) when it ships — those prompts override these defaults.</strong></p>
+<h3 id="51-imagery-midjourney--ideogram">5.1 Imagery (Midjourney / Ideogram)</h3>
+<p><strong>Brand color palette:</strong> dark navy (#1a1a2e), amber (#f59e0b), emerald (#10b981), slate (#64748b). Always reference "navy and amber" in prompts.</p>
+<p><strong>Tradesperson on jobsite (stock-replacement)</strong></p>
+<pre><code>tradesperson silhouette working on jobsite, golden hour, sky blue and amber color palette, modern editorial style, natural lighting, NOT corporate, NOT stock photo, NOT generic, real working hands and tools, dust in air, 4:5 portrait
+</code></pre>
+<p><strong>Founding Pro headshot (when real photo not available)</strong></p>
+<pre><code>real licensed contractor in branded gear, tools in hand, jobsite background, natural lighting, weathered hands, warm dignity, NOT model stock photo vibe, navy work shirt with subtle amber logo, editorial portrait, 4:5
+</code></pre>
+<p><strong>Editorial slide template (Ideogram for text-on-image)</strong></p>
+<pre><code>Editorial slide template, dark navy background #1a1a2e, large bold white sans-serif headline, single statistic in amber #f59e0b, minimal layout, 4:5 portrait, NO photo, JUST typography
+</code></pre>
+<p><strong>Quadrant graphic</strong></p>
+<pre><code>4-box quadrant graphic, dark navy background, amber + emerald accent lines, white text labels, axis labels 'lead-gen vs marketplace' (x) and 'unskilled vs licensed' (y), Sherpa Pros logo placeholder in upper-right empty quadrant, minimalist editorial
+</code></pre>
+<p><strong>Old NE homes / Old-House Verified</strong></p>
+<pre><code>historic Boston brownstone exterior at golden hour, slate roof, lath-and-plaster wall texture detail, Victorian Portland Maine home, NH timber frame, Cape Cod beach house, editorial 4:5 portrait, natural light, NOT stock, NOT generic, sky blue and amber accents only as subtle color grade
+</code></pre>
+<p><strong>Dream renovations (Sunday inspiration)</strong></p>
+<pre><code>modern white shaker kitchen with brass hardware and marble counters, NE coastal style, natural light from large windows, editorial 4:5, NOT generic real estate photography, magazine quality
+</code></pre>
+<h3 id="52-video-runway--pika">5.2 Video (Runway / Pika)</h3>
+<p><strong>App demo screen recording B-roll</strong></p>
+<pre><code>Animated home dashboard interface, navy + amber UI, modern editorial app preview, smooth scroll motion, 9:16 vertical, NOT generic SaaS, looks like a contractor's tool not a tech bro's deck
+</code></pre>
+<p><strong>Founder building-in-public B-roll</strong></p>
+<pre><code>Cinematic dolly past contractor's truck and tools at golden hour, warm amber light, dust particles in air, 9:16 vertical, NOT corporate, real working environment
+</code></pre>
+<p><strong>Quick Job time-lapse intro</strong></p>
+<pre><code>Top-down jobsite scene, contractor enters frame with tool bag, quick handshake with homeowner, time stamp overlay, 9:16, fast-cut style, NOT documentary slow
+</code></pre>
+<h3 id="53-voiceover-elevenlabs">5.3 Voiceover (ElevenLabs)</h3>
+<p><strong>Phyrom voice clone (preferred — record 5 min sample)</strong></p>
+<pre><code>Plainspoken NH GC voice, conversational, dry humor, 8th grade reading level, no marketing-speak, sounds like a guy who actually swung a hammer this morning
+</code></pre>
+<p><strong>Default narrator voice (when Phyrom isn't available)</strong></p>
+<pre><code>ElevenLabs voice "Adam" or "Ethan" — male, 35-45, NE coastal accent OK, warm and direct, no upspeak, no announcer energy
+</code></pre>
+<hr>
+<h2 id="6-hashtag-strategy">6. Hashtag Strategy</h2>
+<h3 id="61-linkedin--no-hashtags">6.1 LinkedIn — NO HASHTAGS</h3>
+<p>Per <code>linkedin-editorial.md</code> §"Notes for Phyrom" item 7: founder voice in 2026 doesn't need hashtags. They downrank organic reach.</p>
+<h3 id="62-ig--tiktok--facebook-hashtag-mix-510-per-post">6.2 IG / TikTok / Facebook hashtag mix (5–10 per post)</h3>
+<p><strong>National (always include 2–3):</strong>
+<code>#LicensedTrades #ConstructionTech #HomeServices #PropTech #JobsNotLeads</code></p>
+<p><strong>Brand (always include 1–2):</strong>
+<code>#SherpaPros #BuiltByAContractor #CodeAware</code></p>
+<p><strong>Geographic — Phase 1 launch markets (rotate by post relevance):</strong></p>
+<ul>
+<li>NH: <code>#NHContractor #PortsmouthNH #ManchesterNH #NewHampshireHome</code></li>
+<li>ME: <code>#PortlandMaine #MaineContractor</code></li>
+<li>MA: <code>#BostonContractor #BostonHomes #CambridgeMA #SomervilleMA #MassSave</code></li>
+<li>General NE: <code>#NewEnglandLife #NewEnglandHome</code></li>
+</ul>
+<p><strong>Trending / category (1–3 per post depending on theme):</strong></p>
+<ul>
+<li>Trade-specific: <code>#Plumber #Electrician #HVAC #Carpenter #Painter #RoofingContractor</code></li>
+<li>Home topics: <code>#HomeRenovation #BeforeAndAfter #DreamHome #KitchenRemodel #BathroomRemodel #HomeImprovement</code></li>
+<li>Old house: <code>#OldHouseLove #VictorianHome #Brownstone #HistoricHomes #Restoration</code></li>
+<li>Energy: <code>#MassSave #HeatPump #EVCharger #EVLife #ClimateTech #SolarReady</code></li>
+<li>Founder: <code>#BuildInPublic #StartupLife #SmallBusinessOwner #Entrepreneur</code></li>
+</ul>
+<p><strong>Monitor weekly (Phyrom or T5 marketing terminal):</strong></p>
+<ul>
+<li>Check trending hashtags Mon morning via Metricool's Discover tab</li>
+<li>Pull top 3 trending construction/home-improvement tags into the week's posts where on-brand</li>
+<li>Never force a trending tag that doesn't fit — algorithms penalize off-topic tagging</li>
+</ul>
+<h3 id="63-x-twitter-hashtag-mix">6.3 X (Twitter) hashtag mix</h3>
+<p>Use 0–2 tags per tweet. X downranks tag-heavy content.</p>
+<ul>
+<li><code>#ConstructionTech #PropTech #JobsNotLeads</code></li>
+</ul>
+<hr>
+<h2 id="7-engagement-plan">7. Engagement Plan</h2>
+<h3 id="71-reply-windows">7.1 Reply windows</h3>
+<ul>
+<li><strong>All platforms:</strong> reply to every comment within 4 hours of post</li>
+<li><strong>LinkedIn (Phyrom):</strong> reply within 60 minutes of posting (algorithm boost) + second reply block 4:30–5:00pm ET</li>
+<li><strong>TikTok / IG Reels:</strong> reply to first 20 comments within 60 minutes of post (algorithm signal); rest within 4 hours</li>
+<li><strong>X:</strong> Phyrom replies in real time during fundraising phase — treat X as a live convo, not broadcast</li>
+</ul>
+<h3 id="72-founding-pro-dm-strategy-recruit-from-social-inbound">7.2 Founding Pro DM strategy (recruit from social inbound)</h3>
+<ul>
+<li>Any contractor account that comments on a Founding Pro post gets a personal DM within 24 hr</li>
+<li>DM template: <em>"Hey [name] — saw your comment on the Founding Pro post. I'm Phyrom, the founder. NH GC. We have [X] Founding Pro spots left for NH/ME/MA contractors at 5% take rate forever. 15-min call to see if it's a fit?"</em></li>
+<li>Track DM-sourced applications in Metricool conversion tracking + Founding Pro pipeline (T2 terminal)</li>
+</ul>
+<h3 id="73-tagging-strategy-for-amplification">7.3 Tagging strategy for amplification</h3>
+<p><strong>Tag (sparingly — only if engagement is likely):</strong></p>
+<ul>
+<li>Trade associations: @NHHBA, @MEHBA, @NAHB</li>
+<li>Supply houses: @FWWebb, @LowesPro, @HomeDepotPro</li>
+<li>Utilities / rebate programs: @MassSave, @NationalGrid, @Eversource</li>
+<li>Local press: @SeacoastOnline, @NHPR, @BostonGlobe (real estate desk)</li>
+<li>Industry pubs: @WBJournal, @Bisnow, @TheContractorFight</li>
+</ul>
+<p><strong>Never tag:</strong></p>
+<ul>
+<li>VCs by name (per LinkedIn editorial Hard Rules)</li>
+<li>Specific named pros without written permission</li>
+<li>Competitor accounts (Angi, Thumbtack, TaskRabbit, Handy) — even to punch up</li>
+</ul>
+<h3 id="74-cross-platform-amplification-rules">7.4 Cross-platform amplification rules</h3>
+<ul>
+<li><strong>Phyrom LinkedIn (Mon/Wed/Fri)</strong> → repurpose hook + asset for Instagram + Facebook + TikTok same day</li>
+<li><strong>Instagram Reel</strong> → cross-post to Facebook Reel (Metricool simulcast) + TikTok (manual upload, native UX) + YouTube Shorts</li>
+<li><strong>TikTok</strong> → cross-post to IG Reels + YouTube Shorts (DO NOT cross-post with TikTok watermark — re-export from CapCut)</li>
+<li><strong>YouTube long-form</strong> → 60-sec teaser cuts to IG, TikTok, FB, X</li>
+<li><strong>X (Phyrom)</strong> → mirror founder LinkedIn posts as threads same day (different audience overlap; LI = NE GCs + investors, X = tech founders + VCs)</li>
+<li><strong>Brand X</strong> → mirror brand IG/FB content; do not duplicate Phyrom's voice</li>
+</ul>
+<h3 id="75-anti-jargon-enforcement-every-post">7.5 Anti-jargon enforcement (every post)</h3>
+<p>Before publishing any post, run this checklist:</p>
+<ul>
+<li><input disabled="" type="checkbox"> No "Wiseman" externally → use "code validation" / "permit assist" / "rebate lookup" / "matching engine"</li>
+<li><input disabled="" type="checkbox"> No "AI-powered" as headline → if AI is the value prop, describe what it does, not what it is</li>
+<li><input disabled="" type="checkbox"> No "Disrupt" / "Revolutionize" / "Uber for X"</li>
+<li><input disabled="" type="checkbox"> No "Gig" / "Task" → use "job"</li>
+<li><input disabled="" type="checkbox"> CO/SOV/AR/RFI/T&amp;M/AIA → spell out (Change Order, Schedule of Values, Accounts Receivable, etc.)</li>
+<li><input disabled="" type="checkbox"> Phyrom surname is NEVER used — first name only</li>
+<li><input disabled="" type="checkbox"> Domain is <code>thesherpapros.com</code> (NOT vercel placeholder)</li>
+<li><input disabled="" type="checkbox"> Specify product name (Sherpa Marketplace / Sherpa Hub / Sherpa Home / Sherpa Manager) — never "the Sherpa Pros app"</li>
+</ul>
+<hr>
+<h2 id="8-performance-metrics--track-in-metricool">8. Performance Metrics — Track in Metricool</h2>
+<h3 id="81-per-platform-engagement-rate">8.1 Per-platform engagement rate</h3>
+<p><code>(Likes + Comments + Shares) / Followers × 100</code></p>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>30-day target</th>
+<th>90-day target</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>LinkedIn (Phyrom)</td>
+<td>3.0%</td>
+<td>5.0%</td>
+</tr>
+<tr>
+<td>Instagram</td>
+<td>2.5%</td>
+<td>4.0%</td>
+</tr>
+<tr>
+<td>TikTok</td>
+<td>5.0%</td>
+<td>8.0%</td>
+</tr>
+<tr>
+<td>Facebook</td>
+<td>1.5%</td>
+<td>2.5%</td>
+</tr>
+<tr>
+<td>X (Phyrom)</td>
+<td>2.0%</td>
+<td>3.5%</td>
+</tr>
+<tr>
+<td>YouTube</td>
+<td>4.0% engagement / 7% CTR</td>
+<td>6.0% / 10%</td>
+</tr>
+</tbody></table>
+<h3 id="82-click-through-rate-to-thesherpaproscom">8.2 Click-through rate to thesherpapros.com</h3>
+<ul>
+<li>Tag every link with UTM: <code>?utm_source={platform}&amp;utm_medium=social&amp;utm_campaign=phase0&amp;utm_content={day}-{pillar}</code></li>
+<li>Target: 1.5% CTR baseline, 3% on Quick Job demo + Founding Pro recruit posts</li>
+</ul>
+<h3 id="83-founding-pro-applications-attributable-to-social">8.3 Founding Pro applications attributable to social</h3>
+<ul>
+<li>Add a "How did you hear about us?" field to the Founding Pro form</li>
+<li>Track DM-sourced applications separately (each platform inbox)</li>
+<li>Phase 0 target: 50% of Founding Pro applications come from social (the rest from HJD network + supply-house outreach)</li>
+</ul>
+<h3 id="84-wefunder-soft-commit-attributable-to-social">8.4 Wefunder soft-commit attributable to social</h3>
+<ul>
+<li>Wefunder UTM tracking via thesherpapros.com → Wefunder redirect</li>
+<li>Phase 0 target: 30% of Wefunder soft-commits attributable to social channels</li>
+</ul>
+<h3 id="85-phyrom-linkedin-follower-growth-founder-voice-metric">8.5 Phyrom LinkedIn follower growth (founder voice metric)</h3>
+<ul>
+<li>Baseline: Day 1 follower count</li>
+<li>Day 30 target: +500 followers</li>
+<li>Day 90 target: 5,000 followers (per <code>linkedin-editorial.md</code> Hard Rules item 6 — weekend posting unlocks at 5K)</li>
+</ul>
+<h3 id="86-weekly-metricool-review-every-sunday-30-min">8.6 Weekly Metricool review (every Sunday, 30 min)</h3>
+<ul>
+<li>Top 3 posts by engagement → identify pattern</li>
+<li>Bottom 3 posts → identify what to cut</li>
+<li>Comment sentiment scan → flag any complaints for Concierge handoff</li>
+<li>Founding Pro DM inbox count → triage to T2 recruiting terminal</li>
+</ul>
+<hr>
+<h2 id="9-phase-0-→-phase-1-social-transition-plan">9. Phase 0 → Phase 1 Social Transition Plan</h2>
+<h3 id="91-phase-0-day-190-now-→-late-july-2026">9.1 Phase 0 (Day 1–90, now → late July 2026)</h3>
+<ul>
+<li><strong>Voice mix:</strong> 80% Phyrom founder-led / 20% brand-led</li>
+<li><strong>Theme:</strong> Building in public, fundraising narrative, Founding Pro recruiting</li>
+<li><strong>Channels:</strong> LinkedIn (Phyrom) is the spine; IG/TikTok are amplification; FB targets older homeowner; X is real-time fundraising</li>
+<li><strong>No paid amplification</strong> — organic only, the constraint is Phyrom's time not budget</li>
+<li><strong>Tone:</strong> Plainspoken, vulnerable, math-heavy (receipts), founder-as-hero</li>
+</ul>
+<h3 id="92-phase-1-transition-day-90180-after-first-close">9.2 Phase 1 transition (Day 90–180, after first close)</h3>
+<ul>
+<li><strong>Voice mix:</strong> 50% Phyrom / 50% brand</li>
+<li><strong>Theme:</strong> Public launch announcements, Founding Pro hero stories, customer wins</li>
+<li><strong>New content:</strong> Old-House Verified launch, Mass Save co-branded landing page, JLC Live New England trade show coverage</li>
+<li><strong>Light paid amplification:</strong> $1–2K/mo Meta + TikTok boost on top-performing organic posts (target homeowner-side acquisition)</li>
+<li><strong>Tone:</strong> Confident, proven, "we told you so" energy on the lead-gen comparison content</li>
+</ul>
+<h3 id="93-phase-2-ramp-day-180365-after-seed-close">9.3 Phase 2 ramp (Day 180–365, after Seed close)</h3>
+<ul>
+<li><strong>Voice mix:</strong> 30% Phyrom / 70% brand-led + Pro Success Manager content</li>
+<li><strong>Theme:</strong> Branded content + paid amplification + influencer collaborations (NE construction influencers, contractor TikTokers)</li>
+<li><strong>Channels add:</strong> ProTok creator program (per GTM spec §4.4), Old-House Verified press blitz, TechCrunch / NH Biz Review founder profiles</li>
+<li><strong>Paid spend:</strong> $30–50K/mo per GTM spec §4.4</li>
+<li><strong>Tone:</strong> Category-defining, scaled, multiple voices but one bible</li>
+</ul>
+<hr>
+<h2 id="10-tools--workflow">10. Tools &amp; Workflow</h2>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Use</th>
+<th>Owner</th>
+<th>Cost</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Metricool</strong></td>
+<td>Multi-platform scheduling, analytics, inbox aggregation</td>
+<td>Phyrom</td>
+<td>$18/mo</td>
+</tr>
+<tr>
+<td><strong>Canva Pro</strong></td>
+<td>Image editing, carousel templates, brand kit</td>
+<td>Phyrom</td>
+<td>$15/mo</td>
+</tr>
+<tr>
+<td><strong>CapCut Pro</strong></td>
+<td>Video editing, captions, motion graphics</td>
+<td>Phyrom + future T5</td>
+<td>$9/mo</td>
+</tr>
+<tr>
+<td><strong>Descript</strong></td>
+<td>Long-form video editing, transcript-based cuts</td>
+<td>Phyrom</td>
+<td>$15/mo</td>
+</tr>
+<tr>
+<td><strong>Midjourney v6.x</strong></td>
+<td>AI imagery (stock-replacement, mood)</td>
+<td>Phyrom</td>
+<td>$30/mo</td>
+</tr>
+<tr>
+<td><strong>Ideogram</strong></td>
+<td>AI imagery with text overlay (slides, quadrants, infographics)</td>
+<td>Phyrom</td>
+<td>$20/mo</td>
+</tr>
+<tr>
+<td><strong>Runway Gen-3</strong></td>
+<td>AI video (B-roll, animated transitions)</td>
+<td>Phyrom</td>
+<td>$35/mo</td>
+</tr>
+<tr>
+<td><strong>ElevenLabs</strong></td>
+<td>Voiceover (Phyrom voice clone + default narrators)</td>
+<td>Phyrom</td>
+<td>$22/mo</td>
+</tr>
+<tr>
+<td><strong>Notion / Markdown</strong></td>
+<td>Calendar source-of-truth (this file)</td>
+<td>Phyrom</td>
+<td>free</td>
+</tr>
+<tr>
+<td><strong>Loom</strong></td>
+<td>Screen recordings of Sherpa Marketplace / Hub demos</td>
+<td>Phyrom</td>
+<td>$12/mo</td>
+</tr>
+</tbody></table>
+<p><strong>Total monthly tool cost: ~$176/mo</strong> — fits within Phase 0 ~$3–5K/mo budget per GTM spec §4.2.</p>
+<p><strong>Wave 6.4 coordination:</strong> When <code>brand-asset-prompts.md</code> ships, swap Section 5 prompts globally for the canonical Wave 6.4 prompts. Until then, Section 5 is the working library.</p>
+<hr>
+<h2 id="10a-wave-12--sherpa-materials-engine-launch-days-38-44">10A. Wave 12 — Sherpa Materials Engine launch (Days 38-44)</h2>
+<p><em>Inserted 2026-04-26 to coincide with the Sherpa Materials engine production launch. Slots into Metricool after Day 37; matches existing per-platform format.</em></p>
+<h3 id="day-38--friday-verify-date">Day 38 — Friday [VERIFY-DATE]</h3>
+<p><strong>Theme: Sherpa Materials Engine — Launch Day</strong></p>
+<p><strong>LinkedIn (Phyrom personal)</strong>
+Copy: "Six months of building. Today it ships. Sherpa Materials engine is live for our beta cohort: real-time materials lookup across 40+ suppliers, Zinc-coordinated order placement, Uber Direct same-day delivery — all from one tap on the Sherpa app. The materials get to the job before the human does. This is what vertical integration looks like in skilled trades. Link in comments."
+Asset prompt: 9:16 hero shot of Sherpa app dashboard with Materials tab highlighted, warm cream <code>#FBF7EE</code> accent, materials line items visible with delivery ETAs, no faces.
+CTA: "Beta cohort is full. Waitlist link in comments."</p>
+<p><strong>Instagram (Sherpa Pros brand handle)</strong>
+Copy variant A (carousel): Slide 1 — "Materials. Solved." Slide 2 — "Tap accept." Slide 3 — "Materials get ordered." Slide 4 — "Uber Direct delivers same-day." Slide 5 — "You start work."
+Copy variant B (single image): "From accept to on-site materials in under 30 minutes."
+Asset prompt: Carousel, 1:1 squares, photo-real shots of: phone with app open, supplier warehouse interior (no logos visible), Uber Direct driver loading van, materials at jobsite door, Sherpa starting work. Warm cream + signature blue accent.</p>
+<p><strong>X / Twitter</strong>
+Copy: "Shipped: Sherpa Materials engine. Real-time supplier lookup, Zinc order placement, Uber Direct same-day delivery, all coordinated from one tap. We just compressed 90 minutes of jobsite chaos into 23 seconds of background work."
+Asset: Static screenshot, 16:9, app dashboard.</p>
+<p><strong>Facebook (NH/NE community groups + Sherpa Pros page)</strong>
+Copy: "If you're a builder, plumber, electrician, or remodeler in New England — Sherpa Materials engine is live. Your crew accepts a job, the materials show up at the jobsite the same day, you stop losing 90 minutes a day to supply runs. Beta cohort full but waitlist is open."
+Asset: Same hero image as LinkedIn.</p>
+<hr>
+<h3 id="day-39--saturday-verify-date">Day 39 — Saturday [VERIFY-DATE]</h3>
+<p><strong>Theme: Customer Reaction</strong></p>
+<p><strong>Instagram Stories</strong>
+3-frame sequence: (1) Anonymous text screenshot from a beta GC saying "I've never had this happen before in 18 years." (2) Photo of materials box on a jobsite porch. (3) "This is what we built. Link in bio."
+Asset prompt: Real text-message styling, paper-texture overlay on screenshot to read like a clipping.</p>
+<p><strong>LinkedIn</strong>
+Skip — Saturday low engagement.</p>
+<p><strong>X</strong>
+Copy: "Beta GC, week 1: 'I've never had this happen in 18 years.' What he's reacting to: materials arriving at the jobsite before he finishes demo. Sherpa Materials engine is live."
+No asset, text-only.</p>
+<hr>
+<h3 id="day-40--sunday-verify-date">Day 40 — Sunday [VERIFY-DATE]</h3>
+<p><strong>Theme: Quiet day — single thoughtful long-form</strong></p>
+<p><strong>LinkedIn (Phyrom)</strong>
+Long-form post (~250 words) on the labor coordination thesis from Wk 33 Fri editorial post. Cross-promote.
+Asset: None, text post.</p>
+<p><strong>Instagram</strong>
+Skip.</p>
+<hr>
+<h3 id="day-41--monday-verify-date">Day 41 — Monday [VERIFY-DATE]</h3>
+<p><strong>Theme: Technical deep-dive (developer/operator audience)</strong></p>
+<p><strong>LinkedIn (Phyrom)</strong>
+Copy: Republish Wk 32 Wed deep-dive on the lookup/confidence model.
+Asset prompt: Annotated diagram, 16:9, showing: Sherpa input → fuzzy-match → catalog → Zinc → Uber Direct → jobsite. Warm cream background, signature blue arrows.</p>
+<p><strong>X thread (5 tweets)</strong>
+T1: "How the Sherpa Materials engine resolves a one-handed phone-typed materials request to a real SKU in under 800ms."
+T2: "Step 1: tokenize the input. 'standard 3/4 ply BCX' → [grade, thickness, species, format]"
+T3: "Step 2: fuzzy-match against ~28K-SKU catalog, score each hit."
+T4: "Step 3: above 0.85 confidence, place the order. Below, escalate to GC for one-tap confirm."
+T5: "We built this because every existing 'AI for trades' product makes the contractor type more, not less. We do the opposite."</p>
+<hr>
+<h3 id="day-42--tuesday-verify-date">Day 42 — Tuesday [VERIFY-DATE]</h3>
+<p><strong>Theme: Counter-positioning (vs Grainger / HD Pro)</strong></p>
+<p><strong>LinkedIn (Phyrom)</strong>
+Copy: Republish Wk 33 Wed counter-positioning post.
+Asset prompt: Comparison table graphic, 1:1 square, 4 columns (Grainger / HD Pro / Angi / Sherpa Pros) × 5 rows (parts only? labor? delivery? coordination? stays on transaction?). Sherpa column all green checks, others mixed.</p>
+<p><strong>Instagram (carousel)</strong>
+Same comparison table broken across 6 slides for swipe-through.</p>
+<p><strong>X</strong>
+Copy: "We are not Grainger. We are not HD Pro. We are not Angi. We are not Procore. The right comp set is all four — stitched into one platform for the residential GC market none of them serve."</p>
+<hr>
+<h3 id="day-43--wednesday-verify-date">Day 43 — Wednesday [VERIFY-DATE]</h3>
+<p><strong>Theme: TAM / fundraising-adjacent</strong></p>
+<p><strong>LinkedIn (Phyrom)</strong>
+Copy: Republish Wk 32 Fri $540B TAM post, with new Wefunder CTA appended.
+Asset prompt: Stat card graphic, 1:1, "$540B" in serif display type, warm cream background, source citation footnote, signature blue accent line.</p>
+<p><strong>Wefunder cross-post</strong>
+Update Wefunder feed with same content + link to refreshed §4.5/§4.6 copy.</p>
+<p><strong>X</strong>
+Copy: "$540B residential + small-commercial materials TAM. 0-3% margin for the GC under the status quo. 8-12% coordination fee under the Sherpa Materials model — paid out of the time + fuel waste, not the GC's margin. This is what vertical integration looks like in trades."</p>
+<hr>
+<h3 id="day-44--thursday-verify-date">Day 44 — Thursday [VERIFY-DATE]</h3>
+<p><strong>Theme: Recap + waitlist push</strong></p>
+<p><strong>LinkedIn (Phyrom)</strong>
+Copy: "Week one of Sherpa Materials engine in production. [VERIFY-METRIC: orders shipped] orders coordinated. [VERIFY-METRIC: avg delivery time] minutes average from Sherpa accept to materials on-site. [VERIFY-METRIC: # of GCs] GCs on the platform. Beta cohort closed. Waitlist below."
+Asset prompt: Single stat card, 1:1, three numbers stacked vertically with warm cream + signature blue.</p>
+<p><strong>Instagram (Reel, 30s)</strong>
+Voiceover (Phyrom): "We shipped the Sherpa Materials engine on [VERIFY-DATE]. Here's what week one looks like." B-roll: Sherpas accepting jobs on phones, Uber Direct vans, materials at jobsites, GCs reviewing dashboards.</p>
+<p><strong>X</strong>
+Copy: Same recap, condensed to single tweet with stat block.</p>
+<hr>
+<h2 id="11-sunday-capture-checklist-every-weekend">11. Sunday Capture Checklist (every weekend)</h2>
+<p>To stay 7 days ahead of the calendar, Phyrom blocks Sunday 4–6pm for asset capture:</p>
+<ul>
+<li><input disabled="" type="checkbox"> 5–10 jobsite photos from the week (HJD work; beta pros with written permission)</li>
+<li><input disabled="" type="checkbox"> 1–3 short selfie videos (15–60 sec) for the upcoming week's reels</li>
+<li><input disabled="" type="checkbox"> 1–2 Loom screen recordings of Sherpa Marketplace / Hub demos</li>
+<li><input disabled="" type="checkbox"> 1 Founding Pro interview (60–90 sec) — pre-schedule one per week</li>
+<li><input disabled="" type="checkbox"> 1 Quick Job time-lapse (toilet install, ceiling fan, GFCI swap, drywall patch — rotate)</li>
+<li><input disabled="" type="checkbox"> 1 Wefunder traction screenshot (numbers only, no investor names)</li>
+<li><input disabled="" type="checkbox"> Pull next week's Mon–Sun rows from this file into Metricool</li>
+<li><input disabled="" type="checkbox"> Generate Midjourney / Ideogram assets for any slots needing AI imagery (allow 2 hr — generate, refine, export)</li>
+</ul>
+<hr>
+<h2 id="12-risk-notes">12. Risk Notes</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Risk</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>Asset capture is the bottleneck (per LinkedIn editorial item 2)</td>
+<td>Sunday 4–6pm capture block is non-negotiable; 1 Founding Pro interview/wk</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Phyrom burnout (60-hr/wk cap per GTM spec)</td>
+<td>Future T5 marketing terminal handles brand-led Tue/Thu/Sat/Sun posts; Phyrom owns Mon/Wed/Fri founder voice + 60-min reply blocks</td>
+</tr>
+<tr>
+<td>3</td>
+<td>TikTok virality could overwhelm Founding Pro inbox</td>
+<td>Pre-write DM templates; auto-respond with calendar link for 15-min calls</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Cross-platform watermark stripping (TikTok → IG)</td>
+<td>Re-export from CapCut, never download from TikTok directly</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Brand bible drift across platforms</td>
+<td>Anti-jargon checklist (§7.5) runs before every post; weekly Sunday audit</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Wave 6.2/6.3/6.4 docs ship and product names change</td>
+<td>Global find-and-replace in this file when those specs land; never write "the Sherpa Pros app"</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="13-last-updated">13. Last Updated</h2>
+<p><strong>2026-04-22</strong> — Plan v1 by Claude. Covers Day 1 (2026-04-22) through Day 30 (2026-05-21). Reuses LinkedIn editorial for Mon/Wed/Fri. Ready to paste into Metricool. Coordinate with Wave 6.2 / 6.3 / 6.4 product + brand asset docs as they ship.</p>
+
+	
+
+
+</body>
+</html>

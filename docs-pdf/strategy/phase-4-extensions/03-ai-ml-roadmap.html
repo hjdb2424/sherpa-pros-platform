@@ -1,0 +1,984 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>03 ai ml roadmap — Sherpa Pros</title>
+<link rel="icon" href="../../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="03-ai-ml-roadmap.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="artificial-intelligence-and-machine-learning-roadmap--phase-4">Artificial Intelligence and Machine Learning Roadmap — Phase 4</h1>
+<h2 id="purpose">Purpose</h2>
+<p>This document is the Phase 4 Artificial Intelligence and Machine Learning roadmap. Phase 0-3 used Artificial Intelligence in narrow, rule-based ways (Sherpa Score scoring rubric, Dispatch matching with hand-tuned weights, Sherpa Smart Scan basic Optical Character Recognition). Phase 4 evolves the platform from "rule-based with some Machine Learning sprinkled on top" to "Machine Learning at the core of every high-leverage decision," while maintaining the brand-locked rule that "Wiseman" is the internal label and never appears in user-facing surfaces.</p>
+<p><strong>Vendor and infrastructure default.</strong> Per session reminder and <code>CLAUDE.md</code> design discipline, Large Language Model calls flow through Vercel Artificial Intelligence Gateway with Anthropic Claude Sonnet (latest production-grade model) as the default model family. Specialized Machine Learning workloads (anomaly detection, time-series forecasting, vision) run on Amazon Web Services SageMaker or Google Cloud Vertex AI depending on team familiarity at hire time.</p>
+<p><strong>Bias and fairness mandate.</strong> Every Machine Learning model that influences pro outcomes (Sherpa Score, Dispatch, Pricing intelligence) is subject to quarterly bias audits with quantified fairness metrics surfaced on the Datadog dashboard. Annual external bias review by an independent third-party auditor (recommend Parity AI or O'Neil Risk Consulting and Algorithmic Auditing).</p>
+<hr>
+<h2 id="1-sherpa-score-evolution">1. Sherpa Score evolution</h2>
+<h3 id="current-state-phase-0-3">Current state (Phase 0-3)</h3>
+<p>Sherpa Score is a deterministic scoring rubric: 12 metrics across 3 pillars (Quality 50% / Communication 25% / Reviews 25%) combined with hand-tuned weights to produce a 0-100 score per pro. The rubric is explainable, gameable in narrow ways, and uniformly weighted across all trade categories.</p>
+<h3 id="phase-4-evolution">Phase 4 evolution</h3>
+<p><strong>Per-trade-category Machine Learning-trained weighting.</strong> Different trades have different success-defining metrics. Electrical work weights "code-pass rate on first inspection" higher than plumbing, which weights "leak-back-call rate within 30 days" higher. The Phase 4 model:</p>
+<ul>
+<li>Trains a separate weight vector for each of the 37 service categories.</li>
+<li>Training data: 5,000+ completed jobs per category by Phase 4 Year 1, 25,000+ by Year 2.</li>
+<li>Loss function: predicted vs actual job-outcome rating (5-star) within 30 days of completion.</li>
+<li>Model class: gradient-boosted trees (XGBoost or LightGBM) for explainability + ability to surface feature importance to pros.</li>
+</ul>
+<p><strong>Pre-dispatch performance prediction.</strong> Before Dispatch routes a job to a specific pro, the platform predicts the probability that this specific pro completes this specific job successfully (5-star, on-time, no rework). The prediction surfaces inside the Dispatch decision engine and feeds back into the routing weight.</p>
+<p><strong>Anomaly detection on Score manipulation.</strong> Pros who climb the Score abnormally fast, who get suspicious cluster-of-5-star reviews from new client accounts, or whose review IP-address pattern looks coordinated are auto-flagged for human review. Model: isolation forest + manual rules layered. Owner: Trust + Safety team (formed Phase 4 Year 1).</p>
+<h3 id="vendor-and-build-vs-buy">Vendor and build-vs-buy</h3>
+<p><strong>Build internally.</strong> Sherpa Score is a strategic moat; outsourcing the scoring engine to a third party is unacceptable. Build with in-house Machine Learning team (Head of Machine Learning hire Phase 4 Year 2, supported by 2-3 Machine Learning engineers).</p>
+<h3 id="phasing">Phasing</h3>
+<ul>
+<li>Phase 4 Year 1 (Month 18-30): Per-category weighting model trained and shadow-tested against rule-based baseline.</li>
+<li>Phase 4 Year 2 (Month 30-36): Per-category Machine Learning model becomes production primary; rule-based fallback maintained for explainability.</li>
+<li>Phase 5 Year 1: Pre-dispatch performance prediction goes live in Dispatch decision engine.</li>
+<li>Phase 5 Year 2: Anomaly detection goes live with Trust and Safety team triage workflow.</li>
+</ul>
+<hr>
+<h2 id="2-dispatch-wiseman-machine-learning-uplift">2. Dispatch Wiseman Machine Learning uplift</h2>
+<h3 id="current-state">Current state</h3>
+<p>Dispatch Wiseman uses 7-factor rule-based scoring: license + certification + skill + geography + Sherpa Score + responsiveness + recent activity. Weights are hand-tuned and uniform across job types.</p>
+<h3 id="phase-4-evolution-1">Phase 4 evolution</h3>
+<p><strong>Predicted job-completion success per pro-job pairing.</strong> Instead of "best pro within radius by composite score," Dispatch optimizes "highest probability of job-completion success across all candidate pros, weighted by Gross Merchandise Value contribution." Training data: prior job outcomes joined to pro Score + job complexity + geography + time-of-day + weather + seasonality + pro recent-load. Model class: deep neural network (PyTorch via SageMaker) — moves beyond gradient-boosted trees because feature interactions are complex.</p>
+<p><strong>Routing optimization to maximize platform Gross Merchandise Value, not just pro acceptance rate.</strong> Today Dispatch routes to the pro most likely to accept; tomorrow Dispatch routes to the pro most likely to accept AND complete AND drive ancillary revenue (materials uplift, Sherpa Hub kit pull, Sherpa Lending working-capital draw). Multi-objective optimization with weights tunable by metro and product mix.</p>
+<p><strong>Fairness constraint.</strong> Routing must not systematically disadvantage minority-owned pros, women-owned pros, or other protected categories. Fairness constraint: per-category match rate within +/- 10% of baseline match rate across protected groups. Constraint enforced at training time (fairness loss term added) and audited monthly.</p>
+<h3 id="vendor-and-build-vs-buy-1">Vendor and build-vs-buy</h3>
+<p><strong>Build internally.</strong> Dispatch is a strategic moat. Vendor consideration ruled out.</p>
+<h3 id="phasing-1">Phasing</h3>
+<ul>
+<li>Phase 4 Year 1 (M18-30): Predicted job-completion success model trained on Phase 0-3 data, shadow-tested.</li>
+<li>Phase 4 Year 2 (M30-36): Production rollout per metro (start: Portsmouth NH, then Manchester NH, then Boston, then everywhere).</li>
+<li>Phase 5 Year 1: Multi-objective Gross Merchandise Value optimization layered on top.</li>
+<li>Ongoing: Quarterly fairness audit cadence.</li>
+</ul>
+<hr>
+<h2 id="3-predictive-materials-demand-forecasting">3. Predictive materials demand forecasting</h2>
+<h3 id="current-state-1">Current state</h3>
+<p>Sherpa Materials engine is reactive: pro orders kit, Materials engine routes order to closest supplier with stock. No forecasting layer.</p>
+<h3 id="phase-4-evolution-2">Phase 4 evolution</h3>
+<p><strong>Per-Hub + per-metro materials demand forecasting.</strong> Forecasting model predicts kit demand 7, 30, and 90 days ahead per Hub. Reduces inventory carrying cost (less safety stock needed) and improves Sherpa Materials on-time delivery rate (kits pre-positioned at Hub before pro orders).</p>
+<p><strong>Inputs.</strong> Historical job-materials lists (Sherpa Marketplace job → Sherpa Materials kit pulls), seasonality (heating-season kits spike October-January, cooling-season kits spike May-August), weather forecast (storm-prep kits spike before forecast severe weather), permit data (large permits filed in metro = upcoming materials demand).</p>
+<p><strong>Outputs.</strong> Per-Hub-per-Stock-Keeping-Unit demand forecast. Auto-generated reorder recommendations to Hub Operations Manager. Sherpa Materials engine pre-positions inventory accordingly.</p>
+<h3 id="vendor-and-build-vs-buy-2">Vendor and build-vs-buy</h3>
+<p><strong>Hybrid: build core forecasting in-house, buy retail-forecasting horizontal product if scale demands it.</strong> Initial build with internal Machine Learning team (time-series models: Prophet or Temporal Fusion Transformer). At Phase 5 scale (30+ hubs), evaluate buying RELEX Solutions or Blue Yonder for retail demand forecasting at scale. Cost-benefit at evaluation time.</p>
+<h3 id="phasing-2">Phasing</h3>
+<ul>
+<li>Phase 4 Year 1 (M18-30): In-house Prophet-baseline forecast for Hub #1 and #2.</li>
+<li>Phase 4 Year 2 (M30-36): Roll out to all 6 hubs.</li>
+<li>Phase 5 Year 1: Evaluate vendor (RELEX or Blue Yonder) when network scales beyond 12 hubs.</li>
+</ul>
+<hr>
+<h2 id="4-sherpa-smart-scan-optical-character-recognition--entity-extraction">4. Sherpa Smart Scan Optical Character Recognition + entity extraction</h2>
+<h3 id="current-state-2">Current state</h3>
+<p>Sherpa Smart Scan uses commodity Optical Character Recognition (Amazon Textract) to extract text from receipts, blueprints, permits. No structured entity extraction; pro manually categorizes each scan.</p>
+<h3 id="phase-4-evolution-3">Phase 4 evolution</h3>
+<p><strong>Trained models for permit number extraction.</strong> Permit documents have structure (permit number, property address, jurisdiction, expiration date, work-type code). Train a fine-tuned model to extract these fields with confidence scoring. When confidence &lt; threshold, route to human review.</p>
+<p><strong>Trained models for blueprint dimension extraction.</strong> Blueprint dimensions (square footage, ceiling height, room counts) feed directly into Sherpa codes engine for code-aware bid generation. Extracting these reliably eliminates a multi-hour manual takeoff per blueprint.</p>
+<p><strong>Receipt categorization auto-tagging.</strong> For pros: auto-tag receipts with Schedule C codes (Internal Revenue Service business expense categories). For Property Manager tier: auto-tag receipts as Capital Expenditure vs Operating Expense. Powered by fine-tuned Large Language Model (Claude Sonnet via Vercel Artificial Intelligence Gateway) reading the OCR'd text + image context.</p>
+<h3 id="vendor-and-build-vs-buy-3">Vendor and build-vs-buy</h3>
+<p><strong>Buy + customize.</strong> Amazon Web Services Textract for Optical Character Recognition core (already integrated). Anthropic Claude Sonnet (via Vercel Artificial Intelligence Gateway) for entity extraction and categorization. Custom fine-tuning on Sherpa Pros' own labeled corpus (1,000+ receipts, 500+ permits, 200+ blueprints by Phase 4 Year 1).</p>
+<h3 id="phasing-3">Phasing</h3>
+<ul>
+<li>Phase 4 Year 1 (M18-30): Permit number extraction + blueprint dimension extraction in beta.</li>
+<li>Phase 4 Year 2 (M30-36): Receipt categorization auto-tagging in production for all pros + Property Manager tier customers.</li>
+<li>Phase 5 Year 1: Schedule C auto-tag accuracy &gt;95% (current baseline: manual ~80%).</li>
+</ul>
+<hr>
+<h2 id="5-customer-support-artificial-intelligence">5. Customer support Artificial Intelligence</h2>
+<h3 id="current-state-3">Current state</h3>
+<p>Sherpa Success Manager team handles Property Manager + white-glove customer relationships manually. Sherpa Marketplace standard-tier support handled by a small Customer Support team via Intercom.</p>
+<h3 id="phase-4-evolution-4">Phase 4 evolution</h3>
+<p><strong>Sherpa Success Manager Artificial Intelligence co-pilot.</strong> Sherpa Success Manager team gets an Artificial Intelligence co-pilot that:</p>
+<ul>
+<li>Drafts email and Short Message Service responses to common questions, reviewed by human before sending.</li>
+<li>Summarizes customer-conversation history before each call.</li>
+<li>Flags churn-risk signals (response-time elongation, sentiment shift, payment-method failure pattern).</li>
+<li>Auto-tracks ticket status and escalation cadence.</li>
+</ul>
+<p><strong>Customer Support Tier 1 Artificial Intelligence.</strong> For Sherpa Marketplace standard tier, Tier 1 questions (password reset, payment status, dispatch tracking) handled by Artificial Intelligence agent with 80%+ resolution rate without human escalation. Escalations to human Tier 2 routed with full conversation context.</p>
+<h3 id="vendor-and-build-vs-buy-4">Vendor and build-vs-buy</h3>
+<p><strong>Buy.</strong> Use Intercom Fin (Intercom's AI agent product) or Decagon for Customer Support Tier 1. Build the Sherpa Success Manager co-pilot in-house on Anthropic Claude Sonnet via Vercel Artificial Intelligence Gateway because Sherpa Success Manager workflow is too custom for commodity vendors.</p>
+<h3 id="phasing-4">Phasing</h3>
+<ul>
+<li>Phase 4 Year 1 (M18-30): Customer Support Tier 1 Artificial Intelligence pilot via Intercom Fin.</li>
+<li>Phase 4 Year 2 (M30-36): Sherpa Success Manager co-pilot in production.</li>
+<li>Phase 5 Year 1: Customer Support Tier 1 Artificial Intelligence handling 80%+ of inbound at &lt;30-second response time.</li>
+</ul>
+<hr>
+<h2 id="6-pricing-intelligence">6. Pricing intelligence</h2>
+<h3 id="current-state-4">Current state</h3>
+<p>Job pricing is largely set by pros bidding into a job posting (Project mode) or pulled from a pre-priced flat-rate menu (Quick Job mode). No per-metro-per-trade fair-pricing intelligence layer.</p>
+<h3 id="phase-4-evolution-5">Phase 4 evolution</h3>
+<p><strong>Per-job-per-metro-per-trade fair-pricing Machine Learning model.</strong> Train on historical data: job acceptance rates as a function of bid price, completed-job prices, job outcomes, customer-satisfaction scores. The model predicts the "fair" price band per job class per metro. Three downstream uses:</p>
+<ol>
+<li><strong>Help clients price jobs correctly.</strong> When a homeowner posts a job, surface a price band ("similar jobs in your area cost $X-$Y") to set expectations and reduce time-to-first-bid.</li>
+<li><strong>Help pros bid competitively.</strong> When a pro views a job, surface "you'll likely win with a bid in $X-$Y range" suggestion (opt-in; respects pro autonomy).</li>
+<li><strong>Increase match rate.</strong> Jobs priced too low get no bids; jobs priced too high get rejected by clients. Pricing intelligence reduces both failure modes.</li>
+</ol>
+<p><strong>Quick Job mode pricing.</strong> Quick Job pre-priced flat-rate menu refreshes quarterly per metro using the same Machine Learning model. Auto-adjusts for inflation, supply-demand imbalance, seasonality.</p>
+<h3 id="vendor-and-build-vs-buy-5">Vendor and build-vs-buy</h3>
+<p><strong>Build internally.</strong> Pricing data is proprietary and the model touches every job. Build with in-house Machine Learning team.</p>
+<h3 id="phasing-5">Phasing</h3>
+<ul>
+<li>Phase 4 Year 1 (M18-30): Beta in Portsmouth NH for top 10 service categories.</li>
+<li>Phase 4 Year 2 (M30-36): Roll out to all metros for all 37 service categories.</li>
+<li>Phase 5 Year 1: Auto-adjusting Quick Job menu refresh quarterly.</li>
+</ul>
+<hr>
+<h2 id="7-artificial-intelligence-safety--bias-monitoring">7. Artificial Intelligence safety + bias monitoring</h2>
+<h3 id="the-risk">The risk</h3>
+<p>As Machine Learning models proliferate across Sherpa Score, Dispatch, Pricing, and Customer Support, the risk of systematically disadvantaging minority-owned pros, women-owned pros, or other protected categories grows. This is not just a regulatory risk (Equal Credit Opportunity Act for Sherpa Lending; Fair Housing for any geographic pricing decisions); it is a brand-trust risk and a moral obligation.</p>
+<h3 id="the-framework">The framework</h3>
+<p><strong>Quarterly bias audit cadence.</strong> Every Machine Learning model in production runs a quarterly fairness audit. Metrics tracked:</p>
+<ul>
+<li><strong>Demographic parity</strong> — Does the model assign positive outcomes (high Score, frequent dispatch, favorable pricing) at equal rates across protected groups?</li>
+<li><strong>Equal opportunity</strong> — Among pros who would succeed at a job, do all groups have equal chance of being matched to that job?</li>
+<li><strong>Calibration</strong> — Does a Score of 80 mean the same expected job-outcome quality across all groups?</li>
+</ul>
+<p><strong>Datadog dashboard.</strong> Bias metrics surface on a dedicated Datadog dashboard reviewed monthly by Vice President Engineering, Head of Machine Learning, and General Counsel. Threshold breaches trigger immediate model rollback to the previous version while the team investigates.</p>
+<p><strong>Annual external bias review.</strong> An independent third-party auditor (recommend Parity AI or O'Neil Risk Consulting and Algorithmic Auditing) conducts an annual deep-dive bias review. Findings are summarized in a public-facing transparency report (published on <code>thesherpapros.com/transparency</code> per Phase 4 Year 2 commitment).</p>
+<p><strong>Human-in-the-loop review for high-stakes decisions.</strong> Any Machine Learning decision that suspends a pro account, lowers a Score below the Founding/Gold tier threshold, or denies a Sherpa Lending application is auto-routed to human review before taking effect. No fully-automated adverse decisions against pros.</p>
+<h3 id="vendor-and-build-vs-buy-6">Vendor and build-vs-buy</h3>
+<p><strong>Build internal monitoring infrastructure, partner with external auditor annually.</strong> Internal monitoring: in-house team. External annual audit: Parity AI or equivalent.</p>
+<h3 id="phasing-6">Phasing</h3>
+<ul>
+<li>Phase 4 Year 1 (M18-30): Bias-audit framework defined, Datadog dashboard built, baseline metrics established.</li>
+<li>Phase 4 Year 2 (M30-36): First annual external bias review published.</li>
+<li>Phase 5 ongoing: Quarterly internal audits + annual external review become standard operating procedure.</li>
+</ul>
+<hr>
+<h2 id="8-phase-4-artificial-intelligence-and-machine-learning-team-build-out">8. Phase 4 Artificial Intelligence and Machine Learning team build-out</h2>
+<h3 id="hires">Hires</h3>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Phase 4 timing</th>
+<th>Compensation range</th>
+<th>Reports to</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Head of Machine Learning</td>
+<td>Year 2 (M24)</td>
+<td>$250K-$320K + 0.5%-0.75% equity</td>
+<td>Vice President Engineering</td>
+</tr>
+<tr>
+<td>Senior Machine Learning Engineer (Sherpa Score / Dispatch)</td>
+<td>Year 2 (M24)</td>
+<td>$200K-$260K + 0.15%-0.25% equity</td>
+<td>Head of Machine Learning</td>
+</tr>
+<tr>
+<td>Senior Machine Learning Engineer (Materials forecasting / Pricing)</td>
+<td>Year 2 (M30)</td>
+<td>$200K-$260K + 0.15%-0.25% equity</td>
+<td>Head of Machine Learning</td>
+</tr>
+<tr>
+<td>Machine Learning Engineer (Optical Character Recognition / Smart Scan)</td>
+<td>Year 2 (M30)</td>
+<td>$170K-$220K + 0.10%-0.15% equity</td>
+<td>Head of Machine Learning</td>
+</tr>
+<tr>
+<td>Trust + Safety Engineer</td>
+<td>Year 2 (M30)</td>
+<td>$170K-$220K + 0.10%-0.15% equity</td>
+<td>Head of Machine Learning</td>
+</tr>
+</tbody></table>
+<p><strong>Headcount at Phase 4 Year 2 end (Month 36):</strong> 5 Artificial Intelligence and Machine Learning team members. Phase 5 Year 1 grows to ~10.</p>
+<h3 id="infrastructure-budget">Infrastructure budget</h3>
+<ul>
+<li>Vercel Artificial Intelligence Gateway (Anthropic Claude Sonnet usage): estimated $40K-$80K/year at Phase 4 Year 2 scale.</li>
+<li>Amazon Web Services SageMaker training + inference: estimated $120K-$200K/year.</li>
+<li>Datadog Machine Learning monitoring add-on: $30K/year.</li>
+<li>External annual bias audit: $80K-$150K/year (Parity AI or equivalent).</li>
+<li><strong>Total Phase 4 Year 2 Artificial Intelligence and Machine Learning infrastructure budget: ~$300K-$450K/year.</strong></li>
+</ul>
+<hr>
+<h2 id="9-out-of-scope-deferred-to-phase-5">9. Out of scope (deferred to Phase 5+)</h2>
+<ul>
+<li>Generative job-matching (Large Language Model-driven natural-language job intake → structured job posting). Deferred because manual structured intake is working and Large Language Model intake costs more per job than the marginal lift.</li>
+<li>Voice agent for inbound pro phone support. Deferred because Customer Support Artificial Intelligence handles text channels first.</li>
+<li>Computer vision for job-completion verification (photo comparison pre/post). Deferred because Smart Scan handles document-class vision and on-job photo verification needs a separate product surface.</li>
+<li>Generative content for marketing (Large Language Model-drafted blog posts, social copy). Deferred because Vice President Marketing owns content strategy and Large Language Model-content quality at scale is not yet brand-safe.</li>
+</ul>
+<hr>
+<h2 id="owner-sign-off">Owner sign-off</h2>
+<p>This roadmap is owned by:</p>
+<ul>
+<li>Phyrom (founder)</li>
+<li>Vice President Engineering (Phase 4 Month 0 promotion)</li>
+<li>Head of Machine Learning (Phase 4 Year 2 hire)</li>
+</ul>
+<p>Reviewed quarterly at engineering all-hands. Bias-monitoring component reviewed monthly by Vice President Engineering + General Counsel.</p>
+
+	
+
+
+</body>
+</html>

@@ -1,0 +1,1280 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2026 04 25 international expansion design — Sherpa Pros</title>
+<link rel="icon" href="../../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="2026-04-25-international-expansion-design.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="sherpa-pros--international-expansion-design-spec">Sherpa Pros — International Expansion Design Spec</h1>
+<p><strong>Date:</strong> 2026-04-25
+<strong>Author:</strong> Phyrom (via brainstorming with Claude)
+<strong>Status:</strong> Draft — Phase 4+ infrastructure layer (companion specs being written in parallel: Franchise Model, Platform Scale Architecture, Sherpa Hub Integration)
+<strong>Next:</strong> <code>superpowers:writing-plans</code> produces the executable rollout plan at <code>docs/superpowers/plans/2026-04-25-international-expansion-plan.md</code></p>
+<hr>
+<h2 id="1-executive-summary">1. Executive Summary</h2>
+<p>Sherpa Pros has a Total Addressable Market (TAM) ceiling at home. The combined United States residential and light-commercial trades labor market plus the materials supply chain we are now vertically integrated into runs roughly $1.27 trillion (industry estimates: $730 billion labor + $540 billion materials). That is a real ceiling. International expansion to the four English-speaking and European markets identified below moves the TAM ceiling to roughly four to five times that figure. Without an international roadmap, Phase 4 hits the wall on growth multiples that institutional Series B and later investors price into our valuation. With an international roadmap, the same investors model the next ten years against a number that justifies the multiples we need.</p>
+<p>This spec proposes a deliberate, four-country sequence — Canada (Year 1), United Kingdom (Year 2), Australia (Year 3), and a European Union pilot (Year 4 to 5) — chosen on hard rationale: regulatory similarity to the United States, English-language defaults that compress localization risk, mature Stripe Connect coverage that lets us reuse our payments stack, and a manageable codes-ingestion cost per country. Rest-of-world expansion is deferred indefinitely. The country sequence is not aspiration; it is a defensible four-step climb from the lowest-risk adjacent market to the most strategically important secondary market, in an order that lets each country fund the next.</p>
+<hr>
+<h2 id="2-country-sequence-with-rationale">2. Country Sequence with Rationale</h2>
+<p>The four-country priority sequence is below, with the strict rule that no country starts Phase 0 in-country until the prior country is at Phase 2 metric gates. This is sequencing, not a portfolio — international missteps compound, and a country general manager cannot rescue another country.</p>
+<h3 id="21-canada--year-1-months-19-through-30">2.1 Canada — Year 1, Months 19 through 30</h3>
+<p><strong>Why Canada first.</strong> Canada is the lowest-risk adjacent market on every dimension that matters. Regulatory regime is the closest analog to the United States (federal plus provincial, mirrors federal plus state). Trade licensing is provincial — Ontario, British Columbia, Alberta, and Quebec each run their own licensing body, but the ingestion model maps one-to-one to how we already handle Massachusetts, New Hampshire, Maine, and Rhode Island. Stripe Connect has full Canadian coverage with native Canadian Dollar (CAD) settlement, native Interac payment-rail support, and a mature Canada Revenue Agency (CRA) tax-reporting integration. The trades market is roughly $135 billion CAD (~$100 billion United States Dollars / USD) — significant, not trivial, and large enough to seat a full country team with positive unit economics. English-language default everywhere except Quebec, where French is mandatory under provincial law (Bill 96) and which we treat as a Year 2 follow-on localization, not a Year 1 launch blocker.</p>
+<p><strong>Why this order.</strong> Canada is the de-risking step. Every assumption in the international playbook (codes ingestion at scale, country general manager hire, multi-currency settlement, data-residency compliance) gets stress-tested at the lowest possible regulatory and cultural distance. If we cannot make Canada work, we cannot make the United Kingdom work — better to learn that with the Canadian Dollar than the British Pound.</p>
+<p><strong>Market size.</strong> Approximately $135 billion CAD trades labor market. Approximately $80 billion CAD materials. Toronto, Vancouver, Calgary, Ottawa, and Montreal account for roughly 60% of national trades spend.</p>
+<p><strong>Regulatory complexity.</strong> Medium. Provincial licensing varies meaningfully (Ontario's College of Trades versus British Columbia's Industry Training Authority versus Alberta's Apprenticeship and Industry Training). Federal Goods and Services Tax (GST) plus provincial Harmonized Sales Tax (HST) on the marketplace transaction. Workers Compensation Board (WCB) per-province requirements for any worker-classification edge cases.</p>
+<p><strong>English-language advantage.</strong> Strong. Quebec is the only carve-out. Even there, our trade pros are largely bilingual; the localization burden lands on customer-facing copy.</p>
+<p><strong>Payment rails.</strong> Stripe Connect Canada is mature. Interac e-Transfer integration is the table-stakes Canadian domestic rail. Wise (formerly TransferWise) is the FX hedge if we settle in USD on the Sherpa Pros LLC parent.</p>
+<p><strong>Competitor density.</strong> Lower than the United States. HomeStars (Canadian Angi clone) is the dominant lead-gen incumbent. No verified-licensed-trade marketplace with a code-aware matching layer exists. The empty quadrant we identified in the United States is also empty in Canada.</p>
+<h3 id="22-united-kingdom--year-2-months-31-through-42">2.2 United Kingdom — Year 2, Months 31 through 42</h3>
+<p><strong>Why the United Kingdom second.</strong> The United Kingdom is the highest-strategic-value English-language market after Canada, with the densest urban concentration of high-margin trade work in Europe (London alone accounts for roughly 22% of national trades spend). Regulatory regime is centralized rather than provincial, which is actually simpler than Canada once we have built the per-province playbook — one Building Regulations 2010 set, one Institution of Engineering and Technology (IET) BS 7671 wiring standard, one Health and Safety Executive (HSE) for safety. Stripe Connect United Kingdom is fully mature with native British Pound (GBP) settlement.</p>
+<p><strong>Why this order.</strong> Canada de-risks the platform; the United Kingdom proves it scales to a market that does not share our codes lineage. The United Kingdom uses its own building regulations heritage (Building Regulations 2010 plus Approved Documents A through R) — it has nothing to do with the National Electrical Code (NEC) or International Residential Code (IRC) that the Sherpa codes engine ingested for the United States and Canada. If our codes ingestion model survives that reset, the European Union pilot in Year 4 is a known-good bet.</p>
+<p><strong>Market size.</strong> Approximately £85 billion (<del>$110 billion USD) trades labor. Approximately £55 billion (</del>$70 billion USD) materials. London, Manchester, Birmingham, Bristol, and Edinburgh account for roughly 65% of national spend.</p>
+<p><strong>Regulatory complexity.</strong> Medium-high. Trades are largely self-regulated through registration schemes (Gas Safe Register for gas work — mandatory; National Inspection Council for Electrical Installation Contracting / NICEIC for electrical — voluntary but de facto required by insurers). Insurance norms differ: Public Liability Insurance is the United Kingdom equivalent of United States General Liability; £2 million minimum is industry-standard. Worker classification under Internal Revenue and Customs (HMRC) IR35 rules is a real risk that requires legal opinion before launch.</p>
+<p><strong>English-language advantage.</strong> Strong, with vocabulary differences (see §4 Localization).</p>
+<p><strong>Payment rails.</strong> Stripe Connect United Kingdom mature. Bacs Direct Debit is the table-stakes domestic settlement rail. Open Banking via Truelayer or Plaid United Kingdom is the modern layer.</p>
+<p><strong>Competitor density.</strong> High. Checkatrade, Rated People, and MyBuilder are the three established lead-gen incumbents, each with 20+ years of brand equity. Our wedge is the same as in the United States — verified licensed work plus code-aware matching plus the materials orchestration layer (which none of the United Kingdom incumbents have shipped).</p>
+<h3 id="23-australia--year-3-months-43-through-54">2.3 Australia — Year 3, Months 43 through 54</h3>
+<p><strong>Why Australia third.</strong> Australia is the third English-speaking market with mature payment rails (Stripe Connect Australia is fully supported with native Australian Dollar / AUD settlement). The trades labor shortage in Australia is structurally similar to the Massachusetts shortage that anchored our United States Phase 1 thesis — Australian construction completion times have stretched and tradesperson (local term: "tradie") demand has outstripped supply for the last six years. Regulatory regime is state-by-state (six states plus two territories) and maps to our United States state-by-state and Canadian province-by-province operating model.</p>
+<p><strong>Why this order.</strong> Australia is the proof point for "we have built a repeatable international launch playbook." If we can launch in Sydney, Melbourne, Brisbane, and Perth using a templated per-country runbook, we have a true international platform. Australia is also the natural launch pad for any future New Zealand expansion (shared AS/NZS standards, shared Trans-Tasman Mutual Recognition for trade licensing) but New Zealand is deferred to Year 4 or later as a low-cost incremental.</p>
+<p><strong>Market size.</strong> Approximately $95 billion AUD (<del>$62 billion USD) trades labor. Approximately $60 billion AUD (</del>$39 billion USD) materials. Sydney, Melbourne, Brisbane, and Perth account for roughly 70% of national spend.</p>
+<p><strong>Regulatory complexity.</strong> Medium-high. State-based licensing (Queensland Building and Construction Commission / QBCC, NSW Fair Trading, Victorian Building Authority / VBA, etc.). Goods and Services Tax (GST) at 10% applies to the marketplace transaction. Worker classification under the Fair Work Act and the Personal Services Income (PSI) rules is the analog to United States 1099 versus W-2 risk and requires legal opinion before launch.</p>
+<p><strong>English-language advantage.</strong> Strong, with vocabulary differences (see §4).</p>
+<p><strong>Payment rails.</strong> Stripe Connect Australia mature. Pay Anyone (BPAY) is the table-stakes Australian domestic settlement rail. New Payments Platform (NPP) handles real-time settlement.</p>
+<p><strong>Competitor density.</strong> Medium. hipages and ServiceSeeking are the two established incumbents. Both are lead-gen models. Our wedge — verified licensed plus code-aware plus materials orchestration — is structurally differentiated.</p>
+<h3 id="24-european-union-pilot--year-4-through-5-months-55-through-78">2.4 European Union Pilot — Year 4 through 5, Months 55 through 78</h3>
+<p><strong>Why the European Union fourth, and as a pilot only.</strong> The European Union is the largest international TAM by a wide margin (~$680 billion EUR / ~$740 billion USD trades labor across the 27 member states, with Germany, France, the Netherlands, and Spain accounting for the majority). It is also the highest-complexity market we will enter — 27 separate regulatory regimes under a common European Norm (EN) harmonized standards umbrella, multi-language localization (German, French, Italian, Spanish, Polish, Dutch as the priority languages), General Data Protection Regulation (GDPR) data-residency compliance with significantly higher penalties than United States or United Kingdom equivalents, and Value Added Tax (VAT) Mini One-Stop Shop (MOSS) registration across every member state we operate in.</p>
+<p><strong>Pilot scope.</strong> One member state, one metro, one language. Working default is <strong>Berlin, Germany</strong> as the pilot — Germany is the European Union's largest construction market by spend, Berlin is the friendliest startup ecosystem, German is a single language with no regional dialect localization burden, and German trades regulation (Handwerksordnung — the federal trades licensing law) is centralized rather than regional. The pilot proves the European Union playbook before any expansion to a second member state. Alternative pilot candidates under open-decision review (§13): Amsterdam (English-default professional environment, smaller market), Madrid (Spanish-language unlocks Latin American expansion later, regulatory friendlier than France), Paris (highest TAM single market, hardest regulation).</p>
+<p><strong>Why this order.</strong> The European Union goes last because it is the costliest mistake. Berlin pilot in Year 4 to 5 is an option to learn, not a commitment to scale. If the pilot proves out, Years 6 through 8 unlock a member-state-by-member-state rollout. If it does not, we have spent ~$3 million and learned what a European Union scale operation requires, and we move on to deferred markets (New Zealand, Singapore, the United Arab Emirates).</p>
+<p><strong>Market size.</strong> Pilot Berlin: ~$8 billion EUR trades labor in the metro. Full Germany: ~$140 billion EUR. Full European Union: ~$680 billion EUR.</p>
+<p><strong>Regulatory complexity.</strong> Very high. Per-member-state licensing, EN harmonized standards plus per-member-state codes, GDPR data residency by member state, VAT MOSS, Posted Workers Directive for any cross-border trade dispatch, country-of-establishment rules for marketplaces.</p>
+<p><strong>English-language advantage.</strong> Weak. German pilot requires full German-language localization on day one.</p>
+<p><strong>Payment rails.</strong> Stripe Connect coverage is per-member-state — fully supported in Germany, France, Spain, Italy, the Netherlands, Belgium, Ireland, Austria. Single Euro Payments Area (SEPA) Direct Debit is the table-stakes rail.</p>
+<p><strong>Competitor density.</strong> High and fragmented. Each member state has its own incumbent (MyHammer in Germany, StarOfService in France, Bricomania in Italy). No pan-European Union licensed-trade marketplace exists with our differentiator.</p>
+<h3 id="25-rest-of-world--deferred">2.5 Rest of World — Deferred</h3>
+<p>New Zealand, Singapore, the United Arab Emirates, and the rest of the English-speaking and high-income world are deferred until at least Year 6. Capital intensity, regulatory diligence cost, and country general manager talent supply do not support more than one country launch per year. The discipline is not about fewer markets eventually — it is about not missing the four that matter.</p>
+<hr>
+<h2 id="3-per-country-regulatory-mapping">3. Per-Country Regulatory Mapping</h2>
+<h3 id="31-canada">3.1 Canada</h3>
+<ul>
+<li><strong>Trade licensing regime.</strong> Provincial. Each of Ontario, British Columbia, Alberta, Quebec, Manitoba, Saskatchewan, and the Atlantic provinces runs its own licensing authority (College of Trades in Ontario, Industry Training Authority in British Columbia, Apprenticeship and Industry Training in Alberta, Commission de la construction du Québec / CCQ in Quebec). Federal Red Seal Program harmonizes journey-level certification across provinces but does not replace provincial licensing.</li>
+<li><strong>Insurance requirements.</strong> Provincial Workers Compensation Board (WCB) coverage mandatory for any worker classified as employee. Commercial General Liability minimum varies by province and trade — common floor is $2 million CAD aggregate, $5 million for high-risk trades. Sherpa Pros requires verified Certificate of Insurance (COI) on file before pro activation.</li>
+<li><strong>Tax treatment.</strong> Goods and Services Tax (GST) at 5% federally plus provincial Harmonized Sales Tax (HST) (e.g., Ontario 13% combined HST, British Columbia 5% GST plus 7% Provincial Sales Tax / PST). Marketplace platform must register for GST/HST collection in any province where annual revenue exceeds $30,000 CAD. Place-of-supply rules determine which province's rate applies to each transaction.</li>
+<li><strong>Worker classification.</strong> Independent contractor versus employee distinction governed by the Canada Revenue Agency (CRA) common-law tests (control, ownership of tools, chance of profit, risk of loss, integration). Provincial labor boards (Ontario Labour Relations Board, etc.) apply parallel tests for provincial labor-law purposes. Same structural risk as United States 1099 versus W-2 — requires Canadian counsel opinion before pro activation.</li>
+<li><strong>Payment rails.</strong> Stripe Connect Canada with full CAD settlement. Interac e-Transfer for domestic peer-to-peer. Plaid Canada for bank linking. Wise for any United States parent settlement.</li>
+<li><strong>Data privacy regime.</strong> Personal Information Protection and Electronic Documents Act (PIPEDA) federally. Provincial overlays in Quebec (Loi 25), Alberta (Personal Information Protection Act / PIPA), and British Columbia (PIPA). Critical: PIPEDA requires that personal information about Canadian residents be processed under Canadian law and be subject to Canadian breach-notification rules. Working assumption is data residency in Canada (defer architecture detail to platform-scale spec).</li>
+</ul>
+<h3 id="32-united-kingdom">3.2 United Kingdom</h3>
+<ul>
+<li><strong>Trade licensing regime.</strong> Centralized scheme-based registration rather than license-based. Mandatory registration for gas work (Gas Safe Register — replaces the old Council for Registered Gas Installers / CORGI scheme). Voluntary but de facto required by insurers and homeowners: NICEIC for electrical, Federation of Master Builders (FMB) for general construction, Chartered Institute of Plumbing and Heating Engineering (CIPHE) for plumbing. The Sherpa codes engine treats Gas Safe and equivalent registrations as the United Kingdom analog to United States state licensure.</li>
+<li><strong>Insurance requirements.</strong> Public Liability Insurance is the United Kingdom analog to United States Commercial General Liability — £2 million minimum is the de facto standard for residential trades, £5 million for commercial. Employers' Liability Insurance is mandatory for any pro who employs subcontractors under United Kingdom law. Professional Indemnity Insurance is required for design-and-build work.</li>
+<li><strong>Tax treatment.</strong> Value Added Tax (VAT) at 20% standard rate, 5% reduced rate for qualifying domestic energy-saving installations. Marketplace platform must register for VAT once United Kingdom turnover exceeds £85,000 (the Making Tax Digital / MTD threshold). His Majesty's Revenue and Customs (HMRC) Domestic Reverse Charge for construction services in the Construction Industry Scheme (CIS) applies between VAT-registered contractors and adds reporting complexity that requires accounting integration on day one.</li>
+<li><strong>Worker classification.</strong> Off-payroll working rules (IR35) determine whether a self-employed pro is taxed as employed or self-employed. Status determined by Check Employment Status for Tax (CEST) tool plus case law. Sherpa Pros is structurally a marketplace and does not employ pros — analogous defensible position to United States 1099 — but requires HMRC opinion before launch.</li>
+<li><strong>Payment rails.</strong> Stripe Connect United Kingdom with full GBP settlement. Bacs Direct Debit and Faster Payments for domestic. Open Banking via Truelayer or Plaid United Kingdom for account verification.</li>
+<li><strong>Data privacy regime.</strong> United Kingdom General Data Protection Regulation (UK GDPR) — substantively identical to the European Union GDPR but adopted independently post-Brexit. Information Commissioner's Office (ICO) enforcement. Data residency is not strictly mandated (United Kingdom has adequacy decisions with most major jurisdictions including the European Union and the United States via the United Kingdom extension to the European Union to United States Data Privacy Framework). Working assumption is data residency in the United Kingdom for risk management even where not strictly required.</li>
+</ul>
+<h3 id="33-australia">3.3 Australia</h3>
+<ul>
+<li><strong>Trade licensing regime.</strong> State-based. Queensland Building and Construction Commission (QBCC), NSW Fair Trading, Victorian Building Authority (VBA), Building Practitioners Board (Tasmania), Building Commission Western Australia, Consumer and Business Services (South Australia). Mutual recognition under the Mutual Recognition Act allows a pro licensed in one state to operate in another after notification but not without process. The Sherpa codes engine ingests state-by-state.</li>
+<li><strong>Insurance requirements.</strong> Public Liability Insurance ($5 million minimum is the industry standard). Workers Compensation Insurance mandatory in every state for any worker classified as employee. Home Building Compensation cover (NSW), Domestic Building Insurance (Victoria), and equivalent state-specific home-warranty insurance schemes for residential work.</li>
+<li><strong>Tax treatment.</strong> Goods and Services Tax (GST) at 10%. Marketplace platform must register for GST once Australian turnover exceeds $75,000 AUD. Australian Business Number (ABN) required for every pro. Pay As You Go (PAYG) withholding rules apply if a pro does not provide an ABN.</li>
+<li><strong>Worker classification.</strong> Independent contractor versus employee distinction governed by Fair Work Act 2009 multi-factor test. Personal Services Income (PSI) rules apply additional tax-treatment overlays. Same structural risk as United States 1099 — requires Australian counsel opinion before launch.</li>
+<li><strong>Payment rails.</strong> Stripe Connect Australia with full AUD settlement. New Payments Platform (NPP) for real-time settlement. BPAY for invoice-based payments. Plaid Australia for account verification.</li>
+<li><strong>Data privacy regime.</strong> Privacy Act 1988 with Australian Privacy Principles (APP). Office of the Australian Information Commissioner (OAIC) enforcement. Notifiable Data Breaches scheme requires breach notification within 72 hours. Cross-border disclosure restrictions under APP 8. Working assumption is data residency in Australia.</li>
+</ul>
+<h3 id="34-european-union-berlin-pilot--germany">3.4 European Union (Berlin Pilot — Germany)</h3>
+<ul>
+<li><strong>Trade licensing regime.</strong> Federal Handwerksordnung (HwO — Trades and Crafts Code) governs trade licensing in Germany. 41 trades (Anlage A) require Master Craftsman (Meisterbrief) certification; 53 trades (Anlage B) are unregulated. Regional Chamber of Crafts (Handwerkskammer) administers registration. Other European Union member states have parallel but distinct regimes (France: Chambre de Métiers, Italy: Albo Imprese Artigiane, Netherlands: SBI registration). Berlin pilot ingests Handwerksordnung; pan-European Union expansion ingests per-member-state.</li>
+<li><strong>Insurance requirements.</strong> Betriebshaftpflichtversicherung (commercial liability insurance) is industry-standard at €3 million minimum. Berufshaftpflichtversicherung (professional indemnity) for design-and-build work. Statutory accident insurance (Berufsgenossenschaft) mandatory for employees.</li>
+<li><strong>Tax treatment.</strong> Value Added Tax / Mehrwertsteuer (VAT/MwSt) at 19% standard rate, 7% reduced. Marketplace operators are subject to the European Union Marketplace Directive (2021) requiring quarterly transaction reporting (Directive on Administrative Cooperation 7 / DAC7) for any pro earning over €2,000 EUR per year or 30+ transactions per year. VAT MOSS (Mini One-Stop Shop) registration in one member state covers obligations across all 27 (the One-Stop Shop / OSS regime).</li>
+<li><strong>Worker classification.</strong> Scheinselbständigkeit (false self-employment) is the German analog to United States 1099 misclassification. Deutsche Rentenversicherung (German pension insurance) audit is the enforcement mechanism. Same structural risk; requires German counsel opinion before launch.</li>
+<li><strong>Payment rails.</strong> Stripe Connect Germany with full EUR settlement. Single Euro Payments Area (SEPA) Direct Debit for domestic and cross-border European Union. Klarna and Sofort for German consumer preferences. PayPal as a Germany-specific consumer comfort layer.</li>
+<li><strong>Data privacy regime.</strong> General Data Protection Regulation (GDPR) at the European Union level, Bundesdatenschutzgesetz (BDSG) federal overlay in Germany. Data Protection Authority (Bundesbeauftragte für den Datenschutz und die Informationsfreiheit / BfDI) federally plus 16 state-level authorities. Data residency in the European Union mandatory for any personal data processing. Schrems II decision restricts data transfer to the United States — Sherpa Pros European Union operations require data residency in the European Union (working assumption: Frankfurt or Amsterdam region; defer architecture to platform-scale spec).</li>
+</ul>
+<hr>
+<h2 id="4-localization-framework">4. Localization Framework</h2>
+<h3 id="41-currency">4.1 Currency</h3>
+<p>Multi-currency Stripe Connect, with one Stripe Connect account per country and per-country settlement in local currency. Pro payouts in local currency. Customer charges in local currency. Foreign Exchange (FX) settlement to the United States parent (Sherpa Pros LLC) handled via Wise for predictable rates and via Stripe's native FX for in-platform currency conversions. Hedging strategy deferred to Chief Financial Officer (CFO) hire (planned Phase 3 United States, Phase 4 international).</p>
+<h3 id="42-language">4.2 Language</h3>
+<ul>
+<li><strong>Year 1 (Canada):</strong> English-default. Quebec French as Year 2 follow-on (per provincial Bill 96 obligations, the Quebec launch cannot proceed without French localization on day one — so Quebec defers until French is ready).</li>
+<li><strong>Year 2 (United Kingdom):</strong> English-default. No additional language work — vocabulary differences only (see §4.5).</li>
+<li><strong>Year 3 (Australia):</strong> English-default. No additional language work — vocabulary differences only (see §4.5).</li>
+<li><strong>Year 4 to 5 (European Union pilot):</strong> German-required day one for Berlin pilot. French (for any France expansion) and Spanish (for any Spain or Latin American expansion) deferred to Phase 5.</li>
+</ul>
+<h3 id="43-units-of-measure">4.3 Units of measure</h3>
+<p>Per-jurisdiction switch handled at the user-account level, defaulting to the country default:</p>
+<ul>
+<li><strong>United States, Canada (Newfoundland and Labrador notwithstanding):</strong> Imperial (feet, inches, pounds, gallons).</li>
+<li><strong>United Kingdom:</strong> Mixed. Building trade still uses imperial for lumber dimensions and feet-and-inches for room measurements; metric for everything else. The Sherpa codes engine and the Sherpa Materials orchestration layer must support both per-line-item.</li>
+<li><strong>Australia, European Union:</strong> Metric (meters, kilograms, liters).</li>
+</ul>
+<h3 id="44-date-format">4.4 Date format</h3>
+<ul>
+<li><strong>United States:</strong> Month-Day-Year (MM/DD/YYYY).</li>
+<li><strong>Canada:</strong> Year-Month-Day (YYYY-MM-DD) is government-default but consumer-facing varies. Default to Day-Month-Year (DD/MM/YYYY) for consumer surfaces.</li>
+<li><strong>United Kingdom, Australia, European Union:</strong> Day-Month-Year (DD/MM/YYYY).</li>
+</ul>
+<h3 id="45-trade-nomenclature">4.5 Trade nomenclature</h3>
+<p>Vocabulary differences that change copy:</p>
+<ul>
+<li><strong>United States:</strong> "trade pros," "homeowner," "general contractor / GC," "subcontractor / sub," "punch list," "change order," "permit."</li>
+<li><strong>United Kingdom:</strong> "trades" or "tradespeople" (not "trade pros"), "homeowner" (acceptable in both regions), "main contractor" or "principal contractor" (not "general contractor"), "subcontractor" (acceptable in both), "snagging list" (not "punch list"), "variation" (not "change order"), "planning permission" plus "Building Regulations approval" (the United Kingdom split between planning and building control has no United States analog).</li>
+<li><strong>Australia:</strong> "tradies" (acceptable colloquial; "tradespeople" formal), "homeowner" (acceptable), "head contractor" or "builder" (not "general contractor"), "subcontractor" or "subbie" (acceptable colloquial), "defects list" (not "punch list"), "variation" (not "change order"), "development approval / DA" plus "construction certificate."</li>
+<li><strong>European Union (German):</strong> "Handwerker" (tradesperson), "Bauherr" (homeowner / building owner), "Generalunternehmer" (general contractor), "Subunternehmer" (subcontractor), "Mängelliste" (defects list), "Nachtrag" (change order / variation), "Baugenehmigung" (building permit).</li>
+</ul>
+<h3 id="46-per-country-brand-variants">4.6 Per-country brand variants</h3>
+<p>The Sherpa Pros umbrella national United States brand carries internationally as "Sherpa Pros" with no country sub-brand by default. Country-specific sub-brands ("Sherpa Pros Canada," etc.) appear only where required by local trademark conflict (see §13 open decisions for current trademark search status). The brand voice, color system, typography, and design system documented in <code>docs/operations/brand-portfolio.md</code> apply unchanged internationally — the brand bible is global.</p>
+<hr>
+<h2 id="5-codes-database-localization">5. Codes Database Localization</h2>
+<p>The Sherpa codes engine (internal name "Wiseman" — never expose externally; customer-facing surface is "code-aware quote validation" or "Sherpa codes engine") is the structural moat. International expansion requires per-country codes ingestion at scale. Estimated cost per country ranges from $80,000 to $150,000 depending on code volume, language localization, and the availability of a structured digital source (versus only PDF or only print).</p>
+<h3 id="51-canada--codes-ingestion-scope">5.1 Canada — Codes ingestion scope</h3>
+<ul>
+<li><strong>National Building Code of Canada (NBC).</strong> Federal model code, adopted with provincial amendments by every province.</li>
+<li><strong>Canadian Electrical Code (CEC) / National Electrical Code Canada.</strong> CSA Group standard C22.1, adopted by every province.</li>
+<li><strong>National Plumbing Code of Canada (NPC) and National Fire Code of Canada (NFC).</strong></li>
+<li><strong>Per-province amendments and overlays.</strong> Ontario Building Code (OBC) is the largest; British Columbia Building Code (BCBC), Alberta Building Code (ABC), Quebec Construction Code, etc.</li>
+<li><strong>Vendor evaluation.</strong> UpCodes Canada coverage exists; Westlaw Canada offers structured access; CSA Group sells digital licenses directly.</li>
+<li><strong>Estimated ingestion cost.</strong> $90,000 to $120,000 CAD over 6 months including digital license, ingestion engineering, validation against 50+ test cases, and Quebec French language localization (Year 2).</li>
+</ul>
+<h3 id="52-united-kingdom--codes-ingestion-scope">5.2 United Kingdom — Codes ingestion scope</h3>
+<ul>
+<li><strong>Building Regulations 2010 plus Approved Documents A through R.</strong> The mandatory regulations plus the guidance documents that satisfy them (Approved Document A: Structure, B: Fire safety, etc.).</li>
+<li><strong>BS 7671 IET Wiring Regulations.</strong> The mandatory electrical installation standard, currently 18th Edition. Published by the Institution of Engineering and Technology (IET).</li>
+<li><strong>Gas Safe regulations.</strong> The Gas Safety (Installation and Use) Regulations 1998 plus current Gas Safe Register technical bulletins.</li>
+<li><strong>Local Authority Building Control (LABC) variations.</strong> Per-council overlays, particularly meaningful in London boroughs.</li>
+<li><strong>Vendor evaluation.</strong> No direct UpCodes United Kingdom equivalent. The British Standards Institution (BSI) sells digital access. Construction Industry Research and Information Association (CIRIA) publishes guidance. Manual ingestion plus engineering work is the working assumption.</li>
+<li><strong>Estimated ingestion cost.</strong> £80,000 to £110,000 (~$100,000 to $140,000 USD) over 6 months.</li>
+</ul>
+<h3 id="53-australia--codes-ingestion-scope">5.3 Australia — Codes ingestion scope</h3>
+<ul>
+<li><strong>National Construction Code (NCC).</strong> The federal model code published by the Australian Building Codes Board, adopted with state amendments.</li>
+<li><strong>AS/NZS 3000:2018 Wiring Rules.</strong> The mandatory electrical installation standard (joint Australian and New Zealand standard).</li>
+<li><strong>Per-state amendments.</strong> Queensland Development Code, NSW Building Code variations, etc.</li>
+<li><strong>Vendor evaluation.</strong> Standards Australia sells digital licenses. SAI Global is the secondary vendor. Some state-government portals offer free access.</li>
+<li><strong>Estimated ingestion cost.</strong> $100,000 to $130,000 AUD (~$65,000 to $85,000 USD) over 6 months.</li>
+</ul>
+<h3 id="54-european-union-berlin-pilot--germany--codes-ingestion-scope">5.4 European Union (Berlin Pilot — Germany) — Codes ingestion scope</h3>
+<ul>
+<li><strong>EN harmonized standards.</strong> European Norm standards published by the European Committee for Standardization (CEN), CENELEC, and the European Telecommunications Standards Institute (ETSI). Adopted with national overlays.</li>
+<li><strong>Bauordnung (German Building Code).</strong> Federal model plus 16 state Bauordnungen (LBO). Berlin pilot ingests Berliner Bauordnung specifically.</li>
+<li><strong>DIN VDE standards.</strong> German electrical installation standards (Deutsches Institut für Normung / German Institute for Standardization). The German parallel to BS 7671 in the United Kingdom and AS/NZS 3000 in Australia.</li>
+<li><strong>Vendor evaluation.</strong> Beuth Verlag (DIN's commercial arm) sells digital licenses. CEN itself sells EN standards. Manual ingestion plus engineering work is the working assumption.</li>
+<li><strong>Estimated ingestion cost.</strong> €100,000 to €140,000 (~$110,000 to $150,000 USD) over 6 to 9 months including German-language localization.</li>
+</ul>
+<h3 id="55-total-codes-ingestion-budget">5.5 Total codes ingestion budget</h3>
+<p>Across all four priority countries: approximately $400,000 to $550,000 USD over Years 1 through 5. Front-loaded to Year 1 Canada (the de-risking step) and Year 4 Berlin pilot (the highest risk).</p>
+<hr>
+<h2 id="6-talent-strategy-per-country">6. Talent Strategy per Country</h2>
+<p>Each country gets a four-person founding team. No country launches Phase 1 without all four hired and on-payroll for at least 60 days.</p>
+<ul>
+<li><strong>Country General Manager.</strong> Executive hire. Local trade industry background mandatory (former construction-tech operator, former trades industry executive, or former marketplace executive in the country). Owns Profit and Loss (P&amp;L), regulatory readiness, country roadmap. Reports to Phyrom (Global Chief Executive Officer / CEO) and to the Chief Operating Officer (COO) once that role is hired in Phase 3 United States.</li>
+<li><strong>Operations Lead.</strong> Owns pro onboarding, dispute resolution, country-specific compliance, codes-engine validation. Local hire.</li>
+<li><strong>Customer Support Lead.</strong> Owns the Sherpa Threads inbound, Sherpa Success Manager equivalent (if launched in-country), and per-country language support if applicable. Local hire.</li>
+<li><strong>Business Development Lead.</strong> Owns pro recruiting, Property Manager pipeline, utility and trade-association partnerships, supply-house relationships. Local hire.</li>
+</ul>
+<p><strong>Loaded annual cost per country.</strong> $400,000 to $600,000 USD across the four hires, varying by country (United Kingdom and Australia higher than Canada; European Union pilot highest because of European employer-of-record overhead). The country General Manager alone runs $180,000 to $250,000 USD all-in including equity.</p>
+<p><strong>Hiring sequence.</strong> Country General Manager hired 6 months before in-country Phase 0 begins (lead time to assemble the rest of the team and stand up regulatory readiness). Other three hires complete during Phase 0 in-country (months 1 through 3 of country launch).</p>
+<p><strong>Reporting and global structure.</strong> Phyrom remains the single Global CEO with all country General Managers reporting to him through a future COO (planned Phase 3 United States hire). Country teams are organized by country, not by function — no global Chief Marketing Officer (CMO) sitting above country marketing leads — to keep accountability inside the country P&amp;L.</p>
+<hr>
+<h2 id="7-per-country-phase-012-launch-sequence">7. Per-Country Phase 0/1/2 Launch Sequence</h2>
+<p>Each country mirrors the proven United States Phase 0 / Phase 1 / Phase 2 model, parameterized for the country.</p>
+<h3 id="71-in-country-phase-0--regulatory-readiness-plus-payment-rails-months-1-through-3-of-country-launch">7.1 In-country Phase 0 — Regulatory readiness plus payment rails (Months 1 through 3 of country launch)</h3>
+<ul>
+<li>Country General Manager hired and on-payroll.</li>
+<li>Local entity formed (Canadian-controlled private corporation in Canada, Limited company in the United Kingdom, Proprietary Limited in Australia, Gesellschaft mit beschränkter Haftung / GmbH in Germany).</li>
+<li>Local Stripe Connect account live with native-currency settlement.</li>
+<li>Local insurance broker engaged; per-country platform liability insurance bound.</li>
+<li>Local counsel engaged for worker-classification opinion.</li>
+<li>Codes engine ingestion complete for the launch metro (Toronto for Canada, London for United Kingdom, Sydney for Australia, Berlin for European Union pilot).</li>
+<li>Beta cohort agreement and pro service agreement localized to country law.</li>
+</ul>
+<h3 id="72-in-country-phase-1--beta-cohort-in-launch-metro-months-4-through-9-of-country-launch">7.2 In-country Phase 1 — Beta cohort in launch metro (Months 4 through 9 of country launch)</h3>
+<ul>
+<li>10 to 15 founding pros recruited in the launch metro. Mirrors United States Phase 0 cohort composition: heavy on trades that match country-specific underserved-trade lanes (heat pumps in Canada and the United Kingdom under net-zero policy push, electric vehicle / EV charger installs in every country, energy retrofits for European Union energy directive compliance, old-housing-stock specialty in the United Kingdom).</li>
+<li>Live transaction beta. Real Gross Merchandise Value (GMV).</li>
+<li>Country-specific traction artifacts produced for the next country's launch (the Canada Phase 1 cohort proof unlocks the United Kingdom Phase 0 hire decision).</li>
+</ul>
+<h3 id="73-in-country-phase-2--scaled-launch-in-3-to-4-metros-months-10-through-18-of-country-launch">7.3 In-country Phase 2 — Scaled launch in 3 to 4 metros (Months 10 through 18 of country launch)</h3>
+<ul>
+<li>Expand from launch metro to 3 to 4 metros. Canada: Toronto, Vancouver, Calgary, Ottawa or Montreal (Quebec depends on French localization status). United Kingdom: London, Manchester, Birmingham, Bristol or Edinburgh. Australia: Sydney, Melbourne, Brisbane, Perth. European Union pilot: Berlin, then potentially Hamburg or Munich if the Berlin pilot validates.</li>
+<li>Local team scaled to 8 to 12 in-country including country-specific Pro Success Managers.</li>
+<li>Country-specific paid acquisition (paid social adapted to country, paid search on country-specific keywords, country-specific public relations).</li>
+<li>Country-level Property Manager (PM) anchor signed.</li>
+<li>Country breakeven targeted at Phase 2 exit.</li>
+</ul>
+<h3 id="74-in-country-exit-gate-triggers-next-country-phase-0">7.4 In-country exit gate (triggers next-country Phase 0)</h3>
+<ul>
+<li>100+ active pros across launch metros.</li>
+<li>$1,000,000 USD-equivalent annualized GMV.</li>
+<li>Country breakeven on operating cost.</li>
+<li>1+ Property Manager anchor signed.</li>
+<li>Country General Manager on track against retention and pro Net Promoter Score (NPS) targets.</li>
+</ul>
+<hr>
+<h2 id="8-international-monetization-model">8. International Monetization Model</h2>
+<p>Take rate adjusted per country to reflect local trade industry margin culture and competitive dynamics. The five-tier Sherpa Score economics from §5 of the United States GTM spec carry over with country-specific calibration.</p>
+<table>
+<thead>
+<tr>
+<th>Country</th>
+<th>Founding Pro</th>
+<th>Gold</th>
+<th>Silver / Bronze</th>
+<th>Sherpa Flex equivalent</th>
+<th>Materials coordination</th>
+<th>Sherpa Home subscription</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>United States (baseline)</td>
+<td>5%</td>
+<td>8%</td>
+<td>12%</td>
+<td>18%</td>
+<td>8 to 12%</td>
+<td>$19 / $149 USD</td>
+</tr>
+<tr>
+<td>Canada</td>
+<td>5%</td>
+<td>8%</td>
+<td>12%</td>
+<td>18%</td>
+<td>8 to 12%</td>
+<td>~$25 CAD / ~$199 CAD (PPP-adjusted)</td>
+</tr>
+<tr>
+<td>United Kingdom</td>
+<td>5%</td>
+<td>7%</td>
+<td>10%</td>
+<td>15%</td>
+<td>8 to 12%</td>
+<td>~£15 GBP / ~£119 GBP</td>
+</tr>
+<tr>
+<td>Australia</td>
+<td>5%</td>
+<td>9%</td>
+<td>13%</td>
+<td>19%</td>
+<td>8 to 12%</td>
+<td>~$29 AUD / ~$229 AUD</td>
+</tr>
+<tr>
+<td>European Union (Berlin pilot)</td>
+<td>5%</td>
+<td>7%</td>
+<td>10%</td>
+<td>15%</td>
+<td>8 to 12%</td>
+<td>~€18 EUR / ~€139 EUR</td>
+</tr>
+</tbody></table>
+<p><strong>Why the per-country adjustments.</strong> United Kingdom trades culture runs on lower margins than United States (typical United Kingdom trade gross margin is 15 to 25% versus United States 25 to 40%) — an 8% take rate would price Sherpa Pros out of the market, so Gold drops to 7% with Standard at 10%. Australia trade margins run slightly higher than United States (regulatory and insurance overhead is higher), so the take rate trends up. Canada is roughly at parity with the United States. European Union trades culture similar to United Kingdom on margin compression, so the United Kingdom calibration applies.</p>
+<p><strong>Materials coordination at 8 to 12% holds globally.</strong> The materials margin is structural to the cost of materials orchestration (procurement plus delivery plus coordination overhead) and does not flex with local labor market conditions.</p>
+<p><strong>Sherpa Home subscription priced at Purchasing Power Parity (PPP) equivalent of the United States $19 monthly / $149 annual baseline.</strong> Local-currency pricing rounded to clean local-currency price points, not raw FX conversion.</p>
+<hr>
+<h2 id="9-data-residency-strategy">9. Data Residency Strategy</h2>
+<p>This section is intentionally high-level and defers architectural detail to the platform-scale-architecture spec being written in parallel.</p>
+<p><strong>Working assumption.</strong> Sherpa Pros operates a multi-region database architecture, with a database region per regulatory jurisdiction:</p>
+<ul>
+<li><strong>United States data:</strong> United States region (existing — current Neon Postgres deployment).</li>
+<li><strong>Canadian data:</strong> Canadian region (PIPEDA requirement plus provincial overlays).</li>
+<li><strong>United Kingdom data:</strong> United Kingdom region (UK GDPR risk-management requirement).</li>
+<li><strong>Australian data:</strong> Australian region (Privacy Act 1988 cross-border restriction risk-management).</li>
+<li><strong>European Union data:</strong> European Union region (GDPR mandatory; Frankfurt or Amsterdam working assumption).</li>
+</ul>
+<p><strong>Cross-region considerations.</strong> A pro who operates in two countries (e.g., a Canadian pro who works on a project across the United States border) creates a data-residency edge case that the platform-scale spec must resolve. Working assumption: dual-account model with one country-of-operation data record per region. Defer to platform-scale spec.</p>
+<p><strong>Data Subject Access Requests (DSAR) and the right to be forgotten.</strong> GDPR, UK GDPR, PIPEDA, and APP all guarantee data subject access and deletion rights. The Sherpa Guard audit log architecture must support per-region deletion that does not break audit-log integrity. Defer to platform-scale spec.</p>
+<hr>
+<h2 id="10-international-franchising-overlay">10. International Franchising Overlay</h2>
+<p>This section is intentionally high-level and defers franchising mechanics to the franchise spec being written in parallel.</p>
+<p><strong>Working assumption.</strong> The international rollout may be 100% master-franchisee model rather than the hybrid greenfield-plus-franchise model used in the United States. The capital intensity of standing up a four-person country team plus regulatory readiness plus codes ingestion in every country is roughly $2 to $3 million USD per country in Year 1 alone — a per-country master franchisee absorbs that capital burden in exchange for an exclusive country license, accelerates the rollout, and shifts the country-General-Manager hiring problem to the franchisee.</p>
+<p><strong>Trade-off.</strong> Master franchisee rollout sacrifices unit economics (franchisee captures a meaningful share of the country's Gross Profit) in exchange for capital efficiency and speed. The right answer per country may differ — Canada (low-risk adjacent market) may justify greenfield to capture full economics; the European Union (high-risk pilot) almost certainly does not. Per-country greenfield-versus-master-franchise decision is an open decision (§13). Defer mechanics to franchise spec.</p>
+<hr>
+<h2 id="11-budget-and-capital-required">11. Budget and Capital Required</h2>
+<h3 id="111-phase-4-international-fundraise-size">11.1 Phase 4 international fundraise size</h3>
+<p>Series B+ raise of approximately <strong>$25 to $50 million USD</strong> to fund the four-country international rollout over Years 1 through 5. Lower bound assumes master-franchise model in 3 of 4 countries (lower per-country burn). Upper bound assumes greenfield in all 4 countries.</p>
+<h3 id="112-per-country-burn-greenfield-model">11.2 Per-country burn (greenfield model)</h3>
+<ul>
+<li><strong>First 18 months per country:</strong> $2 to $3 million USD inclusive of:<ul>
+<li>Country General Manager plus 3 founding hires: $400,000 to $600,000 USD per year for 1.5 years = $600,000 to $900,000 USD.</li>
+<li>Codes ingestion: $80,000 to $150,000 USD one-time.</li>
+<li>Local entity formation, legal counsel, insurance broker, payment-rails setup: $100,000 to $200,000 USD one-time.</li>
+<li>Phase 1 marketing budget (paid acquisition, Public Relations / PR, trade shows): $300,000 to $500,000 USD over 12 months.</li>
+<li>Local office plus operating overhead: $200,000 to $400,000 USD.</li>
+<li>Working capital plus contingency: $300,000 to $500,000 USD.</li>
+</ul>
+</li>
+</ul>
+<h3 id="113-expected-unit-economics-breakeven">11.3 Expected unit economics breakeven</h3>
+<ul>
+<li><strong>24 to 30 months per country.</strong> Canada faster (lower regulatory friction, English-default, mature payment rails) — target 24 months. United Kingdom and Australia at 27 months. European Union pilot at 36 months (the pilot is not designed to break even in Year 1 — it is designed to inform the European Union expansion decision in Year 6).</li>
+</ul>
+<h3 id="114-capital-sequence">11.4 Capital sequence</h3>
+<ul>
+<li><strong>Year 1 (Canada):</strong> $3 million USD allocated.</li>
+<li><strong>Year 2 (United Kingdom):</strong> $3 million USD allocated. Canada operating at or near breakeven.</li>
+<li><strong>Year 3 (Australia):</strong> $3 million USD allocated. Canada profitable, United Kingdom approaching breakeven.</li>
+<li><strong>Year 4 to 5 (European Union pilot):</strong> $3 to $6 million USD allocated depending on pilot scope.</li>
+<li><strong>Reserve for opportunistic expansion plus FX hedging:</strong> $5 to $10 million USD.</li>
+</ul>
+<hr>
+<h2 id="12-risk-register">12. Risk Register</h2>
+<p>Top 10 risks for international expansion. Each risk has a Phase, Severity, Early Signal, and Mitigation.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Risk</th>
+<th>Phase</th>
+<th>Severity</th>
+<th>Early signal</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>IR1</td>
+<td>Regulatory misstep per country (worker classification challenge, marketplace operator obligation missed, codes ingestion incomplete leads to inaccurate quote validation)</td>
+<td>All</td>
+<td>Critical</td>
+<td>Any cease-and-desist, regulator inquiry, or quality complaint tracing to a missed code</td>
+<td>Per-country counsel engaged before Phase 0; codes engine validated against 50+ test cases per country before launch; in-country General Manager owns regulatory readiness as primary metric</td>
+</tr>
+<tr>
+<td>IR2</td>
+<td>Currency / FX volatility erodes United States parent unit economics</td>
+<td>All</td>
+<td>High</td>
+<td>Sustained 10%+ adverse move in CAD, GBP, AUD, or EUR against USD over a quarter</td>
+<td>Wise FX hedging on all per-country balances; in-country settlement in local currency; quarterly hedge ratio review with CFO once that role is hired</td>
+</tr>
+<tr>
+<td>IR3</td>
+<td>Country General Manager hire failure</td>
+<td>All</td>
+<td>Critical</td>
+<td>First 90-day milestones missed; local team hires stalling; Net Promoter Score / NPS from country pros below floor</td>
+<td>Equity-heavy compensation to attract operator-quality talent; Phyrom personally owns first General Manager search per country; 60-day onboarding before in-country Phase 0 begins</td>
+</tr>
+<tr>
+<td>IR4</td>
+<td>Codes ingestion underestimate (cost, time, accuracy)</td>
+<td>All</td>
+<td>High</td>
+<td>Ingestion budget over-run by &gt;25%; codes-engine validation accuracy below 95% on per-country test set</td>
+<td>Front-load Canada (lowest risk) for budget calibration; vendor evaluation before commit; budget contingency 25% on every country</td>
+</tr>
+<tr>
+<td>IR5</td>
+<td>Payment rails gap (Stripe Connect feature missing in country, alternate provider needed)</td>
+<td>All</td>
+<td>Medium</td>
+<td>Stripe Connect onboarding friction reports from country pros; missing feature blocks pro activation</td>
+<td>Payment-rails diligence at Phase 0 per country; Adyen, Mollie, or Wise as backup providers; country-specific rail integration (Interac in Canada, Bacs in United Kingdom, BPAY in Australia, SEPA in European Union)</td>
+</tr>
+<tr>
+<td>IR6</td>
+<td>Trademark conflicts in country</td>
+<td>All</td>
+<td>Medium</td>
+<td>Local "Sherpa" or "Sherpa Pros" trademark conflict surfaces during pre-launch search</td>
+<td>Pre-launch trademark search per country (Year 0 of country launch); per-country brand variant fallback (e.g., "Sherpa Pros UK") if conflict</td>
+</tr>
+<tr>
+<td>IR7</td>
+<td>Cultural fit per market (United Kingdom trades distrust United States platforms, Australian tradies skeptical of marketplace models, European Union trades preference for in-country incumbent)</td>
+<td>All</td>
+<td>Medium-High</td>
+<td>Pro recruiting conversion below 15% in country Phase 1; pro NPS below US baseline</td>
+<td>In-country General Manager with local trade industry credibility; founder story localized (Phyrom-as-working-GC framing held — biography is the trust signal); local trade-association partnerships at Phase 0</td>
+</tr>
+<tr>
+<td>IR8</td>
+<td>International team management overhead (timezone fragmentation, communication cost, decision-making latency)</td>
+<td>All</td>
+<td>Medium</td>
+<td>Decision latency on cross-country issues exceeds 5 business days</td>
+<td>Asynchronous-first communication model (Sherpa Threads internally); weekly global ops review; quarterly in-person all-hands; COO hire before second-country Phase 0</td>
+</tr>
+<tr>
+<td>IR9</td>
+<td>Exchange rate exposure on Wefunder valuation and United States-listed financials</td>
+<td>Phase 4+</td>
+<td>Medium</td>
+<td>Sustained adverse FX move materially affects valuation marks</td>
+<td>Hedging strategy plus disclosure language on Wefunder; quarterly valuation marks reflect FX as a separate line; CFO hire owns this</td>
+</tr>
+<tr>
+<td>IR10</td>
+<td>Geopolitical risk in European Union (regulatory reversal, Brexit-style departure of a member state, GDPR enforcement action, energy crisis affecting Berlin pilot economics)</td>
+<td>Phase 4+</td>
+<td>Medium-High</td>
+<td>Specific regulatory action; member-state political shift; energy-cost shock</td>
+<td>Pilot scope kept small; defer European Union expansion decision until pilot validates; member-state diversification once pilot proves out</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="13-open-decisions">13. Open Decisions</h2>
+<p>Decisions that are not yet locked and require either Phyrom decision or in-country General Manager input once hired.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Decision</th>
+<th>Why it matters</th>
+<th>Working answer (pending lock)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ID1</td>
+<td>Quebec French localization timing</td>
+<td>Bill 96 requires French-default for any consumer-facing service in Quebec; Year 1 Canada launch can either (a) skip Quebec entirely and launch English-Canada only, or (b) defer Year 1 launch by 6 months to ship French day one.</td>
+<td><strong>Working default:</strong> skip Quebec in Year 1 (launch Toronto, Vancouver, Calgary). Quebec joins as Year 2 follow-on once French localization ships.</td>
+</tr>
+<tr>
+<td>ID2</td>
+<td>Australia versus New Zealand split or combined</td>
+<td>Trans-Tasman Mutual Recognition allows shared trade licensing; AS/NZS 3000 wiring rules are joint. Could launch Australia plus New Zealand together as Year 3, or defer New Zealand to Year 5+.</td>
+<td><strong>Working default:</strong> Australia only in Year 3. New Zealand deferred to Year 5+ as a low-cost incremental once Australia at Phase 2 exit.</td>
+</tr>
+<tr>
+<td>ID3</td>
+<td>European Union pilot country choice</td>
+<td>Berlin (Germany — largest market, friendliest regulatory, single-language) versus Amsterdam (Netherlands — English-default professional environment, smaller market, easier compliance) versus Madrid (Spain — Spanish unlocks Latin American expansion, smaller TAM).</td>
+<td><strong>Working default:</strong> Berlin. Open to Amsterdam if Berlin diligence surfaces a Schrems II data-residency blocker we cannot resolve cost-effectively.</td>
+</tr>
+<tr>
+<td>ID4</td>
+<td>Master-franchise versus greenfield per country</td>
+<td>Capital efficiency versus unit economics. Greenfield Canada (low-risk, capture full economics) is most defensible; greenfield European Union pilot (high-risk, conserve capital) is least defensible.</td>
+<td><strong>Working default:</strong> greenfield Canada and United Kingdom. Master franchise Australia and European Union. Lock per-country at country General Manager hire.</td>
+</tr>
+<tr>
+<td>ID5</td>
+<td>Sherpa Hub physical-location deployment internationally</td>
+<td>Sherpa Hub model designed for United States supply-chain dynamics. Per-country Hub economics need fresh diligence (United Kingdom: Wickes / Toolstation / Screwfix dominate the trade-counter format; Canada: Home Depot Pro and Lowe's Pro mirror United States; Australia: Bunnings dominates; European Union: Bauhaus / OBI / Hornbach / Leroy Merlin).</td>
+<td><strong>Defer to Sherpa Hub Integration spec being written in parallel.</strong> Working assumption: defer Hub launch to country Phase 2 exit, if at all.</td>
+</tr>
+<tr>
+<td>ID6</td>
+<td>Per-country brand variant ("Sherpa Pros Canada" versus "Sherpa Pros")</td>
+<td>Trademark search status drives this. If "Sherpa" or "Sherpa Pros" is clear in country, use the umbrella. If conflict, country sub-brand.</td>
+<td><strong>Working default:</strong> umbrella "Sherpa Pros" everywhere. Pre-launch trademark search per country at Phase 0.</td>
+</tr>
+<tr>
+<td>ID7</td>
+<td>Codes-engine vendor strategy per country</td>
+<td>Westlaw, UpCodes, BSI, Standards Australia, Beuth Verlag, CSA Group are vendor candidates. Buy-versus-license-versus-manual-ingest decision per country.</td>
+<td><strong>Defer to codes ingestion runbook in the implementation plan.</strong> Working assumption: license where structured digital is available; manual ingest where only PDF or print exists.</td>
+</tr>
+<tr>
+<td>ID8</td>
+<td>International CFO hire timing</td>
+<td>Could hire CFO at Phase 3 United States (before international begins) or at Phase 4 (when international actually fundraises).</td>
+<td><strong>Working default:</strong> Phase 3 United States hire. CFO must be in seat before Phase 4 Series B+ fundraise.</td>
+</tr>
+<tr>
+<td>ID9</td>
+<td>Sherpa Success Manager international launch</td>
+<td>Managed-service tier may not work in United Kingdom or Australia where homeowner expectations and labor cost differ.</td>
+<td><strong>Working default:</strong> launch Sherpa Success Manager in Canada Year 2 (after Year 1 marketplace proof). United Kingdom and Australia decision deferred to in-country General Manager.</td>
+</tr>
+<tr>
+<td>ID10</td>
+<td>Wefunder international equivalent for community fundraise per country</td>
+<td>Wefunder is United States-only. Crowdcube (United Kingdom), FrontFundr (Canada), Equitise (Australia), Seedrs (United Kingdom plus European Union) are country-specific equivalents.</td>
+<td><strong>Defer to Phase 4 fundraising strategy.</strong> Working default: Series B+ from institutional capital, not crowdfunding, for international expansion.</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="14-brand-bible-compliance-footer">14. Brand Bible Compliance Footer</h2>
+<p>This spec has been written under the brand bible discipline documented at <code>docs/operations/brand-portfolio.md</code>:</p>
+<ul>
+<li><strong>"Wiseman" never used externally.</strong> All references to the codes intelligence layer use "Sherpa codes engine," "code-aware quote validation," or "code intelligence layer." Internal naming retained only in implementation-detail context where the engineering layer name is load-bearing.</li>
+<li><strong>All abbreviations spelled out on first use.</strong> TAM, GMV, NPS, CFO, COO, CEO, FX, PPP, GST, HST, VAT, GDPR, PIPEDA, APP, NEC, IRC, IET, NICEIC, CIRIA, ABCB, OAIC, ICO, BfDI, P&amp;L, DSAR, DSAR (data subject access request), CMO, CSI, MTD, OSS, MOSS, DAC7, IR35, CEST, CIS, COI, WCB, CCQ, DA, NPP, BPAY, SEPA, CEN, CENELEC, DIN, GmbH, etc. — every abbreviation paired with full term on first appearance.</li>
+<li><strong>No region-anchored brand language.</strong> Sherpa Pros is the national licensed-trade marketplace with international roadmap. Every country in this spec is launch geography under the umbrella brand, not a regional rebrand.</li>
+<li><strong>8th-grade reading level on human-facing summaries.</strong> Section 1 and Section 2 country rationales held to plain English. Regulatory section 3, codes section 5, and risk register section 12 are necessarily denser because the audience is operator-class.</li>
+<li><strong>Founder framing.</strong> Phyrom remains the named founder throughout. No surname invented (none on record). "Phyrom" first reference, "Phyrom" thereafter.</li>
+<li><strong>No hype.</strong> No "disrupt," no "revolutionize," no "AI-powered" as headline framing. Confident and specific language throughout.</li>
+</ul>
+<hr>
+<h2 id="appendix-a--cross-spec-references">Appendix A — Cross-Spec References</h2>
+<ul>
+<li><strong>Phase 4 high-level reference:</strong> <code>docs/superpowers/specs/2026-04-22-gtm-marketing-design.md</code> §4.6.</li>
+<li><strong>Brand bible:</strong> <code>docs/operations/brand-portfolio.md</code>.</li>
+<li><strong>Product portfolio:</strong> <code>docs/operations/sherpa-product-portfolio.md</code> (Phase 4 column).</li>
+<li><strong>Franchise mechanics:</strong> companion spec being written in parallel — defer franchising detail to that file.</li>
+<li><strong>Multi-region database architecture:</strong> companion platform-scale spec being written in parallel — defer architecture detail to that file.</li>
+<li><strong>International Sherpa Hub deployment:</strong> companion Sherpa Hub Integration spec being written in parallel — defer Hub detail to that file.</li>
+<li><strong>Implementation plan:</strong> <code>docs/superpowers/plans/2026-04-25-international-expansion-plan.md</code>.</li>
+</ul>
+
+	
+
+
+</body>
+</html>

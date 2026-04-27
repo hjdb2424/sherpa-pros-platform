@@ -1,0 +1,1873 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>brand portfolio — Sherpa Pros</title>
+<link rel="icon" href="../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="brand-portfolio.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="sherpa-pros-brand-portfolio">Sherpa Pros Brand Portfolio</h1>
+<p><strong>v1.0 · 2026-04-25</strong></p>
+<p><strong>Maintainer:</strong> Phyrom (founder, HJD Builders LLC) · <strong>Audit owner:</strong> Brand Guardian agent
+<strong>Source-of-truth chain:</strong> <code>docs/superpowers/specs/2026-04-22-gtm-marketing-design.md</code> §3 → this portfolio → all derivative artifacts (decks, pages, ads, signatures, wraps, gear)
+<strong>Companion docs:</strong></p>
+<ul>
+<li><code>docs/slides/06-brand-bible.md</code> (internal teaching deck — do not duplicate; this portfolio extends)</li>
+<li><code>docs/pitch/brand-audit.md</code> (Brand Guardian audit findings, Waves 1+2)</li>
+<li><code>docs/operations/sherpa-product-portfolio.md</code> (4-product brand architecture)</li>
+<li><code>docs/operations/brand-asset-prompts.md</code> (Ideogram prompt library)</li>
+<li><code>docs/operations/social-media-prompt-library.md</code> (Wave 8.2 — generated in parallel)</li>
+<li><code>scripts/marp-themes/sherpa-pros-editorial.css</code> (slide theme — locked typography)</li>
+<li><code>scripts/docs-pdf-editorial.css</code> (print theme — locked typography)</li>
+</ul>
+<p>This document is the canonical, source-of-truth brand book for Sherpa Pros. Internal teams, contracted designers, the social-media manager, future agency partners, web and mobile developers — anyone who applies the brand without daily founder oversight — reads this first. It exists so that ten people in five cities can produce work that reads as if one person made it.</p>
+<p>It is intentionally substantive. A brand book that fits on one page does not survive its first contact with an agency. This one is built to.</p>
+<hr>
+<h2 id="1-brand-story">1. Brand Story</h2>
+<p>Sherpa Pros is the national licensed-trade marketplace built by a working New Hampshire general contractor. It is one umbrella brand and <strong>six products</strong>: Sherpa Marketplace (the dispatch and match engine), Sherpa Hub (the physical pickup point for pros), Sherpa Home (the homeowner subscription), Sherpa Success Manager (the managed-service tier for property managers and white-glove homeowners), Sherpa Rewards (the points-based loyalty program for pros, fulfilled in real money via the Tremendous API), and Sherpa Flex (the side-hustle pro tier with per-project platform liability insurance built into the service fee — no LLC required).</p>
+<p>The company started as a problem the founder lived. Phyrom runs HJD Builders LLC out of New Hampshire and has been a working general contractor for twelve-plus years. Every week his crew gets pitched the same platforms — Angi, Thumbtack, TaskRabbit, Handy — and every week the same two things go wrong. The leads are sold three or four times before they reach the contractor's phone, so the homeowner already feels harassed and the contractor pays to bid against people who shouldn't be touching the wiring. And nobody on those platforms checks code. A heat pump install in Massachusetts has to clear NEC, MA Electrical, and a municipal inspection, plus a Mass Save rebate paperwork chain. None of the existing platforms know that. Phyrom's crew does.</p>
+<p>The name is the namesake. A Himalayan sherpa is the guide who knows the route — the one local who's done the climb a hundred times so the visitor doesn't die on it. That is the contractor's relationship to the homeowner: the local who's done the climb. Sherpa Pros is the platform that elevates the working contractor into that role and pays them for it, instead of selling their attention as a lead.</p>
+<p>The promise is five words long and we say all five every time:</p>
+<ul>
+<li><strong>Jobs, not leads</strong> — pros pay only when work happens.</li>
+<li><strong>Licensed only</strong> — every pro on the platform has a current state license we verified.</li>
+<li><strong>Code-aware</strong> — quotes get checked against NEC, IRC, state, and 284 NH municipal codes before they're sent.</li>
+<li><strong>Permit-aware</strong> — the platform knows which jobs need permits in which jurisdictions.</li>
+<li><strong>Rebate-aware</strong> — Mass Save, National Grid, and state-program rebates surface inside the quote, not after.</li>
+</ul>
+<p>We are not a lead-generation platform with better marketing. We are a different model. The homeowner gets a verified licensed pro. The pro gets a job, not a sales lead. The platform takes a cut only when work happens. Built by a contractor, for the contractors he works with every day.</p>
+<h3 id="11-two-canonical-hero-messages--when-to-use-which">1.1 Two canonical hero messages — when to use which</h3>
+<p><strong>Public splash + paid acquisition</strong> (homeowner-facing, conversion-anchored):</p>
+<blockquote>
+<p><em>Where every project finds the right pro.</em></p>
+</blockquote>
+<p>This is what runs at <code>https://www.thesherpapros.com/</code> (live), in paid social, and in any homeowner outreach. <strong>Locked 2026-04-25</strong> per backend production deployment.</p>
+<p><strong>Investor + partner + press kit + decks</strong> (strategic positioning anchor):</p>
+<blockquote>
+<p><em>The licensed-trade marketplace that thinks like a contractor.</em>
+<em>Built by a working GC. Code-aware. Permit-aware. Rebate-aware.</em></p>
+</blockquote>
+<p>This is what appears on slide 1 of every pitch deck, the executive one-pager, the Wefunder page, and all founder-voice press placements.</p>
+<p><strong>Seven rotating taglines</strong> also live on the splash (<code>&lt;HeroTagline&gt;</code> component, 5-second rotation). Reuse-per-context is fine for social copy; do not substitute them for the canonical splash hero. Full list in spec §3.1.1.</p>
+<hr>
+<h2 id="2-logo-system">2. Logo System</h2>
+<h3 id="21-primary-wordmark--the-canonical-horizontal-logo">2.1 Primary wordmark — the canonical horizontal logo</h3>
+<p>The primary wordmark is the canonical Sherpa Pros mark and the one to use in every situation where horizontal real estate is available.</p>
+<p><strong>Visual description.</strong> Two horizontal blocks side-by-side, both with rounded outer corners. The left block is sky blue (<code>#00A9E0</code>) and contains the word <strong>SHERPA</strong> in bold, condensed, white sans-serif lettering. The right block is orange-red (<code>#FF4500</code>) and contains the word <strong>PROS</strong> in the same bold, condensed, white sans-serif lettering. The seam between the two blocks is a forward-slanting diagonal cut: a notch is taken out of the upper-right corner of the SHERPA block, a matching notch is taken out of the lower-left corner of the PROS block, and the two notches meet at approximately seventy degrees from horizontal.</p>
+<p>The diagonal cut is not decorative — it is the brand signature. Every other visual element in the system (corner accents on covers, list-item bullets, section dividers, app-icon construction) repeats it.</p>
+<p><strong>Master file.</strong> <code>/Users/poum/Library/Mobile Documents/com~apple~CloudDocs/Cranston Holdings DBA North Forge Construction/HJD Company/Marketing/Logos/Sherpa Pros/Sherpa Pros New.png</code>
+<strong>Project copy required:</strong> <code>public/brand/sherpa-pros-wordmark.png</code> (see §10 — the master needs to be copied into the repo so deployments don't depend on iCloud).</p>
+<p><strong>Use the primary wordmark for:</strong></p>
+<ul>
+<li>Website header (<code>thesherpapros.com</code> and all subdomains)</li>
+<li>Marketing landing pages, hero composition</li>
+<li>Business cards (front, full bleed)</li>
+<li>Vehicle wraps (door panel, side panel)</li>
+<li>Presentation cover slides (Marp <code>.lead</code> slide class)</li>
+<li>Print collateral covers (binders, one-pagers, decks)</li>
+<li>Press releases (header lockup)</li>
+<li>Email signatures (above the rule)</li>
+<li>App splash screen (mobile, when wide enough)</li>
+<li>Trade-show booth banners</li>
+</ul>
+<h3 id="22-app-icon-variant--the-square-form">2.2 App icon variant — the square form</h3>
+<p>When horizontal real estate is not available — anywhere a square or circle is required — use the icon variant.</p>
+<p><strong>Visual description.</strong> A square iOS-style app icon with rounded outer corners and a white background. Inside the icon: two parallelogram-shaped color blocks, slightly skewed clockwise, separated by a diagonal white gap that matches the wordmark's diagonal seam. The left parallelogram is sky blue (<code>#00A9E0</code>) and contains a bold white <strong>S</strong>. The right parallelogram is orange-red (<code>#FF4500</code>) and contains a bold white <strong>P</strong>. The white background gives the mark room to breathe inside circular crops on social platforms.</p>
+<p><strong>Master file.</strong> <code>/Users/poum/Library/Mobile Documents/com~apple~CloudDocs/Cranston Holdings DBA North Forge Construction/HJD Company/Marketing/Logos/Sherpa Pros/Sherpa Pros Icon.png</code>
+<strong>Project copy:</strong> <code>public/brand/sherpa-pros-icon-1024.png</code> (already in repo)</p>
+<p><strong>Use the app icon variant for:</strong></p>
+<ul>
+<li>iOS and Android app icons (every standard size — see §10)</li>
+<li>PWA <code>manifest.json</code> icons</li>
+<li>Browser favicon (<code>public/favicon.ico</code>)</li>
+<li>Apple touch icon (<code>public/apple-touch-icon.png</code>)</li>
+<li>Social media avatars (LinkedIn, Twitter / X, Instagram, Facebook, TikTok, YouTube, Threads)</li>
+<li>Email avatar (Gmail, Outlook profile pictures)</li>
+<li>Slack workspace icon, Notion workspace icon, GitHub organization avatar</li>
+<li>Loyalty / Founding Pro badge backgrounds (when the badge needs a brand anchor and there isn't room for the wordmark)</li>
+<li>Mobile app store screenshots (corner watermark)</li>
+<li>Vehicle decals where the wrap surface is square or circular (steering wheel hub, hubcap centers if ever produced)</li>
+</ul>
+<h3 id="23-single-color-variants">2.3 Single-color variants</h3>
+<p>Production constraints — embroidery, single-plate printing, dark backgrounds — require single-color variants. There are three.</p>
+<h4 id="all-sky-blue-variant-one-color-brand">All-sky-blue variant (one-color brand)</h4>
+<p>Both the SHERPA and PROS blocks become solid sky blue (<code>#00A9E0</code>) with white text. The diagonal seam is preserved as a thin white gap. Use this when only one brand color is allowed (single-thread embroidery on apparel, single-plate offset printing, etched glass, branded coffee-cup sleeves).</p>
+<h4 id="all-white-reversed-variant-dark-background-brand">All-white reversed variant (dark-background brand)</h4>
+<p>Both blocks become solid white. The lettering is knocked out of the white blocks (so the lettering is the dark background showing through). The diagonal seam is preserved as a thin gap of the dark background. Use this on dark navy hero sections, black hoodies, vehicle wraps with dark base colors, dark-mode website headers, late-night ad placements (TikTok, Instagram dark theme).</p>
+<h4 id="all-black-variant-printing-constraints">All-black variant (printing constraints)</h4>
+<p>Both blocks become solid black with white text. The diagonal seam is preserved. Use when the brand has to print to a single black plate — fax cover sheets, cheap black-and-white flyers, photocopier-distributed handouts at supply houses, low-cost newspaper inserts.</p>
+<p><strong>Single-color variants are never decorative choices.</strong> Use the full-color primary wordmark wherever you can. The single-color variants exist because of production constraints, not because someone preferred the look.</p>
+<h3 id="24-clearspace-rules">2.4 Clearspace rules</h3>
+<p>The minimum padding around the wordmark on all sides equals the height of one full letter <strong>S</strong> in the SHERPA block.</p>
+<p>If the SHERPA block letters are 60 pixels tall, the clearspace is 60 pixels on every side — top, right, bottom, left. Nothing intrudes on this clearspace: no other logos, no body copy, no decorative elements, no other graphics. This rule is non-negotiable on covers, signage, and every print application.</p>
+<p>For the app icon variant, the clearspace inside iOS / Android adaptive-icon containers is whatever the OS requires — do not add extra padding inside the icon file itself, because the OS handles the safe zone. For social avatars, leave 18 percent of the frame as padding so the mark survives circular crops on Twitter and Instagram.</p>
+<h3 id="25-minimum-sizes">2.5 Minimum sizes</h3>
+<table>
+<thead>
+<tr>
+<th>Application</th>
+<th>Minimum</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Wordmark, digital</td>
+<td>120 px wide</td>
+</tr>
+<tr>
+<td>Wordmark, print</td>
+<td>1.0 in / 25 mm wide</td>
+</tr>
+<tr>
+<td>App icon, digital</td>
+<td>32 px square</td>
+</tr>
+<tr>
+<td>App icon, print</td>
+<td>0.4 in / 10 mm square</td>
+</tr>
+<tr>
+<td>Favicon</td>
+<td>16 px square (test legibility — see §2.6)</td>
+</tr>
+</tbody></table>
+<p>Below these sizes, the diagonal seam stops resolving cleanly and the wordmark becomes mush. If you need to go smaller, switch to the icon variant. If you need to go smaller than 32 px, switch to the favicon style (a single bold <strong>S</strong> with the diagonal cut).</p>
+<h3 id="26-lockups">2.6 Lockups</h3>
+<p>A lockup is the wordmark plus a fixed companion element, treated as one inseparable unit.</p>
+<h4 id="wordmark--tagline-lockup">Wordmark + tagline lockup</h4>
+<p>Primary wordmark on top. One blank line below (height equal to the SHERPA block letters). The tagline below in <strong>Fraunces italic</strong>, color <strong>dark navy</strong> (<code>#1A1A2E</code>), letter-spacing -0.015em, sized so the tagline is approximately one-third the height of the SHERPA block.</p>
+<blockquote>
+<p><em>The licensed-trade marketplace that thinks like a contractor.</em></p>
+</blockquote>
+<p>Use on landing-page hero, business-card front, vehicle-wrap rear panel, presentation cover slide, deck slide 1.</p>
+<h4 id="wordmark--product-name-lockup">Wordmark + product name lockup</h4>
+<p>Primary wordmark, then a thin sky-blue vertical rule (1.5 px digital / 0.6 pt print), then the product name in Manrope 600 small caps with letter-spacing 0.18em, color dark navy. The product name sits on the same baseline as the SHERPA block letters.</p>
+<p>The four allowed product names:</p>
+<ul>
+<li><strong>SHERPA MARKETPLACE</strong></li>
+<li><strong>SHERPA HUB</strong></li>
+<li><strong>SHERPA HOME</strong></li>
+<li><strong>SHERPA MANAGER</strong></li>
+</ul>
+<p>Use on product-specific landing pages (<code>/marketplace</code>, <code>/home</code>, etc.), product spec sheets, product-specific email signatures, in-app product headers.</p>
+<p><strong>Do not invent new product names</strong> for ad-hoc lockups. Coordinate with Phyrom before any new product gets a lockup. Internal product names (Wiseman, Dispatch Wiseman, BldSync) never appear in any lockup, ever.</p>
+<h4 id="wordmark--founder-credit-lockup">Wordmark + founder credit lockup</h4>
+<p>Primary wordmark, then a thin amber vertical rule, then <strong>Built by HJD Builders LLC</strong> in Manrope 500 at the same height as the tagline-lockup tagline. Color dark navy.</p>
+<p>Use on the press kit, the investor data room cover, the trade-show banner, and Phyrom's email signature.</p>
+<p>This lockup is the visible link between Sherpa Pros and the founder's working construction company. It is on-brand to use it; it is the proof point behind the "built by a working contractor" claim.</p>
+<h3 id="27-things-to-never-do-with-the-logo">2.7 Things to NEVER do with the logo</h3>
+<p>Each of these is a violation of the brand. The Brand Guardian agent treats them as P0 issues during pre-send audits.</p>
+<ul>
+<li><strong>Never recolor outside the palette.</strong> The SHERPA block is sky blue (<code>#00A9E0</code>). The PROS block is orange-red (<code>#FF4500</code>). No purple, no teal, no green, no holiday-themed recoloring, no client-color adaptation, no agency-creative-test recoloring. The single-color variants in §2.3 are the only allowed alternatives.</li>
+<li><strong>Never rotate the wordmark.</strong> Not 5°, not 15°, not 90° for vertical signage. If you need a vertical lockup, use the icon variant stacked above the product name in Manrope.</li>
+<li><strong>Never stretch or squash the wordmark.</strong> Both blocks must scale proportionally. If you need a different aspect ratio, request a new lockup from the brand owner — do not improvise.</li>
+<li><strong>Never apply drop shadows.</strong> The wordmark is a flat geometric mark. Drop shadows make it look like a 1998 PowerPoint clip-art logo.</li>
+<li><strong>Never apply glow effects, outer-glow, inner-glow, or bevels.</strong> Same reason.</li>
+<li><strong>Never separate SHERPA from PROS.</strong> They are one mark. Do not put SHERPA on the left side of a layout and PROS on the right side. Do not animate them flying together. Do not use SHERPA alone. Do not use PROS alone.</li>
+<li><strong>Never remove or alter the diagonal cut.</strong> The diagonal cut is the brand signature. A version without it is not the Sherpa Pros logo.</li>
+<li><strong>Never use the wordmark on a photographic background without proper contrast.</strong> If the photo is busy, place the wordmark on a solid color block (warm cream, dark navy, or white) layered over the photo. If the photo is dark, use the all-white reversed variant. If the photo is light, use the primary wordmark with a 30 percent dark-navy gradient behind it.</li>
+<li><strong>Never crop the wordmark.</strong> Both blocks always appear in full.</li>
+<li><strong>Never animate the diagonal cut.</strong> Don't have it sliding in, splitting apart, glitching, or transforming. Animation reads as gimmick. The cut is a constant.</li>
+<li><strong>Never use a competitor-platform color in any Sherpa Pros context.</strong> No Angi-purple accents. No Thumbtack-blue accents. No TaskRabbit-green accents. Even if the design "works," the association is off-brand.</li>
+<li><strong>Never combine the wordmark with another brand's logo in a single lockup</strong> without explicit approval from Phyrom. Co-branded lockups (e.g., Mass Save × Sherpa Pros) require their own custom design, not an ad-hoc side-by-side placement.</li>
+</ul>
+<hr>
+<h2 id="3-color-palette">3. Color Palette</h2>
+<h3 id="31-primary-brand-colors-used-in-the-logo">3.1 Primary brand colors (used in the logo)</h3>
+<p>These three colors are the brand-identification anchors. The first two appear in every wordmark application. The third is the negative space that lets them breathe.</p>
+<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 24px 0;">
+
+<div style="background: #FBF7EE; border: 1px solid #E8E0CC; padding: 16px; border-radius: 4px;">
+<div style="background: #00A9E0; height: 96px; border-radius: 4px; margin-bottom: 12px;"></div>
+<div style="font-family: Manrope, sans-serif; font-weight: 700; color: #1A1A2E; font-size: 14px;">SKY BLUE</div>
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #475569; margin-top: 4px;">HEX <strong>#00A9E0</strong><br>RGB(0, 169, 224)<br>CMYK(80, 20, 0, 0)<br>Pantone 299 C</div>
+</div>
+
+<div style="background: #FBF7EE; border: 1px solid #E8E0CC; padding: 16px; border-radius: 4px;">
+<div style="background: #FF4500; height: 96px; border-radius: 4px; margin-bottom: 12px;"></div>
+<div style="font-family: Manrope, sans-serif; font-weight: 700; color: #1A1A2E; font-size: 14px;">ORANGE RED</div>
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #475569; margin-top: 4px;">HEX <strong>#FF4500</strong><br>RGB(255, 69, 0)<br>CMYK(0, 80, 100, 0)<br>Pantone Orange 021 C</div>
+</div>
+
+<div style="background: #FBF7EE; border: 1px solid #E8E0CC; padding: 16px; border-radius: 4px;">
+<div style="background: #FFFFFF; height: 96px; border-radius: 4px; margin-bottom: 12px; border: 1px solid #E8E0CC;"></div>
+<div style="font-family: Manrope, sans-serif; font-weight: 700; color: #1A1A2E; font-size: 14px;">WHITE</div>
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #475569; margin-top: 4px;">HEX <strong>#FFFFFF</strong><br>RGB(255, 255, 255)<br>CMYK(0, 0, 0, 0)<br>—</div>
+</div>
+
+</div>
+
+<p><strong>Sky Blue · <code>#00A9E0</code></strong> is the SHERPA wordmark block, the primary brand accent everywhere, the color of every hyperlink, the color of every primary call-to-action button, the color of section rules above headlines, the color of the small diagonal-cut bullet that appears next to every h1, and the color of the favicon's S-shape background.</p>
+<p><strong>Orange Red · <code>#FF4500</code></strong> is the PROS wordmark block, the secondary brand accent, the color of secondary calls-to-action, the color of "★ NEW" tags, and the color of attention-needing badges (urgent, expiring, new release). It is reserved — orange-red appears sparingly in the supporting design so it stays loud when it shows up. Do not use it for body text. Do not use it for backgrounds.</p>
+<p><strong>White · <code>#FFFFFF</code></strong> is the text color inside both wordmark blocks, and an alternative page background when warm cream is not appropriate (for example, on screens where the cream tone clashes with surrounding UI).</p>
+<h3 id="32-supporting-colors-for-typography-surfaces-supporting-ui">3.2 Supporting colors (for typography, surfaces, supporting UI)</h3>
+<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 24px 0;">
+
+<div style="background: #FBF7EE; border: 1px solid #E8E0CC; padding: 12px; border-radius: 4px;">
+<div style="background: #1A1A2E; height: 64px; border-radius: 4px; margin-bottom: 8px;"></div>
+<div style="font-family: Manrope, sans-serif; font-weight: 700; color: #1A1A2E; font-size: 12px;">DARK NAVY</div>
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #475569; margin-top: 4px;"><strong>#1A1A2E</strong><br>Body text, headings</div>
+</div>
+
+<div style="background: #FBF7EE; border: 1px solid #E8E0CC; padding: 12px; border-radius: 4px;">
+<div style="background: #475569; height: 64px; border-radius: 4px; margin-bottom: 8px;"></div>
+<div style="font-family: Manrope, sans-serif; font-weight: 700; color: #1A1A2E; font-size: 12px;">SOFT SLATE</div>
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #475569; margin-top: 4px;"><strong>#475569</strong><br>Captions, metadata</div>
+</div>
+
+<div style="background: #FBF7EE; border: 1px solid #E8E0CC; padding: 12px; border-radius: 4px;">
+<div style="background: #94A3B8; height: 64px; border-radius: 4px; margin-bottom: 8px;"></div>
+<div style="font-family: Manrope, sans-serif; font-weight: 700; color: #1A1A2E; font-size: 12px;">FAINT SLATE</div>
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #475569; margin-top: 4px;"><strong>#94A3B8</strong><br>Tertiary, disabled</div>
+</div>
+
+<div style="background: #FBF7EE; border: 1px solid #E8E0CC; padding: 12px; border-radius: 4px;">
+<div style="background: #10B981; height: 64px; border-radius: 4px; margin-bottom: 8px;"></div>
+<div style="font-family: Manrope, sans-serif; font-weight: 700; color: #1A1A2E; font-size: 12px;">EMERALD</div>
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #475569; margin-top: 4px;"><strong>#10B981</strong><br>Success only</div>
+</div>
+
+<div style="background: #FBF7EE; border: 1px solid #E8E0CC; padding: 12px; border-radius: 4px;">
+<div style="background: #FBF7EE; height: 64px; border-radius: 4px; margin-bottom: 8px; border: 1px solid #E8E0CC;"></div>
+<div style="font-family: Manrope, sans-serif; font-weight: 700; color: #1A1A2E; font-size: 12px;">WARM CREAM PAPER</div>
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #475569; margin-top: 4px;"><strong>#FBF7EE</strong><br>Editorial bg</div>
+</div>
+
+<div style="background: #FBF7EE; border: 1px solid #E8E0CC; padding: 12px; border-radius: 4px;">
+<div style="background: #E8E0CC; height: 64px; border-radius: 4px; margin-bottom: 8px;"></div>
+<div style="font-family: Manrope, sans-serif; font-weight: 700; color: #1A1A2E; font-size: 12px;">WARM EDGE</div>
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #475569; margin-top: 4px;"><strong>#E8E0CC</strong><br>Borders, dividers</div>
+</div>
+
+<div style="background: #FBF7EE; border: 1px solid #E8E0CC; padding: 12px; border-radius: 4px;">
+<div style="background: #F2EBD9; height: 64px; border-radius: 4px; margin-bottom: 8px; border: 1px solid #E8E0CC;"></div>
+<div style="font-family: Manrope, sans-serif; font-weight: 700; color: #1A1A2E; font-size: 12px;">CREAM DEEP</div>
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #475569; margin-top: 4px;"><strong>#F2EBD9</strong><br>Table stripe, code tint</div>
+</div>
+
+<div style="background: #FBF7EE; border: 1px solid #E8E0CC; padding: 12px; border-radius: 4px;">
+<div style="background: #BE1E3C; height: 64px; border-radius: 4px; margin-bottom: 8px;"></div>
+<div style="font-family: Manrope, sans-serif; font-weight: 700; color: #1A1A2E; font-size: 12px;">ROSE (alert)</div>
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #475569; margin-top: 4px;"><strong>#BE1E3C</strong><br>Errors, NEVER decorative</div>
+</div>
+
+</div>
+
+<p><strong>Dark Navy · <code>#1A1A2E</code></strong> is the primary body-text color in print and on light backgrounds. It is the heading color on light backgrounds. It is the default ink. It is also the brand's "lead section" background — when an editorial layout calls for a dark band, dark navy is the right black, not pure <code>#000000</code>. Pure black is a print error in this brand; it reads as cold and corporate. Dark navy is warmer and feels considered.</p>
+<p><strong>Soft Slate · <code>#475569</code></strong> is the secondary text color — image captions, timestamps, byline metadata, the small line under a stat block. It is also the right color for inactive tab labels.</p>
+<p><strong>Faint Slate · <code>#94A3B8</code></strong> is the tertiary text color — disabled buttons, placeholder text, the "5 of 12" counter under a paginated list, footnote markers. Use sparingly.</p>
+<p><strong>Warm Cream Paper · <code>#FBF7EE</code></strong> is the preferred page background for every editorial material. It is not pure white. The cream tone reads as designed, intentional, magazine-like. Pure white reads as default browser stylesheet. Both the slide deck and the print theme already ship with this background. Honor it.</p>
+<p><strong>Warm Edge · <code>#E8E0CC</code></strong> is the border color for cards, dividers, and table rows. Subtle. Visible. Never harsh.</p>
+<p><strong>Cream Deep · <code>#F2EBD9</code></strong> is the table-stripe color and the inline code tint. It's a quarter-step deeper than the page background.</p>
+<p><strong>Emerald · <code>#10B981</code></strong> is success-only. Use for: "Verified" badges, "Code-checked" markers, "Job completed" indicators, "Pro is online now" pulses, OAuth success states. Never decorative. Never as a brand accent. Never "let's add a pop of green" — that is a banned design move.</p>
+<p><strong>Rose · <code>#BE1E3C</code></strong> is errors-only. Form validation failures, dispute-flagged jobs, declined payment states. Never decorative. Never a brand accent.</p>
+<h3 id="33-color-usage-discipline">3.3 Color usage discipline</h3>
+<p>The discipline is more important than the swatches. Most agencies fail this brand by over-using the loud colors and under-using the cream paper.</p>
+<ul>
+<li><strong>Sky blue and orange-red appear ALWAYS in the logo, but use SPARINGLY in surrounding design.</strong> Let them stay as the brand-identification anchors. A landing page with the wordmark in the header, two sky-blue rules separating sections, and one orange-red call-to-action button is on-brand. A landing page with sky-blue gradient backgrounds, orange-red cards, sky-blue dividers, orange-red headers, and sky-blue body links is off-brand — every color is shouting and nothing is loud.</li>
+<li><strong>Most surfaces are WARM CREAM with DARK NAVY text + thin SKY BLUE accent rules.</strong> That is the editorial baseline. The Marp slide theme and the print theme both default to this. Designers should default to it too.</li>
+<li><strong>Orange-red is reserved for accents that need attention.</strong> Calls-to-action, urgent badges, "★ NEW" tags, the lower-third metadata strip on the cover slide. If orange-red appears more than three times on a screen, the design is overusing it.</li>
+<li><strong>Emerald is success-only.</strong> Never decorative. The instinct to add "a fresh pop of green" to balance the warm-cream layout is wrong. Resist it.</li>
+<li><strong>Rose is errors-only.</strong> Same rule.</li>
+<li><strong>NEVER use gradients on body backgrounds.</strong> Gradient backgrounds signal bro-startup. The Marp theme explicitly forbids them. The print theme explicitly forbids them. The website should never use them.</li>
+<li><strong>NEVER use drop shadows on text.</strong> Text shadows are a 2003 web design tic. The brand is flat geometric design. Type sits on the page.</li>
+<li><strong>NEVER use neon variants of the brand colors.</strong> No <code>#00FFFF</code> "electric sky blue." No <code>#FF8800</code> "neon orange." The hex values in §3.1 are exact. Off-palette neon variants drift the brand toward gaming-startup energy and away from tradesperson-credible.</li>
+<li><strong>NEVER add a sixth or seventh "supporting" color</strong> without explicit Brand Guardian sign-off. Designers love to add "a touch of teal" or "a deeper purple for premium." This brand has the colors it has. Adding a color dilutes the system.</li>
+<li><strong>NEVER use brand colors at low opacity to "soften" them.</strong> A 30 percent opacity sky blue is a different color. Use the supporting palette for softer values, not opacity tricks on brand colors.</li>
+</ul>
+<hr>
+<h3 id="35-the-four-phase-brand-growth-arc">3.5 The four-phase brand growth arc</h3>
+<p>The brand identity is national + international from Day 1. The operational footprint expands across four phases — but the brand story compounds, it does not pivot. The Brand Guardian's job is to defend that consistency: every phase should feel like the same Sherpa Pros, just operating in more places, serving more cohorts, with more product surfaces live.</p>
+<p><strong>Why this matters.</strong> The most common mistake premium B2B marketplaces make is rebranding when they expand — adding a "Sherpa Pros National" sub-brand at Phase 3, then a "Sherpa Pros Global" mark at Phase 4, then a franchise sub-mark at Phase 4. That fragmentation kills the equity built in Phase 1. The discipline is: ONE wordmark, ONE color palette, ONE voice — operating across an expanding footprint.</p>
+<p><strong>The four operational phases:</strong></p>
+<ul>
+<li><strong>Phase 1 — Lean Launch (Months 3 to 6).</strong> First close signed, beta cohort converts to founding paying customers (5 percent beta-pricing grandfathered forever), 50+ active pros across the Northern Triangle (Portsmouth + Manchester + Portland), Boston specialty lanes proven (20+ jobs in 5 lanes), 1 commercial Project Manager anchor signed, 500+ homeowner accounts. Seed round teed up.</li>
+<li><strong>Phase 2 — Scaled Launch (Months 6 to 12).</strong> Seed closed, 4-metro parallel execution (Portsmouth + Manchester + Portland + Boston), 200+ active pros, 1,000+ jobs and $1M+ Gross Merchandise Value, 3+ Project Manager anchors, 5,000+ homeowner accounts. Series A conversations open Months 10 to 11. Take rate stable at 10 percent.</li>
+<li><strong>Phase 3 — Regional Expansion (Months 12 to 18, hard 6-month bound).</strong> Series A closed, +2 metros (Providence Months 13 to 14, Hartford Months 15 to 16), New York City specialty beachhead (Brooklyn brownstones + Manhattan pre-war, Months 14 to 18), 1 utility white-label live (Eversource Massachusetts/Connecticut or National Grid New York), 3 Project Manager chain anchors, $5M+ annualized Gross Merchandise Value. Series B prep complete Month 17. Take rate 12 to 15 percent.</li>
+<li><strong>Phase 4 — National + International + Franchise + Scale (Month 18+).</strong> Series B closed (target $20M to $40M), national United States footprint (Philadelphia + Washington DC + San Francisco + Chicago specialty lanes), international expansion Canada Year 1 → United Kingdom Year 2 → Australia Year 3 → European Union pilot Years 4 to 5, franchise model live (Hub #2 to #10 FW Webb co-located + Hub #11+ via franchise), Service Organization Control 2 Type 2 certified by Month 30, multi-region infrastructure (US-East / US-West / Canada / EU), enterprise Project Manager chains + insurance carrier partnerships. Path to Series C Months 27 to 30 or strategic acquisition.</li>
+</ul>
+<p><strong>What changes per phase, and what does NOT change:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Element</th>
+<th>Phase 1</th>
+<th>Phase 2</th>
+<th>Phase 3</th>
+<th>Phase 4</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Wordmark</td>
+<td>Same</td>
+<td>Same</td>
+<td>Same</td>
+<td>Same</td>
+</tr>
+<tr>
+<td>Color palette</td>
+<td>Same</td>
+<td>Same</td>
+<td>Same</td>
+<td>Same</td>
+</tr>
+<tr>
+<td>Typography</td>
+<td>Same</td>
+<td>Same</td>
+<td>Same</td>
+<td>Same</td>
+</tr>
+<tr>
+<td>Voice + tone</td>
+<td>Same</td>
+<td>Same</td>
+<td>Same</td>
+<td>Same</td>
+</tr>
+<tr>
+<td>Founder origin story (Phyrom, working New Hampshire general contractor at HJD Builders LLC)</td>
+<td>Same</td>
+<td>Same</td>
+<td>Same</td>
+<td>Same</td>
+</tr>
+<tr>
+<td>Footprint mention in copy</td>
+<td>"Launching in NH/ME/MA"</td>
+<td>"4 metros across New England"</td>
+<td>"6 metros across New England + New York City specialty"</td>
+<td>"6+ metros across the United States, plus Canada / United Kingdom / Australia"</td>
+</tr>
+<tr>
+<td>Audience cohorts addressed</td>
+<td>Pros + homeowners + 1 Project Manager anchor</td>
+<td>+ 3 Project Manager anchors + utility pilots starting</td>
+<td>+ utility white-label + 3 Project Manager chains + franchise FDD prospects</td>
+<td>+ insurance carriers + enterprise Project Manager chains + international cohorts + franchisees</td>
+</tr>
+<tr>
+<td>Product surfaces LIVE (see §1 of <code>sherpa-product-portfolio.md</code>)</td>
+<td>Marketplace + Hub #1 build</td>
+<td>Marketplace + Hubs #1–3 + Home + Success Manager + Rewards + Flex + all platform capabilities</td>
+<td>All 6 products LIVE in 6 metros + NYC specialty beachhead</td>
+<td>Full national + 4 international countries + franchised Hubs</td>
+</tr>
+</tbody></table>
+<p><strong>Voice example — same brand, expanding footprint:</strong></p>
+<ul>
+<li>Phase 1 lead hook: "Built by a working New Hampshire general contractor. Launching in Portsmouth, Manchester, and Portland."</li>
+<li>Phase 2 lead hook: "Built by a working New Hampshire general contractor. Now serving 4 metros across New England."</li>
+<li>Phase 3 lead hook: "Built by a working New Hampshire general contractor. Serving 6 metros plus a Brooklyn + Manhattan specialty beachhead."</li>
+<li>Phase 4 lead hook: "Built by a working New Hampshire general contractor. Now serving 6+ United States metros, plus Canada, United Kingdom, and Australia."</li>
+</ul>
+<p>The hook compounds. It never resets. A Phase 4 prospect in Toronto reads the same brand story a Phase 1 pro in Portsmouth read — and that continuity is the equity.</p>
+<p><strong>Brand Guardian rules during phase expansion:</strong></p>
+<ul>
+<li>NEVER spin up sub-brands per phase. No "Sherpa Pros National," "Sherpa Pros International," "Sherpa Pros Franchise." It is one brand.</li>
+<li>NEVER drop the founder credit when expanding. Phyrom's working-contractor origin is the trust anchor in every phase, including Phase 4 international.</li>
+<li>NEVER change the color palette to "feel more national" or "feel more international." The colors stay.</li>
+<li>DO add the new metro / country to existing copy when it goes live. Update the lead hook footprint mention. Do not invent new copy frameworks.</li>
+<li>DO grandfather Phase 1 founding pros' pricing forever, and tell that story in Phase 2/3/4 marketing as proof the brand keeps its promises.</li>
+</ul>
+<hr>
+<h2 id="4-typography-system">4. Typography System</h2>
+<p>The typography stack is locked. It ships in the Marp slide theme (<code>scripts/marp-themes/sherpa-pros-editorial.css</code>) and the print theme (<code>scripts/docs-pdf-editorial.css</code>). Designers do not pick the typefaces — they apply them.</p>
+<h3 id="41-display-typeface--fraunces">4.1 Display Typeface — Fraunces</h3>
+<p><strong>Fraunces</strong> is a free Google Fonts variable serif by Undercase Type. Variable axes:</p>
+<ul>
+<li><code>opsz</code> (optical size) — 9 to 144</li>
+<li><code>wght</code> (weight) — 100 to 900</li>
+<li><code>SOFT</code> (softness of letterforms) — 0 to 100</li>
+<li><code>WONK</code> (alternate "wonky" letterforms — <code>g</code>, <code>e</code>, swashes) — 0 to 1</li>
+</ul>
+<p><strong>Use Fraunces for:</strong></p>
+<ul>
+<li>Page titles and section headers</li>
+<li>Big-number callouts (the canonical <code>.bignumber</code> slide)</li>
+<li>Pull quotes</li>
+<li>Marketing hero typography</li>
+<li>Drop caps in long-form editorial</li>
+</ul>
+<p><strong>Why this font.</strong> Fraunces brings real editorial character without being precious. The optical-size axis means it looks like a different (better) typeface at body italic vs. 96-point display. The WONK axis is the secret weapon: turning it on adds a single distinctive flourish to a few letters that differentiates this brand from the Inter/Söhne/GT America homogeneity of every other 2026 startup. Pairing rationale: editorial gravitas without bro-startup flatness.</p>
+<p><strong>Sample (Fraunces display, opsz 144, SOFT 80, WONK 1):</strong></p>
+<div style="background: #FBF7EE; padding: 32px; border: 1px solid #E8E0CC; border-radius: 4px; margin: 16px 0;">
+<h1 style="font-family: 'Fraunces', Georgia, serif; font-variation-settings: 'opsz' 144, 'SOFT' 80, 'WONK' 1; font-size: 56px; font-weight: 500; color: #1A1A2E; line-height: 0.95; letter-spacing: -0.025em; margin: 0;">Built by a working contractor.</h1>
+</div>
+
+<p><strong>Sample (Fraunces italic, opsz 48, SOFT 50, WONK 0) — body italic emphasis:</strong></p>
+<div style="background: #FBF7EE; padding: 24px; border: 1px solid #E8E0CC; border-radius: 4px; margin: 16px 0;">
+<p style="font-family: 'Fraunces', Georgia, serif; font-variation-settings: 'opsz' 48, 'SOFT' 50; font-style: italic; font-size: 18px; color: #1A1A2E; margin: 0;">The licensed-trade marketplace that thinks like a contractor — built by a working New Hampshire general contractor, for the contractors he hires every week.</p>
+</div>
+
+<h3 id="42-body-typeface--manrope">4.2 Body Typeface — Manrope</h3>
+<p><strong>Manrope</strong> is a free Google Fonts geometric grotesque by Mikhail Sharanda. Weights used: 300, 400, 500, 600, 700.</p>
+<p><strong>Use Manrope for:</strong></p>
+<ul>
+<li>All body text</li>
+<li>Captions, metadata, footers</li>
+<li>Button labels, navigation, form labels</li>
+<li>Longer-form reading (more than two paragraphs in a row)</li>
+<li>Small-caps section labels (h4, eyebrows, chip badges)</li>
+</ul>
+<p><strong>Why this font.</strong> Open apertures, distinctive <code>g</code> and <code>a</code> (a true two-story <code>a</code>, not the geometric mono-story Inter <code>a</code>), modern but not trendy. Critically: NOT Inter — Inter is overused to the point that any design using it reads as "competent SaaS startup." NOT Roboto — Roboto reads as "default Android app." Manrope has personality at body weight, holds up at small-caps weight, and renders crisp on every device including older Windows machines. JetBrains designed this with screens in mind, and it shows.</p>
+<p><strong>Sample (Manrope 500, 16pt body):</strong></p>
+<div style="background: #FBF7EE; padding: 24px; border: 1px solid #E8E0CC; border-radius: 4px; margin: 16px 0;">
+<p style="font-family: 'Manrope', sans-serif; font-weight: 500; font-size: 16px; line-height: 1.55; color: #1A1A2E; margin: 0;">The licensed-trade marketplace that thinks like a contractor. Pros pay only when work happens. Quotes get checked against state and municipal codes before they're sent. Built by a working contractor, for the contractors he works with every day.</p>
+</div>
+
+<p><strong>Sample (Manrope 700 small caps, 11pt label):</strong></p>
+<div style="background: #FBF7EE; padding: 24px; border: 1px solid #E8E0CC; border-radius: 4px; margin: 16px 0;">
+<div style="font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: 0.18em; color: #0284B6;">Section · Brand Voice</div>
+</div>
+
+<h3 id="43-mono-typeface--jetbrains-mono">4.3 Mono Typeface — JetBrains Mono</h3>
+<p><strong>JetBrains Mono</strong> is a free Google Fonts distinctive monospace by JetBrains. Weights used: 400, 500, 700.</p>
+<p><strong>Use JetBrains Mono for:</strong></p>
+<ul>
+<li>Code blocks and inline code</li>
+<li>File paths and URLs</li>
+<li>Technical data, API responses, JSON snippets</li>
+<li>Dashboard numerals (where tabular alignment matters)</li>
+<li>Legal-disclaimer fine print where a typewriter feel reinforces "this is the actual contract text"</li>
+</ul>
+<p><strong>Why this font.</strong> Stronger personality in numerals than IBM Plex Mono — the <code>4</code>, <code>7</code>, and <code>0</code> all have distinctive treatment. Programming ligatures via <code>font-feature-settings: 'calt'</code> produce nicer <code>=&gt;</code> and <code>!=</code> sequences in code. Legible at 9 pt where many monospace fonts collapse.</p>
+<p><strong>Sample (JetBrains Mono 400, 11pt code):</strong></p>
+<div style="background: #F2EBD9; padding: 16px; border: 1px solid #E8E0CC; border-left: 3px solid #00A9E0; border-radius: 4px; margin: 16px 0;">
+<pre style="font-family: 'JetBrains Mono', 'SF Mono', monospace; font-weight: 400; font-size: 13px; color: #1A1A2E; margin: 0; line-height: 1.55;">// Brand color tokens — locked
+const sky    = '#00A9E0';   // SHERPA block + primary accent
+const orange = '#FF4500';   // PROS block + secondary accent
+const navy   = '#1A1A2E';   // body text + dark sections
+const cream  = '#FBF7EE';   // page background</pre>
+</div>
+
+<h3 id="44-type-scale-locked">4.4 Type scale (locked)</h3>
+<p>The type scale is sized for both 16:9 slide layouts (1280×720) and 8.5×11 print pages. Rendering may differ; the relative hierarchy stays the same.</p>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Size</th>
+<th>Family</th>
+<th>Weight</th>
+<th>Line-height</th>
+<th>Letter-spacing</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>h1 display (cover, hero)</td>
+<td>48–96 pt</td>
+<td>Fraunces</td>
+<td>500–600</td>
+<td>0.95</td>
+<td>-0.025em</td>
+</tr>
+<tr>
+<td>h1 body (page title)</td>
+<td>32–52 pt</td>
+<td>Fraunces</td>
+<td>500</td>
+<td>1.05</td>
+<td>-0.020em</td>
+</tr>
+<tr>
+<td>h2 section</td>
+<td>22–34 pt</td>
+<td>Fraunces</td>
+<td>500</td>
+<td>1.10</td>
+<td>-0.015em</td>
+</tr>
+<tr>
+<td>h3 subsection</td>
+<td>16–24 pt</td>
+<td>Manrope</td>
+<td>600</td>
+<td>1.25</td>
+<td>-0.010em</td>
+</tr>
+<tr>
+<td>h4 small-caps label</td>
+<td>9–12 pt</td>
+<td>Manrope</td>
+<td>700</td>
+<td>1.20</td>
+<td>0.18em (uppercase)</td>
+</tr>
+<tr>
+<td>Body</td>
+<td>11–21 pt</td>
+<td>Manrope</td>
+<td>400</td>
+<td>1.55</td>
+<td>-0.005em</td>
+</tr>
+<tr>
+<td>Body emphasis</td>
+<td>11–21 pt</td>
+<td>Manrope</td>
+<td>600</td>
+<td>1.55</td>
+<td>-0.005em</td>
+</tr>
+<tr>
+<td>Body italic</td>
+<td>11–21 pt</td>
+<td>Fraunces (italic)</td>
+<td>400</td>
+<td>1.55</td>
+<td>-0.005em</td>
+</tr>
+<tr>
+<td>Caption</td>
+<td>10–16 pt</td>
+<td>Manrope</td>
+<td>500</td>
+<td>1.45</td>
+<td>0.000em</td>
+</tr>
+<tr>
+<td>Mono / code</td>
+<td>9–17 pt</td>
+<td>JetBrains Mono</td>
+<td>400</td>
+<td>1.55</td>
+<td>-0.020em</td>
+</tr>
+<tr>
+<td>Bignumber slide</td>
+<td>200–320 pt</td>
+<td>Fraunces</td>
+<td>500</td>
+<td>0.85</td>
+<td>-0.055em</td>
+</tr>
+</tbody></table>
+<p><strong>Note on Fraunces variation settings.</strong> At display sizes (40 pt and up), use <code>'opsz' 144, 'SOFT' 80, 'WONK' 1</code> for the canonical brand voice. At medium sizes (24–40 pt), use <code>'opsz' 96, 'SOFT' 30, 'WONK' 0</code>. At body sizes, use <code>'opsz' 24, 'SOFT' 30</code> for body italic emphasis. The Marp theme and print theme both encode this.</p>
+<h3 id="45-type-rules">4.5 Type rules</h3>
+<ul>
+<li><strong>Never use more than 2 typeface families on a single layout.</strong> Fraunces + Manrope is the canonical pair. JetBrains Mono only enters when actual code, file paths, or technical data is shown.</li>
+<li><strong>Never set body text below 11 pt.</strong> Below 11 pt, accessibility falls off and reading load spikes. The print theme uses 11 pt as the body floor; the slide theme uses 21 pt.</li>
+<li><strong>Always use proper smart quotes.</strong> <code>"like this"</code> (<code>U+201C</code> and <code>U+201D</code>), not <code>"like this"</code> (straight quotes). For apostrophes, <code>it's</code> not <code>it's</code>. The print theme has <code>font-feature-settings: 'kern' 1, 'liga' 1</code> to enable proper typography; respect it in source content too.</li>
+<li><strong>Always use em-dash for parenthetical asides.</strong> <code>Built by a working contractor — and used by him every week.</code> Never <code>--</code> (double hyphen). Never <code>-</code> (single hyphen between spaces). The em-dash is <code>U+2014</code>.</li>
+<li><strong>Never set body text in all-caps.</strong> All-caps body is unreadable above one line. The only all-caps treatment in this brand is the h4 small-caps label (Manrope 700, 0.18em letter-spacing).</li>
+<li><strong>Justify only print body text, never web body text.</strong> Web hyphenation is unreliable across browsers; left-aligned body with proper line breaks reads better. The print theme justifies body. The web should not.</li>
+<li><strong>Tabular figures for numbers in tables and dashboards.</strong> Use <code>font-variant-numeric: lining-nums tabular-nums</code> on every column that contains numbers to keep them aligned. Both themes enable this.</li>
+<li><strong>Never use Comic Sans, Papyrus, Brush Script, Times New Roman 12 pt single-spaced, or any other "default Word document" typography for any Sherpa Pros surface.</strong> This brand is editorially considered. There is no "quick and dirty" version of it.</li>
+</ul>
+<hr>
+<h2 id="5-voice--tone">5. Voice &amp; Tone</h2>
+<p>This section reproduces the brand voice rules from <code>docs/superpowers/specs/2026-04-22-gtm-marketing-design.md</code> §3.3, with examples for each. Voice is the thing that stays the same across products, audiences, and surfaces.</p>
+<h3 id="51-tone">5.1 Tone</h3>
+<p>Plainspoken. Direct. Tradesperson-friendly. Dry. Zero marketing-speak. 8th-grade reading level.</p>
+<p>He talks like a guy who actually swung a hammer this morning — because he did.</p>
+<p><strong>Good — on voice:</strong></p>
+<blockquote>
+<p><em>I just paid $87 for a lead that ghosted me. The plumber I called paid $112 for the same lead. The "homeowner" was never real.</em></p>
+</blockquote>
+<blockquote>
+<p><em>A homeowner called me yesterday. She'd had three contractors no-show in two weeks.</em></p>
+</blockquote>
+<p><strong>Bad — off voice:</strong></p>
+<blockquote>
+<p><em>Sherpa Pros leverages an AI-powered, next-generation marketplace solution to disrupt the legacy lead-generation paradigm and unlock unprecedented value for the construction ecosystem.</em></p>
+</blockquote>
+<p>The bad example fails seven different ways: AI-powered as a headline, "leverages," "disrupt," "next-generation," "unprecedented value," "ecosystem," and a 30-word sentence with zero specific facts. The good examples win because they have a real number, a real person, a real story.</p>
+<h3 id="52-always-say">5.2 ALWAYS say</h3>
+<h4 id="licensed">Licensed</h4>
+<p>Every pro on the platform has a current state license we verified.</p>
+<ul>
+<li><strong>Good:</strong> <em>"Every electrician on Sherpa Pros has a current state license we pulled from the state board last week."</em></li>
+<li><strong>Good:</strong> <em>"Licensed only — we don't take pros without a verified license."</em></li>
+<li><strong>Bad:</strong> <em>"Sherpa Pros connects you with experienced professionals."</em> (Experienced is unverifiable. Licensed is verifiable. Use the verifiable word.)</li>
+</ul>
+<h4 id="verified">Verified</h4>
+<p>License, insurance, and certificate of insurance with the homeowner named as additional insured.</p>
+<ul>
+<li><strong>Good:</strong> <em>"Verified license, verified insurance, verified COI naming you as additional insured before the pro shows up."</em></li>
+<li><strong>Good:</strong> <em>"Pro background and insurance get re-verified every 90 days."</em></li>
+<li><strong>Bad:</strong> <em>"All our pros are vetted."</em> (Vetted is vague. Verified with a list of what's verified is specific.)</li>
+</ul>
+<h4 id="code-aware">Code-aware</h4>
+<p>Quotes get checked against NEC, IRC, MA Electrical, NH RSA, and 284 NH municipal codes.</p>
+<ul>
+<li><strong>Good:</strong> <em>"Quotes get checked against NEC, IRC, MA Electrical, NH state code, and 284 NH municipal codes before they're sent."</em></li>
+<li><strong>Good:</strong> <em>"Code-aware means the platform knows that a Boston heat pump install needs a different scope than a Manchester one."</em></li>
+<li><strong>Bad:</strong> <em>"AI-powered code intelligence."</em> (AI-powered is banned as a headline. Code-aware describes the user value, not the technology.)</li>
+</ul>
+<h4 id="built-by-a-contractor">Built by a contractor</h4>
+<p>Phyrom runs HJD Builders. He uses the platform himself.</p>
+<ul>
+<li><strong>Good:</strong> <em>"Built by a working New Hampshire general contractor — and used by his crew every week."</em></li>
+<li><strong>Good:</strong> <em>"Hi, I'm Phyrom. I run HJD Builders. I built Sherpa Pros because the platforms my crew gets pitched every week sell us leads we can't afford."</em></li>
+<li><strong>Bad:</strong> <em>"Founded by industry experts."</em> (Industry experts is a tell — the founder voice is missing. Always lead with Phyrom's working-contractor identity.)</li>
+</ul>
+<h4 id="local">Local</h4>
+<p>These are the pros down the street. Treat homeowners as neighbors.</p>
+<ul>
+<li><strong>Good:</strong> <em>"The plumber on the platform lives twelve miles from your house."</em></li>
+<li><strong>Good:</strong> <em>"Local pros, fast match, no national call center."</em></li>
+<li><strong>Bad:</strong> <em>"Hyper-local on-demand service network."</em> (Hyper-local and on-demand are buzzwords. Just say local.)</li>
+</ul>
+<h4 id="jobs-not-leads">Jobs, not leads</h4>
+<p>Pros pay only when work happens.</p>
+<ul>
+<li><strong>Good:</strong> <em>"Jobs, not leads. The whole model in three words."</em></li>
+<li><strong>Good:</strong> <em>"Pros pay only when work happens. Angi sells the same lead four times."</em></li>
+<li><strong>Bad:</strong> <em>"Premium lead-generation alternatives."</em> (We are not a lead-gen alternative. We are a different model. Don't accept the lead-gen frame.)</li>
+</ul>
+<h4 id="national">National</h4>
+<p>The brand is national, with international roadmap. Launch geography (NH/ME/MA, Boston specialty) is a Phase 1/2/3 sequence, not the brand identity.</p>
+<ul>
+<li><strong>Good:</strong> <em>"Sherpa Pros is the national licensed-trade marketplace, launching in NH, ME, and MA — expanding nationally."</em></li>
+<li><strong>Good:</strong> <em>"National platform. Local pros. Built by a working contractor in New Hampshire."</em></li>
+<li><strong>Bad:</strong> <em>"The New England licensed-trade marketplace."</em> (Region-anchored brand language is banned. The launch is in New England; the brand is national.)</li>
+</ul>
+<h3 id="53-never-say">5.3 NEVER say</h3>
+<h4 id="wiseman-externally">"Wiseman" externally</h4>
+<p>Internal product name. If it leaks externally we look like an AI gimmick instead of a contractor's tool.</p>
+<ul>
+<li><strong>Bad:</strong> <em>"Powered by Wiseman code intelligence."</em></li>
+<li><strong>Good:</strong> <em>"Powered by code-aware quote validation."</em></li>
+<li><strong>Why it matters:</strong> Wiseman is an internal name for the AI engine. Externally we describe what it does for the user (code-aware quote validation), not what it is internally (Wiseman). The Brand Guardian audit found Wiseman leaks in five external-facing artifacts in Wave 1+2; eliminating these was the single biggest improvement.</li>
+</ul>
+<h4 id="gig--task">Gig / Task</h4>
+<p>Frames our pros as TaskRabbit-style unskilled labor. They are licensed trade.</p>
+<ul>
+<li><strong>Bad:</strong> <em>"Gig workers. On-demand tasks."</em></li>
+<li><strong>Good:</strong> <em>"Licensed trade pros. Pre-priced jobs."</em></li>
+<li><strong>Why it matters:</strong> TaskRabbit owns "task." Uber owns "gig." Our pros are skilled licensed tradespeople. Calling their work a gig or task is both inaccurate and a category-defining mistake.</li>
+</ul>
+<h4 id="uber-for-x-externally">"Uber for X" externally</h4>
+<p>Internal shorthand only. Externally it cheapens the licensed-trade positioning.</p>
+<ul>
+<li><strong>Bad:</strong> <em>"We're the Uber for licensed contractors."</em></li>
+<li><strong>Good:</strong> <em>"The licensed-trade marketplace that thinks like a contractor."</em></li>
+<li><strong>Why it matters:</strong> "Uber for X" is investor shorthand inside the company. Externally it reduces a multi-product, code-aware platform to a tired startup metaphor. (Note: even our internal CLAUDE.md uses "Uber for contractors" as shorthand — we should fix that too because AI agents reading CLAUDE.md propagate the framing into external copy.)</li>
+</ul>
+<h4 id="ai-powered-as-headline">"AI-powered" as headline</h4>
+<p>Investors and pros tune out. AI is supporting cast. The contractor is the lead.</p>
+<ul>
+<li><strong>Bad:</strong> <em>"AI-powered marketplace for contractors."</em></li>
+<li><strong>Good:</strong> <em>"The licensed-trade marketplace that thinks like a contractor."</em></li>
+<li><strong>Why it matters:</strong> Every other 2026 pitch deck headlines AI. Headlining the contractor — not the AI — differentiates the brand and respects the user. AI can appear later in the body as supporting capability, never as the lead.</li>
+</ul>
+<h4 id="disrupt--revolutionize">Disrupt / Revolutionize</h4>
+<p>Buzzword tax. We do not pay it.</p>
+<ul>
+<li><strong>Bad:</strong> <em>"Disrupting the home-services industry."</em></li>
+<li><strong>Good:</strong> <em>"Sending jobs, not leads. Built by a working contractor."</em></li>
+<li><strong>Why it matters:</strong> Disrupt and revolutionize are tells. They mark a writer who couldn't think of a specific verb. Use specific verbs. ("Sending jobs," "checking codes," "matching pros.")</li>
+</ul>
+<h4 id="jargon-abbreviations-on-first-use">Jargon abbreviations on first use</h4>
+<p>CO, SOV, AR, RFI, ARR, NPS, CAC, GMV — spell out on first use, then abbreviation is fine.</p>
+<ul>
+<li><strong>Bad:</strong> <em>"$2.0M ARR before the PM tier turns on."</em></li>
+<li><strong>Good:</strong> <em>"$2.0 million Annual Recurring Revenue (ARR) before the PM tier turns on."</em> — then <code>ARR</code> alone is fine subsequently.</li>
+<li><strong>Why it matters:</strong> Investors who haven't read the spec don't know what "Phase 0" or "ARR" means at first encounter. Spelling out builds trust. Internal team can still abbreviate; external materials must spell out.</li>
+</ul>
+<h4 id="region-anchored-brand-language">Region-anchored brand language</h4>
+<p>The brand is national. Launch geography (NH/ME/MA, Boston specialty) is a Phase 1/2/3 sequence, not the brand identity.</p>
+<ul>
+<li><strong>Bad:</strong> <em>"The New England licensed-trade marketplace."</em></li>
+<li><strong>Bad:</strong> <em>"Sherpa Pros for NH/ME/MA."</em></li>
+<li><strong>Bad:</strong> <em>"The Northern Triangle marketplace."</em></li>
+<li><strong>Good:</strong> <em>"The national licensed-trade marketplace, launching in New England Phase 1."</em></li>
+<li><strong>Good:</strong> <em>"Phyrom is a working New Hampshire general contractor running HJD Builders LLC."</em> (Founder biography — true and specific. Phyrom's NH-GC identity is biography, not a brand cap.)</li>
+<li><strong>Why it matters:</strong> Region-anchored brand language caps the brand at the launch market. In five years when we operate in Texas, "the New England marketplace" is wrong. The test: if you removed the region word, would the sentence still make sense in five years when we operate in Texas? If yes, the word is operational and stays. If no, it's brand-capping and goes.</li>
+</ul>
+<h4 id="the-sherpa-pros-app">"The Sherpa Pros app"</h4>
+<p>Ambiguous now that we have multiple products (Marketplace, Hub, Home, Manager).</p>
+<ul>
+<li><strong>Bad:</strong> <em>"Download the Sherpa Pros app."</em></li>
+<li><strong>Good:</strong> <em>"Download Sherpa Marketplace."</em> (Or whichever specific product is relevant.)</li>
+<li><strong>Why it matters:</strong> With four products under one brand, "the Sherpa Pros app" doesn't tell the user which app. Always specify.</li>
+</ul>
+<h3 id="54-founder-voice--the-lead-hook">5.4 Founder voice — the lead hook</h3>
+<p>Always. Slide 1 of every deck. Line 1 of every pro recruit. Paragraph 1 of every PR placement.</p>
+<blockquote>
+<p><em>"Hi, I'm Phyrom. I run HJD Builders — a licensed general contractor in New Hampshire."</em></p>
+<p><em>"I built Sherpa Pros because the platforms my crew gets pitched every week — Angi, Thumbtack, TaskRabbit, Handy — sell us leads we can't afford and send homeowners to people who shouldn't be touching their wiring."</em></p>
+</blockquote>
+<p>Why this works: people follow people. Logo posts underperform Phyrom's face by 3–5×. Investors back founders, not decks. Pros trust other pros, not platforms. If your copy does not have Phyrom's voice in the first paragraph, rewrite it.</p>
+<h3 id="55-phyrom-specific-rules">5.5 Phyrom-specific rules</h3>
+<p>His surname is <strong>UNKNOWN</strong> until he confirms it. Until then, never write a surname. Do not guess.</p>
+<ul>
+<li><strong>Right:</strong> <em>Phyrom · Founder · NH General Contractor · HJD Builders LLC</em></li>
+<li><strong>Right:</strong> Founder card initials display: <strong>P</strong> (single letter)</li>
+<li><strong>Wrong:</strong> <em>Phyrom Doung, founder of Sherpa Pros</em> (surname guessed — caught in Brand Guardian audit P0-1)</li>
+<li><strong>Wrong:</strong> Founder card initials: <strong>PD</strong> (encodes a guessed surname — caught in audit P0-2)</li>
+</ul>
+<p><strong>Pre-send check:</strong> run <code>git grep -i "Phyrom [A-Z][a-z]"</code> before any external send. Must return zero hits.</p>
+<h3 id="56-pricing-comparison-framing">5.6 Pricing-comparison framing</h3>
+<p>Pricing is a value comparison, not a price-shopping comparison.</p>
+<ul>
+<li><strong>Always:</strong> <em>"5% take rate vs Angi's effective $400–$800 per closed job."</em></li>
+<li><strong>Always:</strong> <em>"Roughly half the all-in cost a contractor pays Angi today."</em></li>
+<li><strong>Always:</strong> <em>"Pros pay only when work happens. Angi sells the same lead four times."</em></li>
+<li><strong>Never:</strong> <em>"Cheaper than Angi"</em></li>
+<li><strong>Never:</strong> <em>"Lower fees"</em></li>
+<li><strong>Never:</strong> <em>"Better deal forever"</em> · <em>"5 cents on the dollar"</em></li>
+</ul>
+<p>Why: "cheaper / lower / better deal" invites price-shopping. We invite value comparison. The numbers tell the story; we don't editorialize them.</p>
+<hr>
+<h2 id="6-visual-language">6. Visual Language</h2>
+<p>The brand has a consistent visual grammar that extends beyond logo and color. Designers internalizing this grammar produce on-brand work even when they invent new compositions.</p>
+<h3 id="61-diagonal-cut-motif">6.1 Diagonal cut motif</h3>
+<p>The logo's diagonal seam is the brand signature. It appears at approximately 70 degrees from horizontal, slanting forward (lower-left to upper-right). It shows up everywhere:</p>
+<ul>
+<li><strong>Corner accents on covers.</strong> A small sky-blue triangle in the upper-right or upper-left corner of cover slides, business card backs, deck title pages. Built with a <code>clip-path: polygon(100% 0, 100% 100%, 0 0)</code> (upper-right) or mirrored variants.</li>
+<li><strong>Section dividers in editorial materials.</strong> A short diagonal amber rule (skewed -24 degrees) below H1 headings in print, echoing the wordmark seam.</li>
+<li><strong>List bullets.</strong> Every <code>&lt;li&gt;</code> bullet in the slide and print themes is a tiny sky-blue diagonal-cut block (<code>clip-path: polygon(0 0, 100% 0, 100% 60%, 60% 100%, 0 100%)</code>). The same shape as the wordmark seam, miniaturized.</li>
+<li><strong>Color-block transitions.</strong> When two color blocks meet on a layout (e.g., a sky-blue section flowing into a dark-navy section), the seam is a diagonal cut, not a horizontal line.</li>
+<li><strong>Swatch shapes in this document.</strong> The <code>.swatch</code> class uses the same diagonal-cut polygon.</li>
+</ul>
+<p>Apply the diagonal cut consciously. It should feel like a thread running through every brand surface, not like a randomly-placed decoration.</p>
+<h3 id="62-geometry">6.2 Geometry</h3>
+<p>Clean geometric shapes. Rounded outer corners on icon-style elements. Sharp inner corners on diagonal seams. No organic shapes (no swirls, no blobs, no hand-drawn lines, no painterly textures).</p>
+<p>The brand is built with a ruler and a 70-degree angle template, not a paintbrush.</p>
+<h3 id="63-negative-space">6.3 Negative space</h3>
+<p>Generous white and cream space around primary elements. Don't over-fill. The brand is confident; it doesn't need to fill every pixel.</p>
+<p>The 72-pixel slide margin in the Marp theme and the 0.85-inch print margin are floors, not ceilings. When in doubt, leave more white space, not less. The reader's eye needs the rest.</p>
+<h3 id="64-photography-style">6.4 Photography style</h3>
+<p>When photography is used:</p>
+<ul>
+<li><strong>Documentary, not stock.</strong> Real people, real moments. No posed group photos with arms crossed. No smiling-at-camera "we love our customers" energy.</li>
+<li><strong>35mm equivalent focal length, shallow depth of field.</strong> Wide enough to show context (the jobsite, the materials, the room), shallow enough to focus attention on hands or tools.</li>
+<li><strong>Mid-action moments.</strong> Someone tightening a fitting. Drilling a pilot hole. Taping drywall. Reading a measurement. Never a frozen "here is a contractor standing still" pose.</li>
+<li><strong>Real jobsites.</strong> Mid-renovation. Mid-install. Mid-repair. Sawdust on the floor, a half-hung sheet of drywall, a real toolbelt with worn leather. Not a clean Instagram-staged "photo studio with a hardhat on a stand."</li>
+<li><strong>Phyrom on jobsites is the canonical founder portrait.</strong> Real NH jobsite, real work clothes, no studio lighting. The founder photo on the about page should look like a frame from a documentary, not a corporate headshot.</li>
+<li><strong>Natural light strongly preferred.</strong> Golden hour or overcast diffuse. Avoid harsh midday sun (washes out skin tones, blows out highlights on metal tools).</li>
+<li><strong>Cool jobsite tones.</strong> Concrete, denim, copper, sky. These harmonize with the sky-blue brand. Avoid heavily warm or saturated photos that fight brand colors. Avoid the teal-and-orange grading common in stock photos.</li>
+</ul>
+<h3 id="65-iconography-style">6.5 Iconography style</h3>
+<ul>
+<li><strong>Flat geometric.</strong> Single line weight. Brand color OR dark navy. No gradients on icons.</li>
+<li><strong>No Material Design tropes.</strong> No filled-circle backgrounds behind every icon. No Google-style "outlined" / "filled" toggle pairs. The brand has its own iconography vocabulary.</li>
+<li><strong>No 3D rendering.</strong> No isometric construction-equipment renders. No 3D-shaded toolbelts.</li>
+<li><strong>No clip-art tools.</strong> No Microsoft-clipart wrenches and houses. The Ideogram prompt library (<code>docs/operations/brand-asset-prompts.md</code>) gives concrete starting prompts that avoid these tropes.</li>
+</ul>
+<h3 id="66-illustration-style">6.6 Illustration style</h3>
+<p>Minimal. Editorial line-art when illustrations are needed. Think New York Times opinion-page illustrations, The Atlantic feature graphics, Stripe Press cover art.</p>
+<ul>
+<li><strong>Never cartoon mascots.</strong> No Mailchimp Freddie equivalent for Sherpa Pros. (The brand-asset-prompts library includes one mascot variant for exploration — it has not been adopted and is not approved for production use.)</li>
+<li><strong>Never construction clip-art hardhats.</strong> No generic yellow hardhat icons. No wrench-and-house compositions.</li>
+<li><strong>Never bloated infographics.</strong> Information design follows the same editorial discipline as everything else: simple, considered, generous whitespace.</li>
+</ul>
+<hr>
+<h2 id="7-photography-direction">7. Photography Direction</h2>
+<p>This is the brief for any photographer or AI image generator working on Sherpa Pros visuals. Hand it to them with the project, and ask them to acknowledge each section before they shoot.</p>
+<h3 id="71-subject-matter">7.1 Subject matter</h3>
+<ul>
+<li>Real licensed contractors at work. Electricians wiring a panel. Plumbers sweating a copper joint. GCs walking a framed-up addition. Painters cutting in a corner. HVAC techs setting a heat-pump head.</li>
+<li>Real jobsites. Mid-renovation. Mid-install. Mid-repair. The jobsite mid-process is more visually interesting than a finished room.</li>
+<li>Tools, materials, hands at work. Close-up of a tape measure on a 2×4. Hand on a pencil marking a stud. Worn leather toolbelt with the actual scuffs from real use.</li>
+<li>Phyrom on jobsites — the canonical founder portrait. Real NH project, real work clothes, real light.</li>
+</ul>
+<h3 id="72-style">7.2 Style</h3>
+<ul>
+<li>Documentary, not staged. The photographer should be invisible. The contractor should be working, not posing.</li>
+<li>35mm equivalent focal length. Sometimes 50mm for closer detail. Avoid wide-angle distortion (24mm or wider) and telephoto compression (85mm or longer) — they make the work feel less immediate.</li>
+<li>Shallow depth of field for detail shots. Deeper depth for context shots (the whole jobsite). Mix both in any series.</li>
+<li>Natural light strongly preferred. Golden hour OR overcast diffuse. If artificial light is required, soft and warm, not direct flash.</li>
+<li>Authentic skin tones. Real lighting. No over-saturation. No teal-and-orange Hollywood color grading.</li>
+<li>Mid-action moments. Someone tightening a fitting, drilling a pilot hole, taping drywall, reading a measurement. Never a frozen stock-photo pose.</li>
+<li>Color palette in the photograph should harmonize with the brand. Cool jobsite tones — concrete, denim, copper, sky — work well. Avoid heavily warm or saturated photos that fight brand colors.</li>
+</ul>
+<h3 id="73-avoid">7.3 Avoid</h3>
+<ul>
+<li>Stock-photo orange-vest construction worker stereotypes. We are not a highway construction company.</li>
+<li>Posed group photos of "the team" with arms crossed in front of a building.</li>
+<li>Empty-jobsite hero shots without people. The brand is about the people doing the work.</li>
+<li>Heavy color grading, especially the teal-and-orange grade common in stock photos.</li>
+<li>Smiling-at-camera "we love our customers" energy. The contractor should be focused on the work, not on the camera.</li>
+<li>Hardhat-and-clipboard cliché. Hardhats appear when the job requires them, not as a costume.</li>
+<li>Lens flares. Glossy 3D renders. Generic Shutterstock vibes.</li>
+<li>Anything that looks like an Angi or Thumbtack ad. We are intentionally a different visual brand.</li>
+</ul>
+<h3 id="74-releases-and-rights">7.4 Releases and rights</h3>
+<p>Every person photographed signs a model release before publication. Every jobsite photographed has the homeowner's written permission (or is one of Phyrom's HJD Builders projects where permission is built into the contract). The Brand Guardian agent verifies this before any photo ships externally.</p>
+<hr>
+<h2 id="8-brand-applications">8. Brand Applications</h2>
+<p>How the brand applies to specific surfaces. Each is a brief — not a full design spec, but enough that a designer with the rest of this portfolio can produce on-brand work.</p>
+<h3 id="81-website-thesherpaproscom">8.1 Website (thesherpapros.com)</h3>
+<p>The web surface has THREE distinct contexts. Brand application differs per context.</p>
+<p><strong>8.1a — Public splash + waitlist (<code>/</code>, <code>/about</code>, <code>/invite</code>, <code>/invite/pro</code>, <code>/invite/pm</code>, <code>/invite/client</code>)</strong></p>
+<p>This is the live pre-launch acquisition surface (<code>src/app/page.tsx</code>, deployed). Dark navy background (<code>#0a0a0f</code>-ish near-black, NOT pure black) with white text. Primary wordmark in header, left-aligned, with 24 px clearspace from the navigation. Hero canonical: <em>"Where every project finds the right pro."</em> with seven rotating taglines via <code>&lt;HeroTagline&gt;</code> (5-second rotation — see §1.1 + spec §3.1.1). Components in use: <code>&lt;Logo&gt;</code>, <code>&lt;HeroTagline&gt;</code>, <code>&lt;WaitlistForm&gt;</code>, <code>&lt;ZipCapture&gt;</code>, <code>&lt;ScrollFadeIn&gt;</code>, <code>&lt;CountUp&gt;</code>. Above-the-fold contains the waitlist email capture; below-the-fold contains competitor comparison + Sherpa ecosystem section.</p>
+<p>The About page (<code>/about</code>) uses the same dark theme but switches to hero text <em>"Built by a contractor. For everyone in the trade."</em> — founder-origin story. No personal info, no HJD references in body copy (HJD identity used only on the wordmark and where the founder is named).</p>
+<p>Invite pages are role-specific (pro / pm / client) — same dark theme, role-specific value props, prefilled mailto for sharing.</p>
+<p><strong>8.1b — Post-auth dashboards (<code>/(dashboard)/client/...</code>, <code>/(dashboard)/pm/...</code>, <code>/(dashboard)/pro/...</code>, <code>/(dashboard)/admin/...</code>)</strong></p>
+<p>The signed-in product surface. Brand applies as: warm cream sections (<code>#FBF7EE</code>) alternating with dark navy "lead" sections (used sparingly — once or twice per page, for hero or CTA-band). Sky-blue accent rules above section titles. Fraunces for h1 page titles (44–56 pt). Manrope for body (15 pt minimum). Editorial-magazine layout. Sidebar navigation uses Manrope small caps with sky-blue active-state rule. Investor metrics dashboard at <code>/admin/investor-metrics</code> follows the same editorial discipline.</p>
+<p><strong>8.1c — Marketing landing pages (NOT yet shipped — Phase 1 work)</strong></p>
+<p>The aspirational homeowner / pro / PM marketing landing pages drafted in <code>docs/marketing/email-sequences/</code> and the original Wave 1 <code>marketing-content-creator</code> agent output are NOT live yet. They were drafted for post-launch when the public splash flips from waitlist to full marketplace. When they ship, they'll inherit the same warm-cream + dark-navy editorial discipline as the dashboards (§8.1b above) — not the pre-launch dark-navy splash style of §8.1a.</p>
+<p><strong>Universal button rules (apply across all 3 contexts):</strong></p>
+<ul>
+<li>Primary action: sky-blue background with white text</li>
+<li>Secondary action: orange-red background with white text  </li>
+<li>Tertiary action: text link with sky-blue underline</li>
+<li>Never more than one primary action visible on a single screen</li>
+</ul>
+<p><strong>Universal footer rules:</strong></p>
+<ul>
+<li>Dark navy background, warm-cream text, sky-blue accent rule above</li>
+<li>Links underlined in sky-blue</li>
+<li>Canonical domain (thesherpapros.com) and contact (Phyrom email) visible</li>
+<li>About page link, invite page link, sign-in link in nav</li>
+</ul>
+<h3 id="82-mobile-app-sherpa-marketplace">8.2 Mobile app (Sherpa Marketplace)</h3>
+<p>App icon at every standard size — 16, 32, 48, 72, 96, 144, 192, 512, 1024 px (see §10 asset library). Brand color theming respects iOS adaptive icon guidelines (the dark-navy variant for iOS 17+ dark / tinted modes) and Android adaptive icon foreground/background separation.</p>
+<p>In-app type uses Fraunces for screen titles and Manrope for everything else. Same type scale as the editorial system, scaled down for mobile.</p>
+<p>In-app sky blue is the primary accent. In-app orange-red is reserved for badges and urgent actions (a red pulse on a job that needs response within 2 hours, for example). In-app emerald is reserved for success states (job completed, payment received).</p>
+<h3 id="83-email-signature">8.3 Email signature</h3>
+<p>Phyrom's signature template:</p>
+<blockquote>
+<p><strong>Phyrom</strong>
+<em>Founder · NH General Contractor · HJD Builders LLC</em></p>
+<p>Sherpa Pros · The licensed-trade marketplace that thinks like a contractor.
+<a href="https://www.thesherpapros.com/">thesherpapros.com</a> · <a href="mailto:poum@hjd.builders">poum@hjd.builders</a></p>
+</blockquote>
+<p>Format: name in Manrope 600 dark navy. Role + company in Manrope 400 small-caps with letter-spacing 0.18em, soft-slate color. One blank line. Tagline in Fraunces italic 14pt, dark navy. Domain and email on the same line, JetBrains Mono 12pt, sky-blue underline on the domain.</p>
+<p>A 2-pixel sky-blue rule sits above the signature, full-width to the email body's right edge.</p>
+<p>For team emails, replace <code>Phyrom · Founder · NH General Contractor · HJD Builders LLC</code> with the team member's name and role. Keep everything else identical.</p>
+<h3 id="84-business-card">8.4 Business card</h3>
+<p><strong>Front:</strong> primary wordmark, full bleed. Sky-blue and orange-red blocks running edge-to-edge with the diagonal cut centered. No text on the front. The wordmark IS the front.</p>
+<p><strong>Back:</strong> warm cream background. Dark navy type. Sky-blue accent rule along the top edge. Phyrom's name in Fraunces 18pt with the wonky axis on. Role in Manrope 600 small caps below. Three lines of contact info in JetBrains Mono 9pt: email, phone, and <code>thesherpapros.com</code>. A single sky-blue diagonal-cut block sits in the lower-right corner as the brand signature.</p>
+<p>Card stock: 16 pt, soft-touch matte finish, cream paper (<code>#FBF7EE</code> or closest match Pantone). Spot-color print for the brand colors when possible.</p>
+<h3 id="85-vehicle-wrap-hjd-trucks-→-sherpa-pros-work-vehicles">8.5 Vehicle wrap (HJD trucks → Sherpa Pros work vehicles)</h3>
+<p><strong>Side panels:</strong> primary wordmark large, occupying roughly the upper third of the door panel and extending forward onto the front fender. Tagline in Fraunces italic 200 pt below the wordmark, dark navy on cream-painted vehicle base.</p>
+<p><strong>Rear panel:</strong> <code>thesherpapros.com</code> in Manrope 700 condensed, 8-inch tall letters, sky blue. Phone number below in same style, half size.</p>
+<p><strong>Hood:</strong> clean. No wordmark, no tagline. The brand reads at a glance from the side; the hood is for the driver's sightline, not for marketing.</p>
+<p>If the vehicle base is dark (black or dark navy), use the all-white reversed wordmark variant.</p>
+<h3 id="86-pro-branded-gear-phase-2-launch--sherpa-hub-merchandise">8.6 Pro branded gear (Phase 2 launch — Sherpa Hub merchandise)</h3>
+<p>Logo embroidery on hats, t-shirts, work jackets. Single-color brand variant (sky blue OR white reversed) for embroidery legibility — the diagonal seam in two colors does not stitch cleanly at small sizes.</p>
+<ul>
+<li><strong>Hats:</strong> wordmark in white reversed, embroidered on dark navy hat front.</li>
+<li><strong>T-shirts:</strong> wordmark in sky blue, screen-printed on cream-colored shirt body. (Avoid pure white shirts — too cold for the brand.) "Founding Pro" tag on left chest in Manrope 700 small caps.</li>
+<li><strong>Work jackets:</strong> wordmark embroidered on right chest in white reversed. Founding Pro shield-style badge embroidered on left chest. HJD Builders attribution embroidered on inside neck label.</li>
+</ul>
+<p>Vendor specifications, thread Pantone matches, and embroidery file types live in <code>docs/operations/brand-asset-prompts.md</code> (Sections 8 and 9 — Founding Pro badge and Old-House Verified badge prompts) and the eventual <code>docs/operations/sherpa-hub-merch-spec.md</code> (to be written for Phase 2 Hub launch).</p>
+<h3 id="87-print-collateral-binders-one-pagers-decks">8.7 Print collateral (binders, one-pagers, decks)</h3>
+<p>The editorial print theme already shipped at <code>scripts/docs-pdf-editorial.css</code> is canonical for all PDF rendering. Cover-page composition (sky-blue rule above, amber diagonal below H1, page-one drop cap on the chapter opener) is the canonical binder cover.</p>
+<p>For one-pagers: warm cream background, primary wordmark in the upper-left, single-column body in Manrope, pull quote in Fraunces italic, footer with <code>thesherpapros.com</code> in JetBrains Mono and a sky-blue rule above.</p>
+<h3 id="88-slide-presentations">8.8 Slide presentations</h3>
+<p>The Marp editorial theme already shipped at <code>scripts/marp-themes/sherpa-pros-editorial.css</code> is canonical for all decks. Ten slide-class layouts are available:</p>
+<ul>
+<li><code>lead</code> — hero / cover slide (dark navy paper with cream type, diagonal sky wedge upper-right, amber lower-third strip)</li>
+<li><code>bignumber</code> — the signature slide. ONE number is the entire slide. Used for traction stats, headline numbers.</li>
+<li><code>quote</code> — pull-quote slide with oversized opening glyph watermark</li>
+<li><code>split</code> — left half visual, right half text (asymmetric 0.55/0.45)</li>
+<li><code>contents</code> — chapter list / table of contents</li>
+<li><code>divider</code> — section break with sky-blue diagonal corner accent</li>
+<li><code>image</code> — full-bleed image with text overlay</li>
+<li><code>compare</code> — two-column comparison (Sherpa Pros vs competitors)</li>
+<li><code>timeline</code> — phase 0/1/2/3/4 horizontal timeline</li>
+<li><code>metric</code> — investor metrics dashboard</li>
+</ul>
+<p>Use the right class for the right job. Don't recreate a <code>.bignumber</code> slide as a regular content slide with a giant number.</p>
+<h3 id="89-social-media">8.9 Social media</h3>
+<p>See companion doc: <code>docs/operations/social-media-prompt-library.md</code> (Wave 8.2 — generated in parallel with this portfolio).</p>
+<p>Key principles that apply to social regardless of platform:</p>
+<ul>
+<li>Founder voice leads. Phyrom's face outperforms the logo by 3–5× on every platform.</li>
+<li>Brand-consistent square avatar across LinkedIn, Twitter / X, Instagram, Facebook, TikTok, YouTube, Threads.</li>
+<li>Posts use the same color discipline as the rest of the brand: warm-cream backgrounds, dark-navy text, sky-blue accents, orange-red sparingly.</li>
+<li>Never Comic Sans-style "fun" overlays. Even on TikTok, the brand stays editorially considered.</li>
+</ul>
+<hr>
+<h2 id="9-brand-hierarchy-for-the-6-product-portfolio">9. Brand Hierarchy (for the 6-product portfolio)</h2>
+<p>Per <code>docs/operations/sherpa-product-portfolio.md</code>:</p>
+<ul>
+<li><strong>Sherpa Pros</strong> is the umbrella brand. Always say "Sherpa Pros" when referring to the company.</li>
+<li>The six products in canonical order are: <strong>Sherpa Marketplace · Sherpa Hub · Sherpa Home · Sherpa Success Manager · Sherpa Rewards · Sherpa Flex</strong>. Always say "Sherpa [Product]" when referring to a specific one.</li>
+<li><strong>NEVER say</strong> "the Sherpa Pros app" — which app? Always specify the product. This is the most common naming violation now that the portfolio has expanded from one product to six.</li>
+<li><strong>NEVER say</strong> "Flex" alone or "the Flex tier" alone in external surfaces — always <strong>Sherpa Flex</strong> or <strong>the Sherpa Flex tier</strong>.</li>
+<li><strong>Sherpa Rewards</strong> (capitalized, as a program name) refers to the loyalty program. Lowercase "rewards" refers to individual catalog items the pro can redeem. Don't blur the two.</li>
+<li>Visual treatment: each product can have its own sub-icon (per Wave 6.4 brand-asset prompts in <code>docs/operations/brand-asset-prompts.md</code> §7), all derived from the canonical wordmark and icon family. The six product icons share a single visual grammar so they read as a family.</li>
+</ul>
+<p>The umbrella voice is one founder, one tone, one set of always-say words. Product voices specialize within that:</p>
+<ul>
+<li><strong>Sherpa Marketplace</strong> voice: transactional + urgent. "Match in 30 minutes. Pre-priced. Confirmed."</li>
+<li><strong>Sherpa Hub</strong> voice: pro-to-pro, gritty, equipment-and-supplies tone. "Pick up the kit. Rent the saw. Earn the cert."</li>
+<li><strong>Sherpa Home</strong> voice: warm + savings-focused. "Membership that pays for itself. Faster pros. Five percent off every job."</li>
+<li><strong>Sherpa Success Manager</strong> voice: enterprise + trust + relationship. "A real person owns your account. Not a chatbot. Not a portal."</li>
+<li><strong>Sherpa Rewards</strong> voice: pro-to-pro, plainspoken, payoff-focused. "Every job earns points. Real points, real money. The things working pros actually want."</li>
+<li><strong>Sherpa Flex</strong> voice: matter-of-fact, on-ramp-focused. "For skilled tradespeople who do work on the side. No LLC required. Insurance built in." (Use "side-hustle" — it's the contractor-credible word. Never "gig" or "task.")</li>
+</ul>
+<p>The umbrella brand voice is what unifies them. The product voices specialize within it. Never let the product voices contradict the umbrella voice (no "AI-powered Hub experience," no "disrupt-the-PM-software Sherpa Success Manager service," no "gig economy" framing for Sherpa Flex).</p>
+<h3 id="91-platform-capability-layer-shipped-2026-04-25">9.1 Platform Capability Layer (shipped 2026-04-25)</h3>
+<p>Underneath the six products are <strong>eight</strong> platform-level capabilities — features that span every product, not standalone products themselves. They have locked names, locked colors, and locked usage rules so that Brand Guardian audits treat them with the same care as the six products. The first three (Sherpa Threads, Sherpa Smart Scan, Sherpa Mobile) shipped in earlier waves; the five additions below shipped in the 2026-04-25 wave (Sherpa Guard, Sherpa Flex Landing, Sherpa Splash, Sherpa Dispatch, Sherpa Materials). Total brand surface count: <strong>6 products + 8 platform capabilities = 14 brand surfaces</strong> under the Sherpa Pros umbrella.</p>
+<ul>
+<li><strong>Sherpa Threads</strong> — the in-app chat surface that bridges to Short Message Service (SMS) via Twilio. Always <strong>Sherpa Threads</strong>, never "the chat," never "messages," never "the messaging feature." The "Sherpa" prefix is non-negotiable here because <strong>"Threads" alone is a Meta product</strong> (the social network) — dropping the prefix invites brand confusion. Color: <strong>sky blue (#00A9E0)</strong> to match the SHERPA block in the wordmark — Threads is <em>connection</em>, sky blue is <em>connection</em>. Marketing line: <em>"Work-order-attached messaging that bridges to text. Both parties stay on-platform without forcing the client to install anything."</em></li>
+<li><strong>Sherpa Smart Scan</strong> — the Optical Character Recognition (OCR) surface for receipts, invoices, permits, blueprints, and job-site photos. Always <strong>Sherpa Smart Scan</strong>, never "the scanner," never "OCR," never "the AI scanner." OCR is the underlying tech, never the headline. Color: <strong>orange-red (#FF4500)</strong> to match the PROS block — Smart Scan is <em>action</em>, orange-red is <em>action / capture</em>. Marketing line: <em>"Snap a receipt, snap a permit, snap a blueprint — Sherpa Smart Scan reads it, files it, and tags it for tax."</em></li>
+<li><strong>Sherpa Mobile</strong> — the native iOS + Android app shell. Always <strong>Sherpa Mobile</strong> when the conversation is about the native-app surface across products. Bundle ID <code>com.thesherpapros.app</code>. Currently in <strong>TestFlight beta</strong> (iOS) — say "in TestFlight beta" in marketing copy through Phase 0; drop the qualifier once it ships to the App Store. Android via Expo. Color treatment for app screenshots, mockups, and store-listing assets: <strong>warm cream paper (#FBF7EE)</strong> background — matches the editorial system, reads designed and intentional rather than default-browser. Marketing line: <em>"Sherpa Marketplace and Sherpa Home in your pocket. Native iOS and Android. In TestFlight beta now."</em></li>
+<li><strong>Sherpa Guard</strong> — Role-Based Access Control (RBAC) middleware + audit logs. Always <strong>Sherpa Guard</strong>, never "the middleware," never "RBAC layer," never "the security feature." The "Sherpa" prefix is non-negotiable. Color: <strong>emerald (#10b981)</strong> for trust + security — already a brand-system color (Brand Pros checked: emerald is in the supporting palette per §3.2 and is the existing trust signal in tier badges + the Sherpa Score Gold-tier ribbon). Marketing line: <em>"Every action logged. Every role enforced. Service Organization Control 2 (SOC 2) audit trail built in."</em></li>
+<li><strong>Sherpa Flex Landing</strong> — the <code>/flex</code> route and the side-hustle acquisition funnel. Always <strong>Sherpa Flex Landing</strong> when discussing the landing page itself; the underlying tier remains <strong>Sherpa Flex</strong> per §9 product-list naming rules. Color: <strong>orange-red (#FF4500)</strong> to match the PROS block — Flex Landing is <em>action / on-ramp</em>, orange-red is <em>action</em>. (Same color as Sherpa Smart Scan because both are activation-focused surfaces; Brand Guardian disambiguates by surface context — Smart Scan is a feature inside the app, Flex Landing is a marketing landing page.) Marketing line: <em>"Do work on the side? We've got you covered. No LLC required. Insurance built in."</em></li>
+<li><strong>Sherpa Splash</strong> — the public capability showcase on the splash page. Always <strong>Sherpa Splash</strong> when discussing the public marketing front door; the splash page itself can be called "the splash page" in casual copy but <strong>Sherpa Splash</strong> is the locked Brand Guardian name for the showcase surface. Color: <strong>dark navy (#1a1a2e)</strong> — editorial gravity, matches the print + slide editorial system, signals "this is the front door" rather than "this is the app." Marketing line: <em>"Everything Sherpa Pros does, in one place. Code-verified quotes, multi-trade dispatch, materials orchestration, escrow, 37 trades."</em></li>
+<li><strong>Sherpa Dispatch</strong> — multi-trade coordination + timeline. Always <strong>Sherpa Dispatch</strong>, never "the timeline," never "the coordination feature," never "the orchestration layer." The "Sherpa" prefix is non-negotiable. Color: <strong>sky blue (#00A9E0)</strong> to match the SHERPA block — Dispatch is <em>coordination</em>, and coordination is the connective tissue between trades, so the connection-blue from Threads carries forward. (Same color as Sherpa Threads; Brand Guardian disambiguates by surface — Threads is messaging, Dispatch is timeline. Both belong to the "connection" color story.) Marketing line: <em>"Multi-trade jobs, one timeline. Demo to plumbing to electrical to drywall — handed off automatically."</em></li>
+<li><strong>Sherpa Materials</strong> — Wiseman Materials + Zinc + Uber Direct stack. <strong>Internal name "Wiseman Materials" — never expose externally.</strong> Customer-facing always <strong>Sherpa Materials engine</strong> (canonical; lifts to Sherpa Materials short-form after first reference). Brand Guardian default: <strong>Sherpa Materials engine</strong>. Never "internal materials engine," never "the Zinc integration," never "Uber for materials" externally. Color: <strong>warm cream paper (#FBF7EE)</strong> — matches Sherpa Mobile's screenshot treatment because both surfaces are about <em>intentional design</em> — Materials is the receipt + invoice + delivery-slip surface, and the cream-paper color reads "real document" rather than "spreadsheet row." Marketing line: <em>"Materials list, ordered, delivered to the job site. Same day. Pro and client approve before checkout. No supply-house run."</em></li>
+</ul>
+<blockquote>
+<p><strong>CALLOUT — EXTERNAL NAMING RULE (LOCKED, REINFORCED 2026-04-26):</strong></p>
+<p>External-facing copy uses <strong>"Sherpa Materials engine"</strong> as the canonical first reference. Acceptable short-form variants after first mention: "the Materials engine," "Sherpa Pros' materials coordination layer," "the materials surface."</p>
+<p>Internal/code references: "Wiseman Materials" is acceptable inside repos, commit messages, internal architecture docs, engineering Slack, and SQL/migration files.</p>
+<p><strong>Never expose "Wiseman" to clients, partners, or investors.</strong> This includes screenshots in decks, hover-text in mockups, error messages surfaced to users, URLs, email subjects, and press releases. If a "Wiseman" reference leaks into external copy, file it as a P0 issue and fix before next public touch. Brand Guardian audits this on every external send.</p>
+</blockquote>
+<p><strong>Naming-conflict flags (resolved):</strong></p>
+<ul>
+<li>The word <strong>"Threads" alone</strong> refers to <strong>Meta's social network</strong> elsewhere in this portfolio (§2.2 social-avatar usage list, §8.9 social-media presence list — both correct uses of Meta Threads). To prevent any confusion when the same document discusses both <strong>Sherpa Threads</strong> (our product capability) and <strong>Threads</strong> (Meta's social network), the rule is: always use the <strong>full "Sherpa Threads" name</strong> for our capability, and always reserve the bare word <strong>"Threads"</strong> for the Meta social network. Brand Guardian audits this on every external send.</li>
+<li>The word <strong>"Guard" alone</strong> has commercial-security industry overlap (e.g., Allied Universal Guard) and consumer-software overlap (e.g., Norton Security Guard). Always <strong>Sherpa Guard</strong> in copy — never bare "Guard" — to keep the marketplace context clear and avoid implying a physical-security service.</li>
+<li>The word <strong>"Dispatch" alone</strong> is generic operations vocabulary (911 dispatch, taxi dispatch, freight dispatch). Always <strong>Sherpa Dispatch</strong> in copy — never bare "Dispatch" — to keep the multi-trade-coordination meaning specific to Sherpa Pros.</li>
+<li>The word <strong>"Materials" alone</strong> is generic procurement vocabulary. Always <strong>Sherpa Materials</strong> (or, in an existing-product surface, <strong>Smart Materials</strong>) in copy — never bare "Materials" outside an internal engineering context.</li>
+<li>The word <strong>"Splash" alone</strong> is generic web-marketing vocabulary (any landing page is "a splash page"). Always <strong>Sherpa Splash</strong> when referring to <em>our</em> public capability showcase — the team can still call any landing page in general "a splash page," but <strong>Sherpa Splash</strong> is the locked surface name for our showcase.</li>
+<li>The phrase <strong>"Flex Landing" alone</strong> could be read as a feature inside an unrelated product. Always <strong>Sherpa Flex Landing</strong> for the funnel; the underlying tier is always <strong>Sherpa Flex</strong>.</li>
+</ul>
+<p>The rule across all six naming flags: <strong>always use the "Sherpa" prefix in customer-facing copy</strong>, no exceptions.</p>
+<p><strong>Capability-layer voice rules.</strong> All eight capabilities inherit the umbrella voice (plainspoken, founder-anchored, 8th-grade reading level). Capability voices are <strong>modifiers</strong> to product voices, not standalone voices: when Sherpa Marketplace promotes a job match in Sherpa Threads, the voice is Marketplace's (transactional + urgent), with Threads as the surface, not the speaker. Same for Smart Scan inside Sherpa Hub (the voice stays pro-to-pro / equipment-and-supplies; Smart Scan is the verb). Same for Sherpa Dispatch inside Sherpa Marketplace (the voice stays transactional + urgent; Dispatch is the timeline that makes the urgency credible). Same for Sherpa Materials inside Sherpa Hub (the voice stays pro-to-pro; Materials is the noun for the parts list). <strong>Sherpa Guard</strong> is the one exception that almost has its own voice — compliance + trust language sits a half-shade more formal than the rest of the brand — but Brand Guardian still rejects "Sherpa Guard delivers enterprise-grade security" type slop in favor of "Every action gets logged. Every role gets enforced." Never invent a "Threads voice," "Smart Scan voice," "Guard voice," "Dispatch voice," or "Materials voice" as a standalone — they enable, they don't speak.</p>
+<p><strong>Status-disclosure rules</strong> (avoid investor / customer over-promising):</p>
+<ul>
+<li>Sherpa Threads is <strong>LIVE</strong> — describe in present tense.</li>
+<li>Sherpa Smart Scan is <strong>LIVE</strong> — describe in present tense.</li>
+<li>Sherpa Mobile is <strong>in TestFlight beta on iOS, Expo build on Android</strong> — always disclose the beta status until App Store / Play Store launch. Never say "available in the App Store" before that day. Investor decks: "Sherpa Mobile in TestFlight beta — App Store launch Phase 1." Customer marketing: "Sherpa Mobile — invite-only beta, full launch coming."</li>
+<li>Sherpa Guard is <strong>LIVE</strong> — describe in present tense ("every action logged, every role enforced"). Service Organization Control 2 (SOC 2) certification itself is <strong>not yet earned</strong> — never say "SOC 2 certified" until the certification is in hand. Until then, the lock-up is "SOC 2 audit-trail control satisfied" or "SOC 2-ready architecture" — both true, neither overpromising.</li>
+<li>Sherpa Flex Landing is <strong>LIVE</strong> at <code>/flex</code> — describe in present tense.</li>
+<li>Sherpa Splash is <strong>LIVE</strong> on the splash page — describe in present tense.</li>
+<li>Sherpa Dispatch is <strong>LIVE</strong> for multi-trade jobs — describe in present tense. Single-trade jobs run the existing Marketplace match flow (no Dispatch timeline shown).</li>
+<li>Sherpa Materials is <strong>LIVE</strong> — describe in present tense. The Zinc API and Uber Direct integrations are <strong>active</strong> but volume is still ramping; investor decks can disclose "Sherpa Materials live in beta volume" as a Phase 0 traction milestone if the customer-facing copy stays simple ("approve, order, delivered same-day").</li>
+</ul>
+<hr>
+<h2 id="10-asset-library-reference">10. Asset Library Reference</h2>
+<table>
+<thead>
+<tr>
+<th>Asset</th>
+<th>Where it lives</th>
+<th>When to use</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Primary wordmark (master, Phyrom's archive)</td>
+<td><code>~/Library/Mobile Documents/com~apple~CloudDocs/Cranston Holdings DBA North Forge Construction/HJD Company/Marketing/Logos/Sherpa Pros/Sherpa Pros New.png</code></td>
+<td>Source-of-truth — never edit directly</td>
+</tr>
+<tr>
+<td>Primary wordmark (project copy, REQUIRED — see §11 ambiguity)</td>
+<td><code>public/brand/sherpa-pros-wordmark.png</code> (copy from master)</td>
+<td>All horizontal applications shipped from this repo</td>
+</tr>
+<tr>
+<td>App icon master (Phyrom's archive)</td>
+<td><code>~/Library/Mobile Documents/com~apple~CloudDocs/Cranston Holdings DBA North Forge Construction/HJD Company/Marketing/Logos/Sherpa Pros/Sherpa Pros Icon.png</code></td>
+<td>Source-of-truth — never edit directly</td>
+</tr>
+<tr>
+<td>App icon (project copy, in repo)</td>
+<td><code>public/brand/sherpa-pros-icon-1024.png</code></td>
+<td>Square applications</td>
+</tr>
+<tr>
+<td>Favicon</td>
+<td><code>public/favicon.ico</code></td>
+<td>Browser tabs</td>
+</tr>
+<tr>
+<td>iOS app icon set</td>
+<td><code>public/icons/icon-{16,32,48,72,...,1024}x{}.png</code></td>
+<td>Native app + PWA</td>
+</tr>
+<tr>
+<td>Apple touch icon</td>
+<td><code>public/apple-touch-icon.png</code></td>
+<td>iOS home screen</td>
+</tr>
+<tr>
+<td>Generic logo (legacy)</td>
+<td><code>public/logo.png</code></td>
+<td>Audit and confirm: replace or remove</td>
+</tr>
+<tr>
+<td><strong>Sherpa Score + Sherpa Flex tier badges</strong> <em>(needs to be populated)</em></td>
+<td><code>public/badges/</code> (Gold / Silver / Bronze Sherpa Score badges + Sherpa Flex tier badge + Founding Pro badge)</td>
+<td>Pro profile cards, score-detail page, marketplace listings, recruit collateral, Sherpa Rewards Gold-Exclusive lock visuals</td>
+</tr>
+<tr>
+<td>PWA manifest</td>
+<td><code>public/manifest.json</code></td>
+<td>PWA configuration (icon references)</td>
+</tr>
+<tr>
+<td>Marp editorial slide theme</td>
+<td><code>scripts/marp-themes/sherpa-pros-editorial.css</code></td>
+<td>Every slide deck. Includes 10 layout classes.</td>
+</tr>
+<tr>
+<td>Print editorial PDF theme</td>
+<td><code>scripts/docs-pdf-editorial.css</code></td>
+<td>Every PDF rendered from markdown</td>
+</tr>
+<tr>
+<td>Brand bible deck (internal teaching)</td>
+<td><code>docs/slides/06-brand-bible.md</code></td>
+<td>Internal training, contractor onboarding, AI-agent priming</td>
+</tr>
+<tr>
+<td><strong>This portfolio (THE source-of-truth)</strong></td>
+<td><code>docs/operations/brand-portfolio.md</code></td>
+<td>Reference before any external work. Update on every brand decision.</td>
+</tr>
+<tr>
+<td>Brand audit (Brand Guardian findings)</td>
+<td><code>docs/pitch/brand-audit.md</code></td>
+<td>Read before fixing any artifact found in violation</td>
+</tr>
+<tr>
+<td>Product portfolio architecture</td>
+<td><code>docs/operations/sherpa-product-portfolio.md</code></td>
+<td>Reference before working on any specific product</td>
+</tr>
+<tr>
+<td>Brand asset prompts (Ideogram)</td>
+<td><code>docs/operations/brand-asset-prompts.md</code></td>
+<td>Generating new icons, badges, hero images</td>
+</tr>
+<tr>
+<td>Social media prompt library (Wave 8.2)</td>
+<td><code>docs/operations/social-media-prompt-library.md</code></td>
+<td>Generating social assets</td>
+</tr>
+<tr>
+<td>GTM master spec</td>
+<td><code>docs/superpowers/specs/2026-04-22-gtm-marketing-design.md</code></td>
+<td>Brand voice §3 is the canonical bible</td>
+</tr>
+<tr>
+<td>Sherpa Hub design spec</td>
+<td><code>docs/superpowers/specs/2026-04-15-sherpa-hub-model-design.md</code></td>
+<td>Hub product brand specifics</td>
+</tr>
+<tr>
+<td>Sherpa Home design spec</td>
+<td><code>docs/operations/sherpa-home-subscription.md</code></td>
+<td>Home product brand specifics</td>
+</tr>
+</tbody></table>
+<h3 id="101-asset-workflow">10.1 Asset workflow</h3>
+<ol>
+<li>Before generating any new visual asset, check if it already exists in the library above.</li>
+<li>If it doesn't, use the relevant Ideogram prompt from <code>docs/operations/brand-asset-prompts.md</code>.</li>
+<li>Generate at 2× target resolution and downscale in Preview / Pixelmator for sharper edges.</li>
+<li>Save the prompt and the chosen variant to <code>docs/operations/brand-asset-prompts.md</code> (§7 product icons or §8/§9 badges) so future generations stay consistent.</li>
+<li>Run the new asset through the Brand Guardian agent for a visual-consistency audit before using it externally.</li>
+<li>Add it to this portfolio's §10 table once approved.</li>
+</ol>
+<hr>
+<h2 id="11-versioning--maintenance">11. Versioning &amp; Maintenance</h2>
+<ul>
+<li>This document is <strong>v1.0 · 2026-04-25</strong>.</li>
+<li>Update whenever the brand bible (<code>docs/slides/06-brand-bible.md</code>) adds a new rule.</li>
+<li>Update whenever the GTM spec §3 is revised.</li>
+<li>Major version bumps when the product portfolio changes (a fifth product is added, a product is sunset, the umbrella brand is renamed).</li>
+<li>Minor version bumps when typography, color, or photography rules change.</li>
+<li>Patch version bumps for clarifications, examples, or asset-library updates that do not change brand law.</li>
+<li>Brand Guardian agent reviews this document quarterly and after every major external send (investor close, press release, app-store launch).</li>
+</ul>
+<h3 id="111-source-of-truth-chain">11.1 Source-of-truth chain</h3>
+<p>When two documents disagree, the higher-precedence document wins:</p>
+<ol>
+<li><code>docs/superpowers/specs/2026-04-22-gtm-marketing-design.md</code> §3 — the canonical brand spec, owner Phyrom.</li>
+<li><code>docs/operations/brand-portfolio.md</code> (this document) — the canonical brand portfolio, owner Phyrom + Brand Guardian.</li>
+<li><code>docs/slides/06-brand-bible.md</code> — the internal teaching deck, derived from the above.</li>
+<li><code>docs/operations/brand-asset-prompts.md</code> — the asset generation library, derived from the above.</li>
+<li>All other materials — derived from the above.</li>
+</ol>
+<p>When you find a conflict, fix the lower-precedence document to match the higher-precedence one — never the reverse, unless Phyrom explicitly approves a brand revision (which then propagates upward to spec §3 first, then down through everything else).</p>
+<h3 id="112-open-ambiguities-at-v10-flagged-for-resolution">11.2 Open ambiguities at v1.0 (flagged for resolution)</h3>
+<ul>
+<li><strong>Wordmark color secondary value: orange-red vs amber.</strong> The canonical wordmark Phyrom shared uses orange-red (<code>#FF4500</code>) for the PROS block. The currently-shipped editorial themes (<code>scripts/marp-themes/sherpa-pros-editorial.css</code> and <code>scripts/docs-pdf-editorial.css</code>) and the existing brand bible deck use amber (<code>#F59E0B</code>) as the secondary brand color. This portfolio treats orange-red as the canonical wordmark color and reserves amber as a secondary editorial-theme accent (used in print-theme amber underlines, the lower-third strip on cover slides, and rule callouts). <strong>Decision needed:</strong> Phyrom should confirm whether (a) orange-red is canonical and the editorial themes need an update to swap amber for orange-red across the supporting design, or (b) amber stays as the print-and-deck secondary while orange-red lives only in the wordmark itself. This portfolio assumes (b) until Phyrom rules.</li>
+<li><strong>Wordmark master file lives in iCloud, not the repo.</strong> The primary wordmark master is in Phyrom's iCloud Drive, not in the project repository. <strong>Recommendation:</strong> copy the master to <code>public/brand/sherpa-pros-wordmark.png</code> (and a <code>sherpa-pros-wordmark.svg</code> if a vector source is available) before the next deployment so production builds don't depend on iCloud being mounted.</li>
+<li><strong>Sherpa Success Manager human-role title.</strong> The product name is <strong>Sherpa Success Manager</strong> (locked 2026-04-25 per backend deployment commit <code>6097f83</code>). The role title for the dedicated human staffing the product (Account Manager vs Success Manager vs simply "your Sherpa Manager") is still being decided. This portfolio uses "Sherpa Success Manager" as the product name and leaves the human-role title TBD.</li>
+<li><strong>Email canonical alias.</strong> Brand audit P0-4 flagged that two email aliases appear in shipped materials (<code>phyrom@thesherpapros.com</code> and <code>poum@hjd.builders</code>). Phyrom needs to lock one as canonical for investor-facing materials and use it everywhere. This portfolio uses <code>poum@hjd.builders</code> in the §8.3 example signature per the CLAUDE.md project memory, but Phyrom should confirm.</li>
+<li><strong>Domain canonical form.</strong> <code>www.thesherpapros.com</code> vs <code>thesherpapros.com</code>. Spec §3.4 confirms <code>https://www.thesherpapros.com/</code> as canonical. This portfolio honors that. Update CLAUDE.md to drop the <code>sherpa-pros-platform.vercel.app</code> reference (deprecated as of 2026-04-24).</li>
+<li><strong><del>Sherpa Flex naming</del></strong> — <strong>CLOSED 2026-04-25.</strong> "Sherpa Flex" is locked as the canonical name for the 5th pro tier (18% fee, per-project insurance included, no LLC required, jobs &lt;$5K only). Always use "Sherpa Flex" or "Sherpa Flex tier" in external surfaces — never "Flex" alone, never "the Flex tier" alone. Live page: <code>/pro/flex</code>. Position the 18% fee as a <em>feature, not a bug</em> — when you factor in the cost of carrying personal general-liability insurance (the alternative on Standard tier), the 6% premium over Standard is <em>less than</em> what the pro would pay out-of-pocket for their own policy. The headline is <strong>"insurance included,"</strong> not "higher fee."</li>
+<li><strong>Sherpa Rewards visual treatment</strong> <em>(NEW — flagged for resolution).</em> Sherpa Rewards shipped LIVE 2026-04-25 (<code>/pro/rewards</code>) but the visual identity is still using stock heroicons and Tailwind palette tokens. Needed: (1) <strong>branded gift-category icons</strong> for the 5 catalog categories (apparel, tools, gift cards, personal items, experiences) that share the diagonal-cut visual grammar of the Sherpa Pros wordmark; (2) <strong>point-value display</strong> treatment that pairs cleanly with the Manrope numeric scale used in score / earnings dashboards; (3) <strong>Gold-Exclusive lock badge</strong> that uses amber (<code>#F59E0B</code>) plus the Sherpa Score Gold tier visual cue without competing with the wordmark's orange-red; (4) <strong>redemption-success modal animation</strong> — quiet, contractor-credible (no confetti, no "you're a winner!" copy — match the plainspoken founder voice). Brand Guardian to spec these with Phyrom approval before any non-Phyrom designer touches the page.</li>
+<li><strong>Sherpa Flex page color audit</strong> <em>(NEW — flagged for resolution).</em> The shipped <code>/pro/flex</code> page uses <strong>violet</strong> (<code>violet-50</code>, <code>violet-100</code>, <code>violet-600</code> Tailwind tokens) as the dominant tier color. Violet is <strong>not</strong> in the canonical Sherpa Pros palette (sky blue <code>#00A9E0</code>, orange-red <code>#FF4500</code>, amber <code>#F59E0B</code>, dark navy <code>#1A1A2E</code>). Decision needed: should Sherpa Flex pick up an existing brand color (likely sky blue, since amber is reserved for Gold-tier and orange-red for the wordmark / urgency states) or should the brand palette officially expand to add a fifth tier-color for Sherpa Flex? Brand Guardian to recommend before Phase 1 marketing assets are produced.</li>
+</ul>
+<hr>
+<h2 id="brand-bible-compliance-this-portfolio-doc-itself">Brand bible compliance (this portfolio doc itself)</h2>
+<p>This document is written to its own rules:</p>
+<ul>
+<li><strong>Plainspoken, founder-voiced, 8th-grade reading level.</strong> No jargon, no abbreviations on first use, no "leverages" or "ecosystem" or "next-generation."</li>
+<li><strong>Always say:</strong> Licensed · Verified · Code-aware · Built by a contractor · Local · Jobs, not leads · National.</li>
+<li><strong>Never say:</strong> Wiseman externally · Gig / Task · "Uber for X" externally · "AI-powered" as headline · Disrupt · Revolutionize. (The audit findings in §11 reference "Wiseman" as an internal name being audited out of external materials — this is acceptable because the discussion is itself the audit; the term does not appear as a brand claim.)</li>
+<li><strong>Phyrom's surname UNKNOWN</strong> — used "Phyrom" only throughout.</li>
+<li><strong>Domain:</strong> <code>https://www.thesherpapros.com/</code> — used the canonical form everywhere external.</li>
+<li><strong>Founder voice leads</strong> in the Brand Story (§1), the application briefs (§8), and the example email signature.</li>
+</ul>
+<hr>
+<p><strong>End of brand portfolio · v1.0 · 2026-04-25</strong></p>
+<p>For revisions, propose edits to this document via pull request. Coordinate with Phyrom on any change to color, type, voice, or naming rules. Brand Guardian agent runs the final audit before merging.</p>
+
+	
+
+
+</body>
+</html>

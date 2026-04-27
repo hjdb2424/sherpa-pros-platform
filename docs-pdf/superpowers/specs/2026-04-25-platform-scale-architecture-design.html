@@ -1,0 +1,2147 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2026 04 25 platform scale architecture design — Sherpa Pros</title>
+<link rel="icon" href="../../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="2026-04-25-platform-scale-architecture-design.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="platform-scale-architecture--sherpa-pros-phase-4-infrastructure-design">Platform Scale Architecture — Sherpa Pros Phase 4+ Infrastructure Design</h1>
+<blockquote>
+<p>"Every Pro verified. Every project validated. Every region resilient. The marketplace that scales like Stripe and stays compliant like Plaid."</p>
+</blockquote>
+<p><strong>Repo:</strong> <code>hjdb2424/sherpa-pros-platform</code>
+<strong>Date:</strong> 2026-04-25
+<strong>Status:</strong> Approved — staged rollout starts Q3 2026
+<strong>Author:</strong> Backend Architect (advisor to Phyrom)
+<strong>Companion plan:</strong> <code>docs/superpowers/plans/2026-04-25-platform-scale-architecture-plan.md</code>
+<strong>Related specs:</strong> <code>docs/superpowers/specs/2026-04-13-sherpa-pros-platform-design.md</code> (MVP), <code>docs/superpowers/specs/2026-04-25-rbac-roles-dispatch-marketing-design.md</code> (RBAC)</p>
+<hr>
+<h2 id="1-executive-summary">1. Executive Summary</h2>
+<h3 id="current-state-q2-2026">Current State (Q2 2026)</h3>
+<p>Sherpa Pros runs as a single-region Next.js 16 application on Vercel (US-East default region), backed by a single Neon Postgres primary (us-east-1) with PostGIS for geospatial dispatch. Authentication is fully managed by Clerk. Payments run through Stripe Connect Express. Masked communication runs through Twilio. The platform has shipped 6 products plus 8 platform capabilities (14 brand surfaces) including Sherpa Guard (RBAC + audit logs), Sherpa Dispatch (multi-trade coordination), Sherpa Materials (codes engine + Zinc API + Uber Direct), and Sherpa Mobile (TestFlight build via Expo).</p>
+<p>Phase 1 target: ~10,000 monthly active users (MAU), ~1,000 jobs per month, US-only, single primary region. Current architecture comfortably handles this load with significant headroom.</p>
+<h3 id="target-state-phase-4-late-2028">Target State (Phase 4, late 2028)</h3>
+<ul>
+<li><strong>Geography:</strong> Multi-region across US-East, US-West, Canada (ca-central-1), European Union (eu-central-1), United Kingdom (eu-west-2), and Australia (ap-southeast-2)</li>
+<li><strong>Scale:</strong> 1M+ MAU at Phase 4A entry, growing toward 5M+ MAU by Phase 4D</li>
+<li><strong>Compliance:</strong> Service Organization Control 2 (SOC 2) Type 2 certified, General Data Protection Regulation (GDPR) compliant, Personal Information Protection and Electronic Documents Act (PIPEDA) compliant, UK GDPR compliant, Australian Privacy Principles (APP) compliant</li>
+<li><strong>Reliability:</strong> 99.95% uptime Service Level Agreement (SLA), Recovery Point Objective (RPO) of 15 minutes, Recovery Time Objective (RTO) of 4 hours regional, 24 hours catastrophic</li>
+<li><strong>Performance:</strong> Sub-200ms P95 dispatch latency from any supported region, sub-2s P95 payment success, sub-500ms P95 API responses globally</li>
+</ul>
+<h3 id="migration-philosophy">Migration Philosophy</h3>
+<p><strong>Incremental, not big-bang.</strong> Every architectural change ships behind a feature flag, runs in shadow mode, and graduates to production only after observability confirms parity. Vercel Rolling Releases plus LaunchDarkly (or Vercel Edge Config for simple flags) make this safe. We never rewrite — we extend, measure, and harden.</p>
+<p>The four-phase rollout (4A through 4D) maps cleanly onto the international expansion timeline (separate spec). SOC 2 Type 1 lands first (Q2 2027), Type 2 follows after a 12-month observation window (Q2 2028), and Canadian region setup (Phase 4B) is gated on Type 1 to satisfy enterprise property-management buyer requirements.</p>
+<hr>
+<h2 id="2-current-architecture-inventory">2. Current Architecture Inventory</h2>
+<h3 id="stack-as-deployed-april-2026">Stack As Deployed (April 2026)</h3>
+<pre><code>                                  +------------------------+
+                                  |      Vercel Edge       |
+                                  |  (global CDN, default) |
+                                  +-----------+------------+
+                                              |
+                                              v
++--------------+        +-----------------------------------+        +-----------------+
+| Cloudflare?  |  --&gt;   | Vercel Functions (Fluid Compute)  |  --&gt;   |   Clerk Auth    |
+|  (NOT YET)   |        | Next.js 16 App Router (Node 24)   |        |  (managed)      |
++--------------+        | src/app/api/* + middleware.ts     |        +-----------------+
+                        | Sherpa Guard RBAC at edge         |
+                        +------+----------+--------+--------+
+                               |          |        |
+                               v          v        v
+                        +----------+ +--------+ +--------+
+                        |   Neon   | | Stripe | | Twilio |
+                        | Postgres | |Connect | | masked |
+                        | + PostGIS| | Express|  | SMS    |
+                        | us-east-1| | (US)   | +--------+
+                        | (single  | +--------+
+                        |  primary)|
+                        +----+-----+
+                             |
+                             v
+                        +----------+
+                        | Drizzle  |
+                        |   ORM    |
+                        +----------+
+</code></pre>
+<h3 id="layer-breakdown">Layer Breakdown</h3>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Component</th>
+<th>Status</th>
+<th>Scale Concern</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Edge</td>
+<td>Vercel global CDN</td>
+<td>Solid</td>
+<td>None at current load</td>
+</tr>
+<tr>
+<td>Compute</td>
+<td>Vercel Functions (Fluid Compute, Node 24 LTS, 300s timeout default)</td>
+<td>Solid</td>
+<td>Cold-start risk above 100 RPS sustained</td>
+</tr>
+<tr>
+<td>Auth</td>
+<td>Clerk-managed (Google OAuth, email link)</td>
+<td>Solid</td>
+<td>Pricing scales linearly past 10K MAU; revisit at 100K</td>
+</tr>
+<tr>
+<td>Routing</td>
+<td>Next.js 16 App Router middleware (<code>src/middleware.ts</code>) — Sherpa Guard RBAC</td>
+<td>Solid (just shipped)</td>
+<td>Middleware runs Node.js (not Edge) per Vercel knowledge update — full library access available</td>
+</tr>
+<tr>
+<td>Data</td>
+<td>Neon Postgres + PostGIS, single primary us-east-1</td>
+<td>Solid for Phase 1, single point of failure</td>
+<td>No read replicas, no cross-region failover, no formal sharding</td>
+</tr>
+<tr>
+<td>ORM</td>
+<td>Drizzle (TypeScript schema in <code>src/db/drizzle-schema.ts</code>)</td>
+<td>Solid</td>
+<td>Schema is well-designed; partitioning needs planning</td>
+</tr>
+<tr>
+<td>Migrations</td>
+<td>Raw SQL in <code>src/db/migrations/00X_*.sql</code></td>
+<td>Solid</td>
+<td>010 migrations shipped; need automated forward/back testing</td>
+</tr>
+<tr>
+<td>Audit</td>
+<td><code>audit_logs</code> table (migration 008) plus <code>src/lib/audit.ts</code> helper</td>
+<td>Solid (Sherpa Guard)</td>
+<td>Will need partitioning past ~100M rows</td>
+</tr>
+<tr>
+<td>Dispatch</td>
+<td><code>src/lib/dispatch/</code> (multi-trade, materials, deliveries)</td>
+<td>Solid (just shipped)</td>
+<td>Latency budget needs measurement under multi-region load</td>
+</tr>
+<tr>
+<td>Payments</td>
+<td>Stripe Connect Express (US-only)</td>
+<td>Solid for US</td>
+<td>Need per-country Stripe Connect platforms for international</td>
+</tr>
+<tr>
+<td>Messaging</td>
+<td>Twilio masked SMS (auto-fallback to mock)</td>
+<td>Solid</td>
+<td>Twilio Messaging Service per region for international</td>
+</tr>
+<tr>
+<td>Maps</td>
+<td>Google Maps JavaScript API + <code>@vis.gl/react-google-maps</code></td>
+<td>Solid</td>
+<td>Quota review at 100K+ MAU</td>
+</tr>
+<tr>
+<td>Mobile</td>
+<td>Expo + EAS, iOS TestFlight (<code>com.thesherpapros.app</code>), Android via Expo</td>
+<td>Solid</td>
+<td>Native push notifications (Apple Push Notification Service / APNS, Firebase Cloud Messaging / FCM) needed at scale</td>
+</tr>
+<tr>
+<td>Observability</td>
+<td>Vercel built-in logs + analytics, no APM, no synthetic monitors</td>
+<td><strong>Gap</strong></td>
+<td>Critical for SLA enforcement</td>
+</tr>
+<tr>
+<td>Rate limiting</td>
+<td>Vercel default per-deployment limits</td>
+<td><strong>Gap</strong></td>
+<td>No per-user, per-endpoint, or per-tier policy</td>
+</tr>
+<tr>
+<td>WAF</td>
+<td>None</td>
+<td><strong>Gap</strong></td>
+<td>DDoS exposure at launch day</td>
+</tr>
+<tr>
+<td>Secrets</td>
+<td>Vercel environment variables</td>
+<td>OK for now</td>
+<td>Migrate to dedicated secrets manager at Phase 3 scale</td>
+</tr>
+<tr>
+<td>Backup</td>
+<td>Neon Point-in-Time Recovery (PITR) 7 days on Pro plan</td>
+<td><strong>Gap</strong> for compliance</td>
+<td>RPO formalization needed</td>
+</tr>
+<tr>
+<td>Disaster recovery</td>
+<td>None documented</td>
+<td><strong>Gap</strong></td>
+<td>Required before Type 1 audit</td>
+</tr>
+</tbody></table>
+<h3 id="what-is-solid">What Is Solid</h3>
+<p>The foundational schema, the Sherpa Guard RBAC + audit log primitives (migrations 008-010), the Drizzle-typed query layer, the Clerk auth boundary, and the lazy Stripe initialization pattern all set us up well for scale. The team has been disciplined about server-component-first rendering and integer-cents money handling. These are not the things that need to evolve.</p>
+<h3 id="what-needs-to-evolve">What Needs To Evolve</h3>
+<p>Single-region database, no read replicas, no formal observability, no rate limiting beyond Vercel defaults, no Web Application Firewall (WAF), no formal disaster recovery (DR) plan, no compliance posture beyond ad-hoc good practice. Each is addressed below.</p>
+<hr>
+<h2 id="3-multi-region-strategy">3. Multi-Region Strategy</h2>
+<p>We grow regionally in four phases, gated on traction and compliance milestones rather than calendar dates. Each phase adds compute and data in a new geography, leaves the previous regions untouched, and keeps PII jurisdictional.</p>
+<h3 id="phase-4a--us-west-expansion-months-19-24">Phase 4A — US-West Expansion (Months 19-24)</h3>
+<p><strong>Trigger:</strong> Sustained traffic from west-coast metros (LA, San Francisco Bay, Seattle, Phoenix) crossing 15% of total dispatch volume, or P95 dispatch latency from those regions exceeding 400ms.</p>
+<p><strong>Scope:</strong></p>
+<ul>
+<li>Add Vercel automatic regional routing (Vercel handles this with Fluid Compute — functions execute in the region closest to the user)</li>
+<li>Add Neon read replica in <code>us-west-2</code> (Oregon) for read-heavy traffic (Pro search, job-listing browse, dashboards)</li>
+<li>Keep Neon primary in <code>us-east-1</code> for all writes; writes always route to primary, reads route to nearest replica via Drizzle replica-aware client</li>
+<li>No data residency boundary — US data is one logical jurisdiction</li>
+</ul>
+<p><strong>Why now:</strong> Most cost-effective scale move. Vercel handles compute regionalization automatically. Neon read replicas are a managed-service config change, not a migration.</p>
+<h3 id="phase-4b--canada-months-25-30">Phase 4B — Canada (Months 25-30)</h3>
+<p><strong>Trigger:</strong> SOC 2 Type 1 certified (gating requirement for Canadian PM enterprise sales), and Canadian beta cohort committed (10+ Canadian pros recruited via Toronto/Vancouver hubs).</p>
+<p><strong>Scope:</strong></p>
+<ul>
+<li>New Neon database in <code>ca-central-1</code> (Montreal) — separate database, NOT a replica of US primary</li>
+<li>Vercel functions execute in Canadian region for Canadian traffic</li>
+<li>Stripe Connect platform registered in Canada (separate from US platform — Stripe requires per-country platform accounts)</li>
+<li>Twilio Canadian phone numbers + Canadian Messaging Service</li>
+<li>All Canadian PII (users, jobs, audit logs, materials, deliveries) stays in Canada per PIPEDA</li>
+<li>Codes engine (provincial building codes for Ontario, Quebec, BC) deployed as global read-only via CDN — no PII</li>
+</ul>
+<p><strong>Cross-region access pattern:</strong> Phyrom (US-based admin) viewing the Canadian admin panel reads through a routed admin proxy that respects data-residency rules. Aggregate analytics (count of jobs, count of users) are anonymized and pushed nightly to a US analytics warehouse via cross-border data-processing agreement (signed with Canadian customers at sign-up).</p>
+<h3 id="phase-4c--european-union-months-31-36">Phase 4C — European Union (Months 31-36)</h3>
+<p><strong>Trigger:</strong> EU partner secured (likely a Spanish or German construction-industry partner per the international expansion spec), and SOC 2 Type 2 certified (most EU enterprise buyers require it for vendor onboarding).</p>
+<p><strong>Scope:</strong></p>
+<ul>
+<li>New Neon database in <code>eu-central-1</code> (Frankfurt) — separate database</li>
+<li>Vercel functions in EU region</li>
+<li>Stripe Connect platform for EU (covers SEPA, supports per-country payouts via Connect)</li>
+<li>Twilio EU Messaging Service (German, French, Spanish, Italian phone numbers)</li>
+<li>All EU PII stays in EU per GDPR Articles 44-49 (cross-border transfer rules)</li>
+<li>Cookie consent and Data Subject Access Request (DSAR) flow added across all EU surfaces (defer details to International Expansion spec)</li>
+<li>Codes engine extended with EU building-code metadata (Eurocodes plus per-country amendments)</li>
+</ul>
+<h3 id="phase-4d--uk--australia-months-37-42">Phase 4D — UK + Australia (Months 37-42)</h3>
+<p><strong>Trigger:</strong> Phase 4C operationally stable for 6+ months; international team (Sherpa Hub International or franchise model — see those specs) in place.</p>
+<p><strong>Scope:</strong></p>
+<ul>
+<li>UK: Either Neon <code>eu-west-2</code> (London) — UK GDPR substantially mirrors EU GDPR, but post-Brexit UK is a separate jurisdiction. Recommend separate UK database to future-proof against any UK-specific data laws.</li>
+<li>Australia: Neon <code>ap-southeast-2</code> (Sydney). Australian Privacy Act 1988 + Australian Privacy Principles. Distance from US/EU regions makes single-region critical for latency.</li>
+</ul>
+<h3 id="per-region-service-map">Per-Region Service Map</h3>
+<table>
+<thead>
+<tr>
+<th>Service</th>
+<th>US</th>
+<th>Canada</th>
+<th>EU</th>
+<th>UK</th>
+<th>AU</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Authentication (Clerk)</td>
+<td>Global</td>
+<td>Global</td>
+<td>Global (EU instance)</td>
+<td>Global</td>
+<td>Global</td>
+</tr>
+<tr>
+<td>Compute (Vercel)</td>
+<td>Multi-region (East+West)</td>
+<td>Regional</td>
+<td>Regional</td>
+<td>Regional</td>
+<td>Regional</td>
+</tr>
+<tr>
+<td>Primary database (Neon)</td>
+<td>us-east-1 + us-west-2 replica</td>
+<td>ca-central-1</td>
+<td>eu-central-1</td>
+<td>eu-west-2</td>
+<td>ap-southeast-2</td>
+</tr>
+<tr>
+<td>Payments (Stripe Connect)</td>
+<td>US platform</td>
+<td>CA platform</td>
+<td>EU platform</td>
+<td>UK platform</td>
+<td>AU platform</td>
+</tr>
+<tr>
+<td>Messaging (Twilio)</td>
+<td>US Messaging Service</td>
+<td>CA Messaging Service</td>
+<td>EU Messaging Service</td>
+<td>UK Messaging Service</td>
+<td>AU Messaging Service</td>
+</tr>
+<tr>
+<td>Codes engine ("Sherpa codes engine")</td>
+<td>Global read-only via CDN</td>
+<td>Global read-only via CDN</td>
+<td>Global read-only via CDN</td>
+<td>Global read-only via CDN</td>
+<td>Global read-only via CDN</td>
+</tr>
+<tr>
+<td>Materials engine ("Sherpa Materials engine")</td>
+<td>US (Zinc API + Uber Direct)</td>
+<td>CA (separate supplier integrations)</td>
+<td>EU (regional suppliers, defer to international spec)</td>
+<td>UK</td>
+<td>AU</td>
+</tr>
+<tr>
+<td>Maps (Google)</td>
+<td>Global</td>
+<td>Global</td>
+<td>Global</td>
+<td>Global</td>
+<td>Global</td>
+</tr>
+<tr>
+<td>Mobile (Expo / EAS)</td>
+<td>Global build, regional API endpoints</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p><strong>Global-vs-regional rule:</strong> Anything containing PII is regional. Anything that does not (codes, brand assets, marketing pages, Sherpa codes engine read-only metadata) is global via CDN.</p>
+<hr>
+<h2 id="4-database-scaling-strategy">4. Database Scaling Strategy</h2>
+<h3 id="sharding-decision-shard-by-metro_id">Sharding Decision: Shard by <code>metro_id</code></h3>
+<p><strong>Recommendation: shard by metro_id (each Hub or operational metro = one logical shard) starting in Phase 4A pilot, fully rolled out by Phase 4B.</strong></p>
+<p>Why metro_id beats alternatives:</p>
+<ul>
+<li><strong>By user_id:</strong> Loses geospatial locality. Dispatch queries (PostGIS <code>ST_DWithin</code>) must hit one shard, not 30.</li>
+<li><strong>By tenant_id:</strong> No multi-tenancy concept in Sherpa Pros — each user is independent.</li>
+<li><strong>By region:</strong> Too coarse. New England would be one shard at 5M+ users; we'd shard the shard later.</li>
+<li><strong>By metro_id:</strong> Natural locality (a Boston job involves Boston pros and Boston materials). Cross-metro joins are rare. Hubs map cleanly to shards. Sherpa Hub spec already treats metro as a first-class concept.</li>
+</ul>
+<p><strong>Implementation path: Citus extension on Postgres (recommended) over pg_partman + Foreign Data Wrapper (FDW).</strong></p>
+<p>Citus is a Postgres extension (not a separate database) that automatically distributes tables across worker nodes, supports cross-shard SELECTs transparently, and is now first-class on Neon (via the Citus-on-Neon beta as of late 2025). The pg_partman + FDW alternative requires hand-rolling cross-shard joins and is brittle past ~50 shards.</p>
+<pre><code class="hljs sql"><span class="hljs-comment">-- Phase 4A: enable Citus on the primary (Neon Citus tier)</span>
+<span class="hljs-keyword">CREATE</span> EXTENSION citus;
+
+<span class="hljs-comment">-- Distribute the jobs table by metro_id</span>
+<span class="hljs-keyword">SELECT</span> create_distributed_table(<span class="hljs-string">'jobs'</span>, <span class="hljs-string">'metro_id'</span>);
+
+<span class="hljs-comment">-- Distribute related tables along the same key (co-located shards)</span>
+<span class="hljs-keyword">SELECT</span> create_distributed_table(<span class="hljs-string">'bids'</span>, <span class="hljs-string">'metro_id'</span>, colocate_with <span class="hljs-operator">=</span><span class="hljs-operator">&gt;</span> <span class="hljs-string">'jobs'</span>);
+<span class="hljs-keyword">SELECT</span> create_distributed_table(<span class="hljs-string">'dispatch_events'</span>, <span class="hljs-string">'metro_id'</span>, colocate_with <span class="hljs-operator">=</span><span class="hljs-operator">&gt;</span> <span class="hljs-string">'jobs'</span>);
+<span class="hljs-keyword">SELECT</span> create_distributed_table(<span class="hljs-string">'materials_orders'</span>, <span class="hljs-string">'metro_id'</span>, colocate_with <span class="hljs-operator">=</span><span class="hljs-operator">&gt;</span> <span class="hljs-string">'jobs'</span>);
+<span class="hljs-keyword">SELECT</span> create_distributed_table(<span class="hljs-string">'deliveries'</span>, <span class="hljs-string">'metro_id'</span>, colocate_with <span class="hljs-operator">=</span><span class="hljs-operator">&gt;</span> <span class="hljs-string">'jobs'</span>);
+
+<span class="hljs-comment">-- Reference tables (read-only, replicated to every node)</span>
+<span class="hljs-keyword">SELECT</span> create_reference_table(<span class="hljs-string">'skills_catalog'</span>);
+<span class="hljs-keyword">SELECT</span> create_reference_table(<span class="hljs-string">'codes_metadata'</span>);
+<span class="hljs-keyword">SELECT</span> create_reference_table(<span class="hljs-string">'hubs'</span>);
+</code></pre>
+<h3 id="cross-shard-audit-log-queries">Cross-Shard Audit Log Queries</h3>
+<p>The one place cross-shard joins are unavoidable is the audit log (admin reviewing all sign-ins for a user across metros). Solution: keep <code>audit_logs</code> as a <strong>reference table</strong> in Citus (replicated to every node — small enough to not hurt write throughput) until it grows past ~50M rows, then move to weekly partitioning + a read replica dedicated to compliance queries.</p>
+<h3 id="read-replicas-per-region">Read Replicas Per Region</h3>
+<p>Every region gets at least one read replica in addition to the primary. Replica routing happens at the ORM layer:</p>
+<pre><code class="hljs typescript"><span class="hljs-comment">// src/db/index.ts — replica-aware Drizzle client</span>
+<span class="hljs-keyword">import</span> { drizzle } <span class="hljs-keyword">from</span> <span class="hljs-string">'drizzle-orm/neon-http'</span>;
+<span class="hljs-keyword">import</span> { neon } <span class="hljs-keyword">from</span> <span class="hljs-string">'@neondatabase/serverless'</span>;
+
+<span class="hljs-keyword">const</span> primary = <span class="hljs-title function_">neon</span>(process.<span class="hljs-property">env</span>.<span class="hljs-property">DATABASE_URL_PRIMARY</span>!);
+<span class="hljs-keyword">const</span> replica = <span class="hljs-title function_">neon</span>(process.<span class="hljs-property">env</span>.<span class="hljs-property">DATABASE_URL_REPLICA</span>!);
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> dbWrite = <span class="hljs-title function_">drizzle</span>(primary);
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> dbRead = <span class="hljs-title function_">drizzle</span>(replica);
+
+<span class="hljs-comment">// Convention: dbWrite for INSERT/UPDATE/DELETE, dbRead for SELECT</span>
+<span class="hljs-comment">// Exception: read-after-write — use dbWrite for SELECT immediately after INSERT</span>
+</code></pre>
+<h3 id="connection-pooling">Connection Pooling</h3>
+<p>Neon's built-in pooler (PgBouncer-compatible, transaction mode) handles Phase 1-3 scale. For Phase 4+ when concurrent connections exceed 10K, add a self-managed PgBouncer in front of Neon for finer pool tuning (per-region, per-application-tier pools). Vercel Functions are inherently bursty — the pooler matters more than the database.</p>
+<h3 id="hot--warm--cold-tiering">Hot / Warm / Cold Tiering</h3>
+<table>
+<thead>
+<tr>
+<th>Tier</th>
+<th>Age</th>
+<th>Storage</th>
+<th>Access Pattern</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Hot</td>
+<td>0-90 days</td>
+<td>Primary database (Neon)</td>
+<td>Synchronous reads + writes</td>
+</tr>
+<tr>
+<td>Warm</td>
+<td>90-365 days</td>
+<td>Archive read replica (Neon, read-only)</td>
+<td>Async reads (dashboards, reports) — query latency target &lt;2s</td>
+</tr>
+<tr>
+<td>Cold</td>
+<td>365+ days</td>
+<td>S3 archive (Parquet + Iceberg metadata)</td>
+<td>Restore-on-demand for compliance queries; query latency target &lt;60s</td>
+</tr>
+</tbody></table>
+<p>Migration daemon runs nightly: copies rows past 90 days from hot to warm (UPDATE SET in place via partition swap), copies rows past 365 days to S3 + DELETE from warm, and emits an <code>archive_event</code> audit log entry per row archived. Restore path: a single CLI command pulls a date range back into a temporary Postgres table for compliance-team review.</p>
+<h3 id="materialized-views-for-analytics">Materialized Views For Analytics</h3>
+<p>Dashboards (admin investor-metrics, hub manager performance, pro-leaderboard) read from materialized views, not raw tables. Refresh nightly at 02:00 UTC per region.</p>
+<pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> MATERIALIZED <span class="hljs-keyword">VIEW</span> mv_hub_metrics_daily <span class="hljs-keyword">AS</span>
+<span class="hljs-keyword">SELECT</span>
+  hub_id,
+  date_trunc(<span class="hljs-string">'day'</span>, created_at) <span class="hljs-keyword">AS</span> <span class="hljs-keyword">day</span>,
+  <span class="hljs-built_in">COUNT</span>(<span class="hljs-operator">*</span>) <span class="hljs-keyword">FILTER</span> (<span class="hljs-keyword">WHERE</span> status <span class="hljs-operator">=</span> <span class="hljs-string">'completed'</span>) <span class="hljs-keyword">AS</span> jobs_completed,
+  <span class="hljs-built_in">SUM</span>(amount_cents) <span class="hljs-keyword">FILTER</span> (<span class="hljs-keyword">WHERE</span> status <span class="hljs-operator">=</span> <span class="hljs-string">'completed'</span>) <span class="hljs-keyword">AS</span> gmv_cents,
+  <span class="hljs-built_in">AVG</span>(<span class="hljs-built_in">EXTRACT</span>(EPOCH <span class="hljs-keyword">FROM</span> (matched_at <span class="hljs-operator">-</span> created_at))) <span class="hljs-keyword">AS</span> avg_dispatch_seconds_p50,
+  <span class="hljs-built_in">PERCENTILE_CONT</span>(<span class="hljs-number">0.95</span>) <span class="hljs-keyword">WITHIN</span> <span class="hljs-keyword">GROUP</span> (<span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> <span class="hljs-built_in">EXTRACT</span>(EPOCH <span class="hljs-keyword">FROM</span> (matched_at <span class="hljs-operator">-</span> created_at))) <span class="hljs-keyword">AS</span> dispatch_seconds_p95
+<span class="hljs-keyword">FROM</span> jobs
+<span class="hljs-keyword">WHERE</span> created_at <span class="hljs-operator">&gt;</span> NOW() <span class="hljs-operator">-</span> <span class="hljs-type">INTERVAL</span> <span class="hljs-string">'90 days'</span>
+<span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> hub_id, <span class="hljs-keyword">day</span>;
+
+<span class="hljs-keyword">CREATE</span> INDEX <span class="hljs-keyword">ON</span> mv_hub_metrics_daily (hub_id, <span class="hljs-keyword">day</span> <span class="hljs-keyword">DESC</span>);
+</code></pre>
+<h3 id="partitioning-strategy">Partitioning Strategy</h3>
+<table>
+<thead>
+<tr>
+<th>Table</th>
+<th>Partition By</th>
+<th>Partition Cadence</th>
+<th>Retention</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>jobs</code></td>
+<td><code>created_at</code></td>
+<td>Monthly</td>
+<td>7 years (legal hold)</td>
+</tr>
+<tr>
+<td><code>audit_logs</code></td>
+<td><code>created_at</code></td>
+<td>Weekly</td>
+<td>7 years default, 10 years for PM-tier opt-in</td>
+</tr>
+<tr>
+<td><code>messages</code> (Sherpa Threads)</td>
+<td><code>conversation_id</code> (hash)</td>
+<td>32 hash buckets</td>
+<td>7 years default, 10 years for PM opt-in</td>
+</tr>
+<tr>
+<td><code>dispatch_events</code></td>
+<td><code>created_at</code></td>
+<td>Monthly</td>
+<td>2 years (operational), then archive</td>
+</tr>
+<tr>
+<td><code>materials_orders</code></td>
+<td><code>created_at</code></td>
+<td>Monthly</td>
+<td>7 years (financial)</td>
+</tr>
+<tr>
+<td><code>deliveries</code></td>
+<td><code>created_at</code></td>
+<td>Monthly</td>
+<td>3 years</td>
+</tr>
+<tr>
+<td><code>bids</code></td>
+<td><code>job_id</code> (hash)</td>
+<td>16 hash buckets</td>
+<td>Tied to job retention</td>
+</tr>
+<tr>
+<td><code>payments</code></td>
+<td><code>created_at</code></td>
+<td>Monthly</td>
+<td>7 years (financial)</td>
+</tr>
+</tbody></table>
+<p>Partition creation runs ahead 3 months via cron job (Vercel Cron Job hitting a <code>/api/admin/maintenance/create-partitions</code> endpoint, idempotent). Old partitions detached and archived per the cold-tier policy above.</p>
+<hr>
+<h2 id="5-api-gateway-rate-limiting-and-ddos-protection">5. API Gateway, Rate Limiting, and DDoS Protection</h2>
+<h3 id="stack-recommendation">Stack Recommendation</h3>
+<pre><code>Public traffic
+      |
+      v
++-------------------+
+|   Cloudflare Pro  |  -- WAF rules, DDoS mitigation, per-IP throttling
++-------------------+
+      |
+      v
++-------------------+
+|   Vercel Edge     |  -- Vercel BotID at edge (GA Jun 2025 per knowledge update)
++-------------------+
+      |
+      v
++-------------------+
+| Vercel Functions  |  -- Upstash Redis rate-limit middleware (per-user, per-tier)
++-------------------+
+      |
+      v
++-------------------+
+| Sherpa Guard RBAC |  -- src/middleware.ts (already shipped)
++-------------------+
+</code></pre>
+<h3 id="rate-limiting-via-upstash-redis-at-the-edge">Rate Limiting via Upstash Redis at the Edge</h3>
+<p>Recommend Upstash Redis (serverless, edge-replicated, pay-per-request) over Redis on Vercel Marketplace for cost predictability and global availability. Implementation in <code>src/middleware.ts</code>:</p>
+<pre><code class="hljs typescript"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">Ratelimit</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">'@upstash/ratelimit'</span>;
+<span class="hljs-keyword">import</span> { <span class="hljs-title class_">Redis</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">'@upstash/redis'</span>;
+
+<span class="hljs-keyword">const</span> tiers = {
+  <span class="hljs-attr">anonymous</span>: <span class="hljs-keyword">new</span> <span class="hljs-title class_">Ratelimit</span>({ <span class="hljs-attr">redis</span>: <span class="hljs-title class_">Redis</span>.<span class="hljs-title function_">fromEnv</span>(), <span class="hljs-attr">limiter</span>: <span class="hljs-title class_">Ratelimit</span>.<span class="hljs-title function_">slidingWindow</span>(<span class="hljs-number">60</span>, <span class="hljs-string">'1 m'</span>) }),
+  <span class="hljs-attr">client</span>:    <span class="hljs-keyword">new</span> <span class="hljs-title class_">Ratelimit</span>({ <span class="hljs-attr">redis</span>: <span class="hljs-title class_">Redis</span>.<span class="hljs-title function_">fromEnv</span>(), <span class="hljs-attr">limiter</span>: <span class="hljs-title class_">Ratelimit</span>.<span class="hljs-title function_">slidingWindow</span>(<span class="hljs-number">300</span>, <span class="hljs-string">'1 m'</span>) }),
+  <span class="hljs-attr">pro</span>:       <span class="hljs-keyword">new</span> <span class="hljs-title class_">Ratelimit</span>({ <span class="hljs-attr">redis</span>: <span class="hljs-title class_">Redis</span>.<span class="hljs-title function_">fromEnv</span>(), <span class="hljs-attr">limiter</span>: <span class="hljs-title class_">Ratelimit</span>.<span class="hljs-title function_">slidingWindow</span>(<span class="hljs-number">1000</span>, <span class="hljs-string">'1 m'</span>) }),
+  <span class="hljs-attr">pm_admin</span>:  <span class="hljs-keyword">new</span> <span class="hljs-title class_">Ratelimit</span>({ <span class="hljs-attr">redis</span>: <span class="hljs-title class_">Redis</span>.<span class="hljs-title function_">fromEnv</span>(), <span class="hljs-attr">limiter</span>: <span class="hljs-title class_">Ratelimit</span>.<span class="hljs-title function_">slidingWindow</span>(<span class="hljs-number">3000</span>, <span class="hljs-string">'1 m'</span>) }),
+  <span class="hljs-comment">// Integration partners: custom limits provisioned per contract via API</span>
+};
+
+<span class="hljs-comment">// In middleware.ts (after Sherpa Guard RBAC tier resolution):</span>
+<span class="hljs-keyword">const</span> limiter = tiers[userTier ?? <span class="hljs-string">'anonymous'</span>];
+<span class="hljs-keyword">const</span> { success, remaining, reset } = <span class="hljs-keyword">await</span> limiter.<span class="hljs-title function_">limit</span>(<span class="hljs-string">`<span class="hljs-subst">${userTier}</span>:<span class="hljs-subst">${userId ?? ip}</span>`</span>);
+<span class="hljs-keyword">if</span> (!success) {
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Response</span>(<span class="hljs-string">'Rate limited'</span>, { <span class="hljs-attr">status</span>: <span class="hljs-number">429</span>, <span class="hljs-attr">headers</span>: { <span class="hljs-string">'Retry-After'</span>: <span class="hljs-title class_">String</span>(reset) } });
+}
+</code></pre>
+<h3 id="per-tier-rate-limits">Per-Tier Rate Limits</h3>
+<table>
+<thead>
+<tr>
+<th>Tier</th>
+<th>Requests / minute</th>
+<th>Burst</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Anonymous (no auth)</td>
+<td>60</td>
+<td>90</td>
+<td>Per-IP, mostly marketing pages</td>
+</tr>
+<tr>
+<td>Authenticated client</td>
+<td>300</td>
+<td>450</td>
+<td>Job posting, bid review, messaging</td>
+</tr>
+<tr>
+<td>Pro</td>
+<td>1000</td>
+<td>1500</td>
+<td>High-frequency dashboard polling, photo uploads</td>
+</tr>
+<tr>
+<td>PM admin</td>
+<td>3000</td>
+<td>4500</td>
+<td>Bulk operations, multi-property dashboards</td>
+</tr>
+<tr>
+<td>API integration partner</td>
+<td>Custom</td>
+<td>Custom</td>
+<td>Per-contract, provisioned via admin UI</td>
+</tr>
+</tbody></table>
+<p>Limits surface to clients as <code>X-RateLimit-Limit</code>, <code>X-RateLimit-Remaining</code>, <code>X-RateLimit-Reset</code> response headers.</p>
+<h3 id="ddos-protection--cloudflare-pro-in-front-of-vercel">DDoS Protection — Cloudflare Pro in Front of Vercel</h3>
+<p>Cloudflare Pro ($20/mo per zone) gives us: layer-3/4 DDoS auto-mitigation, layer-7 challenge for suspicious traffic, custom WAF rules, country-level blocking (we never expect Russia/North Korea traffic — soft-block). Cloudflare and Vercel both terminate TLS; we configure Cloudflare in "full strict" mode with origin certificates so the edge-to-origin hop is also encrypted.</p>
+<p>Cloudflare Enterprise upgrade ($5K/mo) becomes worthwhile at Phase 4B+ for: priority routing, dedicated support during incident, and custom argo-tunnel options.</p>
+<h3 id="waf-rules-day-1">WAF Rules (Day 1)</h3>
+<table>
+<thead>
+<tr>
+<th>Rule</th>
+<th>Action</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Block known SQL injection patterns</td>
+<td>Block</td>
+<td>OWASP managed ruleset</td>
+</tr>
+<tr>
+<td>Block known Cross-Site Scripting (XSS) patterns</td>
+<td>Block</td>
+<td>OWASP managed ruleset</td>
+</tr>
+<tr>
+<td>Block HTTP request smuggling</td>
+<td>Block</td>
+<td>OWASP managed ruleset</td>
+</tr>
+<tr>
+<td>Rate-limit POST /api/jobs to 10/min/IP</td>
+<td>Challenge</td>
+<td>Anti-spam job creation</td>
+</tr>
+<tr>
+<td>Rate-limit POST /api/auth to 5/min/IP</td>
+<td>Block</td>
+<td>Anti-credential-stuffing</td>
+</tr>
+<tr>
+<td>Block User-Agent matching scrapers (<code>scrapy</code>, <code>wget</code> outside allowlist)</td>
+<td>Challenge</td>
+<td>Allows legitimate curl/postman with auth header</td>
+</tr>
+<tr>
+<td>Block requests missing <code>Origin</code> header on <code>/api/*</code></td>
+<td>Block</td>
+<td>Browser-issued requests always have Origin</td>
+</tr>
+<tr>
+<td>Geographic block: countries with no Sherpa Pros service AND no inbound business</td>
+<td>Block</td>
+<td>Configurable via Cloudflare Edge Config</td>
+</tr>
+</tbody></table>
+<h3 id="vercel-botid">Vercel BotID</h3>
+<p>Vercel BotID (GA June 2025 per the knowledge update) provides edge-level bot scoring without requiring CAPTCHA. We enable it on:</p>
+<ul>
+<li><code>/sign-up</code> (block bot account creation)</li>
+<li><code>POST /api/jobs</code> (block scraped job-posting attempts)</li>
+<li><code>POST /api/waitlist</code> (block list spam)</li>
+</ul>
+<p>Score threshold: 0.7 → challenge with Cloudflare Turnstile, 0.9 → block outright.</p>
+<hr>
+<h2 id="6-observability-stack">6. Observability Stack</h2>
+<h3 id="recommendation-datadog-through-phase-4a-re-evaluate-at-1m-mau">Recommendation: Datadog Through Phase 4A, Re-evaluate at 1M MAU</h3>
+<p><strong>Datadog wins on time-to-insight.</strong> Single pane of glass for Application Performance Monitoring (APM), logs, metrics, Real User Monitoring (RUM), synthetic monitors, and Database Monitoring. Native Vercel integration. Native Postgres integration. Native Stripe integration. Pre-built dashboards for everything we use.</p>
+<p><strong>Cost crossover happens around 1M MAU</strong> (Datadog's per-host APM pricing plus log retention costs scale roughly linearly with traffic). At that point we re-evaluate OpenTelemetry → Grafana Cloud (open standards, cheaper at high volume, more setup work). Decision matrix:</p>
+<table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>MAU</th>
+<th>Monthly cost (estimated)</th>
+<th>Recommendation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Phase 1-2</td>
+<td>&lt;100K</td>
+<td>$300-1,500/mo</td>
+<td>Datadog Free tier through Pro tier</td>
+</tr>
+<tr>
+<td>Phase 3</td>
+<td>100K-1M</td>
+<td>$1,500-15,000/mo</td>
+<td>Datadog Pro</td>
+</tr>
+<tr>
+<td>Phase 4A+</td>
+<td>1M-5M</td>
+<td>$15K-60K/mo Datadog vs $5K-20K/mo OTel + Grafana Cloud</td>
+<td>Run cost analysis; default OTel if Datadog crosses 4x Grafana cost</td>
+</tr>
+</tbody></table>
+<h3 id="required-dashboards-day-1">Required Dashboards (Day 1)</h3>
+<p>These ship before public Phase 4A launch:</p>
+<ol>
+<li><strong>Dispatch latency dashboard</strong> — P50/P95/P99 from job creation to first pro notification, per metro, per urgency tier (Emergency/Standard/Flexible), per shard. Alert on P95 &gt; 500ms for 5 min.</li>
+<li><strong>Payment success rate dashboard</strong> — Stripe Connect transaction success / failure / refund per region per hour. Alert on success rate &lt; 98% for 15 min.</li>
+<li><strong>Job-creation funnel dashboard</strong> — wizard step completion rates, drop-off per step, per source (web/mobile/PWA). Diagnoses UX regressions.</li>
+<li><strong>Pro response rate dashboard</strong> — % of dispatched pros who accept within urgency-tier window. Alert on response rate &lt; 60% for 1 hour (signal of supply imbalance in a metro).</li>
+<li><strong>Audit log ingestion rate dashboard</strong> — count of <code>audit_logs</code> rows written per minute per action type. Alert on zero ingestion for 5 min (signals Sherpa Guard middleware regression).</li>
+<li><strong>Error rate per route dashboard</strong> — 5xx error rate per <code>/api/*</code> route, per region. Alert on &gt;1% errors for 5 min.</li>
+<li><strong>Database connection pool saturation</strong> — pool utilization %, queue depth, slow query count. Alert on &gt;80% saturation for 10 min.</li>
+<li><strong>Cost dashboard</strong> — daily Vercel invocation count, Neon compute-hours, Datadog ingestion volume, Stripe fees. Pages on-call when daily run-rate exceeds budget by 25%.</li>
+</ol>
+<h3 id="service-level-objectives-slos">Service Level Objectives (SLOs)</h3>
+<table>
+<thead>
+<tr>
+<th>SLO</th>
+<th>Target</th>
+<th>Measurement Window</th>
+<th>Error Budget Burn Alerts</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Uptime</td>
+<td>99.95%</td>
+<td>30 days</td>
+<td>25% / 50% / 75% / 100% burn rate</td>
+</tr>
+<tr>
+<td>P95 dispatch latency</td>
+<td>&lt;500ms</td>
+<td>7 days</td>
+<td>Alert at &gt;700ms for 30 min sustained</td>
+</tr>
+<tr>
+<td>P95 payment success</td>
+<td>&lt;2s</td>
+<td>7 days</td>
+<td>Alert at &gt;3s for 15 min sustained</td>
+</tr>
+<tr>
+<td>Job-creation wizard completion</td>
+<td>&gt;85%</td>
+<td>7 days</td>
+<td>Alert on &gt;5% drop week-over-week</td>
+</tr>
+<tr>
+<td>Audit log delivery success</td>
+<td>100% (zero loss)</td>
+<td>Always</td>
+<td>Alert on any single drop</td>
+</tr>
+</tbody></table>
+<p>Error budget for 99.95% uptime over 30 days = ~21.6 minutes of allowed downtime. We page on-call when 25% of that budget burns in any rolling 24-hour window.</p>
+<hr>
+<h2 id="7-site-reliability-engineering-sre-practices">7. Site Reliability Engineering (SRE) Practices</h2>
+<h3 id="on-call-rotation">On-Call Rotation</h3>
+<p>Phase 1-3 (founding-team scale): Phyrom + 1 senior engineer share on-call, week-on / week-off. Sustainable only because traffic is low. Pages route to PagerDuty (recommended over Opsgenie for the better mobile experience and Slack integration).</p>
+<p>Phase 4A entry: hire dedicated Site Reliability Engineer (#5 hire on platform team). Move to 5-engineer rotation, week-long shifts, formal handoff every Monday at 10:00 ET. Compensation: on-call pay $400/week passive + $200/page during business hours, $400/page after-hours, capped at $5K/week. Sustainable rotation requires minimum 5 humans — anything less is a burnout pipeline.</p>
+<h3 id="runbook-discipline">Runbook Discipline</h3>
+<p><strong>Every alert has a runbook link in its description.</strong> No exceptions. Runbooks live in <code>docs/runbooks/{slo-name}.md</code> and follow this template:</p>
+<pre><code class="hljs markdown"><span class="hljs-section"># Runbook: <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">SLO</span> <span class="hljs-attr">violation</span> <span class="hljs-attr">name</span>&gt;</span></span></span>
+
+<span class="hljs-section">## Severity classification</span>
+SEV1 / SEV2 / SEV3 (criteria below)
+
+<span class="hljs-section">## Detection</span>
+<span class="hljs-bullet">-</span> Datadog alert: <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">link</span>&gt;</span></span>
+<span class="hljs-bullet">-</span> Symptoms users see: <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span></span>
+
+<span class="hljs-section">## Immediate triage (first 5 minutes)</span>
+<span class="hljs-bullet">1.</span> Confirm scope (region, % of users affected)
+<span class="hljs-bullet">2.</span> Check status pages: Vercel, Neon, Clerk, Stripe, Twilio, Cloudflare
+<span class="hljs-bullet">3.</span> Check recent deploys (vercel.com/sherpa-pros/deployments)
+<span class="hljs-bullet">4.</span> ...
+
+<span class="hljs-section">## Mitigation</span>
+<span class="hljs-bullet">-</span> Quick fix (rollback / feature-flag kill / scale-up)
+<span class="hljs-bullet">-</span> Long-term fix (link to follow-up issue)
+
+<span class="hljs-section">## Comms</span>
+<span class="hljs-bullet">-</span> Status page update template: <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">link</span>&gt;</span></span>
+<span class="hljs-bullet">-</span> Customer email template (if SEV1): <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">link</span>&gt;</span></span>
+
+<span class="hljs-section">## Postmortem</span>
+<span class="hljs-bullet">-</span> Required for SEV1 / SEV2 within 48 hrs
+<span class="hljs-bullet">-</span> Template: docs/templates/postmortem.md
+</code></pre>
+<h3 id="incident-severity-classification">Incident Severity Classification</h3>
+<table>
+<thead>
+<tr>
+<th>Severity</th>
+<th>Definition</th>
+<th>Page Whom</th>
+<th>SLA to Mitigate</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>SEV1</td>
+<td>Platform-wide outage OR data loss OR security breach affecting &gt;100 users</td>
+<td>Phyrom + on-call + CTO</td>
+<td>30 min ack, 2 hr mitigation</td>
+</tr>
+<tr>
+<td>SEV2</td>
+<td>Regional outage OR core feature broken (dispatch, payments, sign-up)</td>
+<td>On-call + manager</td>
+<td>1 hr ack, 4 hr mitigation</td>
+</tr>
+<tr>
+<td>SEV3</td>
+<td>Degraded performance OR non-core feature broken</td>
+<td>On-call</td>
+<td>4 hr ack, 24 hr mitigation</td>
+</tr>
+<tr>
+<td>SEV4</td>
+<td>Cosmetic OR low-impact bug</td>
+<td>Filed as ticket, no page</td>
+<td>Next sprint</td>
+</tr>
+</tbody></table>
+<h3 id="postmortem-discipline-blameless-culture">Postmortem Discipline (Blameless Culture)</h3>
+<p>Every SEV1/SEV2 gets a blameless postmortem within 48 hours, written by the on-call who handled it, reviewed by Phyrom, published internally. Template covers: timeline, root cause (5 whys), what went well, what went badly, action items with owner and due date. <strong>No naming-and-shaming.</strong> The goal is institutional learning, not individual punishment.</p>
+<h3 id="change-management">Change Management</h3>
+<ul>
+<li><strong>No Friday deploys.</strong> Engineering culture rule, exceptions require written CTO approval.</li>
+<li><strong>Deploy windows:</strong> Mon-Thu 10:00-16:00 ET. Off-hours deploys require on-call notification and feature flag.</li>
+<li><strong>Feature flags via Vercel Edge Config (simple flags) or LaunchDarkly (complex targeting).</strong> Every new feature ships behind a flag; default off; gradual rollout 1% → 10% → 50% → 100% with observability check at each gate.</li>
+<li><strong>Rolling Releases via Vercel Rolling Releases</strong> (managed feature) for big-bang deploys we can't avoid (database migration, dependency upgrade). Phased traffic shift with auto-rollback on error rate spike.</li>
+<li><strong>Deployment audit trail.</strong> Every Vercel deployment links to git commit, PR, deployer identity, environment. Stored 7 years for SOC 2.</li>
+</ul>
+<h3 id="chaos-engineering-phase-4b">Chaos Engineering (Phase 4B+)</h3>
+<p>Quarterly Game Day: controlled failure injection in a staging environment that mirrors production. Scenarios: kill primary database (test failover), kill one region's Vercel functions (test traffic shift), inject 500ms latency into Stripe webhook (test retry behavior), corrupt one row of <code>audit_logs</code> (test data integrity alarms). Document outcomes in runbooks. We hire chaos-engineering tooling (Gremlin or LitmusChaos) at Phase 4C.</p>
+<hr>
+<h2 id="8-soc-2-type-2-readiness-checklist">8. SOC 2 Type 2 Readiness Checklist</h2>
+<p>Sherpa Guard (RBAC + audit logs, just shipped) and Clerk-managed auth give us a strong starting position. The full Type 2 controls map and remediation plan below.</p>
+<h3 id="recommended-vendors">Recommended Vendors</h3>
+<ul>
+<li><strong>Compliance automation:</strong> Vanta (recommended) over Drata. Vanta has stronger Vercel + Neon + Clerk + Stripe integrations out of the box; Drata is slightly cheaper but more setup work.</li>
+<li><strong>Auditor:</strong> Schellman (recommended) or A-LIGN. Both are AICPA-registered, both have construction-tech client experience. Schellman has better Datadog/Stripe integration.</li>
+<li><strong>Pen test firm:</strong> Trail of Bits (premium) or Bishop Fox (premium-mid). Engaged annually, scope = full external + internal network + web app + mobile app.</li>
+<li><strong>Bug bounty:</strong> HackerOne (recommended over Bugcrowd) — better signal-to-noise, better triage support.</li>
+</ul>
+<h3 id="timeline">Timeline</h3>
+<ul>
+<li><strong>Type 1:</strong> Issuable in 90 days from Vanta engagement (controls implemented + observation period not required for Type 1)</li>
+<li><strong>Type 2:</strong> Requires 12 months of operating effectiveness observation. Earliest achievable: Type 1 + 12 months = ~Q2 2028 if we start Type 1 work Q3 2026.</li>
+</ul>
+<h3 id="trust-service-criteria-tsc-coverage">Trust Service Criteria (TSC) Coverage</h3>
+<p>SOC 2 covers up to 5 TSC categories. We commit to <strong>Security</strong> (mandatory) plus <strong>Availability</strong> plus <strong>Confidentiality</strong> at Type 1. We add <strong>Processing Integrity</strong> (relevant to payments) and <strong>Privacy</strong> (relevant to GDPR alignment) at Type 2.</p>
+<h3 id="control-map">Control Map</h3>
+<table>
+<thead>
+<tr>
+<th>Control Category</th>
+<th>Status</th>
+<th>Phase 4 Action</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Access management</strong></td>
+<td>Sherpa Guard RBAC shipped</td>
+<td>Quarterly access review (auto via Vanta), document principle of least privilege, MFA required for all admin</td>
+</tr>
+<tr>
+<td><strong>Vendor management</strong></td>
+<td>Ad-hoc</td>
+<td>Catalog all vendors (Vercel, Neon, Clerk, Stripe, Twilio, Datadog, Cloudflare, Upstash, Vanta), collect SOC 2 reports annually, maintain Vendor Risk Register in Vanta</td>
+</tr>
+<tr>
+<td><strong>Change management</strong></td>
+<td>Git + PR review</td>
+<td>Document PR-required policy, automated test gating in CI, deployment audit trail (Vercel logs), infrastructure change tickets in linear or Jira</td>
+</tr>
+<tr>
+<td><strong>Incident response</strong></td>
+<td>None documented</td>
+<td>Document incident procedures (see SRE section above), run tabletop exercise quarterly, postmortem rigor enforced</td>
+</tr>
+<tr>
+<td><strong>Security awareness training</strong></td>
+<td>None</td>
+<td>Annual mandatory training for all employees and contractors via KnowBe4 or Curricula. Includes phishing simulation.</td>
+</tr>
+<tr>
+<td><strong>Encryption in transit</strong></td>
+<td>TLS 1.3 via Vercel</td>
+<td>Document policy, enforce minimum TLS 1.3 in Cloudflare config, enforce TLS for all internal service hops</td>
+</tr>
+<tr>
+<td><strong>Encryption at rest</strong></td>
+<td>Vercel + Neon manage</td>
+<td>Document key management (Vercel uses AWS KMS, Neon uses AWS KMS), document key rotation policy (annual minimum)</td>
+</tr>
+<tr>
+<td><strong>Backup + restore</strong></td>
+<td>Neon PITR 7 days</td>
+<td>Extend to 30 days (Neon paid tier), test restore quarterly, document RPO 15 min / RTO 4 hr</td>
+</tr>
+<tr>
+<td><strong>Pen testing</strong></td>
+<td>None</td>
+<td>Annual external pen test starting Phase 4A</td>
+</tr>
+<tr>
+<td><strong>Vulnerability management</strong></td>
+<td>None</td>
+<td>Snyk or Dependabot weekly review, automated PR creation for high/critical CVEs, SLA: critical patched &lt;7 days, high &lt;30 days</td>
+</tr>
+<tr>
+<td><strong>Logging + monitoring</strong></td>
+<td>Vercel logs only</td>
+<td>Datadog full APM + log retention 1 year hot + 7 years cold (S3)</td>
+</tr>
+<tr>
+<td><strong>Audit log integrity</strong></td>
+<td><code>audit_logs</code> table</td>
+<td>Daily integrity check (count + checksum), append-only enforced at DB level (no DELETE/UPDATE permission)</td>
+</tr>
+<tr>
+<td><strong>Data classification</strong></td>
+<td>Implicit</td>
+<td>Document data classification (Public / Internal / Confidential / Restricted), tag all tables in Drizzle schema comments</td>
+</tr>
+<tr>
+<td><strong>Personnel security</strong></td>
+<td>Background checks for contractors via Checkr</td>
+<td>Extend to all employees, document policy</td>
+</tr>
+</tbody></table>
+<h3 id="vanta-integration">Vanta Integration</h3>
+<p>Vanta connects to: Vercel, Neon, Clerk, Stripe, AWS (for any future AWS resources), GitHub (PR review evidence), Datadog (alerting evidence), Slack (incident comms evidence), Google Workspace (MFA enforcement evidence). Coverage gap: Twilio (we'll add manual evidence collection for Twilio access reviews).</p>
+<hr>
+<h2 id="9-data-residency-framework">9. Data Residency Framework</h2>
+<p>The principle: <strong>PII never crosses borders.</strong> Aggregate analytics may cross borders only after anonymization and only under signed cross-border data processing agreements (DPAs).</p>
+<h3 id="per-region-data-boundary">Per-Region Data Boundary</h3>
+<table>
+<thead>
+<tr>
+<th>Region</th>
+<th>Database</th>
+<th>What Lives Here</th>
+<th>Cross-Border Reads Allowed?</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>US</td>
+<td>Neon <code>us-east-1</code> (primary) + <code>us-west-2</code> (replica)</td>
+<td>All US user PII, jobs, audit, payments, materials, deliveries</td>
+<td>Yes (admin proxy with audit)</td>
+</tr>
+<tr>
+<td>Canada</td>
+<td>Neon <code>ca-central-1</code></td>
+<td>All Canadian user PII</td>
+<td>No PII reads from outside CA. Anonymized analytics OK.</td>
+</tr>
+<tr>
+<td>EU</td>
+<td>Neon <code>eu-central-1</code></td>
+<td>All EU user PII</td>
+<td>No PII reads from outside EU. Anonymized analytics OK.</td>
+</tr>
+<tr>
+<td>UK</td>
+<td>Neon <code>eu-west-2</code></td>
+<td>All UK user PII</td>
+<td>No PII reads from outside UK. Anonymized analytics OK.</td>
+</tr>
+<tr>
+<td>AU</td>
+<td>Neon <code>ap-southeast-2</code></td>
+<td>All AU user PII</td>
+<td>No PII reads from outside AU. Anonymized analytics OK.</td>
+</tr>
+</tbody></table>
+<h3 id="global-services-no-pii">Global Services (No PII)</h3>
+<p>These cross borders freely via CDN: brand assets, marketing pages, Sherpa codes engine read-only metadata, Sherpa Materials engine SKU catalog (without per-user pricing), platform docs.</p>
+<h3 id="cross-border-analytics-pipeline">Cross-Border Analytics Pipeline</h3>
+<p>Every region runs a nightly aggregation job that produces anonymized analytics:</p>
+<ul>
+<li>Job count by category by metro by day (no user IDs)</li>
+<li>Pro count by skill by metro by week (no user IDs)</li>
+<li>GMV by region by day (no individual transactions)</li>
+<li>NPS distribution by region by month (no respondent IDs)</li>
+</ul>
+<p>Anonymized aggregates ship to a single US-based analytics warehouse (BigQuery or ClickHouse on Vercel — TBD per cost analysis at scale). Customer DPAs disclose this aggregation explicitly.</p>
+<h3 id="gdpr--pipeda--app-specifics">GDPR / PIPEDA / APP Specifics</h3>
+<p>Defer detailed regulatory analysis to the <strong>International Expansion</strong> spec. Architecture-level requirements addressed here:</p>
+<ul>
+<li>Right to erasure: hard-delete user PII within 30 days of request, retain anonymized audit-log entry referencing the deletion</li>
+<li>Data portability: export user data as JSON via <code>/api/me/export</code> (PM-tier-only initially, expanded by Phase 4B)</li>
+<li>DPA acceptance: required at sign-up for all non-US users, version-tracked in DB</li>
+<li>Cookie consent: required for EU/UK users, runs via OneTrust or Cookiebot (deferred decision)</li>
+</ul>
+<hr>
+<h2 id="10-disaster-recovery-dr-and-business-continuity-plan-bcp">10. Disaster Recovery (DR) and Business Continuity Plan (BCP)</h2>
+<h3 id="backup-cadence">Backup Cadence</h3>
+<ul>
+<li><strong>Continuous:</strong> Postgres Write-Ahead Log (WAL) streamed to S3 every 60 seconds (Neon PITR plus our own backup destination)</li>
+<li><strong>Nightly:</strong> Full snapshot per region, retained 30 days</li>
+<li><strong>Weekly:</strong> Full snapshot exported to cross-region S3 bucket (us-west-2 backup of us-east-1, eu-west-1 backup of eu-central-1, etc.), retained 90 days</li>
+<li><strong>Monthly:</strong> Full snapshot exported to cold storage (S3 Glacier Deep Archive), retained 7 years for compliance</li>
+</ul>
+<h3 id="targets">Targets</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Phase 1-3 Target</th>
+<th>Phase 4 Target</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Recovery Point Objective (RPO)</td>
+<td>1 hour</td>
+<td>15 minutes</td>
+</tr>
+<tr>
+<td>Recovery Time Objective (RTO) — regional outage</td>
+<td>24 hours</td>
+<td>4 hours</td>
+</tr>
+<tr>
+<td>Recovery Time Objective (RTO) — full DR scenario</td>
+<td>7 days</td>
+<td>24 hours</td>
+</tr>
+<tr>
+<td>Failover testing cadence</td>
+<td>Annual</td>
+<td>Quarterly</td>
+</tr>
+</tbody></table>
+<h3 id="multi-region-failover-automation">Multi-Region Failover Automation</h3>
+<ul>
+<li><strong>Compute failover:</strong> Vercel handles automatically with Fluid Compute (functions execute in nearest healthy region; if a region fails, traffic shifts to next-nearest within seconds, no human intervention)</li>
+<li><strong>Database failover:</strong> Neon manages primary failover within <code>us-east-1</code> automatically. Cross-region failover (e.g., <code>us-east-1</code> permanently down → promote <code>us-west-2</code> replica to primary) is manual and requires SEV1 incident declaration. Documented runbook in <code>docs/runbooks/db-cross-region-failover.md</code>.</li>
+</ul>
+<h3 id="bcp-scenarios">BCP Scenarios</h3>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Detection</th>
+<th>Mitigation</th>
+<th>Owner</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Single AWS region down</td>
+<td>Datadog synthetics fail in region</td>
+<td>Vercel auto-routes; Neon manual promote of cross-region replica</td>
+<td>On-call SRE</td>
+</tr>
+<tr>
+<td>Database corruption</td>
+<td>Daily integrity check fails OR user reports inconsistent data</td>
+<td>Point-in-Time Recovery (PITR) to last-known-good timestamp; replay any lost work from audit logs</td>
+<td>DBA + on-call</td>
+</tr>
+<tr>
+<td>Security breach</td>
+<td>SIEM alert (Datadog Security Monitoring) OR vulnerability disclosure OR pen test</td>
+<td>Containment (revoke credentials, kill suspicious sessions), customer notification per per-jurisdiction breach laws, regulator notification per GDPR Article 33 (72 hours), postmortem</td>
+<td>Phyrom + legal</td>
+</tr>
+<tr>
+<td>Key vendor outage (Stripe / Clerk / Twilio)</td>
+<td>Vendor status page + Datadog third-party-API monitor</td>
+<td>Graceful degradation (queue payments, defer auth, fall back to email). Customer-facing status page.</td>
+<td>On-call + comms</td>
+</tr>
+<tr>
+<td>Key-person event (Phyrom unavailable for 7+ days)</td>
+<td>Manual or automatic via 3-day no-checkin trigger</td>
+<td>Pre-published succession plan: COO assumes operational decisions, CTO assumes engineering decisions, board notified. Phyrom maintains "in case of bus" doc with all critical access references and contact tree.</td>
+<td>Board</td>
+</tr>
+<tr>
+<td>DDoS at scale</td>
+<td>Cloudflare alert + Vercel function invocation spike</td>
+<td>Cloudflare auto-mitigation + manual rule deployment + Cloudflare Enterprise hotline if Pro plan</td>
+<td>On-call + Cloudflare support</td>
+</tr>
+<tr>
+<td>Catastrophic data loss (ransomware on backup destination)</td>
+<td>Anomalous deletion patterns in S3</td>
+<td>Restore from cold-storage Glacier backup (RTO 24 hr) + customer comms + insurance claim</td>
+<td>Phyrom + legal + insurance</td>
+</tr>
+</tbody></table>
+<h3 id="quarterly-dr-testing">Quarterly DR Testing</h3>
+<p>Game Day cadence (Phase 4A+): every quarter, on-call team executes one DR scenario in a staging environment that mirrors production at scale. Outcomes documented in <code>docs/dr-test-results/{date}.md</code>. Findings feed back into runbook updates.</p>
+<hr>
+<h2 id="11-security-hardening-beyond-soc-2">11. Security Hardening Beyond SOC 2</h2>
+<h3 id="secrets-management-migration">Secrets Management Migration</h3>
+<p><strong>Phase 1-3:</strong> Vercel environment variables (encrypted at rest via AWS KMS, accessible only to Vercel runtime).</p>
+<p><strong>Phase 4A+:</strong> Migrate production secrets to AWS Secrets Manager (recommended) or HashiCorp Vault (more flexibility, more setup). Reasons:</p>
+<ul>
+<li>Per-environment scoping (production / staging / dev) with stricter ACLs</li>
+<li>Automatic rotation (database credentials, API keys) on configurable schedule</li>
+<li>Audit trail of secret access (compliance requirement)</li>
+<li>Integration with multi-region: secrets replicated to each region's Vercel runtime</li>
+</ul>
+<p>Recommendation: AWS Secrets Manager. Reasons: simpler operational model, tight Neon integration (Neon now offers native AWS Secrets Manager rotation as of late 2025), ~$0.40/secret/month (negligible).</p>
+<h3 id="dependency-scanning">Dependency Scanning</h3>
+<ul>
+<li><strong>Snyk</strong> (recommended) over Dependabot. Snyk catches more vulnerabilities, has better triage UI, and produces SOC-2-acceptable evidence reports.</li>
+<li>Automated PR creation for high/critical CVEs</li>
+<li>Weekly review of medium CVEs in Monday SRE sync</li>
+<li>SLA: critical CVE patched &lt;7 days, high &lt;30 days, medium &lt;90 days</li>
+</ul>
+<h3 id="supply-chain-security">Supply Chain Security</h3>
+<ul>
+<li><strong>Software Bill of Materials (SBOM)</strong> generated per release via Vercel build hook (CycloneDX format)</li>
+<li><strong>Sigstore signing</strong> of release artifacts (Phase 4B+, becomes meaningful when we publish public APIs / SDKs)</li>
+<li><strong>Lockfile integrity</strong> enforced in CI (no <code>npm install</code> without <code>npm ci</code>)</li>
+<li><strong>Vendored audit:</strong> monthly review of any new third-party dependency before merge</li>
+</ul>
+<h3 id="penetration-testing">Penetration Testing</h3>
+<ul>
+<li><strong>Annual external pen test</strong> by Trail of Bits or Bishop Fox starting Phase 4A</li>
+<li><strong>Quarterly internal red-team exercise</strong> Phase 4B+ (we contract a part-time red-teamer or use Cobalt Strike subscription)</li>
+<li>Scope per engagement: web app, mobile app (iOS + Android), API, internal infrastructure, social engineering simulation</li>
+<li>Findings tracked in Vanta with remediation SLA</li>
+</ul>
+<h3 id="bug-bounty-program">Bug Bounty Program</h3>
+<p>Launched on HackerOne at Phase 4A entry. Initial scope:</p>
+<ul>
+<li>In-scope: <code>*.thesherpapros.com</code> web surface, mobile apps, public APIs</li>
+<li>Out-of-scope: third-party services (Vercel, Neon, Stripe), DoS attacks, social engineering</li>
+<li>Payout tiers: Critical $5K-$15K, High $1K-$5K, Medium $300-$1K, Low $100-$300</li>
+<li>Triage SLA: ack &lt;48 hours, fix critical &lt;7 days</li>
+</ul>
+<h3 id="customer-facing-security-page">Customer-Facing Security Page</h3>
+<p><code>/security</code> page documenting:</p>
+<ul>
+<li>Compliance posture (SOC 2 status, GDPR, PIPEDA, APP)</li>
+<li>Encryption (in-transit, at-rest)</li>
+<li>Vulnerability disclosure: <code>security@thesherpapros.com</code> with PGP key</li>
+<li>Bug bounty link</li>
+<li>Sub-processors list (Vercel, Neon, Clerk, Stripe, Twilio, Cloudflare, etc.)</li>
+<li>Incident history (last 12 months, public-facing)</li>
+</ul>
+<hr>
+<h2 id="12-cost-of-scale-model">12. Cost-of-Scale Model</h2>
+<p>Estimated infrastructure cost per phase. Excludes salaries, marketing, professional services. All figures are monthly.</p>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>MAU</th>
+<th>Jobs/mo</th>
+<th>Vercel</th>
+<th>Neon</th>
+<th>Clerk</th>
+<th>Stripe (% take, not flat)</th>
+<th>Twilio</th>
+<th>Cloudflare</th>
+<th>Datadog</th>
+<th>Other</th>
+<th><strong>Total</strong></th>
+<th>$/MAU</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Phase 1 (current)</td>
+<td>10K</td>
+<td>1K</td>
+<td>$20 (Pro)</td>
+<td>$69 (Pro)</td>
+<td>$25 (Pro)</td>
+<td>passes through</td>
+<td>$50</td>
+<td>$0 (free)</td>
+<td>$0 (free)</td>
+<td>$135 (misc)</td>
+<td><strong>~$300</strong></td>
+<td>$0.030</td>
+</tr>
+<tr>
+<td>Phase 2</td>
+<td>100K</td>
+<td>10K</td>
+<td>$200 (Pro+ functions)</td>
+<td>$500 (Scale)</td>
+<td>$300 (Pro+)</td>
+<td>passes through</td>
+<td>$500</td>
+<td>$20 (Pro)</td>
+<td>$300 (Pro)</td>
+<td>$1,180 (misc)</td>
+<td><strong>~$3,000</strong></td>
+<td>$0.030</td>
+</tr>
+<tr>
+<td>Phase 3</td>
+<td>500K</td>
+<td>50K</td>
+<td>$1,500 (Enterprise)</td>
+<td>$3,000 (Scale + Citus)</td>
+<td>$1,500</td>
+<td>passes through</td>
+<td>$2,500</td>
+<td>$200 (Pro+)</td>
+<td>$3,000 (Pro APM)</td>
+<td>$3,300 (misc)</td>
+<td><strong>~$15,000</strong></td>
+<td>$0.030</td>
+</tr>
+<tr>
+<td>Phase 4A</td>
+<td>1M</td>
+<td>100K</td>
+<td>$6,000 (Enterprise multi-region)</td>
+<td>$15,000 (multi-region + replicas)</td>
+<td>$5,000</td>
+<td>passes through</td>
+<td>$5,000</td>
+<td>$5,000 (Enterprise)</td>
+<td>$10,000 (Pro APM + RUM)</td>
+<td>$13,000 (Vanta + bug bounty + Snyk + Upstash + AWS Secrets + dedicated DBA tooling)</td>
+<td><strong>~$59,000</strong></td>
+<td>$0.059</td>
+</tr>
+<tr>
+<td>Phase 4D</td>
+<td>5M</td>
+<td>500K</td>
+<td>$30,000 (international multi-region)</td>
+<td>$80,000 (5 regions + replicas + Citus + archive)</td>
+<td>$25,000</td>
+<td>passes through</td>
+<td>$30,000</td>
+<td>$20,000 (Enterprise + WAF custom)</td>
+<td>$50,000 (Pro APM + RUM + multi-region)</td>
+<td>$65,000 (full security stack + 24/7 SRE tooling + observability + DR drills)</td>
+<td><strong>~$300,000</strong></td>
+<td>$0.060</td>
+</tr>
+</tbody></table>
+<h3 id="operating-leverage-trend">Operating Leverage Trend</h3>
+<p>Cost per MAU stays roughly flat $0.03 through Phases 1-3, then doubles to $0.06 at Phase 4A entry (multi-region step-change), then plateaus through 4D. Despite raw infrastructure cost growing 1000x from Phase 1 to Phase 4D, cost per MAU only doubles — meaningful operating leverage for the unit economics story to investors.</p>
+<h3 id="cost-optimization-levers-phase-4">Cost-Optimization Levers (Phase 4+)</h3>
+<ul>
+<li><strong>Reserved capacity</strong> for Vercel + Neon + Datadog (typical 30-40% savings for committed annual spend)</li>
+<li><strong>Cross-region traffic routing rules</strong> to keep US traffic on cheapest US region</li>
+<li><strong>Cold-tier migration</strong> of older audit logs / completed jobs to S3 Glacier (massive storage cost reduction)</li>
+<li><strong>Datadog log filtering</strong> at edge — drop debug-level logs in production, only keep info+</li>
+<li><strong>Vercel Bandwidth Optimization</strong> (image optimization, automatic CDN caching)</li>
+</ul>
+<hr>
+<h2 id="13-migration-path-from-current-to-multi-region">13. Migration Path From Current to Multi-Region</h2>
+<p>Step-by-step path from today's single-region MVP to the Phase 4D global state. Each step is independently shippable and rollback-safe.</p>
+<h3 id="step-1--q3-2026--add-us-west-vercel--neon-read-replica">Step 1 — Q3 2026 — Add US-West Vercel + Neon Read Replica</h3>
+<ul>
+<li>Vercel: nothing to do — Fluid Compute already handles regional routing automatically</li>
+<li>Neon: add <code>us-west-2</code> read replica via Neon dashboard (single-click, ~30 min provisioning)</li>
+<li>Code: introduce replica-aware Drizzle client (<code>src/db/index.ts</code> exporting <code>dbWrite</code> + <code>dbRead</code>)</li>
+<li>Migrate read-heavy routes to <code>dbRead</code>: pro search, job browse, dashboards</li>
+<li>Validate via Datadog: dispatch latency from west-coast metros drops below 200ms</li>
+</ul>
+<h3 id="step-2--q4-2026--implement-metro-based-sharding-pilot-2-metros">Step 2 — Q4 2026 — Implement Metro-Based Sharding (Pilot, 2 Metros)</h3>
+<ul>
+<li>Enable Citus extension on Neon primary</li>
+<li>Migrate <code>jobs</code>, <code>bids</code>, <code>dispatch_events</code>, <code>materials_orders</code>, <code>deliveries</code> to distributed tables sharded by <code>metro_id</code></li>
+<li>Pilot with 2 metros: Boston + Portsmouth (low-traffic, easy to reason about)</li>
+<li>Add shard-rebalancing runbook</li>
+<li>Validate: dispatch query latency unchanged or improved, cross-shard query count &lt;5% of total</li>
+</ul>
+<h3 id="step-3--q1-2027--cloudflare-waf--upstash-rate-limiting--datadog-full">Step 3 — Q1 2027 — Cloudflare WAF + Upstash Rate Limiting + Datadog Full</h3>
+<ul>
+<li>Cloudflare Pro plan, configure WAF rules per Section 5</li>
+<li>Upstash Redis provisioned, integrate <code>@upstash/ratelimit</code> into <code>src/middleware.ts</code></li>
+<li>Datadog full APM rolled out with dashboards from Section 6</li>
+<li>All SLOs documented and alerting configured</li>
+</ul>
+<h3 id="step-4--q2-2027--soc-2-type-1-certified">Step 4 — Q2 2027 — SOC 2 Type 1 Certified</h3>
+<ul>
+<li>Vanta engaged Q3 2026, controls implemented Q4 2026, audit Q1 2027, report issued Q2 2027</li>
+<li>All controls from Section 8 evidenced</li>
+</ul>
+<h3 id="step-5--q3-2027--add-canadian-region-international-expansion-alignment">Step 5 — Q3 2027 — Add Canadian Region (International Expansion Alignment)</h3>
+<ul>
+<li>Neon <code>ca-central-1</code> provisioned, separate database</li>
+<li>Vercel functions in CA region</li>
+<li>Stripe Connect Canadian platform live</li>
+<li>Twilio CA Messaging Service live</li>
+<li>DPA acceptance flow live for Canadian users</li>
+<li>First Canadian beta cohort onboarded</li>
+</ul>
+<h3 id="step-6--q4-2027--soc-2-type-2-certified">Step 6 — Q4 2027 — SOC 2 Type 2 Certified</h3>
+<ul>
+<li>12-month observation period from Type 1 completes</li>
+<li>Type 2 report issued — gating for EU enterprise sales</li>
+</ul>
+<h3 id="step-7--q1-q2-2028--add-eu-region-for-international-launch">Step 7 — Q1-Q2 2028 — Add EU Region for International Launch</h3>
+<ul>
+<li>Neon <code>eu-central-1</code> provisioned</li>
+<li>Cookie consent + GDPR compliance flow live</li>
+<li>EU partner go-live coordinated with International Expansion plan</li>
+<li>First EU beta cohort onboarded</li>
+</ul>
+<h3 id="step-8--q3-2028--uk--australia">Step 8 — Q3 2028+ — UK + Australia</h3>
+<ul>
+<li>Repeat the regional template for <code>eu-west-2</code> (UK) and <code>ap-southeast-2</code> (AU)</li>
+<li>Operational maturity should make each new region take ~3 months end-to-end vs the 6 months for first international (Canada)</li>
+</ul>
+<hr>
+<h2 id="14-risk-register--top-10">14. Risk Register — Top 10</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Risk</th>
+<th>Probability</th>
+<th>Impact</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>Database scaling unknowns at &gt;100M rows (Citus performance, materialized view refresh windows)</td>
+<td>Medium</td>
+<td>High</td>
+<td>Load test in staging at projected 18-month scale, hire DBA Phase 4A, fallback path to pg_partman documented</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Multi-region consistency challenges (eventual consistency surprising users)</td>
+<td>Medium</td>
+<td>Medium</td>
+<td>Document read-after-write rules, default writes route to primary, add user-visible "syncing..." UI for cross-region edge cases</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Observability cost runaway (Datadog log ingest hitting $50K/mo unexpectedly)</td>
+<td>High</td>
+<td>Medium</td>
+<td>Daily cost dashboard with paging at 25% over budget, log filtering at edge, sample high-volume routes</td>
+</tr>
+<tr>
+<td>4</td>
+<td>SOC 2 audit finding remediation cost (auditor demands controls we did not budget for)</td>
+<td>Medium</td>
+<td>Medium</td>
+<td>Engage Vanta + Schellman early for pre-audit scoping call, build buffer into Q1 2027 budget</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Key-person dependency on Phyrom + 1-2 senior engineers</td>
+<td>High</td>
+<td>Critical</td>
+<td>Document everything in runbooks, hire CTO and VP Eng by Phase 4A, succession plan published, "in case of bus" doc updated quarterly</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Vendor lock-in (Vercel, Neon, Clerk specifically)</td>
+<td>Medium</td>
+<td>High</td>
+<td>Maintain abstraction layers in code (no Vercel-specific APIs leaking past <code>src/lib/</code>), annually review portability cost, contract terms include data-export guarantees</td>
+</tr>
+<tr>
+<td>7</td>
+<td>GDPR fines for data-residency mistakes</td>
+<td>Low</td>
+<td>Critical</td>
+<td>Architectural enforcement (separate databases per region make accidental cross-border PII writes nearly impossible), legal review at each new region, DPO appointed before EU launch</td>
+</tr>
+<tr>
+<td>8</td>
+<td>DDoS attack on launch day (high-profile media coverage)</td>
+<td>Medium</td>
+<td>High</td>
+<td>Cloudflare Pro + WAF live before any major launch, pre-arranged Cloudflare Enterprise hotline contact, capacity headroom 5x normal</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Key-dependency CVE zero-day (Next.js, Drizzle, Postgres)</td>
+<td>Medium</td>
+<td>High</td>
+<td>Snyk monitoring, on-call SLA for critical CVEs &lt;7 days, Vercel auto-patches managed runtime, Neon auto-patches Postgres</td>
+</tr>
+<tr>
+<td>10</td>
+<td>ML/AI-feature bias in Sherpa Score (legal exposure if score correlates with protected class)</td>
+<td>Medium</td>
+<td>Critical</td>
+<td>Bias audit before any Sherpa Score goes live to clients, third-party fairness review by Phase 4B, documented model card, opt-out path for pros, never expose score to clients as a single number — only as ranking input</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="15-open-decisions">15. Open Decisions</h2>
+<p>Decisions deferred for explicit resolution by Phyrom + advisors before Phase 4A entry.</p>
+<ol>
+<li><strong>Datadog vs OpenTelemetry + Grafana Cloud</strong> at the 1M MAU threshold. Default: Datadog through 1M MAU, evaluate at the threshold. Decision owner: Phyrom + CTO when hired.</li>
+<li><strong>Snyk vs Dependabot</strong> for dependency scanning. Default: Snyk for SOC 2 evidence quality. Revisit if Snyk pricing exceeds 2x Dependabot value.</li>
+<li><strong>When to hire dedicated DBA</strong> — recommend Phase 4A trigger (1M MAU OR 100M total rows in any one table). Decision owner: Phyrom.</li>
+<li><strong>When to hire dedicated SRE</strong> — recommend Phase 4A trigger (multi-region rollout OR 99.95% SLA committed to enterprise customers). Decision owner: Phyrom.</li>
+<li><strong>When to migrate any workload off Vercel</strong> — currently no plan to. Trigger would be: Vercel pricing exceeds 3x equivalent self-hosted at 5M+ MAU, OR a workload pattern Vercel cannot serve (long-running async jobs &gt;300s — solvable via Vercel Workflow DevKit, see Vercel knowledge update).</li>
+<li><strong>Sharding strategy detail: Citus vs pg_partman + FDW</strong>. Default: Citus. Revisit if Neon pulls Citus-on-Neon out of beta and pricing surprises us.</li>
+<li><strong>Secrets management vendor: AWS Secrets Manager vs HashiCorp Vault</strong>. Default: AWS Secrets Manager for simplicity. Revisit if we adopt Kubernetes anywhere (then Vault becomes more attractive).</li>
+<li><strong>WAF: Cloudflare WAF vs Vercel Firewall</strong>. Default: Cloudflare Pro for proven track record at scale. Vercel Firewall is improving fast; revisit at Phase 4A.</li>
+<li><strong>Bug bounty platform: HackerOne vs Bugcrowd</strong>. Default: HackerOne. Revisit only if HackerOne triage quality drops below acceptable threshold.</li>
+<li><strong>Backup destination: Neon-managed vs custom S3 bucket</strong>. Default: both (defense in depth). Cost is negligible at our scale.</li>
+</ol>
+<hr>
+<h2 id="cross-references-to-parallel-specs">Cross-References to Parallel Specs</h2>
+<ul>
+<li><strong>International Expansion</strong> (per-country regulatory specifics, language localization, Stripe Connect per-country onboarding, GDPR/UK GDPR/APP details): defer</li>
+<li><strong>Franchise Model</strong> (per-franchise tech stack, white-label vs shared infrastructure, franchise-specific RBAC): defer</li>
+<li><strong>Sherpa Hub Integration</strong> (hub-specific infrastructure: POS, inventory management, IoT for materials tracking, real-time delivery telemetry): defer</li>
+</ul>
+<p>This spec covers only the platform-layer infrastructure that all three downstream specs depend on. Decisions made here (multi-region database strategy, sharding by metro_id, observability stack, SOC 2 readiness) are inputs to the other three specs.</p>
+<hr>
+<p><strong>End of spec — implementation plan: <code>docs/superpowers/plans/2026-04-25-platform-scale-architecture-plan.md</code></strong></p>
+
+	
+
+
+</body>
+</html>

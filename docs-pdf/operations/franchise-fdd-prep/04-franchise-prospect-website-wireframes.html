@@ -1,0 +1,1583 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>04 franchise prospect website wireframes — Sherpa Pros</title>
+<link rel="icon" href="../../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="04-franchise-prospect-website-wireframes.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="franchise-prospect-website--wireframes--copy">Franchise Prospect Website — Wireframes + Copy</h1>
+<h2 id="0-page-level-information-architecture">0. Page-Level Information Architecture</h2>
+<p>Single long-scroll page with 9 sections + sticky CTA. Mobile-first per Sherpa Pros design conventions. Page weight target: &lt; 1.2 MB. Time to Interactive target: &lt; 2.5 seconds on mobile 4G.</p>
+<pre><code>+-------------------------------------------------+
+|  [STICKY HEADER]  Sherpa Pros logo  | [Apply]   |
++-------------------------------------------------+
+|  SECTION 1 — HERO                               |
+|  Headline + subhead + primary CTA + hero image  |
++-------------------------------------------------+
+|  SECTION 2 — WHY SHERPA HUB FRANCHISE           |
+|  6-product portfolio + 8 platform capabilities  |
++-------------------------------------------------+
+|  SECTION 3 — WHO FITS                           |
+|  Ideal franchisee profile + qualification bar   |
++-------------------------------------------------+
+|  SECTION 4 — ITEM 19 ECONOMICS TEASER           |
+|  5-year revenue + EBITDA chart + disclaimer     |
++-------------------------------------------------+
+|  SECTION 5 — THE 7-STAGE PROCESS                |
+|  Inquiry to signed Franchise Agreement timeline |
++-------------------------------------------------+
+|  SECTION 6 — FOUNDER STORY                      |
+|  Phyrom + HJD Builders + working contractor     |
++-------------------------------------------------+
+|  SECTION 7 — INQUIRY FORM                       |
+|  8-field form + privacy + auto-response promise |
++-------------------------------------------------+
+|  SECTION 8 — FAQ (15 questions)                 |
+|  Accordion list                                 |
++-------------------------------------------------+
+|  SECTION 9 — REQUIRED FDD DISCLOSURE FOOTER     |
+|  Legal disclaimer + state regulator language    |
++-------------------------------------------------+
+</code></pre>
+<hr>
+<h2 id="section-1--hero">Section 1 — Hero</h2>
+<h3 id="wireframe">Wireframe</h3>
+<pre><code>+-------------------------------------------------+
+|  [Sherpa Pros wordmark logo, top-left]          |
+|                                                 |
+|  ╔═════════════════════════════════════════╗   |
+|  ║                                         ║   |
+|  ║  Headline (Fraunces italic, 64-72px)    ║   |
+|  ║                                         ║   |
+|  ║  Subhead (Manrope 500, 18-22px,         ║   |
+|  ║  3-line max, dark navy)                 ║   |
+|  ║                                         ║   |
+|  ║  [PRIMARY CTA: sky blue button]         ║   |
+|  ║  Inquire about a Sherpa Hub franchise   ║   |
+|  ║                                         ║   |
+|  ║  [SECONDARY LINK: text link]            ║   |
+|  ║  Watch the 90-second walkthrough →      ║   |
+|  ╚═════════════════════════════════════════╝   |
+|                                                 |
+|  [HERO IMAGE: photo of Hub #1 Atkinson NH       |
+|   exterior — overcast NE light, branded sign    |
+|   visible, working pro loading kit into truck]  |
++-------------------------------------------------+
+</code></pre>
+<h3 id="copy--headline-3-alternatives-for-ab-test">Copy — Headline (3 alternatives for A/B test)</h3>
+<p><strong>Alternative A (RECOMMENDED PRIMARY):</strong></p>
+<blockquote>
+<p>Own a Sherpa Hub. Build community wealth in the trades.</p>
+</blockquote>
+<p><strong>Alternative B (founder-story angle):</strong></p>
+<blockquote>
+<p>The contractor's marketplace, owned by contractors — one Hub at a time.</p>
+</blockquote>
+<p><strong>Alternative C (economics angle):</strong></p>
+<blockquote>
+<p>A franchise built for the working contractor. $185K to $420K in. $236K cash flow at maturity.</p>
+</blockquote>
+<h3 id="copy--subhead-paired-with-all-three">Copy — Subhead (paired with all three)</h3>
+<blockquote>
+<p>Sherpa Hub is the physical pickup point and community center for verified pros in your local market. You own the Hub. You serve the pros. Sherpa Pros corporate runs the national platform. Your franchise sits at the intersection of physical infrastructure and the largest licensed-trade marketplace in New England.</p>
+</blockquote>
+<h3 id="copy--primary-cta">Copy — Primary CTA</h3>
+<blockquote>
+<p>Inquire about a Sherpa Hub franchise</p>
+</blockquote>
+<p>(Sky-blue button — <code>#00A9E0</code>. Anchors to inquiry form. Hover state: 5% darker <code>#0095C7</code>. Disabled state: 40% opacity.)</p>
+<h3 id="copy--secondary-link">Copy — Secondary Link</h3>
+<blockquote>
+<p>Watch the 90-second walkthrough →</p>
+</blockquote>
+<p>(Triggers in-page video modal. Video is the founder Phyrom giving a 90-second tour of Hub #1 Atkinson NH. Required production deliverable before site goes live.)</p>
+<hr>
+<h2 id="section-2--why-sherpa-hub-franchise">Section 2 — Why Sherpa Hub Franchise</h2>
+<h3 id="wireframe-1">Wireframe</h3>
+<pre><code>+-------------------------------------------------+
+|  Section eyebrow: WHY SHERPA HUB                |
+|  Section headline (Fraunces italic, 48px):      |
+|  "A franchise built on a platform, not a logo." |
+|                                                 |
+|  +-----------------+  +-----------------+       |
+|  | 6 PRODUCTS      |  | 8 PLATFORM      |       |
+|  | ICON GRID       |  | CAPABILITIES    |       |
+|  | (Sherpa Hub,    |  | (Codes engine,  |       |
+|  |  Marketplace,   |  |  Materials      |       |
+|  |  Materials,     |  |  engine,        |       |
+|  |  Home, Manager, |  |  Dispatch,      |       |
+|  |  Rewards/Flex)  |  |  Threads, Smart |       |
+|  +-----------------+  |  Scan, Mobile,  |       |
+|                       |  Guard, Score)  |       |
+|                       +-----------------+       |
+|                                                 |
+|  [3-column why-this-matters callout strip]      |
+|  Vertical integration | Stripe Connect moment | |
+|  Northeast density                              |
++-------------------------------------------------+
+</code></pre>
+<h3 id="copy--section-headline">Copy — Section Headline</h3>
+<blockquote>
+<p>A franchise built on a platform, not a logo.</p>
+</blockquote>
+<h3 id="copy--subhead">Copy — Subhead</h3>
+<blockquote>
+<p>Most franchises sell you a brand. Sherpa Pros sells you brand plus an integrated technology platform — the Sherpa codes engine, the Sherpa Materials engine, the Dispatch matching layer, the Sherpa Mobile app, the Sherpa Smart Scan optical character recognition stack, the Sherpa Threads in-app messaging system, the Sherpa Guard role-based access and audit log layer, and the Sherpa Score reputation algorithm. Every franchisee gets the entire stack from day one. You compete locally with national-platform leverage.</p>
+</blockquote>
+<h3 id="copy--6-product-portfolio-bullets">Copy — 6-Product Portfolio Bullets</h3>
+<table>
+<thead>
+<tr>
+<th>Product</th>
+<th>One-line Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Sherpa Hub</strong></td>
+<td>Your physical franchise — 1,500–3,000 sq ft pickup point + training facility + community center for licensed pros</td>
+</tr>
+<tr>
+<td><strong>Sherpa Marketplace</strong></td>
+<td>The corporate-run national matchmaking platform; routes jobs to your local pros and pays you the per-pro engagement royalty</td>
+</tr>
+<tr>
+<td><strong>Sherpa Materials</strong></td>
+<td>Materials orchestration — sources kits and equipment from supplier network, stages them at your Hub, dispatches via Uber Direct or pro pickup</td>
+</tr>
+<tr>
+<td><strong>Sherpa Home</strong></td>
+<td>The homeowner-facing entry point; corporate-owned funnel that drives demand into your territory</td>
+</tr>
+<tr>
+<td><strong>Sherpa Success Manager</strong></td>
+<td>Concierge-style success management; corporate-owned but routes high-value clients to your local pros</td>
+</tr>
+<tr>
+<td><strong>Sherpa Rewards + Flex</strong></td>
+<td>Pro acquisition + retention; lifetime grandfather pricing for Founding Pros, hourly side-bandwidth pros via Flex</td>
+</tr>
+</tbody></table>
+<h3 id="copy--8-platform-capabilities-bullets">Copy — 8 Platform Capabilities Bullets</h3>
+<blockquote>
+<p>Every Sherpa Hub franchisee gets full platform access included in the $200/month technology fee.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Capability</th>
+<th>What It Does for the Franchisee</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Sherpa codes engine (internal codes intelligence layer)</td>
+<td>Automatic code-aware quotes and dispatch routing — your pros price against current code, not memory</td>
+</tr>
+<tr>
+<td>Sherpa Materials engine</td>
+<td>Materials lists generated from job scope; supplier orders placed via Application Programming Interface (API)</td>
+</tr>
+<tr>
+<td>Dispatch matching algorithm</td>
+<td>7-factor pro selection (license, certification, geography, availability, Sherpa Score tier, specialty match, customer history)</td>
+</tr>
+<tr>
+<td>Sherpa Threads</td>
+<td>In-app and Short Message Service messaging between pros, clients, and your Hub team</td>
+</tr>
+<tr>
+<td>Sherpa Smart Scan</td>
+<td>Optical character recognition for receipts, permits, photos — reduces pro paperwork to seconds</td>
+</tr>
+<tr>
+<td>Sherpa Mobile</td>
+<td>Native iOS and Android apps for pros and clients</td>
+</tr>
+<tr>
+<td>Sherpa Guard</td>
+<td>Role-Based Access Control + audit logs across the entire platform</td>
+</tr>
+<tr>
+<td>Sherpa Score</td>
+<td>Multi-factor pro reputation score that drives dispatch priority</td>
+</tr>
+</tbody></table>
+<h3 id="copy--3-column-why-this-matters-strip">Copy — 3-Column Why-This-Matters Strip</h3>
+<p><strong>Vertical integration</strong></p>
+<blockquote>
+<p>Sherpa Pros is the only national licensed-trade marketplace that owns the materials orchestration layer end-to-end. Your Hub captures margin on every materials line that flows through it — a revenue stream that grows with platform-wide adoption.</p>
+</blockquote>
+<p><strong>The Stripe Connect moment</strong></p>
+<blockquote>
+<p>The marketplace runs on Stripe Connect. Pros get paid faster than any competing platform. Your Hub sits inside that flow — every transaction is auditable, every margin line is traceable, every royalty payment is automated.</p>
+</blockquote>
+<p><strong>Northeast density</strong></p>
+<blockquote>
+<p>Phase 4 launches in non-registration states first (New Hampshire, Maine, Massachusetts, Vermont) — the same territory that already supports Sherpa Pros' active pro network. You inherit a recruiting pipeline, not a cold start.</p>
+</blockquote>
+<hr>
+<h2 id="section-3--who-fits">Section 3 — Who Fits</h2>
+<h3 id="wireframe-2">Wireframe</h3>
+<pre><code>+-------------------------------------------------+
+|  Section eyebrow: WHO FITS                      |
+|  Section headline (Fraunces italic, 48px):      |
+|  "We approve operators, not investors."         |
+|                                                 |
+|  [Two-column layout]                            |
+|  LEFT: "You are a strong fit if..."             |
+|  • bullet                                       |
+|  • bullet                                       |
+|  • bullet                                       |
+|                                                 |
+|  RIGHT: "We will not approve..."                |
+|  • bullet                                       |
+|  • bullet                                       |
+|  • bullet                                       |
+|                                                 |
+|  [Self-screening calculator: optional widget]   |
+|  3 yes/no questions → fit-score green/yellow/red|
++-------------------------------------------------+
+</code></pre>
+<h3 id="copy--headline">Copy — Headline</h3>
+<blockquote>
+<p>We approve operators, not investors.</p>
+</blockquote>
+<h3 id="copy--subhead-1">Copy — Subhead</h3>
+<blockquote>
+<p>Sherpa Pros does not permit absentee ownership in Phase 4 Years 1 through 3. Every Sherpa Hub franchisee is an operator — present at the Hub full-time during the first 24 months, hands-on with pro recruiting, hands-on with member service, hands-on with your local trade community. If you are looking for a passive franchise investment, this is not the right opportunity for you.</p>
+</blockquote>
+<h3 id="copy--strong-fit-bullets">Copy — "Strong Fit" Bullets</h3>
+<blockquote>
+<p><strong>You are a strong fit if you can answer YES to all of these:</strong></p>
+</blockquote>
+<ul>
+<li>5–15 years of construction-adjacent industry experience (licensed General Contractor, trade-supply-house operator or branch manager, big-box pro-desk leader, multi-property property manager, or trade-association executive)</li>
+<li>$200,000+ in liquid net worth (cash and marketable securities not encumbered by other obligations)</li>
+<li>$400,000+ total net worth</li>
+<li>$185,000+ in cash available for the franchise investment (covers Year 1 low-case Initial Investment without debt; or covers Small Business Administration 7(a) down payment if you finance)</li>
+<li>Active in your local trade association, chamber of commerce, or building-industry circles</li>
+<li>Prepared to be on-site at your Hub full-time for at least the first 24 months</li>
+<li>Comfortable reading a Profit and Loss statement, managing to a cash-flow forecast, and working constructively with a corporate compliance team</li>
+</ul>
+<h3 id="copy--we-will-not-approve-bullets">Copy — "We Will Not Approve" Bullets</h3>
+<blockquote>
+<p><strong>We will not approve a franchise application that includes:</strong></p>
+</blockquote>
+<ul>
+<li>Any franchise litigation history (plaintiff or defendant)</li>
+<li>Personal bankruptcy in the last 7 years</li>
+<li>No construction-adjacent industry experience (the Sherpa Pros platform is specialized; multi-unit franchise experience in unrelated categories does not substitute)</li>
+<li>Lifestyle-franchisee intent — anyone who plans to delegate operations to a hired manager from day one</li>
+<li>Currently operating a competing licensed-trade marketplace, equipment-rental business, or job-kit business (conflict of interest)</li>
+<li>Felony conviction in the last 10 years (case-by-case review for non-violent financial crimes outside the 10-year window)</li>
+<li>Failed credit check or undisclosed material liabilities</li>
+<li>Negative reference from any of three required professional references</li>
+</ul>
+<hr>
+<h2 id="section-4--item-19-economics-teaser">Section 4 — Item 19 Economics Teaser</h2>
+<h3 id="wireframe-3">Wireframe</h3>
+<pre><code>+-------------------------------------------------+
+|  Section eyebrow: THE ECONOMICS                 |
+|  Section headline (Fraunces italic, 48px):      |
+|  "Item 19 Financial Performance Representations"|
+|                                                 |
+|  [REQUIRED DISCLAIMER BOX — top of section]     |
+|  Some outlets have earned this amount. Your     |
+|  individual results may differ. There is no     |
+|  assurance that you will earn as much...        |
+|                                                 |
+|  [Bar chart: 5-year revenue Mid Case]           |
+|  Y1 $580K | Y2 $1.05M | Y3 $1.25M | Y5 $1.42M  |
+|                                                 |
+|  [Bar chart: 5-year EBITDA Mid Case]            |
+|  Y1 $94K | Y2 $204K | Y3 $269K | Y5 $320K       |
+|                                                 |
+|  [3-tile callout strip]                         |
+|  $185K-$420K | 14-22 months | $236K cash flow   |
+|  Initial Inv | to breakeven  | at maturity      |
+|                                                 |
+|  [LINK: Read the full Item 19 in the FDD →]     |
+|  (Triggers FDD-request flow per 7-stage screen) |
++-------------------------------------------------+
+</code></pre>
+<h3 id="copy--required-disclaimer-must-appear-before-any-earnings-number">Copy — Required Disclaimer (must appear before any earnings number)</h3>
+<blockquote>
+<p>The Federal Trade Commission's Franchise Rule permits a franchisor to provide information about the actual or potential financial performance of its franchised and franchisor-owned outlets, if there is a reasonable basis for the information, and if the information is included in the disclosure document. Sherpa Pros LLC is providing the information set forth below.</p>
+<p><strong>Some outlets have earned this amount. Your individual results may differ. There is no assurance that you will earn as much.</strong></p>
+<p>Written substantiation for the financial performance representation will be made available to the prospective franchisee upon reasonable request.</p>
+</blockquote>
+<h3 id="copy--headline-1">Copy — Headline</h3>
+<blockquote>
+<p>Item 19 Financial Performance Representations</p>
+</blockquote>
+<h3 id="copy--subhead-2">Copy — Subhead</h3>
+<blockquote>
+<p>Sherpa Pros' Item 19 disclosure is grounded in operating data from Hub #1 (Atkinson NH, corporate-owned) and industry-comparable home-services franchise benchmarks. Three-tier scenarios — Low (P25), Mid (P50), High (P75) — are disclosed for every revenue and Earnings Before Interest, Taxes, Depreciation, and Amortization (EBITDA) line.</p>
+</blockquote>
+<h3 id="copy--3-tile-callout">Copy — 3-Tile Callout</h3>
+<table>
+<thead>
+<tr>
+<th>Tile</th>
+<th>Number</th>
+<th>Caption</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>$185K–$420K</td>
+<td>Total Initial Investment Range (per FDD Item 7)</td>
+</tr>
+<tr>
+<td>2</td>
+<td>14–22 months</td>
+<td>Time to monthly cash-flow positive operations</td>
+</tr>
+<tr>
+<td>3</td>
+<td>$236K</td>
+<td>Mid-case franchisee pre-tax cash flow at Year 3 maturity</td>
+</tr>
+</tbody></table>
+<h3 id="copy--closing-link">Copy — Closing Link</h3>
+<blockquote>
+<p>Read the full Item 19 disclosure in the Franchise Disclosure Document — request the FDD via inquiry form below. The FDD will be delivered after Discovery Call and signed mutual Non-Disclosure Agreement, in compliance with the Federal Trade Commission Franchise Rule's 14-calendar-day waiting period. →</p>
+</blockquote>
+<hr>
+<h2 id="section-5--the-7-stage-process">Section 5 — The 7-Stage Process</h2>
+<h3 id="wireframe-4">Wireframe</h3>
+<pre><code>+-------------------------------------------------+
+|  Section eyebrow: THE PROCESS                   |
+|  Section headline (Fraunces italic, 48px):      |
+|  "Seven stages. 60-120 days. Then you build."   |
+|                                                 |
+|  [Vertical timeline — 7 numbered cards]         |
+|  Each card: number + stage name + 2-line        |
+|  description + duration estimate                |
++-------------------------------------------------+
+</code></pre>
+<h3 id="copy--headline-2">Copy — Headline</h3>
+<blockquote>
+<p>Seven stages. 60–120 days. Then you build.</p>
+</blockquote>
+<h3 id="copy--subhead-3">Copy — Subhead</h3>
+<blockquote>
+<p>The Federal Trade Commission Franchise Rule mandates a 14-day waiting period between Franchise Disclosure Document (FDD) delivery and any binding signature. Add Discovery Day, references, and Approval Committee deliberation, and the typical inquiry-to-signed-Franchise-Agreement cycle is 60 to 120 days.</p>
+</blockquote>
+<h3 id="copy--stage-cards">Copy — Stage Cards</h3>
+<table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>Name</th>
+<th>What Happens</th>
+<th>Typical Duration</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>Inquiry</td>
+<td>You submit the form below. Auto-response with FDD Frequently Asked Questions and Discovery Day calendar.</td>
+<td>&lt; 1 day</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Discovery Call</td>
+<td>45-minute video call with our Vice President of Franchise Development. We qualify your industry experience, net worth, cash to invest, and territory interest. You ask any questions about the business.</td>
+<td>Week 1–2</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Mutual Non-Disclosure Agreement (NDA)</td>
+<td>Both parties sign before any non-public information is exchanged.</td>
+<td>Week 2</td>
+</tr>
+<tr>
+<td>4</td>
+<td>FDD Delivery</td>
+<td>We deliver the full Franchise Disclosure Document — all 23 Items, sample franchise agreement, financial statements. <strong>The Federal Trade Commission's mandatory 14-calendar-day waiting period begins.</strong> No binding signatures during this window.</td>
+<td>Week 2–4</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Discovery Day On-Site</td>
+<td>Full-day visit to Hub #1 in Atkinson, New Hampshire. Phyrom hosts. You meet our Vice President of Operations, our Hub Manager, and at least one founding pro. You walk the Hub, observe daily operations, get every question answered.</td>
+<td>Week 4–6</td>
+</tr>
+<tr>
+<td>6</td>
+<td>References + Background Check + Credit Check</td>
+<td>We contact your three professional references. We run a credit check via standard franchise-industry vendor. We run a background check via standard third party. Cost reimbursed by you ($550 application processing fee).</td>
+<td>Week 6–10</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Final Approval + Signing</td>
+<td>Sherpa Pros Franchise Approval Committee reviews your complete file and votes. Approval requires unanimous vote. If approved, signing scheduled at Hub #1; you deliver the $45,000 Initial Franchise Fee at signing.</td>
+<td>Week 10–14</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="section-6--founder-story">Section 6 — Founder Story</h2>
+<h3 id="wireframe-5">Wireframe</h3>
+<pre><code>+-------------------------------------------------+
+|  [Editorial 2-column layout — image + text]     |
+|                                                 |
+|  LEFT: Founder portrait (Phyrom at HJD HQ       |
+|  Atkinson NH; working contractor lens — boots,  |
+|  blueprint, half-built deck visible behind)     |
+|                                                 |
+|  RIGHT: Founder story copy                      |
+|  Section eyebrow: FROM THE FOUNDER              |
+|  Headline (Fraunces italic, 36-44px):           |
+|  "I built this for the contractor I wish I had  |
+|  on speed-dial when I started."                 |
+|                                                 |
+|  Body copy (Manrope 400, 17-19px, 5-7 paras)    |
++-------------------------------------------------+
+</code></pre>
+<h3 id="copy--headline-3">Copy — Headline</h3>
+<blockquote>
+<p>I built this for the contractor I wish I had on speed-dial when I started.</p>
+</blockquote>
+<h3 id="copy--body-5-paragraphs">Copy — Body (5 paragraphs)</h3>
+<blockquote>
+<p>I am Phyrom, a working General Contractor in Atkinson, New Hampshire. I founded HJD Builders LLC because I wanted to build the kinds of New England homes that last 200 years — the kind of build I learned to respect from the older trades who taught me. I started Sherpa Pros because every working contractor I knew was getting clobbered by the same set of problems: pros with great trade skills but no platform to find work, materials orchestration so manual it ate half the profit on every job, code complexity that varied by town, dispatch logic that rewarded the loudest aggregator instead of the verified pro.</p>
+<p>Sherpa Pros is the platform I wish HJD Builders had on speed-dial in the early years. The Sherpa codes engine reads every state and town code change automatically and surfaces it as part of the quote. The Sherpa Materials engine pulls from the supplier network and stages everything at the right Hub for the right job. The Sherpa Score algorithm rewards verified pros for showing up, doing clean work, and keeping their licenses current — not for paying the platform the highest take-rate. The whole thing runs on the assumption that the working pro is the customer, and the homeowner is the demand.</p>
+<p>Sherpa Hub is the physical pickup point that holds the whole thing together. The Hub is where pros walk in for kits, equipment, training, and a place to belong. The Hub is where Sherpa Materials orders get staged the night before a job and dispatched in the morning. The Hub is the local community center for verified-licensed-trade work in its market. We opened Hub #1 in Atkinson, New Hampshire — colocated at HJD Builders' headquarters — as the proof point. Hub #1 is corporate-owned. Every other Hub from Hub #2 forward is built for franchise.</p>
+<p>Why franchise? Because the local market knowledge that makes a Hub work — knowing which landlord to negotiate with, which trade school to partner with, which supply house already sells to local pros, which town-hall politics affect zoning, which trade associations matter — is not the kind of knowledge you can airdrop into a market from corporate. It belongs to the operator on the ground. The franchise model is how Sherpa Pros respects that knowledge and pays for it directly. The franchisee writes the check, runs the Hub, owns the local relationships, and keeps the cash flow. Sherpa Pros corporate runs the platform, the brand, the technology, the national pro-recruiting funnel, and the national customer-acquisition funnel — and earns the royalty.</p>
+<p>If you are a working contractor, a former trade-supply-house owner, a former big-box pro-desk manager, or a former trade-association executive — and you have $200,000+ in liquid net worth and $185,000+ in cash to invest — you are exactly who I built this for. The application form is below. I read every inquiry personally for the first 25 franchisees. — Phyrom</p>
+</blockquote>
+<hr>
+<h2 id="section-7--inquiry-form">Section 7 — Inquiry Form</h2>
+<h3 id="wireframe-6">Wireframe</h3>
+<pre><code>+-------------------------------------------------+
+|  Section eyebrow: APPLY                         |
+|  Section headline (Fraunces italic, 48px):      |
+|  "Tell us about you."                           |
+|                                                 |
+|  [8-field form, 2 fields per row on desktop]    |
+|                                                 |
+|  First Name [____________]  Last Name [_______] |
+|  Email      [____________]  Phone     [_______] |
+|  City of interest [______]  State [▼ dropdown ] |
+|  Construction industry experience [▼ years ▼]   |
+|  Liquid capital available [▼ ranges ▼]          |
+|  Current role [▼ dropdown ▼]                    |
+|  How did you hear about us [▼ dropdown ▼]       |
+|  [Optional textarea] Anything else? [______]    |
+|                                                 |
+|  [Required checkbox] I acknowledge that the     |
+|  Sherpa Pros franchise opportunity is governed  |
+|  by the Federal Trade Commission Franchise Rule |
+|  and applicable state franchise registration    |
+|  laws. I understand that submission of this     |
+|  inquiry does not constitute an offer or        |
+|  acceptance of any franchise...                 |
+|                                                 |
+|  [PRIMARY CTA: sky blue button]                 |
+|  Submit Inquiry                                 |
+|                                                 |
+|  Privacy: We use your information solely to     |
+|  evaluate your franchise inquiry. We do not     |
+|  sell or share your data. Read our privacy      |
+|  policy →                                       |
++-------------------------------------------------+
+</code></pre>
+<h3 id="form-fields-per-fdd-inquiry-intake-requirements">Form Fields (per FDD inquiry intake requirements)</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>First Name</td>
+<td>Text</td>
+<td>Yes</td>
+<td></td>
+</tr>
+<tr>
+<td>Last Name</td>
+<td>Text</td>
+<td>Yes</td>
+<td></td>
+</tr>
+<tr>
+<td>Email</td>
+<td>Email</td>
+<td>Yes</td>
+<td>Validated; auto-response triggered</td>
+</tr>
+<tr>
+<td>Phone</td>
+<td>Phone (with country code)</td>
+<td>Yes</td>
+<td>E.164 format; for Discovery Call scheduling</td>
+</tr>
+<tr>
+<td>City of interest</td>
+<td>Text</td>
+<td>Yes</td>
+<td>Free-form for territory mapping</td>
+</tr>
+<tr>
+<td>State of interest</td>
+<td>Dropdown</td>
+<td>Yes</td>
+<td>Pre-filtered to allowed-sales states based on registration status (Phase 4 Year 1: NH/ME/MA/VT only initially)</td>
+</tr>
+<tr>
+<td>Construction industry experience</td>
+<td>Dropdown</td>
+<td>Yes</td>
+<td>&lt; 5 years / 5–10 years / 10–15 years / 15+ years</td>
+</tr>
+<tr>
+<td>Liquid capital available</td>
+<td>Dropdown</td>
+<td>Yes</td>
+<td>&lt; $100K (auto-disqualify with respectful response) / $100K–$200K (review) / $200K–$500K (proceed) / $500K+ (priority)</td>
+</tr>
+<tr>
+<td>Current role</td>
+<td>Dropdown</td>
+<td>Yes</td>
+<td>Licensed General Contractor / Trade-supply-house owner or manager / Big-box Pro-Desk leader / Property manager / Trade-association executive / Other (specify)</td>
+</tr>
+<tr>
+<td>How did you hear about us</td>
+<td>Dropdown</td>
+<td>No</td>
+<td>Referral / Conference / Search / Trade publication / Existing pro / Other</td>
+</tr>
+<tr>
+<td>Anything else</td>
+<td>Textarea</td>
+<td>No</td>
+<td>Open response</td>
+</tr>
+<tr>
+<td>Acknowledgment checkbox</td>
+<td>Checkbox</td>
+<td>Yes</td>
+<td>FTC + state franchise law acknowledgment</td>
+</tr>
+</tbody></table>
+<h3 id="copy--submit-button">Copy — Submit Button</h3>
+<blockquote>
+<p>Submit Inquiry</p>
+</blockquote>
+<h3 id="copy--auto-response-promise">Copy — Auto-Response Promise</h3>
+<blockquote>
+<p>A Sherpa Pros team member will reach out within 2 business days to schedule your Discovery Call. Phyrom personally reads every inquiry for the first 25 franchisees.</p>
+</blockquote>
+<h3 id="copy--privacy-footer">Copy — Privacy Footer</h3>
+<blockquote>
+<p>We use your information solely to evaluate your franchise inquiry. We do not sell or share your data with third parties. Background and credit checks are run only after Stage 6 of the screening process and only with your written consent. Read our [Privacy Policy] and [Franchise Inquiry Terms].</p>
+</blockquote>
+<hr>
+<h2 id="section-8--faq-15-questions">Section 8 — FAQ (15 Questions)</h2>
+<h3 id="wireframe-7">Wireframe</h3>
+<p>Standard accordion. Each FAQ is a row that expands on click. First 3 expanded by default.</p>
+<h3 id="faq-content">FAQ Content</h3>
+<p><strong>Q1: What is the total cost to open a Sherpa Hub franchise?</strong></p>
+<blockquote>
+<p>$185,000 to $420,000 depending on Hub size, market real estate cost, and existing franchisee resources. The $45,000 Initial Franchise Fee is included in this range. The full breakdown is disclosed in Item 7 of the Franchise Disclosure Document.</p>
+</blockquote>
+<p><strong>Q2: How much can I expect to earn?</strong></p>
+<blockquote>
+<p>Item 19 of the Franchise Disclosure Document discloses Year 1 through Year 5 revenue and Earnings Before Interest, Taxes, Depreciation, and Amortization (EBITDA) at three scenarios — Low (P25), Mid (P50), and High (P75). Mid-case franchisee pre-tax cash flow at Year 3 maturity is approximately $236,000. <strong>Some outlets have earned this amount. Your individual results may differ. There is no assurance that you will earn as much.</strong></p>
+</blockquote>
+<p><strong>Q3: What is the royalty rate?</strong></p>
+<blockquote>
+<p>6% of gross revenue in Year 1, 8% in Year 2 and onward. Marketing Fund contribution is an additional 2% of gross revenue. Technology fee is a flat $200/month. Local marketing minimum is 1.5% of gross revenue (spent at the franchisee's discretion in approved channels).</p>
+</blockquote>
+<p><strong>Q4: What is the protected territory?</strong></p>
+<blockquote>
+<p>5-mile radius in major-metro markets, 15-mile radius in suburban markets, 30-mile radius in rural markets. Sherpa Pros LLC will not open another corporate-owned or franchise-owned Hub within your protected radius for the duration of your Franchise Agreement.</p>
+</blockquote>
+<p><strong>Q5: How long is the initial term?</strong></p>
+<blockquote>
+<p>10 years from Hub Grand Opening. One 10-year renewal term available, conditional on good standing, Brand Standards compliance, facility upgrade to then-current corporate specifications, and payment of the $15,000 renewal fee.</p>
+</blockquote>
+<p><strong>Q6: How long does the application process take?</strong></p>
+<blockquote>
+<p>Typically 60–120 days from inquiry to signed Franchise Agreement, including the mandatory Federal Trade Commission 14-calendar-day waiting period after FDD delivery.</p>
+</blockquote>
+<p><strong>Q7: Where can I open a Sherpa Hub?</strong></p>
+<blockquote>
+<p>Phase 4 Year 1: New Hampshire, Maine, Massachusetts, Vermont (non-registration states). Phase 4 Year 2: New York, Rhode Island, Maryland, Virginia (priority registration states). Phase 4 Year 3: remaining 10 registration states for full national coverage.</p>
+</blockquote>
+<p><strong>Q8: Do I need construction-industry experience?</strong></p>
+<blockquote>
+<p>Yes. We require 5–15 years in construction-adjacent industries — licensed General Contractor, trade-supply-house operator, big-box pro-desk leader, multi-property property manager, or trade-association executive. Multi-unit franchise experience in unrelated categories does not substitute.</p>
+</blockquote>
+<p><strong>Q9: Can I be an absentee owner?</strong></p>
+<blockquote>
+<p>No. Sherpa Pros does not permit absentee ownership in Phase 4 Years 1 through 3. Every Sherpa Hub franchisee is an operator — present at the Hub full-time during the first 24 months.</p>
+</blockquote>
+<p><strong>Q10: What does the 80-hour initial training cover?</strong></p>
+<blockquote>
+<p>Hub operations, pro recruiting and onboarding, codes literacy, materials orchestration, customer service, compliance, marketing, and financial management. Delivered at Hub #1 in Atkinson, New Hampshire. You also receive 40 hours of on-site Hub-opening support during Weeks 1–2 of your operations.</p>
+</blockquote>
+<p><strong>Q11: Do you offer financing?</strong></p>
+<blockquote>
+<p>Sherpa Pros LLC does not offer direct financing in Phase 4 Year 1. We are pursuing Small Business Administration (SBA) Approved Franchisor status by Phase 4 Year 2. We can introduce you to franchise-friendly lenders (BoeFly, ApplePie Capital, Live Oak Bank).</p>
+</blockquote>
+<p><strong>Q12: What technology platform do I get?</strong></p>
+<blockquote>
+<p>The full Sherpa Pros stack — Sherpa codes engine (codes intelligence layer), Sherpa Materials engine, Dispatch matching algorithm, Sherpa Threads (in-app and Short Message Service messaging), Sherpa Smart Scan (optical character recognition), Sherpa Mobile (native iOS and Android), Sherpa Guard (Role-Based Access Control and audit logs), and the Hub-specific Point of Sale system.</p>
+</blockquote>
+<p><strong>Q13: How does the materials margin share work?</strong></p>
+<blockquote>
+<p>Every materials line that flows through your Hub generates a per-line margin share. Hub buffer stock (you stock it, you fulfill it): 40% margin share. Hub staged plus Uber Direct (you receive, stage, dispatch): 25%. Hub staged plus pro pickup (you receive, stage, pro picks up — no Uber Direct cost): 35%. Supplier-direct (Hub not involved): 0%.</p>
+</blockquote>
+<p><strong>Q14: Can I open more than one Hub?</strong></p>
+<blockquote>
+<p>Yes. Area Development Agreements are available for franchisees who commit to opening 3 Hubs over 5 years for a discounted $125,000 Initial Franchise Fee (versus $135,000 if purchased one-by-one). Existing franchisees also have Right of First Refusal on adjacent territories.</p>
+</blockquote>
+<p><strong>Q15: What if my application is rejected?</strong></p>
+<blockquote>
+<p>We provide written feedback on the rejection rationale. The most common rejection reasons are: insufficient construction-industry experience, lifestyle-franchisee intent (absentee ownership plan), franchise litigation history, undisclosed material liabilities, or negative professional references. We may invite you to reapply after 12 months if circumstances change materially.</p>
+</blockquote>
+<hr>
+<h2 id="section-9--required-fdd-disclosure-footer">Section 9 — Required FDD Disclosure Footer</h2>
+<h3 id="wireframe-8">Wireframe</h3>
+<pre><code>+-------------------------------------------------+
+|  [Full-width dark-navy band, white type]        |
+|                                                 |
+|  REQUIRED LEGAL DISCLOSURE                      |
+|                                                 |
+|  This website does not constitute an offer to   |
+|  sell a franchise. The offer of a franchise can |
+|  only be made through the delivery of a         |
+|  Franchise Disclosure Document. Certain states  |
+|  require that we register the Franchise         |
+|  Disclosure Document in those states. The       |
+|  communications on this web site are not        |
+|  directed by us to the residents of any of      |
+|  those states. Moreover, we will not offer or   |
+|  sell franchises in those states until we have  |
+|  registered the franchise (or obtained an       |
+|  applicable exemption from registration) and    |
+|  delivered the Franchise Disclosure Document    |
+|  to the prospective franchisee in compliance    |
+|  with applicable law.                           |
+|                                                 |
+|  © 2026 Sherpa Pros LLC. All rights reserved.   |
+|  Privacy Policy | Terms of Use | Sitemap        |
++-------------------------------------------------+
+</code></pre>
+<h3 id="copy--required-federal--state-disclosure-footer">Copy — Required Federal + State Disclosure Footer</h3>
+<blockquote>
+<p><strong>REQUIRED LEGAL DISCLOSURE</strong></p>
+<p>This website does not constitute an offer to sell a franchise. The offer of a franchise can only be made through the delivery of a Franchise Disclosure Document. Certain states require that we register the Franchise Disclosure Document in those states. The communications on this website are not directed by us to the residents of any of those states. Moreover, we will not offer or sell franchises in those states until we have registered the franchise (or obtained an applicable exemption from registration) and delivered the Franchise Disclosure Document to the prospective franchisee in compliance with applicable law.</p>
+<p>Minnesota residents: MN Franchise Registration #_________ (placeholder — populate post-Minnesota registration in Phase 4 Year 3).</p>
+<p>New York residents: NY Franchise Registration #_________ (placeholder — populate post-New York registration in Phase 4 Year 2).</p>
+<p>California residents: CA Franchise Registration #_________ (placeholder — populate post-California registration in Phase 4 Year 3).</p>
+<p>© 2026 Sherpa Pros LLC. All rights reserved. [Privacy Policy] | [Terms of Use] | [Sitemap]</p>
+</blockquote>
+<hr>
+<h2 id="10-designer-handoff-notes">10. Designer Handoff Notes</h2>
+<h3 id="typography-per-docsoperationsbrand-portfoliomd">Typography (per <code>docs/operations/brand-portfolio.md</code>)</h3>
+<table>
+<thead>
+<tr>
+<th>Use</th>
+<th>Font</th>
+<th>Weight</th>
+<th>Size Range</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Section eyebrow</td>
+<td>Manrope</td>
+<td>600 small caps</td>
+<td>12–14px / 0.18em letter-spacing</td>
+</tr>
+<tr>
+<td>Section headline</td>
+<td>Fraunces italic</td>
+<td>400</td>
+<td>48–72px / -0.015em letter-spacing</td>
+</tr>
+<tr>
+<td>Subhead</td>
+<td>Manrope</td>
+<td>500</td>
+<td>18–22px</td>
+</tr>
+<tr>
+<td>Body</td>
+<td>Manrope</td>
+<td>400</td>
+<td>17–19px / 1.6 line-height</td>
+</tr>
+<tr>
+<td>Stats / numbers</td>
+<td>JetBrains Mono</td>
+<td>500</td>
+<td>14–24px</td>
+</tr>
+<tr>
+<td>CTA</td>
+<td>Manrope</td>
+<td>600</td>
+<td>16–18px</td>
+</tr>
+</tbody></table>
+<h3 id="color-tokens">Color Tokens</h3>
+<table>
+<thead>
+<tr>
+<th>Use</th>
+<th>Token</th>
+<th>Hex</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Primary CTA background</td>
+<td>sky-blue</td>
+<td>#00A9E0</td>
+</tr>
+<tr>
+<td>Primary CTA hover</td>
+<td>sky-blue-dark</td>
+<td>#0095C7</td>
+</tr>
+<tr>
+<td>Headline text</td>
+<td>dark-navy</td>
+<td>#1A1A2E</td>
+</tr>
+<tr>
+<td>Body text</td>
+<td>dark-navy-soft</td>
+<td>#2A2A40</td>
+</tr>
+<tr>
+<td>Background (light editorial sections)</td>
+<td>warm-cream</td>
+<td>#FAF7F0</td>
+</tr>
+<tr>
+<td>Background (dark hero / footer)</td>
+<td>dark-navy</td>
+<td>#1A1A2E</td>
+</tr>
+<tr>
+<td>Section rule above headline</td>
+<td>sky-blue</td>
+<td>#00A9E0 (3px high)</td>
+</tr>
+<tr>
+<td>Required disclaimer box border</td>
+<td>dark-navy</td>
+<td>#1A1A2E (1px, dotted)</td>
+</tr>
+<tr>
+<td>Required disclaimer box background</td>
+<td>warm-cream</td>
+<td>#FAF7F0</td>
+</tr>
+</tbody></table>
+<h3 id="mobile-adaptations">Mobile Adaptations</h3>
+<ul>
+<li>Hero stacks vertically; image moves below headline/CTA.</li>
+<li>6-product portfolio + 8-platform-capability sections become single-column accordions.</li>
+<li>Item 19 charts stack vertically; bar charts become horizontal bars on mobile for readability.</li>
+<li>7-stage timeline becomes vertical stack with connecting line on left edge.</li>
+<li>FAQ accordion remains accordion.</li>
+<li>Form fields stack to single column.</li>
+</ul>
+<h3 id="performance-budget">Performance Budget</h3>
+<ul>
+<li>Total page weight: &lt; 1.2 MB</li>
+<li>Hero image: &lt; 250 KB (WebP, lazy-loaded for below-fold versions)</li>
+<li>Founder portrait: &lt; 180 KB</li>
+<li>Total HTTP requests: &lt; 30</li>
+<li>Time to Interactive on mobile 4G: &lt; 2.5 seconds</li>
+<li>Lighthouse Performance score: 90+</li>
+<li>Lighthouse Accessibility score: 100</li>
+</ul>
+<h3 id="required-pre-launch-production-deliverables">Required Pre-Launch Production Deliverables</h3>
+<ol>
+<li>Hero photograph — Hub #1 Atkinson NH exterior with branded sign</li>
+<li>Founder portrait — Phyrom at HJD HQ in editorial style</li>
+<li>90-second walkthrough video (Phyrom voiceover, Hub #1 interior tour)</li>
+<li>6-product portfolio iconography (custom — match brand portfolio iconography)</li>
+<li>8-platform-capability iconography (custom)</li>
+<li>Bar chart illustrations for Item 19 teaser (matched to brand color palette)</li>
+<li>7-stage timeline graphic (custom illustration matching editorial brand)</li>
+</ol>
+
+	
+
+
+</body>
+</html>

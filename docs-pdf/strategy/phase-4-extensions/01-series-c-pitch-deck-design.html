@@ -1,0 +1,1275 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>01 series c pitch deck design — Sherpa Pros</title>
+<link rel="icon" href="../../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="01-series-c-pitch-deck-design.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="sherpa-pros--series-c-pitch-deck-design">Sherpa Pros — Series C Pitch Deck Design</h1>
+<blockquote>
+<p><strong>Document type:</strong> Deck design specification + first-pass slide content. Final presentation file (<code>docs/slides/08-series-c-investor-pitch.md</code>) gets generated as part of the Phase 4 marketing kit refresh (see <code>08-phase-4-marketing-kit-refresh-spec.md</code>). This file is the brief, the slide-by-slide outline, and the data-source map the future deck builder works against.</p>
+</blockquote>
+<p><strong>Target audience.</strong> Tier-1 growth investors: Sequoia Capital, Andreessen Horowitz (a16z) Growth, General Catalyst, Insight Partners, Tiger Global, Bessemer Venture Partners (BVP). Strategic check candidates: Home Depot Ventures, Lowe's Strategic Investments, Procore Ventures.</p>
+<p><strong>Target close window.</strong> Phase 4 Month 30 to Month 36. Trigger: Phase 4 OKR 7 met (see <code>06-phase-4-okrs-and-measurement-framework.md</code>).</p>
+<p><strong>Target raise.</strong> $40M-$80M (target $60M).</p>
+<p><strong>Target valuation.</strong> $400M-$800M (target $600M, ~10x trailing-twelve-month Annual Recurring Revenue at the $60M-ARR proof point).</p>
+<p><strong>Comparable benchmark transactions.</strong> Procore Series E ($150M at $3B in 2018), ServiceTitan Series F ($200M at $8.3B in 2020), Toast Series F ($400M at $4.9B in 2020). Sherpa Pros at the Series C target is ~5-10x smaller than these comparables — appropriate for the stage.</p>
+<hr>
+<h2 id="deck-design-principles">Deck design principles</h2>
+<ol>
+<li><strong>Receipts over rhetoric.</strong> The Series C deck is a receipts deck. Every claim — Annual Recurring Revenue, Gross Merchandise Value, Customer Acquisition Cost, take rate, retention — has a screenshot, a chart, or a citation. Investors at this stage have seen the founder story.</li>
+<li><strong>The flywheel is the moat.</strong> Slides do not present products in isolation; they show how each new product compounds the others. The single most important slide is Slide 11 (the multi-product flywheel diagram).</li>
+<li><strong>International and franchise are not promises — they are proven systems.</strong> The deck shows Canada Year 1 lived numbers and the first signed franchisee, not pro-forma projections.</li>
+<li><strong>Path to one-billion-dollar Annual Recurring Revenue is shown, not stated.</strong> Slide 22 walks the model line by line.</li>
+<li><strong>Founder voice stays.</strong> Phyrom is on every founder slide and in the closing slide. The Series A and Series B narrative was "working contractor builds the platform he wished existed." The Series C narrative is "working contractor turned out to be right — and now leads a company built to outscale the comp set."</li>
+</ol>
+<hr>
+<h2 id="slide-by-slide-outline-25-slides">Slide-by-slide outline (~25 slides)</h2>
+<h3 id="slide-1--hero--cover">Slide 1 — Hero / cover</h3>
+<p><strong>Headline:</strong> <em>The Stripe Connect of the trade economy — at scale.</em></p>
+<p><strong>Subhead:</strong> Sherpa Pros · Series C · 2026</p>
+<p><strong>Visual:</strong> Primary wordmark on dark navy (<code>#1a1a2e</code>) ground. Diagonal seam motif (per brand bible <code>§2.1</code>) repeats as section dividers throughout the deck.</p>
+<p><strong>Footer:</strong> Confidentiality notice. Date. Lead-investor name (filled per recipient).</p>
+<hr>
+<h3 id="slide-2--the-arc-so-far-phases-0-→-3">Slide 2 — The arc so far (Phases 0 → 3)</h3>
+<p><strong>Headline:</strong> <em>Four years. Four phases. Four metros. Four products that compound each other.</em></p>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Window</th>
+<th>What we proved</th>
+<th>Headline number</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Phase 0</td>
+<td>Months 0-9</td>
+<td>Founding-pro recruit, 10-pro beta, Wefunder $250K close</td>
+<td>10 pros in beta, NPS 71</td>
+</tr>
+<tr>
+<td>Phase 1</td>
+<td>Months 9-18</td>
+<td>Public launch — Portsmouth, Manchester, Portland, Boston (specialty wedge)</td>
+<td>350 pros, $4M Gross Merchandise Value run-rate</td>
+</tr>
+<tr>
+<td>Phase 2</td>
+<td>Months 18-30</td>
+<td>Series B closed ($20-40M), Sherpa Hub network of six co-located locations live, materials orchestration live</td>
+<td>2,400 pros, $42M Gross Merchandise Value run-rate, $7.6M Annual Recurring Revenue</td>
+</tr>
+<tr>
+<td>Phase 3</td>
+<td>Months 30-36</td>
+<td>Multi-region infrastructure, Canada Year 1 cohort live, first Sherpa Hub franchisee signed</td>
+<td>4,800 pros, $128M Gross Merchandise Value run-rate, $52M Annual Recurring Revenue</td>
+</tr>
+</tbody></table>
+<p><strong>Visual:</strong> Horizontal stepped chart. Each phase = one block. Numbers in <code>font-feature-settings: 'tnum'</code> (locked tabular numerals per editorial theme).</p>
+<hr>
+<h3 id="slide-3--where-we-are-today-snapshot-at-series-c-raise">Slide 3 — Where we are today (snapshot at Series C raise)</h3>
+<p><strong>Headline:</strong> <em>4 metros US, Canada Year 1 live, multi-product flywheel proven.</em></p>
+<p>Bulleted snapshot:</p>
+<ul>
+<li><strong>4 US metros</strong> at scale (Portsmouth, Manchester, Portland-ME, Boston) plus Providence + Hartford in beta = 6 metros US total.</li>
+<li><strong>Canada Year 1</strong> — Toronto cohort 60+ pros, $400K Canadian Gross Merchandise Value run-rate at Month 30.</li>
+<li><strong>Sherpa Hub network</strong> — 6 hubs operational (5 First Webb co-located + Hub #1 Portsmouth standalone) plus first signed franchisee.</li>
+<li><strong>Materials orchestration</strong> — Sherpa Materials engine routing $1.2M/month gross run-rate across Zinc + Uber Direct rails.</li>
+<li><strong>14 brand surfaces live</strong> — Sherpa Marketplace, Sherpa Hub, Sherpa Home, Sherpa Success Manager, Sherpa Rewards, Sherpa Flex, Sherpa Threads, Sherpa Smart Scan, Sherpa Mobile, Sherpa Guard, Dispatch (internal), Sherpa Materials engine, Sherpa codes engine, plus the Sherpa Pros umbrella.</li>
+</ul>
+<hr>
+<h3 id="slide-4--the-category-map-where-we-sit-where-we-dont">Slide 4 — The category map (where we sit, where we don't)</h3>
+<p><strong>Headline:</strong> <em>The last platform you have to license.</em></p>
+<p><strong>Visual:</strong> Two-axis chart. Y axis = vertical integration (low → high). X axis = customer trust (low → high). Comp set placed:</p>
+<ul>
+<li><strong>Angi, Thumbtack, TaskRabbit, Handy</strong> — low trust, low vertical integration (lead generation).</li>
+<li><strong>Procore, BuilderTrend, ServiceTitan, JobNimbus</strong> — high trust, low vertical integration (Software as a Service tools, no marketplace).</li>
+<li><strong>Home Depot Pro Desk, Lowe's Pro</strong> — medium trust, medium vertical integration (materials only, no labor matching).</li>
+<li><strong>Sherpa Pros</strong> — high trust, high vertical integration (only player in the upper-right quadrant).</li>
+</ul>
+<hr>
+<h3 id="slide-5--phase-4-vision-the-next-18-months">Slide 5 — Phase 4 vision (the next 18 months)</h3>
+<p><strong>Headline:</strong> <em>6 metros US + Canada Year 1 + United Kingdom Year 2 → estimated $80M-$120M Annual Recurring Revenue run-rate by Series C raise close.</em></p>
+<p>Three pillars stacked:</p>
+<ol>
+<li><strong>International</strong> — Canada (Y1, live), United Kingdom (Y2, in build), Australia (Y3, scoped), European Union pilot (Y4, scoped).</li>
+<li><strong>Franchise</strong> — Sherpa Hub franchise model live; target 12 hubs operational by Series C close, Item 19 Financial Disclosure Document validated, three franchisee cohorts trained.</li>
+<li><strong>Vertical integration</strong> — Materials engine, codes engine, embedded fintech (Sherpa Lending pilot), embedded insurance (Sherpa Insurance pilot).</li>
+</ol>
+<hr>
+<h3 id="slide-6--the-multi-product-flywheel-the-money-slide">Slide 6 — The multi-product flywheel (THE money slide)</h3>
+<p><strong>Headline:</strong> <em>Twelve products that pull each other forward.</em></p>
+<p><strong>Visual:</strong> Circular flywheel diagram. Each node is a brand surface. Arrows show the compounding loops:</p>
+<ul>
+<li>Sherpa Marketplace → Sherpa Hub (pros graduating to physical pickup point)</li>
+<li>Sherpa Hub → Sherpa Materials (kits drive engine volume)</li>
+<li>Sherpa Materials → Sherpa Lending (working-capital line of credit underwritten on materials throughput)</li>
+<li>Sherpa Lending → Sherpa Score (repayment behavior feeds back into trust score)</li>
+<li>Sherpa Score → Dispatch (better matching → higher Gross Merchandise Value per pro)</li>
+<li>Dispatch → Sherpa Marketplace (close the loop)</li>
+</ul>
+<p><strong>Blended take rate by product cluster:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Cluster</th>
+<th>Take rate range</th>
+<th>Phase 4 mix</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Marketplace (job fees)</td>
+<td>5%-10%</td>
+<td>~40% of revenue</td>
+</tr>
+<tr>
+<td>Hub + Materials (per-transaction)</td>
+<td>8%-25% gross margin</td>
+<td>~25%</td>
+</tr>
+<tr>
+<td>Subscription tiers (Home, Success Manager)</td>
+<td>flat $/month</td>
+<td>~15%</td>
+</tr>
+<tr>
+<td>Embedded fintech (Lending, Insurance, Banking)</td>
+<td>1.5%-25% margin</td>
+<td>~10%</td>
+</tr>
+<tr>
+<td>Software-as-a-Service spinouts (codes engine, Score Application Programming Interface)</td>
+<td>$/Application Programming Interface call</td>
+<td>~5%</td>
+</tr>
+<tr>
+<td>Franchise (Item 19 royalty)</td>
+<td>6%-8% of franchisee revenue</td>
+<td>~5%</td>
+</tr>
+</tbody></table>
+<p><strong>Blended take rate at scale: 18%-25%</strong> (industry-leading vs Angi ~20% lead-gen rate, Thumbtack ~12%, ServiceTitan Software-as-a-Service-only ~no take rate but high seat licenses).</p>
+<hr>
+<h3 id="slide-7--sherpa-hub-franchise-model-proven-economics">Slide 7 — Sherpa Hub franchise model (proven economics)</h3>
+<p><strong>Headline:</strong> <em>The first signed franchisee proves the unit economics.</em></p>
+<p>Item 19 Financial Disclosure Document numbers (estimated, validated against the first six company-operated hubs):</p>
+<ul>
+<li>Average hub gross revenue Year 1: $480K-$680K (kit sales + rentals + training + materials commissions).</li>
+<li>Average hub gross margin: 38%-44%.</li>
+<li>Franchisee initial investment: $180K-$280K (lease, buildout, inventory float, initial marketing, franchise fee $40K).</li>
+<li>Royalty: 6% of gross revenue + 1.5% marketing fund contribution.</li>
+<li>Year 1 franchisee Earnings Before Interest, Taxes, Depreciation, and Amortization: $90K-$150K (estimated, hedge: dependent on metro density and First Webb partnership tier).</li>
+</ul>
+<p><strong>Slide footer:</strong> Item 19 Financial Disclosure Document filed by Director of Franchise (Phase 4 Month 12 hire); Franchise Disclosure Document audited by [franchise law firm — to be selected].</p>
+<hr>
+<h3 id="slide-8--vertical-integration-moat-4-layer-comp-set-diagram">Slide 8 — Vertical integration moat (4-layer comp set diagram)</h3>
+<p><strong>Headline:</strong> <em>Four layers. Nobody else owns more than one.</em></p>
+<p><strong>Visual:</strong> Stacked horizontal bars. Each comp shaded for which layers they own.</p>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Sherpa Pros</th>
+<th>Angi/Thumbtack</th>
+<th>Procore/ServiceTitan</th>
+<th>Home Depot Pro</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Demand</strong> (homeowner / property manager / commercial buyer)</td>
+<td>Owned</td>
+<td>Owned</td>
+<td>Not owned (B2B Software as a Service only)</td>
+<td>Partial (foot traffic)</td>
+</tr>
+<tr>
+<td><strong>Supply</strong> (licensed pros)</td>
+<td>Owned + verified</td>
+<td>Owned but unverified</td>
+<td>Not owned</td>
+<td>Partial (Pro account)</td>
+</tr>
+<tr>
+<td><strong>Workflow</strong> (code, permit, rebate, scope, dispatch)</td>
+<td>Owned</td>
+<td>Not owned</td>
+<td>Owned</td>
+<td>Not owned</td>
+</tr>
+<tr>
+<td><strong>Materials + fulfillment</strong></td>
+<td>Owned (Sherpa Materials engine)</td>
+<td>Not owned</td>
+<td>Not owned</td>
+<td>Owned</td>
+</tr>
+</tbody></table>
+<p><strong>Sherpa is the only player owning all four.</strong> That's the moat slide.</p>
+<hr>
+<h3 id="slide-9--international-expansion-canada-year-1-receipts">Slide 9 — International expansion (Canada Year 1 receipts)</h3>
+<p><strong>Headline:</strong> <em>The model travels.</em></p>
+<p>Canada Year 1 numbers (lived at Series C raise time, Phase 4 Month 30):</p>
+<ul>
+<li>60+ pros in Toronto cohort (target 50; beat).</li>
+<li>250+ jobs completed (target 50 by Month 27, 200 by Month 30; beat).</li>
+<li>$400K Canadian Gross Merchandise Value run-rate (target $200K by Month 30; beat 2x).</li>
+<li>88% Toronto pro retention at 6 months (target 75%).</li>
+<li>Canada Country General Manager (hired Phase 4 Month 21) running operations.</li>
+</ul>
+<p><strong>Pipeline:</strong> United Kingdom General Manager hired Phase 4 Month 21 (in build). Australia General Manager hired Phase 4 Month 33. European Union pilot Phase 4 Month 45.</p>
+<hr>
+<h3 id="slide-10--materials-total-addressable-market-capture-trajectory">Slide 10 — Materials Total Addressable Market capture trajectory</h3>
+<p><strong>Headline:</strong> <em>$540B materials market. Currently capturing $14M annualized. Estimated $130M by Series C close.</em></p>
+<p><strong>Visual:</strong> Total Addressable Market funnel:</p>
+<ul>
+<li>Total Addressable Market (United States residential + light-commercial trade materials): $540B</li>
+<li>Serviceable Addressable Market (metros where Sherpa Pros operates by Phase 4 close: 6 US + Toronto + London beta): ~$22B</li>
+<li>Serviceable Obtainable Market (estimated 5-year capture at current trajectory): $850M</li>
+<li>Currently captured (annualized at Month 30): $14M</li>
+<li>Estimated at Series C close (Month 36): $130M (hedge: assumes Sherpa Materials engine maintains 1.2x quarter-over-quarter volume growth and Sherpa Lending pilot drives materials throughput)</li>
+</ul>
+<hr>
+<h3 id="slide-11--path-to-1b-annual-recurring-revenue-5-year-model">Slide 11 — Path to $1B Annual Recurring Revenue (5-year model)</h3>
+<p><strong>Headline:</strong> <em>$60M Annual Recurring Revenue today → $1B Annual Recurring Revenue in five years.</em></p>
+<p>Per-year build:</p>
+<table>
+<thead>
+<tr>
+<th>Year (post-Series-C close)</th>
+<th>Annual Recurring Revenue</th>
+<th>Driver</th>
+<th>Hedge</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Y0 (close)</td>
+<td>$60M</td>
+<td>Phase 4 close numbers</td>
+<td>---</td>
+</tr>
+<tr>
+<td>Y+1</td>
+<td>$140M</td>
+<td>International (Canada full year + United Kingdom Year 1) + 3 new US metros + franchise expansion</td>
+<td>International ramp risk</td>
+</tr>
+<tr>
+<td>Y+2</td>
+<td>$300M</td>
+<td>Australia Year 1 + United Kingdom full year + materials capture acceleration</td>
+<td>International ops risk, materials supply concentration risk</td>
+</tr>
+<tr>
+<td>Y+3</td>
+<td>$520M</td>
+<td>European Union pilot, Sherpa Lending at scale, Sherpa Insurance launch</td>
+<td>Regulatory risk per geography</td>
+</tr>
+<tr>
+<td>Y+4</td>
+<td>$760M</td>
+<td>Software-as-a-Service spinouts at full revenue (codes engine + Materials engine + Score Application Programming Interface)</td>
+<td>Spinout adoption risk</td>
+</tr>
+<tr>
+<td>Y+5</td>
+<td>$1.05B</td>
+<td>All flywheel surfaces compounding, exit-window window opens</td>
+<td>---</td>
+</tr>
+</tbody></table>
+<p>Slide footer: Standard projection language — "estimated," "target," "industry-comparable." All numbers contingent on continued execution and macro conditions.</p>
+<hr>
+<h3 id="slide-12--org-scale-executives-in-seat">Slide 12 — Org scale (executives in seat)</h3>
+<p><strong>Headline:</strong> <em>The team that scales.</em></p>
+<p>Executive bench at Series C raise time (per <code>07-phase-4-org-design.md</code>):</p>
+<ul>
+<li><strong>Chief Executive Officer:</strong> Phyrom (founder)</li>
+<li><strong>Chief Operating Officer:</strong> [name to be added Phase 4 M0 hire]</li>
+<li><strong>Chief Financial Officer:</strong> [name to be added Phase 4 M6 hire]</li>
+<li><strong>Vice President Engineering:</strong> [name to be added Phase 4 M0 promotion]</li>
+<li><strong>Vice President Marketing:</strong> [name to be added Phase 4 M3 hire]</li>
+<li><strong>Vice President Operations:</strong> [name to be added Phase 4 M12 hire]</li>
+<li><strong>General Manager Canada:</strong> [name to be added Phase 4 M9 hire]</li>
+<li><strong>General Manager United Kingdom:</strong> [name to be added Phase 4 M21 hire]</li>
+<li><strong>General Counsel:</strong> [name to be added Phase 4 M12 hire]</li>
+<li><strong>Director of Franchise:</strong> [name to be added Phase 4 M12 hire]</li>
+<li><strong>Director of People:</strong> [name to be added Phase 4 M6 hire]</li>
+</ul>
+<p><strong>Headcount:</strong> ~140 employees by Phase 4C end (Month 36), of which ~25 are international country teams.</p>
+<hr>
+<h3 id="slide-13--use-of-series-c-proceeds">Slide 13 — Use of Series C proceeds</h3>
+<p><strong>Headline:</strong> <em>Where the $60M (target) goes.</em></p>
+<p>Pie chart, allocation:</p>
+<ul>
+<li><strong>International expansion (35%, ~$21M)</strong> — United Kingdom Year 2 full launch, Australia Year 3 entry, European Union pilot Year 4 prep.</li>
+<li><strong>Franchise scale (15%, ~$9M)</strong> — Franchise sales, Franchisee Advisory Council, Item 19 Financial Disclosure Document audit, training infrastructure for 30+ franchisees.</li>
+<li><strong>Acquisition war chest (20%, ~$12M)</strong> — Smaller residential property-management Software as a Service tuck-ins (BuilderTrend / JobNimbus tier), specialty trade marketplaces, regional Sherpa Hub operators.</li>
+<li><strong>Technology moat (15%, ~$9M)</strong> — Artificial Intelligence and Machine Learning team, Sherpa Score evolution, Dispatch Wiseman Machine Learning uplift, predictive materials demand forecasting.</li>
+<li><strong>Embedded fintech infrastructure (10%, ~$6M)</strong> — Sherpa Lending pilot operating capital + loss reserves, Sherpa Insurance underwriting partnership, Sherpa Banking integration.</li>
+<li><strong>General reserve (5%, ~$3M)</strong> — Strategic flexibility.</li>
+</ul>
+<hr>
+<h3 id="slide-14--sherpa-hub-network-expansion-plan">Slide 14 — Sherpa Hub network expansion plan</h3>
+<p><strong>Headline:</strong> <em>6 hubs at Series C close → 30 hubs at Series C+24 months.</em></p>
+<p>Map visual: hubs marked by status (operational / under construction / signed franchisee / in pipeline).</p>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Count at Series C close</th>
+<th>Count at Series C+24</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Company-operated hubs</td>
+<td>5</td>
+<td>8</td>
+</tr>
+<tr>
+<td>First Webb co-located hubs</td>
+<td>5</td>
+<td>8</td>
+</tr>
+<tr>
+<td>Franchisee-operated hubs</td>
+<td>1</td>
+<td>14</td>
+</tr>
+<tr>
+<td><strong>Total operational</strong></td>
+<td><strong>11</strong></td>
+<td><strong>30</strong></td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="slide-15--embedded-fintech-roadmap">Slide 15 — Embedded fintech roadmap</h3>
+<p><strong>Headline:</strong> <em>From Stripe Connect rails to a full embedded financial stack.</em></p>
+<p>(See full detail in <code>04-embedded-fintech-roadmap.md</code>.) Slide presents the 5-product roadmap:</p>
+<ol>
+<li><strong>Sherpa Lending</strong> (Phase 4 Year 1 pilot, full Phase 5 Year 1) — working capital line of credit for Founding/Gold pros.</li>
+<li><strong>Sherpa Insurance</strong> (Phase 4 Year 2) — embedded service-warranty + completion-guarantee on jobs.</li>
+<li><strong>Sherpa Banking</strong> (Phase 4 Year 2) — pro-focused business banking via Mercury or Brex partnership.</li>
+<li><strong>Sherpa Pay-Later</strong> (Phase 4 Year 3) — Buy Now Pay Later on jobs &gt;$2K via Affirm or Klarna.</li>
+<li><strong>Hub-side payment processing</strong> (Phase 4 ongoing) — Stripe Terminal or Square at every Hub for member fees, training, materials pickup.</li>
+</ol>
+<hr>
+<h3 id="slide-16--sherpa-score-and-dispatch-machine-learning-roadmap">Slide 16 — Sherpa Score and Dispatch Machine Learning roadmap</h3>
+<p><strong>Headline:</strong> <em>The algorithm gets sharper every week.</em></p>
+<p>Highlights from <code>03-ai-ml-roadmap.md</code>:</p>
+<ul>
+<li>Sherpa Score: from 12 fixed metrics to Machine Learning-trained per-trade weighting.</li>
+<li>Dispatch: from rule-based matching to predicted job-completion success per pro-job pairing.</li>
+<li>Predictive materials demand forecasting per hub per metro.</li>
+<li>Sherpa Smart Scan: trained models for permit + blueprint dimension extraction (with confidence scoring).</li>
+<li>Customer support Artificial Intelligence co-pilot for Sherpa Success Manager team.</li>
+<li>Pricing intelligence Machine Learning model per metro per trade.</li>
+<li>Bias and fairness monitoring quarterly cadence.</li>
+</ul>
+<hr>
+<h3 id="slide-17--software-as-a-service-spinouts-phase-5-optionality">Slide 17 — Software-as-a-Service spinouts (Phase 5 optionality)</h3>
+<p><strong>Headline:</strong> <em>The platform under the platform.</em></p>
+<p>Per <code>05-vertical-saas-spinout-strategy.md</code>. Four ranked productized Software as a Service surfaces:</p>
+<ol>
+<li>Sherpa codes engine Application Programming Interface.</li>
+<li>Sherpa Materials engine Application Programming Interface.</li>
+<li>Sherpa Score Application Programming Interface.</li>
+<li>Dispatch Wiseman matching engine Application Programming Interface.</li>
+</ol>
+<p>Estimated combined Software-as-a-Service revenue contribution by Series C+24 months: $30M-$50M Annual Recurring Revenue (hedge: depends on Application Programming Interface partner adoption).</p>
+<hr>
+<h3 id="slide-18--exit-pathways">Slide 18 — Exit pathways</h3>
+<p><strong>Headline:</strong> <em>Multiple paths. We design for optionality.</em></p>
+<p>(Full detail in <code>02-acquisition-track-strategic-analysis.md</code>.) Four pathways:</p>
+<ol>
+<li><strong>Strategic acquisition by Home Depot</strong> — comparable to Home Depot's Interline Brands acquisition ($1.6B, 2015). Vertical integration thesis aligns with HD ecosystem.</li>
+<li><strong>Strategic acquisition by Lowe's</strong> — strategic stretch, less likely than Home Depot but possible if Lowe's accelerates pro vertical investment.</li>
+<li><strong>Strategic acquisition by an insurance carrier</strong> (Travelers, Chubb, Liberty Mutual) — Sherpa Flex tier already proves the embedded-insurance distribution thesis.</li>
+<li><strong>Strategic acquisition by Procore</strong> — vertical extension into residential + light-commercial; less likely given Procore's organic-growth posture.</li>
+<li><strong>Initial Public Offering</strong> — $200M+ Annual Recurring Revenue with 25%+ growth, $50M+ Earnings Before Interest, Taxes, Depreciation, and Amortization, 5+ year operating history. Comparable: Procore Initial Public Offering 2021, Toast Initial Public Offering 2021. Window targeted Phase 4+24 to +36 months.</li>
+</ol>
+<hr>
+<h3 id="slide-19--risk-factors-and-mitigations">Slide 19 — Risk factors and mitigations</h3>
+<p><strong>Headline:</strong> <em>What can break this. What we have already done about it.</em></p>
+<table>
+<thead>
+<tr>
+<th>Risk</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>International regulatory complexity (Canadian provincial trade licensing, United Kingdom Construction Industry Scheme, European Union General Data Protection Regulation cross-border)</td>
+<td>Country General Manager hires lead with local Legal counsel before market entry; phased rollout (Toronto-only Year 1) before national Canada</td>
+</tr>
+<tr>
+<td>Franchisee underperformance / brand dilution</td>
+<td>Director of Franchise + Franchisee Advisory Council + Franchise Disclosure Document quality bar; quarterly mystery-shop audits</td>
+</tr>
+<tr>
+<td>Materials supply concentration (Zinc + Uber Direct)</td>
+<td>Multi-rail strategy: First Webb partnership, regional supply houses, direct manufacturer relationships (Schluter, Laticrete, etc.)</td>
+</tr>
+<tr>
+<td>Embedded fintech regulatory exposure (Sherpa Lending = state-by-state lender licensing)</td>
+<td>Partner-bank model first (white-label via regional bank); own state licenses only after Phase 5</td>
+</tr>
+<tr>
+<td>Macro housing slowdown reducing job pipeline</td>
+<td>Quick Job lane is recession-defensive (repairs over remodels); Sherpa Home subscription smoothes revenue</td>
+</tr>
+<tr>
+<td>Talent acquisition cost at scale (executive bench compensation)</td>
+<td>Equity-heavy compensation model preserves cash; international country General Manager hires per <code>07-phase-4-org-design.md</code></td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="slide-20--the-competitive-cost-of-not-winning-this-round">Slide 20 — The competitive cost of NOT winning this round</h3>
+<p><strong>Headline:</strong> <em>The window is now.</em></p>
+<p>Three forces converging:</p>
+<ol>
+<li><strong>Home Depot Pro Desk + Lowe's Pro</strong> are accelerating their pro-loyalty programs but have no labor-matching layer. Sherpa fills the white space; if we don't, they will build it.</li>
+<li><strong>Procore + ServiceTitan</strong> are exploring residential. Procore's 2025 acquisition rumors (unsourced; treat as directional) suggest they would buy a residential marketplace before building one.</li>
+<li><strong>Insurance carriers</strong> are searching for embedded distribution. Sherpa Flex's per-project insurance tier is the proof-of-concept; carriers are watching.</li>
+</ol>
+<p>Sherpa Pros either becomes the consolidator or becomes the consolidated. Series C funds the consolidator path.</p>
+<hr>
+<h3 id="slide-21--the-ask">Slide 21 — The ask</h3>
+<p><strong>Headline:</strong> <em>Lead our Series C.</em></p>
+<ul>
+<li><strong>Raise:</strong> $40M-$80M (target $60M).</li>
+<li><strong>Valuation:</strong> $400M-$800M post-money (target $600M).</li>
+<li><strong>Lead investor terms:</strong> Standard preferred (1x liquidation, no participation, weighted-average broad-based anti-dilution).</li>
+<li><strong>Board seat:</strong> One Series C board seat to lead investor; existing board (founder + Series A investor + Series B investor + independent) expands to six (founder + 3 investor seats + 2 independent).</li>
+<li><strong>Use of proceeds:</strong> Per Slide 13.</li>
+<li><strong>Process:</strong> Banker-led (Goldman Sachs / Morgan Stanley / J.P. Morgan or boutique like Qatalyst / Lazard Middle Market). Term sheet target window Phase 4 Month 30 → close Month 36.</li>
+</ul>
+<hr>
+<h3 id="slide-22--why-us-why-now-the-founder-slide">Slide 22 — Why us, why now (the founder slide)</h3>
+<p><strong>Headline:</strong> <em>I built this because I needed it. It works because every other working contractor needed it too.</em></p>
+<p>Phyrom's founder bio (locked surname-omission per session reminder). Photo. Three sentences max. Closing line:</p>
+<blockquote>
+<p><em>"I'm still on the tools every Tuesday. Sherpa Pros is the platform I would have paid for ten years ago. Now we get to build it for a million more contractors. Let's go."</em></p>
+</blockquote>
+<p>— Phyrom, Founder + Chief Executive Officer</p>
+<hr>
+<h3 id="slide-23--appendix-detailed-financials">Slide 23 — Appendix: detailed financials</h3>
+<p>(Backloaded into the deck for investors who want depth.)</p>
+<ul>
+<li>Monthly Annual Recurring Revenue cohort retention (Phase 1 cohort vs Phase 2 cohort vs Phase 3 cohort)</li>
+<li>Customer Acquisition Cost / Lifetime Value per acquisition channel</li>
+<li>Gross margin per product surface</li>
+<li>Burn rate, runway, capital efficiency ratio</li>
+<li>Per-metro Profit and Loss</li>
+<li>Per-country Profit and Loss</li>
+<li>Sherpa Hub per-unit Profit and Loss</li>
+</ul>
+<hr>
+<h3 id="slide-24--appendix-data-room-index">Slide 24 — Appendix: data-room index</h3>
+<p>Pointers to the data room (typically Carta's investor data-room product or DocSend):</p>
+<ol>
+<li>Cap table</li>
+<li>Audited financials (CFO-led, Phase 4 Month 6+ deliverable)</li>
+<li>SOC 2 Type 2 report</li>
+<li>Customer references (10 named pros + 10 named clients + 3 named property-management partners)</li>
+<li>Legal: Articles of Incorporation, bylaws, all material contracts (Stripe, Twilio, First Webb partnership Master Services Agreement, Tremendous, Vanta, Zinc Application Programming Interface)</li>
+<li>Intellectual Property: pending and granted patents (Sherpa codes engine, Dispatch matching algorithm)</li>
+<li>Insurance: directors and officers, errors and omissions, cyber liability, commercial general liability</li>
+<li>Compliance: state-by-state licensing checklist for all jurisdictions where pros operate</li>
+</ol>
+<hr>
+<h3 id="slide-25--closing">Slide 25 — Closing</h3>
+<p><strong>Headline:</strong> <em>The licensed-trade marketplace that thinks like a contractor — at scale.</em></p>
+<p><strong>Subhead:</strong> Sherpa Pros · Series C · Let's build the next decade.</p>
+<p><strong>Footer:</strong> Phyrom · Founder + Chief Executive Officer · <a href="mailto:phyrom@thesherpapros.com">phyrom@thesherpapros.com</a> · thesherpapros.com</p>
+<hr>
+<h2 id="production-notes">Production notes</h2>
+<ul>
+<li>Marp build target: <code>scripts/build-deck.sh slides/08-series-c-investor-pitch.md</code> (see <code>08-phase-4-marketing-kit-refresh-spec.md</code> for build-pipeline reference).</li>
+<li>Theme: <code>sherpa-pros-editorial</code> (locked typography per brand bible §3).</li>
+<li>Diagonal seam motif on every section divider (per brand bible §2.1).</li>
+<li>Tabular numerals (<code>font-feature-settings: 'tnum'</code>) on all numeric tables.</li>
+<li>Color palette locked: Dark Navy <code>#1a1a2e</code>, Sky Blue <code>#00A9E0</code>, Orange-Red <code>#FF4500</code>, Amber <code>#f59e0b</code>, Emerald <code>#10b981</code>, Slate <code>#64748b</code>.</li>
+<li>Founder photo: high-resolution headshot (master in <code>Marketing/Photos/Phyrom/headshot-2026.jpg</code> per brand bible §10).</li>
+<li>Embargoed financials: every slide with revenue numbers carries footer "CONFIDENTIAL — under NDA."</li>
+</ul>
+<hr>
+<h2 id="owner-sign-off">Owner sign-off</h2>
+<p>Final Series C deck will be reviewed and signed off by:</p>
+<ul>
+<li>Phyrom (founder)</li>
+<li>Chief Financial Officer (Phase 4 Month 6 hire)</li>
+<li>Vice President Marketing (Phase 4 Month 3 hire)</li>
+<li>Outside fundraising counsel (to be selected)</li>
+<li>Lead Series B investor representative (informal review)</li>
+</ul>
+
+	
+
+
+</body>
+</html>

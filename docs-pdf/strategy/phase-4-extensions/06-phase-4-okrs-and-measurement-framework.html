@@ -1,0 +1,1174 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>06 phase 4 okrs and measurement framework — Sherpa Pros</title>
+<link rel="icon" href="../../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="06-phase-4-okrs-and-measurement-framework.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="phase-4-objectives-and-key-results--master-framework">Phase 4 Objectives and Key Results — Master Framework</h1>
+<h2 id="purpose">Purpose</h2>
+<p>Phase 4 spans Months 18-36 from current date (2026-04-25), a window of ~18 months. The deferred Phase 4 strategic extensions — international, franchise scale, embedded fintech, Software-as-a-Service-readiness, executive bench, organizational scale — sit on top of the Phase 4 base build (multi-region infrastructure, materials orchestration, Hub network expansion, SOC 2 Type 2). This document is the integrated Objectives and Key Results framework that aligns all of them.</p>
+<p>Each Objective has 3-5 Key Results, an owner, a measurement cadence, and a Datadog or executive-dashboard surface where the metric lives.</p>
+<hr>
+<h2 id="objective-1--series-b-closed-and-capital-deployed">Objective 1 — Series B closed and capital deployed</h2>
+<p><strong>Objective.</strong> Close the $20-40M Series B by Phase 4 Month 21 and deploy the capital into the four growth tracks (international, multi-region infrastructure, franchise development, reserve) with measured milestones.</p>
+<table>
+<thead>
+<tr>
+<th>Key Result</th>
+<th>Target</th>
+<th>Owner</th>
+<th>Cadence</th>
+<th>Surface</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>KR1.1 — Series B closed</td>
+<td>$20M-$40M raised by Month 21</td>
+<td>Phyrom + Chief Financial Officer</td>
+<td>Once at close</td>
+<td>Board memo</td>
+</tr>
+<tr>
+<td>KR1.2 — International Y1 (Canada) capital deployed</td>
+<td>30% of raise (~$6M-$12M)</td>
+<td>Country General Manager Canada (M21+ hire)</td>
+<td>Quarterly</td>
+<td>International dashboard</td>
+</tr>
+<tr>
+<td>KR1.3 — Multi-region infrastructure capital deployed</td>
+<td>25% of raise (~$5M-$10M)</td>
+<td>Vice President Engineering</td>
+<td>Quarterly</td>
+<td>Engineering finance dashboard</td>
+</tr>
+<tr>
+<td>KR1.4 — Franchise development capital deployed</td>
+<td>25% of raise (~$5M-$10M)</td>
+<td>Director of Franchise (M12+ hire), Vice President Operations</td>
+<td>Quarterly</td>
+<td>Franchise dashboard</td>
+</tr>
+<tr>
+<td>KR1.5 — Reserve maintained</td>
+<td>20% of raise (~$4M-$8M) preserved for opportunistic deployment</td>
+<td>Chief Financial Officer</td>
+<td>Monthly</td>
+<td>Treasury report</td>
+</tr>
+</tbody></table>
+<p><strong>Risk note.</strong> If Series B closes below $20M, capital allocation across KR1.2-KR1.5 must rebalance — Canada launch is the highest-priority commitment and the reserve buffer is the first lever to compress.</p>
+<hr>
+<h2 id="objective-2--international-year-1-canada-launched-and-traction-validated">Objective 2 — International Year 1 (Canada) launched and traction validated</h2>
+<p><strong>Objective.</strong> Toronto-first Canada launch hits operational and revenue milestones that prove the international model travels.</p>
+<table>
+<thead>
+<tr>
+<th>Key Result</th>
+<th>Target</th>
+<th>Owner</th>
+<th>Cadence</th>
+<th>Surface</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>KR2.1 — Canada Country General Manager hired</td>
+<td>Hire closed by Month 21</td>
+<td>Phyrom + Director of People (M6+ hire)</td>
+<td>Once</td>
+<td>Hire tracker</td>
+</tr>
+<tr>
+<td>KR2.2 — Toronto beta cohort</td>
+<td>10+ pros active by Month 24</td>
+<td>Country General Manager Canada</td>
+<td>Monthly</td>
+<td>International dashboard</td>
+</tr>
+<tr>
+<td>KR2.3 — Canadian jobs completed</td>
+<td>50+ jobs by Month 27</td>
+<td>Country General Manager Canada</td>
+<td>Weekly</td>
+<td>International dashboard</td>
+</tr>
+<tr>
+<td>KR2.4 — Canadian Gross Merchandise Value</td>
+<td>$200K+ Canadian Gross Merchandise Value by Month 30</td>
+<td>Country General Manager Canada</td>
+<td>Weekly</td>
+<td>International dashboard</td>
+</tr>
+<tr>
+<td>KR2.5 — Toronto pro retention</td>
+<td>75%+ at 6-month mark</td>
+<td>Country General Manager Canada</td>
+<td>Monthly</td>
+<td>Pro retention cohort dashboard</td>
+</tr>
+</tbody></table>
+<p><strong>Stretch Key Result.</strong> Vancouver beta-cohort exploration begins by Month 30 (signal: positive Toronto trajectory + capital buffer permits second-metro investment).</p>
+<hr>
+<h2 id="objective-3--sherpa-hub-network-expanded-to-6-hubs">Objective 3 — Sherpa Hub network expanded to 6+ Hubs</h2>
+<p><strong>Objective.</strong> From the 5 First Webb co-located Hubs operational at Phase 4 entry, grow to 6+ Hubs operational by Phase 4 Year 1 end (Month 30) including the first signed franchisee.</p>
+<table>
+<thead>
+<tr>
+<th>Key Result</th>
+<th>Target</th>
+<th>Owner</th>
+<th>Cadence</th>
+<th>Surface</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>KR3.1 — Sherpa Hub #1 (Portsmouth) grand-open</td>
+<td>Live by Month 4 (already in flight per Phase 4 base build)</td>
+<td>Vice President Operations (until M12 hire, then Director of Franchise)</td>
+<td>Once</td>
+<td>Hub dashboard</td>
+</tr>
+<tr>
+<td>KR3.2 — First Webb co-located Hubs operational</td>
+<td>5 hubs operational by Month 18</td>
+<td>Vice President Operations</td>
+<td>Quarterly</td>
+<td>Hub dashboard</td>
+</tr>
+<tr>
+<td>KR3.3 — First franchisee signed</td>
+<td>1 franchisee Discovery Day → Letter of Intent → signed Franchise Agreement by Month 27</td>
+<td>Director of Franchise</td>
+<td>Monthly</td>
+<td>Franchise pipeline dashboard</td>
+</tr>
+<tr>
+<td>KR3.4 — Total Hubs operational</td>
+<td>6+ by Month 30</td>
+<td>Vice President Operations</td>
+<td>Quarterly</td>
+<td>Hub dashboard</td>
+</tr>
+<tr>
+<td>KR3.5 — Hub Item 19 Financial Disclosure Document validated</td>
+<td>Average Hub gross revenue Year 1 within Item 19 disclosed range</td>
+<td>Director of Franchise + Chief Financial Officer</td>
+<td>Quarterly</td>
+<td>Hub Profit and Loss dashboard</td>
+</tr>
+</tbody></table>
+<p><strong>Risk note.</strong> First franchisee close is the leading indicator for the franchise model. If no Letter of Intent by Month 24, escalate to executive review and consider extending the Discovery Day pipeline (more Hub-prospect events, broader marketing fund spend).</p>
+<hr>
+<h2 id="objective-4--soc-2-type-2-certification-achieved">Objective 4 — SOC 2 Type 2 certification achieved</h2>
+<p><strong>Objective.</strong> Demonstrate enterprise-grade security and operational discipline required for Property-Manager tier customers, insurance-carrier embedded-fintech partners, and Series C investor due-diligence.</p>
+<table>
+<thead>
+<tr>
+<th>Key Result</th>
+<th>Target</th>
+<th>Owner</th>
+<th>Cadence</th>
+<th>Surface</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>KR4.1 — Vanta + Schellman engaged</td>
+<td>Both vendors engaged with statement-of-work signed by Month 9</td>
+<td>Vice President Engineering + General Counsel (M12+ hire)</td>
+<td>Once</td>
+<td>Vendor contract tracker</td>
+</tr>
+<tr>
+<td>KR4.2 — SOC 2 Type 1 achieved</td>
+<td>Type 1 report received by Month 18</td>
+<td>Vice President Engineering</td>
+<td>Once</td>
+<td>Compliance dashboard</td>
+</tr>
+<tr>
+<td>KR4.3 — SOC 2 Type 2 achieved</td>
+<td>Type 2 report received by Month 30 (12 months observation period after Type 1)</td>
+<td>Vice President Engineering</td>
+<td>Once</td>
+<td>Compliance dashboard</td>
+</tr>
+<tr>
+<td>KR4.4 — Security incident response time</td>
+<td>&lt;15 minutes from detection to acknowledgement, &lt;60 minutes to mitigation for Severity-1 incidents</td>
+<td>Vice President Engineering + Director of Security (Phase 5 hire)</td>
+<td>Monthly</td>
+<td>Security incident dashboard</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="objective-5--multi-region-infrastructure-proven">Objective 5 — Multi-region infrastructure proven</h2>
+<p><strong>Objective.</strong> Move from single-region (US-East) deployment to multi-region (US-East + US-West + Canada) with 99.95%+ uptime maintained throughout.</p>
+<table>
+<thead>
+<tr>
+<th>Key Result</th>
+<th>Target</th>
+<th>Owner</th>
+<th>Cadence</th>
+<th>Surface</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>KR5.1 — US-West replica live</td>
+<td>Database replica + application failover live by Month 21</td>
+<td>Vice President Engineering</td>
+<td>Once</td>
+<td>Infrastructure dashboard</td>
+</tr>
+<tr>
+<td>KR5.2 — Canadian region live</td>
+<td>Canada-resident database + application live by Month 27 (data-residency requirement for Canadian operations)</td>
+<td>Vice President Engineering + Country General Manager Canada</td>
+<td>Once</td>
+<td>Infrastructure dashboard</td>
+</tr>
+<tr>
+<td>KR5.3 — Uptime maintained</td>
+<td>99.95% uptime across all regions throughout Phase 4</td>
+<td>Vice President Engineering</td>
+<td>Monthly</td>
+<td>Datadog uptime dashboard</td>
+</tr>
+<tr>
+<td>KR5.4 — Cross-region failover tested</td>
+<td>Quarterly failover drill executed and timing measured</td>
+<td>Vice President Engineering</td>
+<td>Quarterly</td>
+<td>Disaster recovery test log</td>
+</tr>
+</tbody></table>
+<p><strong>Hedge.</strong> Multi-region adds cost (estimated $15K-$25K/month additional infrastructure spend at Phase 4 scale). Worth it for international + Property-Manager-tier customer trust.</p>
+<hr>
+<h2 id="objective-6--vertical-integration-revenue-lines-proven">Objective 6 — Vertical integration revenue lines proven</h2>
+<p><strong>Objective.</strong> Materials orchestration, Sherpa Rewards, and Sherpa Flex move from "live" to "meaningful revenue contributors."</p>
+<table>
+<thead>
+<tr>
+<th>Key Result</th>
+<th>Target</th>
+<th>Owner</th>
+<th>Cadence</th>
+<th>Surface</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>KR6.1 — Materials orchestration gross run-rate</td>
+<td>$1M+/month gross run-rate by Month 27</td>
+<td>Vice President Operations + Materials team</td>
+<td>Monthly</td>
+<td>Materials dashboard</td>
+</tr>
+<tr>
+<td>KR6.2 — Sherpa Rewards adoption</td>
+<td>1,000+ active pros earning by Month 24</td>
+<td>Vice President Marketing + Pro Success team</td>
+<td>Monthly</td>
+<td>Rewards dashboard</td>
+</tr>
+<tr>
+<td>KR6.3 — Sherpa Flex adoption</td>
+<td>200+ side-bandwidth pros active by Month 27</td>
+<td>Vice President Marketing + Pro Success team</td>
+<td>Monthly</td>
+<td>Flex dashboard</td>
+</tr>
+<tr>
+<td>KR6.4 — Sherpa Lending pilot</td>
+<td>$500K-$1M originated in pilot metros by Month 30</td>
+<td>Chief Financial Officer + Head of Embedded Fintech (Phase 4 Y2 hire)</td>
+<td>Monthly</td>
+<td>Lending dashboard</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="objective-7--series-c-ready">Objective 7 — Series C ready</h2>
+<p><strong>Objective.</strong> Phase 4 closes with Series C investor process opened and lead investor identified.</p>
+<table>
+<thead>
+<tr>
+<th>Key Result</th>
+<th>Target</th>
+<th>Owner</th>
+<th>Cadence</th>
+<th>Surface</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>KR7.1 — Annual Recurring Revenue run-rate</td>
+<td>$50M+ Annual Recurring Revenue by Month 27</td>
+<td>Chief Financial Officer</td>
+<td>Monthly</td>
+<td>Finance dashboard</td>
+</tr>
+<tr>
+<td>KR7.2 — Month-over-Month revenue growth</td>
+<td>25%+ Month-over-Month growth maintained throughout Phase 4 Year 2</td>
+<td>Chief Financial Officer + Vice President Marketing</td>
+<td>Weekly</td>
+<td>Growth dashboard</td>
+</tr>
+<tr>
+<td>KR7.3 — Lead Series C investor identified</td>
+<td>Lead investor terms-sheet conversation by Month 30</td>
+<td>Phyrom + Chief Financial Officer</td>
+<td>Once</td>
+<td>Corporate development tracker</td>
+</tr>
+<tr>
+<td>KR7.4 — Audited financials available</td>
+<td>Year-end Phase 4 Year 1 audited financials available for Series C diligence by Month 30</td>
+<td>Chief Financial Officer</td>
+<td>Once</td>
+<td>Audit deliverable</td>
+</tr>
+<tr>
+<td>KR7.5 — SOC 2 Type 2 + data-room ready</td>
+<td>Series C data room populated with 100% of standard line items by Month 30</td>
+<td>Chief Financial Officer + General Counsel</td>
+<td>Once</td>
+<td>Data room</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="cross-cutting-measurement-disciplines">Cross-cutting measurement disciplines</h2>
+<h3 id="cadence">Cadence</h3>
+<ul>
+<li><strong>Weekly metric scan.</strong> Phyrom + Chief Operating Officer + Chief Financial Officer review the executive dashboard every Monday morning. 30-minute meeting. Just-the-numbers, no narrative.</li>
+<li><strong>Monthly operational review.</strong> Each Vice President or Director presents their Objective progress at the monthly executive operating review. 90-minute meeting. Trends, blockers, asks.</li>
+<li><strong>Quarterly board review.</strong> Phyrom + Chief Operating Officer + Chief Financial Officer present full Objectives and Key Results scorecard at every quarterly board meeting. Format: red/yellow/green per Key Result with one-paragraph commentary.</li>
+<li><strong>Annual planning refresh.</strong> Full Objectives and Key Results refresh at end of each Phase 4 year (Month 30 + Month 36) to align with phase transitions.</li>
+</ul>
+<h3 id="dashboard-surfaces">Dashboard surfaces</h3>
+<p>All Key Results land in one of three dashboards:</p>
+<ol>
+<li><strong>Executive dashboard (Datadog).</strong> Top-line metrics: Annual Recurring Revenue, Gross Merchandise Value, Customer Acquisition Cost, pro count, job count, uptime, Series B/C status. Read by Phyrom + executive team weekly.</li>
+<li><strong>Operational dashboards (Datadog + Mode + Tableau-cluster).</strong> Per-Objective dashboards owned by each Vice President or Director. Read by their team weekly + reviewed at monthly operational review.</li>
+<li><strong>Compliance + audit dashboards (Vanta + Datadog).</strong> SOC 2 evidence collection, security incident tracking, bias-audit metrics. Read by Vice President Engineering + General Counsel monthly.</li>
+</ol>
+<h3 id="redyellowgreen-thresholds">Red/yellow/green thresholds</h3>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Green</td>
+<td>Key Result on track to hit target by deadline</td>
+</tr>
+<tr>
+<td>Yellow</td>
+<td>Key Result at risk; owner has corrective plan</td>
+</tr>
+<tr>
+<td>Red</td>
+<td>Key Result will miss target; escalate to executive team for re-prioritization or resource reallocation</td>
+</tr>
+</tbody></table>
+<p>A single Red Key Result triggers an emergency executive review within 5 business days. Two or more Red Key Results in the same Objective trigger a board-level escalation.</p>
+<h3 id="compensation-tie-in">Compensation tie-in</h3>
+<p>Executive team compensation has 30%-40% variable component tied to Objectives and Key Results achievement. Specifically:</p>
+<ul>
+<li>Phyrom: 100% variable compensation tied to Objectives 1, 2, 7 (Series B, international, Series C ready).</li>
+<li>Chief Operating Officer: tied to Objectives 2, 3, 6 (international, Hub network, vertical integration).</li>
+<li>Chief Financial Officer: tied to Objectives 1, 4, 7 (Series B, SOC 2, Series C ready).</li>
+<li>Vice President Engineering: tied to Objectives 4, 5 (SOC 2, multi-region).</li>
+<li>Vice President Marketing: tied to Objectives 6, 7 (vertical integration revenue, Annual Recurring Revenue + growth).</li>
+<li>Vice President Operations: tied to Objectives 3, 6 (Hub network, materials orchestration).</li>
+<li>Director of Franchise: tied to Objective 3 (first franchisee signed).</li>
+<li>Country General Manager Canada: tied to Objective 2 entirely.</li>
+</ul>
+<hr>
+<h2 id="out-of-scope-deferred-to-phase-5-objectives-and-key-results-refresh">Out-of-scope (deferred to Phase 5 Objectives and Key Results refresh)</h2>
+<p>The following are explicitly NOT Phase 4 Objectives:</p>
+<ul>
+<li>United Kingdom Year 2 launch metrics (separate Phase 4 Year 2-3 OKR refresh once United Kingdom General Manager hired Month 21).</li>
+<li>Australia Year 3 launch metrics.</li>
+<li>Software-as-a-Service spinout revenue targets (Phase 5 territory per <code>05-vertical-saas-spinout-strategy.md</code>).</li>
+<li>Initial Public Offering readiness milestones (Phase 5 Year 4-5 territory).</li>
+<li>Mergers and Acquisitions deal flow (separate corporate development tracker per <code>02-acquisition-track-strategic-analysis.md</code>).</li>
+</ul>
+<hr>
+<h2 id="owner-sign-off">Owner sign-off</h2>
+<p>This Objectives and Key Results framework is owned by:</p>
+<ul>
+<li>Phyrom (founder) — overall accountability</li>
+<li>Chief Operating Officer (Phase 4 Month 0 hire) — execution accountability</li>
+<li>Chief Financial Officer (Phase 4 Month 6 hire) — measurement accountability</li>
+</ul>
+<p>Reviewed and updated quarterly. Major changes (adding/removing Objectives, restating targets) require board approval.</p>
+
+	
+
+
+</body>
+</html>

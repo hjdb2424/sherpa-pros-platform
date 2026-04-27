@@ -1,0 +1,1498 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2026 04 25 international expansion plan — Sherpa Pros</title>
+<link rel="icon" href="../../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="2026-04-25-international-expansion-plan.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="sherpa-pros-international-expansion--implementation-plan">Sherpa Pros International Expansion — Implementation Plan</h1>
+<blockquote>
+<p><strong>For agentic workers:</strong> REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (<code>- [ ]</code>) syntax for tracking.</p>
+</blockquote>
+<p><strong>Goal:</strong> Execute the four-country international expansion sequence (Canada Year 1, United Kingdom Year 2, Australia Year 3, European Union pilot Year 4 to 5) defined in <code>docs/superpowers/specs/2026-04-25-international-expansion-design.md</code>. This plan covers the per-country runbook tasks, parameterized for each country, plus the foundational work that must happen once globally before any country starts Phase 0.</p>
+<p><strong>Architecture:</strong> Six parallel work streams (WS1 through WS6) executed in sequence per country. Critical path: Country General Manager hire (gates everything in-country) → Codes ingestion plus Payment rails plus Regulatory readiness (parallel) → Localization → Per-country Phase 0/1/2 launch.</p>
+<p><strong>Source spec:</strong> <code>docs/superpowers/specs/2026-04-25-international-expansion-design.md</code></p>
+<p><strong>Companion specs (do not duplicate work):</strong></p>
+<ul>
+<li>Franchise mechanics: companion franchise spec (in flight in parallel session).</li>
+<li>Multi-region database architecture: companion platform-scale spec (in flight in parallel session).</li>
+<li>Sherpa Hub international deployment: companion Sherpa Hub Integration spec (in flight in parallel session).</li>
+</ul>
+<p><strong>Owners:</strong></p>
+<ul>
+<li><strong>P</strong> = Phyrom (Global CEO; owns first General Manager search per country, owns all-country regulatory go/no-go)</li>
+<li><strong>CFO</strong> = Chief Financial Officer (Phase 3 United States hire; owns FX strategy, international fundraise)</li>
+<li><strong>COO</strong> = Chief Operating Officer (Phase 3 United States hire; owns country General Manager management once hired)</li>
+<li><strong>CGM</strong> = Country General Manager (one per country; owns in-country P&amp;L)</li>
+<li><strong>AI</strong> = Claude sub-agent dispatch</li>
+<li><strong>LEGAL-{country}</strong> = Per-country outside counsel</li>
+</ul>
+<hr>
+<h2 id="work-stream-1--country-general-manager-hires">Work Stream 1 — Country General Manager Hires</h2>
+<p><strong>Goal:</strong> Recruit and onboard four Country General Managers, one per country, on a sequenced timeline. CGM must be in seat 6 months before in-country Phase 0 begins.</p>
+<h3 id="task-ws11-build-country-general-manager-generic-job-specification-template">Task WS1.1: Build Country General Manager generic job specification template</h3>
+<p><strong>Owner:</strong> P + AI
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/operations/hiring/country-gm-job-spec-template.md</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Draft the template</strong></p>
+</li>
+</ul>
+<p>Capture the role definition, responsibilities, must-have qualifications, nice-to-have qualifications, compensation band ($180,000 to $250,000 USD-equivalent base plus equity), reporting structure (reports to Phyrom plus future COO), and 30/60/90-day milestones. Keep country-agnostic — country-specific overlays go in WS1.2 through WS1.5.</p>
+<p><strong>Acceptance:</strong> Template is generic enough to fork for any of the four priority countries; specific enough to surface the executive-class profile we need.</p>
+<h3 id="task-ws12-fork-the-canada-country-general-manager-job-specification">Task WS1.2: Fork the Canada Country General Manager job specification</h3>
+<p><strong>Owner:</strong> P
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/operations/hiring/country-gm-canada-job-spec.md</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Country-specific overlays</strong></p>
+</li>
+</ul>
+<p>Add Canada-specific requirements: experience with provincial trade licensing (Ontario, British Columbia, Alberta), familiarity with PIPEDA plus provincial privacy overlays, fluency in Canadian construction industry, optional French fluency for Quebec follow-on. Compensation in CAD with FX peg to base USD band.</p>
+<p><strong>Acceptance:</strong> Canada job spec ready to send to executive search firm.</p>
+<h3 id="task-ws13-fork-the-united-kingdom-country-general-manager-job-specification">Task WS1.3: Fork the United Kingdom Country General Manager job specification</h3>
+<p><strong>Owner:</strong> P
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/operations/hiring/country-gm-uk-job-spec.md</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Country-specific overlays</strong></p>
+</li>
+</ul>
+<p>Add United Kingdom-specific requirements: experience with United Kingdom trades regulation (Building Regulations 2010, Gas Safe, NICEIC), familiarity with HMRC IR35 and Construction Industry Scheme, prior marketplace or construction-tech operator background, London-based preferred. Compensation in GBP.</p>
+<p><strong>Acceptance:</strong> United Kingdom job spec ready.</p>
+<h3 id="task-ws14-fork-the-australia-country-general-manager-job-specification">Task WS1.4: Fork the Australia Country General Manager job specification</h3>
+<p><strong>Owner:</strong> P
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/operations/hiring/country-gm-australia-job-spec.md</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Country-specific overlays</strong></p>
+</li>
+</ul>
+<p>Add Australia-specific requirements: experience with state-based trade licensing (QBCC, NSW Fair Trading, VBA), familiarity with Fair Work Act independent contractor tests and Personal Services Income (PSI) rules, Sydney-based preferred. Compensation in AUD.</p>
+<p><strong>Acceptance:</strong> Australia job spec ready.</p>
+<h3 id="task-ws15-fork-the-european-union-berlin-pilot-country-general-manager-job-specification">Task WS1.5: Fork the European Union (Berlin pilot) Country General Manager job specification</h3>
+<p><strong>Owner:</strong> P
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/operations/hiring/country-gm-eu-pilot-job-spec.md</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Country-specific overlays</strong></p>
+</li>
+</ul>
+<p>Add Germany-specific requirements: native German-language fluency, experience with Handwerksordnung trade regulation, familiarity with GDPR enforcement and BfDI/state DPA dynamics, Berlin-based, prior marketplace or construction-tech operator background. Compensation in EUR.</p>
+<p><strong>Acceptance:</strong> European Union pilot job spec ready.</p>
+<h3 id="task-ws16-executive-search-firm-engagement">Task WS1.6: Executive search firm engagement</h3>
+<p><strong>Owner:</strong> P
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/operations/hiring/executive-search-firm-evaluation.md</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Evaluate three executive search firms with cross-border construction-tech track record</strong></p>
+</li>
+</ul>
+<p>Candidates to evaluate: Heidrick &amp; Struggles (global construction practice), Spencer Stuart (proptech practice), DHR Global (mid-market international). Score on cross-border experience, construction-tech-specific placements, fee structure (retained vs contingency), 90-day backstop guarantee. Document recommendation.</p>
+<p><strong>Acceptance:</strong> One firm selected with signed engagement letter; or documented decision to run search in-house with country-specific recruiting partners.</p>
+<h3 id="task-ws17-country-general-manager-recruiting-playbook">Task WS1.7: Country General Manager recruiting playbook</h3>
+<p><strong>Owner:</strong> P + AI
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/operations/hiring/country-gm-recruiting-playbook.md</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Document the recruiting funnel</strong></p>
+</li>
+</ul>
+<p>Per-country funnel: source list (LinkedIn talent pool query template, executive search shortlist, founder network referrals), screening rubric (regulatory fluency, marketplace operating experience, founder-fit), interview loop (Phyrom + future COO + technical reference call + customer reference call), reference-check protocol, offer construction including equity grant size per country (working default 0.5% to 1.0% common stock vesting four years with one-year cliff).</p>
+<p><strong>Acceptance:</strong> Playbook documented and version-controlled; ready to instantiate per country.</p>
+<hr>
+<h2 id="work-stream-2--codes-database-ingestion">Work Stream 2 — Codes Database Ingestion</h2>
+<p><strong>Goal:</strong> Ingest the codes corpus per country into the Sherpa codes engine (internal name "Wiseman"). Per-country budget $80,000 to $150,000 USD over 6 to 9 months.</p>
+<h3 id="task-ws21-codes-ingestion-vendor-evaluation-framework">Task WS2.1: Codes ingestion vendor evaluation framework</h3>
+<p><strong>Owner:</strong> P + AI
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/operations/codes-ingestion/vendor-evaluation-framework.md</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Document the evaluation rubric</strong></p>
+</li>
+</ul>
+<p>Capture the per-country evaluation rubric: structured digital availability (yes / partial / PDF-only / print-only), licensing cost, language(s) covered, update cadence, accuracy claims, customer references in construction-tech. Apply rubric to each country's vendor candidates in WS2.2 through WS2.5.</p>
+<p><strong>Acceptance:</strong> Reusable rubric in place.</p>
+<h3 id="task-ws22-canada-codes-ingestion-runbook">Task WS2.2: Canada codes ingestion runbook</h3>
+<p><strong>Owner:</strong> P + AI
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/operations/codes-ingestion/canada-runbook.md</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Document Canada codes scope</strong></p>
+</li>
+</ul>
+<p>Capture the codes corpus to ingest: National Building Code of Canada (NBC), Canadian Electrical Code (CEC) / CSA C22.1, National Plumbing Code, National Fire Code, Ontario Building Code (OBC), British Columbia Building Code (BCBC), Alberta Building Code (ABC), Quebec Construction Code, plus per-municipality overlays for Toronto, Vancouver, Calgary, Ottawa.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Apply vendor evaluation framework</strong></li>
+</ul>
+<p>Score CSA Group direct license, UpCodes Canada, Westlaw Canada per the WS2.1 rubric. Document recommendation.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 3: Estimate ingestion budget and timeline</strong></li>
+</ul>
+<p>Working estimate: $90,000 to $120,000 CAD over 6 months. Document assumptions for line-item validation.</p>
+<p><strong>Acceptance:</strong> Canada runbook complete; ready to hand to ingestion engineering team at Canada Phase 0 kick-off.</p>
+<h3 id="task-ws23-united-kingdom-codes-ingestion-runbook">Task WS2.3: United Kingdom codes ingestion runbook</h3>
+<p><strong>Owner:</strong> P + AI
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/operations/codes-ingestion/uk-runbook.md</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Document United Kingdom codes scope</strong></p>
+</li>
+</ul>
+<p>Capture: Building Regulations 2010 plus Approved Documents A through R, BS 7671 IET Wiring Regulations 18th Edition, Gas Safety (Installation and Use) Regulations 1998, Local Authority Building Control (LABC) per-borough variations for London plus Manchester, Birmingham, Bristol.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Apply vendor evaluation framework</strong></li>
+</ul>
+<p>Score British Standards Institution (BSI) direct license, IET direct license for BS 7671, manual ingestion option. Document recommendation.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 3: Estimate ingestion budget and timeline</strong></li>
+</ul>
+<p>Working estimate: £80,000 to £110,000 over 6 months.</p>
+<p><strong>Acceptance:</strong> United Kingdom runbook complete.</p>
+<h3 id="task-ws24-australia-codes-ingestion-runbook">Task WS2.4: Australia codes ingestion runbook</h3>
+<p><strong>Owner:</strong> P + AI
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/operations/codes-ingestion/australia-runbook.md</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Document Australia codes scope</strong></p>
+</li>
+</ul>
+<p>Capture: National Construction Code (NCC) Volumes One, Two, Three; AS/NZS 3000:2018 Wiring Rules; Queensland Development Code; NSW Building Code variations; Victorian Building Regulations.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Apply vendor evaluation framework</strong></li>
+</ul>
+<p>Score Standards Australia direct license, SAI Global, state government portals. Document recommendation.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 3: Estimate ingestion budget and timeline</strong></li>
+</ul>
+<p>Working estimate: $100,000 to $130,000 AUD over 6 months.</p>
+<p><strong>Acceptance:</strong> Australia runbook complete.</p>
+<h3 id="task-ws25-european-union-berlin-pilot--germany-codes-ingestion-runbook">Task WS2.5: European Union (Berlin pilot — Germany) codes ingestion runbook</h3>
+<p><strong>Owner:</strong> P + AI
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/operations/codes-ingestion/eu-pilot-germany-runbook.md</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Document Germany codes scope</strong></p>
+</li>
+</ul>
+<p>Capture: relevant EN harmonized standards (CEN, CENELEC), Berliner Bauordnung (Berlin Building Code), DIN VDE electrical installation standards, plus federal Bauproduktenverordnung product directive.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Apply vendor evaluation framework</strong></li>
+</ul>
+<p>Score Beuth Verlag (DIN's commercial arm), CEN direct license, manual ingestion. Document recommendation.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 3: Estimate ingestion budget and timeline plus German-language localization overlay</strong></li>
+</ul>
+<p>Working estimate: €100,000 to €140,000 over 6 to 9 months including German-language localization.</p>
+<p><strong>Acceptance:</strong> European Union pilot runbook complete.</p>
+<h3 id="task-ws26-codes-engine-validation-test-set-per-country">Task WS2.6: Codes engine validation test set per country</h3>
+<p><strong>Owner:</strong> P + AI
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/operations/codes-ingestion/validation-test-set-template.md</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Define the per-country validation set</strong></p>
+</li>
+</ul>
+<p>50+ test cases per country drawn from real residential and light-commercial scenarios (electrical panel upgrade, kitchen renovation, bathroom rough-in, heat pump install, EV charger install). Each test case lists the codes the engine must surface and the expected accuracy floor (95%).</p>
+<p><strong>Acceptance:</strong> Reusable template ready for per-country instantiation.</p>
+<hr>
+<h2 id="work-stream-3--payment-rails">Work Stream 3 — Payment Rails</h2>
+<p><strong>Goal:</strong> Stand up Stripe Connect plus per-country domestic payment rails for each country before in-country Phase 0 begins.</p>
+<h3 id="task-ws31-stripe-connect-canada-setup">Task WS3.1: Stripe Connect Canada setup</h3>
+<p><strong>Owner:</strong> CGM-Canada (once hired) + P
+<strong>Files:</strong></p>
+<ul>
+<li><p>Modify: <code>src/lib/payments/stripe.ts</code> (add multi-country Stripe Connect account routing)</p>
+</li>
+<li><p>Create: <code>docs/operations/payment-rails/canada-rails.md</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Create Sherpa Pros Canada Stripe Connect account</strong></p>
+</li>
+</ul>
+<p>Use Canadian operating entity (formed in WS4.1). Configure for CAD settlement. Enable Express onboarding for pros. Validate webhook endpoint receives <code>account.updated</code>, <code>payout.created</code>, <code>payment_intent.succeeded</code> events.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Add Interac e-Transfer integration</strong></li>
+</ul>
+<p>Document Interac as the Canadian peer-to-peer rail. Validate Stripe's native Interac support or evaluate third-party providers.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 3: Document tax-collection configuration for GST and HST per province</strong></li>
+</ul>
+<p>Stripe Tax Canada handles GST/HST collection. Configure per-province rates. Validate against test transactions.</p>
+<p><strong>Acceptance:</strong> Sherpa Pros Canada Stripe Connect live with CAD settlement, Interac, and GST/HST tax collection.</p>
+<h3 id="task-ws32-stripe-connect-united-kingdom-setup">Task WS3.2: Stripe Connect United Kingdom setup</h3>
+<p><strong>Owner:</strong> CGM-UK (once hired) + P
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/operations/payment-rails/uk-rails.md</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Create Sherpa Pros United Kingdom Stripe Connect account</strong></p>
+</li>
+</ul>
+<p>Use United Kingdom operating entity (Limited company, formed in WS4.2). Configure for GBP settlement. Enable Express onboarding.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Add Bacs Direct Debit and Faster Payments integration</strong></li>
+</ul>
+<p>Document Bacs as the United Kingdom domestic rail. Validate Stripe's native Bacs support.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 3: Configure VAT collection per HMRC rules</strong></li>
+</ul>
+<p>Stripe Tax United Kingdom handles VAT at 20%. Configure for the marketplace transaction. Document Construction Industry Scheme (CIS) Domestic Reverse Charge handling for VAT-registered pro-to-pro work.</p>
+<p><strong>Acceptance:</strong> Sherpa Pros United Kingdom Stripe Connect live with GBP settlement, Bacs, and VAT collection.</p>
+<h3 id="task-ws33-stripe-connect-australia-setup">Task WS3.3: Stripe Connect Australia setup</h3>
+<p><strong>Owner:</strong> CGM-Australia (once hired) + P
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/operations/payment-rails/australia-rails.md</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Create Sherpa Pros Australia Stripe Connect account</strong></p>
+</li>
+</ul>
+<p>Use Australian operating entity (Proprietary Limited, formed in WS4.3). Configure for AUD settlement. Enable Express onboarding.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Add New Payments Platform (NPP) and BPAY integration</strong></li>
+</ul>
+<p>Document NPP for real-time settlement and BPAY for invoice-based. Validate Stripe support or evaluate third-party.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 3: Configure GST collection at 10%</strong></li>
+</ul>
+<p>Stripe Tax Australia handles GST. Configure ABN validation for pro onboarding (pros without ABN trigger PAYG withholding).</p>
+<p><strong>Acceptance:</strong> Sherpa Pros Australia Stripe Connect live with AUD settlement, NPP, BPAY, GST collection, and ABN validation.</p>
+<h3 id="task-ws34-stripe-connect-european-union-berlin-pilot--germany-setup">Task WS3.4: Stripe Connect European Union (Berlin pilot — Germany) setup</h3>
+<p><strong>Owner:</strong> CGM-EU (once hired) + P
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/operations/payment-rails/eu-pilot-germany-rails.md</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Create Sherpa Pros Deutschland Stripe Connect account</strong></p>
+</li>
+</ul>
+<p>Use German operating entity (GmbH, formed in WS4.4). Configure for EUR settlement. Enable Express onboarding.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Add Single Euro Payments Area (SEPA) Direct Debit and German-specific consumer rails</strong></li>
+</ul>
+<p>Document SEPA as the cross-border European Union rail. Add Klarna, Sofort, and PayPal as German consumer-comfort layers via Stripe.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 3: Configure VAT MOSS / OSS registration</strong></li>
+</ul>
+<p>Register for VAT in Germany. Configure VAT MOSS / OSS to cover other European Union member states from the German registration. Stripe Tax handles per-member-state rate calculation.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 4: Configure DAC7 reporting</strong></li>
+</ul>
+<p>European Union Marketplace Directive (DAC7) requires quarterly transaction reporting for any pro earning over €2,000 EUR per year or 30+ transactions per year. Document the data export process.</p>
+<p><strong>Acceptance:</strong> Sherpa Pros Deutschland Stripe Connect live with EUR settlement, SEPA, VAT OSS, DAC7 reporting.</p>
+<h3 id="task-ws35-fx-hedging-strategy">Task WS3.5: FX hedging strategy</h3>
+<p><strong>Owner:</strong> CFO (once hired)
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/operations/payment-rails/fx-hedging-strategy.md</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Document the FX exposure model</strong></p>
+</li>
+</ul>
+<p>Per-country settlement in local currency; periodic conversion to USD for parent reporting. Document the Wise integration for conversion, the natural hedge from in-country operating expenses paid in local currency, and the residual USD-denominated exposure.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Set hedge ratio policy</strong></li>
+</ul>
+<p>Working default: hedge 50% of forward 6-month forecasted residual FX exposure. Quarterly review with CFO.</p>
+<p><strong>Acceptance:</strong> Hedging policy documented and ready to execute once CFO is in seat.</p>
+<hr>
+<h2 id="work-stream-4--regulatory-readiness">Work Stream 4 — Regulatory Readiness</h2>
+<p><strong>Goal:</strong> Per-country legal entity formation, trade-licensing research, insurance broker engagement, worker-classification opinion. Must complete before Country Phase 0 begins.</p>
+<h3 id="task-ws41-canada-legal-entity-formation">Task WS4.1: Canada legal entity formation</h3>
+<p><strong>Owner:</strong> P + LEGAL-Canada
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/operations/regulatory/canada-entity.md</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Engage Canadian outside counsel</strong></p>
+</li>
+</ul>
+<p>Working candidates: Borden Ladner Gervais (BLG), Gowling WLG, Osler Hoskin &amp; Harcourt. Engage on entity formation, worker-classification opinion, and ongoing per-province compliance.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Form Canadian operating entity</strong></li>
+</ul>
+<p>Working default: Canadian-controlled private corporation (CCPC) federally incorporated under the Canada Business Corporations Act, with extra-provincial registration in Ontario, British Columbia, Alberta, and Quebec (when Quebec launches in Year 2).</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 3: Register for federal GST and per-province HST/PST</strong></li>
+</ul>
+<p>Threshold $30,000 CAD annual revenue in any province; Sherpa Pros will exceed this in launch month.</p>
+<p><strong>Acceptance:</strong> Canadian entity formed, registered, GST/HST configured.</p>
+<h3 id="task-ws42-united-kingdom-legal-entity-formation">Task WS4.2: United Kingdom legal entity formation</h3>
+<p><strong>Owner:</strong> P + LEGAL-UK
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/operations/regulatory/uk-entity.md</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Engage United Kingdom outside counsel</strong></p>
+</li>
+</ul>
+<p>Working candidates: Mishcon de Reya, Taylor Wessing, Bird &amp; Bird. Engage on entity formation, IR35 worker-classification opinion, and CIS reporting setup.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Form United Kingdom operating entity</strong></li>
+</ul>
+<p>Working default: Sherpa Pros (UK) Limited, registered with Companies House.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 3: Register for VAT and Construction Industry Scheme (CIS)</strong></li>
+</ul>
+<p>VAT registration once £85,000 turnover threshold expected. CIS registration required for any contractor-to-subcontractor payment.</p>
+<p><strong>Acceptance:</strong> United Kingdom entity formed, VAT and CIS configured.</p>
+<h3 id="task-ws43-australia-legal-entity-formation">Task WS4.3: Australia legal entity formation</h3>
+<p><strong>Owner:</strong> P + LEGAL-Australia
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/operations/regulatory/australia-entity.md</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Engage Australian outside counsel</strong></p>
+</li>
+</ul>
+<p>Working candidates: Allens, Herbert Smith Freehills, Gilbert + Tobin. Engage on entity formation, Fair Work Act independent contractor opinion, and state-by-state licensing research.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Form Australian operating entity</strong></li>
+</ul>
+<p>Working default: Sherpa Pros Australia Pty Ltd, ASIC-registered with Australian Business Number (ABN) and Tax File Number (TFN).</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 3: Register for GST</strong></li>
+</ul>
+<p>GST registration once $75,000 AUD turnover threshold expected.</p>
+<p><strong>Acceptance:</strong> Australian entity formed, ABN issued, GST configured.</p>
+<h3 id="task-ws44-european-union-berlin-pilot--germany-legal-entity-formation">Task WS4.4: European Union (Berlin pilot — Germany) legal entity formation</h3>
+<p><strong>Owner:</strong> P + LEGAL-Germany
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/operations/regulatory/eu-pilot-germany-entity.md</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Engage German outside counsel</strong></p>
+</li>
+</ul>
+<p>Working candidates: Hengeler Mueller, Gleiss Lutz, Noerr. Engage on GmbH formation, Scheinselbständigkeit (false self-employment) worker-classification opinion, and GDPR plus BDSG compliance setup.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Form German operating entity</strong></li>
+</ul>
+<p>Working default: Sherpa Pros Deutschland GmbH, registered with the Handelsregister (Commercial Register). Minimum capital €25,000.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 3: Register for VAT (MwSt) and OSS</strong></li>
+</ul>
+<p>Standard VAT rate 19%; OSS registration via the Bundeszentralamt für Steuern covers cross-member-state VAT obligations.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 4: Appoint Data Protection Officer (DPO)</strong></li>
+</ul>
+<p>GDPR Article 37 requires DPO designation for any entity processing personal data at scale. Working default: external DPO firm contracted.</p>
+<p><strong>Acceptance:</strong> German entity formed, VAT registered, DPO appointed.</p>
+<h3 id="task-ws45-per-country-insurance-broker-engagement">Task WS4.5: Per-country insurance broker engagement</h3>
+<p><strong>Owner:</strong> P + CGM (once hired per country)
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/operations/regulatory/insurance-brokers.md</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Engage insurance brokers per country</strong></p>
+</li>
+</ul>
+<p>Canada: Marsh Canada or Aon Canada. United Kingdom: Lockton United Kingdom or Marsh United Kingdom. Australia: Marsh Australia or Aon Australia. European Union (Germany): Funk Gruppe or Marsh Deutschland.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Bind platform liability insurance per country</strong></li>
+</ul>
+<p>Per-country minimums: Canada $5 million CAD aggregate Commercial General Liability; United Kingdom £5 million Public Liability; Australia $10 million AUD Public Liability; Germany €5 million Betriebshaftpflicht. Working budget $5,000 to $15,000 USD per country annual.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 3: Document COI verification flow per country</strong></li>
+</ul>
+<p>Per-country pro Certificate of Insurance verification process integrated into pro onboarding. Country-specific minimums applied.</p>
+<p><strong>Acceptance:</strong> Per-country platform liability bound; pro COI verification flow live per country.</p>
+<h3 id="task-ws46-per-country-worker-classification-opinion">Task WS4.6: Per-country worker-classification opinion</h3>
+<p><strong>Owner:</strong> LEGAL-{country}
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/operations/regulatory/worker-classification-opinions.md</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Engage country counsel for written worker-classification opinion</strong></p>
+</li>
+</ul>
+<p>Per country: written opinion that pros operating on Sherpa Pros are independent contractors under country-specific tests (CRA common-law test in Canada, IR35 in United Kingdom, Fair Work Act multi-factor in Australia, Scheinselbständigkeit tests in Germany). Same scope as the United States 1099 vs W-2 opinion in Phase 0.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Document Sherpa Flex international equivalent per country</strong></li>
+</ul>
+<p>Each country needs a Sherpa Flex equivalent if the side-hustle path is launched in country. Per-project platform liability insurance + sub-equivalent-of-$5,000 USD job ceiling + explicit independent-contractor framing. Defer to in-country General Manager whether Flex launches in country at all.</p>
+<p><strong>Acceptance:</strong> Written opinion on file per country; Flex international approach decided per country.</p>
+<h3 id="task-ws47-per-country-trade-licensing-research">Task WS4.7: Per-country trade licensing research</h3>
+<p><strong>Owner:</strong> CGM (once hired) + AI
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/operations/regulatory/trade-licensing-research-canada.md</code> (NEW)</p>
+</li>
+<li><p>Create: <code>docs/operations/regulatory/trade-licensing-research-uk.md</code> (NEW)</p>
+</li>
+<li><p>Create: <code>docs/operations/regulatory/trade-licensing-research-australia.md</code> (NEW)</p>
+</li>
+<li><p>Create: <code>docs/operations/regulatory/trade-licensing-research-eu-pilot-germany.md</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Document the trades licensed per country and the issuing authority</strong></p>
+</li>
+</ul>
+<p>Per country, build the trade-by-trade table (Electrician, Plumber, Heating-Ventilation-Air Conditioning / HVAC, Gas, General Builder, Roofer, etc.) with the issuing authority and the verification source. This feeds the codes engine and the pro onboarding verification flow.</p>
+<p><strong>Acceptance:</strong> Per-country trade licensing table complete and ready to integrate into pro onboarding.</p>
+<hr>
+<h2 id="work-stream-5--localization">Work Stream 5 — Localization</h2>
+<p><strong>Goal:</strong> Currency, language, units, date format, trade nomenclature per country. Localization framework lives globally; per-country localization configuration sets the per-country values.</p>
+<h3 id="task-ws51-multi-currency-display-layer">Task WS5.1: Multi-currency display layer</h3>
+<p><strong>Owner:</strong> P + AI
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>src/lib/i18n/currency.ts</code> (NEW)</p>
+</li>
+<li><p>Create: <code>docs/operations/localization/currency.md</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Build currency-display utility</strong></p>
+</li>
+</ul>
+<p>Function <code>formatCurrency(amountInMinorUnits, currencyCode, locale)</code> returning the locale-formatted string. Handles CAD, GBP, AUD, EUR, USD. Always integer minor units (cents, pence) per the Sherpa Pros monetary rule.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Update all monetary display components to call the utility</strong></li>
+</ul>
+<p>Replace every hard-coded <code>$</code> and <code>USD</code> in <code>src/components/</code> with <code>formatCurrency()</code> keyed off user country.</p>
+<p><strong>Acceptance:</strong> Every monetary display reads from the utility; one regression test per currency passes.</p>
+<h3 id="task-ws52-language-strategy-implementation">Task WS5.2: Language strategy implementation</h3>
+<p><strong>Owner:</strong> P + AI
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>src/lib/i18n/language.ts</code> (NEW)</p>
+</li>
+<li><p>Create: <code>docs/operations/localization/language.md</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Document the language sequence</strong></p>
+</li>
+</ul>
+<p>Year 1 Canada English-default. Year 2 Quebec French follow-on. Year 4 to 5 Berlin pilot German required day one. French and Spanish deferred.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Choose the i18n library</strong></li>
+</ul>
+<p>Working default: <code>next-intl</code> (Next.js native plus App Router compatible). Document the alternative (<code>react-i18next</code>) and the decision rationale.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 3: Scaffold the locale-routing structure</strong></li>
+</ul>
+<p>Add the <code>[locale]</code> segment to <code>src/app/</code>. Default locale <code>en-US</code>. Locale-aware link helper. No translation work in this task; just the routing.</p>
+<p><strong>Acceptance:</strong> Locale-routing in place; English-default for all locales; ready for per-country translation work.</p>
+<h3 id="task-ws53-units-of-measure-switcher">Task WS5.3: Units of measure switcher</h3>
+<p><strong>Owner:</strong> P + AI
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>src/lib/i18n/units.ts</code> (NEW)</p>
+</li>
+<li><p>Create: <code>docs/operations/localization/units.md</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Build the unit-conversion utility</strong></p>
+</li>
+</ul>
+<p>Imperial-default for United States and Canada. Mixed for United Kingdom (per-line-item override). Metric for Australia and European Union. Functions: <code>formatLength(meters, units)</code>, <code>formatWeight(kilograms, units)</code>, <code>formatVolume(liters, units)</code>, <code>formatTemperature(celsius, units)</code>.</p>
+<p><strong>Acceptance:</strong> Utility used by every measurement display in materials orchestration plus codes engine.</p>
+<h3 id="task-ws54-date-format-switcher">Task WS5.4: Date format switcher</h3>
+<p><strong>Owner:</strong> P + AI
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>src/lib/i18n/date.ts</code> (NEW)</p>
+</li>
+<li><p>Create: <code>docs/operations/localization/date-format.md</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Build the date-format utility</strong></p>
+</li>
+</ul>
+<p><code>formatDate(date, locale)</code> returning locale-formatted date string. United States MM/DD/YYYY default; United Kingdom, Canada (consumer), Australia, European Union DD/MM/YYYY default.</p>
+<p><strong>Acceptance:</strong> Every date display uses the utility; one regression test per locale passes.</p>
+<h3 id="task-ws55-trade-nomenclature-dictionary">Task WS5.5: Trade nomenclature dictionary</h3>
+<p><strong>Owner:</strong> P + AI + CGM (once hired per country)
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/operations/localization/trade-nomenclature.md</code> (NEW)</p>
+</li>
+<li><p>Create: <code>src/lib/i18n/trade-terms.ts</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Document the per-country trade-term dictionary</strong></p>
+</li>
+</ul>
+<p>Build the lookup table for each country's correct term: "trade pros" / "tradespeople" / "tradies" / "Handwerker"; "general contractor" / "main contractor" / "head contractor" / "Generalunternehmer"; "punch list" / "snagging list" / "defects list" / "Mängelliste"; "change order" / "variation" / "Nachtrag"; "permit" / "planning permission" / "DA" / "Baugenehmigung". Apply to every country-specific copy surface.</p>
+<p><strong>Acceptance:</strong> Dictionary complete; ready for in-country General Manager review at country Phase 0.</p>
+<h3 id="task-ws56-per-country-trademark-search">Task WS5.6: Per-country trademark search</h3>
+<p><strong>Owner:</strong> P + LEGAL-{country}
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/operations/localization/trademark-searches.md</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Run trademark searches per country</strong></p>
+</li>
+</ul>
+<p>Canadian Intellectual Property Office (CIPO) for Canada; United Kingdom Intellectual Property Office (UKIPO) for United Kingdom; IP Australia for Australia; European Union Intellectual Property Office (EUIPO) plus Deutsches Patent- und Markenamt (DPMA) for Berlin pilot. Search "Sherpa," "Sherpa Pros," and "Sherpa" plus product names in each country's classes 35, 36, 37, 41, 42 (the relevant marketplace plus services classes).</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Document conflicts and per-country brand variant fallback</strong></li>
+</ul>
+<p>If "Sherpa Pros" is clear in country, use the umbrella brand. If conflict, fall back to "Sherpa Pros {Country}" or evaluate alternative brand variant.</p>
+<p><strong>Acceptance:</strong> Per-country trademark status documented; per-country brand variant decision locked.</p>
+<hr>
+<h2 id="work-stream-6--per-country-launch-playbook-phase-012">Work Stream 6 — Per-Country Launch Playbook (Phase 0/1/2)</h2>
+<p><strong>Goal:</strong> Templated, parameterized per-country launch playbook mirroring the United States Phase 0 / Phase 1 / Phase 2 model.</p>
+<h3 id="task-ws61-per-country-launch-playbook-template">Task WS6.1: Per-country launch playbook template</h3>
+<p><strong>Owner:</strong> P + AI
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/operations/launch-playbook/per-country-launch-template.md</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Document the universal launch template</strong></p>
+</li>
+</ul>
+<p>Country-agnostic template covering: Phase 0 entry criteria (CGM hired, entity formed, payment rails live, codes ingested, insurance bound, worker-class opinion received), Phase 0 activities (10 to 15 founding pros recruited in launch metro), Phase 0 exit gate ($X local-currency-equivalent GMV plus pro retention floor), Phase 1 scope (3 to 4 metros), Phase 1 exit gate, Phase 2 scope (full country footprint), Phase 2 exit gate (country breakeven plus PM anchor signed).</p>
+<p><strong>Acceptance:</strong> Template ready to fork per country.</p>
+<h3 id="task-ws62-canada-launch-playbook">Task WS6.2: Canada launch playbook</h3>
+<p><strong>Owner:</strong> CGM-Canada (once hired) + P
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/operations/launch-playbook/canada-launch.md</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Fork the template with Canada-specific values</strong></p>
+</li>
+</ul>
+<p>Launch metro Toronto. Phase 1 metros add Vancouver, Calgary. Phase 2 adds Ottawa and Montreal (Montreal contingent on French localization). Country-specific underserved-trade lanes: heat pumps under federal Greener Homes program plus provincial rebates, EV chargers, energy retrofits.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Document country-specific paid acquisition channels</strong></li>
+</ul>
+<p>Meta plus Google in Canada with Canadian-creative work (the Canadian creative is meaningfully different from United States). Reddit Canada subreddits. Local trade-association partnerships (Canadian Home Builders Association / CHBA, Canadian Construction Association / CCA).</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 3: Document country-specific Property Manager pipeline</strong></li>
+</ul>
+<p>Working candidate list: Greystar Canada (cross-border from United States anchor), Realstar, QuadReal Property Group. Plus Canadian-specific multi-family operators.</p>
+<p><strong>Acceptance:</strong> Canada playbook ready to execute at Canada Phase 0 kick-off.</p>
+<h3 id="task-ws63-united-kingdom-launch-playbook">Task WS6.3: United Kingdom launch playbook</h3>
+<p><strong>Owner:</strong> CGM-UK (once hired) + P
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/operations/launch-playbook/uk-launch.md</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Fork the template with United Kingdom-specific values</strong></p>
+</li>
+</ul>
+<p>Launch metro London. Phase 1 metros add Manchester, Birmingham. Phase 2 adds Bristol and Edinburgh. Country-specific underserved-trade lanes: heat pumps under United Kingdom Boiler Upgrade Scheme, EV chargers under Electric Vehicle Homecharge Scheme, period-property restoration (Victorian and Edwardian housing stock specialty).</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Document country-specific paid acquisition channels</strong></li>
+</ul>
+<p>Meta plus Google United Kingdom. Mumsnet for homeowner reach. Local trade-association partnerships (Federation of Master Builders / FMB, NICEIC, Gas Safe Register).</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 3: Document country-specific Property Manager pipeline</strong></li>
+</ul>
+<p>Working candidate list: Foxtons, Savills Property Management, Knight Frank Property Management, JLL Residential.</p>
+<p><strong>Acceptance:</strong> United Kingdom playbook ready.</p>
+<h3 id="task-ws64-australia-launch-playbook">Task WS6.4: Australia launch playbook</h3>
+<p><strong>Owner:</strong> CGM-Australia (once hired) + P
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/operations/launch-playbook/australia-launch.md</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Fork the template with Australia-specific values</strong></p>
+</li>
+</ul>
+<p>Launch metro Sydney. Phase 1 metros add Melbourne, Brisbane. Phase 2 adds Perth. Country-specific underserved-trade lanes: solar plus battery installs (Australian residential solar penetration is the world's highest), EV chargers, bushfire retrofit specialty in regional New South Wales and Victoria.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Document country-specific paid acquisition channels</strong></li>
+</ul>
+<p>Meta plus Google Australia. Domain.com.au and realestate.com.au partnerships for homeowner reach. Local trade-association partnerships (Master Builders Australia, Housing Industry Association / HIA).</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 3: Document country-specific Property Manager pipeline</strong></li>
+</ul>
+<p>Working candidate list: Mirvac, Stockland, Lendlease Communities, Greystar Australia.</p>
+<p><strong>Acceptance:</strong> Australia playbook ready.</p>
+<h3 id="task-ws65-european-union-pilot-berlin-launch-playbook">Task WS6.5: European Union pilot (Berlin) launch playbook</h3>
+<p><strong>Owner:</strong> CGM-EU (once hired) + P
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/operations/launch-playbook/eu-pilot-berlin-launch.md</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Fork the template with Berlin-pilot-specific values</strong></p>
+</li>
+</ul>
+<p>Launch metro Berlin only. No Phase 1 expansion to second metro until pilot validates at Phase 2 metric gates. Country-specific underserved-trade lanes: heat pumps under Bundesförderung für effiziente Gebäude (BEG), EV chargers under KfW funding, energy-efficiency retrofits under European Union Energy Performance of Buildings Directive (EPBD).</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Document Germany-specific paid acquisition channels</strong></li>
+</ul>
+<p>Meta plus Google Deutschland. Immobilienscout24 partnership for homeowner reach. Local trade-association partnerships (Zentralverband des Deutschen Handwerks / ZDH, regional Handwerkskammer Berlin).</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 3: Document Germany-specific Property Manager pipeline</strong></li>
+</ul>
+<p>Working candidate list: Vonovia, Deutsche Wohnen, Akelius Residential Property, GCP (Grand City Properties).</p>
+<p><strong>Acceptance:</strong> Berlin pilot playbook ready; explicit pilot scope (no Phase 1 expansion until pilot validates).</p>
+<h3 id="task-ws66-per-country-traction-metric-dashboard">Task WS6.6: Per-country traction-metric dashboard</h3>
+<p><strong>Owner:</strong> CGM (once hired per country) + AI
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/operations/launch-playbook/traction-metrics-dashboard.md</code> (NEW)</p>
+</li>
+<li><p>Modify: <code>src/app/admin/investor-metrics/page.tsx</code> (add per-country breakdown)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Define per-country metric definitions</strong></p>
+</li>
+</ul>
+<p>Per country: GMV in local currency plus USD-equivalent, active pros, pro retention, NPS, match time, materials attach rate. Same definitions as the United States dashboard, parameterized per country.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Add country dimension to investor metrics dashboard</strong></li>
+</ul>
+<p>Modify the admin investor metrics page to break out by country plus aggregate global. Surface per-country exit-gate progress.</p>
+<p><strong>Acceptance:</strong> Per-country dashboard live; investor reporting reflects international footprint.</p>
+<h3 id="task-ws67-cross-country-knowledge-transfer-cadence">Task WS6.7: Cross-country knowledge-transfer cadence</h3>
+<p><strong>Owner:</strong> P + COO (once hired)
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/operations/launch-playbook/cross-country-cadence.md</code> (NEW)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Document the weekly cross-country ops review</strong></p>
+</li>
+</ul>
+<p>Working default: 60-minute Monday call across all in-country General Managers plus Phyrom plus COO. Each CGM gives a 5-minute traction snapshot. Discuss cross-country issues. Quarterly in-person all-hands.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Document the country-launch-postmortem template</strong></li>
+</ul>
+<p>Each country runs a 30-day Phase 1 retrospective and a 90-day Phase 2 retrospective documenting what worked, what failed, what to change for next country. Postmortems feed the per-country launch template (WS6.1) updates.</p>
+<p><strong>Acceptance:</strong> Cadence in place by Canada Phase 0; updated per country thereafter.</p>
+<hr>
+<h2 id="critical-path-dependencies">Critical-Path Dependencies</h2>
+<ol>
+<li><strong>Country General Manager hire (per country)</strong> → unlocks every other in-country workstream → 6-month lead time before in-country Phase 0 begins.</li>
+<li><strong>Codes ingestion complete (per country)</strong> → unlocks Phase 1 launch in country.</li>
+<li><strong>Payment rails live (per country)</strong> → unlocks pro activation and beta cohort.</li>
+<li><strong>Worker-classification opinion received (per country)</strong> → unlocks pro activation legally.</li>
+<li><strong>Trademark search clear (per country)</strong> → unlocks per-country brand variant decision and marketing surface launch.</li>
+<li><strong>Phase 4 fundraise close</strong> → unlocks Canada Year 1 launch capital → unlocks the entire international sequence.</li>
+</ol>
+<h2 id="success-metrics-and-phase-gates">Success Metrics and Phase Gates</h2>
+<h3 id="per-country-in-country-phase-0-exit-gate">Per-country in-country Phase 0 exit gate</h3>
+<ul>
+<li>CGM in seat, country team of 4 hired and on-payroll, regulatory readiness complete, payment rails live, codes ingested for launch metro, insurance bound, worker-class opinion received.</li>
+</ul>
+<h3 id="per-country-in-country-phase-1-exit-gate">Per-country in-country Phase 1 exit gate</h3>
+<ul>
+<li>50+ active pros in launch metro, $200,000 USD-equivalent GMV, 1 PM anchor in pipeline, NPS &gt;50, pro retention &gt;80%.</li>
+</ul>
+<h3 id="per-country-in-country-phase-2-exit-gate">Per-country in-country Phase 2 exit gate</h3>
+<ul>
+<li>100+ active pros across 3 to 4 metros, $1,000,000 USD-equivalent annualized GMV, country breakeven on operating cost, 1+ PM anchor signed.</li>
+</ul>
+<h3 id="phase-4-international-portfolio-exit-gate-triggers-phase-5--rest-of-world-consideration">Phase 4 international portfolio exit gate (triggers Phase 5 — rest-of-world consideration)</h3>
+<ul>
+<li>All 4 priority countries at or past in-country Phase 2 exit gate, OR</li>
+<li>3 of 4 countries at Phase 2 plus formal decision to discontinue the 4th.</li>
+</ul>
+<hr>
+<h2 id="glossary">Glossary</h2>
+<p>ABN = Australian Business Number · APP = Australian Privacy Principles · BCBC = British Columbia Building Code · BfDI = Bundesbeauftragte für den Datenschutz und die Informationsfreiheit · CCPC = Canadian-controlled private corporation · CEC = Canadian Electrical Code · CFO = Chief Financial Officer · CGM = Country General Manager · CIPO = Canadian Intellectual Property Office · CIS = Construction Industry Scheme · COI = Certificate of Insurance · COO = Chief Operating Officer · CRA = Canada Revenue Agency · DAC7 = Directive on Administrative Cooperation 7 · DIN = Deutsches Institut für Normung · DPA = Data Protection Authority · DPO = Data Protection Officer · DSAR = Data Subject Access Request · EUIPO = European Union Intellectual Property Office · FX = Foreign Exchange · GDPR = General Data Protection Regulation · GMV = Gross Merchandise Value · GST = Goods and Services Tax · HMRC = His Majesty's Revenue and Customs · HST = Harmonized Sales Tax · HwO = Handwerksordnung · IET = Institution of Engineering and Technology · IR35 = Off-payroll working rules · LABC = Local Authority Building Control · MOSS = Mini One-Stop Shop · MTD = Making Tax Digital · NBC = National Building Code of Canada · NCC = National Construction Code (Australia) · NEC = National Electrical Code · NICEIC = National Inspection Council for Electrical Installation Contracting · NPP = New Payments Platform · NPS = Net Promoter Score · OAIC = Office of the Australian Information Commissioner · OBC = Ontario Building Code · OSS = One-Stop Shop · PIPEDA = Personal Information Protection and Electronic Documents Act · PM = Property Manager · PPP = Purchasing Power Parity · PSI = Personal Services Income · QBCC = Queensland Building and Construction Commission · SEPA = Single Euro Payments Area · TFN = Tax File Number · UKIPO = United Kingdom Intellectual Property Office · VAT = Value Added Tax · VBA = Victorian Building Authority · WCB = Workers Compensation Board.</p>
+
+	
+
+
+</body>
+</html>

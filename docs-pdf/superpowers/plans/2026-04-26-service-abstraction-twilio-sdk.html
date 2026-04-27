@@ -1,0 +1,1840 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2026 04 26 service abstraction twilio sdk — Sherpa Pros</title>
+<link rel="icon" href="../../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="2026-04-26-service-abstraction-twilio-sdk.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="service-abstraction-layer--twilio-sdk-implementation-plan">Service Abstraction Layer + Twilio SDK Implementation Plan</h1>
+<blockquote>
+<p><strong>For agentic workers:</strong> REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (<code>- [ ]</code>) syntax for tracking.</p>
+</blockquote>
+<p><strong>Goal:</strong> Land the migration-ready service abstraction skeleton (<code>src/lib/services/</code>) and wire the real Twilio Conversations SDK into the existing messaging stack so the platform can send real SMS/in-app messages instead of returning mock stubs.</p>
+<p><strong>Architecture:</strong> Additive — keep <code>src/lib/communication/</code> (already conforms to the <code>CommunicationService</code> interface) and introduce <code>src/lib/services/</code> as the umbrella for all integration getters. <code>getMessagingService()</code> initially re-exports the existing <code>communicationService</code> const so we get spec-compliant call sites without a 11-file refactor; future integrations (Stripe, R2) are written fresh inside <code>services/</code>. Twilio SDK calls replace the <code>// TODO</code> stubs in <code>src/lib/communication/twilio-service.ts</code>. DB persistence for conversations/messages is OUT OF SCOPE — the existing in-memory <code>conversationCache</code> stays until a follow-up plan adds migration 012 with <code>conversations</code> + <code>messages</code> tables.</p>
+<p><strong>Tech Stack:</strong> Next.js 16 (App Router) · TypeScript strict · Twilio Node SDK · Vitest · Drizzle ORM (no schema changes in this plan).</p>
+<p><strong>Source spec:</strong> <code>docs/superpowers/specs/2026-04-25-production-launch-hub-architecture-design.md</code> (sections 1, 3, and 8).</p>
+<hr>
+<h2 id="file-structure">File Structure</h2>
+<p><strong>Create:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Path</th>
+<th>Responsibility</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>src/lib/services/interfaces.ts</code></td>
+<td>Re-exports of all service interfaces, single import point for consumers</td>
+</tr>
+<tr>
+<td><code>src/lib/services/messaging/index.ts</code></td>
+<td><code>getMessagingService()</code> — env-aware getter returning <code>CommunicationService</code></td>
+</tr>
+<tr>
+<td><code>src/lib/services/README.md</code></td>
+<td>One-page guide: how to add a new service to the umbrella</td>
+</tr>
+<tr>
+<td><code>src/lib/communication/__tests__/twilio-service.test.ts</code></td>
+<td>Vitest suite for the real Twilio implementation (mocks the <code>twilio</code> SDK)</td>
+</tr>
+<tr>
+<td><code>src/lib/services/__tests__/messaging.test.ts</code></td>
+<td>Vitest suite for <code>getMessagingService()</code> env switching</td>
+</tr>
+<tr>
+<td><code>src/app/api/health/route.ts</code></td>
+<td><code>GET /api/health</code> — service status JSON</td>
+</tr>
+</tbody></table>
+<p><strong>Modify:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Path</th>
+<th>Change</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>package.json</code></td>
+<td>Add <code>twilio: ^5.x</code> dependency</td>
+</tr>
+<tr>
+<td><code>src/lib/communication/twilio-service.ts</code></td>
+<td>Replace TODO stubs (lines 34-37, 65-82, 111-117, 138-150, 176-179, 197-200, 211-216) with real Twilio Conversations API calls; keep the in-memory <code>conversationCache</code></td>
+</tr>
+<tr>
+<td><code>src/app/api/chat/webhook/route.ts</code></td>
+<td>Add real signature validation (replace TODO at lines 16-22) using <code>twilio.validateRequest</code></td>
+</tr>
+</tbody></table>
+<p><strong>Out of scope (followup plans):</strong></p>
+<ul>
+<li>DB migration for <code>conversations</code> + <code>messages</code> tables — currently in-memory only</li>
+<li>Stripe Connect (own plan)</li>
+<li>Cloudflare R2 storage (own plan)</li>
+<li><code>getDeliveryService()</code>, <code>getPaymentService()</code>, <code>getStorageService()</code>, <code>getQueueService()</code> — interfaces only, no implementations until each integration is wired</li>
+</ul>
+<hr>
+<h2 id="task-1-create-services-directory-skeleton--interfaces">Task 1: Create services/ directory skeleton + interfaces</h2>
+<p><strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>src/lib/services/interfaces.ts</code></p>
+</li>
+<li><p>Create: <code>src/lib/services/README.md</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Write the interfaces re-export file</strong></p>
+</li>
+</ul>
+<p>Create <code>src/lib/services/interfaces.ts</code>:</p>
+<pre><code class="hljs typescript"><span class="hljs-comment">/**
+ * Sherpa Pros — Service Interfaces
+ *
+ * Single import point for all integration interfaces.
+ * Each `services/&lt;name&gt;/index.ts` exports a `getXService()` function that
+ * picks a real or mock implementation based on env.
+ *
+ * Pattern from spec: 2026-04-25-production-launch-hub-architecture-design.md
+ */</span>
+
+<span class="hljs-comment">// Messaging — already implemented in src/lib/communication/</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">type</span> {
+  <span class="hljs-title class_">CommunicationService</span> <span class="hljs-keyword">as</span> <span class="hljs-title class_">MessagingService</span>,
+  <span class="hljs-title class_">Conversation</span>,
+  <span class="hljs-title class_">Message</span>,
+  <span class="hljs-title class_">ConversationStatus</span>,
+  <span class="hljs-title class_">ConversationEvent</span>,
+  <span class="hljs-title class_">ConversationEventType</span>,
+  <span class="hljs-title class_">ParticipantRole</span>,
+} <span class="hljs-keyword">from</span> <span class="hljs-string">'@/lib/communication/types'</span>;
+
+<span class="hljs-comment">// Future interfaces — these get filled in as each integration lands.</span>
+<span class="hljs-comment">// Each interface lives next to its implementation, then is re-exported here.</span>
+<span class="hljs-comment">//</span>
+<span class="hljs-comment">// Tracked in followup plans:</span>
+<span class="hljs-comment">// - PaymentService     (Stripe Connect)</span>
+<span class="hljs-comment">// - StorageService     (Cloudflare R2)</span>
+<span class="hljs-comment">// - DeliveryService    (Uber Connect / DoorDash Drive)</span>
+<span class="hljs-comment">// - QueueService       (in-process → QStash)</span>
+<span class="hljs-comment">// - HubService         (warehouse inventory)</span>
+</code></pre>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Write the README</strong></li>
+</ul>
+<p>Create <code>src/lib/services/README.md</code>:</p>
+<pre><code class="hljs markdown"><span class="hljs-section"># Services Layer</span>
+
+Migration-ready integration umbrella. Each external integration lives in its
+own subdirectory and exports a <span class="hljs-code">`getXService()`</span> function that picks the
+implementation based on environment variables.
+
+<span class="hljs-section">## Adding a new integration</span>
+
+<span class="hljs-bullet">1.</span> Define the interface in <span class="hljs-code">`&lt;name&gt;/types.ts`</span> (or re-export an existing one in
+   <span class="hljs-code">`interfaces.ts`</span>).
+<span class="hljs-bullet">2.</span> Implement the real adapter in <span class="hljs-code">`&lt;name&gt;/&lt;provider&gt;-service.ts`</span>.
+<span class="hljs-bullet">3.</span> Implement the mock in <span class="hljs-code">`&lt;name&gt;/mock-service.ts`</span>.
+<span class="hljs-bullet">4.</span> Export <span class="hljs-code">`getXService()`</span> from <span class="hljs-code">`&lt;name&gt;/index.ts`</span> that returns real if creds
+   are set, mock otherwise.
+<span class="hljs-bullet">5.</span> Add the interface to <span class="hljs-code">`interfaces.ts`</span>.
+<span class="hljs-bullet">6.</span> Add the service to <span class="hljs-code">`/api/health/route.ts`</span>.
+
+<span class="hljs-section">## Why this pattern?</span>
+
+Vercel → containers migration is a config flip, not a refactor. No business
+logic touches infrastructure directly — every page/component imports from
+<span class="hljs-code">`@/lib/services/...`</span> not from a vendor SDK.
+</code></pre>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 3: Verify the file compiles in isolation</strong></li>
+</ul>
+<p>Run: <code>cd ~/sherpa-pros-platform &amp;&amp; npx tsc --noEmit src/lib/services/interfaces.ts</code></p>
+<p>Expected: no output (success) — the type re-exports resolve against existing <code>src/lib/communication/types.ts</code>.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 4: Commit</strong></li>
+</ul>
+<pre><code class="hljs bash"><span class="hljs-built_in">cd</span> ~/sherpa-pros-platform
+git add src/lib/services/interfaces.ts src/lib/services/README.md
+git commit -m <span class="hljs-string">"feat(services): add migration-ready service abstraction skeleton
+
+Spec section 1: docs/superpowers/specs/2026-04-25-production-launch-hub-architecture-design.md"</span>
+</code></pre>
+<hr>
+<h2 id="task-2-implement-getmessagingservice-with-tdd">Task 2: Implement getMessagingService() with TDD</h2>
+<p><strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>src/lib/services/__tests__/messaging.test.ts</code></p>
+</li>
+<li><p>Create: <code>src/lib/services/messaging/index.ts</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Write the failing test</strong></p>
+</li>
+</ul>
+<p>Create <code>src/lib/services/__tests__/messaging.test.ts</code>:</p>
+<pre><code class="hljs typescript"><span class="hljs-keyword">import</span> { describe, it, expect, beforeEach, afterEach } <span class="hljs-keyword">from</span> <span class="hljs-string">'vitest'</span>;
+<span class="hljs-keyword">import</span> { getMessagingService } <span class="hljs-keyword">from</span> <span class="hljs-string">'../messaging'</span>;
+<span class="hljs-keyword">import</span> { mockService } <span class="hljs-keyword">from</span> <span class="hljs-string">'@/lib/communication/mock-service'</span>;
+<span class="hljs-keyword">import</span> { twilioService } <span class="hljs-keyword">from</span> <span class="hljs-string">'@/lib/communication/twilio-service'</span>;
+
+<span class="hljs-title function_">describe</span>(<span class="hljs-string">'getMessagingService'</span>, <span class="hljs-function">() =&gt;</span> {
+  <span class="hljs-keyword">const</span> originalSid = process.<span class="hljs-property">env</span>.<span class="hljs-property">TWILIO_ACCOUNT_SID</span>;
+
+  <span class="hljs-title function_">afterEach</span>(<span class="hljs-function">() =&gt;</span> {
+    <span class="hljs-keyword">if</span> (originalSid === <span class="hljs-literal">undefined</span>) {
+      <span class="hljs-keyword">delete</span> process.<span class="hljs-property">env</span>.<span class="hljs-property">TWILIO_ACCOUNT_SID</span>;
+    } <span class="hljs-keyword">else</span> {
+      process.<span class="hljs-property">env</span>.<span class="hljs-property">TWILIO_ACCOUNT_SID</span> = originalSid;
+    }
+  });
+
+  <span class="hljs-title function_">it</span>(<span class="hljs-string">'returns the mock service when TWILIO_ACCOUNT_SID is unset'</span>, <span class="hljs-function">() =&gt;</span> {
+    <span class="hljs-keyword">delete</span> process.<span class="hljs-property">env</span>.<span class="hljs-property">TWILIO_ACCOUNT_SID</span>;
+    <span class="hljs-title function_">expect</span>(<span class="hljs-title function_">getMessagingService</span>()).<span class="hljs-title function_">toBe</span>(mockService);
+  });
+
+  <span class="hljs-title function_">it</span>(<span class="hljs-string">'returns the Twilio service when TWILIO_ACCOUNT_SID is set'</span>, <span class="hljs-function">() =&gt;</span> {
+    process.<span class="hljs-property">env</span>.<span class="hljs-property">TWILIO_ACCOUNT_SID</span> = <span class="hljs-string">'AC_test_sid'</span>;
+    <span class="hljs-title function_">expect</span>(<span class="hljs-title function_">getMessagingService</span>()).<span class="hljs-title function_">toBe</span>(twilioService);
+  });
+});
+</code></pre>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Run test to verify it fails</strong></li>
+</ul>
+<p>Run: <code>cd ~/sherpa-pros-platform &amp;&amp; npx vitest run src/lib/services/__tests__/messaging.test.ts</code></p>
+<p>Expected: FAIL — module <code>../messaging</code> not found.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 3: Write the implementation</strong></li>
+</ul>
+<p>Create <code>src/lib/services/messaging/index.ts</code>:</p>
+<pre><code class="hljs typescript"><span class="hljs-comment">/**
+ * Sherpa Pros — Messaging Service
+ *
+ * Picks Twilio if TWILIO_ACCOUNT_SID is set, mock otherwise.
+ * Returns the canonical CommunicationService implementation from
+ * src/lib/communication/ (which already conforms to the interface).
+ */</span>
+
+<span class="hljs-keyword">import</span> <span class="hljs-keyword">type</span> { <span class="hljs-title class_">MessagingService</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">'@/lib/services/interfaces'</span>;
+<span class="hljs-keyword">import</span> { mockService } <span class="hljs-keyword">from</span> <span class="hljs-string">'@/lib/communication/mock-service'</span>;
+<span class="hljs-keyword">import</span> { twilioService } <span class="hljs-keyword">from</span> <span class="hljs-string">'@/lib/communication/twilio-service'</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">getMessagingService</span>(<span class="hljs-params"></span>): <span class="hljs-title class_">MessagingService</span> {
+  <span class="hljs-keyword">if</span> (process.<span class="hljs-property">env</span>.<span class="hljs-property">TWILIO_ACCOUNT_SID</span>) {
+    <span class="hljs-keyword">return</span> twilioService;
+  }
+  <span class="hljs-keyword">return</span> mockService;
+}
+</code></pre>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 4: Run test to verify it passes</strong></li>
+</ul>
+<p>Run: <code>cd ~/sherpa-pros-platform &amp;&amp; npx vitest run src/lib/services/__tests__/messaging.test.ts</code></p>
+<p>Expected: PASS — 2 tests green.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 5: Commit</strong></li>
+</ul>
+<pre><code class="hljs bash"><span class="hljs-built_in">cd</span> ~/sherpa-pros-platform
+git add src/lib/services/messaging/index.ts src/lib/services/__tests__/messaging.test.ts
+git commit -m <span class="hljs-string">"feat(services): add getMessagingService() with env-based selection"</span>
+</code></pre>
+<hr>
+<h2 id="task-3-add-apihealth-endpoint">Task 3: Add /api/health endpoint</h2>
+<p><strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>src/app/api/health/route.ts</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Write the route</strong></p>
+</li>
+</ul>
+<p>Create <code>src/app/api/health/route.ts</code>:</p>
+<pre><code class="hljs typescript"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">NextResponse</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">'next/server'</span>;
+
+<span class="hljs-comment">/**
+ * GET /api/health
+ *
+ * Returns the status of every external service. Becomes the container
+ * health probe when migrated off Vercel.
+ *
+ * Spec section 8: 2026-04-25-production-launch-hub-architecture-design.md
+ */</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">GET</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> <span class="hljs-attr">services</span>: <span class="hljs-title class_">Record</span>&lt;<span class="hljs-built_in">string</span>, { <span class="hljs-attr">status</span>: <span class="hljs-string">'up'</span> | <span class="hljs-string">'unconfigured'</span>; <span class="hljs-attr">mode</span>?: <span class="hljs-built_in">string</span> }&gt; = {
+    <span class="hljs-attr">database</span>: {
+      <span class="hljs-attr">status</span>: process.<span class="hljs-property">env</span>.<span class="hljs-property">DATABASE_URL</span> ? <span class="hljs-string">'up'</span> : <span class="hljs-string">'unconfigured'</span>,
+    },
+    <span class="hljs-attr">stripe</span>: {
+      <span class="hljs-attr">status</span>: process.<span class="hljs-property">env</span>.<span class="hljs-property">STRIPE_SECRET_KEY</span> ? <span class="hljs-string">'up'</span> : <span class="hljs-string">'unconfigured'</span>,
+      <span class="hljs-attr">mode</span>: process.<span class="hljs-property">env</span>.<span class="hljs-property">STRIPE_SECRET_KEY</span>?.<span class="hljs-title function_">startsWith</span>(<span class="hljs-string">'sk_live_'</span>)
+        ? <span class="hljs-string">'live'</span>
+        : process.<span class="hljs-property">env</span>.<span class="hljs-property">STRIPE_SECRET_KEY</span>?.<span class="hljs-title function_">startsWith</span>(<span class="hljs-string">'sk_test_'</span>)
+          ? <span class="hljs-string">'test'</span>
+          : <span class="hljs-literal">undefined</span>,
+    },
+    <span class="hljs-attr">twilio</span>: {
+      <span class="hljs-attr">status</span>: process.<span class="hljs-property">env</span>.<span class="hljs-property">TWILIO_ACCOUNT_SID</span> ? <span class="hljs-string">'up'</span> : <span class="hljs-string">'unconfigured'</span>,
+      <span class="hljs-attr">mode</span>: process.<span class="hljs-property">env</span>.<span class="hljs-property">TWILIO_ACCOUNT_SID</span> ? <span class="hljs-string">'real'</span> : <span class="hljs-string">'mock'</span>,
+    },
+    <span class="hljs-attr">zinc</span>: {
+      <span class="hljs-attr">status</span>: process.<span class="hljs-property">env</span>.<span class="hljs-property">ZINC_API_KEY</span> ? <span class="hljs-string">'up'</span> : <span class="hljs-string">'unconfigured'</span>,
+    },
+    <span class="hljs-attr">storage</span>: {
+      <span class="hljs-attr">status</span>: process.<span class="hljs-property">env</span>.<span class="hljs-property">R2_ACCESS_KEY_ID</span> ? <span class="hljs-string">'up'</span> : <span class="hljs-string">'unconfigured'</span>,
+    },
+  };
+
+  <span class="hljs-keyword">const</span> allUp = <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">values</span>(services).<span class="hljs-title function_">every</span>(<span class="hljs-function">(<span class="hljs-params">s</span>) =&gt;</span> s.<span class="hljs-property">status</span> === <span class="hljs-string">'up'</span>);
+
+  <span class="hljs-keyword">return</span> <span class="hljs-title class_">NextResponse</span>.<span class="hljs-title function_">json</span>(
+    {
+      <span class="hljs-attr">status</span>: allUp ? <span class="hljs-string">'healthy'</span> : <span class="hljs-string">'degraded'</span>,
+      <span class="hljs-attr">timestamp</span>: <span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>().<span class="hljs-title function_">toISOString</span>(),
+      services,
+    },
+    { <span class="hljs-attr">status</span>: <span class="hljs-number">200</span> },
+  );
+}
+</code></pre>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Verify the route works</strong></li>
+</ul>
+<p>In one terminal: <code>cd ~/sherpa-pros-platform &amp;&amp; npm run dev</code></p>
+<p>In another: <code>curl http://localhost:3000/api/health | head -40</code></p>
+<p>Expected: JSON response with <code>status</code> (healthy or degraded) and a <code>services</code> object listing every key shown above.</p>
+<ul>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3: Stop the dev server (Ctrl-C in the dev terminal).</strong></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4: Commit</strong></p>
+</li>
+</ul>
+<pre><code class="hljs bash"><span class="hljs-built_in">cd</span> ~/sherpa-pros-platform
+git add src/app/api/health/route.ts
+git commit -m <span class="hljs-string">"feat(services): add /api/health endpoint with per-service status
+
+Spec section 8: 2026-04-25-production-launch-hub-architecture-design.md"</span>
+</code></pre>
+<hr>
+<h2 id="task-4-install-twilio-sdk-package">Task 4: Install Twilio SDK package</h2>
+<p><strong>Files:</strong></p>
+<ul>
+<li><p>Modify: <code>package.json</code></p>
+</li>
+<li><p>Modify: <code>package-lock.json</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Install the package</strong></p>
+</li>
+</ul>
+<p>Run: <code>cd ~/sherpa-pros-platform &amp;&amp; npm install twilio@^5.3.0</code></p>
+<p>Expected: <code>+ twilio@5.x.x</code> in stdout, no errors.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Verify it landed in package.json</strong></li>
+</ul>
+<p>Run: <code>grep '"twilio":' package.json</code></p>
+<p>Expected: <code>"twilio": "^5.3.0"</code> (or newer 5.x).</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 3: Verify build still passes</strong></li>
+</ul>
+<p>Run: <code>cd ~/sherpa-pros-platform &amp;&amp; npm run build 2&gt;&amp;1 | tail -20</code></p>
+<p>Expected: build succeeds (no type errors). The TODO stubs in <code>twilio-service.ts</code> will still be there — they don't import the package yet.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 4: Commit</strong></li>
+</ul>
+<pre><code class="hljs bash"><span class="hljs-built_in">cd</span> ~/sherpa-pros-platform
+git add package.json package-lock.json
+git commit -m <span class="hljs-string">"chore(deps): add twilio SDK ^5.3.0 for Conversations API"</span>
+</code></pre>
+<hr>
+<h2 id="task-5-wire-real-twilio-client--createconversation-tdd">Task 5: Wire real Twilio client + createConversation (TDD)</h2>
+<p><strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>src/lib/communication/__tests__/twilio-service.test.ts</code></p>
+</li>
+<li><p>Modify: <code>src/lib/communication/twilio-service.ts</code> (replace <code>getTwilioClient()</code> and <code>createConversation</code>)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Write the failing test</strong></p>
+</li>
+</ul>
+<p>Create <code>src/lib/communication/__tests__/twilio-service.test.ts</code>:</p>
+<pre><code class="hljs typescript"><span class="hljs-keyword">import</span> { describe, it, expect, vi, beforeEach } <span class="hljs-keyword">from</span> <span class="hljs-string">'vitest'</span>;
+
+<span class="hljs-comment">// Hoisted mock — twilio SDK swap before twilio-service.ts imports it</span>
+vi.<span class="hljs-title function_">mock</span>(<span class="hljs-string">'twilio'</span>, <span class="hljs-function">() =&gt;</span> {
+  <span class="hljs-keyword">const</span> participantsCreate = vi.<span class="hljs-title function_">fn</span>().<span class="hljs-title function_">mockResolvedValue</span>({ <span class="hljs-attr">sid</span>: <span class="hljs-string">'PA_mock'</span> });
+  <span class="hljs-keyword">const</span> conversationsCreate = vi.<span class="hljs-title function_">fn</span>().<span class="hljs-title function_">mockResolvedValue</span>({
+    <span class="hljs-attr">sid</span>: <span class="hljs-string">'CH_mock_sid'</span>,
+    <span class="hljs-attr">friendlyName</span>: <span class="hljs-string">'mock'</span>,
+    <span class="hljs-attr">participants</span>: <span class="hljs-function">() =&gt;</span> ({ <span class="hljs-attr">create</span>: participantsCreate }),
+  });
+  <span class="hljs-keyword">const</span> messagesCreate = vi.<span class="hljs-title function_">fn</span>().<span class="hljs-title function_">mockResolvedValue</span>({
+    <span class="hljs-attr">sid</span>: <span class="hljs-string">'IM_mock'</span>,
+    <span class="hljs-attr">body</span>: <span class="hljs-string">'hi'</span>,
+    <span class="hljs-attr">author</span>: <span class="hljs-string">'user_1'</span>,
+    <span class="hljs-attr">dateCreated</span>: <span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>(<span class="hljs-string">'2026-04-26T00:00:00Z'</span>),
+  });
+  <span class="hljs-keyword">const</span> messagesList = vi.<span class="hljs-title function_">fn</span>().<span class="hljs-title function_">mockResolvedValue</span>([]);
+  <span class="hljs-keyword">const</span> conversationUpdate = vi.<span class="hljs-title function_">fn</span>().<span class="hljs-title function_">mockResolvedValue</span>({ <span class="hljs-attr">sid</span>: <span class="hljs-string">'CH_mock_sid'</span> });
+
+  <span class="hljs-keyword">const</span> <span class="hljs-title function_">conversationsAccessor</span> = (<span class="hljs-params"><span class="hljs-attr">sid</span>: <span class="hljs-built_in">string</span></span>) =&gt; ({
+    sid,
+    <span class="hljs-attr">messages</span>: { <span class="hljs-attr">create</span>: messagesCreate, <span class="hljs-attr">list</span>: messagesList },
+    <span class="hljs-attr">update</span>: conversationUpdate,
+    <span class="hljs-attr">participants</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">identity</span>: <span class="hljs-built_in">string</span></span>) =&gt;</span> ({
+      <span class="hljs-attr">update</span>: vi.<span class="hljs-title function_">fn</span>().<span class="hljs-title function_">mockResolvedValue</span>({ identity }),
+    }),
+  });
+  conversationsAccessor.<span class="hljs-property">create</span> = conversationsCreate;
+
+  <span class="hljs-keyword">const</span> factory = vi.<span class="hljs-title function_">fn</span>().<span class="hljs-title function_">mockReturnValue</span>({
+    <span class="hljs-attr">conversations</span>: {
+      <span class="hljs-attr">v1</span>: {
+        <span class="hljs-attr">conversations</span>: conversationsAccessor,
+      },
+    },
+  });
+  <span class="hljs-keyword">return</span> { <span class="hljs-attr">default</span>: factory, <span class="hljs-attr">__esModule</span>: <span class="hljs-literal">true</span> };
+});
+
+<span class="hljs-title function_">beforeEach</span>(<span class="hljs-function">() =&gt;</span> {
+  process.<span class="hljs-property">env</span>.<span class="hljs-property">TWILIO_ACCOUNT_SID</span> = <span class="hljs-string">'AC_test'</span>;
+  process.<span class="hljs-property">env</span>.<span class="hljs-property">TWILIO_AUTH_TOKEN</span> = <span class="hljs-string">'token_test'</span>;
+});
+
+<span class="hljs-title function_">describe</span>(<span class="hljs-string">'twilioService.createConversation'</span>, <span class="hljs-function">() =&gt;</span> {
+  <span class="hljs-title function_">it</span>(<span class="hljs-string">'creates a Twilio Conversation and returns a typed Conversation'</span>, <span class="hljs-title function_">async</span> () =&gt; {
+    <span class="hljs-keyword">const</span> { twilioService } = <span class="hljs-keyword">await</span> <span class="hljs-keyword">import</span>(<span class="hljs-string">'../twilio-service'</span>);
+    <span class="hljs-keyword">const</span> conv = <span class="hljs-keyword">await</span> twilioService.<span class="hljs-title function_">createConversation</span>(<span class="hljs-string">'job_1'</span>, <span class="hljs-string">'pro_1'</span>, <span class="hljs-string">'client_1'</span>);
+
+    <span class="hljs-title function_">expect</span>(conv.<span class="hljs-property">jobId</span>).<span class="hljs-title function_">toBe</span>(<span class="hljs-string">'job_1'</span>);
+    <span class="hljs-title function_">expect</span>(conv.<span class="hljs-property">proUserId</span>).<span class="hljs-title function_">toBe</span>(<span class="hljs-string">'pro_1'</span>);
+    <span class="hljs-title function_">expect</span>(conv.<span class="hljs-property">clientUserId</span>).<span class="hljs-title function_">toBe</span>(<span class="hljs-string">'client_1'</span>);
+    <span class="hljs-title function_">expect</span>(conv.<span class="hljs-property">twilioSid</span>).<span class="hljs-title function_">toBe</span>(<span class="hljs-string">'CH_mock_sid'</span>);
+    <span class="hljs-title function_">expect</span>(conv.<span class="hljs-property">status</span>).<span class="hljs-title function_">toBe</span>(<span class="hljs-string">'active'</span>);
+  });
+
+  <span class="hljs-title function_">it</span>(<span class="hljs-string">'throws when credentials are missing'</span>, <span class="hljs-title function_">async</span> () =&gt; {
+    <span class="hljs-keyword">delete</span> process.<span class="hljs-property">env</span>.<span class="hljs-property">TWILIO_ACCOUNT_SID</span>;
+    vi.<span class="hljs-title function_">resetModules</span>();
+    <span class="hljs-keyword">const</span> { twilioService } = <span class="hljs-keyword">await</span> <span class="hljs-keyword">import</span>(<span class="hljs-string">'../twilio-service'</span>);
+    <span class="hljs-keyword">await</span> <span class="hljs-title function_">expect</span>(
+      twilioService.<span class="hljs-title function_">createConversation</span>(<span class="hljs-string">'job_1'</span>, <span class="hljs-string">'pro_1'</span>, <span class="hljs-string">'client_1'</span>),
+    ).<span class="hljs-property">rejects</span>.<span class="hljs-title function_">toThrow</span>(<span class="hljs-regexp">/credentials not configured/i</span>);
+  });
+});
+</code></pre>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Run test to verify it fails</strong></li>
+</ul>
+<p>Run: <code>cd ~/sherpa-pros-platform &amp;&amp; npx vitest run src/lib/communication/__tests__/twilio-service.test.ts</code></p>
+<p>Expected: FAIL — <code>createConversation</code> returns <code>CH_placeholder_*</code> instead of <code>CH_mock_sid</code> (the current TODO stub builds the SID from a string template, not from the SDK).</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 3: Replace the client + createConversation with real SDK calls</strong></li>
+</ul>
+<p>In <code>src/lib/communication/twilio-service.ts</code>, replace lines 24-38 (the <code>getTwilioClient</code> function) with:</p>
+<pre><code class="hljs typescript"><span class="hljs-keyword">import</span> <span class="hljs-title class_">Twilio</span> <span class="hljs-keyword">from</span> <span class="hljs-string">'twilio'</span>;
+
+<span class="hljs-keyword">type</span> <span class="hljs-title class_">TwilioClient</span> = <span class="hljs-title class_">ReturnType</span>&lt;<span class="hljs-keyword">typeof</span> <span class="hljs-title class_">Twilio</span>&gt;;
+
+<span class="hljs-keyword">let</span> <span class="hljs-attr">cachedClient</span>: <span class="hljs-title class_">TwilioClient</span> | <span class="hljs-literal">null</span> = <span class="hljs-literal">null</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">getTwilioClient</span>(<span class="hljs-params"></span>): <span class="hljs-title class_">TwilioClient</span> {
+  <span class="hljs-keyword">if</span> (cachedClient) <span class="hljs-keyword">return</span> cachedClient;
+
+  <span class="hljs-keyword">const</span> accountSid = process.<span class="hljs-property">env</span>.<span class="hljs-property">TWILIO_ACCOUNT_SID</span>;
+  <span class="hljs-keyword">const</span> authToken = process.<span class="hljs-property">env</span>.<span class="hljs-property">TWILIO_AUTH_TOKEN</span>;
+
+  <span class="hljs-keyword">if</span> (!accountSid || !authToken) {
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(
+      <span class="hljs-string">'Twilio credentials not configured. Set TWILIO_ACCOUNT_SID and TWILIO_AUTH_TOKEN.'</span>,
+    );
+  }
+
+  cachedClient = <span class="hljs-title class_">Twilio</span>(accountSid, authToken);
+  <span class="hljs-keyword">return</span> cachedClient;
+}
+</code></pre>
+<p>In the same file, replace the <code>createConversation</code> body (currently lines 61-99 — the function with the <code>TODO: Actual Twilio Conversations API call</code> block) with:</p>
+<pre><code class="hljs typescript">  <span class="hljs-keyword">async</span> <span class="hljs-title function_">createConversation</span>(<span class="hljs-params">jobId, proId, clientId</span>) {
+    <span class="hljs-keyword">const</span> client = <span class="hljs-title function_">getTwilioClient</span>();
+    <span class="hljs-keyword">const</span> id = <span class="hljs-title function_">generateId</span>(<span class="hljs-string">'conv'</span>);
+
+    <span class="hljs-keyword">const</span> twilioConv = <span class="hljs-keyword">await</span> client.<span class="hljs-property">conversations</span>.<span class="hljs-property">v1</span>.<span class="hljs-property">conversations</span>.<span class="hljs-title function_">create</span>({
+      <span class="hljs-attr">friendlyName</span>: <span class="hljs-string">`Job <span class="hljs-subst">${jobId}</span> — Pro ↔ Client`</span>,
+      <span class="hljs-attr">uniqueName</span>: id,
+      <span class="hljs-attr">attributes</span>: <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>({ jobId, proId, clientId }),
+    });
+
+    <span class="hljs-keyword">await</span> client.<span class="hljs-property">conversations</span>.<span class="hljs-property">v1</span>
+      .<span class="hljs-title function_">conversations</span>(twilioConv.<span class="hljs-property">sid</span>)
+      .<span class="hljs-property">participants</span>.<span class="hljs-title function_">create</span>({
+        <span class="hljs-attr">identity</span>: proId,
+        <span class="hljs-attr">attributes</span>: <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>({ <span class="hljs-attr">role</span>: <span class="hljs-string">'pro'</span>, <span class="hljs-attr">displayName</span>: <span class="hljs-string">'Pro'</span> }),
+      });
+
+    <span class="hljs-keyword">await</span> client.<span class="hljs-property">conversations</span>.<span class="hljs-property">v1</span>
+      .<span class="hljs-title function_">conversations</span>(twilioConv.<span class="hljs-property">sid</span>)
+      .<span class="hljs-property">participants</span>.<span class="hljs-title function_">create</span>({
+        <span class="hljs-attr">identity</span>: clientId,
+        <span class="hljs-attr">attributes</span>: <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>({ <span class="hljs-attr">role</span>: <span class="hljs-string">'client'</span>, <span class="hljs-attr">displayName</span>: <span class="hljs-string">'Client'</span> }),
+      });
+
+    <span class="hljs-keyword">const</span> <span class="hljs-attr">conversation</span>: <span class="hljs-title class_">Conversation</span> = {
+      id,
+      jobId,
+      <span class="hljs-attr">proUserId</span>: proId,
+      <span class="hljs-attr">clientUserId</span>: clientId,
+      <span class="hljs-attr">twilioSid</span>: twilioConv.<span class="hljs-property">sid</span>,
+      <span class="hljs-attr">status</span>: <span class="hljs-string">'active'</span>,
+      <span class="hljs-attr">createdAt</span>: <span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>(),
+      <span class="hljs-attr">closedAt</span>: <span class="hljs-literal">null</span>,
+    };
+
+    conversationCache.<span class="hljs-title function_">set</span>(id, conversation);
+    <span class="hljs-keyword">return</span> conversation;
+  },
+</code></pre>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 4: Run test to verify it passes</strong></li>
+</ul>
+<p>Run: <code>cd ~/sherpa-pros-platform &amp;&amp; npx vitest run src/lib/communication/__tests__/twilio-service.test.ts</code></p>
+<p>Expected: PASS — both tests green.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 5: Commit</strong></li>
+</ul>
+<pre><code class="hljs bash"><span class="hljs-built_in">cd</span> ~/sherpa-pros-platform
+git add src/lib/communication/twilio-service.ts src/lib/communication/__tests__/twilio-service.test.ts
+git commit -m <span class="hljs-string">"feat(messaging): wire real Twilio Conversations.create + participants
+
+Replaces TODO stub in createConversation. In-memory conversationCache stays
+until DB persistence lands in followup plan."</span>
+</code></pre>
+<hr>
+<h2 id="task-6-wire-sendmessage-with-real-twilio-call-tdd">Task 6: Wire sendMessage with real Twilio call (TDD)</h2>
+<p><strong>Files:</strong></p>
+<ul>
+<li><p>Modify: <code>src/lib/communication/__tests__/twilio-service.test.ts</code> (add suite)</p>
+</li>
+<li><p>Modify: <code>src/lib/communication/twilio-service.ts</code> (replace <code>sendMessage</code> TODO)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Add the failing test</strong></p>
+</li>
+</ul>
+<p>Append to <code>src/lib/communication/__tests__/twilio-service.test.ts</code>:</p>
+<pre><code class="hljs typescript"><span class="hljs-title function_">describe</span>(<span class="hljs-string">'twilioService.sendMessage'</span>, <span class="hljs-function">() =&gt;</span> {
+  <span class="hljs-title function_">beforeEach</span>(<span class="hljs-function">() =&gt;</span> {
+    process.<span class="hljs-property">env</span>.<span class="hljs-property">TWILIO_ACCOUNT_SID</span> = <span class="hljs-string">'AC_test'</span>;
+    process.<span class="hljs-property">env</span>.<span class="hljs-property">TWILIO_AUTH_TOKEN</span> = <span class="hljs-string">'token_test'</span>;
+    vi.<span class="hljs-title function_">resetModules</span>();
+  });
+
+  <span class="hljs-title function_">it</span>(<span class="hljs-string">'posts the message via Conversations.messages.create'</span>, <span class="hljs-title function_">async</span> () =&gt; {
+    <span class="hljs-keyword">const</span> { twilioService } = <span class="hljs-keyword">await</span> <span class="hljs-keyword">import</span>(<span class="hljs-string">'../twilio-service'</span>);
+    <span class="hljs-keyword">const</span> conv = <span class="hljs-keyword">await</span> twilioService.<span class="hljs-title function_">createConversation</span>(<span class="hljs-string">'job_2'</span>, <span class="hljs-string">'pro_2'</span>, <span class="hljs-string">'client_2'</span>);
+    <span class="hljs-keyword">const</span> msg = <span class="hljs-keyword">await</span> twilioService.<span class="hljs-title function_">sendMessage</span>(conv.<span class="hljs-property">id</span>, <span class="hljs-string">'pro_2'</span>, <span class="hljs-string">'hello'</span>);
+
+    <span class="hljs-title function_">expect</span>(msg.<span class="hljs-property">body</span>).<span class="hljs-title function_">toBe</span>(<span class="hljs-string">'hi'</span>); <span class="hljs-comment">// from the mock</span>
+    <span class="hljs-title function_">expect</span>(msg.<span class="hljs-property">senderId</span>).<span class="hljs-title function_">toBe</span>(<span class="hljs-string">'user_1'</span>); <span class="hljs-comment">// mock returns author='user_1'</span>
+    <span class="hljs-title function_">expect</span>(msg.<span class="hljs-property">conversationId</span>).<span class="hljs-title function_">toBe</span>(conv.<span class="hljs-property">id</span>);
+  });
+
+  <span class="hljs-title function_">it</span>(<span class="hljs-string">'throws when conversation does not exist'</span>, <span class="hljs-title function_">async</span> () =&gt; {
+    <span class="hljs-keyword">const</span> { twilioService } = <span class="hljs-keyword">await</span> <span class="hljs-keyword">import</span>(<span class="hljs-string">'../twilio-service'</span>);
+    <span class="hljs-keyword">await</span> <span class="hljs-title function_">expect</span>(
+      twilioService.<span class="hljs-title function_">sendMessage</span>(<span class="hljs-string">'does_not_exist'</span>, <span class="hljs-string">'pro_2'</span>, <span class="hljs-string">'hello'</span>),
+    ).<span class="hljs-property">rejects</span>.<span class="hljs-title function_">toThrow</span>(<span class="hljs-regexp">/Conversation not found/</span>);
+  });
+});
+</code></pre>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Run test to verify it fails</strong></li>
+</ul>
+<p>Run: <code>cd ~/sherpa-pros-platform &amp;&amp; npx vitest run src/lib/communication/__tests__/twilio-service.test.ts -t sendMessage</code></p>
+<p>Expected: FAIL — current stub builds an in-memory message, not from the SDK return value, so <code>msg.body</code> is <code>'hello'</code> not <code>'hi'</code>.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 3: Replace sendMessage TODO with real SDK call</strong></li>
+</ul>
+<p>In <code>src/lib/communication/twilio-service.ts</code>, replace the <code>sendMessage</code> body (currently the function around lines 101-129 with <code>TODO: Actual Twilio API call</code>) with:</p>
+<pre><code class="hljs typescript">  <span class="hljs-keyword">async</span> <span class="hljs-title function_">sendMessage</span>(<span class="hljs-params">conversationId, senderId, body</span>) {
+    <span class="hljs-keyword">const</span> client = <span class="hljs-title function_">getTwilioClient</span>();
+    <span class="hljs-keyword">const</span> conversation = conversationCache.<span class="hljs-title function_">get</span>(conversationId);
+    <span class="hljs-keyword">if</span> (!conversation) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">`Conversation not found: <span class="hljs-subst">${conversationId}</span>`</span>);
+    }
+    <span class="hljs-keyword">if</span> (conversation.<span class="hljs-property">status</span> !== <span class="hljs-string">'active'</span>) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">`Conversation is <span class="hljs-subst">${conversation.status}</span>`</span>);
+    }
+    <span class="hljs-keyword">if</span> (!conversation.<span class="hljs-property">twilioSid</span>) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">`Conversation <span class="hljs-subst">${conversationId}</span> has no Twilio SID`</span>);
+    }
+
+    <span class="hljs-keyword">const</span> twilioMsg = <span class="hljs-keyword">await</span> client.<span class="hljs-property">conversations</span>.<span class="hljs-property">v1</span>
+      .<span class="hljs-title function_">conversations</span>(conversation.<span class="hljs-property">twilioSid</span>)
+      .<span class="hljs-property">messages</span>.<span class="hljs-title function_">create</span>({
+        <span class="hljs-attr">author</span>: senderId,
+        body,
+      });
+
+    <span class="hljs-keyword">const</span> <span class="hljs-attr">message</span>: <span class="hljs-title class_">Message</span> = {
+      <span class="hljs-attr">id</span>: twilioMsg.<span class="hljs-property">sid</span>,
+      conversationId,
+      <span class="hljs-attr">senderId</span>: twilioMsg.<span class="hljs-property">author</span> ?? senderId,
+      <span class="hljs-attr">body</span>: twilioMsg.<span class="hljs-property">body</span> ?? body,
+      <span class="hljs-attr">createdAt</span>: twilioMsg.<span class="hljs-property">dateCreated</span> ?? <span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>(),
+      <span class="hljs-attr">readAt</span>: <span class="hljs-literal">null</span>,
+    };
+
+    <span class="hljs-keyword">return</span> message;
+  },
+</code></pre>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 4: Run test to verify it passes</strong></li>
+</ul>
+<p>Run: <code>cd ~/sherpa-pros-platform &amp;&amp; npx vitest run src/lib/communication/__tests__/twilio-service.test.ts -t sendMessage</code></p>
+<p>Expected: PASS — both new tests green.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 5: Commit</strong></li>
+</ul>
+<pre><code class="hljs bash"><span class="hljs-built_in">cd</span> ~/sherpa-pros-platform
+git add src/lib/communication/twilio-service.ts src/lib/communication/__tests__/twilio-service.test.ts
+git commit -m <span class="hljs-string">"feat(messaging): wire real Twilio Conversations.messages.create"</span>
+</code></pre>
+<hr>
+<h2 id="task-7-wire-getmessages-with-real-twilio-call-tdd">Task 7: Wire getMessages with real Twilio call (TDD)</h2>
+<p><strong>Files:</strong></p>
+<ul>
+<li><p>Modify: <code>src/lib/communication/__tests__/twilio-service.test.ts</code> (add suite)</p>
+</li>
+<li><p>Modify: <code>src/lib/communication/twilio-service.ts</code> (replace <code>getMessages</code> TODO)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Add the failing test</strong></p>
+</li>
+</ul>
+<p>Append to <code>src/lib/communication/__tests__/twilio-service.test.ts</code>:</p>
+<pre><code class="hljs typescript"><span class="hljs-title function_">describe</span>(<span class="hljs-string">'twilioService.getMessages'</span>, <span class="hljs-function">() =&gt;</span> {
+  <span class="hljs-title function_">beforeEach</span>(<span class="hljs-function">() =&gt;</span> {
+    process.<span class="hljs-property">env</span>.<span class="hljs-property">TWILIO_ACCOUNT_SID</span> = <span class="hljs-string">'AC_test'</span>;
+    process.<span class="hljs-property">env</span>.<span class="hljs-property">TWILIO_AUTH_TOKEN</span> = <span class="hljs-string">'token_test'</span>;
+    vi.<span class="hljs-title function_">resetModules</span>();
+  });
+
+  <span class="hljs-title function_">it</span>(<span class="hljs-string">'returns mapped messages from the Twilio API'</span>, <span class="hljs-title function_">async</span> () =&gt; {
+    <span class="hljs-comment">// Adjust the mock to return one message</span>
+    vi.<span class="hljs-title function_">doMock</span>(<span class="hljs-string">'twilio'</span>, <span class="hljs-function">() =&gt;</span> {
+      <span class="hljs-keyword">const</span> factory = vi.<span class="hljs-title function_">fn</span>().<span class="hljs-title function_">mockReturnValue</span>({
+        <span class="hljs-attr">conversations</span>: {
+          <span class="hljs-attr">v1</span>: {
+            <span class="hljs-attr">conversations</span>: <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">assign</span>(
+              <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">sid</span>: <span class="hljs-built_in">string</span></span>) =&gt;</span> ({
+                sid,
+                <span class="hljs-attr">messages</span>: {
+                  <span class="hljs-attr">list</span>: vi.<span class="hljs-title function_">fn</span>().<span class="hljs-title function_">mockResolvedValue</span>([
+                    {
+                      <span class="hljs-attr">sid</span>: <span class="hljs-string">'IM_one'</span>,
+                      <span class="hljs-attr">body</span>: <span class="hljs-string">'hello'</span>,
+                      <span class="hljs-attr">author</span>: <span class="hljs-string">'pro_x'</span>,
+                      <span class="hljs-attr">dateCreated</span>: <span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>(<span class="hljs-string">'2026-04-26T01:00:00Z'</span>),
+                    },
+                  ]),
+                  <span class="hljs-attr">create</span>: vi.<span class="hljs-title function_">fn</span>(),
+                },
+                <span class="hljs-attr">update</span>: vi.<span class="hljs-title function_">fn</span>(),
+                <span class="hljs-attr">participants</span>: vi.<span class="hljs-title function_">fn</span>(),
+              }),
+              {
+                <span class="hljs-attr">create</span>: vi.<span class="hljs-title function_">fn</span>().<span class="hljs-title function_">mockResolvedValue</span>({
+                  <span class="hljs-attr">sid</span>: <span class="hljs-string">'CH_x'</span>,
+                  <span class="hljs-attr">participants</span>: <span class="hljs-function">() =&gt;</span> ({ <span class="hljs-attr">create</span>: vi.<span class="hljs-title function_">fn</span>().<span class="hljs-title function_">mockResolvedValue</span>({}) }),
+                }),
+              },
+            ),
+          },
+        },
+      });
+      <span class="hljs-keyword">return</span> { <span class="hljs-attr">default</span>: factory, <span class="hljs-attr">__esModule</span>: <span class="hljs-literal">true</span> };
+    });
+
+    <span class="hljs-keyword">const</span> { twilioService } = <span class="hljs-keyword">await</span> <span class="hljs-keyword">import</span>(<span class="hljs-string">'../twilio-service'</span>);
+    <span class="hljs-keyword">const</span> conv = <span class="hljs-keyword">await</span> twilioService.<span class="hljs-title function_">createConversation</span>(<span class="hljs-string">'job_3'</span>, <span class="hljs-string">'pro_3'</span>, <span class="hljs-string">'client_3'</span>);
+    <span class="hljs-keyword">const</span> msgs = <span class="hljs-keyword">await</span> twilioService.<span class="hljs-title function_">getMessages</span>(conv.<span class="hljs-property">id</span>);
+
+    <span class="hljs-title function_">expect</span>(msgs).<span class="hljs-title function_">toHaveLength</span>(<span class="hljs-number">1</span>);
+    <span class="hljs-title function_">expect</span>(msgs[<span class="hljs-number">0</span>].<span class="hljs-property">body</span>).<span class="hljs-title function_">toBe</span>(<span class="hljs-string">'hello'</span>);
+    <span class="hljs-title function_">expect</span>(msgs[<span class="hljs-number">0</span>].<span class="hljs-property">senderId</span>).<span class="hljs-title function_">toBe</span>(<span class="hljs-string">'pro_x'</span>);
+  });
+});
+</code></pre>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Run test to verify it fails</strong></li>
+</ul>
+<p>Run: <code>cd ~/sherpa-pros-platform &amp;&amp; npx vitest run src/lib/communication/__tests__/twilio-service.test.ts -t getMessages</code></p>
+<p>Expected: FAIL — current stub returns <code>[]</code> regardless.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 3: Replace getMessages TODO with real SDK call</strong></li>
+</ul>
+<p>In <code>src/lib/communication/twilio-service.ts</code>, replace the <code>getMessages</code> body (function around lines 131-154) with:</p>
+<pre><code class="hljs typescript">  <span class="hljs-keyword">async</span> <span class="hljs-title function_">getMessages</span>(<span class="hljs-params">conversationId, limit = <span class="hljs-number">50</span>, _before</span>) {
+    <span class="hljs-keyword">const</span> client = <span class="hljs-title function_">getTwilioClient</span>();
+    <span class="hljs-keyword">const</span> conversation = conversationCache.<span class="hljs-title function_">get</span>(conversationId);
+    <span class="hljs-keyword">if</span> (!conversation) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">`Conversation not found: <span class="hljs-subst">${conversationId}</span>`</span>);
+    }
+    <span class="hljs-keyword">if</span> (!conversation.<span class="hljs-property">twilioSid</span>) {
+      <span class="hljs-keyword">return</span> [];
+    }
+
+    <span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> client.<span class="hljs-property">conversations</span>.<span class="hljs-property">v1</span>
+      .<span class="hljs-title function_">conversations</span>(conversation.<span class="hljs-property">twilioSid</span>)
+      .<span class="hljs-property">messages</span>.<span class="hljs-title function_">list</span>({ limit, <span class="hljs-attr">order</span>: <span class="hljs-string">'desc'</span> });
+
+    <span class="hljs-keyword">return</span> result.<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">m</span>: { sid: <span class="hljs-built_in">string</span>; body: <span class="hljs-built_in">string</span> | <span class="hljs-literal">null</span>; author: <span class="hljs-built_in">string</span> | <span class="hljs-literal">null</span>; dateCreated: <span class="hljs-built_in">Date</span> | <span class="hljs-literal">null</span> }</span>) =&gt;</span> ({
+      <span class="hljs-attr">id</span>: m.<span class="hljs-property">sid</span>,
+      conversationId,
+      <span class="hljs-attr">senderId</span>: m.<span class="hljs-property">author</span> ?? <span class="hljs-string">'unknown'</span>,
+      <span class="hljs-attr">body</span>: m.<span class="hljs-property">body</span> ?? <span class="hljs-string">''</span>,
+      <span class="hljs-attr">createdAt</span>: m.<span class="hljs-property">dateCreated</span> ?? <span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>(),
+      <span class="hljs-attr">readAt</span>: <span class="hljs-literal">null</span>,
+    }));
+  },
+</code></pre>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 4: Run test to verify it passes</strong></li>
+</ul>
+<p>Run: <code>cd ~/sherpa-pros-platform &amp;&amp; npx vitest run src/lib/communication/__tests__/twilio-service.test.ts -t getMessages</code></p>
+<p>Expected: PASS.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 5: Commit</strong></li>
+</ul>
+<pre><code class="hljs bash"><span class="hljs-built_in">cd</span> ~/sherpa-pros-platform
+git add src/lib/communication/twilio-service.ts src/lib/communication/__tests__/twilio-service.test.ts
+git commit -m <span class="hljs-string">"feat(messaging): wire real Twilio Conversations.messages.list"</span>
+</code></pre>
+<hr>
+<h2 id="task-8-wire-closeconversation--markread-with-real-twilio-calls">Task 8: Wire closeConversation + markRead with real Twilio calls</h2>
+<p><strong>Files:</strong></p>
+<ul>
+<li><p>Modify: <code>src/lib/communication/twilio-service.ts</code> (replace remaining TODO stubs)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Replace closeConversation TODO</strong></p>
+</li>
+</ul>
+<p>In <code>src/lib/communication/twilio-service.ts</code>, replace the <code>closeConversation</code> body (function around lines 169-184) with:</p>
+<pre><code class="hljs typescript">  <span class="hljs-keyword">async</span> <span class="hljs-title function_">closeConversation</span>(<span class="hljs-params">conversationId</span>) {
+    <span class="hljs-keyword">const</span> client = <span class="hljs-title function_">getTwilioClient</span>();
+    <span class="hljs-keyword">const</span> conversation = conversationCache.<span class="hljs-title function_">get</span>(conversationId);
+    <span class="hljs-keyword">if</span> (!conversation) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">`Conversation not found: <span class="hljs-subst">${conversationId}</span>`</span>);
+    }
+
+    <span class="hljs-keyword">if</span> (conversation.<span class="hljs-property">twilioSid</span>) {
+      <span class="hljs-keyword">await</span> client.<span class="hljs-property">conversations</span>.<span class="hljs-property">v1</span>
+        .<span class="hljs-title function_">conversations</span>(conversation.<span class="hljs-property">twilioSid</span>)
+        .<span class="hljs-title function_">update</span>({ <span class="hljs-attr">state</span>: <span class="hljs-string">'closed'</span> });
+    }
+
+    conversation.<span class="hljs-property">status</span> = <span class="hljs-string">'closed'</span>;
+    conversation.<span class="hljs-property">closedAt</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>();
+    <span class="hljs-keyword">return</span> conversation;
+  },
+</code></pre>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Replace markRead TODO</strong></li>
+</ul>
+<p>In the same file, replace the <code>markRead</code> body (around lines 205-217) with:</p>
+<pre><code class="hljs typescript">  <span class="hljs-keyword">async</span> <span class="hljs-title function_">markRead</span>(<span class="hljs-params">conversationId, userId</span>) {
+    <span class="hljs-keyword">const</span> client = <span class="hljs-title function_">getTwilioClient</span>();
+    <span class="hljs-keyword">const</span> conversation = conversationCache.<span class="hljs-title function_">get</span>(conversationId);
+    <span class="hljs-keyword">if</span> (!conversation) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">`Conversation not found: <span class="hljs-subst">${conversationId}</span>`</span>);
+    }
+    <span class="hljs-keyword">if</span> (!conversation.<span class="hljs-property">twilioSid</span>) {
+      <span class="hljs-keyword">return</span>;
+    }
+
+    <span class="hljs-keyword">const</span> messages = <span class="hljs-keyword">await</span> client.<span class="hljs-property">conversations</span>.<span class="hljs-property">v1</span>
+      .<span class="hljs-title function_">conversations</span>(conversation.<span class="hljs-property">twilioSid</span>)
+      .<span class="hljs-property">messages</span>.<span class="hljs-title function_">list</span>({ <span class="hljs-attr">limit</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">order</span>: <span class="hljs-string">'desc'</span> });
+
+    <span class="hljs-keyword">if</span> (messages.<span class="hljs-property">length</span> === <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span>;
+
+    <span class="hljs-keyword">const</span> latestIndex = messages[<span class="hljs-number">0</span>].<span class="hljs-property">index</span>;
+    <span class="hljs-keyword">await</span> client.<span class="hljs-property">conversations</span>.<span class="hljs-property">v1</span>
+      .<span class="hljs-title function_">conversations</span>(conversation.<span class="hljs-property">twilioSid</span>)
+      .<span class="hljs-title function_">participants</span>(userId)
+      .<span class="hljs-title function_">update</span>({ <span class="hljs-attr">lastReadMessageIndex</span>: latestIndex });
+  },
+</code></pre>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 3: Verify all twilio-service tests still pass</strong></li>
+</ul>
+<p>Run: <code>cd ~/sherpa-pros-platform &amp;&amp; npx vitest run src/lib/communication/__tests__/twilio-service.test.ts</code></p>
+<p>Expected: PASS — all suites green (no new tests added; existing mocks already cover update/participants).</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 4: Verify build passes</strong></li>
+</ul>
+<p>Run: <code>cd ~/sherpa-pros-platform &amp;&amp; npm run build 2&gt;&amp;1 | tail -10</code></p>
+<p>Expected: build succeeds, no type errors. (Note: <code>messages[0].index</code> may need a type cast if the SDK types complain — if so, cast the access expression: <code>(messages[0] as { index: number }).index</code>.)</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 5: Commit</strong></li>
+</ul>
+<pre><code class="hljs bash"><span class="hljs-built_in">cd</span> ~/sherpa-pros-platform
+git add src/lib/communication/twilio-service.ts
+git commit -m <span class="hljs-string">"feat(messaging): wire real Twilio close + markRead
+
+All TODO stubs in twilio-service.ts are now real SDK calls."</span>
+</code></pre>
+<hr>
+<h2 id="task-9-add-twilio-webhook-signature-validation-tdd">Task 9: Add Twilio webhook signature validation (TDD)</h2>
+<p><strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>src/app/api/chat/webhook/__tests__/route.test.ts</code></p>
+</li>
+<li><p>Modify: <code>src/app/api/chat/webhook/route.ts</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1: Write the failing test</strong></p>
+</li>
+</ul>
+<p>Create <code>src/app/api/chat/webhook/__tests__/route.test.ts</code>:</p>
+<pre><code class="hljs typescript"><span class="hljs-keyword">import</span> { describe, it, expect, vi, beforeEach } <span class="hljs-keyword">from</span> <span class="hljs-string">'vitest'</span>;
+
+vi.<span class="hljs-title function_">mock</span>(<span class="hljs-string">'twilio'</span>, <span class="hljs-function">() =&gt;</span> {
+  <span class="hljs-keyword">const</span> validateRequest = vi.<span class="hljs-title function_">fn</span>();
+  <span class="hljs-keyword">const</span> factory = vi.<span class="hljs-title function_">fn</span>();
+  <span class="hljs-comment">// expose validateRequest on default export to match `Twilio.validateRequest`</span>
+  <span class="hljs-keyword">return</span> {
+    <span class="hljs-attr">default</span>: <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">assign</span>(factory, { validateRequest }),
+    <span class="hljs-attr">__esModule</span>: <span class="hljs-literal">true</span>,
+    validateRequest,
+  };
+});
+
+<span class="hljs-title function_">beforeEach</span>(<span class="hljs-function">() =&gt;</span> {
+  process.<span class="hljs-property">env</span>.<span class="hljs-property">TWILIO_AUTH_TOKEN</span> = <span class="hljs-string">'token_test'</span>;
+  vi.<span class="hljs-title function_">resetModules</span>();
+});
+
+<span class="hljs-title function_">describe</span>(<span class="hljs-string">'POST /api/chat/webhook signature validation'</span>, <span class="hljs-function">() =&gt;</span> {
+  <span class="hljs-title function_">it</span>(<span class="hljs-string">'rejects requests without a valid Twilio signature'</span>, <span class="hljs-title function_">async</span> () =&gt; {
+    <span class="hljs-keyword">const</span> twilio = <span class="hljs-keyword">await</span> <span class="hljs-keyword">import</span>(<span class="hljs-string">'twilio'</span>);
+    (twilio.<span class="hljs-property">validateRequest</span> <span class="hljs-keyword">as</span> <span class="hljs-title class_">ReturnType</span>&lt;<span class="hljs-keyword">typeof</span> vi.<span class="hljs-property">fn</span>&gt;).<span class="hljs-title function_">mockReturnValue</span>(<span class="hljs-literal">false</span>);
+
+    <span class="hljs-keyword">const</span> { <span class="hljs-variable constant_">POST</span> } = <span class="hljs-keyword">await</span> <span class="hljs-keyword">import</span>(<span class="hljs-string">'../route'</span>);
+    <span class="hljs-keyword">const</span> req = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Request</span>(<span class="hljs-string">'https://x.test/api/chat/webhook'</span>, {
+      <span class="hljs-attr">method</span>: <span class="hljs-string">'POST'</span>,
+      <span class="hljs-attr">headers</span>: {
+        <span class="hljs-string">'content-type'</span>: <span class="hljs-string">'application/x-www-form-urlencoded'</span>,
+        <span class="hljs-string">'x-twilio-signature'</span>: <span class="hljs-string">'bad'</span>,
+      },
+      <span class="hljs-attr">body</span>: <span class="hljs-string">'EventType=onMessageAdded&amp;ConversationSid=CH_x'</span>,
+    });
+
+    <span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> <span class="hljs-title function_">POST</span>(req);
+    <span class="hljs-title function_">expect</span>(res.<span class="hljs-property">status</span>).<span class="hljs-title function_">toBe</span>(<span class="hljs-number">403</span>);
+  });
+
+  <span class="hljs-title function_">it</span>(<span class="hljs-string">'accepts requests with a valid Twilio signature'</span>, <span class="hljs-title function_">async</span> () =&gt; {
+    <span class="hljs-keyword">const</span> twilio = <span class="hljs-keyword">await</span> <span class="hljs-keyword">import</span>(<span class="hljs-string">'twilio'</span>);
+    (twilio.<span class="hljs-property">validateRequest</span> <span class="hljs-keyword">as</span> <span class="hljs-title class_">ReturnType</span>&lt;<span class="hljs-keyword">typeof</span> vi.<span class="hljs-property">fn</span>&gt;).<span class="hljs-title function_">mockReturnValue</span>(<span class="hljs-literal">true</span>);
+
+    <span class="hljs-keyword">const</span> { <span class="hljs-variable constant_">POST</span> } = <span class="hljs-keyword">await</span> <span class="hljs-keyword">import</span>(<span class="hljs-string">'../route'</span>);
+    <span class="hljs-keyword">const</span> req = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Request</span>(<span class="hljs-string">'https://x.test/api/chat/webhook'</span>, {
+      <span class="hljs-attr">method</span>: <span class="hljs-string">'POST'</span>,
+      <span class="hljs-attr">headers</span>: {
+        <span class="hljs-string">'content-type'</span>: <span class="hljs-string">'application/x-www-form-urlencoded'</span>,
+        <span class="hljs-string">'x-twilio-signature'</span>: <span class="hljs-string">'good'</span>,
+      },
+      <span class="hljs-attr">body</span>: <span class="hljs-string">'EventType=onMessageAdded&amp;ConversationSid=CH_x&amp;Author=pro&amp;Body=hi'</span>,
+    });
+
+    <span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> <span class="hljs-title function_">POST</span>(req);
+    <span class="hljs-title function_">expect</span>(res.<span class="hljs-property">status</span>).<span class="hljs-title function_">toBe</span>(<span class="hljs-number">200</span>);
+    <span class="hljs-keyword">const</span> json = <span class="hljs-keyword">await</span> res.<span class="hljs-title function_">json</span>();
+    <span class="hljs-title function_">expect</span>(json.<span class="hljs-property">received</span>).<span class="hljs-title function_">toBe</span>(<span class="hljs-literal">true</span>);
+  });
+});
+</code></pre>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Run test to verify it fails</strong></li>
+</ul>
+<p>Run: <code>cd ~/sherpa-pros-platform &amp;&amp; npx vitest run src/app/api/chat/webhook/__tests__/route.test.ts</code></p>
+<p>Expected: FAIL — current route does not validate signatures, so the "rejects bad signature" test gets 200 instead of 403.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 3: Add signature validation</strong></li>
+</ul>
+<p>In <code>src/app/api/chat/webhook/route.ts</code>, replace the function body. The full new file content:</p>
+<pre><code class="hljs typescript"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">NextResponse</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">'next/server'</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">Twilio</span> <span class="hljs-keyword">from</span> <span class="hljs-string">'twilio'</span>;
+
+<span class="hljs-comment">/**
+ * POST /api/chat/webhook
+ * Twilio webhook for incoming Conversations events.
+ *
+ * Twilio posts here when:
+ * - A new message is added (onMessageAdded)
+ * - A participant joins/leaves
+ * - A conversation state changes
+ *
+ * Signature is validated using Twilio.validateRequest. The shared secret
+ * is TWILIO_AUTH_TOKEN. Bad signatures get 403.
+ */</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">POST</span>(<span class="hljs-params"><span class="hljs-attr">request</span>: <span class="hljs-title class_">Request</span></span>) {
+  <span class="hljs-keyword">const</span> authToken = process.<span class="hljs-property">env</span>.<span class="hljs-property">TWILIO_AUTH_TOKEN</span>;
+  <span class="hljs-keyword">const</span> signature = request.<span class="hljs-property">headers</span>.<span class="hljs-title function_">get</span>(<span class="hljs-string">'x-twilio-signature'</span>);
+
+  <span class="hljs-comment">// Twilio sends form-encoded by default; capture raw body once.</span>
+  <span class="hljs-keyword">const</span> contentType = request.<span class="hljs-property">headers</span>.<span class="hljs-title function_">get</span>(<span class="hljs-string">'content-type'</span>) ?? <span class="hljs-string">''</span>;
+  <span class="hljs-keyword">let</span> <span class="hljs-attr">body</span>: <span class="hljs-title class_">Record</span>&lt;<span class="hljs-built_in">string</span>, <span class="hljs-built_in">unknown</span>&gt;;
+  <span class="hljs-keyword">let</span> <span class="hljs-attr">paramsForSig</span>: <span class="hljs-title class_">Record</span>&lt;<span class="hljs-built_in">string</span>, <span class="hljs-built_in">string</span>&gt; = {};
+
+  <span class="hljs-keyword">try</span> {
+    <span class="hljs-keyword">if</span> (contentType.<span class="hljs-title function_">includes</span>(<span class="hljs-string">'application/json'</span>)) {
+      body = <span class="hljs-keyword">await</span> request.<span class="hljs-title function_">json</span>();
+    } <span class="hljs-keyword">else</span> {
+      <span class="hljs-keyword">const</span> formData = <span class="hljs-keyword">await</span> request.<span class="hljs-title function_">formData</span>();
+      <span class="hljs-keyword">const</span> entries = <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">fromEntries</span>(formData.<span class="hljs-title function_">entries</span>());
+      body = entries;
+      paramsForSig = <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">fromEntries</span>(
+        <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">entries</span>(entries).<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">[k, v]</span>) =&gt;</span> [k, <span class="hljs-title class_">String</span>(v)]),
+      );
+    }
+  } <span class="hljs-keyword">catch</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-title class_">NextResponse</span>.<span class="hljs-title function_">json</span>(
+      { <span class="hljs-attr">error</span>: <span class="hljs-string">'Could not parse webhook body'</span> },
+      { <span class="hljs-attr">status</span>: <span class="hljs-number">400</span> },
+    );
+  }
+
+  <span class="hljs-comment">// Validate signature when token + signature are present.</span>
+  <span class="hljs-comment">// In dev with no TWILIO_AUTH_TOKEN we skip (mock mode).</span>
+  <span class="hljs-keyword">if</span> (authToken &amp;&amp; signature) {
+    <span class="hljs-keyword">const</span> valid = <span class="hljs-title class_">Twilio</span>.<span class="hljs-title function_">validateRequest</span>(
+      authToken,
+      signature,
+      request.<span class="hljs-property">url</span>,
+      paramsForSig,
+    );
+    <span class="hljs-keyword">if</span> (!valid) {
+      <span class="hljs-keyword">return</span> <span class="hljs-title class_">NextResponse</span>.<span class="hljs-title function_">json</span>({ <span class="hljs-attr">error</span>: <span class="hljs-string">'Invalid signature'</span> }, { <span class="hljs-attr">status</span>: <span class="hljs-number">403</span> });
+    }
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (authToken &amp;&amp; !signature) {
+    <span class="hljs-keyword">return</span> <span class="hljs-title class_">NextResponse</span>.<span class="hljs-title function_">json</span>({ <span class="hljs-attr">error</span>: <span class="hljs-string">'Missing signature'</span> }, { <span class="hljs-attr">status</span>: <span class="hljs-number">403</span> });
+  }
+
+  <span class="hljs-keyword">const</span> eventType = body[<span class="hljs-string">'EventType'</span>] <span class="hljs-keyword">as</span> <span class="hljs-built_in">string</span> | <span class="hljs-literal">undefined</span>;
+
+  <span class="hljs-keyword">switch</span> (eventType) {
+    <span class="hljs-keyword">case</span> <span class="hljs-string">'onMessageAdded'</span>: {
+      <span class="hljs-keyword">const</span> conversationSid = body[<span class="hljs-string">'ConversationSid'</span>] <span class="hljs-keyword">as</span> <span class="hljs-built_in">string</span>;
+      <span class="hljs-keyword">const</span> author = body[<span class="hljs-string">'Author'</span>] <span class="hljs-keyword">as</span> <span class="hljs-built_in">string</span>;
+      <span class="hljs-keyword">const</span> messageBody = body[<span class="hljs-string">'Body'</span>] <span class="hljs-keyword">as</span> <span class="hljs-built_in">string</span>;
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(
+        <span class="hljs-string">`[webhook] New message in <span class="hljs-subst">${conversationSid}</span> from <span class="hljs-subst">${author}</span>: <span class="hljs-subst">${messageBody?.substring(<span class="hljs-number">0</span>, <span class="hljs-number">50</span>)}</span>`</span>,
+      );
+      <span class="hljs-comment">// Persistence + push notifications land in followup plan (DB migration).</span>
+      <span class="hljs-keyword">break</span>;
+    }
+
+    <span class="hljs-keyword">case</span> <span class="hljs-string">'onConversationStateUpdated'</span>: {
+      <span class="hljs-keyword">const</span> conversationSid = body[<span class="hljs-string">'ConversationSid'</span>] <span class="hljs-keyword">as</span> <span class="hljs-built_in">string</span>;
+      <span class="hljs-keyword">const</span> state = body[<span class="hljs-string">'StateTo'</span>] <span class="hljs-keyword">as</span> <span class="hljs-built_in">string</span>;
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(
+        <span class="hljs-string">`[webhook] Conversation <span class="hljs-subst">${conversationSid}</span> state -&gt; <span class="hljs-subst">${state}</span>`</span>,
+      );
+      <span class="hljs-keyword">break</span>;
+    }
+
+    <span class="hljs-keyword">case</span> <span class="hljs-string">'onParticipantAdded'</span>:
+    <span class="hljs-keyword">case</span> <span class="hljs-string">'onParticipantRemoved'</span>: {
+      <span class="hljs-keyword">const</span> conversationSid = body[<span class="hljs-string">'ConversationSid'</span>] <span class="hljs-keyword">as</span> <span class="hljs-built_in">string</span>;
+      <span class="hljs-keyword">const</span> identity = body[<span class="hljs-string">'Identity'</span>] <span class="hljs-keyword">as</span> <span class="hljs-built_in">string</span>;
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(
+        <span class="hljs-string">`[webhook] <span class="hljs-subst">${eventType}</span> in <span class="hljs-subst">${conversationSid}</span>: <span class="hljs-subst">${identity}</span>`</span>,
+      );
+      <span class="hljs-keyword">break</span>;
+    }
+
+    <span class="hljs-attr">default</span>:
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`[webhook] Unhandled event: <span class="hljs-subst">${eventType}</span>`</span>);
+  }
+
+  <span class="hljs-keyword">return</span> <span class="hljs-title class_">NextResponse</span>.<span class="hljs-title function_">json</span>({ <span class="hljs-attr">received</span>: <span class="hljs-literal">true</span> });
+}
+</code></pre>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 4: Run test to verify it passes</strong></li>
+</ul>
+<p>Run: <code>cd ~/sherpa-pros-platform &amp;&amp; npx vitest run src/app/api/chat/webhook/__tests__/route.test.ts</code></p>
+<p>Expected: PASS — both tests green.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 5: Commit</strong></li>
+</ul>
+<pre><code class="hljs bash"><span class="hljs-built_in">cd</span> ~/sherpa-pros-platform
+git add src/app/api/chat/webhook/route.ts src/app/api/chat/webhook/__tests__/route.test.ts
+git commit -m <span class="hljs-string">"feat(messaging): validate Twilio webhook signature
+
+Replaces TODO stub. Returns 403 on bad/missing signature when
+TWILIO_AUTH_TOKEN is set. Skips validation in mock mode."</span>
+</code></pre>
+<hr>
+<h2 id="task-10-smoke-test-the-full-path-locally">Task 10: Smoke test the full path locally</h2>
+<p><strong>Files:</strong> No file changes — verification only.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 1: Verify mock-mode end-to-end</strong></li>
+</ul>
+<p>Run: <code>cd ~/sherpa-pros-platform &amp;&amp; npm run dev</code> in one terminal.</p>
+<p>In another terminal:</p>
+<pre><code class="hljs bash">curl -s http://localhost:3000/api/health | python3 -m json.tool
+</code></pre>
+<p>Expected: <code>services.twilio.mode == "mock"</code> and <code>services.database.status == "up"</code> (or similar based on env).</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 2: Verify the messaging service picks the mock</strong></li>
+</ul>
+<p>In a Node REPL or a quick script:</p>
+<pre><code class="hljs bash"><span class="hljs-built_in">cd</span> ~/sherpa-pros-platform
+node --input-type=module -e <span class="hljs-string">"
+  const { getMessagingService } = await import('./src/lib/services/messaging/index.ts');
+  const svc = getMessagingService();
+  const conv = await svc.createConversation('job_smoke', 'pro_smoke', 'client_smoke');
+  console.log('conv twilioSid:', conv.twilioSid);
+  // null means we got the mock — expected when TWILIO_ACCOUNT_SID is unset
+"</span>
+</code></pre>
+<p>Expected: <code>conv twilioSid: null</code> (mock mode).</p>
+<p>If TypeScript/ESM resolution complains, skip this step — the unit tests already prove the wiring.</p>
+<ul>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3: Stop dev server (Ctrl-C in dev terminal).</strong></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4: Run full test suite</strong></p>
+</li>
+</ul>
+<p>Run: <code>cd ~/sherpa-pros-platform &amp;&amp; npx vitest run 2&gt;&amp;1 | tail -20</code></p>
+<p>Expected: all tests pass — at minimum the two new files (<code>twilio-service.test.ts</code>, <code>messaging.test.ts</code>, <code>webhook/__tests__/route.test.ts</code>) plus the existing 5 test files (commission, project-vetter, scoring, documentation-engine, xactimate-bridge). No regressions.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 5: Verify production build</strong></li>
+</ul>
+<p>Run: <code>cd ~/sherpa-pros-platform &amp;&amp; npm run build 2&gt;&amp;1 | tail -15</code></p>
+<p>Expected: build succeeds. <code>/api/health</code> and <code>/api/chat/webhook</code> show in the route list.</p>
+<ul>
+<li><input disabled="" type="checkbox"> <strong>Step 6: Push the branch</strong></li>
+</ul>
+<pre><code class="hljs bash"><span class="hljs-built_in">cd</span> ~/sherpa-pros-platform
+git status
+git push origin main
+</code></pre>
+<p>Expected: all 9 commits land on remote <code>main</code>.</p>
+<hr>
+<h2 id="known-limitations-followup-tracked">Known Limitations (followup-tracked)</h2>
+<p>These are intentional out-of-scope items, NOT placeholders:</p>
+<ol>
+<li><strong>In-memory <code>conversationCache</code> in <code>twilio-service.ts</code></strong> — conversations are lost on server restart. Followup plan: add migration 012 with <code>conversations</code> + <code>messages</code> tables, swap the Map for <code>db.query.conversations</code>.</li>
+<li><strong>Webhook persistence</strong> — <code>onMessageAdded</code> only logs. Followup plan persists incoming messages to DB and triggers push notifications.</li>
+<li><strong><code>getDeliveryService()</code>, <code>getPaymentService()</code>, <code>getStorageService()</code>, <code>getQueueService()</code></strong> — interfaces tracked in <code>services/interfaces.ts</code> comments only. Stripe Connect, R2, and queue work each get their own plan.</li>
+<li><strong>Twilio SMS sync (in-app ↔ SMS)</strong> — webhook receives messages, but routing them as SMS to the other party's phone requires phone-number provisioning per conversation (Twilio Proxy or Messaging Service mapping). Tracked in followup plan.</li>
+</ol>
+<hr>
+<h2 id="spec-coverage">Spec Coverage</h2>
+<table>
+<thead>
+<tr>
+<th>Spec section</th>
+<th>Tasks</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>§1 Service abstraction layer (pattern, directory, env-based selection)</td>
+<td>1, 2</td>
+</tr>
+<tr>
+<td>§3 Real messaging — install package, replace TODO stubs, webhook</td>
+<td>4, 5, 6, 7, 8, 9</td>
+</tr>
+<tr>
+<td>§8 Health check endpoint</td>
+<td>3</td>
+</tr>
+<tr>
+<td>§9 Migration path (the abstraction itself enables this)</td>
+<td>1 (foundation)</td>
+</tr>
+</tbody></table>
+<p>Spec sections 2 (Stripe Connect), 4 (R2 storage), 5 (Hub), 6 (DB migrations 011/012), 7 (rollout) are out of scope — each gets its own plan.</p>
+
+	
+
+
+</body>
+</html>

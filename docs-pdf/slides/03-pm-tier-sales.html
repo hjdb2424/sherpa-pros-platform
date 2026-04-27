@@ -1,0 +1,1342 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>03 pm tier sales — Sherpa Pros</title>
+<link rel="icon" href="../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="03-pm-tier-sales.pdf">Download PDF →</a>
+</nav>
+
+		<!-- _class: lead -->
+
+<h2 id="for-property-managers">For Property Managers</h2>
+<h1 id="stop-juggling-40-vendors-in-spreadsheets">Stop juggling 40 vendors in spreadsheets.</h1>
+<p>Sherpa Pros is the work-order platform built by a working contractor — for property managers running 100 to 5,000 units.</p>
+<p><span class="pill">Licensed</span> <span class="pill">Verified</span> <span class="pill">Code-aware</span> <span class="pill">Local</span></p>
+<p>Phyrom · Founder · Sherpa Pros · NH General Contractor</p>
+<hr>
+<h1 id="i-am-phyrom-i-have-lived-both-sides-of-this-problem">I am Phyrom. I have lived both sides of this problem.</h1>
+<h2 id="who-is-talking-to-you">Who is talking to you</h2>
+<p>I run <strong>HJD Builders LLC</strong>, a licensed general contractor in New Hampshire. Twelve years in the trades.</p>
+<p>For ten of those years I have been on the <strong>sell side</strong> of property manager work orders — the contractor your team calls at 2 a.m. when a heat pump dies. I know what makes a vendor reliable, what makes a property manager easy to work with, and where the dollars leak in between.</p>
+<p>I have also been on the <strong>buy side</strong> — managing 30 plus subcontractors across active job sites, with the same spreadsheet-and-group-text mess your maintenance director wrestles with every Monday.</p>
+<p>I built Sherpa Pros because the platforms my crew gets pitched every week — Angi, Thumbtack, TaskRabbit, Handy — solve the wrong problem. They sell leads to contractors. They do not run a property manager's vendor stack.</p>
+<p>So I built the one I wished existed. <strong>Built by a contractor. For the people who hire contractors.</strong></p>
+<hr>
+<h1 id="four-pain-points-your-team-feels-every-single-week">Four pain points your team feels every single week.</h1>
+<h2 id="the-property-manager-vendor-problem">The property manager vendor problem</h2>
+<ul>
+<li><p><strong>Vendor sourcing is chaos.</strong> When a heating call comes in at 2 a.m., who gets it? Honest answer in most shops: a spreadsheet, a group text, and whoever picks up first. That is not a process. That is a coin flip.</p>
+</li>
+<li><p><strong>Quality is inconsistent and invisible.</strong> You have 40 vendors in rotation. Three of them are great. Five of them are slow. Some you suspect are overcharging. Nobody on your team can prove which is which because <strong>nobody has the data in one place.</strong></p>
+</li>
+<li><p><strong>Compliance is a January fire drill.</strong> License, insurance, <strong>W-9 (taxpayer ID form)</strong>, <strong>Certificate of Insurance (COI)</strong> — chased by email every renewal. A lapsed COI on a vendor who damages a unit is a liability event waiting to happen.</p>
+</li>
+<li><p><strong>Unit-level finance is invisible.</strong> You know what you spent at the property level. You do not know what you spent <strong>per unit</strong>, what was <strong>Operating Expense versus Capital Expenditure</strong>, or what each work order did to <strong>Net Operating Income (NOI)</strong>. The data exists. It just lives in 40 different places.</p>
+</li>
+</ul>
+<hr>
+<h1 id="this-is-what-your-stack-looks-like-today">This is what your stack looks like today.</h1>
+<h2 id="todays-property-manager-vendor-workflow">Today's property manager vendor workflow</h2>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>What it does</th>
+<th>What it costs you</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Spreadsheet of 40 vendors</strong></td>
+<td>Phone numbers, sometimes a note</td>
+<td>Out of date the day after you build it</td>
+</tr>
+<tr>
+<td><strong>Group text / phone tree</strong></td>
+<td>Dispatch</td>
+<td>No record of who declined, no audit trail</td>
+</tr>
+<tr>
+<td><strong>Paper or PDF invoices</strong></td>
+<td>Vendor billing</td>
+<td>Site manager retypes into accounting</td>
+</tr>
+<tr>
+<td><strong>Manual 1099-NEC tracking</strong></td>
+<td>Year-end tax form (Nonemployee Compensation)</td>
+<td>Bookkeeper spends 2 weeks every January</td>
+</tr>
+<tr>
+<td><strong>Annual COI chase</strong></td>
+<td>Insurance compliance</td>
+<td>One email at a time, often misses renewals</td>
+</tr>
+<tr>
+<td><strong>Property-level GL only</strong></td>
+<td>Finance reporting</td>
+<td>No unit-level NOI, no CapEx vs OpEx</td>
+</tr>
+</tbody></table>
+<p><strong>The hidden cost:</strong> a typical site manager spends <strong>6 to 10 hours per week</strong> just coordinating work orders, chasing vendors, and reconciling invoices. At a fully loaded $35 an hour that is <strong>$10,000 to $18,000 per site per year</strong> in pure coordination overhead — before you fix a single toilet.</p>
+<hr>
+<h1 id="one-platform-the-whole-vendor-stack">One platform. The whole vendor stack.</h1>
+<h2 id="what-sherpa-pros-replaces">What Sherpa Pros replaces</h2>
+<table>
+<thead>
+<tr>
+<th>Today (40 vendors in spreadsheets)</th>
+<th>With Sherpa Pros</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Spreadsheet of vendors</td>
+<td><strong>One inbox</strong> for every work order across the portfolio</td>
+</tr>
+<tr>
+<td>Group text dispatch</td>
+<td><strong>Match-and-go dispatch</strong> — closest qualified pro confirmed in &lt;30 minutes</td>
+</tr>
+<tr>
+<td>No quality data</td>
+<td><strong>Vendor scorecard</strong> — response time, days to close, first-time-fix rate, cost variance, tenant rating</td>
+</tr>
+<tr>
+<td>Paper invoices</td>
+<td>Stripe-direct payment, automatic reconciliation</td>
+</tr>
+<tr>
+<td>January 1099-NEC scramble</td>
+<td><strong>Automatic 1099-NEC reporting</strong> at year-end</td>
+</tr>
+<tr>
+<td>Annual COI chase</td>
+<td><strong>License + insurance + W-9 + COI</strong> auto-tracked, auto-renewed</td>
+</tr>
+<tr>
+<td>Property-level GL only</td>
+<td><strong>Unit-level finance</strong> — every job tagged to property + unit</td>
+</tr>
+<tr>
+<td>Manual CapEx vs OpEx tagging</td>
+<td><strong>Sherpa Smart Scan auto-tags every work order to CapEx or OpEx — your bookkeeper stops hand-coding.</strong> Receipt scanner reads vendor invoices in the field, attaches them to the work order, and classifies every line automatically.</td>
+</tr>
+</tbody></table>
+<p><strong>One login. One source of truth. Built by a contractor, not a software company.</strong></p>
+<hr>
+<!-- _class: lead -->
+
+<h2 id="the-killer-feature">The killer feature</h2>
+<h1 id="same-day-quick-job-dispatch">Same-day Quick Job dispatch.</h1>
+<p>A pre-priced menu. A licensed pro. <strong>Confirmed in under 30 minutes. On site within 24 hours.</strong></p>
+<p>This is what your maintenance director will use ten times a week.</p>
+<hr>
+<h1 id="same-day-dispatch-from-a-pre-priced-menu">Same-day dispatch from a pre-priced menu.</h1>
+<h2 id="how-quick-job-lane-works">How Quick Job lane works</h2>
+<p><strong>The menu (Sherpa Pros sets the price band per metro):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th>NH / ME</th>
+<th>MA</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Toilet install (customer-supplied)</td>
+<td>$250 – $350</td>
+<td>$325 – $450</td>
+</tr>
+<tr>
+<td>Faucet replacement</td>
+<td>$150 – $250</td>
+<td>$200 – $325</td>
+</tr>
+<tr>
+<td>Smoke / CO detector swap</td>
+<td>$75 – $125 per unit</td>
+<td>$100 – $150 per unit</td>
+</tr>
+<tr>
+<td>Single accent wall paint touch-up</td>
+<td>$200 – $275</td>
+<td>$275 – $350</td>
+</tr>
+<tr>
+<td>Ceiling fan install (existing wiring)</td>
+<td>$200 – $300</td>
+<td>$275 – $400</td>
+</tr>
+<tr>
+<td>GFCI outlet replacement (licensed electrician)</td>
+<td>$125 – $175</td>
+<td>$175 – $225</td>
+</tr>
+<tr>
+<td>Leaky valve / shutoff replacement</td>
+<td>$200 – $325</td>
+<td>$275 – $425</td>
+</tr>
+</tbody></table>
+<p><strong>The lifecycle (target end-to-end: under 90 seconds to confirm a pro):</strong></p>
+<p><code>Tenant text → PM dispatches in 2 taps → Pro confirms in &lt;30 min → On site within 24–48 hr → Pro marks done in app → Auto-posts to that property + unit P&amp;L → Stripe releases pro in 24 hr</code></p>
+<p><strong>No bidding war. No phone tag. No spreadsheet update.</strong> The job is on a licensed pro's calendar before your maintenance director finishes their coffee.</p>
+<p><strong>Sherpa Threads — work-order-attached chat with a text-message bridge.</strong> Every conversation between the tenant, the site manager, and the pro is attached to the work order. The tenant texts from their normal phone (no app to install); replies land in-app for your team and for the pro. Read receipts, file attachments, full audit trail when a dispute happens. The "they said in a text" leak that wrecks vendor accountability — fixed.</p>
+<hr>
+<h1 id="project-mode-for-the-bigger-work">Project mode for the bigger work.</h1>
+<h2 id="when-the-job-is-more-than-a-250-toilet-swap">When the job is more than a $250 toilet swap</h2>
+<p>Quick Job covers the everyday. <strong>Project mode</strong> covers the work that drives your capital plan:</p>
+<ul>
+<li><strong>Heat pump installations</strong> (Mass Save certified pros, $10K+ per home in rebates surfaced automatically)</li>
+<li><strong>EV charger installations</strong> (licensed electrician + panel upgrade)</li>
+<li><strong>Electrical panel upgrades</strong></li>
+<li><strong>Full unit repaints, full kitchen and bath renovations</strong></li>
+<li><strong>Old-house specialty work</strong> — plaster and lath, slate roofs, brownstone repointing</li>
+<li><strong>Triple-decker exterior and porch work</strong> (Boston-specific code, ISD permits)</li>
+</ul>
+<p><strong>How Project mode works:</strong></p>
+<ul>
+<li><strong>Pre-bid with 3 vetted licensed pros.</strong> No pay-to-bid. No lead-share noise.</li>
+<li><strong>Code-aware quote validation.</strong> Every quote is checked against National Electrical Code (NEC), International Residential Code (IRC), and state code before you see it. Catches missing line items, wrong materials, code violations.</li>
+<li><strong>Permit handling included.</strong> The platform knows which jobs need a permit and walks the pro through pulling it.</li>
+<li><strong>Rebate-aware.</strong> Mass Save, National Grid, EV-charger rebates surfaced at quote time.</li>
+</ul>
+<hr>
+<h1 id="compliance-done-for-you">Compliance, done for you.</h1>
+<h2 id="you-stop-chasing-paperwork">You stop chasing paperwork</h2>
+<p>Every vendor on Sherpa Pros has, on file, current and verified:</p>
+<ul>
+<li><strong>License</strong> (state license check, re-verified at renewal)</li>
+<li><strong>General liability insurance</strong> (with the policy number and the carrier)</li>
+<li><strong>W-9</strong> (taxpayer ID form for 1099 reporting)</li>
+<li><strong>Certificate of Insurance (COI)</strong> with your property entity named where required</li>
+</ul>
+<p><strong>What changes for your team:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th>Today</th>
+<th>With Sherpa Pros</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>New-vendor onboarding paperwork</td>
+<td>2–4 hours per vendor</td>
+<td><strong>Zero — done at vendor signup</strong></td>
+</tr>
+<tr>
+<td>Annual COI renewal chase</td>
+<td>January fire drill, often misses lapses</td>
+<td><strong>Auto-tracked, auto-renewed</strong></td>
+</tr>
+<tr>
+<td>1099-NEC year-end reporting</td>
+<td>2 weeks of bookkeeper time</td>
+<td><strong>Automatic at year-end</strong></td>
+</tr>
+<tr>
+<td>Lapsed-insurance liability exposure</td>
+<td>Constant, hard to monitor</td>
+<td><strong>System blocks dispatch if insurance lapses</strong></td>
+</tr>
+</tbody></table>
+<p><strong>You stop chasing paperwork. The platform does it.</strong></p>
+<hr>
+<h1 id="unit-level-finance-automatically">Unit-level finance, automatically.</h1>
+<h2 id="you-stop-reconciling-spreadsheets">You stop reconciling spreadsheets</h2>
+<p>Every work order auto-posts to the property <strong>and the unit</strong>. Every line is tagged automatically as:</p>
+<ul>
+<li><strong>Operating Expense (OpEx)</strong> — repairs, maintenance, turnover, day-to-day</li>
+<li><strong>Capital Expenditure (CapEx)</strong> — heat pumps, panel upgrades, kitchen rebuilds, anything with a depreciation schedule</li>
+</ul>
+<p><strong>What your finance team gets:</strong></p>
+<ul>
+<li><strong>Net Operating Income (NOI) impact</strong> visible in the dashboard at the property level and the portfolio level</li>
+<li><strong>Schedule E ready</strong> for the accountant — every line categorized, vendor 1099-NEC ready</li>
+<li><strong>Vendor scorecard</strong> sortable by cost variance — instantly shows which vendor is overpriced for which work type</li>
+<li><strong>Property-level vs portfolio-level views</strong> — your asset manager sees that Property A has a vendor problem while Property B is humming</li>
+</ul>
+<blockquote>
+<p><em>Most portfolios are paying their worst vendor the most. Not because anyone wants that — because nobody has the data to see it. Once the data is in front of you, the next vendor renegotiation is a different conversation.</em></p>
+</blockquote>
+<hr>
+<h1 id="pricing-that-pays-for-itself-in-the-first-month">Pricing that pays for itself in the first month.</h1>
+<h2 id="4-per-unit-per-month-at-entry-150-per-unit-at-scale">$4 per unit per month at entry. $1.50 per unit at scale.</h2>
+<table>
+<thead>
+<tr>
+<th>Portfolio size</th>
+<th>Per unit / month</th>
+<th>Monthly cost</th>
+<th>Annual cost</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>100 units</td>
+<td>$4.00</td>
+<td>$400</td>
+<td>$4,800</td>
+</tr>
+<tr>
+<td>200 units</td>
+<td>$4.00</td>
+<td><strong>$800</strong></td>
+<td>$9,600</td>
+</tr>
+<tr>
+<td>500 units</td>
+<td>$3.00</td>
+<td>$1,500</td>
+<td>$18,000</td>
+</tr>
+<tr>
+<td>1,000 units</td>
+<td>$2.50</td>
+<td>$2,500</td>
+<td>$30,000</td>
+</tr>
+<tr>
+<td>5,000+ units</td>
+<td>$1.50</td>
+<td><strong>$7,500</strong></td>
+<td>$90,000</td>
+</tr>
+</tbody></table>
+<p><strong>Compare against the cost of one staff hour per week chasing vendors:</strong></p>
+<ul>
+<li>1 hour / week × $150 fully loaded rate = <strong>$7,800 per year</strong> in pure coordination overhead per site manager</li>
+<li>Most sites lose <strong>6 to 10 hours per week</strong> to vendor coordination today</li>
+<li>A 200-unit portfolio with one site manager loses <strong>$46,800 to $78,000 per year</strong> in coordination overhead</li>
+</ul>
+<p><strong>Sherpa Pros at 200 units costs $9,600 per year. Saves more than its fee in the first month.</strong></p>
+<hr>
+<h1 id="optional-portfolio-protection">Optional: Portfolio Protection.</h1>
+<h2 id="replace-the-per-vendor-coi-hassle-with-one-policy">Replace the per-vendor COI hassle with one policy</h2>
+<p><strong>Sherpa Pros Portfolio Protection</strong> — $24 per unit per year, on top of the platform tier.</p>
+<p><strong>What it covers:</strong></p>
+<ul>
+<li>All Sherpa Pros work performed at your units in that year</li>
+<li><strong>$50,000 to $250,000 per claim</strong> caps (commercial-grade, B2B contract)</li>
+<li>Materials defects, structural defects, consequential damage, vendor failure</li>
+<li>Optional <strong>Commercial General Liability rider for the property manager</strong> — replaces your per-vendor COI tracking entirely</li>
+</ul>
+<p><strong>The math on a 1,000-unit portfolio:</strong></p>
+<ul>
+<li>$24 × 1,000 units = <strong>$24,000 per year</strong></li>
+<li>One mid-size water-damage claim from a vendor mistake: <strong>$15,000 to $40,000</strong></li>
+<li>One missed COI on a vendor who damages a unit and disappears: <strong>uncapped exposure</strong></li>
+</ul>
+<p><strong>Backed by a real specialty commercial insurance carrier (white-label MGA backend). A.M. Best A-rated.</strong> Not a promise from a software company.</p>
+<hr>
+<h1 id="what-changes-day-1">What changes Day 1.</h1>
+<h2 id="a-30-day-pilot-at-one-property-then-roll-out-when-you-are-convinced">A 30-day pilot at one property. Then roll out when you are convinced.</h2>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>What we do</th>
+<th>What you do</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Week 1</strong></td>
+<td>We migrate your existing vendor spreadsheet into the platform — license, insurance, W-9, contact, rate history</td>
+<td>Hand us the spreadsheet</td>
+</tr>
+<tr>
+<td><strong>Week 1</strong></td>
+<td>We onboard each vendor (2 minutes each, we make the calls)</td>
+<td>Approve the preferred-vendor list</td>
+</tr>
+<tr>
+<td><strong>Week 2</strong></td>
+<td>Maintenance director gets a 30-minute training. Tenants get a text-in number.</td>
+<td>Pick the pilot property</td>
+</tr>
+<tr>
+<td><strong>Week 2 – 30</strong></td>
+<td>Live work orders flow. Same-day Quick Job dispatch. Vendor scorecard fills in.</td>
+<td>Use it. Tell us what is wrong.</td>
+</tr>
+<tr>
+<td><strong>Day 30</strong></td>
+<td>We send you a one-page report — jobs run, response times, cost variance, hours saved</td>
+<td>Decide: roll out to portfolio, or walk away</td>
+</tr>
+</tbody></table>
+<p><strong>Beta-pilot pricing:</strong> $0 platform fee for the 30-day pilot. You pay only the 5 percent take rate on completed jobs.</p>
+<p>If you are not convinced at Day 30, you walk away owing nothing on the platform fee.</p>
+<hr>
+<h1 id="sherpa-guard--your-auditor-will-thank-you">Sherpa Guard — your auditor will thank you.</h1>
+<h2 id="role-based-access-control--audit-logs-baked-in">Role-Based Access Control + audit logs, baked in</h2>
+<p>Every action a person takes in Sherpa Pros — every work order assigned, every payment released, every vendor approved, every COI uploaded — is recorded with <strong>who did it, what they did, on which target, and when.</strong> Every record. Every time. Sortable, filterable, exportable.</p>
+<p><strong>Five role tiers, permission-scoped:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Sees</th>
+<th>Can do</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Owner</strong></td>
+<td>Full portfolio, all properties, all units, all financials</td>
+<td>Everything</td>
+</tr>
+<tr>
+<td><strong>Admin</strong></td>
+<td>Full portfolio (configurable property scope)</td>
+<td>Approve vendors, release escrow, configure tiers</td>
+</tr>
+<tr>
+<td><strong>Project Manager</strong></td>
+<td>Assigned properties + units</td>
+<td>Dispatch work orders, approve invoices</td>
+</tr>
+<tr>
+<td><strong>Pro</strong></td>
+<td>Own assigned work orders only</td>
+<td>Bid, message, mark complete, upload receipts</td>
+</tr>
+<tr>
+<td><strong>Client / Tenant</strong></td>
+<td>Own jobs and own units only</td>
+<td>Post work orders, message, rate</td>
+</tr>
+</tbody></table>
+<p><strong>Sample audit-log row (the format your auditor will ask for):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>User</th>
+<th>Role</th>
+<th>Target</th>
+<th>Timestamp</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Work order #4017 dispatched</td>
+<td><a href="mailto:jdoe@portfolio.com">jdoe@portfolio.com</a></td>
+<td>PM</td>
+<td>Building 12 / Unit 4B</td>
+<td>2026-04-25 09:14:22 ET</td>
+</tr>
+<tr>
+<td>Vendor approved</td>
+<td><a href="mailto:mgray@portfolio.com">mgray@portfolio.com</a></td>
+<td>Admin</td>
+<td>ABC Plumbing LLC</td>
+<td>2026-04-25 09:18:47 ET</td>
+</tr>
+<tr>
+<td>Escrow released $475.00</td>
+<td><a href="mailto:mgray@portfolio.com">mgray@portfolio.com</a></td>
+<td>Admin</td>
+<td>Work order #4017</td>
+<td>2026-04-25 11:32:09 ET</td>
+</tr>
+<tr>
+<td>Insurance lapsed — auto-blocked</td>
+<td>system</td>
+<td>RBAC engine</td>
+<td>XYZ Electric LLC</td>
+<td>2026-04-25 12:00:00 ET</td>
+</tr>
+</tbody></table>
+<p><strong>Why this matters at audit time:</strong> when your accountant asks who approved the $12,000 capital expenditure on Property C in Q2, the answer is one filtered audit-log query — not a week of email archaeology. When a regulator asks how you ensure every vendor on a unit had current insurance, the answer is "RBAC blocks dispatch the moment a Certificate of Insurance lapses." When your insurance carrier asks for a chain of custody on a vendor incident, the answer is the audit log, exported to comma-separated values (CSV).</p>
+<p><strong>Sherpa Guard is the SOC 2-readiness signal.</strong> SOC 2 is the security certification institutional partners (large lenders, large property-management chains, large insurance carriers) ask to see before signing. Most platforms in this category cannot produce this. Sherpa Guard ships it on Day 1.</p>
+<hr>
+<h1 id="make-ready-in-one-job-not-four">Make-ready in one job, not four.</h1>
+<h2 id="multi-trade-unit-turnover-sequenced-on-one-timeline">Multi-trade unit turnover, sequenced on one timeline</h2>
+<p>A typical apartment turnover involves <strong>four separate trades</strong> showing up on four separate days, often in the wrong order, often with idle days in between:</p>
+<ol>
+<li><strong>Cleaning</strong> — appliances out, deep clean</li>
+<li><strong>Paint</strong> — touch-up or full repaint</li>
+<li><strong>Carpet</strong> — replacement or steam clean</li>
+<li><strong>Appliance</strong> — refrigerator, dishwasher, range hood swap</li>
+</ol>
+<p><strong>Today: 4 separate vendors, 4 separate phone calls, 8–12 days of unit downtime, $300–$600 in lost rent.</strong></p>
+<p><strong>With Sherpa Dispatch — multi-trade timeline orchestration:</strong> all four trades sequenced on one timeline, handoffs owned by the platform, blockers surfaced before they become slips. <strong>Same turnover finishes in 4 days.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Today (4 vendors, 4 phone calls)</th>
+<th>With Sherpa Dispatch</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Schedule</td>
+<td>Site manager calls 4 vendors over 3 days</td>
+<td>One Dispatch request, all 4 trades sequenced</td>
+</tr>
+<tr>
+<td>Day 1</td>
+<td>Cleaning (or whoever picks up the phone first)</td>
+<td>Cleaning</td>
+</tr>
+<tr>
+<td>Day 2</td>
+<td>Idle (waiting for paint vendor)</td>
+<td>Paint (handoff owned by platform)</td>
+</tr>
+<tr>
+<td>Day 3</td>
+<td>Paint</td>
+<td>Carpet (handoff owned by platform)</td>
+</tr>
+<tr>
+<td>Day 4</td>
+<td>Idle</td>
+<td>Appliance — unit ready by end of day</td>
+</tr>
+<tr>
+<td>Day 5–8</td>
+<td>Carpet, then appliance, then re-walk</td>
+<td>(already turned)</td>
+</tr>
+<tr>
+<td><strong>Total downtime</strong></td>
+<td><strong>8–12 days</strong></td>
+<td><strong>4 days</strong></td>
+</tr>
+<tr>
+<td><strong>Lost rent</strong></td>
+<td>$300–$600 per turnover</td>
+<td>$100–$200 per turnover</td>
+</tr>
+</tbody></table>
+<p><strong>On a 1,000-unit portfolio with ~25% annual turnover, that is 250 turnovers per year. Compressing each by 5 days at $40 per day in lost rent = $50,000 per year recovered, before any vendor cost savings.</strong> The Dispatch upgrade pays for the platform fee on a 1,000-unit portfolio in 7 months on its own.</p>
+<hr>
+<h1 id="the-numbers-by-portfolio-size">The numbers, by portfolio size.</h1>
+<h2 id="net-annual-savings--conservative-case">Net annual savings — conservative case</h2>
+<table>
+<thead>
+<tr>
+<th>Portfolio</th>
+<th>Platform fee</th>
+<th>Site-manager hours saved</th>
+<th>Vendor cost variance saved (6–11%)</th>
+<th>Net annual savings</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>100 units</strong></td>
+<td>$4,800</td>
+<td>1 site mgr × 6 hr/wk × $35 × 50 wk = $10,500</td>
+<td>~$8,000</td>
+<td><strong>+$13,700</strong></td>
+</tr>
+<tr>
+<td><strong>500 units</strong></td>
+<td>$18,000</td>
+<td>2 site mgrs × 8 hr/wk × $35 × 50 wk = $28,000</td>
+<td>~$36,000</td>
+<td><strong>+$46,000</strong></td>
+</tr>
+<tr>
+<td><strong>1,000 units</strong></td>
+<td>$30,000</td>
+<td>3 site mgrs × 8 hr/wk × $35 × 50 wk = $42,000</td>
+<td>~$72,000</td>
+<td><strong>+$84,000</strong></td>
+</tr>
+<tr>
+<td><strong>5,000 units</strong></td>
+<td>$90,000</td>
+<td>8 site mgrs × 8 hr/wk × $35 × 50 wk = $112,000</td>
+<td>~$360,000</td>
+<td><strong>+$382,000</strong></td>
+</tr>
+</tbody></table>
+<p><strong>The savings the table does not yet count:</strong></p>
+<ul>
+<li><strong>Faster repair times reduce tenant churn.</strong> A tenant who waits 8 days for a leaky valve is a tenant looking at apartments.com. One avoided turnover at $2,500 covers a 200-unit portfolio for 3 months.</li>
+<li><strong>Compliance fines avoided.</strong> One lapsed COI plus a vendor incident is uncapped exposure.</li>
+<li><strong>Auditor time saved.</strong> Every controller we have shown unit-level CapEx vs OpEx tagging to has called it the most valuable feature.</li>
+</ul>
+<p><strong>Net effect on a typical 1,000-unit portfolio: $6,500 to $14,000 in monthly NOI improvement. We charge $2,500.</strong></p>
+<hr>
+<!-- _class: lead -->
+
+<h2 id="the-ask">The ask</h2>
+<h1 id="want-to-pilot-at-one-property">Want to pilot at one property?</h1>
+<p><strong>30-day pilot. One property. We migrate your vendor list. You pay the take rate only — no platform fee for 30 days.</strong></p>
+<p>If you are not convinced at Day 30, you walk away. No platform-fee invoice.</p>
+<p>If you are, we roll out to the rest of the portfolio at your pace.</p>
+<p><strong>The differentiator vs. the spreadsheet-and-group-text status quo:</strong>
+<strong>Sherpa Guard</strong> (Role-Based Access Control plus audit logs) gives your auditor and your insurance carrier the chain of custody they have been asking your team for since 2022.
+<strong>Sherpa Dispatch</strong> (multi-trade timeline orchestration) compresses unit-turnover downtime from 8–12 days to 4 days by sequencing cleaning, paint, carpet, and appliance handoffs on one timeline.
+Together they replace what your team is doing today in 40 vendor spreadsheets, an annual COI fire drill, and a group text — with one platform that documents every handoff and shortens every turnover.</p>
+<p><strong>Phyrom · Founder · Sherpa Pros</strong>
+<a href="mailto:phyrom@thesherpapros.com">phyrom@thesherpapros.com</a>
+[Book 20 minutes on my calendar]</p>
+<p><em>A working contractor built this for the people who hire contractors. Try it on one building. Decide for yourself.</em></p>
+
+	
+
+
+</body>
+</html>

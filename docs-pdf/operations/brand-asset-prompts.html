@@ -1,0 +1,992 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>brand asset prompts — Sherpa Pros</title>
+<link rel="icon" href="../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="brand-asset-prompts.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="sherpa-pros--ideogramai-brand-asset-prompt-library">Sherpa Pros — Ideogram.ai Brand Asset Prompt Library</h1>
+<p><strong>Date:</strong> 2026-04-22
+<strong>Owner:</strong> Phyrom
+<strong>Tool:</strong> <a href="https://ideogram.ai/">Ideogram.ai</a>
+<strong>Brand bible:</strong> <code>docs/superpowers/specs/2026-04-22-gtm-marketing-design.md</code> §3 + <code>docs/slides/06-brand-bible.md</code>
+<strong>Use:</strong> Copy any prompt below directly into Ideogram. Each prompt is ready to paste with no edits required.</p>
+<hr>
+<h2 id="how-to-read-this-doc">How to read this doc</h2>
+<p>Phyrom — this is your prompt library for generating every visual asset Sherpa Pros needs in Phase 0. Each section gives you 2–6 prompt variants so you can A/B in one Ideogram session. None of these prompts invent new brand elements: they all reuse the canonical sky blue / dark navy / amber / emerald palette and the diagonal-cut wordmark concept. Use the workflow at the bottom (Section 12) to sequence the work — generate the app icon and favicon first, because they anchor the rest of the visual identity.</p>
+<p>A few rules before you start:</p>
+<ul>
+<li>Generate 4 at a time, save the prompt with each generation.</li>
+<li>Try with <strong>Magic Prompt OFF first</strong> when you want exact control. Turn it ON for surprise / variation passes.</li>
+<li>Use <strong>v_2</strong> or the latest Ideogram model for icon work.</li>
+<li>Generate icons at <strong>2048×2048</strong> and downscale to 1024×1024 in Preview / Pixelmator — it produces sharper edges than asking Ideogram for 1024 directly.</li>
+<li>For favicons, keep it simple. Anything with more than 2 elements dies at 16 pixels.</li>
+</ul>
+<hr>
+<h2 id="1-brand-visual-identity-reference-paste-at-top-of-any-custom-prompt">1. Brand visual identity reference (paste at top of any custom prompt)</h2>
+<p>Use this as the brand context block whenever you write your own prompt for an asset not covered below.</p>
+<pre><code>Sherpa Pros is a national licensed-trade marketplace built by a working New Hampshire general contractor. Visual identity is tradesperson-credible, not corporate-enterprise. Think Mailchimp's mascot energy meets construction-industry credibility — bold, simple, memorable, plainspoken.
+
+Brand colors (use exactly):
+- Sky blue #00a9e0 (primary, used in the SHERPA wordmark)
+- Dark navy #1a1a2e (secondary, body text and dark backgrounds)
+- Amber #f59e0b (accent, used in the PROS wordmark and CTAs)
+- Emerald #10b981 (success, used for verified badges)
+
+Logo style: a two-block wordmark — sky-blue "SHERPA" + amber "PROS" with a diagonal cut between the two words. Modern, geometric, no serifs. The diagonal cut is the signature visual element across the entire brand.
+
+Tone: clean, professional, tradesperson-friendly. NOT slick startup. NOT corporate enterprise. NOT tech-bro. NOT generic stock-construction. Construction-industry credible without being construction-industry generic.
+
+Avoid: stock-photo construction worker imagery, generic blue gradients, tool icons that look like Microsoft clipart, overly slick Silicon Valley aesthetic, hardhat clipart, generic wrench-and-house compositions, lens flares, glossy 3D renders, Shutterstock vibes.
+</code></pre>
+<hr>
+<h2 id="2-app-icon-prompts-1024×1024-ios-app-store">2. App Icon prompts (1024×1024, iOS App Store)</h2>
+<p>Generate at 2048×2048 in Ideogram and downscale to 1024×1024. iOS auto-rounds the corners — do NOT add rounded corners in the icon itself. Use a solid background (no transparency) — App Store rejects transparent app icons.</p>
+<h3 id="app-icon--style-1-bold-s-with-diagonal-cut">App Icon — Style 1: Bold "S" with diagonal cut</h3>
+<pre><code>A bold geometric letter "S" as an iOS app icon, 1024 by 1024 pixels, square format with sharp corners (iOS will round automatically). The "S" is split diagonally — the upper-left portion is solid sky blue #00a9e0, the lower-right portion is solid amber #f59e0b, with a clean diagonal cut between the two halves. Background is solid dark navy #1a1a2e. The S is centered with comfortable padding (about 12% on each side). Modern sans-serif construction, geometric, slightly heavy weight. Flat design, no gradients, no shadows, no bevels, no glossy effects. Tradesperson-credible, not corporate. Think Mailchimp app icon energy — bold, simple, memorable. No text outside the S itself.
+</code></pre>
+<h3 id="app-icon--style-2-hard-hat-with-diagonal-cut">App Icon — Style 2: Hard-hat with diagonal cut</h3>
+<pre><code>A minimalist construction hard-hat silhouette as an iOS app icon, 1024 by 1024 pixels, square format with sharp corners. The hard-hat is split diagonally — left half solid sky blue #00a9e0, right half solid amber #f59e0b, with a clean diagonal cut down the center. Background is solid dark navy #1a1a2e. Hard-hat is centered with 15% padding. Flat geometric design, two colors only inside the hat, no gradients, no shadows, no bevels, no realistic rendering. Construction-credible without being clipart. No face, no body, just the hat shape. Think modern Scandinavian icon design — bold, simple, confident. No text.
+</code></pre>
+<h3 id="app-icon--style-3-sherpa-mountain-peak-the-namesake">App Icon — Style 3: Sherpa mountain peak (the namesake)</h3>
+<pre><code>A stylized mountain peak as an iOS app icon, 1024 by 1024 pixels, square format with sharp corners. Two overlapping triangular peaks — the larger left peak in solid sky blue #00a9e0, the smaller right peak in solid amber #f59e0b, separated by a clean diagonal cut where they meet. Background is solid dark navy #1a1a2e. Peaks are centered with comfortable padding. Flat geometric design, no snow detail, no shading, no gradients, no realistic mountain rendering. Bold, simple, memorable. Subtle reference to Himalayan sherpa — the guide who knows the way — translated to construction trades guidance. Think Patagonia logo simplicity meets app-store icon clarity. No text.
+</code></pre>
+<h3 id="app-icon--style-4-geometric-tool-composition-level--plumb-line--framing-square">App Icon — Style 4: Geometric tool composition (level + plumb-line + framing square)</h3>
+<pre><code>A geometric composition of three construction tools as an iOS app icon, 1024 by 1024 pixels, square format with sharp corners. Centered: a framing square (L-shape) in sky blue #00a9e0, a level (horizontal bar with bubble) in amber #f59e0b crossing it diagonally, and a plumb line (vertical line with weight) in white. All three tools meet at a central point and are cut diagonally where they overlap. Background is solid dark navy #1a1a2e. Flat design, geometric line-art style, no realistic rendering, no gradients, no shadows. Modern industrial design aesthetic. Think Field Notes brand simplicity. No text.
+</code></pre>
+<h3 id="app-icon--style-5-friendly-construction-helmet-character">App Icon — Style 5: Friendly construction-helmet character</h3>
+<pre><code>A friendly minimalist construction-helper mascot as an iOS app icon, 1024 by 1024 pixels, square format with sharp corners. A simple round character wearing a hard hat — head and hat only, no body. Hard hat is split diagonally — left half sky blue #00a9e0, right half amber #f59e0b. Face is two simple dots for eyes and a small confident smile, drawn in dark navy #1a1a2e. Background is a clean cream #f5f1ea (warm off-white) for friendliness. Character is centered with 15% padding. Flat vector style, no gradients, no shadows, no bevels. Approachable and trustworthy — think Mailchimp's Freddie the chimp energy applied to a construction guide character. No text.
+</code></pre>
+<h3 id="app-icon--style-6-modernist-sp-monogram-with-diagonal-cut">App Icon — Style 6: Modernist "SP" monogram with diagonal cut</h3>
+<pre><code>A modernist "SP" monogram as an iOS app icon, 1024 by 1024 pixels, square format with sharp corners. The letters S and P are interlocked geometrically — S in sky blue #00a9e0, P in amber #f59e0b — with a clean diagonal cut where they meet. Background is solid dark navy #1a1a2e. Monogram is centered with comfortable padding (12% on each side). Modern geometric sans-serif, slightly heavy weight, custom-drawn ligature feel. Flat design, no gradients, no shadows, no bevels, no glossy effects. Confident and tradesperson-credible. Think Stripe-quality typography meets construction-industry boldness. No additional text outside the SP.
+</code></pre>
+<hr>
+<h2 id="3-favicon-prompts-32×32-ico--16×16-ico--512×512-png-apple-touch-icon">3. Favicon prompts (32×32 ICO + 16×16 ICO + 512×512 PNG Apple touch icon)</h2>
+<p>Favicons live or die by simplicity. Anything with more than two visual elements becomes mush at 16 pixels. Generate at 512×512, then export at 32×32 and 16×16 to test legibility before committing.</p>
+<h3 id="favicon--style-1-single-letter-s-monogram">Favicon — Style 1: Single letter "S" monogram</h3>
+<pre><code>A single bold letter "S" as a favicon, 512 by 512 pixels, square format. The "S" is split diagonally — upper-left half sky blue #00a9e0, lower-right half amber #f59e0b, with a clean diagonal cut between. Background is solid dark navy #1a1a2e. The S is large, fills 80% of the frame, centered. Heavy geometric sans-serif, optimized to be legible even at 16 pixels. Flat design, no gradients, no shadows, no fine details. The image must remain readable when scaled down to a 16-pixel browser tab favicon. No additional text or elements.
+</code></pre>
+<h3 id="favicon--style-2-single-color-silhouette-mark">Favicon — Style 2: Single-color silhouette mark</h3>
+<pre><code>A single-color minimal mark as a favicon, 512 by 512 pixels, square format. A bold geometric "S" shape in solid sky blue #00a9e0 on a solid white background. The S has a small diagonal notch cut from the lower-right corner in amber #f59e0b — a single tiny detail that subtly references the brand's diagonal-cut wordmark. Bold weight, fills 75% of the frame, centered. Flat design, no gradients, no shadows. Must remain crisp and recognizable at 16 pixels. No text or other elements.
+</code></pre>
+<h3 id="favicon--style-3-geometric-mountain-peak-symbol">Favicon — Style 3: Geometric mountain-peak symbol</h3>
+<pre><code>A simple geometric mountain peak as a favicon, 512 by 512 pixels, square format. Two overlapping triangular peaks — left peak sky blue #00a9e0, right peak amber #f59e0b, separated by a clean diagonal cut. Background is solid white. Peaks fill 70% of the frame, centered. Flat design, no shading, no gradients, no detail beyond the two triangle shapes. Must remain legible at 16 pixels in a browser tab. Bold, confident, memorable. No text.
+</code></pre>
+<hr>
+<h2 id="4-social-avatar-prompts-400×400-square--linkedin--twitter--instagram--facebook">4. Social avatar prompts (400×400 square — LinkedIn / Twitter / Instagram / Facebook)</h2>
+<p>Same direction as the app icon, but with extra padding so the design survives circular cropping on Twitter and Instagram. Keep the central element inside a 75%-of-frame safe zone.</p>
+<h3 id="social-avatar--style-a-sp-monogram-for-circular-crop">Social avatar — Style A: SP monogram for circular crop</h3>
+<pre><code>A modernist "SP" monogram as a social media avatar, 400 by 400 pixels, square format optimized for circular cropping. The letters S and P are interlocked — S in sky blue #00a9e0, P in amber #f59e0b — with a clean diagonal cut where they meet. Background is solid dark navy #1a1a2e. Monogram is centered with extra-generous 18% padding on all sides so the full mark remains visible inside a circular crop on platforms like Twitter and Instagram. Modern geometric sans-serif, slightly heavy weight. Flat design, no gradients, no shadows. Bold and tradesperson-credible. No text outside the SP.
+</code></pre>
+<h3 id="social-avatar--style-b-single-s-with-diagonal-cut-circular-safe">Social avatar — Style B: Single "S" with diagonal cut, circular safe</h3>
+<pre><code>A bold geometric letter "S" as a social media avatar, 400 by 400 pixels, square format optimized for circular cropping. The "S" is split diagonally — upper-left half sky blue #00a9e0, lower-right half amber #f59e0b. Background is solid dark navy #1a1a2e. The S is centered with 18% padding so it remains fully visible inside a circular crop. Heavy geometric sans-serif. Flat design, no gradients, no shadows, no bevels. Memorable at small sizes (down to 32 pixel profile thumbnails on Twitter). No text outside the S.
+</code></pre>
+<h3 id="social-avatar--style-c-mountain-peak-in-circular-safe-zone">Social avatar — Style C: Mountain peak in circular safe zone</h3>
+<pre><code>A stylized mountain-peak symbol as a social media avatar, 400 by 400 pixels, square format optimized for circular cropping. Two overlapping triangular peaks — left peak sky blue #00a9e0, right peak amber #f59e0b, separated by a clean diagonal cut. Background is solid dark navy #1a1a2e. Peaks are centered with 18% padding to remain fully visible in a circular crop. Flat geometric design, no shading, no detail. Subtle Himalayan-sherpa-as-construction-guide reference. Bold and confident. No text.
+</code></pre>
+<h3 id="social-avatar--style-d-friendly-mascot-for-circular-crop">Social avatar — Style D: Friendly mascot for circular crop</h3>
+<pre><code>A friendly minimalist construction-helper mascot as a social media avatar, 400 by 400 pixels, square format optimized for circular cropping. A simple round character wearing a hard hat (head and hat only) — hard hat split diagonally, left half sky blue #00a9e0 right half amber #f59e0b. Face is two dot eyes and a small smile in dark navy #1a1a2e. Background is warm cream #f5f1ea. Character is centered with 18% padding so the full face remains visible inside a circular crop. Approachable and trustworthy. Flat vector style, no gradients. Mailchimp-mascot energy applied to a tradesperson guide. No text.
+</code></pre>
+<hr>
+<h2 id="5-company-logo-prompts-wordmark--for-landing-page-header-deck-business-cards">5. Company logo prompts (wordmark — for landing page header, deck, business cards)</h2>
+<p>These are wordmark explorations. The current logo (sky-blue SHERPA + amber PROS with diagonal cut) is canonical — these prompts are for the case where Phyrom wants to refresh or generate alternate lockups (stacked, single-color, dark-mode).</p>
+<h3 id="logo--style-1-cleaner-version-of-current-wordmark">Logo — Style 1: Cleaner version of current wordmark</h3>
+<pre><code>A clean modern wordmark logo for "SHERPA PROS", horizontal lockup, 1600 by 600 pixels, transparent PNG. The word "SHERPA" is in bold sky blue #00a9e0, the word "PROS" is in bold amber #f59e0b. Between the two words is a clean diagonal cut — a sharp angled line that visually separates SHERPA from PROS while implying they're cut from the same block. Modern geometric sans-serif typeface (think Inter, GT America, or Söhne — clean and tradesperson-credible, not corporate). Both words are the same x-height. No additional taglines, no icon, no flourishes. White space around the wordmark. Flat design, no gradients, no shadows, no bevels.
+</code></pre>
+<h3 id="logo--style-2-single-color-variant-for-engraving--one-color-print">Logo — Style 2: Single-color variant for engraving / one-color print</h3>
+<pre><code>A single-color version of the "SHERPA PROS" wordmark logo, horizontal lockup, 1600 by 600 pixels, transparent PNG. Both "SHERPA" and "PROS" are in solid dark navy #1a1a2e — same color, same weight. The diagonal cut between the two words is preserved as a thin negative-space gap (transparent), so the diagonal is the only visual differentiator between the two words. Modern geometric sans-serif typeface, bold weight. Use this on light backgrounds, embroidery, single-color print, hard-hat stickers. Flat design, no gradients, no shadows.
+</code></pre>
+<h3 id="logo--style-3-stacked-variant-for-dark-backgrounds">Logo — Style 3: Stacked variant for dark backgrounds</h3>
+<pre><code>A stacked vertical wordmark logo for "SHERPA PROS", 1000 by 1000 pixels, transparent PNG, optimized for dark backgrounds. "SHERPA" sits on the top line in sky blue #00a9e0; "PROS" sits on the bottom line in amber #f59e0b. A clean diagonal cut (a thin angled line in white) separates the two stacked words horizontally — angled from upper-left to lower-right. Modern geometric sans-serif, bold weight, both words the same x-height. Centered, white space all around. Flat design, no gradients, no shadows. Use on dark navy or black backgrounds, app splash screen, dark-mode site header, hoodie chest print.
+</code></pre>
+<hr>
+<h2 id="6-hero--header-image-prompts-landing-page-hero-social-cover-photos">6. Hero / header image prompts (landing page hero, social cover photos)</h2>
+<p>For the landing page above-the-fold image and Twitter / LinkedIn cover photos. Anti-stock-photo guardrails are critical — Phyrom is a working contractor and the imagery has to feel earned, not licensed.</p>
+<h3 id="hero--style-1-photorealistic-anonymous-tradesperson">Hero — Style 1: Photorealistic anonymous tradesperson</h3>
+<pre><code>A photorealistic medium-format photograph of a working tradesperson on a residential construction jobsite, 1920 by 1080 pixels, landscape. Composition: shoulders-down view, no face visible — focus on weathered hands holding a clipboard, a tape measure clipped to a leather tool belt, sawdust on a flannel sleeve. Background is softly out-of-focus residential interior framing — visible 2x4 wall studs and a partial window opening. Natural daylight from a window, golden-hour warmth, slight haze. Color palette is muted earth tones with a small accent of sky blue #00a9e0 (a tape measure or pencil). Documentary photo style, not stock. Think Magnum Photos meets construction trade. NOT generic Shutterstock construction-worker imagery. NOT a smiling person looking at the camera. NOT high-vis vests. Real working hands, real materials, real light. No text in the image.
+</code></pre>
+<h3 id="hero--style-2-illustrated-abstract-construction-scene">Hero — Style 2: Illustrated abstract construction scene</h3>
+<pre><code>An illustrated abstract construction scene as a landing page hero image, 1920 by 1080 pixels, landscape. Geometric flat-design illustration of a residential house cross-section — visible studs, plumbing lines, electrical wiring, a roof peak — composed of overlapping geometric shapes in the brand palette: sky blue #00a9e0 for primary structures, amber #f59e0b for accent details (windows, electrical), dark navy #1a1a2e for shadow and outline, emerald #10b981 for verified-check accents, warm cream #f5f1ea background. A subtle diagonal cut runs through the composition. Modern editorial illustration style — think New York Times opinion-page illustrations or The Atlantic feature graphics. Confident, clean, NOT clipart. No people. No text in the image.
+</code></pre>
+<h3 id="hero--style-3-dark-navy-with-floating-tools">Hero — Style 3: Dark navy with floating tools</h3>
+<pre><code>A dark navy editorial composition as a landing page hero, 1920 by 1080 pixels, landscape. Solid dark navy #1a1a2e background. Floating in the composition: a level (in sky blue #00a9e0), a framing square (in amber #f59e0b), a plumb line (in white), and a small emerald #10b981 checkmark badge — each tool slightly tilted, arranged in a loose diagonal that runs from upper-left to lower-right (echoing the brand's diagonal cut). Tools are stylized flat geometric shapes, not photorealistic. Subtle drop shadows. Generous negative space around the tools so headline text can be overlaid in post. Modern editorial design — think Stripe, Linear, or Vercel hero compositions translated to construction trades. No text in the image.
+</code></pre>
+<hr>
+<h2 id="7-product-specific-icons-the-4-product-portfolio-per-wave-62">7. Product-specific icons (the 4-product portfolio per Wave 6.2)</h2>
+<p>These icons must feel like a family — same construction grammar, same color palette — while being instantly distinguishable. Generate all four in a single Ideogram session so the family resemblance holds. Use the same overall framing (square, padded, flat geometric, two-color-plus-accent) for all four.</p>
+<h3 id="product-icon--sherpa-marketplace">Product Icon — Sherpa Marketplace</h3>
+<pre><code>A flat geometric icon for the "Sherpa Marketplace" product, 512 by 512 pixels, square format. Two interlocking shapes: a stylized contractor toolbelt silhouette in sky blue #00a9e0 on the left, a small house silhouette in amber #f59e0b on the right, joined by a clean diagonal cut between them. Background is warm cream #f5f1ea. Flat geometric design, single-line-weight, no gradients, no shadows. Centered with 12% padding. Modern, tradesperson-credible, instantly readable. The visual concept: pros (toolbelt) connecting with homes (house) through a clean diagonal exchange. Part of a 4-icon product family — share the same flat geometric grammar as Hub, Home, and Manager icons. No text.
+</code></pre>
+<h3 id="product-icon--sherpa-hub-warehouse--pickup-location">Product Icon — Sherpa Hub (warehouse / pickup location)</h3>
+<pre><code>A flat geometric icon for "Sherpa Hub" — a physical pickup location for pros, 512 by 512 pixels, square format. A simple warehouse / depot silhouette: a wide low building with a slanted roof and a single roll-up door in the center, drawn in sky blue #00a9e0 outline with the door in amber #f59e0b. A small diagonal cut runs across the building's facade as a brand-consistent detail. Background is warm cream #f5f1ea. Flat geometric design, single-line-weight, no gradients, no shadows. Centered with 12% padding. Part of a 4-icon product family with Marketplace, Home, and Manager — share the same grammar. The visual concept: physical pickup point where pros grab materials. No text.
+</code></pre>
+<h3 id="product-icon--sherpa-home-subscription--homeowner">Product Icon — Sherpa Home (subscription / homeowner)</h3>
+<pre><code>A flat geometric icon for "Sherpa Home" — a homeowner subscription service, 512 by 512 pixels, square format. A simple residential house silhouette (peaked roof, single door, single window), drawn in sky blue #00a9e0 outline with a small amber #f59e0b heart or shield in the upper window — implying ongoing care and protection. A subtle diagonal cut runs across the roof line as a brand-consistent detail. Background is warm cream #f5f1ea. Flat geometric design, single-line-weight, no gradients, no shadows. Centered with 12% padding. Part of a 4-icon product family — share the grammar of Marketplace, Hub, and Manager. The visual concept: ongoing care for the home itself. No text.
+</code></pre>
+<h3 id="product-icon--sherpa-manager-concierge--human-service">Product Icon — Sherpa Manager (concierge / human service)</h3>
+<pre><code>A flat geometric icon for "Sherpa Manager" — a human concierge service for property managers, 512 by 512 pixels, square format. A simple stylized person silhouette (head and shoulders, no facial features) wearing a small headset, drawn in sky blue #00a9e0, with a small amber #f59e0b clipboard or checkmark badge to the right of the figure. A subtle diagonal cut behind the figure as a brand-consistent detail. Background is warm cream #f5f1ea. Flat geometric design, single-line-weight, no gradients, no shadows. Centered with 12% padding. Part of a 4-icon product family — share the grammar of Marketplace, Hub, and Home. The visual concept: a real human guide managing the work for a property manager. No text.
+</code></pre>
+<hr>
+<h2 id="8-founding-pro-badge-in-app--marketing">8. Founding Pro badge (in-app + marketing)</h2>
+<p>The "Founding Pro" badge is the permanent visual marker for the beta cohort. It needs to feel earned — like a varsity letter or a guild patch — not like a participation trophy.</p>
+<h3 id="founding-pro--style-1-mountain-peak--wordmark">Founding Pro — Style 1: Mountain peak + wordmark</h3>
+<pre><code>A circular badge for "Founding Pro" status, 800 by 800 pixels, transparent PNG. Outer ring: solid dark navy #1a1a2e with the words "FOUNDING PRO" in white bold sans-serif arched along the top of the ring and "EST. 2026" arched along the bottom. Inner field: a stylized mountain peak — left peak sky blue #00a9e0, right peak amber #f59e0b, with a clean diagonal cut between. Below the peak inside the ring: a small emerald #10b981 checkmark. Heavy geometric sans-serif typography, tradesperson-credible. Think a guild patch or a varsity letter — earned, not decorative. Flat design, no gradients, no shadows, no glossy effects. Small enough for a profile-card chip; large enough for a hoodie embroidery file.
+</code></pre>
+<h3 id="founding-pro--style-2-shield-with-f--diagonal-cut">Founding Pro — Style 2: Shield with "F" + diagonal cut</h3>
+<pre><code>A shield-shaped badge for "Founding Pro" status, 800 by 800 pixels, transparent PNG. Classic shield silhouette in solid dark navy #1a1a2e. Inside the shield: a large bold letter "F" split diagonally — upper-left half sky blue #00a9e0, lower-right half amber #f59e0b. A small banner across the bottom of the shield reads "FOUNDING PRO" in white bold sans-serif, with "EST. 2026" in smaller text below. Heavy geometric typography, slightly retro tradesperson-club aesthetic. Flat design, no gradients, no realistic shading, no metallic effects. Think a fire-department badge or a steelworker union patch. Earned, not decorative. Suitable for in-app profile chip and embroidered hoodie patch.
+</code></pre>
+<h3 id="founding-pro--style-3-hard-hat-with-mountain-accent">Founding Pro — Style 3: Hard-hat with mountain accent</h3>
+<pre><code>A circular badge for "Founding Pro" status, 800 by 800 pixels, transparent PNG. Outer ring: solid dark navy #1a1a2e with "FOUNDING PRO" arched along the top and "SHERPA PROS" arched along the bottom in white bold sans-serif. Inner field: a hard-hat silhouette in sky blue #00a9e0 with a small mountain peak in amber #f59e0b rising behind it — combining the construction-trades hard hat with the Himalayan-sherpa namesake. A small emerald #10b981 checkmark on the hat itself. Flat geometric design, no gradients, no shadows. Tradesperson-club aesthetic — guild patch, not Silicon Valley sticker. Suitable for in-app profile chip, embroidered patch, sticker.
+</code></pre>
+<hr>
+<h2 id="9-old-house-verified-badge-the-trademark-were-filing--uspto">9. Old-House Verified badge (the trademark we're filing — USPTO)</h2>
+<p>This badge appears on listings, in marketing, and ultimately on a USPTO trademark filing. It needs to be visually distinct from the Founding Pro badge so the two never get confused, and it needs to convey "this pro understands plaster, lath, knob-and-tube, slate, and pre-1950 housing." Hyphenated as "Old-House Verified" — the hyphen is canonical.</p>
+<h3 id="old-house-verified--style-1-vintage-seal">Old-House Verified — Style 1: Vintage seal</h3>
+<pre><code>A vintage-seal-style badge for "Old-House Verified", 800 by 800 pixels, transparent PNG. Circular seal with a dark-navy #1a1a2e ribbon ring containing the words "OLD-HOUSE VERIFIED" arched along the top in white bold sans-serif and "SHERPA PROS" arched along the bottom. Inner field: a small Victorian-style house silhouette (steep gabled roof, ornamental gingerbread trim, a single chimney) in sky blue #00a9e0, with a small emerald #10b981 checkmark in the lower-right of the house. A subtle amber #f59e0b accent on the chimney smoke or the front door. Heavy bold typography, slightly retro craftsmanship feel — think a state historical-society plaque crossed with a modern verification badge. Flat design, no gradients, no realistic shading. The hyphen in "Old-House" is mandatory and must be visible.
+</code></pre>
+<h3 id="old-house-verified--style-2-modern-minimal-badge">Old-House Verified — Style 2: Modern minimal badge</h3>
+<pre><code>A modern minimal verification badge for "Old-House Verified", 800 by 800 pixels, transparent PNG. Rounded rectangle in solid sky blue #00a9e0. Inside the rectangle, left-aligned: a small Victorian-house silhouette icon in white. Right of the icon: the words "OLD-HOUSE VERIFIED" stacked on two lines in white bold sans-serif. A small amber #f59e0b diagonal accent line runs vertically between the icon and the text — echoing the brand's diagonal-cut signature. A small emerald #10b981 checkmark in the upper-right corner of the badge. Modern, clean, tradesperson-credible. Flat design, no gradients, no shadows. The hyphen in "Old-House" is mandatory and must be visible. Suitable for use on listing cards, landing page social proof, and marketing materials.
+</code></pre>
+<h3 id="old-house-verified--style-3-brick--window--checkmark-composition">Old-House Verified — Style 3: Brick + window + checkmark composition</h3>
+<pre><code>A composition-style badge for "Old-House Verified", 800 by 800 pixels, transparent PNG. Square format with rounded corners. Inside the badge: a small section of historic brick wall in muted brick red, with a single double-hung window with divided lights drawn over it in sky blue #00a9e0. Below the window: the words "OLD-HOUSE VERIFIED" in dark navy #1a1a2e bold sans-serif, with "SHERPA PROS" in smaller amber #f59e0b text below. An emerald #10b981 checkmark sits in the upper-right corner of the badge as a verification mark. The hyphen in "Old-House" is mandatory and must be visible. Flat geometric design with subtle texture on the brick only — no realistic shading on anything else, no gradients, no glossy effects. Think Pre-War-NYC building plaque crossed with a modern verification badge.
+</code></pre>
+<hr>
+<h2 id="10-general-ideogram-prompt-template-adapt-for-any-future-asset">10. General Ideogram prompt template (adapt for any future asset)</h2>
+<p>When you need to generate something not covered above, paste this as a starting block and fill in the bracketed sections.</p>
+<pre><code>[Asset type — e.g., "A flat geometric icon for X" or "A photorealistic image of Y"] for Sherpa Pros, [size in pixels, e.g., 1024 by 1024], [format — square / landscape / portrait], [transparency — solid background or transparent PNG].
+
+Sherpa Pros is a national licensed-trade marketplace built by a working New Hampshire general contractor. Visual identity is tradesperson-credible, not corporate-enterprise.
+
+Brand colors (use exactly):
+- Sky blue #00a9e0 (primary)
+- Dark navy #1a1a2e (secondary)
+- Amber #f59e0b (accent)
+- Emerald #10b981 (success / verified)
+
+Visual signature: a clean diagonal cut between two color blocks (echoes the SHERPA + PROS wordmark).
+
+Style: clean, modern, bold, simple, memorable. Flat design, no gradients, no shadows, no bevels, no glossy effects, no realistic 3D rendering unless explicitly required.
+
+[SPECIFIC DIRECTION: describe the actual subject of the image here — what's in it, where it's positioned, what colors go where, what the visual concept is.]
+
+Avoid: stock-photo construction worker imagery, generic blue gradients, tool icons that look like Microsoft clipart, overly slick Silicon Valley aesthetic, hardhat clipart, generic wrench-and-house compositions, lens flares, glossy 3D renders, Shutterstock vibes, smiling-person-looking-at-camera tropes.
+
+[Additional constraints — e.g., "must remain legible at 16 pixels" / "no text in the image" / "centered with 15% padding" / "transparent background"]
+</code></pre>
+<hr>
+<h2 id="11-tips-for-using-ideogram">11. Tips for using Ideogram</h2>
+<ul>
+<li><strong>Model:</strong> use v_2 or the latest Ideogram model for icon work — earlier models produce mushier edges.</li>
+<li><strong>Magic Prompt:</strong> turn it OFF when you want exact control (rare for refinements), turn it ON when you want surprise / stylistic variation (common for first-pass exploration).</li>
+<li><strong>Generate 4 at a time.</strong> Ideogram batches by default. Save the prompt with each generation so you can iterate from the strongest variant.</li>
+<li><strong>For app icons:</strong> generate at 2048×2048 and downscale to 1024×1024 in Preview / Pixelmator. Direct-to-1024 generation produces softer edges.</li>
+<li><strong>For favicons:</strong> simpler is better. Anything more than 2 visual elements becomes mush at 16 pixels. Test the export at 16×16 in your browser tab before shipping.</li>
+<li><strong>For badges / wordmarks:</strong> generate with transparent background (Ideogram supports it via prompt — say "transparent PNG"). Verify in Preview that the alpha channel is preserved.</li>
+<li><strong>For photorealistic hero images:</strong> use detailed lighting and composition direction. Anti-stock-photo guardrails matter — explicitly say "documentary style, not stock" and "no faces visible" if you want anonymous-tradesperson framing.</li>
+<li><strong>Iterate by remixing:</strong> Ideogram lets you "remix" an existing generation with a tweaked prompt. Use this to refine the strongest variant from a batch instead of starting from scratch.</li>
+<li><strong>Save the prompt history.</strong> Build a per-asset markdown file with each prompt + which generation Phyrom picked. Future-you will thank present-you.</li>
+<li><strong>Stay on palette.</strong> When Ideogram drifts off-palette (it sometimes adds purple or teal), append: <em>"Use ONLY these four colors and white/cream: #00a9e0, #1a1a2e, #f59e0b, #10b981. No other colors."</em></li>
+</ul>
+<hr>
+<h2 id="12-workflow-recommendation-3-day-sequence">12. Workflow recommendation (3-day sequence)</h2>
+<p><strong>Day 1 — Anchor the brand visually (the one-day push).</strong></p>
+<ol>
+<li>Generate 4 variants per category for: app icon, favicon, social avatar = 12+ images.</li>
+<li>Phyrom picks the top 2 in each category.</li>
+<li>Lock the app-icon direction first — it cascades into favicon, social avatar, and product icons.</li>
+</ol>
+<p><strong>Day 2 — Refine + extend to product family.</strong></p>
+<ol>
+<li>Generate 4 refinements of each top-2 variant per category = 8 more images.</li>
+<li>Pick the winner per category (app icon, favicon, social avatar).</li>
+<li>Once the app icon is locked, generate the 4 product-specific icons in a single batch so the family resemblance holds.</li>
+<li>Generate the Founding Pro badge variants (3 styles × 1 batch each = 12 images, pick 1).</li>
+<li>Generate the Old-House Verified badge variants (3 styles × 1 batch each = 12 images, pick 1).</li>
+</ol>
+<p><strong>Day 3 — Brand Guardian review + ship.</strong></p>
+<ol>
+<li>Brand Guardian agent runs visual-consistency audit across all 6 final assets (app icon, favicon, social avatar, product family, Founding Pro badge, Old-House Verified badge).</li>
+<li>Verify against bible §3.5 (visual identity — colors, diagonal cut, no off-palette drift).</li>
+<li>Export and integrate into <code>public/icons/</code>, <code>public/manifest.json</code>, social profiles, landing page header, in-app badge components.</li>
+</ol>
+<p><strong>Total:</strong> 40+ images generated, 6–8 final assets shipped. Estimated Phyrom time: 4–6 hours over 3 days.</p>
+<p><strong>Sequencing reasoning:</strong> the app icon is the highest-leverage asset because it sets the visual grammar for everything else. Generate it first. Once it's locked, every downstream asset (favicon, social avatar, product icons, badges) has a fixed reference point. Generating the product-icon family after the app icon is locked also reduces the risk that the four product icons feel disconnected from the parent brand.</p>
+<hr>
+<h2 id="13-brand-bible-compliance-notes-read-before-generating">13. Brand-bible compliance notes (read before generating)</h2>
+<ul>
+<li><strong>Plainspoken, founder-voiced</strong> — these prompts intentionally read like Phyrom wrote them (because they're <em>for</em> Phyrom). Don't dress them up with marketing-speak in future revisions.</li>
+<li><strong>Always say:</strong> Licensed · Verified · Code-aware · Built by a contractor · Local · National. (If you're writing alt text or filenames, lean on these words.)</li>
+<li><strong>Never say:</strong> "Wiseman" externally · "AI-powered" as headline · Disrupt · Revolutionize · Region-anchored brand language ("New England marketplace"). Ideogram doesn't generate copy in the image (we're prompting visual-only) but if you're naming files, naming generations, or writing alt text, hold the line.</li>
+<li><strong>Phyrom's surname is UNKNOWN</strong> — don't invent one in any filename or alt text. "Phyrom" only.</li>
+<li><strong>Tradesperson-credible visual style is non-negotiable</strong> — no startup-bro polish, no glossy 3D renders, no Shutterstock smiling-construction-worker imagery, no Silicon Valley aesthetic.</li>
+</ul>
+<hr>
+<p><strong>End of prompt library. Questions or revisions: ping the Brand Guardian agent.</strong></p>
+
+	
+
+
+</body>
+</html>

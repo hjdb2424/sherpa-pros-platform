@@ -1,0 +1,1088 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>05 sherpa materials hub integration spec — Sherpa Pros</title>
+<link rel="icon" href="../../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="05-sherpa-materials-hub-integration-spec.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="sherpa-materials-engine--hub-side-integration-spec">Sherpa Materials Engine — Hub-Side Integration Spec</h1>
+<h2 id="scope">Scope</h2>
+<p>This spec covers the <strong>Hub-side technical integration</strong> of the Sherpa Materials engine (internally <code>Wiseman Materials engine</code>) for the 5 FW Webb co-located Pilot Hubs. It defines:</p>
+<ul>
+<li>Zinc API ship-to-Hub configuration</li>
+<li>Hub inventory management + Marketplace exposure</li>
+<li>Uber Direct dispatch-from-Hub configuration (4 daily waves)</li>
+<li>Pickup-by-pro flow (QR scan + grab + go)</li>
+<li>Return processing</li>
+<li>Per-Hub margin attribution</li>
+<li>SQL schema additions</li>
+</ul>
+<p>Out of scope: standalone (non-co-located) Hub variant — see Hub spec §4 Option A.</p>
+<h2 id="1-three-fulfillment-modes-per-hub-per-hub-spec-§13">1. Three fulfillment modes per Hub (per Hub spec §13)</h2>
+<p>Every material order routed through Sherpa Materials engine resolves to <strong>one of three modes</strong> based on SKU class, member preferences, and Hub stocking state:</p>
+<table>
+<thead>
+<tr>
+<th>Mode</th>
+<th>% of Hub volume</th>
+<th>Margin to Hub</th>
+<th>Latency to pro</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Buffer-stocked</strong></td>
+<td>40%</td>
+<td>High (full Hub markup)</td>
+<td>Immediate (pickup or staged)</td>
+</tr>
+<tr>
+<td><strong>Counter-pickup</strong></td>
+<td>35%</td>
+<td>Medium (FW Webb counter handoff fee)</td>
+<td>Same-day (pro picks at FW Webb counter)</td>
+</tr>
+<tr>
+<td><strong>Staged + Uber Direct</strong></td>
+<td>25%</td>
+<td>Lower (Uber Direct fee deduction)</td>
+<td>1-4 hrs to job site</td>
+</tr>
+</tbody></table>
+<p>The orchestrator decision-tree lives in <code>materials-engine/src/orchestrator/hub-routing.ts</code> (to be created in WS3).</p>
+<h2 id="2-zinc-api-ship-to-hub-configuration">2. Zinc API ship-to-Hub configuration</h2>
+<h3 id="21-default-ship-to-hub-for-top-200-skus">2.1 Default ship-to-Hub for Top-200 SKUs</h3>
+<p>For each Hub, the Sherpa Materials catalog flags the <strong>Top-200 SKUs</strong> by historical pro-demand velocity in the Hub's catchment region. These SKUs default to <code>ship_mode = 'hub_buffer'</code> in the Zinc API call — the engine ships them in case-pack quantities to the Hub on a weekly replenishment cadence.</p>
+<pre><code class="hljs ts"><span class="hljs-comment">// materials-engine/src/zinc/ship-to-hub.ts</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">HubShipConfig</span> {
+  <span class="hljs-attr">hubId</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">fwWebbBranchId</span>: <span class="hljs-built_in">string</span>; <span class="hljs-comment">// for cross-fulfillment</span>
+  <span class="hljs-attr">shipToAddress</span>: <span class="hljs-title class_">HubAddress</span>;
+  <span class="hljs-attr">defaultShipMode</span>: <span class="hljs-string">'hub_buffer'</span> | <span class="hljs-string">'counter_pickup'</span> | <span class="hljs-string">'job_site'</span>;
+  <span class="hljs-attr">bufferStockedSkus</span>: <span class="hljs-built_in">string</span>[]; <span class="hljs-comment">// top-200 SKUs for this Hub</span>
+  <span class="hljs-attr">replenishCadence</span>: <span class="hljs-string">'weekly'</span> | <span class="hljs-string">'biweekly'</span>;
+}
+</code></pre>
+<h3 id="22-routing-override">2.2 Routing override</h3>
+<p>For SKUs <strong>not</strong> in the Top-200, the orchestrator falls through to:</p>
+<ol>
+<li>FW Webb counter-pickup (if SKU is FW Webb-stocked at the co-located branch)</li>
+<li>FW Webb staged + Uber Direct (if SKU is FW Webb-stocked + pro chose direct-to-job)</li>
+<li>Zinc → 3rd-party supplier ship-direct (if SKU is not FW Webb-stocked)</li>
+</ol>
+<h3 id="23-replenishment-trigger">2.3 Replenishment trigger</h3>
+<p>Buffer levels are tracked in <code>hub_materials_staging</code> (§7). A nightly cron checks each Hub's Top-200 SKU on-hand vs reorder point and pushes a replenishment PO to FW Webb (via the FW Webb wholesale-order API or EDI 850 — TBD in WS2).</p>
+<h2 id="3-hub-inventory-management">3. Hub inventory management</h2>
+<h3 id="31-real-time-stocking-levels">3.1 Real-time stocking levels</h3>
+<p>Hub inventory levels are exposed to the Marketplace pro app:</p>
+<ul>
+<li>Pro requests material → Marketplace queries <code>hub_materials_staging</code> → returns <code>in_stock_at_hub: true | false | low_stock</code></li>
+<li>"In stock at Hub" gets a green badge + immediate pickup option</li>
+<li>"Low stock" gets a yellow badge + counter-pickup fallback</li>
+<li>"Not in stock" gets either counter-pickup or Uber Direct option</li>
+</ul>
+<h3 id="32-cycle-counts">3.2 Cycle counts</h3>
+<p>Hub Manager performs weekly cycle counts on the Top-50 highest-velocity SKUs and a rolling sample of the rest. Counts are entered via Hub Manager dashboard → updates <code>hub_materials_staging.qty_on_hand</code>.</p>
+<h3 id="33-variance-handling">3.3 Variance handling</h3>
+<p>If a cycle count finds variance &gt;5% on any SKU, an alert fires to Hub Manager + Network Ops. Variance investigation is logged in <code>hub_access_log</code>.</p>
+<h2 id="4-uber-direct-dispatch-from-hub-configuration">4. Uber Direct dispatch-from-Hub configuration</h2>
+<h3 id="41-four-daily-waves">4.1 Four daily waves</h3>
+<p>Each Hub runs <strong>four daily Uber Direct dispatch waves</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Wave</th>
+<th>Cutoff time</th>
+<th>Pro receives by</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>6:30 AM</td>
+<td>8:00 AM</td>
+</tr>
+<tr>
+<td>2</td>
+<td>8:00 AM</td>
+<td>9:30 AM</td>
+</tr>
+<tr>
+<td>3</td>
+<td>10:00 AM</td>
+<td>11:30 AM</td>
+</tr>
+<tr>
+<td>4</td>
+<td>12:00 PM</td>
+<td>1:30 PM</td>
+</tr>
+</tbody></table>
+<p>Why 4 waves and not on-demand: Hub Manager batches staging → reduces Uber Direct per-trip cost ~30% via consolidated drop-runs. Pros placing orders after wave-4 cutoff get next-day wave-1.</p>
+<h3 id="42-wave-orchestration">4.2 Wave orchestration</h3>
+<pre><code class="hljs ts"><span class="hljs-comment">// materials-engine/src/dispatch/wave-scheduler.ts</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">DispatchWave</span> {
+  <span class="hljs-attr">hubId</span>: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">waveNumber</span>: <span class="hljs-number">1</span> | <span class="hljs-number">2</span> | <span class="hljs-number">3</span> | <span class="hljs-number">4</span>;
+  <span class="hljs-attr">cutoffTime</span>: <span class="hljs-built_in">string</span>; <span class="hljs-comment">// local TZ</span>
+  <span class="hljs-attr">orders</span>: <span class="hljs-title class_">MaterialsOrder</span>[];
+  <span class="hljs-attr">uberDirectQuoteId</span>?: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">uberDirectStatus</span>?: <span class="hljs-string">'quoted'</span> | <span class="hljs-string">'requested'</span> | <span class="hljs-string">'in_transit'</span> | <span class="hljs-string">'delivered'</span> | <span class="hljs-string">'failed'</span>;
+}
+</code></pre>
+<h3 id="43-failure-handling">4.3 Failure handling</h3>
+<p>If Uber Direct fails for a wave (driver unavailable, etc.), the orchestrator falls back to:</p>
+<ol>
+<li>Hub Manager personal van delivery (if member is within 5 mi)</li>
+<li>Reschedule to next wave + auto-credit member $10 inconvenience credit</li>
+</ol>
+<h2 id="5-pickup-by-pro-flow-qr-scan--grab--go">5. Pickup-by-pro flow (QR scan + grab + go)</h2>
+<h3 id="51-flow">5.1 Flow</h3>
+<ol>
+<li>Pro orders materials in Marketplace app</li>
+<li>Sherpa Materials engine routes to Hub buffer</li>
+<li>Hub Manager pre-stages order on labeled shelf (label = pro name + order ID + QR)</li>
+<li>Pro receives push notification: "Order ready at Hub — show QR at door"</li>
+<li>Pro arrives at Hub, scans QR at entry kiosk → entry log written to <code>hub_access_log</code></li>
+<li>Pro walks to labeled shelf, scans QR on order package → completion log written</li>
+<li>Pro walks out</li>
+</ol>
+<h3 id="52-loss-prevention">5.2 Loss prevention</h3>
+<ul>
+<li>Cameras over each staging shelf (per Hub buildout spec)</li>
+<li>QR scan + camera log = audit trail for any order discrepancy</li>
+<li>Hub access requires active Sherpa Pros member + valid QR (no walk-in pickup without membership)</li>
+</ul>
+<h3 id="53-after-hours-pickup">5.3 After-hours pickup</h3>
+<p>Pilot Hubs offer 24/7 access via member QR for prepaid stocked orders. Buffer-stocked SKUs only — no counter-pickup outside FW Webb branch hours (counter-pickup requires FW Webb staff).</p>
+<h2 id="6-return-processing">6. Return processing</h2>
+<p>Three return classes, each with a defined flow:</p>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Flow</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Defective</strong></td>
+<td>Pro flags in app → returns to Hub → Hub Manager logs in <code>hub_returns</code> table → ships back to Zinc supplier or FW Webb under defective-goods clause → pro credited within 24 hrs</td>
+</tr>
+<tr>
+<td><strong>Wrong item</strong></td>
+<td>Pro flags in app → Hub Manager logs + offers same-day correct-item dispatch → wrong item goes back to buffer (if intact) or returned to source</td>
+</tr>
+<tr>
+<td><strong>End-of-job remainder</strong></td>
+<td>Pro can return unopened cases for restock credit (50-90% credit depending on SKU) → Hub Manager logs + back to buffer</td>
+</tr>
+</tbody></table>
+<p>All returns log to <code>hub_returns</code> (§7).</p>
+<h2 id="7-per-hub-margin-attribution">7. Per-Hub margin attribution</h2>
+<p>Per Hub spec §13, each Hub's P&amp;L tracks margin by mode:</p>
+<table>
+<thead>
+<tr>
+<th>Mode</th>
+<th>Margin model</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Buffer-stocked</td>
+<td>Sherpa Pros markup over Hub-landed cost (incl freight + 8% inventory carry); Hub keeps 100% of markup gross margin</td>
+</tr>
+<tr>
+<td>Counter-pickup</td>
+<td>FW Webb invoices Sherpa Pros at preferred-vendor rate; Sherpa Pros marks up to pro; Hub gets ~$3 per-order handling fee</td>
+</tr>
+<tr>
+<td>Staged + Uber Direct</td>
+<td>Sherpa Pros markup minus Uber Direct fee minus Hub staging labor (~$4/order); margin tighter</td>
+</tr>
+</tbody></table>
+<p>The 40/35/25 mix yields a blended Hub gross margin target of ~22% of materials revenue.</p>
+<h2 id="8-sql-schema-additions">8. SQL schema additions</h2>
+<p>Reference Hub spec §13 — the following tables added to <code>db/schema/hub-materials.ts</code>:</p>
+<pre><code class="hljs sql"><span class="hljs-keyword">CREATE TABLE</span> hub_materials_staging (
+  id UUID <span class="hljs-keyword">PRIMARY KEY</span>,
+  hub_id UUID <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">REFERENCES</span> hubs(id),
+  sku TEXT <span class="hljs-keyword">NOT NULL</span>,
+  qty_on_hand <span class="hljs-type">INTEGER</span> <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-number">0</span>,
+  reorder_point <span class="hljs-type">INTEGER</span> <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-number">0</span>,
+  reorder_qty <span class="hljs-type">INTEGER</span> <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-number">0</span>,
+  last_replenish_at TIMESTAMPTZ,
+  last_cycle_count_at TIMESTAMPTZ,
+  cycle_count_variance_pct <span class="hljs-type">DECIMAL</span>(<span class="hljs-number">5</span>,<span class="hljs-number">2</span>),
+  is_top_200 <span class="hljs-type">BOOLEAN</span> <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-literal">FALSE</span>,
+  fw_webb_sku_match TEXT,
+  created_at TIMESTAMPTZ <span class="hljs-keyword">DEFAULT</span> NOW(),
+  updated_at TIMESTAMPTZ <span class="hljs-keyword">DEFAULT</span> NOW(),
+  <span class="hljs-keyword">UNIQUE</span> (hub_id, sku)
+);
+
+<span class="hljs-keyword">CREATE TABLE</span> hub_access_log (
+  id UUID <span class="hljs-keyword">PRIMARY KEY</span>,
+  hub_id UUID <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">REFERENCES</span> hubs(id),
+  member_id UUID <span class="hljs-keyword">REFERENCES</span> members(id),
+  event_type TEXT <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">CHECK</span> (event_type <span class="hljs-keyword">IN</span> (<span class="hljs-string">'entry'</span>,<span class="hljs-string">'exit'</span>,<span class="hljs-string">'order_pickup'</span>,<span class="hljs-string">'return_dropoff'</span>,<span class="hljs-string">'staff_admin'</span>)),
+  related_order_id UUID <span class="hljs-keyword">REFERENCES</span> materials_orders(id),
+  qr_scan_payload TEXT,
+  occurred_at TIMESTAMPTZ <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> NOW(),
+  notes TEXT
+);
+
+<span class="hljs-keyword">CREATE TABLE</span> hub_metrics_daily (
+  id UUID <span class="hljs-keyword">PRIMARY KEY</span>,
+  hub_id UUID <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">REFERENCES</span> hubs(id),
+  metric_date <span class="hljs-type">DATE</span> <span class="hljs-keyword">NOT NULL</span>,
+  active_member_count <span class="hljs-type">INTEGER</span> <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-number">0</span>,
+  member_visits <span class="hljs-type">INTEGER</span> <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-number">0</span>,
+  materials_orders_count <span class="hljs-type">INTEGER</span> <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-number">0</span>,
+  materials_revenue_cents <span class="hljs-type">BIGINT</span> <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-number">0</span>,
+  materials_gross_margin_cents <span class="hljs-type">BIGINT</span> <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-number">0</span>,
+  uber_direct_orders_count <span class="hljs-type">INTEGER</span> <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-number">0</span>,
+  uber_direct_on_time_pct <span class="hljs-type">DECIMAL</span>(<span class="hljs-number">5</span>,<span class="hljs-number">2</span>),
+  pickup_orders_count <span class="hljs-type">INTEGER</span> <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-number">0</span>,
+  return_count <span class="hljs-type">INTEGER</span> <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-number">0</span>,
+  member_nps_avg <span class="hljs-type">DECIMAL</span>(<span class="hljs-number">4</span>,<span class="hljs-number">2</span>),
+  created_at TIMESTAMPTZ <span class="hljs-keyword">DEFAULT</span> NOW(),
+  <span class="hljs-keyword">UNIQUE</span> (hub_id, metric_date)
+);
+
+<span class="hljs-keyword">CREATE TABLE</span> hub_returns (
+  id UUID <span class="hljs-keyword">PRIMARY KEY</span>,
+  hub_id UUID <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">REFERENCES</span> hubs(id),
+  order_id UUID <span class="hljs-keyword">REFERENCES</span> materials_orders(id),
+  member_id UUID <span class="hljs-keyword">REFERENCES</span> members(id),
+  return_class TEXT <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">CHECK</span> (return_class <span class="hljs-keyword">IN</span> (<span class="hljs-string">'defective'</span>,<span class="hljs-string">'wrong_item'</span>,<span class="hljs-string">'remainder'</span>)),
+  sku TEXT <span class="hljs-keyword">NOT NULL</span>,
+  qty <span class="hljs-type">INTEGER</span> <span class="hljs-keyword">NOT NULL</span>,
+  credit_pct <span class="hljs-type">INTEGER</span> <span class="hljs-keyword">NOT NULL</span>,
+  credit_cents <span class="hljs-type">BIGINT</span> <span class="hljs-keyword">NOT NULL</span>,
+  return_logged_at TIMESTAMPTZ <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> NOW(),
+  resolved_at TIMESTAMPTZ,
+  notes TEXT
+);
+</code></pre>
+<p>Indexes: <code>hub_id</code> on every table; <code>metric_date</code> on <code>hub_metrics_daily</code>; <code>member_id, occurred_at</code> on <code>hub_access_log</code>.</p>
+<h2 id="9-implementation-phasing-aligns-with-ws3">9. Implementation phasing (aligns with WS3)</h2>
+<table>
+<thead>
+<tr>
+<th>Sub-phase</th>
+<th>Weeks</th>
+<th>Owner</th>
+<th>Deliverable</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>9.1</td>
+<td>1-2</td>
+<td>Eng</td>
+<td>Schema migration + Drizzle types</td>
+</tr>
+<tr>
+<td>9.2</td>
+<td>3-4</td>
+<td>Eng</td>
+<td>Zinc ship-to-Hub config + Top-200 SKU loader</td>
+</tr>
+<tr>
+<td>9.3</td>
+<td>5-6</td>
+<td>Eng</td>
+<td>Hub inventory exposure to Marketplace</td>
+</tr>
+<tr>
+<td>9.4</td>
+<td>7-8</td>
+<td>Eng</td>
+<td>Wave scheduler + Uber Direct integration</td>
+</tr>
+<tr>
+<td>9.5</td>
+<td>9-10</td>
+<td>Eng + Hub Mgr</td>
+<td>Pickup-by-pro QR flow + access kiosk</td>
+</tr>
+<tr>
+<td>9.6</td>
+<td>11-12</td>
+<td>Eng + Ops</td>
+<td>Return processing + Hub Manager dashboard wire-up</td>
+</tr>
+<tr>
+<td>9.7</td>
+<td>13-14</td>
+<td>Eng + Ops</td>
+<td>Margin attribution reporting + per-Hub P&amp;L</td>
+</tr>
+</tbody></table>
+<h2 id="10-naming-guard">10. Naming guard</h2>
+<p>Internal code/comments may reference <code>wiseman</code> (the engine's internal name). All <strong>user-facing copy</strong> (Marketplace, Hub Manager dashboard, Hub kiosk, member emails, FW Webb-shared screens) MUST use <strong>"Sherpa Materials"</strong>. CI lint should fail if any string literal containing "wiseman" appears in <code>src/components/**</code> or <code>src/app/(public)/**</code>.</p>
+
+	
+
+
+</body>
+</html>

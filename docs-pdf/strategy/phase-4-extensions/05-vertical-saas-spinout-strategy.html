@@ -1,0 +1,1003 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>05 vertical saas spinout strategy — Sherpa Pros</title>
+<link rel="icon" href="../../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="05-vertical-saas-spinout-strategy.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="trades-vertical-software-as-a-service-spinout-strategy">Trades-Vertical Software-as-a-Service Spinout Strategy</h1>
+<h2 id="purpose">Purpose</h2>
+<p>Sherpa Pros is built first as a marketplace + Hub network + embedded fintech platform. But underneath the consumer-and-pro-facing surfaces are four engineering platforms — Sherpa codes engine, Sherpa Materials engine, Sherpa Score, and Dispatch matching — that are best-in-class Business-to-Business Software-as-a-Service products in their own right. This document is the strategy for productizing those engines as Application Programming Interface-first Software as a Service offerings sold to other platforms (Procore, BuilderTrend, JobNimbus, ServiceTitan, Housecall Pro, insurance carriers, and adjacent vertical marketplaces) starting in Phase 5.</p>
+<p><strong>The core thesis.</strong> Building a code-aware, materials-aware, score-aware, dispatch-aware platform takes 4-6 years and $50M-$100M of investment. Competitors in adjacent verticals (commercial construction Software as a Service, residential service trades Software as a Service, restoration Software as a Service) would rather pay $2-$25/month/seat to license these capabilities than rebuild them. The Software-as-a-Service spinouts monetize that build-vs-buy gap.</p>
+<p><strong>Phyrom's stated preference.</strong> The Software-as-a-Service spinouts are Phase 5 surfaces, not Phase 4 surfaces. Phase 4 stays focused on international + franchise + embedded fintech. The spinouts are spec'd here so that Phase 4 engineering decisions (Application Programming Interface design, modularization, monitoring) keep the Phase 5 spinout option alive instead of foreclosing it.</p>
+<hr>
+<h2 id="1-the-four-spinout-candidate-engines-ranked">1. The four spinout-candidate engines, ranked</h2>
+<h3 id="11-sherpa-codes-engine--the-highest-value-spinout">1.1 Sherpa codes engine — the highest-value spinout</h3>
+<p><strong>What it does.</strong> Application Programming Interface for code-aware permit and bid generation. Given a job description (square footage, scope, jurisdiction), the engine returns:</p>
+<ul>
+<li>Applicable codes (National Electrical Code, International Residential Code, state codes, municipal amendments, fire-rated assembly requirements).</li>
+<li>Required permits (which jurisdictions, which permit types, which fees, which inspection schedule).</li>
+<li>Permit-application paperwork (auto-filled per jurisdiction).</li>
+<li>Code-violation flags on the bid (e.g., "this scope requires a 20-amp circuit on a dedicated branch per National Electrical Code 210.11(C)(2)").</li>
+<li>Rebate eligibility (Mass Save, National Grid, Inflation Reduction Act federal tax credits).</li>
+</ul>
+<p><strong>Why it spins out.</strong> Code intelligence is the single hardest moat to build in the Sherpa Pros stack. It took 12+ years of working-contractor experience (Phyrom + advisors) plus 192 codes × 480K entries × 284 NH municipal amendments to assemble. No competitor will build this from scratch — they will license it.</p>
+<p><strong>Targets.</strong></p>
+<ul>
+<li><strong>Procore.</strong> Procore's commercial customers desperately want code intelligence inside their bid workflow. Procore pays Sherpa Application Programming Interface fees per call, embeds in their existing user interface.</li>
+<li><strong>BuilderTrend / JobNimbus / CoConstruct.</strong> Residential general contractor Software as a Service tools. Same value prop, smaller seat base.</li>
+<li><strong>ServiceTitan.</strong> Service-trades Software as a Service. Code intelligence for HVAC + electrical + plumbing is high-value; ServiceTitan's customer base is large.</li>
+<li><strong>Code-research tools (UpCodes, BSDcodes, ICCsafe).</strong> Lower value (these are competitors at the document layer, not at the bid-generation layer) but possible licensing partners.</li>
+</ul>
+<p><strong>Pricing model.</strong> Two pricing tiers:</p>
+<ul>
+<li><strong>Per-Application-Programming-Interface-call:</strong> $0.05-$0.50 per call depending on jurisdiction complexity (NH municipal vs. simple state-only). Best for low-volume customers.</li>
+<li><strong>Enterprise tier:</strong> $5K-$25K per month for unlimited Application Programming Interface usage + Service Level Agreement + dedicated support. Best for Procore-tier customers.</li>
+</ul>
+<p><strong>Estimated revenue at scale.</strong> $8M-$15M Annual Recurring Revenue by Phase 5 Year 3 if Procore + BuilderTrend + 1-2 other strategic customers sign on.</p>
+<h3 id="12-sherpa-materials-engine--the-second-highest-value-spinout">1.2 Sherpa Materials engine — the second-highest-value spinout</h3>
+<p><strong>What it does.</strong> Application Programming Interface for materials orchestration. Given a job (or kit specification), the engine:</p>
+<ul>
+<li>Identifies the optimal supplier (price, distance, in-stock availability, delivery time).</li>
+<li>Routes the order across multiple rails: Zinc Application Programming Interface (Home Depot Pro Desk + Lowe's For Pros), Uber Direct (last-mile delivery), First Webb partnership network (regional supply houses), direct-from-manufacturer (Schluter, Laticrete).</li>
+<li>Returns a single tracking surface and Application Programming Interface for the calling platform.</li>
+</ul>
+<p><strong>Why it spins out.</strong> Materials orchestration is a multi-rail integration problem that takes 18-24 months to build per major supplier. Sherpa already built it for the Sherpa Marketplace + Sherpa Hub use case; spinning it out to other platforms is leverage on existing infrastructure.</p>
+<p><strong>Targets.</strong></p>
+<ul>
+<li><strong>Home Depot Pro Desk + Lowe's For Pros.</strong> Both want their pro customers to order materials from anywhere (mobile, third-party software) and have the order routed to the optimal store. Sherpa Materials engine is the routing layer they'd license.</li>
+<li><strong>Procore.</strong> Procore Materials is a Procore product line. Sherpa Materials engine could power it (or compete with it; partnership economics depend).</li>
+<li><strong>Regional supply houses (Lansing Building Products, US LBM Holdings).</strong> Large regional supply distributors want Application Programming Interface access to Sherpa's pro demand and Sherpa Hub network.</li>
+</ul>
+<p><strong>Pricing model.</strong> Percentage of materials moved through the Application Programming Interface: 1%-3% take rate. Higher than competitor margins but justified by orchestration value (the calling platform doesn't need to build supplier integrations).</p>
+<p><strong>Estimated revenue at scale.</strong> $12M-$25M Annual Recurring Revenue by Phase 5 Year 3 (assumes $400M-$800M Gross Merchandise Value flowing through Application Programming Interface at 3% take).</p>
+<h3 id="13-sherpa-score-application-programming-interface--the-third-highest-value-spinout">1.3 Sherpa Score Application Programming Interface — the third-highest-value spinout</h3>
+<p><strong>What it does.</strong> Application Programming Interface for pro-trust scoring. Given a pro identifier (license number, business name, business address), returns Sherpa Score (0-100) + breakdown by pillar (Quality, Communication, Reviews) + per-trade-category sub-scores.</p>
+<p><strong>Why it spins out.</strong> Sherpa Score is a proprietary trust signal that no other platform has access to. Insurance carriers, home-services platforms, trade-school placement programs, and any platform that needs to vet trade pros would license the Score rather than build their own.</p>
+<p><strong>Targets.</strong></p>
+<ul>
+<li><strong>Insurance carriers (Travelers, Chubb, Liberty Mutual, Hippo).</strong> Sherpa Score as input to commercial-general-liability underwriting for trade pros. Higher Score = lower premium = competitive advantage for the carrier.</li>
+<li><strong>Home-services platforms (HomeAdvisor, Houzz Pro, Porch).</strong> Pro-vetting input. These are quasi-competitors to Sherpa Marketplace, but they'd license the Score for vetting their pros even while competing with us on demand-side.</li>
+<li><strong>Trade-school placement programs (NCCER, ABC, AGC).</strong> Recent graduate placement programs use Sherpa Score for outcomes tracking.</li>
+<li><strong>Real-estate-maintenance platforms (Latchel, Maintenance Made Simple).</strong> Pro-vetting for property-management pro networks.</li>
+</ul>
+<p><strong>Pricing model.</strong> $1-$10 per scored pro per month depending on use case (insurance underwriting commands premium pricing; bulk vetting is lower-tier).</p>
+<p><strong>Estimated revenue at scale.</strong> $5M-$10M Annual Recurring Revenue by Phase 5 Year 3.</p>
+<h3 id="14-dispatch-wiseman-matching-engine-application-programming-interface--the-fourth-highest-value-spinout">1.4 Dispatch Wiseman matching engine Application Programming Interface — the fourth-highest-value spinout</h3>
+<p><strong>What it does.</strong> Application Programming Interface for best-pro-for-job matching. Given a job (description, location, budget) and a pool of pros (loaded by the calling platform), the engine returns a ranked list of pros most likely to accept + complete the job successfully, with explanation.</p>
+<p><strong>Why it spins out.</strong> Dispatch is the Phase 4 Machine Learning model with built-in fairness constraints. Smaller marketplaces and insurance restoration networks benefit from Sherpa's matching expertise without building the model themselves.</p>
+<p><strong>Targets.</strong></p>
+<ul>
+<li><strong>Smaller vertical marketplaces.</strong> Pet-services marketplaces, beauty-services marketplaces, etc., where matching is a non-trivial problem and the marketplace is sub-scale to invest in their own model.</li>
+<li><strong>Insurance restoration networks (Servpro, ServiceMaster, Belfor).</strong> When insurance claim opens, restoration network needs to dispatch a pro fast. Sherpa Dispatch as Application Programming Interface accelerates this.</li>
+<li><strong>Real-estate-maintenance platforms.</strong> Maintenance request comes in; platform dispatches via Sherpa Dispatch.</li>
+</ul>
+<p><strong>Pricing model.</strong> Percentage of Gross Merchandise Value transacted via Application Programming Interface (0.5%-2%) OR per-match fee ($5-$25 per successful match). Customer chooses based on volume profile.</p>
+<p><strong>Estimated revenue at scale.</strong> $3M-$6M Annual Recurring Revenue by Phase 5 Year 3 (smaller market than codes/Materials/Score).</p>
+<h3 id="combined-software-as-a-service-spinout-revenue-at-phase-5-year-3">Combined Software-as-a-Service spinout revenue at Phase 5 Year 3</h3>
+<table>
+<thead>
+<tr>
+<th>Spinout</th>
+<th>Estimated Annual Recurring Revenue</th>
+<th>Margin profile</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Sherpa codes engine Application Programming Interface</td>
+<td>$8M-$15M</td>
+<td>70%-80% gross margin</td>
+</tr>
+<tr>
+<td>Sherpa Materials engine Application Programming Interface</td>
+<td>$12M-$25M</td>
+<td>30%-40% gross margin (volume-pass-through)</td>
+</tr>
+<tr>
+<td>Sherpa Score Application Programming Interface</td>
+<td>$5M-$10M</td>
+<td>80%-90% gross margin</td>
+</tr>
+<tr>
+<td>Dispatch Wiseman Application Programming Interface</td>
+<td>$3M-$6M</td>
+<td>80%-90% gross margin</td>
+</tr>
+<tr>
+<td><strong>Combined</strong></td>
+<td><strong>$28M-$56M</strong></td>
+<td><strong>Blended ~55%-65% gross margin</strong></td>
+</tr>
+</tbody></table>
+<p>By Series C+24 months (Phase 5 Year 2-3), Software-as-a-Service spinouts contribute meaningful revenue + high-quality margin profile that improves overall company unit economics.</p>
+<hr>
+<h2 id="2-spinout-structure-decision">2. Spinout structure decision</h2>
+<p>The board decides between three structures for the Software-as-a-Service spinouts. The recommendation evolves with revenue scale.</p>
+<h3 id="structure-a-software-as-a-service-revenue-line-inside-sherpa-pros-llc">Structure A: Software-as-a-Service revenue line inside Sherpa Pros LLC</h3>
+<p><strong>Description.</strong> Spinout engines are productized but stay inside Sherpa Pros LLC as a Business-to-Business Software-as-a-Service revenue line. Same balance sheet, same equity, same tax filings.</p>
+<p><strong>Pros.</strong></p>
+<ul>
+<li>Simplest structure. No new entity creation.</li>
+<li>Tightest integration with the marketplace + Hub + fintech surfaces.</li>
+<li>Cross-sell easier (a Procore customer who licenses Sherpa codes engine is a candidate for Sherpa Marketplace integration on the consumer side).</li>
+<li>Tax-loss-carryforward and credit utilization stays consolidated.</li>
+</ul>
+<p><strong>Cons.</strong></p>
+<ul>
+<li>Software-as-a-Service revenue gets blended into marketplace revenue at investor reporting time, possibly suppressing the Software-as-a-Service multiple.</li>
+<li>Software-as-a-Service customer-acquisition motion (sales team, customer-success team) sits inside a marketplace company, which is operationally awkward.</li>
+<li>A future Software-as-a-Service spinout exit is harder to extract.</li>
+</ul>
+<p><strong>When this is the right structure.</strong> Phase 5 Year 1-2, when Software-as-a-Service revenue is &lt;$30M Annual Recurring Revenue and the marketplace + Hub remain the primary growth engine.</p>
+<h3 id="structure-b-spin-out-as-separate-delaware-c-corporation-with-sherpa-pros-as-80-owner">Structure B: Spin out as separate Delaware C-corporation with Sherpa Pros as 80% owner</h3>
+<p><strong>Description.</strong> Sherpa Pros LLC creates a new Delaware C-corp, "Sherpa Platforms Inc." (working name; subject to brand review). Sherpa Pros LLC owns 80%; the remaining 20% is reserved for the new Sherpa Platforms Inc. employee equity pool (incentivizes Software-as-a-Service-dedicated employees with equity in the company they build).</p>
+<p><strong>Pros.</strong></p>
+<ul>
+<li>Clean separation between marketplace economics and Software-as-a-Service economics. Investors can value each separately.</li>
+<li>Software-as-a-Service-dedicated equity pool incentivizes Software-as-a-Service team without diluting Sherpa Pros LLC cap table.</li>
+<li>A future Software-as-a-Service spinout sale or Initial Public Offering is structurally cleaner.</li>
+<li>Possible to take outside investment into Sherpa Platforms Inc. without diluting Sherpa Pros LLC.</li>
+</ul>
+<p><strong>Cons.</strong></p>
+<ul>
+<li>Significant legal + accounting overhead to set up and maintain (transfer pricing between entities, intercompany agreements, separate audits).</li>
+<li>Complicates Sherpa Pros LLC's own Initial Public Offering pathway if the parent company wants to take Sherpa Pros LLC public including the Software-as-a-Service surfaces.</li>
+<li>Cap-table complexity on a future combined exit.</li>
+</ul>
+<p><strong>When this is the right structure.</strong> Phase 5 Year 2-3, when Software-as-a-Service revenue exceeds $30M Annual Recurring Revenue and the Software-as-a-Service business has its own meaningful P&amp;L profile.</p>
+<h3 id="structure-c-full-divestiture-spin-out--sell-to-a-software-as-a-service-focused-buyer">Structure C: Full divestiture (spin out + sell to a Software-as-a-Service-focused buyer)</h3>
+<p><strong>Description.</strong> Sherpa Pros LLC spins out the Software-as-a-Service engine as a separate entity and either sells it outright to a strategic buyer or takes it public separately.</p>
+<p><strong>Pros.</strong></p>
+<ul>
+<li>Maximum value extraction if a Software-as-a-Service-focused buyer values the spinout above what the integrated structure prices it at.</li>
+<li>Full focus for the spinout team — they're not constrained by marketplace decisions.</li>
+<li>Simplifies the Sherpa Pros LLC story for its own exit (smaller, cleaner business).</li>
+</ul>
+<p><strong>Cons.</strong></p>
+<ul>
+<li>Loses the integration moat (Sherpa codes engine is more valuable when it's connected to Sherpa Marketplace + Sherpa Hub data).</li>
+<li>Loses the cross-sell flywheel.</li>
+<li>Risk that the divested entity competes with Sherpa Pros LLC over time (e.g., Procore acquires the Sherpa codes engine spinout and then builds a competing residential marketplace).</li>
+</ul>
+<p><strong>When this is the right structure.</strong> Only if a strategic buyer values the Software-as-a-Service spinout at a price that exceeds the present value of keeping it integrated. Likely Phase 5 Year 4+ scenario.</p>
+<hr>
+<h2 id="3-phasing">3. Phasing</h2>
+<h3 id="phase-4-year-2-months-24-30-software-as-a-service-readiness-investments-inside-sherpa-pros-engineering">Phase 4 Year 2 (Months 24-30): Software-as-a-Service-readiness investments inside Sherpa Pros engineering</h3>
+<p>These are not spinouts yet — they are engineering decisions made during Phase 4 that keep the Phase 5 spinout option alive:</p>
+<ul>
+<li><strong>Sherpa codes engine Application Programming Interface beta</strong> released to 2-3 friendly partners (Procore corporate development relationship from <code>02-acquisition-track-strategic-analysis.md</code> provides a natural channel). Goal: validate that an external customer can integrate the Application Programming Interface and that the Application Programming Interface design is portable beyond Sherpa Pros' own use cases.</li>
+<li><strong>Application Programming Interface design and documentation discipline</strong> baked into all four candidate engines. Even when used internally, treat the Application Programming Interface as a public contract.</li>
+<li><strong>Modularization</strong> of code that today is tightly coupled to Sherpa Pros' own database and authentication. Refactor toward portable cores.</li>
+<li><strong>Monitoring and observability</strong> at the Application Programming Interface layer (separate from product-feature monitoring), so that spinout customers can be served at Software-as-a-Service-grade reliability.</li>
+</ul>
+<h3 id="phase-5-year-1-months-36-48-sherpa-codes-engine-application-programming-interface-to-general-availability">Phase 5 Year 1 (Months 36-48): Sherpa codes engine Application Programming Interface to General Availability</h3>
+<ul>
+<li>Sherpa codes engine Application Programming Interface released to General Availability.</li>
+<li>5-10 paying customers, $1M-$3M Annual Recurring Revenue at year-end.</li>
+<li>Sherpa Materials engine Application Programming Interface to closed-beta with 2-3 friendly partners.</li>
+<li>Hire Head of Software-as-a-Service Platform (estimated Phase 5 Month 6).</li>
+</ul>
+<h3 id="phase-5-year-2-months-48-60-sherpa-materials-engine-application-programming-interface-to-general-availability">Phase 5 Year 2 (Months 48-60): Sherpa Materials engine Application Programming Interface to General Availability</h3>
+<ul>
+<li>Sherpa Materials engine Application Programming Interface to General Availability.</li>
+<li>$5M-$15M combined Software-as-a-Service Annual Recurring Revenue.</li>
+<li>Sherpa Score Application Programming Interface to closed-beta with insurance-carrier partner.</li>
+<li>Evaluate Structure B (separate Delaware C-corp) at Phase 5 Year 2 board meeting.</li>
+</ul>
+<h3 id="phase-5-year-3-months-60-72-full-software-as-a-service-portfolio">Phase 5 Year 3 (Months 60-72): Full Software-as-a-Service portfolio</h3>
+<ul>
+<li>All four spinout engines available as Application Programming Interface products.</li>
+<li>$28M-$56M combined Software-as-a-Service Annual Recurring Revenue.</li>
+<li>Software-as-a-Service-dedicated sales team (3-5 enterprise account executives).</li>
+<li>Customer-success team for Software-as-a-Service customers.</li>
+<li>Marketing motion for developer-and-platform audience (separate from consumer-and-pro marketing).</li>
+</ul>
+<h3 id="phase-5-year-4-months-72-strategic-optionality">Phase 5 Year 4+ (Months 72+): Strategic optionality</h3>
+<ul>
+<li>Decide between Structure A (continue inside Sherpa Pros LLC), Structure B (separate Delaware C-corp), or Structure C (divestiture).</li>
+<li>Decision drivers: combined Software-as-a-Service revenue, Sherpa Pros LLC's own exit path (strategic acquisition vs Initial Public Offering), strategic buyer interest in Software-as-a-Service spinouts.</li>
+</ul>
+<hr>
+<h2 id="4-risk-and-counter-arguments">4. Risk and counter-arguments</h2>
+<h3 id="counter-argument-1-software-as-a-service-spinouts-compete-with-sherpa-marketplace">Counter-argument 1: "Software-as-a-Service spinouts compete with Sherpa Marketplace."</h3>
+<p>If Procore licenses Sherpa codes engine and uses it inside their Software-as-a-Service to support residential general contractors, are they competing with Sherpa Marketplace? Possibly yes — the codes-engine licensee might use the Application Programming Interface to power a competing residential marketplace.</p>
+<p><strong>Mitigation.</strong> Application Programming Interface license terms can include non-compete clauses that prohibit using the codes engine to power a competing trade marketplace. This is contractually enforceable; whether it's strategically wise depends on the customer.</p>
+<h3 id="counter-argument-2-software-as-a-service-spinouts-dilute-focus">Counter-argument 2: "Software-as-a-Service spinouts dilute focus."</h3>
+<p>Sherpa Pros' founder and executive team should focus on marketplace + Hub + international + franchise. Software-as-a-Service spinouts are a different motion (Application Programming Interface developer relations, enterprise sales, multi-tenant operations).</p>
+<p><strong>Mitigation.</strong> Defer Software-as-a-Service spinouts to Phase 5. Don't launch any of them in Phase 4. Hire a dedicated Head of Software-as-a-Service Platform (Phase 5 Year 1) so they have an owner with separate Profit and Loss accountability.</p>
+<h3 id="counter-argument-3-software-as-a-service-spinouts-give-competitors-our-moat">Counter-argument 3: "Software-as-a-Service spinouts give competitors our moat."</h3>
+<p>Sherpa codes engine is the deepest moat. Licensing it to Procore shrinks Sherpa's competitive advantage in the long run.</p>
+<p><strong>Mitigation.</strong> Phyrom's read is that the moat is the integrated stack (codes + materials + score + dispatch + marketplace), not codes alone. Licensing one component doesn't cede the whole. And: charging Procore for the Application Programming Interface generates revenue we can reinvest into widening the moat (better Machine Learning models, more code coverage, more jurisdictions).</p>
+<h3 id="risk-insurance-carrier-locks-in-exclusive-license-to-sherpa-score-application-programming-interface">Risk: insurance carrier locks in exclusive license to Sherpa Score Application Programming Interface</h3>
+<p><strong>Scenario.</strong> Travelers offers Sherpa $50M for an exclusive 5-year license to Sherpa Score Application Programming Interface. Tempting, but exclusivity locks out other carriers + reduces optionality.</p>
+<p><strong>Mitigation.</strong> Default to non-exclusive licensing. Only consider exclusive deals with significant premium and short tenor (12-18 months max).</p>
+<hr>
+<h2 id="5-phase-4-commitments-to-keep-phase-5-spinout-option-alive">5. Phase 4 commitments to keep Phase 5 spinout option alive</h2>
+<p>The Phase 4 engineering team makes the following commitments now so that Phase 5 spinouts are possible:</p>
+<ol>
+<li><strong>Application Programming Interface contract discipline.</strong> All four engines expose stable Application Programming Interfaces. Breaking changes require deprecation periods.</li>
+<li><strong>Multi-tenancy readiness.</strong> Code is built with future multi-tenant operation in mind, even when used internally for Sherpa Pros only.</li>
+<li><strong>Documentation.</strong> Application Programming Interface documentation is maintained at Software-as-a-Service-grade (OpenAPI specifications, SDK examples, error references).</li>
+<li><strong>Authentication separation.</strong> Application Programming Interface authentication is decoupled from Sherpa Pros user authentication so external customers can authenticate as their own organization.</li>
+<li><strong>Rate limiting + Service Level Agreement infrastructure.</strong> Built into the Application Programming Interface gateway from day one.</li>
+<li><strong>Logging + audit trail.</strong> Per-customer Application Programming Interface usage logging for billing + Service Level Agreement tracking.</li>
+</ol>
+<p>These commitments cost engineering ~10%-15% extra effort in Phase 4. They are paid back many times over in Phase 5.</p>
+<hr>
+<h2 id="owner-sign-off">Owner sign-off</h2>
+<p>This strategy is owned by:</p>
+<ul>
+<li>Phyrom (founder)</li>
+<li>Chief Financial Officer (Phase 4 Month 6 hire)</li>
+<li>Vice President Engineering (Phase 4 Month 0 promotion)</li>
+<li>Head of Software-as-a-Service Platform (Phase 5 Year 1 hire)</li>
+</ul>
+<p>Reviewed semi-annually at board meeting beginning Phase 4 Year 2.</p>
+
+	
+
+
+</body>
+</html>

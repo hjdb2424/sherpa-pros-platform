@@ -1,0 +1,859 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>08 fw webb partnership faq — Sherpa Pros</title>
+<link rel="icon" href="../../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="08-fw-webb-partnership-faq.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="fw-webb-×-sherpa-pros-partnership--faq">FW Webb × Sherpa Pros Partnership — FAQ</h1>
+<h2 id="strategic--why-fw-webb">Strategic / Why-FW-Webb</h2>
+<h3 id="q1-why-fw-webb-specifically">Q1. Why FW Webb specifically?</h3>
+<p>FW Webb is the <strong>dominant trade-supply distributor in New England</strong> with ~100 branches concentrated in NH, MA, ME, RI, VT, CT — the exact geography where Sherpa Pros is launching. FW Webb already brings the trade pro to its branches every morning. Sherpa Pros captures the workflow + dispatch side those same pros need. The two stacks compose without overlap. FW Webb is also a privately-held, founder-friendly culture — meaningfully easier to do a 12-month pilot with than a publicly-traded distributor that has quarterly-EPS pressure.</p>
+<h3 id="q2-why-a-co-located-hub-instead-of-a-digital-only-partnership">Q2. Why a co-located Hub instead of a digital-only partnership?</h3>
+<p>Pros are physical-world workers. The morning ritual is <strong>walk into the supply house at 6:30 a.m.</strong>, not "open an app." Putting the Sherpa Hub 30 ft from the FW Webb counter means the Sherpa workflow attaches to the existing pro habit at zero adoption friction. Digital-only would require us to acquire pros from scratch and would deny FW Webb the foot-traffic + retention upside.</p>
+<h3 id="q3-why-5-pilot-hubs-and-not-1-or-50">Q3. Why 5 pilot Hubs and not 1 or 50?</h3>
+<p>One Hub is too small to validate the model — too many idiosyncratic-branch effects. Fifty Hubs is too much capital risk for an unproven format. Five Hubs gives statistically defensible per-branch evidence across 3 NE states with 4 distinct trade mixes (urban + suburban + dense-MA + ME-style spread).</p>
+<h3 id="q4-how-does-sherpa-pros-compete-with-fw-webbs-pro-counter">Q4. How does Sherpa Pros compete with FW Webb's pro counter?</h3>
+<p>It doesn't. FW Webb's pro counter is the <strong>fulfillment layer for the materials</strong>. Sherpa Pros' Hub is the <strong>workflow layer for the pro's day</strong> — dispatch, scheduling, payments, training, lounge, materials <em>staging</em> (not selling). Sherpa Pros sources the materials <em>through</em> FW Webb (preferred-vendor in pilot regions). The pro experience is "I went to FW Webb and got my whole morning sorted," not "I picked between FW Webb and Sherpa."</p>
+<h2 id="operational--branch-impact">Operational / Branch-impact</h2>
+<h3 id="q5-what-happens-if-a-pilot-hub-underperforms">Q5. What happens if a pilot Hub underperforms?</h3>
+<p>Three scenarios per LOI §9.3:</p>
+<ol>
+<li><strong>Below 50% of gates</strong> — joint review at QBR, root-cause analysis, corrective action plan</li>
+<li><strong>50-70% of gates</strong> — same as above + extension option for 6 months at revised gates</li>
+<li><strong>Above 70%, below 100%</strong> — meet/almost-meet path; expand selectively (some Hubs replicated, some held)</li>
+<li><strong>Below 50% in two consecutive QBRs</strong> — pilot wind-down for the underperforming Hub specifically (not the whole partnership) per LOI §10</li>
+</ol>
+<p>Each individual Pilot Branch can be wound down without unwinding the whole partnership.</p>
+<h3 id="q6-who-hires-and-manages-the-hub-manager">Q6. Who hires and manages the Hub Manager?</h3>
+<p>Sherpa Pros — fully. The Hub Manager is a Sherpa Pros W-2 employee. They report into Sherpa Pros Regional Ops. FW Webb has zero HR / payroll / compliance / liability exposure on Sherpa Pros staff. The Hub Manager and FW Webb branch manager will coordinate on day-to-day branch operations (loading dock, materials staging) but are independent organizations.</p>
+<h3 id="q7-how-does-this-affect-existing-fw-webb-branch-staff">Q7. How does this affect existing FW Webb branch staff?</h3>
+<p>Modest <strong>positive</strong> impact:</p>
+<ul>
+<li>Branch staff bandwidth gets a small assist on bagging / counter staging via Sherpa Materials staging workflows</li>
+<li>Branch staff have a new resource (Hub Manager next door) for tough customer escalations</li>
+<li>Counter sales lift (+15%) creates more activity but also more revenue-sharing opportunity</li>
+<li>Modeled at $8K incremental staff cost per branch (covered by net incremental EBITDA of $165-210K)</li>
+</ul>
+<p>A handful of high-performing FW Webb branch staff may be Sherpa Hub Manager candidates over time — this is a recruiting opportunity, not a threat.</p>
+<h3 id="q8-does-the-hub-take-parking-spaces">Q8. Does the Hub take parking spaces?</h3>
+<p>Hub uses ~5 dedicated parking spots for member-priority parking + 1 loading dock slot for Uber Direct staging. Each Pilot Branch will be evaluated in the Branch Site Schedule (LOI Exhibit B) for parking adequacy.</p>
+<h3 id="q9-what-about-insurance--liability-for-members-on-the-fw-webb-premises">Q9. What about insurance + liability for members on the FW Webb premises?</h3>
+<p>Sherpa Pros carries commercial general liability with FW Webb named additional insured ($2M per occurrence / $4M aggregate minimum per LOI §5). All Sherpa Pros members go through onboarding that includes a premises-liability waiver covering both the Sherpa Hub footprint and FW Webb branch.</p>
+<h3 id="q10-how-are-after-hours-member-visits-managed">Q10. How are after-hours member visits managed?</h3>
+<p>Pilot Hubs offer 24/7 member access via QR scan to the Hub footprint. Member access does not include the FW Webb branch interior outside FW Webb branch hours. The Sherpa Hub footprint is physically separated by an interior wall + secured door + cameras. Members who need supplies after hours can grab from buffer-stocked Sherpa Hub inventory only.</p>
+<h2 id="data--tech">Data / Tech</h2>
+<h3 id="q11-how-is-data-shared-between-sherpa-pros-and-fw-webb">Q11. How is data shared between Sherpa Pros and FW Webb?</h3>
+<p>Per LOI §6.3 + §11.4:</p>
+<ul>
+<li>FW Webb gives Sherpa Pros: monthly aggregate Pilot-Branch sales data attributable to Sherpa Materials orchestration (no individual customer detail)</li>
+<li>Sherpa Pros gives FW Webb: monthly aggregate Hub member count, Materials throughput metrics, NPS scores</li>
+<li>Per-pro identifiable cross-data (e.g. "this specific pro is both an FW Webb account and a Sherpa member") requires the pro's prior written consent</li>
+<li>The FW Webb partner counterpart sees a <strong>scoped, redacted slice</strong> of the network-wide Hub Ops dashboard (per dashboard spec §7)</li>
+</ul>
+<h3 id="q12-what-about-fw-webbs-existing-pro-account-data--does-sherpa-pros-get-it">Q12. What about FW Webb's existing pro-account data — does Sherpa Pros get it?</h3>
+<p>No. FW Webb's pro-account customer data is FW Webb's exclusive property (LOI §11.3). Sherpa Pros has no access to FW Webb pro-account names, contact info, or purchase history beyond aggregate Pilot-Branch reporting. Co-marketing campaigns to FW Webb pros must be initiated by FW Webb (Sherpa-Pros-funded co-mailers go through FW Webb's CRM).</p>
+<h3 id="q13-where-does-the-sherpa-materials-engine-live-does-fw-webb-need-to-integrate-with-it">Q13. Where does the Sherpa Materials engine live? Does FW Webb need to integrate with it?</h3>
+<p>The Sherpa Materials engine (internally <code>Wiseman Materials engine</code>, externally always <code>Sherpa Materials</code>) is hosted by Sherpa Pros. FW Webb integrates via:</p>
+<ul>
+<li><strong>Phase 1 (manual)</strong>: weekly inventory levels emailed by Sherpa Hub Manager to FW Webb branch</li>
+<li><strong>Phase 2 (semi-automated)</strong>: EDI 850 / 855 / 856 for replenishment POs, advance ship notices</li>
+<li><strong>Phase 3 (real-time)</strong>: FW Webb wholesale-order API integration for live inventory + pricing (target Pilot Month 9)</li>
+</ul>
+<p>FW Webb investment in Phase 3 is optional — Phases 1+2 cover the pilot.</p>
+<h2 id="competitive--strategic">Competitive / Strategic</h2>
+<h3 id="q14-what-if-a-competing-marketplace-homeadvisor-angi-thumbtack-amazon-business-trade-approaches-fw-webb-during-the-pilot">Q14. What if a competing marketplace (HomeAdvisor, Angi, Thumbtack, Amazon Business Trade) approaches FW Webb during the pilot?</h3>
+<p>Per LOI §7.1, FW Webb is <strong>exclusive to Sherpa Pros for trade-pro marketplace co-locations</strong> during the Pilot Term within 25 miles of any Pilot Branch. FW Webb retains freedom to do all other partnerships (training providers, fleet services, financing partners, single-trade specialty distributors, etc.). The exclusivity is narrowly scoped to the trade-marketplace lane that Sherpa Pros occupies.</p>
+<h3 id="q15-what-if-sherpa-pros-wants-to-expand-to-a-market-where-fw-webb-has-no-branch">Q15. What if Sherpa Pros wants to expand to a market where FW Webb has no branch?</h3>
+<p>Per LOI §9.2, FW Webb has a 30-day right of first refusal to host any new Hub Sherpa Pros opens. If FW Webb declines or has no branch in the market, Sherpa Pros is free to pursue a standalone Hub or alternate-host partnership.</p>
+<h2 id="future--scale">Future / Scale</h2>
+<h3 id="q16-post-pilot-how-does-this-scale">Q16. Post-pilot, how does this scale?</h3>
+<p>The post-pilot path is laid out in LOI §9.1:</p>
+<ul>
+<li><strong>Year 2</strong> (post-pilot): 25 co-located Hubs across NE</li>
+<li><strong>Year 3-4</strong>: 50+ co-located Hubs across full FW Webb footprint (all 100 branches assessed)</li>
+<li><strong>Year 5+</strong>: Expansion to non-FW-Webb markets via standalone Hubs + franchise model (separate spec — <code>franchise-model-design.md</code>)</li>
+</ul>
+<p>Year-2 expansion negotiation begins at Pilot Month 10 to allow for definitive Master Services Agreement before Pilot end.</p>
+<h3 id="q17-international-rollout--does-fw-webb-participate">Q17. International rollout — does FW Webb participate?</h3>
+<p>FW Webb's footprint is US-only (NE-concentrated). International rollout (Canada Year 3-4, Europe Year 5+) will use:</p>
+<ul>
+<li><strong>Canada</strong>: similar partnership model with Wolseley / EMCO (FW Webb does not have right-of-first-refusal in Canada, but conversation expected)</li>
+<li><strong>Europe / UK</strong>: similar model with Travis Perkins / Plumbase</li>
+<li>FW Webb retains right of first negotiation if it expands internationally during Sherpa Pros' international rollout window</li>
+</ul>
+<h3 id="q18-could-fw-webb-acquire-sherpa-pros-at-some-point">Q18. Could FW Webb acquire Sherpa Pros at some point?</h3>
+<p>Optional addendum referenced in LOI: FW Webb has right of first negotiation to acquire Sherpa Pros' Hub network at end of Pilot Year 5, on terms to be negotiated in good faith. This is an <em>option</em>, not an obligation, and either Party can decline. The intent is mutual optionality, not a forced exit.</p>
+<h2 id="internal-only-sherpa-pros-team">Internal-only (Sherpa Pros team)</h2>
+<h3 id="q19-why-are-we-never-saying-wiseman-externally">Q19. Why are we never saying "Wiseman" externally?</h3>
+<p>The internal engine is named <code>Wiseman Materials engine</code>. Externally — in any FW Webb-facing material, member-facing material, marketing material, dashboard label, email — we call it the <strong>Sherpa Materials engine</strong> (or just "Sherpa Materials"). Reason: the Wiseman name is not customer-positioned and would dilute the Sherpa Pros brand. CI lint should fail any external string containing "Wiseman."</p>
+<h3 id="q20-whats-the-loi-deadline-and-why-is-it-hard">Q20. What's the LOI deadline and why is it hard?</h3>
+<p><strong>Phase 1 Month 4 — HARD DEADLINE.</strong> Reason: the GTM Phase 0 fundraise narrative (Series Seed) depends on the FW Webb LOI as the proof-point that the partnership-anchored Hub model is real. Without a signed LOI by Month 4, the fundraise narrative slips by 2 quarters and Hub #1 buildout (Wave A) loses its planned revenue ramp. The deadline is forcing the pace deliberately.</p>
+
+	
+
+
+</body>
+</html>

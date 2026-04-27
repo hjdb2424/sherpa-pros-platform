@@ -1,0 +1,1294 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>05 7 stage screening templates — Sherpa Pros</title>
+<link rel="icon" href="../../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="05-7-stage-screening-templates.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="7-stage-franchise-screening--templates--scripts">7-Stage Franchise Screening — Templates + Scripts</h1>
+<h2 id="stage-1--inquiry-form-auto-response-email">Stage 1 — Inquiry Form Auto-Response Email</h2>
+<p><strong>Trigger:</strong> Form submission via thesherpapros.com/franchise inquiry form.
+<strong>Cadence:</strong> Sent within 60 seconds of submission.
+<strong>From:</strong> <a href="mailto:franchise@thesherpapros.com">franchise@thesherpapros.com</a> (Phyrom + VPFD distribution list)
+<strong>Reply-to:</strong> <a href="mailto:franchise@thesherpapros.com">franchise@thesherpapros.com</a></p>
+<h3 id="subject-line">Subject Line</h3>
+<blockquote>
+<p>Your Sherpa Hub franchise inquiry — next step inside</p>
+</blockquote>
+<h3 id="email-body">Email Body</h3>
+<blockquote>
+<p>Hi {{first_name}},</p>
+<p>Thank you for your inquiry about the Sherpa Hub franchise opportunity. We received your application moments ago and a Sherpa Pros team member will personally review it within 2 business days.</p>
+<p>Phyrom — our founder — reads every inquiry personally for the first 25 franchisees. So if you don't hear from a team member, you'll hear from him.</p>
+<p><strong>What happens next:</strong></p>
+<ol>
+<li>Within 2 business days, our Vice President of Franchise Development will email you to schedule a 45-minute Discovery Call (Stage 2 of our 7-stage screening process).</li>
+<li>Before the Discovery Call, please review the attached Frequently Asked Questions document and the Discovery Day calendar (linked below).</li>
+<li>The Discovery Call will cover your construction-industry experience, your net worth, your cash to invest, your territory of interest, and any questions you have about the business.</li>
+</ol>
+<p><strong>Important regulatory note:</strong> This communication does not constitute an offer to sell a franchise. The offer of a franchise can only be made through delivery of a Franchise Disclosure Document (FDD). We will deliver the FDD only after a signed mutual Non-Disclosure Agreement (Stage 3 of our process), and a mandatory 14-calendar-day waiting period under the Federal Trade Commission Franchise Rule applies before any binding signature.</p>
+<p><strong>Resources:</strong></p>
+<ul>
+<li>Frequently Asked Questions document — [attached PDF]</li>
+<li>Discovery Day calendar at Hub #1 Atkinson NH — [link to calendar]</li>
+<li>Sherpa Pros 6-product portfolio overview — [link]</li>
+<li>Founder story (90-second video) — [link]</li>
+</ul>
+<p>Looking forward to talking soon.</p>
+<p>The Sherpa Pros Franchise Development Team
+<a href="mailto:franchise@thesherpapros.com">franchise@thesherpapros.com</a> | thesherpapros.com/franchise</p>
+<p>Sherpa Pros LLC | Atkinson, New Hampshire</p>
+<p><strong>Required disclosure:</strong> This website does not constitute an offer to sell a franchise. The offer of a franchise can only be made through the delivery of a Franchise Disclosure Document. Certain states require that we register the Franchise Disclosure Document in those states. The communications in this email are not directed by us to the residents of any of those states. Moreover, we will not offer or sell franchises in those states until we have registered the franchise (or obtained an applicable exemption from registration) and delivered the Franchise Disclosure Document to the prospective franchisee in compliance with applicable law.</p>
+</blockquote>
+<hr>
+<h2 id="stage-2--discovery-call-script-45-minutes">Stage 2 — Discovery Call Script (45 Minutes)</h2>
+<p><strong>Trigger:</strong> Discovery Call scheduled by VPFD via Calendly link.
+<strong>Format:</strong> Video (Google Meet or Zoom)
+<strong>Attendees:</strong> VPFD (lead), prospect, optionally Phyrom for first 25 prospects
+<strong>Recording:</strong> With prospect consent only — recording goes into franchise-prospect file under mutual NDA</p>
+<h3 id="pre-call-preparation-checklist-vpfd">Pre-Call Preparation Checklist (VPFD)</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Review prospect's inquiry form responses</li>
+<li><input disabled="" type="checkbox"> Pull credit-bureau pre-screen (soft pull — no permission required for marketing screen)</li>
+<li><input disabled="" type="checkbox"> Review LinkedIn + public-record search on prospect</li>
+<li><input disabled="" type="checkbox"> Confirm territory of interest is in an allowed-sales state (Phase 4 Year 1: NH/ME/MA/VT only)</li>
+<li><input disabled="" type="checkbox"> Prepare Discovery Call agenda PDF for prospect</li>
+</ul>
+<h3 id="call-agenda-time-boxed">Call Agenda (Time-Boxed)</h3>
+<p><strong>0:00–0:05 — Introductions + agenda walkthrough</strong></p>
+<blockquote>
+<p>"Hi {{first_name}}, thanks for making time. I'm [VPFD Name], Vice President of Franchise Development at Sherpa Pros. Today's call is 45 minutes. I'll spend the first 15 minutes telling you about Sherpa Pros and the Sherpa Hub franchise opportunity. The next 20 minutes I'll ask you questions about your background and your interest. The last 10 minutes are yours — any question you have. We're recording with your consent for our internal file. Are you good with that?"</p>
+</blockquote>
+<p><strong>0:05–0:20 — Sherpa Pros + Sherpa Hub franchise overview</strong></p>
+<blockquote>
+<p>"Sherpa Pros is the largest licensed-trade marketplace in New England. We connect verified pros with clients on demand. We've shipped six core products: Sherpa Hub, Sherpa Marketplace, Sherpa Materials, Sherpa Home, Sherpa Success Manager, and Sherpa Rewards plus Flex. The Sherpa Hub is the physical pickup point — 1,500 to 3,000 square feet, located in your local market, where verified pros come to grab kits, rent equipment, attend training, and meet other pros in their trade community.</p>
+<p>Sherpa Hub franchise is the only franchise we offer at this time. Initial Franchise Fee is $45,000. Total initial investment range is $185,000 to $420,000 depending on your market. Royalty is 6 percent of gross revenue in Year 1, 8 percent in Year 2 and onward. Marketing Fund contribution is 2 percent. Technology fee is $200 a month flat. You get a protected territory — 5-mile radius in major-metro markets, 15-mile in suburban, 30-mile in rural.</p>
+<p>Our Item 19 financial performance representations disclose Year 1 revenue between $385,000 (low) and $740,000 (high), ramping to $1.05 million Year 2 mid case and $1.25 million Year 3 mid case. Mid-case Earnings Before Interest, Taxes, Depreciation, and Amortization at maturity is approximately 21 percent. Mid-case franchisee pre-tax cash flow at maturity is approximately $236,000.</p>
+<p>Item 19 includes the standard FTC disclaimer: some outlets have earned this amount; your individual results may differ; there is no assurance that you will earn as much. Substantiation is from Hub #1 in Atkinson NH (corporate-owned, opened in Phase 1) plus industry-comparable home-services franchise benchmarks.</p>
+<p>Any questions on the basics so far?"</p>
+</blockquote>
+<p><strong>0:20–0:40 — Qualification questions (the heart of the call)</strong></p>
+<blockquote>
+<p>Question 1 — Industry experience:
+"Walk me through your career in construction-adjacent work. Specifically: years, roles, and your relationship with the local trade community — trade associations, supply houses, building inspectors, town hall."</p>
+</blockquote>
+<blockquote>
+<p>Question 2 — Operating experience:
+"Have you ever owned or run a business with a Profit and Loss statement you were responsible for? Tell me about it — revenue range, employee count, biggest operational lesson."</p>
+</blockquote>
+<blockquote>
+<p>Question 3 — Capital position:
+"What is your current liquid net worth — cash plus marketable securities not encumbered by other obligations? And what is your total net worth? You don't need to give exact numbers, but ranges. We require $200,000+ liquid and $400,000+ total."</p>
+</blockquote>
+<blockquote>
+<p>Question 4 — Cash to invest:
+"How much cash do you have available for the franchise investment? Our Initial Investment range is $185,000 to $420,000. Most franchisees finance $185,000 via Small Business Administration 7(a) loan and put $117,500 of cash in. How does your situation compare?"</p>
+</blockquote>
+<blockquote>
+<p>Question 5 — Operator vs investor mindset:
+"We do not approve absentee ownership. Every franchisee is an operator — present at the Hub full-time during the first 24 months. Are you prepared to do that, or were you thinking of this as a passive investment?"</p>
+</blockquote>
+<blockquote>
+<p>Question 6 — Territory + geography:
+"What city or market are you interested in? Why that one specifically — what's your local connection?"</p>
+</blockquote>
+<blockquote>
+<p>Question 7 — Risk tolerance + time horizon:
+"The Initial Term is 10 years. Time to monthly cash-flow positive is 14 to 22 months. What's your time horizon for this investment?"</p>
+</blockquote>
+<blockquote>
+<p>Question 8 — Existing competing business:
+"Are you currently running, employed by, or invested in a competing licensed-trade marketplace, equipment-rental business, or job-kit assembly business? This is a hard disqualification — we need to know."</p>
+</blockquote>
+<blockquote>
+<p>Question 9 — Litigation + bankruptcy:
+"Have you ever been a plaintiff or defendant in franchise litigation? Have you filed personal bankruptcy in the last 7 years? Any felony conviction in the last 10 years?"</p>
+</blockquote>
+<blockquote>
+<p>Question 10 — Why Sherpa Pros (not competitor):
+"Why are you interested in Sherpa Pros specifically — versus opening an independent equipment rental, joining a competing franchise, or starting your own platform?"</p>
+</blockquote>
+<p><strong>0:40–0:50 — Prospect's questions</strong></p>
+<blockquote>
+<p>"What questions do you have for me?"</p>
+</blockquote>
+<p>(Most common prospect questions — VPFD should have answers ready: Item 19 ranges in detail; FW Webb partnership status; existing pro count in their market; competitive landscape vs Angi/Thumbtack/TaskRabbit; technology platform demonstration availability; reference franchisees they could speak to (after FDD delivery).)</p>
+<p><strong>0:50–0:55 — Next steps</strong></p>
+<blockquote>
+<p>"Here's what happens next. Based on this conversation, [VPFD assesses internally and communicates]:</p>
+<p>Path A (proceed): 'I think you're a strong fit on the qualifications we discussed. Our next step is mutual Non-Disclosure Agreement so we can share non-public information. I'll email the NDA today; once it's signed by both parties, we deliver the Franchise Disclosure Document. The FTC requires a mandatory 14-calendar-day waiting period after FDD delivery before any binding signature. Then we schedule Discovery Day at Hub #1 in Atkinson NH. From inquiry to signed Franchise Agreement, the typical cycle is 60 to 120 days.'</p>
+<p>Path B (need more info): 'I'd like to think more about a few things you raised — particularly [X]. I'll email you within 5 business days with our assessment.'</p>
+<p>Path C (decline with rationale): 'Based on our conversation, I don't think this is a fit because [specific rationale]. We may invite you to reapply after 12 months if [circumstances change]. Thank you for your time, and we wish you the best.'</p>
+</blockquote>
+<p><strong>0:55–1:00 — Close + send confirmation</strong></p>
+<blockquote>
+<p>"Great talking with you. You'll have a follow-up email from me within {{timeframe}} with [next-stage materials | thoughtful decline rationale | request for additional information]. Thank you, {{first_name}}."</p>
+</blockquote>
+<h3 id="post-call-documentation-vpfd">Post-Call Documentation (VPFD)</h3>
+<ul>
+<li>Complete Discovery Call assessment form (10 categories scored 1–5)</li>
+<li>Add notes to franchise-prospect file in franchise management software (FranConnect — see <code>07-vendor-accounts-setup.md</code>)</li>
+<li>Trigger appropriate next-stage automation (NDA send, decline email, request-additional-info email)</li>
+</ul>
+<hr>
+<h2 id="stage-3--mutual-non-disclosure-agreement-nda-template">Stage 3 — Mutual Non-Disclosure Agreement (NDA) Template</h2>
+<p><strong>Trigger:</strong> Path A from Stage 2 (proceed).
+<strong>Cadence:</strong> NDA emailed within 24 hours of Stage 2 call; signing target within 5 business days.
+<strong>Tool:</strong> OpenSign (per cost preference) or DocuSign for e-signature.</p>
+<h3 id="mutual-non-disclosure-agreement--sherpa-pros-franchise-development">Mutual Non-Disclosure Agreement — Sherpa Pros Franchise Development</h3>
+<p><strong>This Mutual Non-Disclosure Agreement ("Agreement") is entered into as of {{date}} between:</strong></p>
+<p><strong>Sherpa Pros LLC</strong> ("Sherpa Pros"), a Delaware Limited Liability Company with principal office at {{Atkinson NH HQ address}};</p>
+<p><strong>and</strong></p>
+<p><strong>{{Prospect Name}}</strong> ("Prospect"), an individual residing at {{prospect address}}.</p>
+<p><strong>WHEREAS</strong> Sherpa Pros and Prospect are engaged in discussions regarding a potential Sherpa Hub franchise opportunity;</p>
+<p><strong>WHEREAS</strong> in the course of such discussions each party may disclose to the other certain non-public, confidential, or proprietary information ("Confidential Information");</p>
+<p><strong>NOW, THEREFORE,</strong> the parties agree as follows:</p>
+<ol>
+<li><p><strong>Confidential Information</strong> means any non-public information disclosed by one party (the "Disclosing Party") to the other (the "Receiving Party") in connection with franchise development discussions, including but not limited to: financial performance data not contained in the published Franchise Disclosure Document; the Sherpa codes intelligence layer (the codes engine); the Sherpa Materials orchestration architecture; the Dispatch matching algorithm; the Sherpa Score reputation algorithm; supplier negotiations; per-market pro-recruiting data; Hub #1 (Atkinson NH) operating data; Sherpa Pros' technology roadmap; Sherpa Pros' international expansion strategy; the Prospect's net worth, financial statements, business plans, and personal information.</p>
+</li>
+<li><p><strong>Use Restriction.</strong> The Receiving Party shall use Confidential Information solely for the purpose of evaluating the potential Sherpa Hub franchise opportunity ("the Purpose") and for no other purpose.</p>
+</li>
+<li><p><strong>Non-Disclosure.</strong> The Receiving Party shall not disclose Confidential Information to any third party without the prior written consent of the Disclosing Party, except to: (a) the Receiving Party's attorneys, accountants, and financial advisors who are bound by professional duties of confidentiality and who have a need-to-know for the Purpose; (b) the Receiving Party's spouse or domestic partner; (c) lenders or investors evaluating financing for the Purpose, who have signed a separate confidentiality undertaking.</p>
+</li>
+<li><p><strong>Standard of Care.</strong> The Receiving Party shall protect Confidential Information with the same degree of care it uses to protect its own confidential information, but in no event less than reasonable care.</p>
+</li>
+<li><p><strong>Exceptions.</strong> Confidential Information does not include information that: (a) is or becomes publicly available through no fault of the Receiving Party; (b) was rightfully known by the Receiving Party prior to disclosure; (c) is rightfully received by the Receiving Party from a third party without confidentiality restriction; (d) is required to be disclosed by court order or applicable law (in which case the Receiving Party shall give prompt notice to the Disclosing Party so the Disclosing Party may seek a protective order).</p>
+</li>
+<li><p><strong>Term.</strong> This Agreement remains in effect for 3 years from the date first written above. Confidentiality obligations survive termination.</p>
+</li>
+<li><p><strong>No License.</strong> No license, intellectual property right, or other right is granted by this Agreement.</p>
+</li>
+<li><p><strong>No Obligation to Pursue.</strong> Nothing in this Agreement obligates either party to enter into a Franchise Agreement or any other transaction.</p>
+</li>
+<li><p><strong>Return or Destruction.</strong> Upon written request, the Receiving Party shall return or destroy all Confidential Information in its possession.</p>
+</li>
+<li><p><strong>Governing Law.</strong> This Agreement is governed by the laws of the State of New Hampshire, without regard to conflict of law principles.</p>
+</li>
+<li><p><strong>Dispute Resolution.</strong> Any dispute arising under this Agreement shall be resolved by binding arbitration administered by the American Arbitration Association under its Commercial Arbitration Rules; venue Boston, Massachusetts. Each party bears its own costs.</p>
+</li>
+<li><p><strong>Entire Agreement.</strong> This Agreement is the entire agreement between the parties on the subject of confidentiality. Amendments must be in writing and signed by both parties.</p>
+</li>
+</ol>
+<p><strong>SHERPA PROS LLC</strong>
+By: _______________________________
+Name: {{VPFD Name}}
+Title: Vice President, Franchise Development
+Date: {{date}}</p>
+<p><strong>PROSPECT</strong>
+Signature: _______________________________
+Name: {{Prospect Name}}
+Date: {{date}}</p>
+<hr>
+<h2 id="stage-4--fdd-delivery-cover-letter">Stage 4 — FDD Delivery Cover Letter</h2>
+<p><strong>Trigger:</strong> Mutual NDA fully executed.
+<strong>Cadence:</strong> FDD delivered within 5 business days of NDA execution. <strong>The Federal Trade Commission's mandatory 14-calendar-day waiting period begins on the FDD delivery date.</strong>
+<strong>Method:</strong> Email with PDF + tracked-link confirmation; receipt page (Item 23) signed by prospect on delivery.</p>
+<h3 id="cover-letter">Cover Letter</h3>
+<blockquote>
+<p>{{date}}</p>
+<p>{{Prospect Name}}
+{{Prospect Address}}</p>
+<p>Dear {{first_name}},</p>
+<p>Pursuant to the Federal Trade Commission's Franchise Rule (16 Code of Federal Regulations Part 436) and the mutual Non-Disclosure Agreement we executed on {{NDA execution date}}, please find attached the Sherpa Pros LLC Franchise Disclosure Document (FDD), Version {{X.X}}, dated {{FDD issue date}}.</p>
+<p><strong>Critical regulatory information:</strong></p>
+<p>The Federal Trade Commission's Franchise Rule requires that you have at least <strong>14 calendar days</strong> to review this Franchise Disclosure Document before you (a) sign any binding agreement or (b) pay any money to Sherpa Pros LLC or any of its affiliates in connection with the purchase of a franchise. The 14-day waiting period begins on the date you sign the receipt page (Item 23) of the attached FDD.</p>
+<p><strong>Today is {{delivery date}}. The earliest date you may sign a binding Franchise Agreement is {{delivery date + 14 calendar days}}.</strong></p>
+<p>Some states impose additional waiting-period requirements. Your specific state's requirements are addressed in the state-specific addenda included with the FDD.</p>
+<p><strong>What is in this FDD:</strong></p>
+<ul>
+<li>All 23 Items required by the Federal Trade Commission Franchise Rule</li>
+<li>Item 19 financial performance representations (per-Hub economics)</li>
+<li>Item 20 outlets and franchisee information</li>
+<li>Item 21 audited financial statements of Sherpa Pros LLC</li>
+<li>Item 22 sample contracts (Franchise Agreement, Brand License, Software License, Confidentiality Agreement, Personal Guaranty)</li>
+<li>Item 23 receipt pages (please sign and return one copy)</li>
+</ul>
+<p><strong>What we are asking of you:</strong></p>
+<ol>
+<li><p><strong>Sign the receipt page</strong> (Item 23) acknowledging the date you received this FDD. Email the signed receipt back to <a href="mailto:franchise@thesherpapros.com">franchise@thesherpapros.com</a> within 24 hours. This date triggers the 14-day waiting period.</p>
+</li>
+<li><p><strong>Read the entire FDD carefully.</strong> Do not rely solely on summaries from this letter or our conversations. The FDD is the controlling document.</p>
+</li>
+<li><p><strong>Consult your professional advisors.</strong> We strongly recommend you engage a qualified franchise attorney, an independent accountant, and an independent financial advisor to review the FDD before any signing. Sherpa Pros LLC will not represent you in this evaluation.</p>
+</li>
+<li><p><strong>Schedule Discovery Day</strong> at Hub #1 in Atkinson, New Hampshire. Discovery Day is a full-day on-site visit hosted by our founder (Phyrom) and our Vice President of Operations. The earliest available Discovery Day after your 14-day waiting period commences is {{date 14 days from delivery + scheduling buffer}}. Calendar link: {{Calendly link}}.</p>
+</li>
+<li><p><strong>Begin reference outreach.</strong> Identify three professional references — one business reference (former colleague, partner, or supervisor), one financial reference (banker, accountant, or attorney), one personal reference. We will contact your references during Stage 6 of our screening process. Please provide names, titles, and contact information by {{date + 7 days}}.</p>
+</li>
+</ol>
+<p><strong>What we are NOT asking of you (yet):</strong></p>
+<ul>
+<li>We are NOT asking you to sign any binding Franchise Agreement before {{delivery date + 14 calendar days}}.</li>
+<li>We are NOT asking you to pay the $45,000 Initial Franchise Fee at this stage.</li>
+<li>We are NOT asking you to commit to any specific Hub location, lease, or capital expenditure at this stage.</li>
+</ul>
+<p>If at any point during your review you decide not to proceed, please let me know. Sherpa Pros respects your time and your decision either way.</p>
+<p>If you have questions about any Item in the FDD, please email me directly. For legal interpretation questions, please consult your franchise attorney — Sherpa Pros LLC cannot provide legal advice to prospective franchisees.</p>
+<p>Thank you for your continued interest in the Sherpa Hub franchise opportunity.</p>
+<p>Sincerely,</p>
+<p>{{VPFD Name}}
+Vice President, Franchise Development
+Sherpa Pros LLC
+<a href="mailto:franchise@thesherpapros.com">franchise@thesherpapros.com</a> | (603) <em><strong>-</strong></em>_</p>
+<p><strong>Enclosures:</strong></p>
+<ul>
+<li>Sherpa Pros LLC Franchise Disclosure Document, Version {{X.X}}, dated {{date}}</li>
+<li>Sample Sherpa Hub Franchise Agreement (Item 22 exhibit)</li>
+<li>Receipt Pages (Item 23) — please sign and return Page 2</li>
+</ul>
+</blockquote>
+<hr>
+<h2 id="stage-5--discovery-day-on-site-agenda">Stage 5 — Discovery Day On-Site Agenda</h2>
+<p><strong>Trigger:</strong> Mid-way through 14-day waiting period (typically Day 7–14 after FDD delivery).
+<strong>Location:</strong> Hub #1, Atkinson, New Hampshire (colocated at HJD Builders LLC HQ).
+<strong>Duration:</strong> Full day, 9:00 AM to 5:30 PM Eastern Time.
+<strong>Hosts:</strong> Phyrom (founder), VPFD, future Hub Manager (Hub #1), future Chief Operating Officer (COO).
+<strong>Lunch:</strong> Catered on-site (no expense to prospect).
+<strong>Travel:</strong> Prospect responsible for travel and lodging. Sherpa Pros provides recommended hotel list (Manchester NH or Salem NH options within 20 miles).</p>
+<h3 id="discovery-day-agenda">Discovery Day Agenda</h3>
+<table>
+<thead>
+<tr>
+<th>Time</th>
+<th>Activity</th>
+<th>Lead</th>
+<th>Format</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>9:00 AM</td>
+<td>Arrival + coffee + welcome</td>
+<td>VPFD</td>
+<td>Hub #1 lounge</td>
+</tr>
+<tr>
+<td>9:15 AM</td>
+<td>Founder welcome + 6-product portfolio overview</td>
+<td>Phyrom</td>
+<td>Hub #1 conference room</td>
+</tr>
+<tr>
+<td>10:00 AM</td>
+<td>Hub #1 facility tour</td>
+<td>Hub Manager</td>
+<td>Walk-through: warehouse, kit assembly, equipment cage, training facility, member lounge, receiving dock</td>
+</tr>
+<tr>
+<td>11:00 AM</td>
+<td>Live operations observation</td>
+<td>Hub Manager</td>
+<td>Watch a real morning Uber Direct dispatch wave; observe pro check-ins; observe a kit pickup</td>
+</tr>
+<tr>
+<td>12:00 PM</td>
+<td>Lunch + Q&amp;A with founding pro</td>
+<td>Founding Pro + Phyrom</td>
+<td>Hub #1 lounge; prospect hears directly from a working pro using the platform</td>
+</tr>
+<tr>
+<td>1:00 PM</td>
+<td>Item 19 economics deep-dive</td>
+<td>VPFD + future CFO</td>
+<td>Hub #1 conference room; walk through the substantiation file (Mid + Low + High cases); answer questions on the FDD</td>
+</tr>
+<tr>
+<td>2:30 PM</td>
+<td>Operations Manual + Brand Standards Manual walkthrough</td>
+<td>COO</td>
+<td>Hub #1 conference room; preview of what franchisee receives at signing</td>
+</tr>
+<tr>
+<td>3:30 PM</td>
+<td>Technology platform demonstration</td>
+<td>COO + technology lead</td>
+<td>Live demo: Sherpa codes engine, Sherpa Materials engine, Dispatch, Sherpa Mobile, Sherpa Threads, Sherpa Smart Scan, Sherpa Guard, Sherpa Score</td>
+</tr>
+<tr>
+<td>4:30 PM</td>
+<td>Q&amp;A + open conversation</td>
+<td>Phyrom + VPFD + COO</td>
+<td>Hub #1 conference room; everything still on the table</td>
+</tr>
+<tr>
+<td>5:15 PM</td>
+<td>Next steps + close</td>
+<td>VPFD</td>
+<td>Recap of what comes next: references, background check, Approval Committee, signing schedule</td>
+</tr>
+<tr>
+<td>5:30 PM</td>
+<td>Adjourn</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h3 id="pre-discovery-day-checklist-sherpa-pros">Pre-Discovery-Day Checklist (Sherpa Pros)</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Confirm prospect's travel + lodging</li>
+<li><input disabled="" type="checkbox"> Send Discovery Day Agenda PDF 5 business days in advance</li>
+<li><input disabled="" type="checkbox"> Brief Hub Manager on prospect background</li>
+<li><input disabled="" type="checkbox"> Brief founding pro on prospect background</li>
+<li><input disabled="" type="checkbox"> Prepare Item 19 substantiation file printout</li>
+<li><input disabled="" type="checkbox"> Pre-load technology platform demo with sample data</li>
+<li><input disabled="" type="checkbox"> Confirm prospect has signed FDD receipt page (Item 23) and we are inside the 14-day waiting period</li>
+<li><input disabled="" type="checkbox"> <strong>DO NOT</strong> present any binding Franchise Agreement signature opportunity at Discovery Day; that would violate the FTC waiting period</li>
+</ul>
+<h3 id="post-discovery-day-documentation-vpfd">Post-Discovery-Day Documentation (VPFD)</h3>
+<ul>
+<li>Complete Discovery Day assessment form (15 categories scored 1–5)</li>
+<li>Solicit feedback from Hub Manager + founding pro + COO + Phyrom on prospect fit</li>
+<li>Add comprehensive notes to franchise-prospect file</li>
+<li>Within 5 business days: VPFD email to prospect summarizing day, confirming next steps, and providing reference outreach instructions</li>
+</ul>
+<hr>
+<h2 id="stage-6--reference-check-questionnaire">Stage 6 — Reference Check Questionnaire</h2>
+<p><strong>Trigger:</strong> Day 14 of FDD waiting period (waiting period must elapse before signing; Stage 6 can run in parallel with the back half of the waiting period).
+<strong>Cadence:</strong> All 3 references contacted within 7 business days; assessments compiled within 14 business days.
+<strong>Tool:</strong> Reference contact via email + phone; recorded with reference's consent.</p>
+<h3 id="three-required-reference-categories">Three Required Reference Categories</h3>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Who Qualifies</th>
+<th>What We're Validating</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Business reference</td>
+<td>Former colleague, business partner, supervisor (not family)</td>
+<td>Operational competence, integrity, reliability under pressure</td>
+</tr>
+<tr>
+<td>Financial reference</td>
+<td>Banker, accountant, attorney, financial advisor (with prospect's written authorization)</td>
+<td>Financial sophistication, ability to manage to a budget, debt management track record</td>
+</tr>
+<tr>
+<td>Personal reference</td>
+<td>Long-term personal contact (not family)</td>
+<td>Character, community standing, reliability of word-as-bond</td>
+</tr>
+</tbody></table>
+<h3 id="business-reference-questionnaire-15-minute-call-or-email">Business Reference Questionnaire (15-minute call or email)</h3>
+<blockquote>
+<ol>
+<li>How do you know {{prospect_name}}? In what capacity have you worked together?</li>
+<li>How long have you known the prospect?</li>
+<li>Describe a high-pressure operational situation you observed the prospect handle. What did they do well? What could have gone better?</li>
+<li>How does the prospect handle disagreement or conflict — with employees, with customers, with vendors?</li>
+<li>Has the prospect ever been responsible for a budget, a Profit and Loss statement, or a team? What was the scope, and how did they perform?</li>
+<li>Would you work with this prospect again? Why or why not?</li>
+<li>Are there any concerns about character, integrity, or reliability we should know about?</li>
+<li>Anything else you think is relevant to evaluating someone for a 10-year, $185,000+ business commitment?</li>
+</ol>
+</blockquote>
+<h3 id="financial-reference-questionnaire">Financial Reference Questionnaire</h3>
+<blockquote>
+<ol>
+<li>How long have you worked with {{prospect_name}}?</li>
+<li>In what capacity (banking, accounting, legal, advisory)?</li>
+<li>To the extent you can disclose without violating client confidentiality: how would you characterize the prospect's financial discipline — budgeting, debt management, savings rate?</li>
+<li>Has the prospect ever defaulted on a debt obligation, missed a tax filing deadline, or had a material financial misstep?</li>
+<li>To the extent you can disclose: is the prospect's stated liquid net worth consistent with your professional knowledge of their finances?</li>
+<li>Would you continue working with this prospect for the next 10 years?</li>
+<li>Any concerns about financial sophistication or financial trustworthiness we should know about?</li>
+</ol>
+</blockquote>
+<h3 id="personal-reference-questionnaire">Personal Reference Questionnaire</h3>
+<blockquote>
+<ol>
+<li>How do you know {{prospect_name}}? How long?</li>
+<li>How would you describe the prospect's character in 3 words?</li>
+<li>Does the prospect keep their word? Tell me about a time you observed it.</li>
+<li>Does the prospect handle stress well? Tell me about a time.</li>
+<li>How is the prospect regarded in the community?</li>
+<li>Would you trust the prospect with your business or your money?</li>
+<li>Anything else we should know about character, integrity, or community standing?</li>
+</ol>
+</blockquote>
+<h3 id="background-check--credit-check">Background Check + Credit Check</h3>
+<ul>
+<li>Background check vendor: HireRight or similar (industry-standard franchise vendor)</li>
+<li>Credit check vendor: Experian Business + personal credit pull (with prospect's written consent)</li>
+<li>Cost: $550 application processing fee; reimbursed by prospect at this stage</li>
+<li>Timeline: 5–10 business days</li>
+</ul>
+<h3 id="stage-6-decision-gate">Stage 6 Decision Gate</h3>
+<p>VPFD compiles reference summary, background check results, credit check results, and Discovery Day assessment into a single Stage 6 file. File goes to Stage 7 Approval Committee.</p>
+<hr>
+<h2 id="stage-7--final-approval-letter--signing-pack">Stage 7 — Final Approval Letter + Signing Pack</h2>
+<p><strong>Trigger:</strong> Stage 6 file complete + Approval Committee scheduled.
+<strong>Approval Committee:</strong> Phyrom + VPFD + future COO + future CFO. Unanimous vote required.
+<strong>Cadence:</strong> Committee meets within 7 business days of Stage 6 file completion. Decision within 24 hours of meeting.</p>
+<h3 id="approval-committee-decision-tree">Approval Committee Decision Tree</h3>
+<table>
+<thead>
+<tr>
+<th>Outcome</th>
+<th>Cadence</th>
+<th>Communication</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Unanimous APPROVE</td>
+<td>&lt; 24 hours</td>
+<td>Approval letter (template below) + signing schedule</td>
+</tr>
+<tr>
+<td>Unanimous DECLINE</td>
+<td>&lt; 24 hours</td>
+<td>Decline letter with rationale + 12-month re-application invitation if appropriate</td>
+</tr>
+<tr>
+<td>Split vote (any non-unanimous)</td>
+<td>&lt; 48 hours</td>
+<td>Re-discussion with optional additional information request from prospect</td>
+</tr>
+</tbody></table>
+<h3 id="approval-letter">Approval Letter</h3>
+<blockquote>
+<p>{{date}}</p>
+<p>{{Prospect Name}}
+{{Prospect Address}}</p>
+<p>Dear {{first_name}},</p>
+<p>The Sherpa Pros LLC Franchise Approval Committee has reviewed your Sherpa Hub franchise application, and we are pleased to inform you that your application is <strong>APPROVED</strong>.</p>
+<p>The Approval Committee considered:</p>
+<ul>
+<li>Your construction-industry experience and operating background</li>
+<li>Your liquid net worth, total net worth, and cash to invest</li>
+<li>Your Discovery Call performance and Discovery Day on-site engagement</li>
+<li>Your three professional references (business, financial, personal)</li>
+<li>Your background check and credit check results</li>
+<li>The Hub #1 team's assessment of fit</li>
+</ul>
+<p>The vote was unanimous.</p>
+<p><strong>Confirming the regulatory timeline:</strong></p>
+<p>You signed the FDD receipt page on {{FDD receipt date}}. The Federal Trade Commission's mandatory 14-calendar-day waiting period elapsed on {{FDD receipt date + 14 days}}. You are eligible to sign a binding Franchise Agreement on or after that date. This approval letter is dated {{date}}, which is on or after {{FDD receipt date + 14 days}}, so we may proceed to signing.</p>
+<p><strong>Next steps:</strong></p>
+<ol>
+<li><p><strong>Signing date proposal.</strong> Our recommended signing date is {{date}} at Hub #1, Atkinson NH. Phyrom will be present. Please confirm or propose alternate within 5 business days.</p>
+</li>
+<li><p><strong>Initial Franchise Fee.</strong> $45,000 due at signing via wire transfer to Sherpa Pros LLC. Wire instructions are included in the signing pack (separate secure email).</p>
+</li>
+<li><p><strong>Signing pack contents</strong> (separate email — encrypted):</p>
+<ul>
+<li>Sherpa Hub Franchise Agreement (10-year initial term)</li>
+<li>Sherpa Brand License Agreement</li>
+<li>Sherpa Software License Agreement</li>
+<li>Confidentiality Agreement</li>
+<li>Personal Guaranty Agreement</li>
+<li>Site Selection Addendum (template)</li>
+<li>Hub Lease Rider (corporate-required lease language)</li>
+<li>Wire transfer instructions</li>
+</ul>
+</li>
+<li><p><strong>Post-signing 90-day onboarding.</strong> Your Hub Grand Opening target date is {{signing date + 90 days}}. We will engage immediately on:</p>
+<ul>
+<li>Days 1–14: Real estate selection in your approved territory</li>
+<li>Days 15–30: Lease negotiation + permits + insurance binding</li>
+<li>Days 31–60: Buildout + equipment + hiring + initial pro recruiting</li>
+<li>Days 61–80: 80-hour initial training at Hub #1 in Atkinson NH (you + your Hub Manager)</li>
+<li>Days 81–90: Soft launch + Hub Grand Opening</li>
+</ul>
+</li>
+<li><p><strong>Your Sherpa Pros corporate liaison.</strong> {{COO Name}} (Chief Operating Officer) is your primary corporate liaison from signing through Hub Grand Opening. You will receive {{COO Name}}'s direct email and mobile number at signing.</p>
+</li>
+</ol>
+<p>Welcome to the Sherpa Pros franchise system. We are honored you chose us.</p>
+<p>Sincerely,</p>
+<p>{{VPFD Name}}
+Vice President, Franchise Development
+Sherpa Pros LLC</p>
+<p><strong>CC:</strong> Phyrom (Founder + Chief Executive Officer); {{COO Name}} (Chief Operating Officer); {{CFO Name}} (Chief Financial Officer)</p>
+</blockquote>
+<h3 id="decline-letter-template-when-applicable">Decline Letter Template (when applicable)</h3>
+<blockquote>
+<p>{{date}}</p>
+<p>{{Prospect Name}}</p>
+<p>Dear {{first_name}},</p>
+<p>Thank you for the time and effort you invested in our 7-stage screening process for the Sherpa Hub franchise opportunity. The Sherpa Pros LLC Franchise Approval Committee has completed its review of your application.</p>
+<p>After careful consideration, we are unable to approve your franchise application at this time. The specific factors that led to this decision are:</p>
+<ul>
+<li>{{Specific rationale 1}}</li>
+<li>{{Specific rationale 2}}</li>
+<li>{{Specific rationale 3}}</li>
+</ul>
+<p>This decision is not a reflection on you as a person or as a professional. Our approval bar is calibrated to a specific operating profile (5–15 years construction-adjacent industry experience, $200,000+ liquid net worth, operator-not-investor mindset, no franchise litigation history, clean background and credit). Your application did not align with that profile in the specific areas listed above.</p>
+<p>{{If applicable:}} You may reapply after 12 months if the specific factors change materially. We invite you to do so.</p>
+<p>{{If applicable:}} We are unable to consider a re-application for this opportunity in the foreseeable future.</p>
+<p>We respect the time you invested with us and we wish you the best in whatever you pursue next.</p>
+<p>Sincerely,</p>
+<p>{{VPFD Name}}
+Vice President, Franchise Development
+Sherpa Pros LLC</p>
+<p><strong>Note:</strong> All Confidential Information you received from Sherpa Pros under our mutual Non-Disclosure Agreement remains subject to the confidentiality obligations of that agreement, which survive this decision per Section 6 of the NDA. Please return or destroy all Confidential Information per Section 9 of the NDA, and confirm the same in writing within 30 days.</p>
+</blockquote>
+
+	
+
+
+</body>
+</html>

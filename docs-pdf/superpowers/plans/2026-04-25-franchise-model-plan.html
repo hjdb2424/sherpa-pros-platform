@@ -1,0 +1,1896 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2026 04 25 franchise model plan — Sherpa Pros</title>
+<link rel="icon" href="../../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="2026-04-25-franchise-model-plan.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="sherpa-pros-franchise-model--implementation-plan">Sherpa Pros Franchise Model — Implementation Plan</h1>
+<blockquote>
+<p><strong>For agentic workers:</strong> REQUIRED SUB-SKILL: Use <code>superpowers:subagent-driven-development</code> (recommended) or <code>superpowers:executing-plans</code> to implement this plan task-by-task. Steps use checkbox (<code>- [ ]</code>) syntax for tracking.</p>
+</blockquote>
+<p><strong>Goal:</strong> Deliver a fully-compliant Franchise Disclosure Document (FDD), the regulatory infrastructure to sell franchises in launch states, the operational infrastructure to support the first cohort of Phase 4 franchisees, and the international-readiness foundation to add Master Franchisees in Phase 5.</p>
+<p><strong>Phase:</strong> Phase 3 (franchise design begins) through Phase 4 Year 1 (first 3–5 sold franchises).</p>
+<p><strong>Architecture:</strong> Six parallel work streams executed concurrently. Critical-path dependencies: WS1 (FDD development) gates WS2 (state registration) and WS3 (pilot franchisee selection). WS4 (training program) and WS5 (operations support infrastructure) run in parallel with WS1–WS3. WS6 (international master-franchise readiness) runs in parallel as a Phase 5 prep stream. Weekly review cadence with Phyrom + Vice President of Franchise Development.</p>
+<p><strong>Source spec:</strong> <code>docs/superpowers/specs/2026-04-25-franchise-model-design.md</code></p>
+<p><strong>Companion specs (parallel work streams):</strong></p>
+<ul>
+<li><code>docs/superpowers/specs/2026-04-25-international-expansion-design.md</code></li>
+<li><code>docs/superpowers/specs/2026-04-25-platform-scale-architecture-design.md</code></li>
+<li><code>docs/superpowers/specs/2026-04-25-sherpa-hub-integration-design.md</code></li>
+</ul>
+<p><strong>Owners:</strong></p>
+<ul>
+<li><strong>P</strong> = Phyrom (founder, Chief Executive Officer; final approval on all FDD content + franchisee selection)</li>
+<li><strong>VPFD</strong> = Vice President of Franchise Development (Phase 4 Year 1 hire; lead owner of WS1 + WS3)</li>
+<li><strong>VPOPS</strong> = Vice President of Operations (lead owner of WS4 + WS5)</li>
+<li><strong>CFO</strong> = Chief Financial Officer (owner of audit firm engagement, Item 19 substantiation)</li>
+<li><strong>LEGAL</strong> = Outside Franchise Attorney (lead drafter of FDD per WS1 Task 1)</li>
+<li><strong>AUDIT</strong> = Outside CPA Firm (Item 21 audited financials)</li>
+<li><strong>AI</strong> = Claude sub-agent dispatch (parallelized for research, document drafting, comparison analysis)</li>
+</ul>
+<hr>
+<h2 id="work-stream-1--fdd-development-lead-vpfd--legal--cfo">Work Stream 1 — FDD Development (Lead: VPFD + LEGAL + CFO)</h2>
+<p><strong>Goal:</strong> Deliver an FTC-compliant FDD Version 1.0 ready for state registration filings and franchisee delivery.</p>
+<h3 id="task-ws1-1-engage-franchise-attorney">Task WS1-1: Engage franchise attorney</h3>
+<p><strong>Owner:</strong> P + VPFD
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/franchise/attorney-engagement/2026-04-25-franchise-attorney-rfp.md</code> (Request for Proposal)</p>
+</li>
+<li><p>Create: <code>docs/franchise/attorney-engagement/2026-04-25-franchise-attorney-shortlist.md</code></p>
+</li>
+<li><p>Create: <code>docs/franchise/attorney-engagement/2026-04-25-franchise-attorney-engagement-letter-signed.pdf</code> (placeholder for signed scan)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Draft Franchise Attorney Request for Proposal scoping FDD Version 1.0 development, state registrations in 14 registration states + 4 business-opportunity states, ongoing FDD annual update, FAC charter drafting, franchise relationship law compliance review.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Send RFP to four candidate firms — Spadea Lanard &amp; Lignana, DLA Piper Franchise Group, Faegre Drinker Biddle &amp; Reath, Lathrop GPM.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Schedule 60-minute scoping call with each firm. Score on: franchise depth, marketplace-platform comparable experience, fee structure, response time, named partner availability.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Select preferred firm, negotiate engagement letter (capped fee structure preferred; estimated $80K–$120K for FDD Version 1.0).</p>
+</li>
+</ul>
+<p><strong>Deliverable:</strong> Signed engagement letter on file.
+<strong>Acceptance:</strong> Firm formally engaged with kick-off scheduled.
+<strong>Dependencies:</strong> None (start immediately).</p>
+<hr>
+<h3 id="task-ws1-2-engage-audit-firm">Task WS1-2: Engage audit firm</h3>
+<p><strong>Owner:</strong> CFO + P
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/franchise/audit-engagement/2026-04-25-audit-firm-rfp.md</code></p>
+</li>
+<li><p>Create: <code>docs/franchise/audit-engagement/2026-04-25-audit-firm-engagement-letter-signed.pdf</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Draft Audit Firm Request for Proposal scoping audited financial statements for Sherpa Pros LLC for Fiscal Years 2025 + 2026 + 2027 (and ongoing annual audit).</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Send RFP to four candidate firms — Marcum, BDO USA, RSM US, Aprio.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Score on: franchise audit experience, fee structure, geographic location (Boston-based preferred), partner accessibility.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Select preferred firm; negotiate engagement letter (estimated $20K–$30K per fiscal year).</p>
+</li>
+</ul>
+<p><strong>Deliverable:</strong> Signed engagement letter.
+<strong>Acceptance:</strong> Firm engaged; first-year audit kick-off scheduled.
+<strong>Dependencies:</strong> Sherpa Pros LLC must have organized books for the fiscal year being audited.</p>
+<hr>
+<h3 id="task-ws1-3-compile-item-1-franchisor--affiliates-draft">Task WS1-3: Compile Item 1 (Franchisor + Affiliates) draft</h3>
+<p><strong>Owner:</strong> VPFD + P
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/franchise/fdd-drafts/Item-01-franchisor-affiliates-draft.md</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Document Sherpa Pros LLC formation, state of incorporation, principal office address, federal Employer Identification Number (EIN), business activity.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Document HJD Builders LLC affiliate relationship and disclose explanation of why founder's working contracting business is a competitive advantage rather than a conflict.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Disclose any other affiliated entities (real estate holding, intellectual property holding) if applicable.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Send draft to LEGAL for FTC-compliance review.</p>
+</li>
+</ul>
+<p><strong>Deliverable:</strong> Item 1 first draft.
+<strong>Acceptance:</strong> LEGAL accepts draft as ready for FDD compilation.
+<strong>Dependencies:</strong> WS1-1.</p>
+<hr>
+<h3 id="task-ws1-4-compile-item-2-business-experience-draft">Task WS1-4: Compile Item 2 (Business Experience) draft</h3>
+<p><strong>Owner:</strong> VPFD + P
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/franchise/fdd-drafts/Item-02-business-experience-draft.md</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Phyrom drafts five-year work-history biography (must be complete and accurate including surname; this is a public document at FDD delivery).</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Each Phase 4 executive hire (VPOPS, CFO, VPFD, Chief Marketing Officer) drafts five-year work-history biography upon hire.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Each named officer signs disclosure that no material franchise-industry violation, securities violation, fraud claim, criminal conviction, or bankruptcy occurred in the last 10 years.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Send draft to LEGAL.</p>
+</li>
+</ul>
+<p><strong>Deliverable:</strong> Item 2 first draft with all then-current officer biographies.
+<strong>Acceptance:</strong> LEGAL accepts.
+<strong>Dependencies:</strong> WS1-1; ongoing as new executives hired.</p>
+<hr>
+<h3 id="task-ws1-5-compile-item-3-litigation-draft">Task WS1-5: Compile Item 3 (Litigation) draft</h3>
+<p><strong>Owner:</strong> P + LEGAL
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/franchise/fdd-drafts/Item-03-litigation-draft.md</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> P discloses every pending or concluded litigation matter involving Sherpa Pros LLC, HJD Builders LLC, and every named officer for the past 10 years.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> LEGAL applies materiality test (FTC threshold + state-by-state thresholds) and produces final disclosure language.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> If any HJD Builders contracting-business matter exceeds materiality, draft disclosure language with explanation of why the matter does not affect franchise viability.</p>
+</li>
+</ul>
+<p><strong>Deliverable:</strong> Item 3 first draft.
+<strong>Acceptance:</strong> LEGAL accepts.
+<strong>Dependencies:</strong> WS1-1.</p>
+<hr>
+<h3 id="task-ws1-6-compile-item-4-bankruptcy-draft">Task WS1-6: Compile Item 4 (Bankruptcy) draft</h3>
+<p><strong>Owner:</strong> P + LEGAL
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/franchise/fdd-drafts/Item-04-bankruptcy-draft.md</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Each named officer + Sherpa Pros LLC + HJD Builders LLC discloses any bankruptcy filing in the last 10 years (target: zero).</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> LEGAL produces final disclosure (likely "None" if target met).</p>
+</li>
+</ul>
+<p><strong>Deliverable:</strong> Item 4 first draft.
+<strong>Acceptance:</strong> LEGAL accepts.
+<strong>Dependencies:</strong> WS1-1.</p>
+<hr>
+<h3 id="task-ws1-7-compile-items-5--6-initial-fees--other-fees-draft">Task WS1-7: Compile Items 5 + 6 (Initial Fees + Other Fees) draft</h3>
+<p><strong>Owner:</strong> CFO + VPFD + LEGAL
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/franchise/fdd-drafts/Item-05-initial-fees-draft.md</code></p>
+</li>
+<li><p>Create: <code>docs/franchise/fdd-drafts/Item-06-other-fees-draft.md</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Confirm fee schedule from §4 of source spec ($45K single Hub / $125K Area Development / $300K Metro Master / $25K Pro Network) and verify CFO acceptance of unit economics.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Compile Item 6 fee table (royalty, marketing fund, technology fee, renewal, transfer, audit, training-additional, convention, local marketing minimum).</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> LEGAL applies state-specific fee disclosure formatting (some states require additional fee categorization).</p>
+</li>
+</ul>
+<p><strong>Deliverable:</strong> Item 5 + Item 6 drafts.
+<strong>Acceptance:</strong> LEGAL + CFO approve.
+<strong>Dependencies:</strong> WS1-1.</p>
+<hr>
+<h3 id="task-ws1-8-compile-item-7-estimated-initial-investment-draft">Task WS1-8: Compile Item 7 (Estimated Initial Investment) draft</h3>
+<p><strong>Owner:</strong> CFO + VPOPS + VPFD
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/franchise/fdd-drafts/Item-07-initial-investment-draft.md</code></p>
+</li>
+<li><p>Create: <code>docs/franchise/item-07-substantiation/2026-04-25-hub1-build-cost-actuals.md</code> (Hub #1 actual buildout costs as substantiation)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Compile actual Hub #1 (Atkinson NH) buildout cost detail by line item.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Survey 3 commercial real estate brokers in Phase 4 launch markets (NH/ME/MA/VT) for current per-square-foot lease rates.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Compile equipment vendor quotes (Point of Sale, computers, security, signage, racking).</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Compile initial inventory cost estimate from Sherpa Materials catalog.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 5:</strong> Build low-end and high-end Item 7 table; verify totals match $185K–$420K range from source spec.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 6:</strong> Send to LEGAL with Hub #1 substantiation file.</p>
+</li>
+</ul>
+<p><strong>Deliverable:</strong> Item 7 first draft + substantiation file.
+<strong>Acceptance:</strong> LEGAL + CFO approve; substantiation file is auditable.
+<strong>Dependencies:</strong> WS1-1; Hub #1 must have completed buildout.</p>
+<hr>
+<h3 id="task-ws1-9-compile-item-8-sources-of-products-and-services-draft">Task WS1-9: Compile Item 8 (Sources of Products and Services) draft</h3>
+<p><strong>Owner:</strong> VPOPS + LEGAL
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/franchise/fdd-drafts/Item-08-sources-of-products-draft.md</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Document required-source list (Sherpa Materials orchestration for kit inventory; FW Webb partnership; Wurth Louis and Company; Best Tile; Walzcraft; Eagle drawers; Richelieu hardware; Hafele cabinet hardware; Rubio Monocoat; corporate-approved branded gear vendor).</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Disclose franchisor rebate income from approved suppliers (estimated 2–4 percent of franchisee inventory purchases).</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> LEGAL refines disclosure language to comply with FTC Item 8 requirements.</p>
+</li>
+</ul>
+<p><strong>Deliverable:</strong> Item 8 first draft.
+<strong>Acceptance:</strong> LEGAL accepts.
+<strong>Dependencies:</strong> WS1-1; corporate supplier accounts must be in place.</p>
+<hr>
+<h3 id="task-ws1-10-compile-item-11-franchisors-assistance-advertising-computer-systems-training-draft">Task WS1-10: Compile Item 11 (Franchisor's Assistance, Advertising, Computer Systems, Training) draft</h3>
+<p><strong>Owner:</strong> VPOPS + VPFD + LEGAL
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/franchise/fdd-drafts/Item-11-franchisor-assistance-draft.md</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Document pre-opening assistance, opening assistance, ongoing assistance, computer systems list, training program syllabus (cross-reference WS4 task series).</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Specify training-program contact-hour totals (80-hour initial + 40-hour on-site + 32-hour annual continuing education + 24-hour Annual Summit).</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Disclose required hardware list and corporate-licensed software list.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> LEGAL finalizes language.</p>
+</li>
+</ul>
+<p><strong>Deliverable:</strong> Item 11 first draft.
+<strong>Acceptance:</strong> LEGAL + VPOPS approve.
+<strong>Dependencies:</strong> WS1-1; WS4-1 (training curriculum design must be far enough along to specify contact hours).</p>
+<hr>
+<h3 id="task-ws1-11-compile-item-12-territory-draft">Task WS1-11: Compile Item 12 (Territory) draft</h3>
+<p><strong>Owner:</strong> VPFD + LEGAL
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/franchise/fdd-drafts/Item-12-territory-draft.md</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Document protected radius rules (5/15/30-mile by metro/suburban/rural per United States Census Bureau density tier).</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Document Right of First Refusal language.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Document overlap zone rules (corporate retains digital product rights; per-pro engagement royalty allocation).</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> LEGAL refines language to avoid territory-dispute litigation risk (the most common franchise litigation category).</p>
+</li>
+</ul>
+<p><strong>Deliverable:</strong> Item 12 first draft.
+<strong>Acceptance:</strong> LEGAL accepts.
+<strong>Dependencies:</strong> WS1-1.</p>
+<hr>
+<h3 id="task-ws1-12-compile-item-13--14-trademarks--proprietary-information-drafts">Task WS1-12: Compile Item 13 + 14 (Trademarks + Proprietary Information) drafts</h3>
+<p><strong>Owner:</strong> LEGAL + P
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/franchise/fdd-drafts/Item-13-trademarks-draft.md</code></p>
+</li>
+<li><p>Create: <code>docs/franchise/fdd-drafts/Item-14-proprietary-info-draft.md</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> File or update USPTO trademark applications for: "Sherpa Pros," "Sherpa Hub," Sherpa Pros logo, "Old-House Verified," "Sherpa Marketplace," "Sherpa Home," "Sherpa Success Manager," "Sherpa Rewards," "Sherpa Flex," "Sherpa Threads," "Sherpa Smart Scan," "Sherpa Mobile," "Sherpa Guard," "Sherpa Dispatch," "Sherpa Materials."</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Document trade-secret assets — codes engine, Materials engine, Dispatch matching algorithm, Sherpa Score algorithm — without disclosing the trade secret itself (the disclosure references the existence and importance, not the implementation).</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> File patent applications for matching algorithm + materials orchestration (started Phase 3; updated per Phase 4 Year 1).</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> LEGAL drafts Items 13 + 14.</p>
+</li>
+</ul>
+<p><strong>Deliverable:</strong> Items 13 + 14 first drafts.
+<strong>Acceptance:</strong> LEGAL accepts.
+<strong>Dependencies:</strong> WS1-1; USPTO filings ongoing.</p>
+<hr>
+<h3 id="task-ws1-13-compile-items-1518-drafts">Task WS1-13: Compile Items 15–18 drafts</h3>
+<p><strong>Owner:</strong> LEGAL + VPFD
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/franchise/fdd-drafts/Item-15-operation-obligation-draft.md</code></p>
+</li>
+<li><p>Create: <code>docs/franchise/fdd-drafts/Item-16-restrictions-on-sales-draft.md</code></p>
+</li>
+<li><p>Create: <code>docs/franchise/fdd-drafts/Item-17-renewal-termination-transfer-draft.md</code></p>
+</li>
+<li><p>Create: <code>docs/franchise/fdd-drafts/Item-18-public-figures-draft.md</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Item 15 — full-time on-site operation obligation language (no absentee owners in Phase 4 Years 1–3).</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Item 16 — restrictions on what franchisee may sell + non-compete language.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Item 17 — renewal, termination, transfer, dispute resolution language. State-by-state addenda for franchise relationship law states (NJ, CA, MN, etc.).</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Item 18 — public figures (likely "None" for Version 1.0).</p>
+</li>
+</ul>
+<p><strong>Deliverable:</strong> Items 15–18 first drafts.
+<strong>Acceptance:</strong> LEGAL accepts.
+<strong>Dependencies:</strong> WS1-1.</p>
+<hr>
+<h3 id="task-ws1-14-compile-item-19-financial-performance-representations-draft">Task WS1-14: Compile Item 19 (Financial Performance Representations) draft</h3>
+<p><strong>Owner:</strong> CFO + LEGAL + VPFD
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/franchise/fdd-drafts/Item-19-financial-performance-draft.md</code></p>
+</li>
+<li><p>Create: <code>docs/franchise/item-19-substantiation/2026-04-25-hub1-financials-Y1.md</code></p>
+</li>
+<li><p>Create: <code>docs/franchise/item-19-substantiation/2026-04-25-hub1-financials-Y2.md</code> (when available)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Compile Hub #1 (Atkinson NH) actual operating financials by month (revenue, COGS, OpEx, EBITDA).</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Map Hub #1 actuals to Item 19 disclosure tables (Year 1 ramp, Year 2 maturity).</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Document substantiation methodology (single-Hub corporate reference + comparable-franchise industry data for Years 2 + 3).</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> LEGAL drafts Item 19 with required FTC caveats (forward-looking statements language, no-guarantee language, individual results disclaimer).</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 5:</strong> Independent franchise counsel second-opinion review (this is the highest-litigation-risk Item).</p>
+</li>
+</ul>
+<p><strong>Deliverable:</strong> Item 19 first draft + substantiation files.
+<strong>Acceptance:</strong> LEGAL + independent franchise counsel both approve.
+<strong>Dependencies:</strong> WS1-1; Hub #1 must have at least 12 months of operating data.</p>
+<hr>
+<h3 id="task-ws1-15-compile-items-2023-drafts">Task WS1-15: Compile Items 20–23 drafts</h3>
+<p><strong>Owner:</strong> LEGAL + VPFD + CFO
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/franchise/fdd-drafts/Item-20-outlets-info-draft.md</code></p>
+</li>
+<li><p>Create: <code>docs/franchise/fdd-drafts/Item-21-financial-statements-draft.md</code></p>
+</li>
+<li><p>Create: <code>docs/franchise/fdd-drafts/Item-22-contracts-draft.md</code> (with sample Franchise Agreement, Area Development Agreement, etc., as exhibits)</p>
+</li>
+<li><p>Create: <code>docs/franchise/fdd-drafts/Item-23-receipts-draft.md</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Item 20 — current franchise outlet count + projected openings + transfer/termination/non-renewal/reacquisition tables (likely sparse for Year 1; will populate over time).</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Item 21 — attach audited financial statements from WS1-2.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Item 22 — attach sample contracts (Sherpa Hub Franchise Agreement, Area Development Agreement, Pro Network Franchise Agreement, Metro Master Franchise Agreement, Site Selection Addendum, Lease Rider, Brand License, Software License, Confidentiality, Personal Guaranty).</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Item 23 — two-receipt-page format per FTC requirement.</p>
+</li>
+</ul>
+<p><strong>Deliverable:</strong> Items 20–23 first drafts + sample contracts.
+<strong>Acceptance:</strong> LEGAL accepts.
+<strong>Dependencies:</strong> WS1-1, WS1-2 (audited statements), WS1-7 to WS1-14 (sample contract terms reflect Items 5–18).</p>
+<hr>
+<h3 id="task-ws1-16-compile-fdd-version-10--independent-second-opinion-review">Task WS1-16: Compile FDD Version 1.0 + independent second-opinion review</h3>
+<p><strong>Owner:</strong> LEGAL + VPFD + P
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/franchise/fdd-final/2026-XX-XX-FDD-v1.0.pdf</code></p>
+</li>
+<li><p>Create: <code>docs/franchise/fdd-final/2026-XX-XX-FDD-v1.0-cover-letter-from-counsel.pdf</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> LEGAL compiles all 23 Items into FTC-compliant FDD format (paginated, consistent typography, table-of-contents, exhibits).</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Engage independent franchise counsel for second-opinion compliance review (separate firm from LEGAL).</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Address second-opinion comments.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> P + VPFD final approval.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 5:</strong> Issue FDD Version 1.0.</p>
+</li>
+</ul>
+<p><strong>Deliverable:</strong> FDD Version 1.0 ready for state filings + franchisee delivery.
+<strong>Acceptance:</strong> Both LEGAL and independent counsel issue compliance opinion letters.
+<strong>Dependencies:</strong> WS1-3 through WS1-15 all complete.</p>
+<hr>
+<h2 id="work-stream-2--state-registration--compliance-lead-vpfd--legal">Work Stream 2 — State Registration + Compliance (Lead: VPFD + LEGAL)</h2>
+<h3 id="task-ws2-1-build-state-registration-calendar--filing-matrix">Task WS2-1: Build state registration calendar + filing matrix</h3>
+<p><strong>Owner:</strong> VPFD + LEGAL
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/franchise/state-registration/2026-04-25-state-filing-matrix.md</code></p>
+</li>
+<li><p>Create: <code>docs/franchise/state-registration/2026-04-25-state-renewal-calendar.ics</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Build per-state filing matrix: filing fee, attorney fee estimate, expected review time, renewal cadence, renewal fee, contact at state regulator.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Build renewal-calendar with 90-day pre-renewal alerts for every state.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Document priority order: Phase 4 Year 2 (NY, RI, MD, VA), Phase 4 Year 3 (10 remaining registration states + 4 business-opportunity states).</p>
+</li>
+</ul>
+<p><strong>Deliverable:</strong> State filing matrix + renewal calendar.
+<strong>Acceptance:</strong> VPFD signs off; calendar entries set in corporate calendar system.
+<strong>Dependencies:</strong> None.</p>
+<hr>
+<h3 id="task-ws2-2-file-new-york-fdd-registration">Task WS2-2: File New York FDD registration</h3>
+<p><strong>Owner:</strong> LEGAL + VPFD
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/franchise/state-registration/NY/2026-XX-XX-NY-FDD-application.pdf</code></p>
+</li>
+<li><p>Create: <code>docs/franchise/state-registration/NY/2026-XX-XX-NY-AG-correspondence.md</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> LEGAL prepares New York Attorney General registration filing per New York Franchise Sales Act.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Submit filing with $750 filing fee.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Respond to NY AG reviewer comments (typical 60–90 day review cycle).</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Receive Effective Date letter; flag in corporate calendar.</p>
+</li>
+</ul>
+<p><strong>Deliverable:</strong> New York registration effective.
+<strong>Acceptance:</strong> Effective Date letter on file.
+<strong>Dependencies:</strong> WS1-16 (FDD Version 1.0 issued).</p>
+<hr>
+<h3 id="task-ws2-3-file-rhode-island-fdd-registration">Task WS2-3: File Rhode Island FDD registration</h3>
+<p><strong>Owner:</strong> LEGAL + VPFD
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/franchise/state-registration/RI/2026-XX-XX-RI-FDD-application.pdf</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> LEGAL prepares Rhode Island Department of Business Regulation filing.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Submit with $500 filing fee.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Receive Effective Date.</p>
+</li>
+</ul>
+<p><strong>Deliverable:</strong> Rhode Island registration effective.
+<strong>Acceptance:</strong> Effective Date on file.
+<strong>Dependencies:</strong> WS1-16.</p>
+<hr>
+<h3 id="task-ws2-4-file-maryland--virginia-fdd-registrations">Task WS2-4: File Maryland + Virginia FDD registrations</h3>
+<p><strong>Owner:</strong> LEGAL + VPFD
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/franchise/state-registration/MD/2026-XX-XX-MD-FDD-application.pdf</code></p>
+</li>
+<li><p>Create: <code>docs/franchise/state-registration/VA/2026-XX-XX-VA-FDD-application.pdf</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> LEGAL prepares both filings ($500 each).</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Submit to Maryland Securities Division + Virginia State Corporation Commission.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Receive Effective Dates.</p>
+</li>
+</ul>
+<p><strong>Deliverable:</strong> Maryland + Virginia registrations effective.
+<strong>Acceptance:</strong> Effective Dates on file.
+<strong>Dependencies:</strong> WS1-16.</p>
+<hr>
+<h3 id="task-ws2-5-file-business-opportunity-notice-in-florida--texas">Task WS2-5: File business-opportunity notice in Florida + Texas</h3>
+<p><strong>Owner:</strong> LEGAL + VPFD
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/franchise/state-registration/FL/2026-XX-XX-FL-business-opp-notice.pdf</code></p>
+</li>
+<li><p>Create: <code>docs/franchise/state-registration/TX/2026-XX-XX-TX-business-opp-notice.pdf</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Prepare Florida Annual Business Opportunity Filing ($100) and Texas Business Opportunity Act notice ($0).</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Submit.</p>
+</li>
+</ul>
+<p><strong>Deliverable:</strong> Florida + Texas notices on file.
+<strong>Acceptance:</strong> State acknowledgment letters received.
+<strong>Dependencies:</strong> WS1-16.</p>
+<hr>
+<h3 id="task-ws2-6-register-in-remaining-10-fdd-registration-states-phase-4-year-3">Task WS2-6: Register in remaining 10 FDD-registration states (Phase 4 Year 3)</h3>
+<p><strong>Owner:</strong> LEGAL + VPFD
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/franchise/state-registration/[STATE]/2027-XX-XX-[STATE]-FDD-application.pdf</code> for each of: California, Hawaii, Illinois, Indiana, Michigan, Minnesota, North Dakota, South Dakota, Washington, Wisconsin</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> LEGAL prepares per-state filings (estimated $4,575 in filing fees + $15K–$25K attorney fees total).</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Submit all 10 filings within Phase 4 Year 3 Quarter 1.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Address state-by-state reviewer comments.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Receive Effective Dates; populate state filing matrix.</p>
+</li>
+</ul>
+<p><strong>Deliverable:</strong> All 14 FDD-registration states registered.
+<strong>Acceptance:</strong> Effective Dates on file for all 10 remaining states.
+<strong>Dependencies:</strong> WS1-16; WS2-2 to WS2-5 (proves filing process).</p>
+<hr>
+<h3 id="task-ws2-7-annual-fdd-update--state-renewal-cycle">Task WS2-7: Annual FDD update + state renewal cycle</h3>
+<p><strong>Owner:</strong> VPFD + LEGAL + AUDIT
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/franchise/fdd-final/2027-XX-XX-FDD-v2.0.pdf</code> (annual update)</p>
+</li>
+<li><p>Update: <code>docs/franchise/state-registration/2026-04-25-state-renewal-calendar.ics</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Audited financial statements for prior fiscal year delivered by AUDIT within 90 days of year-end.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> LEGAL updates FDD Items 1, 2, 3, 4, 19, 20, 21 to reflect current-year data.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> File annual renewal in every registration state on its specific renewal cadence.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Distribute updated FDD to every prospective franchisee in pipeline.</p>
+</li>
+</ul>
+<p><strong>Deliverable:</strong> Annual FDD update issued; all state renewals current.
+<strong>Acceptance:</strong> Zero state filings out of compliance.
+<strong>Dependencies:</strong> WS1-16; WS2-2 through WS2-6 (initial registrations).</p>
+<hr>
+<h2 id="work-stream-3--pilot-franchisee-selection-lead-vpfd--p">Work Stream 3 — Pilot Franchisee Selection (Lead: VPFD + P)</h2>
+<h3 id="task-ws3-1-build-franchise-prospect-website">Task WS3-1: Build franchise-prospect website</h3>
+<p><strong>Owner:</strong> VPFD + Marketing team
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>src/app/franchise/page.tsx</code> (franchise.thesherpapros.com landing page)</p>
+</li>
+<li><p>Create: <code>src/app/franchise/inquiry/page.tsx</code> (Franchise Inquiry Form)</p>
+</li>
+<li><p>Create: <code>src/app/franchise/economics/page.tsx</code> (per-Hub economics overview — Item 19 redacted public version)</p>
+</li>
+<li><p>Create: <code>src/app/franchise/discovery-day/page.tsx</code> (Discovery Day calendar + signup)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Design franchise.thesherpapros.com landing page using thesherpapros design system (read <code>references/DESIGN.md</code> first).</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Build Franchise Inquiry Form (industry experience, net worth, cash to invest, target market, timing).</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Build per-Hub economics overview page (must NOT make earnings claims that exceed Item 19 — coordinate with LEGAL).</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Build Discovery Day calendar + signup.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 5:</strong> Wire form submissions to corporate Customer Relationship Management (CRM) for VPFD intake.</p>
+</li>
+</ul>
+<p><strong>Deliverable:</strong> Franchise prospect website live.
+<strong>Acceptance:</strong> All four routes pass build; VPFD can receive and track inquiries.
+<strong>Dependencies:</strong> None for design; LEGAL review required before per-Hub economics page goes live.</p>
+<hr>
+<h3 id="task-ws3-2-build-7-stage-screening-process-documentation">Task WS3-2: Build 7-stage screening process documentation</h3>
+<p><strong>Owner:</strong> VPFD + LEGAL
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/franchise/screening/2026-04-25-7-stage-screening-process.md</code></p>
+</li>
+<li><p>Create: <code>docs/franchise/screening/templates/stage-1-inquiry-auto-response.md</code></p>
+</li>
+<li><p>Create: <code>docs/franchise/screening/templates/stage-2-discovery-call-script.md</code></p>
+</li>
+<li><p>Create: <code>docs/franchise/screening/templates/stage-3-mutual-NDA.docx</code></p>
+</li>
+<li><p>Create: <code>docs/franchise/screening/templates/stage-4-FDD-delivery-cover-letter.md</code></p>
+</li>
+<li><p>Create: <code>docs/franchise/screening/templates/stage-5-discovery-day-agenda.md</code></p>
+</li>
+<li><p>Create: <code>docs/franchise/screening/templates/stage-6-references-background-check-form.md</code></p>
+</li>
+<li><p>Create: <code>docs/franchise/screening/templates/stage-7-final-approval-committee-template.md</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Document each stage with entry criteria, deliverables, exit criteria, time-to-next-stage.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Draft template documents for each stage.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> LEGAL reviews mutual NDA + FDD delivery cover letter (FTC waiting-period trigger) for compliance.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Configure CRM stages to mirror the 7-stage process.</p>
+</li>
+</ul>
+<p><strong>Deliverable:</strong> 7-stage screening process documented + templated.
+<strong>Acceptance:</strong> VPFD can run a prospect through all 7 stages with documented templates.
+<strong>Dependencies:</strong> WS1-16 (FDD must exist for Stage 4); WS3-1 (intake mechanism).</p>
+<hr>
+<h3 id="task-ws3-3-identify-hub-2-candidate-franchisees-in-nhmemavt">Task WS3-3: Identify Hub #2 candidate franchisees in NH/ME/MA/VT</h3>
+<p><strong>Owner:</strong> VPFD + P
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/franchise/prospect-pipeline/2026-04-25-phase-4-prospect-list.md</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Source candidate prospects from: HJD Builders contractor network, NH Home Builders Association, Maine Builders Association, FW Webb supply-house manager network, ex-Big-Box pro-desk manager LinkedIn search, local trade-association executive director outreach.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Build prospect list with name, current role, target market, estimated net worth band, source of referral.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> VPFD personally outreaches top 20 prospects via warm intro.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Schedule Stage 2 Discovery Calls.</p>
+</li>
+</ul>
+<p><strong>Deliverable:</strong> Phase 4 Year 1 prospect pipeline of 20+ qualified prospects.
+<strong>Acceptance:</strong> Minimum 5 prospects in Stage 2 within 90 days; minimum 3 prospects in Stage 5 within 180 days.
+<strong>Dependencies:</strong> WS3-2.</p>
+<hr>
+<h3 id="task-ws3-4-configure-background-check--credit-check-vendor-accounts">Task WS3-4: Configure background check + credit check vendor accounts</h3>
+<p><strong>Owner:</strong> VPFD
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/franchise/screening/vendor-accounts/2026-04-25-hireright-account-setup.md</code></p>
+</li>
+<li><p>Create: <code>docs/franchise/screening/vendor-accounts/2026-04-25-boefly-credit-check-setup.md</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Set up HireRight (or comparable) corporate account for prospect background checks.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Set up BoeFly account for credit check + franchise lending evaluation.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Document per-prospect cost ($550 application processing fee charged to prospect; covers actual vendor costs).</p>
+</li>
+</ul>
+<p><strong>Deliverable:</strong> Background + credit check vendors operational.
+<strong>Acceptance:</strong> Test run passes for one HJD-internal candidate.
+<strong>Dependencies:</strong> WS3-2.</p>
+<hr>
+<h3 id="task-ws3-5-run-first-3-prospects-through-full-7-stage-screening">Task WS3-5: Run first 3 prospects through full 7-stage screening</h3>
+<p><strong>Owner:</strong> VPFD + P + LEGAL
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/franchise/prospect-pipeline/2026-XX-XX-prospect-001-file.md</code></p>
+</li>
+<li><p>Create: <code>docs/franchise/prospect-pipeline/2026-XX-XX-prospect-002-file.md</code></p>
+</li>
+<li><p>Create: <code>docs/franchise/prospect-pipeline/2026-XX-XX-prospect-003-file.md</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Move first 3 qualified prospects through Stages 1–7.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Document edge cases and screening process refinements as they emerge.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Convene Franchise Approval Committee (P + VPFD + VPOPS + CFO) for Stage 7 unanimous-approval vote.</p>
+</li>
+</ul>
+<p><strong>Deliverable:</strong> First 3 franchise sales completed (or documented Reject decisions for prospects who do not pass screening).
+<strong>Acceptance:</strong> First sold Franchise Agreement executed.
+<strong>Dependencies:</strong> WS1-16, WS2-2 to WS2-5 (registered in target state), WS3-1 to WS3-4.</p>
+<hr>
+<h2 id="work-stream-4--franchisee-training-program-lead-vpops">Work Stream 4 — Franchisee Training Program (Lead: VPOPS)</h2>
+<h3 id="task-ws4-1-design-80-hour-initial-training-curriculum">Task WS4-1: Design 80-hour initial training curriculum</h3>
+<p><strong>Owner:</strong> VPOPS + VPFD
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/franchise/training/2026-04-25-initial-training-curriculum.md</code></p>
+</li>
+<li><p>Create: <code>docs/franchise/training/curriculum/module-01-platform-operations.md</code></p>
+</li>
+<li><p>Create: <code>docs/franchise/training/curriculum/module-02-hub-operations.md</code></p>
+</li>
+<li><p>Create: <code>docs/franchise/training/curriculum/module-03-pro-recruiting-onboarding.md</code></p>
+</li>
+<li><p>Create: <code>docs/franchise/training/curriculum/module-04-codes-literacy.md</code></p>
+</li>
+<li><p>Create: <code>docs/franchise/training/curriculum/module-05-materials-orchestration.md</code></p>
+</li>
+<li><p>Create: <code>docs/franchise/training/curriculum/module-06-customer-service.md</code></p>
+</li>
+<li><p>Create: <code>docs/franchise/training/curriculum/module-07-compliance-brand-standards.md</code></p>
+</li>
+<li><p>Create: <code>docs/franchise/training/curriculum/module-08-marketing-local.md</code></p>
+</li>
+<li><p>Create: <code>docs/franchise/training/curriculum/module-09-financial-management.md</code></p>
+</li>
+<li><p>Create: <code>docs/franchise/training/curriculum/module-10-final-assessment.md</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Build 10-module curriculum with 8-hour modules (total 80 hours).</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Each module specifies: learning objectives, content outline, hands-on exercises, knowledge check, completion criteria.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Module 4 (codes literacy) references the codes intelligence layer internally; never expose "Wiseman" externally — use "Sherpa codes engine" in franchisee-facing materials.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Module 10 final assessment determines pass/fail; passing score required to operate Hub.</p>
+</li>
+</ul>
+<p><strong>Deliverable:</strong> 10-module training curriculum.
+<strong>Acceptance:</strong> VPOPS + VPFD sign off; first prospect successfully completes pilot training run.
+<strong>Dependencies:</strong> None.</p>
+<hr>
+<h3 id="task-ws4-2-build-training-facility-at-hub-1-atkinson-nh">Task WS4-2: Build training facility at Hub #1 (Atkinson NH)</h3>
+<p><strong>Owner:</strong> VPOPS + P
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/franchise/training/facility/2026-04-25-hub1-training-room-fitout.md</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Design 600-square-foot training room (12-seat classroom + 2 demo benches per Hub #1 spec §1).</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Equipment manifest: 12 student stations, projector, whiteboard, demo workbench with all Sherpa codes engine + Sherpa Materials access points, sample kit assembly station, Hub Point of Sale demo terminal.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Buildout (target: complete by Phase 3 Year 1 Quarter 4 to support first franchisee training in Phase 4 Year 1).</p>
+</li>
+</ul>
+<p><strong>Deliverable:</strong> Training room operational at Hub #1.
+<strong>Acceptance:</strong> First training cohort completes without facility issues.
+<strong>Dependencies:</strong> Hub #1 must be operational.</p>
+<hr>
+<h3 id="task-ws4-3-develop-sherpa-brand-standards-manual--sherpa-operations-manual">Task WS4-3: Develop Sherpa Brand Standards Manual + Sherpa Operations Manual</h3>
+<p><strong>Owner:</strong> VPOPS + Brand team
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/franchise/manuals/2026-04-25-sherpa-brand-standards-manual.md</code></p>
+</li>
+<li><p>Create: <code>docs/franchise/manuals/2026-04-25-sherpa-operations-manual.md</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Brand Standards Manual: signage, exterior, interior, uniform, customer touchpoints, marketing collateral, brand voice, do/don't list. References §3.3 of the GTM spec for voice.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Operations Manual: opening and closing procedures, Point of Sale workflows, inventory management, kit assembly procedures, equipment rental procedures, training event procedures, customer service procedures, financial reporting procedures.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Versioning system (Brand Standards updates pushed quarterly; Operations Manual updates pushed monthly when material).</p>
+</li>
+</ul>
+<p><strong>Deliverable:</strong> Brand Standards Manual + Operations Manual Version 1.0.
+<strong>Acceptance:</strong> VPOPS + Phyrom approve.
+<strong>Dependencies:</strong> None.</p>
+<hr>
+<h3 id="task-ws4-4-build-8-quarterly-continuing-education-courses">Task WS4-4: Build 8 quarterly continuing education courses</h3>
+<p><strong>Owner:</strong> VPOPS
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/franchise/training/quarterly-courses/2026-04-25-course-catalog.md</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Design course rotation: advanced pro retention, code-update bulletin, materials-supplier negotiation, marketing campaign templates, financial benchmarking, customer-dispute resolution, hiring + management, technology-roadmap update.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Each course: 2-hour Online format; recording archive; live Q&amp;A with subject-matter expert.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Schedule first cycle for Phase 4 Year 1 Quarter 1.</p>
+</li>
+</ul>
+<p><strong>Deliverable:</strong> 8-course catalog + first-cycle schedule.
+<strong>Acceptance:</strong> First course delivered with first franchisee cohort.
+<strong>Dependencies:</strong> WS3-5 (first franchisees need to be onboarded before continuing education matters).</p>
+<hr>
+<h2 id="work-stream-5--operations-support-infrastructure-lead-vpops--vpfd">Work Stream 5 — Operations Support Infrastructure (Lead: VPOPS + VPFD)</h2>
+<h3 id="task-ws5-1-build-franchisee-performance-dashboard">Task WS5-1: Build franchisee performance dashboard</h3>
+<p><strong>Owner:</strong> VPOPS + Engineering
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>src/app/admin/franchise/performance/page.tsx</code> (corporate-side dashboard)</p>
+</li>
+<li><p>Create: <code>src/app/franchise-portal/dashboard/page.tsx</code> (franchisee-side dashboard)</p>
+</li>
+<li><p>Create: <code>src/app/api/franchise/performance/route.ts</code> (Application Programming Interface)</p>
+</li>
+<li><p>Create: <code>db/migrations/franchise/2026-04-25-add-franchise-tables.sql</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Define performance metrics: monthly gross revenue, COGS, OpEx, EBITDA, royalty paid, marketing fund paid, technology fee paid, local marketing spend, pro-recruiting velocity, customer satisfaction score, Brand Compliance Score, software adoption score.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Build database tables (franchisee, franchise_agreement, franchise_monthly_pnl, franchise_compliance_audit, franchise_brand_audit).</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Build API endpoints that aggregate Point of Sale data + Sherpa Marketplace data + Sherpa Materials data into per-franchisee dashboards.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Build corporate-side comparison dashboard (all franchisees ranked by each metric).</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 5:</strong> Build franchisee-side dashboard (their own data + benchmarks against system average).</p>
+</li>
+</ul>
+<p><strong>Deliverable:</strong> Performance dashboards live for first franchisee cohort.
+<strong>Acceptance:</strong> First franchisee can see their data in real-time; corporate can run system-wide reports.
+<strong>Dependencies:</strong> WS1-7 (Items 5 + 6 royalty/fee structure must be locked).</p>
+<hr>
+<h3 id="task-ws5-2-configure-marketing-fund-management">Task WS5-2: Configure Marketing Fund management</h3>
+<p><strong>Owner:</strong> Chief Marketing Officer + CFO + VPFD
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/franchise/marketing-fund/2026-04-25-marketing-fund-charter.md</code></p>
+</li>
+<li><p>Create: <code>docs/franchise/marketing-fund/2026-04-25-marketing-fund-spending-rules.md</code></p>
+</li>
+<li><p>Create: <code>db/migrations/franchise/2026-04-25-add-marketing-fund-table.sql</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Charter the Marketing Fund (segregated bank account; 2 percent of gross revenue from every franchisee + corporate Hub).</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Define spending rules (60 percent national brand campaigns, 25 percent regional co-op, 15 percent franchise-system lead generation).</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Build quarterly Marketing Fund report template (income, expenditure, fund balance) — distributed to every franchisee + FAC.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Configure ACH auto-debit of monthly Marketing Fund contributions.</p>
+</li>
+</ul>
+<p><strong>Deliverable:</strong> Marketing Fund operational.
+<strong>Acceptance:</strong> First-quarter contributions collected; first quarterly report published.
+<strong>Dependencies:</strong> WS3-5 (first franchisee must have signed Franchise Agreement).</p>
+<hr>
+<h3 id="task-ws5-3-configure-royalty--technology-fee-auto-debit">Task WS5-3: Configure royalty + technology fee auto-debit</h3>
+<p><strong>Owner:</strong> CFO + VPFD
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/franchise/royalty-collection/2026-04-25-royalty-ach-auto-debit-setup.md</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Configure Stripe ACH or comparable for monthly auto-debit of royalty (6/8 percent of franchisee gross revenue), Marketing Fund (2 percent), Technology Fee ($200 flat).</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Auto-generate monthly statement to franchisee 5 business days before debit date.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Build dispute / correction workflow for revenue reconciliation.</p>
+</li>
+</ul>
+<p><strong>Deliverable:</strong> Royalty + fee auto-debit operational.
+<strong>Acceptance:</strong> First debit cycle clears for first franchisee.
+<strong>Dependencies:</strong> WS3-5.</p>
+<hr>
+<h3 id="task-ws5-4-charter-franchise-advisory-council-fac">Task WS5-4: Charter Franchise Advisory Council (FAC)</h3>
+<p><strong>Owner:</strong> P + VPFD
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/franchise/fac/2026-04-25-fac-charter.md</code></p>
+</li>
+<li><p>Create: <code>docs/franchise/fac/2026-04-25-fac-election-process.md</code></p>
+</li>
+<li><p>Create: <code>docs/franchise/fac/2026-04-25-fac-meeting-cadence.ics</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Trigger FAC charter when 5 active franchisees signed (or earlier if corporate elects).</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Document composition, voting structure, term limits, meeting cadence per source spec §12.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Build election process (annual election; nominations open 60 days before; ballots distributed to all franchisees).</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Schedule first FAC meeting.</p>
+</li>
+</ul>
+<p><strong>Deliverable:</strong> FAC operational.
+<strong>Acceptance:</strong> First FAC meeting held with 5 elected franchisee representatives.
+<strong>Dependencies:</strong> WS3-5 plus 4 additional franchise sales.</p>
+<hr>
+<h3 id="task-ws5-5-build-franchise-compliance-monitoring">Task WS5-5: Build franchise compliance monitoring</h3>
+<p><strong>Owner:</strong> VPFD + LEGAL
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/franchise/compliance/2026-04-25-compliance-monitoring-framework.md</code></p>
+</li>
+<li><p>Create: <code>docs/franchise/compliance/2026-04-25-mystery-shopper-program.md</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Document compliance monitoring framework: Brand Compliance Score (quarterly mystery-shopper audit + signage audit + uniform audit + customer touchpoint audit); Software Adoption Score (codes engine usage + Materials engine usage + Dispatch usage + Smart Scan usage); Operations Compliance Score (kit-assembly procedure + equipment-rental procedure + training delivery procedure).</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Engage mystery-shopper vendor for quarterly audits.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Build cure-period framework (first violation: written notice + 30-day cure; repeated violations: written notice + 15-day cure + path to termination).</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 4:</strong> Tie compliance scores to franchise renewal eligibility (Item 17).</p>
+</li>
+</ul>
+<p><strong>Deliverable:</strong> Compliance monitoring operational.
+<strong>Acceptance:</strong> First mystery-shopper audit completed within 90 days of first Hub opening.
+<strong>Dependencies:</strong> WS3-5.</p>
+<hr>
+<h2 id="work-stream-6--international-master-franchise-readiness-lead-vpfd--legal">Work Stream 6 — International Master-Franchise Readiness (Lead: VPFD + LEGAL)</h2>
+<blockquote>
+<p><strong>Defer detailed country-by-country execution to</strong> <code>docs/superpowers/specs/2026-04-25-international-expansion-design.md</code>. <strong>WS6 below covers only the franchise-program-specific readiness items.</strong></p>
+</blockquote>
+<h3 id="task-ws6-1-research-canada-provincial-franchise-acts">Task WS6-1: Research Canada provincial Franchise Acts</h3>
+<p><strong>Owner:</strong> LEGAL + VPFD
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/franchise/international/canada/2026-04-25-canada-provincial-franchise-act-summary.md</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Research Ontario Arthur Wishart Act (Franchise Disclosure), Alberta Franchises Act, Prince Edward Island Franchises Act, Manitoba Franchises Act, New Brunswick Franchises Act.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Build per-province disclosure-document requirements summary.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Engage Canadian franchise counsel (recommended: Cassels Brock &amp; Blackwell or Osler Hoskin &amp; Harcourt for Ontario; provincial-specific counsel for others).</p>
+</li>
+</ul>
+<p><strong>Deliverable:</strong> Canada provincial franchise compliance brief.
+<strong>Acceptance:</strong> VPFD can speak to Canada Master Franchisee compliance requirements.
+<strong>Dependencies:</strong> None.</p>
+<hr>
+<h3 id="task-ws6-2-research-united-kingdom-british-franchise-association-bfa-code">Task WS6-2: Research United Kingdom British Franchise Association (BFA) Code</h3>
+<p><strong>Owner:</strong> LEGAL + VPFD
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/franchise/international/uk/2026-04-25-uk-bfa-code-summary.md</code></p>
+</li>
+<li><p>Create: <code>docs/franchise/international/uk/2026-04-25-bfa-membership-application.md</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Research BFA Code of Ethics + BFA Membership criteria.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Apply for BFA Provisional Membership (entry-level UK franchise credibility signal).</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Engage UK franchise counsel (recommended: Hamilton Pratt or Field Fisher).</p>
+</li>
+</ul>
+<p><strong>Deliverable:</strong> UK BFA membership application submitted.
+<strong>Acceptance:</strong> BFA Provisional Membership granted.
+<strong>Dependencies:</strong> None.</p>
+<hr>
+<h3 id="task-ws6-3-research-australian-franchising-code-of-conduct">Task WS6-3: Research Australian Franchising Code of Conduct</h3>
+<p><strong>Owner:</strong> LEGAL + VPFD
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/franchise/international/australia/2026-04-25-au-franchising-code-summary.md</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Research Australian Franchising Code of Conduct (mandatory under Competition and Consumer Act); Australian Disclosure Document requirements; Australian cooling-off period; Australian dispute-resolution mechanism.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Engage Australian franchise counsel (recommended: DC Strategy Lawyers or MST Lawyers).</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Build Australian Disclosure Document outline (analogous to FDD).</p>
+</li>
+</ul>
+<p><strong>Deliverable:</strong> Australia Franchising Code compliance brief.
+<strong>Acceptance:</strong> VPFD can speak to Australia Master Franchisee compliance requirements.
+<strong>Dependencies:</strong> None.</p>
+<hr>
+<h3 id="task-ws6-4-build-international-master-franchisee-qualification-matrix">Task WS6-4: Build International Master Franchisee qualification matrix</h3>
+<p><strong>Owner:</strong> VPFD + P + LEGAL
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/franchise/international/2026-04-25-international-master-franchisee-qualification-matrix.md</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> Define qualification criteria: country-market experience, multi-unit franchise track record, country-currency net worth equivalents (USD-equivalent $5M+ liquid net worth recommended floor), management capacity for sub-franchise development, country-specific regulatory compliance capability.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Define disqualification criteria.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 3:</strong> Document Master Franchisee fee structure per country market size (Canada $750K, UK $1.2M, Australia $850K, Mexico $500K reference points; refine with international-expansion spec authors).</p>
+</li>
+</ul>
+<p><strong>Deliverable:</strong> International Master Franchisee qualification matrix.
+<strong>Acceptance:</strong> VPFD + P sign off; matrix is consistent with international-expansion spec.
+<strong>Dependencies:</strong> Coordination with international-expansion spec authors.</p>
+<hr>
+<h3 id="task-ws6-5-build-international-master-franchise-agreement-template">Task WS6-5: Build International Master Franchise Agreement template</h3>
+<p><strong>Owner:</strong> LEGAL + VPFD
+<strong>Files:</strong></p>
+<ul>
+<li><p>Create: <code>docs/franchise/international/2026-04-25-international-master-franchise-agreement-template.md</code></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 1:</strong> LEGAL drafts International Master Franchise Agreement template covering: country-wide territory exclusivity, Master Franchisee development schedule (number of sub-Hubs over 10 years), Master Franchisee fee structure, royalty, marketing fund, sub-franchise-royalty split, country-level FDD-equivalent compliance obligation, brand standards compliance, software license, dispute resolution under London Court of International Arbitration (LCIA) Rules.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Step 2:</strong> Per-country counsel reviews template.</p>
+</li>
+</ul>
+<p><strong>Deliverable:</strong> International Master Franchise Agreement template Version 1.0.
+<strong>Acceptance:</strong> LEGAL + per-country counsel issue compliance opinion.
+<strong>Dependencies:</strong> WS6-1 to WS6-4.</p>
+<hr>
+<h2 id="cross-stream-coordination">Cross-Stream Coordination</h2>
+<p><strong>Weekly review:</strong> every Monday, 60 minutes — P + VPFD + VPOPS + CFO + Chief Marketing Officer. Agenda: WS1 milestone status, WS2 state filing status, WS3 prospect-pipeline movement, WS4 training-program readiness, WS5 operations-infrastructure delivery, WS6 international research progress, risk-register update.</p>
+<p><strong>Monthly milestone gate:</strong> end of each month, P approves or holds the next month's go-forward based on previous month deliverable acceptance.</p>
+<p><strong>Quarterly Franchise Program Strategic Review:</strong> P + Board (when Board exists) reviews aggregate franchise program economics versus plan; adjusts royalty rates, Initial Franchise Fee, territory rules, or recruiting strategy if material variance.</p>
+<hr>
+<h2 id="critical-path-summary">Critical-Path Summary</h2>
+<table>
+<thead>
+<tr>
+<th>Milestone</th>
+<th>Target Date</th>
+<th>Gating Tasks</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>FDD Version 1.0 issued</td>
+<td>Phase 3 Year 1 Quarter 4</td>
+<td>WS1-1 through WS1-16</td>
+</tr>
+<tr>
+<td>First state registrations effective (NY, RI, MD, VA)</td>
+<td>Phase 4 Year 1 Quarter 2</td>
+<td>WS1-16 + WS2-2 to WS2-5</td>
+</tr>
+<tr>
+<td>First franchise sale</td>
+<td>Phase 4 Year 1 Quarter 3</td>
+<td>WS1-16 + WS2-2 + WS3-1 to WS3-5 + WS4-1 to WS4-3</td>
+</tr>
+<tr>
+<td>First Hub Grand Opening</td>
+<td>Phase 4 Year 1 Quarter 4</td>
+<td>First franchise sale + WS5-1 + 90-day onboarding playbook</td>
+</tr>
+<tr>
+<td>FAC chartered</td>
+<td>Phase 4 Year 2 Quarter 2</td>
+<td>5 sold franchises (multiple WS3-5 cycles)</td>
+</tr>
+<tr>
+<td>All 14 FDD-registration states registered</td>
+<td>Phase 4 Year 3 Quarter 4</td>
+<td>WS2-6</td>
+</tr>
+<tr>
+<td>First International Master Franchise Agreement signed</td>
+<td>Phase 5 Year 1</td>
+<td>WS6-1 to WS6-5 + international-expansion spec execution</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="acceptance-for-plan-as-a-whole">Acceptance for Plan as a Whole</h2>
+<p>This plan is complete when:</p>
+<ol>
+<li>FDD Version 1.0 is issued and accepted by both LEGAL and independent franchise counsel.</li>
+<li>Sherpa Pros LLC is registered as a franchisor in at least the four Phase 4 Year 2 priority states (NY, RI, MD, VA).</li>
+<li>At least 3 Sherpa Hub franchises are sold and operating in Phase 4 Year 1 launch states (NH/ME/MA/VT).</li>
+<li>Franchisee Performance Dashboard is live with at least 90 days of operating data per franchisee.</li>
+<li>Marketing Fund + royalty auto-debit operational and reconciled monthly.</li>
+<li>Compliance monitoring framework operational with at least one completed mystery-shopper audit cycle per franchisee.</li>
+<li>International Master Franchise Agreement template Version 1.0 reviewed by per-country counsel and ready for first Master Franchisee outreach in Phase 5.</li>
+</ol>
+
+	
+
+
+</body>
+</html>

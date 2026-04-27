@@ -1,0 +1,1499 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>05 equipment manifest — Sherpa Pros</title>
+<link rel="icon" href="../../../../public/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Manrope:wght@300..800&family=Barlow+Condensed:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>/*
+ * Sherpa Pros — Editorial Print Stylesheet
+ * "Editorial · Trade · Considered"
+ *
+ * Magazine-grade typography for client-facing PDFs.
+ * Reference points: Stripe Press · Apartamento · The Atlantic · Bain & Co reports
+ *
+ * Typography stack:
+ *   Display — Fraunces (variable serif, optical sizing, soft swashes)
+ *   Body    — Manrope (geometric grotesque, designed for screens, prints crisp)
+ *   Mono    — JetBrains Mono (designed for code, generous counters)
+ *
+ * Paper: warm cream #FBF7EE, second tone #F5F0E0 for stripes/code tints
+ * Sharp brand accents on generous negative space — never gradient washes.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap");
+
+/* ───────────────────────────────────────────────────────────────────
+   1. Brand tokens
+   ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand */
+  --sky:    #00a9e0;   /* sharp accent */
+  --navy:   #1a1a2e;   /* primary text + structural */
+  --amber:  #f59e0b;   /* secondary accent (rules, hairlines) */
+  --emerald:#10b981;   /* tertiary, sparingly */
+
+  /* Paper system — warm cream, not white */
+  --paper:        #FBF7EE;   /* page background */
+  --paper-deep:   #F5F0E0;   /* table stripe + code tint */
+  --paper-edge:   #E8E0CC;   /* designed border */
+
+  /* Ink */
+  --ink:          #1d1d24;   /* body text — slightly warmer than navy */
+  --ink-soft:     #4a4a55;   /* secondary text */
+  --ink-faint:    #8a8a90;   /* metadata */
+
+  /* Display serif — used for h1/h2/h3, drop cap, pull quotes */
+  --serif: "Fraunces", "Source Serif 4", Georgia, serif;
+  /* Body grotesque */
+  --sans:  "Manrope", "Söhne", "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  /* Mono */
+  --mono:  "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   2. Page + paper texture
+   ─────────────────────────────────────────────────────────────────── */
+
+@page {
+  size: Letter;
+  /* Asymmetric editorial margins — generous inside gutter, tighter outside */
+  margin: 0.85in 0.65in 0.85in 0.95in;
+}
+
+html, body {
+  background: var(--paper);
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--sans);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 400;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "ss01" 1;
+  text-rendering: geometricPrecision;
+
+  /* Subtle paper noise — SVG turbulence at very low opacity adds book-like depth */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.10  0 0 0 0 0.12  0 0 0 0.035 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   3. Body typography — book-quality
+   ─────────────────────────────────────────────────────────────────── */
+
+p {
+  margin: 0 0 8pt 0;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphenate-limit-chars: 7 3 3;
+  hyphenate-limit-lines: 2;
+  orphans: 3;
+  widows: 3;
+}
+
+/* Tighten leading slightly on shorter paragraphs (inherits anyway) */
+p + p { margin-top: 0; text-indent: 14pt; }
+/* But not after headings, lists, blockquotes, tables, code, or hr */
+h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p,
+ul + p, ol + p, blockquote + p, table + p, pre + p, hr + p,
+li > p:first-child {
+  text-indent: 0;
+}
+
+strong, b {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+em, i {
+  font-style: italic;
+  /* Manrope has a real italic — use it */
+}
+
+small {
+  font-size: 0.85em;
+  color: var(--ink-soft);
+}
+
+/* Smart quotes */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+q::before { content: open-quote; }
+q::after  { content: close-quote; }
+
+/* ───────────────────────────────────────────────────────────────────
+   4. Headings — Fraunces display
+   ─────────────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  hyphens: manual;
+}
+
+/* H1 — cover treatment.
+   First H1 in the document gets the page-cover composition;
+   subsequent H1s (rare) still feel grand. */
+h1 {
+  font-family: var(--serif);
+  font-size: 48pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-style: normal;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 0 0 28pt 0;
+  padding: 0;
+
+  /* Cover composition: top label + sky-blue rule above, amber diagonal below */
+  position: relative;
+  padding-top: 64pt;
+}
+
+h1::before {
+  /* "SHERPA PROS · DOC" label + sky-blue full rule above the H1 */
+  content: "SHERPA PROS  \00B7  EDITORIAL";
+  position: absolute;
+  top: 18pt;
+  left: 0;
+  right: 0;
+  font-family: var(--sans);
+  font-size: 8pt;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--sky);
+  text-transform: uppercase;
+  border-top: 0.6pt solid var(--sky);
+  padding-top: 14pt;
+}
+
+h1::after {
+  /* Diagonal amber accent rule below — short, off-axis, editorial */
+  content: "";
+  display: block;
+  width: 56pt;
+  height: 1.2pt;
+  background: var(--amber);
+  margin-top: 22pt;
+  transform: skewX(-24deg);
+  transform-origin: left center;
+}
+
+/* The whole opening section (everything until the first <hr>) acts as a cover.
+   Markdown convention: --- after the metadata block triggers the page break. */
+h1 + p,
+h1 ~ p:first-of-type {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+  line-height: 1.7;
+}
+
+/* Force cover page break after the first <hr> — markdown's standard --- divider */
+body > hr:first-of-type {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* H2 — chapter opener */
+h2 {
+  font-size: 22pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 96, "SOFT" 20;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--navy);
+  margin: 28pt 0 12pt 0;
+  padding-bottom: 8pt;
+  border-bottom: 0.4pt solid var(--sky);
+}
+
+/* H3 — section */
+h3 {
+  font-size: 16pt;
+  font-weight: 500;
+  font-variation-settings: "opsz" 48;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 20pt 0 8pt 0;
+}
+
+/* H4 — small caps grotesque label */
+h4 {
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sky);
+  margin: 16pt 0 6pt 0;
+}
+
+h5 {
+  font-family: var(--sans);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 12pt 0 4pt 0;
+}
+
+h6 {
+  font-family: var(--sans);
+  font-size: 9pt;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 10pt 0 4pt 0;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   5. Drop cap — first paragraph after first H2 (chapter opener)
+   This avoids stomping the metadata block under H1.
+   ─────────────────────────────────────────────────────────────────── */
+
+h2 + p::first-letter {
+  font-family: var(--serif);
+  font-size: 4em;
+  font-weight: 500;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+  float: left;
+  line-height: 0.85;
+  margin: 4pt 8pt 0 0;
+  padding: 0;
+  color: var(--sky);
+  text-transform: uppercase;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   6. Links — body links: navy with thin amber underline
+   ─────────────────────────────────────────────────────────────────── */
+
+a {
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 0.5pt solid var(--amber);
+  padding-bottom: 0.5pt;
+  font-weight: 500;
+}
+
+a:hover { color: var(--sky); }
+
+/* Print: append URL after external links, in small caps amber */
+@media print {
+  a[href^="http"]::after {
+    content: "  " attr(href);
+    font-family: var(--sans);
+    font-size: 7.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: none;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   7. Lists — em-dash bullets, brand-color numerals
+   ─────────────────────────────────────────────────────────────────── */
+
+ul, ol {
+  margin: 8pt 0 12pt 0;
+  padding-left: 24pt;
+}
+
+ul { list-style: none; padding-left: 0; }
+
+ul > li {
+  position: relative;
+  padding-left: 22pt;
+  margin: 4pt 0;
+}
+
+ul > li::before {
+  content: "\2014";              /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sky);
+  font-weight: 500;
+}
+
+/* Nested lists — switch to en dash to mark the level */
+ul ul > li::before { content: "\2013"; color: var(--amber); }
+ul ul ul > li::before { content: "\00B7"; color: var(--ink-soft); font-size: 1.4em; line-height: 0.7; }
+
+ol {
+  list-style: none;
+  counter-reset: ed-ol;
+  padding-left: 0;
+}
+
+ol > li {
+  counter-increment: ed-ol;
+  position: relative;
+  padding-left: 28pt;
+  margin: 4pt 0;
+}
+
+ol > li::before {
+  content: counter(ed-ol) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--sky);
+  font-variant-numeric: lining-nums tabular-nums;
+  width: 22pt;
+  text-align: right;
+}
+
+li { line-height: 1.55; }
+li > p { margin: 0; text-indent: 0; }
+
+/* Task lists — GitHub-flavored markdown checkboxes */
+li > input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 9pt; height: 9pt;
+  border: 0.6pt solid var(--ink-soft);
+  border-radius: 1.5pt;
+  background: var(--paper);
+  margin-right: 6pt;
+  vertical-align: -1pt;
+}
+li > input[type="checkbox"]:checked {
+  background: var(--sky);
+  border-color: var(--sky);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   8. Blockquotes — pull-quote treatment
+   ─────────────────────────────────────────────────────────────────── */
+
+blockquote {
+  font-family: var(--serif);
+  font-size: 14pt;
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: "opsz" 48, "SOFT" 50;
+  line-height: 1.4;
+  color: var(--navy);
+  margin: 16pt 0;
+  padding: 14pt 18pt 14pt 22pt;
+  border-left: 3pt solid var(--sky);
+  background: linear-gradient(to right, rgba(0,169,224,0.04), transparent 70%);
+  page-break-inside: avoid;
+  break-inside: avoid;
+  quotes: "\201C" "\201D";
+}
+
+blockquote p {
+  margin: 0;
+  text-align: left;
+  text-indent: 0;
+  hyphens: none;
+}
+
+blockquote p + p { margin-top: 8pt; }
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 8pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   9. Tables — designed, not default
+   No grid lines. Header sky underline. Subtle stripe.
+   ─────────────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 14pt 0;
+  font-family: var(--sans);
+  font-size: 9.5pt;
+  line-height: 1.4;
+  page-break-inside: auto;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+  caption-side: top;
+  text-align: left;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-bottom: 6pt;
+}
+
+thead {
+  display: table-header-group;   /* repeat header on page break */
+}
+
+table th {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: left;
+  vertical-align: bottom;
+  padding: 10pt 12pt 8pt 12pt;
+  border-bottom: 1.4pt solid var(--sky);
+  background: transparent;
+}
+
+table td {
+  padding: 8pt 12pt;
+  vertical-align: top;
+  border-bottom: 0.4pt solid var(--paper-edge);
+  color: var(--ink);
+  word-wrap: break-word;
+}
+
+table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Subtle warm-cream stripe — even rows */
+table tbody tr:nth-child(even) td {
+  background: var(--paper-deep);
+}
+
+/* Right-align numeric columns — heuristic via class, plus a generic rule
+   for cells whose only content is a number/currency */
+table td.num,
+table th.num,
+table td[align="right"],
+table th[align="right"] {
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Last row gets a heavier baseline rule for finish */
+table tbody tr:last-child td {
+  border-bottom: 1pt solid var(--navy);
+}
+
+/* Inline code inside tables — stay readable, no balloon */
+table code {
+  font-size: 8.5pt;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   10. Code — inline + blocks
+   ─────────────────────────────────────────────────────────────────── */
+
+code {
+  font-family: var(--mono);
+  font-size: 9pt;
+  background: var(--paper-deep);
+  color: var(--navy);
+  padding: 1pt 5pt;
+  border-radius: 2pt;
+  border: 0.4pt solid var(--paper-edge);
+  font-feature-settings: "calt" 0;
+}
+
+pre {
+  font-family: var(--mono);
+  background: var(--paper-deep);
+  border: 0.6pt solid var(--paper-edge);
+  border-left: 2.5pt solid var(--sky);
+  border-radius: 3pt;
+  padding: 12pt 14pt;
+  font-size: 9pt;
+  line-height: 1.5;
+  color: var(--navy);
+  margin: 14pt 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  position: relative;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+  color: inherit;
+}
+
+/* Language label — top-right, small caps sky.
+   Renders only when highlight.js / md-to-pdf attaches `language-xxx` class */
+pre code[class*="language-"]::before {
+  content: attr(class);
+  position: absolute;
+  top: 6pt;
+  right: 10pt;
+  font-family: var(--sans);
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sky);
+  /* Strip the "language-" prefix via CSS — best-effort */
+}
+
+/* Keyboard keys */
+kbd {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--paper-edge);
+  border-bottom-width: 1.5pt;
+  border-radius: 2pt;
+  padding: 1pt 4pt;
+  color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   11. Horizontal rules — thin sky line with diamond ornament
+   ─────────────────────────────────────────────────────────────────── */
+
+hr {
+  border: none;
+  height: 14pt;
+  margin: 22pt 0;
+  position: relative;
+  background: transparent;
+  text-align: center;
+  page-break-after: auto;
+}
+
+hr::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 0.4pt;
+  background: var(--sky);
+  opacity: 0.55;
+}
+
+hr::after {
+  /* Diamond ornament center-set — built from a rotated square */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5pt;
+  height: 5pt;
+  margin: -2.5pt 0 0 -2.5pt;
+  background: var(--paper);
+  border: 0.6pt solid var(--sky);
+  transform: rotate(45deg);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   12. Images + figures
+   ─────────────────────────────────────────────────────────────────── */
+
+img {
+  max-width: 100%;
+  height: auto;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  border-radius: 2pt;
+}
+
+figure {
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figcaption {
+  margin-top: 6pt;
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: left;
+  border-left: 1.5pt solid var(--amber);
+  padding-left: 8pt;
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   13. Definition lists — used in product briefs / specs
+   ─────────────────────────────────────────────────────────────────── */
+
+dl {
+  margin: 12pt 0;
+  display: grid;
+  grid-template-columns: minmax(80pt, 25%) 1fr;
+  column-gap: 16pt;
+  row-gap: 6pt;
+}
+
+dt {
+  font-family: var(--sans);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding-top: 2pt;
+}
+
+dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   14. Print-specific niceties + page break controls
+   ─────────────────────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid-page;
+  }
+
+  /* Don't break a heading away from the paragraph that follows */
+  h2 + p, h3 + p, h4 + p { page-break-before: avoid; break-before: avoid; }
+
+  pre, table, blockquote, figure {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid a single line stranded at top/bottom of a page */
+  p, li { orphans: 3; widows: 3; }
+
+  /* If a row absolutely must break, keep the header repeating (handled by thead display) */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* ───────────────────────────────────────────────────────────────────
+   15. Utility: <mark> highlight + <del>/<ins> diff styling
+   ─────────────────────────────────────────────────────────────────── */
+
+mark {
+  background: rgba(245, 158, 11, 0.22);
+  color: var(--navy);
+  padding: 0 2pt;
+  border-radius: 1.5pt;
+}
+
+del { color: var(--ink-faint); text-decoration: line-through; }
+ins { color: var(--emerald); text-decoration: none; border-bottom: 0.6pt dotted var(--emerald); }
+
+/* ───────────────────────────────────────────────────────────────────
+   16. Final detail — diagonal cut accent in cover top-right.
+   Built as a fixed-position pseudo on body that prints on every page,
+   most prominent on cover. Subtle, not loud.
+   ─────────────────────────────────────────────────────────────────── */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 96pt;
+  height: 96pt;
+  background:
+    linear-gradient(225deg, var(--sky) 0%, var(--sky) 28%, transparent 28.5%),
+    linear-gradient(225deg, transparent 32%, var(--amber) 32.5%, var(--amber) 34%, transparent 34.5%);
+  opacity: 0.85;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Keep content above the corner accent */
+h1, h2, h3, h4, h5, h6, p, ul, ol, table, pre, blockquote, figure, dl, hr {
+  position: relative;
+  z-index: 1;
+}
+</style>
+<style>body{max-width:760px;margin:0 auto;padding:64px 48px 96px;background:#FBF7EE;color:#1a1a2e;font-family:'Manrope',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;line-height:1.65}@media (max-width:768px){body{padding:36px 22px 64px;font-size:15px}}.doc-nav{position:sticky;top:0;background:rgba(251,247,238,0.95);backdrop-filter:blur(8px);margin:-64px -48px 32px;padding:14px 48px;border-bottom:1px solid #E8E0CC;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center;z-index:100}.doc-nav a{color:#1a1a2e;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}.doc-nav a:hover{border-bottom-color:#FF4500}.doc-nav .pdf-link{color:#FF4500}@media (max-width:768px){.doc-nav{margin:-36px -22px 24px;padding:12px 22px;font-size:11px;letter-spacing:1.5px}}</style>
+</head>
+<body>
+<nav class="doc-nav">
+  <a href="../../../index.html">← All Deliverables</a>
+  <a class="pdf-link" href="05-equipment-manifest.pdf">Download PDF →</a>
+</nav>
+
+		<h1 id="hub-1-atkinson-nh---equipment-manifest">Hub #1 Atkinson NH - Equipment Manifest</h1>
+<h2 id="purpose">Purpose</h2>
+<p>Comprehensive list of fixtures, furnishings, equipment (FF&amp;E), IT, security, signage, and materials-handling assets required to make Hub #1 operational. Excludes construction build-out (per <code>03-contractor-rfp-and-criteria.md</code>) and opening inventory (per <code>06-opening-inventory-list.md</code>).</p>
+<p><strong>Total budget target: $55,000 - $65,000.</strong></p>
+<p>Order in waves to align with build schedule:</p>
+<ul>
+<li>Wave 1 (Month 2): Long-lead items (security cameras + NVR, racking, signage fabrication, training A/V, locker bank)</li>
+<li>Wave 2 (Month 3 early): Network + IT, POS hardware, member-lounge furniture, materials-handling equipment</li>
+<li>Wave 3 (Month 3 late): Office finishes, copier, sundries</li>
+</ul>
+<hr>
+<h2 id="1-point-of-sale--payment-processing-2000">1. Point of Sale + Payment Processing (~$2,000)</h2>
+<p>Per integration spec section 14 Open Decision #6, build on existing Drizzle/Postgres stack for Phase 1-2; revisit retail POS at Phase 4 scale. POS hardware below is hardware-only - software runs on existing platform.</p>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Qty</th>
+<th>Unit Cost</th>
+<th>Total</th>
+<th>Supplier</th>
+<th>Lead time</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Counter terminal (touchscreen, Windows or iPad-based)</td>
+<td>1</td>
+<td>$750</td>
+<td>$750</td>
+<td>Square Hardware or Toast</td>
+<td>1 wk</td>
+</tr>
+<tr>
+<td>Mobile barcode scanner (Bluetooth, ruggedized)</td>
+<td>2</td>
+<td>$180</td>
+<td>$360</td>
+<td>Honeywell or Zebra</td>
+<td>1 wk</td>
+</tr>
+<tr>
+<td>Receipt printer (thermal, USB + Ethernet)</td>
+<td>1</td>
+<td>$280</td>
+<td>$280</td>
+<td>Star Micronics</td>
+<td>1 wk</td>
+</tr>
+<tr>
+<td>Card reader (Stripe Terminal or Square Reader)</td>
+<td>2</td>
+<td>$200</td>
+<td>$400</td>
+<td>Stripe / Square</td>
+<td>1 wk</td>
+</tr>
+<tr>
+<td>Cash drawer (electronic release, lockable)</td>
+<td>1</td>
+<td>$150</td>
+<td>$150</td>
+<td>APG</td>
+<td>1 wk</td>
+</tr>
+<tr>
+<td>Backup printer (label printer for kit + rack labels)</td>
+<td>1</td>
+<td>$200</td>
+<td>$200</td>
+<td>DYMO LabelWriter</td>
+<td>1 wk</td>
+</tr>
+<tr>
+<td><strong>POS subtotal</strong></td>
+<td></td>
+<td></td>
+<td><strong>$2,140</strong></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="2-inventory-management-system-1500-initial">2. Inventory Management System (~$1,500 initial)</h2>
+<p>Software runs on existing Drizzle/Postgres stack. Costs below are hardware + first-year subscription where applicable.</p>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Qty</th>
+<th>Unit Cost</th>
+<th>Total</th>
+<th>Supplier</th>
+<th>Lead time</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Bin labels + label printer ribbons (1-year supply)</td>
+<td>1</td>
+<td>$300</td>
+<td>$300</td>
+<td>Avery / DYMO</td>
+<td>1 wk</td>
+</tr>
+<tr>
+<td>Cycle-count tablets (Android, ruggedized)</td>
+<td>2</td>
+<td>$400</td>
+<td>$800</td>
+<td>Lenovo / Samsung</td>
+<td>2 wk</td>
+</tr>
+<tr>
+<td>RFID handheld reader (for rental fleet ping)</td>
+<td>1</td>
+<td>$400</td>
+<td>$400</td>
+<td>Zebra MC3300</td>
+<td>3 wk</td>
+</tr>
+<tr>
+<td><strong>Inventory subtotal</strong></td>
+<td></td>
+<td></td>
+<td><strong>$1,500</strong></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="3-it-infrastructure-8000">3. IT Infrastructure (~$8,000)</h2>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Qty</th>
+<th>Unit Cost</th>
+<th>Total</th>
+<th>Supplier</th>
+<th>Lead time</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Business-grade router + firewall (UniFi Dream Machine Pro or pfSense appliance)</td>
+<td>1</td>
+<td>$500</td>
+<td>$500</td>
+<td>Ubiquiti</td>
+<td>1 wk</td>
+</tr>
+<tr>
+<td>Managed PoE switch (24-port, gigabit)</td>
+<td>1</td>
+<td>$400</td>
+<td>$400</td>
+<td>Ubiquiti / Netgear</td>
+<td>1 wk</td>
+</tr>
+<tr>
+<td>Wi-Fi access points (UniFi U6-LR or similar, ceiling mount)</td>
+<td>3</td>
+<td>$200</td>
+<td>$600</td>
+<td>Ubiquiti</td>
+<td>1 wk</td>
+</tr>
+<tr>
+<td>Staff desktop workstations (mid-tier, Windows 11 Pro or Mac mini)</td>
+<td>4</td>
+<td>$1,000</td>
+<td>$4,000</td>
+<td>Dell / Apple</td>
+<td>2 wk</td>
+</tr>
+<tr>
+<td>Customer-facing kiosks (24" touchscreen all-in-one for showroom self-serve catalog browse)</td>
+<td>2</td>
+<td>$1,000</td>
+<td>$2,000</td>
+<td>Lenovo / Elo</td>
+<td>3 wk</td>
+</tr>
+<tr>
+<td>UPS (uninterruptible power supplies, for POS + NVR + router rack)</td>
+<td>2</td>
+<td>$250</td>
+<td>$500</td>
+<td>APC / CyberPower</td>
+<td>1 wk</td>
+</tr>
+<tr>
+<td><strong>IT subtotal</strong></td>
+<td></td>
+<td></td>
+<td><strong>$8,000</strong></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="4-security-6000">4. Security (~$6,000)</h2>
+<p>Per integration spec section 6 security playbook: 8-camera IP setup, NVR + cloud retention, RFID on rental tools, access control (badge + keypad).</p>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Qty</th>
+<th>Unit Cost</th>
+<th>Total</th>
+<th>Supplier</th>
+<th>Lead time</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>IP cameras (8-camera, PoE, 4K, indoor + 2 outdoor weatherized)</td>
+<td>8</td>
+<td>$250</td>
+<td>$2,000</td>
+<td>Reolink / Axis</td>
+<td>2 wk</td>
+</tr>
+<tr>
+<td>NVR (network video recorder, 8-channel, 4TB local storage)</td>
+<td>1</td>
+<td>$700</td>
+<td>$700</td>
+<td>Reolink / Synology</td>
+<td>2 wk</td>
+</tr>
+<tr>
+<td>Cloud retention subscription (30-day cloud, 90-day local) - Year 1</td>
+<td>1</td>
+<td>$480</td>
+<td>$480</td>
+<td>Eagle Eye / Verkada</td>
+<td>recurring</td>
+</tr>
+<tr>
+<td>Alarm panel + door/window contacts + motion sensors</td>
+<td>1</td>
+<td>$600</td>
+<td>$600</td>
+<td>Honeywell / DSC</td>
+<td>2 wk</td>
+</tr>
+<tr>
+<td>Alarm monitoring service (Year 1)</td>
+<td>1</td>
+<td>$360</td>
+<td>$360</td>
+<td>National monitoring center</td>
+<td>recurring</td>
+</tr>
+<tr>
+<td>Access control: keypad + badge reader at member entry</td>
+<td>1</td>
+<td>$700</td>
+<td>$700</td>
+<td>HID / SALTO</td>
+<td>3 wk</td>
+</tr>
+<tr>
+<td>Member badges (RFID cards, branded, lot of 100 for first year)</td>
+<td>100</td>
+<td>$4</td>
+<td>$400</td>
+<td>HID</td>
+<td>3 wk</td>
+</tr>
+<tr>
+<td>RFID tags for rental tool fleet (200 tags)</td>
+<td>200</td>
+<td>$3</td>
+<td>$600</td>
+<td>Zebra / GAO</td>
+<td>2 wk</td>
+</tr>
+<tr>
+<td>Deposit safe (drop-slot, fireproof)</td>
+<td>1</td>
+<td>$300</td>
+<td>$300</td>
+<td>SentrySafe</td>
+<td>1 wk</td>
+</tr>
+<tr>
+<td><strong>Security subtotal</strong></td>
+<td></td>
+<td></td>
+<td><strong>$6,140</strong></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="5-signage-8000">5. Signage (~$8,000)</h2>
+<p>Designed by architect (per <code>02-architect-engagement-rfp.md</code> deliverable 1.5), fabricated by signage vendor, installed by GC (per <code>03-contractor-rfp-and-criteria.md</code> scope 2.8) or signage installer.</p>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Qty</th>
+<th>Unit Cost</th>
+<th>Total</th>
+<th>Supplier</th>
+<th>Lead time</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Exterior primary sign (illuminated channel letters or backlit panel, 6-8 ft wide)</td>
+<td>1</td>
+<td>$4,500</td>
+<td>$4,500</td>
+<td>Local NH signage shop (FastSigns / Signarama)</td>
+<td>6 wk</td>
+</tr>
+<tr>
+<td>Building-mounted secondary sign (member-entry door, ~3 ft)</td>
+<td>1</td>
+<td>$800</td>
+<td>$800</td>
+<td>Same</td>
+<td>4 wk</td>
+</tr>
+<tr>
+<td>Wayfinding signs (parking arrow + dock sign + member parking)</td>
+<td>4</td>
+<td>$200</td>
+<td>$800</td>
+<td>Same</td>
+<td>3 wk</td>
+</tr>
+<tr>
+<td>Interior zone signs (Pickup / Tool Rental / Training / Lounge / Restroom)</td>
+<td>8</td>
+<td>$120</td>
+<td>$960</td>
+<td>Same</td>
+<td>3 wk</td>
+</tr>
+<tr>
+<td>Tool cage + buffer stock "Staff Only" signs</td>
+<td>4</td>
+<td>$80</td>
+<td>$320</td>
+<td>Same</td>
+<td>3 wk</td>
+</tr>
+<tr>
+<td>Emergency / egress signage (per fire department spec, GC-installed)</td>
+<td>lot</td>
+<td>$400</td>
+<td>$400</td>
+<td>GC pass-through</td>
+<td>with build</td>
+</tr>
+<tr>
+<td>Branded wall graphics (member lounge feature wall + brand identity)</td>
+<td>1</td>
+<td>$400</td>
+<td>$400</td>
+<td>Local print shop</td>
+<td>4 wk</td>
+</tr>
+<tr>
+<td><strong>Signage subtotal</strong></td>
+<td></td>
+<td></td>
+<td><strong>$8,180</strong></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="6-furniture-15000">6. Furniture (~$15,000)</h2>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Qty</th>
+<th>Unit Cost</th>
+<th>Total</th>
+<th>Supplier</th>
+<th>Lead time</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Member-lounge bar stools (durable, contractor-friendly)</td>
+<td>6</td>
+<td>$180</td>
+<td>$1,080</td>
+<td>Wayfair Business / NBF</td>
+<td>2 wk</td>
+</tr>
+<tr>
+<td>Member-lounge lounge chairs</td>
+<td>4</td>
+<td>$350</td>
+<td>$1,400</td>
+<td>Wayfair Business / NBF</td>
+<td>3 wk</td>
+</tr>
+<tr>
+<td>Communal work table (8-10 person, hardwood, 8 ft)</td>
+<td>1</td>
+<td>$1,200</td>
+<td>$1,200</td>
+<td>NBF / Crate Barrel Business</td>
+<td>4 wk</td>
+</tr>
+<tr>
+<td>Coffee station (espresso machine + drip + grinder + supplies)</td>
+<td>1</td>
+<td>$1,500</td>
+<td>$1,500</td>
+<td>Breville / commercial espresso</td>
+<td>2 wk</td>
+</tr>
+<tr>
+<td>Member day-use lockers (24-bank, padlock or RFID-ready)</td>
+<td>1</td>
+<td>$2,400</td>
+<td>$2,400</td>
+<td>Lyon / Hallowell</td>
+<td>4 wk</td>
+</tr>
+<tr>
+<td>Training-room chairs (12-seat, stackable, padded)</td>
+<td>12</td>
+<td>$90</td>
+<td>$1,080</td>
+<td>NBF / Wayfair Business</td>
+<td>2 wk</td>
+</tr>
+<tr>
+<td>Training-room tables (folding, 6 ft, banquet-style)</td>
+<td>4</td>
+<td>$140</td>
+<td>$560</td>
+<td>NBF</td>
+<td>2 wk</td>
+</tr>
+<tr>
+<td>Training-room A/V: projector + screen + sound bar + wireless mic kit</td>
+<td>1</td>
+<td>$2,800</td>
+<td>$2,800</td>
+<td>Best Buy Business / B&amp;H</td>
+<td>3 wk</td>
+</tr>
+<tr>
+<td>Demo bench (training-room, hardwood top, plumbing/electrical demo wired)</td>
+<td>1</td>
+<td>$1,200</td>
+<td>$1,200</td>
+<td>Custom millwork or Greenlee bench</td>
+<td>5 wk</td>
+</tr>
+<tr>
+<td>Showroom display fixtures (kit display wall, sample boards)</td>
+<td>lot</td>
+<td>$1,800</td>
+<td>$1,800</td>
+<td>Local store-fixture vendor</td>
+<td>4 wk</td>
+</tr>
+<tr>
+<td><strong>Furniture subtotal</strong></td>
+<td></td>
+<td></td>
+<td><strong>$15,020</strong></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="7-materials-handling-12000">7. Materials Handling (~$12,000)</h2>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Qty</th>
+<th>Unit Cost</th>
+<th>Total</th>
+<th>Supplier</th>
+<th>Lead time</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Industrial pallet racking (warehouse zone, 12 sections, 8 ft tall x 8 ft wide x 42" deep)</td>
+<td>12</td>
+<td>$450</td>
+<td>$5,400</td>
+<td>Uline / Global Industrial</td>
+<td>3 wk</td>
+</tr>
+<tr>
+<td>Job-staging racks (light-duty wire shelving, dedicated rack-by-job-ID)</td>
+<td>24</td>
+<td>$150</td>
+<td>$3,600</td>
+<td>Uline</td>
+<td>2 wk</td>
+</tr>
+<tr>
+<td>Pallet jack (manual, 5,500 lb capacity)</td>
+<td>1</td>
+<td>$400</td>
+<td>$400</td>
+<td>Uline / Grainger</td>
+<td>1 wk</td>
+</tr>
+<tr>
+<td>Picking carts (wheeled, 3-tier, 250 lb capacity)</td>
+<td>3</td>
+<td>$250</td>
+<td>$750</td>
+<td>Uline</td>
+<td>1 wk</td>
+</tr>
+<tr>
+<td>Packing station (table + scanner mount + tape dispensers + box storage)</td>
+<td>1</td>
+<td>$600</td>
+<td>$600</td>
+<td>Custom or Uline</td>
+<td>2 wk</td>
+</tr>
+<tr>
+<td>Dock plate (hinged, 5,000 lb capacity, for truck-to-dock material flow)</td>
+<td>1</td>
+<td>$700</td>
+<td>$700</td>
+<td>Uline</td>
+<td>2 wk</td>
+</tr>
+<tr>
+<td>Hand trucks (2-wheel, 600 lb capacity)</td>
+<td>2</td>
+<td>$120</td>
+<td>$240</td>
+<td>Uline / Grainger</td>
+<td>1 wk</td>
+</tr>
+<tr>
+<td>Tool cage steel mesh + lockable door</td>
+<td>1</td>
+<td>$900</td>
+<td>$900</td>
+<td>Uline / WireCrafters</td>
+<td>4 wk</td>
+</tr>
+<tr>
+<td><strong>Materials handling subtotal</strong></td>
+<td></td>
+<td></td>
+<td><strong>$12,590</strong></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="8-office-3000">8. Office (~$3,000)</h2>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Qty</th>
+<th>Unit Cost</th>
+<th>Total</th>
+<th>Supplier</th>
+<th>Lead time</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Manager workstation (sit/stand desk + ergonomic chair + dual monitor arms)</td>
+<td>1</td>
+<td>$1,200</td>
+<td>$1,200</td>
+<td>NBF / Uplift</td>
+<td>3 wk</td>
+</tr>
+<tr>
+<td>File cabinets (lockable, 4-drawer, lateral)</td>
+<td>2</td>
+<td>$350</td>
+<td>$700</td>
+<td>NBF</td>
+<td>2 wk</td>
+</tr>
+<tr>
+<td>Multifunction copier / printer / scanner (color, network, business-grade)</td>
+<td>1</td>
+<td>$900</td>
+<td>$900</td>
+<td>HP / Brother</td>
+<td>1 wk</td>
+</tr>
+<tr>
+<td>Office supplies starter pack (paper, toner, pens, binders, etc.)</td>
+<td>lot</td>
+<td>$300</td>
+<td>$300</td>
+<td>Staples</td>
+<td>1 wk</td>
+</tr>
+<tr>
+<td><strong>Office subtotal</strong></td>
+<td></td>
+<td></td>
+<td><strong>$3,100</strong></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="9-aggregate-equipment-budget">9. Aggregate Equipment Budget</h2>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Subtotal</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1. POS + payment processing</td>
+<td>$2,140</td>
+</tr>
+<tr>
+<td>2. Inventory management system</td>
+<td>$1,500</td>
+</tr>
+<tr>
+<td>3. IT infrastructure</td>
+<td>$8,000</td>
+</tr>
+<tr>
+<td>4. Security</td>
+<td>$6,140</td>
+</tr>
+<tr>
+<td>5. Signage</td>
+<td>$8,180</td>
+</tr>
+<tr>
+<td>6. Furniture</td>
+<td>$15,020</td>
+</tr>
+<tr>
+<td>7. Materials handling</td>
+<td>$12,590</td>
+</tr>
+<tr>
+<td>8. Office</td>
+<td>$3,100</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>$56,670</strong></td>
+</tr>
+<tr>
+<td>Contingency (10%)</td>
+<td>$5,670</td>
+</tr>
+<tr>
+<td><strong>Total with contingency</strong></td>
+<td><strong>$62,340</strong></td>
+</tr>
+</tbody></table>
+<p><strong>Within target $55-65K budget.</strong> Decision points if budget pressure emerges:</p>
+<ul>
+<li>Defer training-room A/V to Phase 2 (-$2,800)</li>
+<li>Defer 2nd customer-facing kiosk to Phase 2 (-$1,000)</li>
+<li>Defer espresso machine, ship with drip-only coffee in Phase 1 (-$1,000)</li>
+<li>Reduce locker bank from 24 to 16 (-$800)</li>
+</ul>
+<hr>
+<h2 id="10-recurring-costs-year-1-not-in-capex-above">10. Recurring Costs (Year 1, NOT in capex above)</h2>
+<table>
+<thead>
+<tr>
+<th>Recurring</th>
+<th>Annual</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Cloud video retention</td>
+<td>$480</td>
+</tr>
+<tr>
+<td>Alarm monitoring</td>
+<td>$360</td>
+</tr>
+<tr>
+<td>POS / inventory software (built on existing stack, no incremental)</td>
+<td>$0</td>
+</tr>
+<tr>
+<td>Internet (business-grade fiber, NH)</td>
+<td>$1,800</td>
+</tr>
+<tr>
+<td>RFID tag replenishment</td>
+<td>$200</td>
+</tr>
+<tr>
+<td>Member badge replenishment</td>
+<td>$200</td>
+</tr>
+<tr>
+<td><strong>Total Year 1 recurring</strong></td>
+<td><strong>$3,040</strong></td>
+</tr>
+</tbody></table>
+<p>Recurring costs flow to opex, not capex. Tracked in <code>09-soft-open-and-grand-open-calendar.md</code> Month 4+ operating budget.</p>
+<hr>
+<h2 id="11-sign-off">11. Sign-off</h2>
+<ul>
+<li><input disabled="" type="checkbox"> Equipment manifest reviewed by Phyrom</li>
+<li><input disabled="" type="checkbox"> Wave 1 long-lead orders placed (security, racking, signage, A/V, lockers)</li>
+<li><input disabled="" type="checkbox"> Wave 2 orders placed (network, IT, POS, furniture, materials handling)</li>
+<li><input disabled="" type="checkbox"> Wave 3 orders placed (office, sundries)</li>
+<li><input disabled="" type="checkbox"> All deliveries scheduled to Hub #1 receiving dock per build schedule</li>
+<li><input disabled="" type="checkbox"> Equipment install coordinated with GC final-week schedule</li>
+</ul>
+
+	
+
+
+</body>
+</html>

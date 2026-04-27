@@ -1,7 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { readFile, stat } from "node:fs/promises";
 import { join, normalize, resolve as resolvePath, sep } from "node:path";
-import { hasDataroomAccess } from "@/lib/auth/dataroom";
+import { getDataroomAccessState } from "@/lib/auth/dataroom";
 
 /**
  * Investor data room catch-all route.
@@ -76,7 +76,7 @@ function rewriteHtml(html: string): string {
     .replaceAll('src="../public/', 'src="/');
 }
 
-function unauthorizedRedirect(request: NextRequest): NextResponse {
+function signInRedirect(request: NextRequest): NextResponse {
   const signInUrl = new URL("/sign-in", request.url);
   // Clerk's standard query param is `redirect_url`; setting `redirect` too
   // for compatibility with the existing proxy.ts convention.
@@ -85,12 +85,56 @@ function unauthorizedRedirect(request: NextRequest): NextResponse {
   return NextResponse.redirect(signInUrl);
 }
 
+const FORBIDDEN_HTML = `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Access required · Sherpa Pros</title>
+<link rel="icon" href="/favicon.ico">
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Manrope', sans-serif; background: #FBF7EE; color: #1a1a2e; margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; }
+  .card { max-width: 480px; background: white; border: 1px solid #E8E0CC; border-radius: 16px; padding: 48px 40px; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+  .logo { width: 200px; height: auto; margin: 0 auto 32px; display: block; }
+  h1 { font-size: 22px; font-weight: 700; margin: 0 0 12px; letter-spacing: -0.01em; }
+  p { font-size: 15px; line-height: 1.55; color: #4a4a55; margin: 0 0 16px; }
+  .accent { color: #00a9e0; text-decoration: none; font-weight: 600; }
+  .accent:hover { text-decoration: underline; }
+  .footer { font-size: 12px; color: #94a3b8; margin-top: 32px; }
+  .home-link { display: inline-block; margin-top: 24px; padding: 10px 20px; background: #00a9e0; color: white; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px; }
+  .home-link:hover { background: #0090c0; }
+</style>
+</head>
+<body>
+  <div class="card">
+    <img class="logo" src="/brand/sherpa-pros-wordmark.png" alt="Sherpa Pros">
+    <h1>Investor data room — access required</h1>
+    <p>You're signed in, but your account doesn't yet have data room access.</p>
+    <p>Email <a class="accent" href="mailto:poum@hjd.builders?subject=Data%20room%20access%20request">poum@hjd.builders</a> with the email on this account and we'll grant access.</p>
+    <a class="home-link" href="/">Back to thesherpapros.com</a>
+    <div class="footer">Account access is granted manually for verified investors.</div>
+  </div>
+</body>
+</html>`;
+
+function forbiddenResponse(): NextResponse {
+  return new NextResponse(FORBIDDEN_HTML, {
+    status: 403,
+    headers: {
+      "Content-Type": "text/html; charset=utf-8",
+      "Cache-Control": "private, no-store",
+      "X-Robots-Tag": "noindex, nofollow",
+    },
+  });
+}
+
 export async function GET(
   request: NextRequest,
   context: { params: Promise<{ path?: string[] }> }
 ) {
-  const allowed = await hasDataroomAccess();
-  if (!allowed) return unauthorizedRedirect(request);
+  const accessState = await getDataroomAccessState();
+  if (accessState === "not_signed_in") return signInRedirect(request);
+  if (accessState === "signed_in_no_access") return forbiddenResponse();
 
   const params = await context.params;
   const segments = params.path ?? [];

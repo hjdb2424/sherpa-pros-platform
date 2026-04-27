@@ -10,7 +10,8 @@
     "docs:pdf": "node scripts/build-docs-pdf.mjs",
     "docs:binders": "node scripts/build-docs-binders.mjs",
     "docs:slides": "node scripts/build-docs-slides.mjs",
-    "docs:all": "npm run docs:pdf && npm run docs:binders && npm run docs:slides"
+    "docs:all": "npm run docs:pdf && npm run docs:binders && npm run docs:slides",
+    "list:dataroom": "node --env-file=.env.local scripts/list-dataroom-access.mjs"
   },
   "dependencies": {
     "@clerk/nextjs": "^7.0.12",

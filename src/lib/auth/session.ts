@@ -10,6 +10,7 @@
  */
 
 import type { UserRole, UserSubtype } from './roles';
+import type { StripeAccountStatus } from '@/lib/services/payments/types';
 
 export interface UserSession {
   userId: string;
@@ -17,6 +18,7 @@ export interface UserSession {
   subtype: UserSubtype;
   email: string;
   name: string;
+  stripeAccountStatus: StripeAccountStatus;
 }
 
 // ---------------------------------------------------------------------------
@@ -30,6 +32,7 @@ const MOCK_USERS: Record<UserRole, UserSession> = {
     subtype: 'standard',
     email: 'user@test.com',
     name: 'Pro User',
+    stripeAccountStatus: 'none',
   },
   client: {
     userId: 'c1000000-0000-0000-0000-000000000001',
@@ -37,6 +40,7 @@ const MOCK_USERS: Record<UserRole, UserSession> = {
     subtype: 'residential',
     email: 'user@test.com',
     name: 'Client User',
+    stripeAccountStatus: 'none',
   },
   pm: {
     userId: 'p1000000-0000-0000-0000-000000000001',
@@ -44,6 +48,7 @@ const MOCK_USERS: Record<UserRole, UserSession> = {
     subtype: null,
     email: 'user@test.com',
     name: 'PM User',
+    stripeAccountStatus: 'none',
   },
 };
 

@@ -19,11 +19,18 @@ export type {
   ParticipantRole,
 } from '@/lib/communication/types';
 
+// Payments — new in this plan (Stripe Connect onboarding only; money flow Plan 2)
+export type {
+  PaymentService,
+  StripeAccountStatus,
+  ConnectedAccountResult,
+  AccountSessionResult,
+} from '@/lib/services/payments/types';
+
 // Future interfaces — these get filled in as each integration lands.
 // Each interface lives next to its implementation, then is re-exported here.
 //
 // Tracked in followup plans:
-// - PaymentService     (Stripe Connect)
 // - StorageService     (Cloudflare R2)
 // - DeliveryService    (Uber Connect / DoorDash Drive)
 // - QueueService       (in-process → QStash)

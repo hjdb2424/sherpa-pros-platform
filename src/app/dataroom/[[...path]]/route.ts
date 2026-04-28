@@ -174,9 +174,30 @@ export async function GET(
     ? rewriteHtml(body.toString("utf-8"))
     : new Uint8Array(body);
 
+  // Force inline preview for browser-previewable types (HTML, PDF, images).
+  // Default would let the browser decide, which on some setups defaults to
+  // download for PDFs.
+  // PPTX/DOCX are not previewable in-browser → explicit attachment so the
+  // download dialog gets a sensible filename.
+  const inlineTypes = [
+    "text/html",
+    "application/pdf",
+    "image/",
+    "application/json",
+    "application/javascript",
+    "text/css",
+    "font/",
+  ];
+  const isInline = inlineTypes.some((t) => contentType.startsWith(t));
+  const filename = resolvedPath.split(sep).pop() ?? "file";
+  const disposition = isInline
+    ? `inline; filename="${filename}"`
+    : `attachment; filename="${filename}"`;
+
   return new NextResponse(responseBody, {
     headers: {
       "Content-Type": contentType,
+      "Content-Disposition": disposition,
       "Cache-Control": "private, no-store",
       "X-Robots-Tag": "noindex, nofollow, noarchive",
     },

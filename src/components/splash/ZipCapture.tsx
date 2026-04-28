@@ -71,7 +71,7 @@ export default function ZipCapture() {
           onChange={(e) => setZip(e.target.value)}
           placeholder="Enter your zip code"
           aria-label="Zip code"
-          className="h-12 w-full rounded-xl border border-white/10 bg-white/5 px-5 text-base text-white placeholder-white/40 outline-none backdrop-blur-sm transition-all duration-300 focus:border-[#00a9e0]/60 focus:bg-white/[0.08] focus:shadow-[0_0_24px_rgba(0,169,224,0.15)] focus:ring-1 focus:ring-[#00a9e0]/40"
+          className="h-12 w-full rounded-xl border border-zinc-300 bg-white px-5 text-base text-zinc-900 placeholder-zinc-400 outline-none backdrop-blur-sm transition-all duration-300 focus:border-[#00a9e0]/60 focus:bg-zinc-50 dark:border-white/10 dark:bg-white/5 dark:text-white dark:placeholder-white/40 dark:focus:bg-white/[0.08] focus:shadow-[0_0_24px_rgba(0,169,224,0.15)] focus:ring-1 focus:ring-[#00a9e0]/40"
         />
         {error && (
           <p className="absolute -bottom-6 left-1 text-xs text-red-400">
@@ -81,7 +81,7 @@ export default function ZipCapture() {
       </div>
       <button
         type="submit"
-        className="h-12 shrink-0 rounded-xl bg-white/10 px-6 text-sm font-semibold text-white transition-all duration-200 hover:bg-white/20 active:scale-[0.97]"
+        className="h-12 shrink-0 rounded-xl bg-zinc-200 px-6 text-sm font-semibold text-zinc-900 transition-all duration-200 hover:bg-zinc-300 active:scale-[0.97] dark:bg-white/10 dark:text-white dark:hover:bg-white/20"
       >
         Check Availability
       </button>

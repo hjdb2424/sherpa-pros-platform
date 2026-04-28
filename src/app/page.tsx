@@ -94,7 +94,7 @@ function FacebookIcon() {
 
 export default function SplashPage() {
   return (
-    <div className="relative min-h-screen bg-[#0a0a0f] text-white selection:bg-[#00a9e0]/30">
+    <div className="relative min-h-screen bg-zinc-50 text-zinc-900 dark:bg-[#0a0a0f] dark:text-white selection:bg-[#00a9e0]/30">
       {/* ── Animated background ── */}
       <div className="pointer-events-none fixed inset-0 overflow-hidden">
         {/* Slow-drifting gradient orbs */}
@@ -120,7 +120,7 @@ export default function SplashPage() {
 
           <HeroTagline />
 
-          <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-white/60 sm:text-xl">
+          <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-zinc-600 dark:text-white/60 sm:text-xl">
             Transparent pricing for clients. Steady work for pros. One platform that works for everyone.
           </p>
 
@@ -128,7 +128,7 @@ export default function SplashPage() {
             <WaitlistForm />
           </div>
 
-          <p className="mt-6 text-sm text-white/30">
+          <p className="mt-6 text-sm text-zinc-500 dark:text-white/30">
             Be the first to know when we launch in your area
           </p>
           <Link
@@ -142,7 +142,7 @@ export default function SplashPage() {
         {/* Scroll indicator */}
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
           <svg
-            className="h-6 w-6 text-white/20"
+            className="h-6 w-6 text-zinc-400 dark:text-white/20"
             fill="none"
             viewBox="0 0 24 24"
             strokeWidth={1.5}
@@ -169,12 +169,12 @@ export default function SplashPage() {
 
           <div className="grid gap-6 sm:grid-cols-3">
             <ScrollFadeIn delay={0}>
-              <div className="group relative h-full overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.03] p-8 backdrop-blur-sm transition-all duration-300 hover:border-[#00a9e0]/20 hover:bg-white/[0.05]">
+              <div className="group relative h-full overflow-hidden rounded-2xl border border-zinc-200 dark:border-white/[0.06] bg-white dark:bg-white/[0.03] p-8 backdrop-blur-sm transition-all duration-300 hover:border-[#00a9e0]/20 hover:bg-zinc-100 dark:bg-white/[0.05]">
                 <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-xl bg-[#00a9e0]/10 text-[#00a9e0] transition-colors duration-300 group-hover:bg-[#00a9e0]/20">
                   <HomeIcon />
                 </div>
                 <h3 className="mb-3 text-xl font-semibold">For Homeowners</h3>
-                <p className="text-sm leading-relaxed text-white/50">
+                <p className="text-sm leading-relaxed text-zinc-500 dark:text-white/50">
                   Post a job. Get bids from licensed, insured pros. Pay when it is
                   done right.
                 </p>
@@ -182,12 +182,12 @@ export default function SplashPage() {
             </ScrollFadeIn>
 
             <ScrollFadeIn delay={150}>
-              <div className="group relative h-full overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.03] p-8 backdrop-blur-sm transition-all duration-300 hover:border-[#ff4500]/20 hover:bg-white/[0.05]">
+              <div className="group relative h-full overflow-hidden rounded-2xl border border-zinc-200 dark:border-white/[0.06] bg-white dark:bg-white/[0.03] p-8 backdrop-blur-sm transition-all duration-300 hover:border-[#ff4500]/20 hover:bg-zinc-100 dark:bg-white/[0.05]">
                 <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-xl bg-[#ff4500]/10 text-[#ff4500] transition-colors duration-300 group-hover:bg-[#ff4500]/20">
                   <WrenchIcon />
                 </div>
                 <h3 className="mb-3 text-xl font-semibold">For Pros</h3>
-                <p className="text-sm leading-relaxed text-white/50">
+                <p className="text-sm leading-relaxed text-zinc-500 dark:text-white/50">
                   Whether you&apos;re full-time or side-hustle, find steady work with
                   fair pay. No lead fees. Vetted jobs from real clients.
                 </p>
@@ -195,12 +195,12 @@ export default function SplashPage() {
             </ScrollFadeIn>
 
             <ScrollFadeIn delay={300}>
-              <div className="group relative h-full overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.03] p-8 backdrop-blur-sm transition-all duration-300 hover:border-emerald-500/20 hover:bg-white/[0.05]">
+              <div className="group relative h-full overflow-hidden rounded-2xl border border-zinc-200 dark:border-white/[0.06] bg-white dark:bg-white/[0.03] p-8 backdrop-blur-sm transition-all duration-300 hover:border-emerald-500/20 hover:bg-zinc-100 dark:bg-white/[0.05]">
                 <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-400 transition-colors duration-300 group-hover:bg-emerald-500/20">
                   <BuildingIcon />
                 </div>
                 <h3 className="mb-3 text-xl font-semibold">For Property Managers</h3>
-                <p className="text-sm leading-relaxed text-white/50">
+                <p className="text-sm leading-relaxed text-zinc-500 dark:text-white/50">
                   Manage maintenance like a Fortune 500. Track every dollar across
                   every unit.
                 </p>
@@ -245,14 +245,14 @@ export default function SplashPage() {
             ].map((item, i) => (
               <ScrollFadeIn key={item.step} delay={i * 150}>
                 <div className="group relative text-center">
-                  <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl border border-white/[0.08] bg-white/[0.04] text-white/40 transition-all duration-300 group-hover:border-[#00a9e0]/30 group-hover:text-[#00a9e0]">
+                  <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl border border-zinc-200 dark:border-white/[0.08] bg-zinc-100 dark:bg-white/[0.04] text-zinc-500 dark:text-white/40 transition-all duration-300 group-hover:border-[#00a9e0]/30 group-hover:text-[#00a9e0]">
                     {item.icon}
                   </div>
                   <div className="mb-2 text-xs font-bold uppercase tracking-widest text-[#00a9e0]/60">
                     Step {item.step}
                   </div>
                   <h3 className="mb-2 text-lg font-semibold">{item.title}</h3>
-                  <p className="text-sm leading-relaxed text-white/45">
+                  <p className="text-sm leading-relaxed text-zinc-600 dark:text-white/45">
                     {item.desc}
                   </p>
                 </div>
@@ -269,7 +269,7 @@ export default function SplashPage() {
             <h2 className="text-2xl font-bold sm:text-3xl">
               Launching soon in your area
             </h2>
-            <p className="mx-auto mt-4 max-w-sm text-sm leading-relaxed text-white/50">
+            <p className="mx-auto mt-4 max-w-sm text-sm leading-relaxed text-zinc-500 dark:text-white/50">
               Enter your zip code and we will let you know when Sherpa Pros is available near you.
             </p>
           </ScrollFadeIn>
@@ -287,7 +287,7 @@ export default function SplashPage() {
         <div className="mx-auto max-w-5xl">
           <ScrollFadeIn>
             <div className="mb-16 text-center">
-              <p className="mb-3 text-sm font-medium uppercase tracking-widest text-white/40">
+              <p className="mb-3 text-sm font-medium uppercase tracking-widest text-zinc-500 dark:text-white/40">
                 Sound familiar?
               </p>
               <h2 className="text-3xl font-bold sm:text-4xl">
@@ -298,12 +298,12 @@ export default function SplashPage() {
 
           <div className="grid gap-6 sm:grid-cols-3">
             <ScrollFadeIn delay={0}>
-              <div className="relative flex h-full flex-col rounded-2xl border border-white/[0.06] bg-white/[0.02] p-8">
+              <div className="relative flex h-full flex-col rounded-2xl border border-zinc-200 dark:border-white/[0.06] bg-white/[0.02] p-8">
                 {/* The problem */}
                 <div className="mb-6">
                   <div className="mb-3 text-2xl">&#x1f62e;&#x200d;&#x1f4a8;</div>
-                  <h3 className="mb-2 text-lg font-semibold text-white/70">Pros pay to compete</h3>
-                  <p className="text-sm leading-relaxed text-white/40">
+                  <h3 className="mb-2 text-lg font-semibold text-zinc-700 dark:text-white/70">Pros pay to compete</h3>
+                  <p className="text-sm leading-relaxed text-zinc-500 dark:text-white/40">
                     On the big platforms, pros pay $15&ndash;$100+ per lead &mdash; even when the homeowner
                     never picks up the phone. The best pros stop bidding. The desperate ones raise prices.
                   </p>
@@ -311,7 +311,7 @@ export default function SplashPage() {
                 {/* The what-if */}
                 <div className="mt-auto rounded-xl border border-[#00a9e0]/15 bg-[#00a9e0]/[0.04] p-5">
                   <p className="mb-2 text-xs font-bold uppercase tracking-widest text-[#00a9e0]/70">What if there was a better way?</p>
-                  <p className="text-sm leading-relaxed text-white/60">
+                  <p className="text-sm leading-relaxed text-zinc-600 dark:text-white/60">
                     Sherpa Pros never charges for leads. Pros only pay a small service fee when the job is
                     completed and the client pays. No upfront cost. No wasted bids. Better pros show up.
                   </p>
@@ -320,12 +320,12 @@ export default function SplashPage() {
             </ScrollFadeIn>
 
             <ScrollFadeIn delay={150}>
-              <div className="relative flex h-full flex-col rounded-2xl border border-white/[0.06] bg-white/[0.02] p-8">
+              <div className="relative flex h-full flex-col rounded-2xl border border-zinc-200 dark:border-white/[0.06] bg-white/[0.02] p-8">
                 {/* The problem */}
                 <div className="mb-6">
                   <div className="mb-3 text-2xl">&#x1f3b0;</div>
-                  <h3 className="mb-2 text-lg font-semibold text-white/70">Quotes are a guessing game</h3>
-                  <p className="text-sm leading-relaxed text-white/40">
+                  <h3 className="mb-2 text-lg font-semibold text-zinc-700 dark:text-white/70">Quotes are a guessing game</h3>
+                  <p className="text-sm leading-relaxed text-zinc-500 dark:text-white/40">
                     You get three quotes and they are all different. Different scopes, different line items,
                     no way to tell who is padding and who forgot something. Nobody checks the numbers. You just pick and hope.
                   </p>
@@ -333,7 +333,7 @@ export default function SplashPage() {
                 {/* The what-if */}
                 <div className="mt-auto rounded-xl border border-[#00a9e0]/15 bg-[#00a9e0]/[0.04] p-5">
                   <p className="mb-2 text-xs font-bold uppercase tracking-widest text-[#00a9e0]/70">If only it could do this&hellip;</p>
-                  <p className="text-sm leading-relaxed text-white/60">
+                  <p className="text-sm leading-relaxed text-zinc-600 dark:text-white/60">
                     Every Sherpa quote is validated against local building codes and market pricing
                     before it reaches your inbox. You see the right scope, the right number, the first time.
                   </p>
@@ -342,12 +342,12 @@ export default function SplashPage() {
             </ScrollFadeIn>
 
             <ScrollFadeIn delay={300}>
-              <div className="relative flex h-full flex-col rounded-2xl border border-white/[0.06] bg-white/[0.02] p-8">
+              <div className="relative flex h-full flex-col rounded-2xl border border-zinc-200 dark:border-white/[0.06] bg-white/[0.02] p-8">
                 {/* The problem */}
                 <div className="mb-6">
                   <div className="mb-3 text-2xl">&#x1f6a8;</div>
-                  <h3 className="mb-2 text-lg font-semibold text-white/70">You pay and pray</h3>
-                  <p className="text-sm leading-relaxed text-white/40">
+                  <h3 className="mb-2 text-lg font-semibold text-zinc-700 dark:text-white/70">You pay and pray</h3>
+                  <p className="text-sm leading-relaxed text-zinc-500 dark:text-white/40">
                     On most platforms, you send money directly to the contractor and hope for the best.
                     If they disappear mid-job or cut corners, getting your money back is your problem.
                   </p>
@@ -355,7 +355,7 @@ export default function SplashPage() {
                 {/* The what-if */}
                 <div className="mt-auto rounded-xl border border-[#00a9e0]/15 bg-[#00a9e0]/[0.04] p-5">
                   <p className="mb-2 text-xs font-bold uppercase tracking-widest text-[#00a9e0]/70">There is a better way.</p>
-                  <p className="text-sm leading-relaxed text-white/60">
+                  <p className="text-sm leading-relaxed text-zinc-600 dark:text-white/60">
                     Sherpa holds your payment with marketplace payment protection until the work passes inspection. The pro gets paid
                     when the job is done right. If something is wrong, your money stays protected.
                   </p>
@@ -377,7 +377,7 @@ export default function SplashPage() {
               <h2 className="text-3xl font-bold sm:text-4xl">
                 The Sherpa Ecosystem
               </h2>
-              <p className="mx-auto mt-4 max-w-xl text-base text-white/50">
+              <p className="mx-auto mt-4 max-w-xl text-base text-zinc-500 dark:text-white/50">
                 Four pillars designed to support every side of the trade.
               </p>
             </div>
@@ -385,10 +385,10 @@ export default function SplashPage() {
 
           <div className="grid gap-6 sm:grid-cols-2">
             <ScrollFadeIn delay={0}>
-              <div className="group relative h-full overflow-hidden rounded-2xl border border-[#00a9e0]/15 bg-white/[0.03] p-8 transition-all duration-300 hover:border-[#00a9e0]/30 hover:bg-white/[0.05]">
+              <div className="group relative h-full overflow-hidden rounded-2xl border border-[#00a9e0]/15 bg-white dark:bg-white/[0.03] p-8 transition-all duration-300 hover:border-[#00a9e0]/30 hover:bg-zinc-100 dark:bg-white/[0.05]">
                 <div className="mb-1 text-xs font-bold uppercase tracking-widest text-[#00a9e0]/60">Live</div>
                 <h3 className="mb-2 text-xl font-semibold">Sherpa Marketplace</h3>
-                <p className="text-sm leading-relaxed text-white/50">
+                <p className="text-sm leading-relaxed text-zinc-500 dark:text-white/50">
                   The smart marketplace for trade work. Post a job, get matched with verified pros,
                   track progress in real time, and pay with marketplace payment protection. From plumbing to smart home
                   automation &mdash; available on web and mobile.
@@ -402,10 +402,10 @@ export default function SplashPage() {
             </ScrollFadeIn>
 
             <ScrollFadeIn delay={150}>
-              <div className="group relative h-full overflow-hidden rounded-2xl border border-amber-500/15 bg-white/[0.03] p-8 transition-all duration-300 hover:border-amber-500/30 hover:bg-white/[0.05]">
+              <div className="group relative h-full overflow-hidden rounded-2xl border border-amber-500/15 bg-white dark:bg-white/[0.03] p-8 transition-all duration-300 hover:border-amber-500/30 hover:bg-zinc-100 dark:bg-white/[0.05]">
                 <div className="mb-1 text-xs font-bold uppercase tracking-widest text-amber-400/60">Coming Soon</div>
                 <h3 className="mb-2 text-xl font-semibold">Sherpa Hub</h3>
-                <p className="text-sm leading-relaxed text-white/50">
+                <p className="text-sm leading-relaxed text-zinc-500 dark:text-white/50">
                   Physical locations where pros pick up pre-built supply kits, rent professional equipment
                   (Festool, Hilti, Milwaukee), get manufacturer training, and grab branded gear.
                 </p>
@@ -418,10 +418,10 @@ export default function SplashPage() {
             </ScrollFadeIn>
 
             <ScrollFadeIn delay={300}>
-              <div className="group relative h-full overflow-hidden rounded-2xl border border-emerald-500/15 bg-white/[0.03] p-8 transition-all duration-300 hover:border-emerald-500/30 hover:bg-white/[0.05]">
+              <div className="group relative h-full overflow-hidden rounded-2xl border border-emerald-500/15 bg-white dark:bg-white/[0.03] p-8 transition-all duration-300 hover:border-emerald-500/30 hover:bg-zinc-100 dark:bg-white/[0.05]">
                 <div className="mb-1 text-xs font-bold uppercase tracking-widest text-emerald-400/60">Coming Soon</div>
                 <h3 className="mb-2 text-xl font-semibold">Sherpa Home</h3>
-                <p className="text-sm leading-relaxed text-white/50">
+                <p className="text-sm leading-relaxed text-zinc-500 dark:text-white/50">
                   A subscription for homeowners and property managers. Members get discounted service rates,
                   priority matching with top-tier pros, faster SLAs, and exclusive seasonal maintenance packages.
                 </p>
@@ -434,10 +434,10 @@ export default function SplashPage() {
             </ScrollFadeIn>
 
             <ScrollFadeIn delay={450}>
-              <div className="group relative h-full overflow-hidden rounded-2xl border border-violet-500/15 bg-white/[0.03] p-8 transition-all duration-300 hover:border-violet-500/30 hover:bg-white/[0.05]">
+              <div className="group relative h-full overflow-hidden rounded-2xl border border-violet-500/15 bg-white dark:bg-white/[0.03] p-8 transition-all duration-300 hover:border-violet-500/30 hover:bg-zinc-100 dark:bg-white/[0.05]">
                 <div className="mb-1 text-xs font-bold uppercase tracking-widest text-violet-400/60">Live</div>
                 <h3 className="mb-2 text-xl font-semibold">Sherpa Success Manager</h3>
-                <p className="text-sm leading-relaxed text-white/50">
+                <p className="text-sm leading-relaxed text-zinc-500 dark:text-white/50">
                   Your dedicated account manager. Not a chatbot &mdash; a real person who manages your projects,
                   handles vendor coordination, resolves disputes, and makes sure every job finishes on time and on budget.
                 </p>
@@ -457,7 +457,7 @@ export default function SplashPage() {
               <h3 className="text-lg font-semibold sm:text-xl">
                 Sherpa Flex &mdash; Side-hustle pros welcome
               </h3>
-              <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-white/50">
+              <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-zinc-500 dark:text-white/50">
                 No LLC required. Per-project insurance included. 18% fee covers everything so you can earn on your terms.
               </p>
               <Link
@@ -482,7 +482,7 @@ export default function SplashPage() {
               <h2 className="text-3xl font-bold sm:text-4xl">
                 Everything You Need, Built In
               </h2>
-              <p className="mx-auto mt-4 max-w-xl text-base text-white/50">
+              <p className="mx-auto mt-4 max-w-xl text-base text-zinc-500 dark:text-white/50">
                 Not just a marketplace. A complete platform for trade work.
               </p>
             </div>
@@ -601,13 +601,13 @@ export default function SplashPage() {
               },
             ].map((feature, i) => (
               <ScrollFadeIn key={feature.title} delay={(i % 3) * 100}>
-                <div className="group flex gap-4 rounded-xl border border-white/[0.06] bg-white/[0.02] p-5 transition-all duration-300 hover:border-white/[0.12] hover:bg-white/[0.04]">
+                <div className="group flex gap-4 rounded-xl border border-zinc-200 dark:border-white/[0.06] bg-white/[0.02] p-5 transition-all duration-300 hover:border-white/[0.12] hover:bg-zinc-100 dark:bg-white/[0.04]">
                   <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#00a9e0]/10 text-[#00a9e0] transition-colors duration-300 group-hover:bg-[#00a9e0]/20">
                     {feature.icon}
                   </div>
                   <div>
                     <h3 className="text-sm font-semibold">{feature.title}</h3>
-                    <p className="mt-1 text-xs leading-relaxed text-white/40">{feature.desc}</p>
+                    <p className="mt-1 text-xs leading-relaxed text-zinc-500 dark:text-white/40">{feature.desc}</p>
                   </div>
                 </div>
               </ScrollFadeIn>
@@ -617,23 +617,23 @@ export default function SplashPage() {
       </section>
 
       {/* ━━━ SECTION 8: Footer ━━━ */}
-      <footer className="relative border-t border-white/[0.06] px-4 py-16">
+      <footer className="relative border-t border-zinc-200 dark:border-white/[0.06] px-4 py-16">
         <div className="mx-auto max-w-6xl">
           <div className="flex flex-col items-center gap-10 sm:flex-row sm:items-start sm:justify-between">
             <div className="flex flex-col items-center sm:items-start">
               <Logo size="md" />
-              <p className="mt-3 max-w-xs text-center text-sm text-white/30 sm:text-left">
+              <p className="mt-3 max-w-xs text-center text-sm text-zinc-500 dark:text-white/30 sm:text-left">
                 Where every project finds the right pro.
               </p>
             </div>
 
             <nav className="flex flex-wrap justify-center gap-x-8 gap-y-3 text-sm">
-              <Link href="/about" className="text-white/40 transition-colors hover:text-white/70">
+              <Link href="/about" className="text-zinc-500 dark:text-white/40 transition-colors hover:text-zinc-700 dark:text-white/70">
                 About
               </Link>
               <a
                 href="mailto:info@thesherpapros.com"
-                className="text-white/40 transition-colors hover:text-white/70"
+                className="text-zinc-500 dark:text-white/40 transition-colors hover:text-zinc-700 dark:text-white/70"
               >
                 Contact
               </a>
@@ -643,32 +643,32 @@ export default function SplashPage() {
               <a
                 href="#"
                 aria-label="Instagram"
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-white/[0.08] text-white/30 transition-all hover:border-white/20 hover:text-white/60"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-zinc-200 dark:border-white/[0.08] text-zinc-500 dark:text-white/30 transition-all hover:border-white/20 hover:text-zinc-600 dark:text-white/60"
               >
                 <InstagramIcon />
               </a>
               <a
                 href="#"
                 aria-label="LinkedIn"
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-white/[0.08] text-white/30 transition-all hover:border-white/20 hover:text-white/60"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-zinc-200 dark:border-white/[0.08] text-zinc-500 dark:text-white/30 transition-all hover:border-white/20 hover:text-zinc-600 dark:text-white/60"
               >
                 <LinkedInIcon />
               </a>
               <a
                 href="#"
                 aria-label="Facebook"
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-white/[0.08] text-white/30 transition-all hover:border-white/20 hover:text-white/60"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-zinc-200 dark:border-white/[0.08] text-zinc-500 dark:text-white/30 transition-all hover:border-white/20 hover:text-zinc-600 dark:text-white/60"
               >
                 <FacebookIcon />
               </a>
             </div>
           </div>
 
-          <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-white/[0.06] pt-8 sm:flex-row">
-            <p className="text-xs text-white/20">
+          <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-zinc-200 dark:border-white/[0.06] pt-8 sm:flex-row">
+            <p className="text-xs text-zinc-400 dark:text-white/20">
               &copy; 2026 Sherpa Pros. All rights reserved.
             </p>
-            <span className="text-xs text-white/20">
+            <span className="text-xs text-zinc-400 dark:text-white/20">
               Built by a working general contractor.
             </span>
           </div>

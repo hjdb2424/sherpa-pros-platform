@@ -174,32 +174,26 @@ export async function GET(
     ? rewriteHtml(body.toString("utf-8"))
     : new Uint8Array(body);
 
-  // Force inline preview for browser-previewable types (HTML, PDF, images).
-  // Default would let the browser decide, which on some setups defaults to
-  // download for PDFs.
-  // PPTX/DOCX are not previewable in-browser → explicit attachment so the
-  // download dialog gets a sensible filename.
-  const inlineTypes = [
-    "text/html",
-    "application/pdf",
-    "image/",
-    "application/json",
-    "application/javascript",
-    "text/css",
-    "font/",
+  // Only set Content-Disposition: attachment for non-previewable types
+  // (PPTX/DOCX/XLSX). For HTML, PDF, images, etc., omit the header so the
+  // browser uses its default behavior — which is inline rendering.
+  // Setting `inline` explicitly was causing some browsers to misinterpret.
+  const downloadOnlyTypes = [
+    "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
   ];
-  const isInline = inlineTypes.some((t) => contentType.startsWith(t));
-  const filename = resolvedPath.split(sep).pop() ?? "file";
-  const disposition = isInline
-    ? `inline; filename="${filename}"`
-    : `attachment; filename="${filename}"`;
+  const headers: Record<string, string> = {
+    "Content-Type": contentType,
+    "Cache-Control": "private, no-store",
+    "X-Robots-Tag": "noindex, nofollow, noarchive",
+  };
+  if (downloadOnlyTypes.includes(contentType)) {
+    const filename = resolvedPath.split(sep).pop() ?? "file";
+    headers["Content-Disposition"] = `attachment; filename="${filename}"`;
+  }
 
   return new NextResponse(responseBody, {
-    headers: {
-      "Content-Type": contentType,
-      "Content-Disposition": disposition,
-      "Cache-Control": "private, no-store",
-      "X-Robots-Tag": "noindex, nofollow, noarchive",
-    },
+    headers,
   });
 }

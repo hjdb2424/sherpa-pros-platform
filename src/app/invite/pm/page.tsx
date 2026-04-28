@@ -58,7 +58,7 @@ export default function PMInvitePage() {
           <h2 className="text-lg font-bold text-zinc-900">The Sherpa Ecosystem</h2>
           <div className="mt-3 grid gap-3 sm:grid-cols-2">
             {[
-              { name: 'Sherpa Marketplace', status: 'LIVE', color: 'text-[#00a9e0] bg-[#00a9e0]/10', desc: 'Post jobs, get matched with licensed pros, track progress, pay through escrow.' },
+              { name: 'Sherpa Marketplace', status: 'LIVE', color: 'text-[#00a9e0] bg-[#00a9e0]/10', desc: 'Post jobs, get matched with licensed pros, track progress, pay with marketplace payment protection.' },
               { name: 'Sherpa Hub', status: 'SOON', color: 'text-amber-700 bg-amber-100', desc: 'Supply kits, equipment rental, training, and branded gear at physical locations.' },
               { name: 'Sherpa Home', status: 'SOON', color: 'text-emerald-700 bg-emerald-100', desc: 'Subscription for discounted rates, priority matching, and faster SLAs.' },
               { name: 'Sherpa Success Manager', status: 'SOON', color: 'text-violet-700 bg-violet-100', desc: 'Dedicated account manager for project oversight and dispute resolution.' },

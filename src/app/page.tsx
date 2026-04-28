@@ -356,7 +356,7 @@ export default function SplashPage() {
                 <div className="mt-auto rounded-xl border border-[#00a9e0]/15 bg-[#00a9e0]/[0.04] p-5">
                   <p className="mb-2 text-xs font-bold uppercase tracking-widest text-[#00a9e0]/70">There is a better way.</p>
                   <p className="text-sm leading-relaxed text-white/60">
-                    Sherpa holds your payment in escrow until the work passes inspection. The pro gets paid
+                    Sherpa holds your payment with marketplace payment protection until the work passes inspection. The pro gets paid
                     when the job is done right. If something is wrong, your money stays protected.
                   </p>
                 </div>
@@ -390,12 +390,12 @@ export default function SplashPage() {
                 <h3 className="mb-2 text-xl font-semibold">Sherpa Marketplace</h3>
                 <p className="text-sm leading-relaxed text-white/50">
                   The smart marketplace for trade work. Post a job, get matched with verified pros,
-                  track progress in real time, and pay through escrow. From plumbing to smart home
+                  track progress in real time, and pay with marketplace payment protection. From plumbing to smart home
                   automation &mdash; available on web and mobile.
                 </p>
                 <div className="mt-4 flex flex-wrap gap-2">
                   <span className="rounded-full bg-[#00a9e0]/10 px-3 py-1 text-[10px] font-semibold text-[#00a9e0]">On-demand dispatch</span>
-                  <span className="rounded-full bg-[#00a9e0]/10 px-3 py-1 text-[10px] font-semibold text-[#00a9e0]">Escrow payments</span>
+                  <span className="rounded-full bg-[#00a9e0]/10 px-3 py-1 text-[10px] font-semibold text-[#00a9e0]">Payment protection</span>
                   <span className="rounded-full bg-[#00a9e0]/10 px-3 py-1 text-[10px] font-semibold text-[#00a9e0]">Smart home services</span>
                 </div>
               </div>
@@ -546,8 +546,8 @@ export default function SplashPage() {
                 ),
               },
               {
-                title: 'Escrow Payments',
-                desc: 'Milestone-based payments held in escrow until work is verified.',
+                title: 'Payment Protection',
+                desc: 'Milestone-based payments held with marketplace payment protection until work is verified.',
                 icon: (
                   <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />

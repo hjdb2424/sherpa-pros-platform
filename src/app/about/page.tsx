@@ -66,7 +66,7 @@ export default function AboutPage() {
           <div>
             <h3 className="text-lg font-semibold text-[#00a9e0]">Your money should be protected</h3>
             <p className="mt-2 text-sm leading-relaxed text-white/50">
-              Payments are held in escrow until the work is inspected and approved. The pro gets paid
+              Payments are held with marketplace payment protection until the work is inspected and approved. The pro gets paid
               when the job is done right. If something goes wrong, your money stays protected. No other
               marketplace in the trades does this at scale.
             </p>
@@ -98,7 +98,7 @@ export default function AboutPage() {
               name: 'Sherpa Marketplace',
               status: 'Live',
               statusColor: 'text-[#00a9e0] bg-[#00a9e0]/10',
-              desc: 'The smart marketplace for trade work. From plumbing to smart home automation &mdash; post a job, get matched with verified pros, track progress, and pay through escrow.',
+              desc: 'The smart marketplace for trade work. From plumbing to smart home automation &mdash; post a job, get matched with verified pros, track progress, and pay with marketplace payment protection.',
             },
             {
               name: 'Sherpa Hub',
@@ -192,7 +192,7 @@ export default function AboutPage() {
             { title: 'In-App Messaging', desc: 'Chat with your pro or client. Synced to SMS via Twilio.' },
             { title: 'Combined Maintenance', desc: 'Kanban boards, schedules, and drill-down views for property managers.' },
             { title: 'Finance Hub', desc: 'Track expenses, mileage, and quarterly estimates. 1099-ready.' },
-            { title: 'Escrow Payments', desc: 'Milestone-based payments held in escrow until work is verified.' },
+            { title: 'Payment Protection', desc: 'Milestone-based payments held with marketplace payment protection until work is verified.' },
             { title: 'Code-Verified Quotes', desc: 'Every quote validated against local building codes.' },
             { title: '37 Service Categories', desc: '251+ services from smart home to landscaping to finish carpentry.' },
             { title: 'Sherpa Success Manager', desc: 'A dedicated human account manager, not a chatbot.' },

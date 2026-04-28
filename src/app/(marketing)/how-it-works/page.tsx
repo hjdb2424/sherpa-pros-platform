@@ -49,7 +49,7 @@ const clientSteps = [
     step: '06',
     title: 'Pay Securely and Rate',
     description:
-      'Funds are held in escrow and released only when you approve the work. Leave a review to help the next client — and help great pros get recognized.',
+      'Funds are held with marketplace payment protection and released only when you approve the work. Leave a review to help the next client — and help great pros get recognized.',
     detail: 'Dispute resolution built in if anything goes sideways.',
   },
 ];
@@ -94,7 +94,7 @@ const proSteps = [
     step: '06',
     title: 'Complete and Get Paid',
     description:
-      'Do great work, log milestones, and get paid through escrow when the client approves. Build your reputation with every completed job.',
+      'Do great work, log milestones, and get paid through marketplace settlement when the client approves. Build your reputation with every completed job.',
     detail: 'Fast payment — no chasing invoices or bounced checks.',
   },
 ];
@@ -113,12 +113,12 @@ const faqItems = [
   {
     question: 'What happens if I am not satisfied with the work?',
     answer:
-      'Funds are held in escrow until you approve the completed work. If there is a dispute, our resolution team steps in to mediate. We also offer a satisfaction guarantee on qualified projects.',
+      'Funds are held with marketplace payment protection until you approve the completed work. If there is a dispute, our resolution team steps in to mediate. We also offer a satisfaction guarantee on qualified projects.',
   },
   {
-    question: 'How does the escrow payment work?',
+    question: 'How does payment protection work?',
     answer:
-      'When you hire a pro, the agreed amount is held securely in escrow. It is released to the pro only after you approve the completed work. For larger projects, milestone-based releases are available.',
+      'When you hire a pro, the agreed amount is held securely via Stripe marketplace settlement. It is released to the pro only after you approve the completed work. For larger projects, milestone-based releases are available.',
   },
   {
     question: 'Is there a subscription fee for pros?',

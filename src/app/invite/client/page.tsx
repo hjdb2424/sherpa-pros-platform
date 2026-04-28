@@ -30,7 +30,7 @@ export default function ClientInvitePage() {
           <p className="mt-3 text-sm leading-relaxed text-zinc-600">
             We&apos;re building the smart platform for trade work &mdash; where every project
             finds the right pro. Post a job, get verified bids from licensed professionals,
-            and pay through escrow so your money is always protected.
+            and pay through our marketplace payment protection so your money is always protected.
           </p>
         </div>
 
@@ -42,7 +42,7 @@ export default function ClientInvitePage() {
               'Post a job in 60 seconds — describe the work, add photos, done',
               'Code-checked quotes — every bid is validated against building codes',
               'Licensed and insured pros only — no guessing, no risk',
-              'Escrow-protected payments — your money is held until the work is done right',
+              'Marketplace-protected payments — your money is held until the work is done right',
               'Real reviews from real jobs — verified ratings from completed projects',
             ].map((item, i) => (
               <li key={i} className="flex gap-3 text-sm text-zinc-600">

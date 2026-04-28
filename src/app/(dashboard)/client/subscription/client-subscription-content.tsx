@@ -99,7 +99,7 @@ export default function ClientSubscriptionContent() {
               {[
                 { benefit: 'Post jobs', free: true, sherpa: true },
                 { benefit: 'Browse verified pros', free: true, sherpa: true },
-                { benefit: 'Escrow payment protection', free: true, sherpa: true },
+                { benefit: 'Marketplace payment protection', free: true, sherpa: true },
                 { benefit: 'Service fee', free: '18%', sherpa: '12%' },
                 { benefit: 'Dedicated Sherpa Client Pro', free: false, sherpa: true },
                 { benefit: 'Priority matching', free: false, sherpa: true },

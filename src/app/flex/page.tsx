@@ -348,7 +348,7 @@ export default function FlexPage() {
               { icon: <MiniStarIcon />, title: 'Sherpa Score', desc: 'Build your reputation with a quality score that follows you across the platform.' },
               { icon: <MiniGiftIcon />, title: 'Rewards Program', desc: 'Earn points on every job. Redeem for tools, gear, and gift cards.' },
               { icon: <MiniChatIcon />, title: 'In-App Messaging', desc: 'Chat with clients directly. Synced to SMS so nothing gets missed.' },
-              { icon: <MiniLockIcon />, title: 'Payment Protection', desc: 'Payments held in escrow until the work is verified and approved.' },
+              { icon: <MiniLockIcon />, title: 'Payment Protection', desc: 'Payments held with marketplace payment protection until the work is verified and approved.' },
               { icon: <MiniCalculatorIcon />, title: 'Tax Tools', desc: 'Track expenses, mileage, and quarterly estimates. 1099-ready at year end.' },
             ].map((feature, i) => (
               <ScrollFadeIn key={feature.title} delay={i * 75}>

@@ -166,7 +166,7 @@ If you want the long technical version of this thesis, ask the founder for the i
 
 **Web platform:** [www.thesherpapros.com](https://www.thesherpapros.com)
 **Mobile:** iOS via TestFlight (request access). Android via PWA.
-**Tech stack:** Next.js 16 · Stripe Connect (marketplace splits + escrow) · Neon Postgres + PostGIS (location-aware matching) · Clerk (verified pro/client roles) · Twilio (masked messaging)
+**Tech stack:** Next.js 16 · Stripe Connect (marketplace splits with payment protection) · Neon Postgres + PostGIS (location-aware matching) · Clerk (verified pro/client roles) · Twilio (masked messaging)
 
 **Three flows you can demo right now:**
 
@@ -187,7 +187,7 @@ If you want the long technical version of this thesis, ask the founder for the i
 
 - 37 service categories live (residential trades, light commercial, specialty)
 - Mobile-first PWA — installable on any phone in 10 seconds
-- Stripe Connect marketplace splits + 7-day escrow hold (deposit-theft protection)
+- Stripe Connect marketplace splits with 7-day payment protection hold (deposit-theft prevention)
 - QuickBooks Online sync for pros (one-click)
 - Real-time Twilio masked messaging between pro and homeowner (no number sharing)
 - Property Manager tier with multi-unit work order management
@@ -276,7 +276,7 @@ Phyrom is based in NH, mobile-first, and reachable directly at poum@hjd.builders
 - Mobile build hardening (iOS App Store submission, Android PWA polish)
 - Code-aware quote validation expansion (additional state codes; permit-assist workflow for Boston ISD)
 - Property Manager tier feature buildout
-- Dispute resolution + escrow refinement
+- Dispute resolution + payment-protection refinement
 
 **~30% New England operations and expansion (~$75K–$150K)**
 - Pro Success Manager hire (NH/ME first, $8K/month loaded × ~12 months)
@@ -411,8 +411,8 @@ This is not the complete list. **The full risk disclosures are in the Form C fil
 ### 11.3 Risks specific to licensed-trade work
 
 - **Regulatory risk on contractor classification (1099 vs. W-2).** Various state attorneys general (including in MA) have challenged gig-platform contractor classifications. Sherpa Pros' pros are independently licensed contractors with their own insurance — defensible — but a regulatory action could force re-structure. **Mitigation:** written legal opinion on 1099 vs. W-2 commissioned in Phase 0 Week 4 (see GTM spec Risk R5).
-- **Liability risk on completed work.** If a pro damages a homeowner's property or causes injury, the homeowner could attempt to involve Sherpa Pros as a defendant. **Mitigation:** Platform liability insurance (~$800/year), 7-day Stripe escrow hold, 4.5-star rating floor, full pro license/insurance verification at onboarding.
-- **Fraud risk on either side.** Pro fraud (no-shows, deposit-theft, code violations) or client fraud (chargebacks, false claims) is endemic in the industry. **Mitigation:** Stripe Connect 7-day escrow hold, dispute resolution workflow, pro deactivation on confirmed fraud.
+- **Liability risk on completed work.** If a pro damages a homeowner's property or causes injury, the homeowner could attempt to involve Sherpa Pros as a defendant. **Mitigation:** Platform liability insurance (~$800/year), 7-day Stripe payment-protection hold, 4.5-star rating floor, full pro license/insurance verification at onboarding.
+- **Fraud risk on either side.** Pro fraud (no-shows, deposit-theft, code violations) or client fraud (chargebacks, false claims) is endemic in the industry. **Mitigation:** Stripe Connect 7-day payment-protection hold, dispute resolution workflow, pro deactivation on confirmed fraud.
 
 ### 11.4 Risks specific to competitive pressure
 

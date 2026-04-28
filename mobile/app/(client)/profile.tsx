@@ -478,7 +478,7 @@ export default function ClientProfileScreen() {
                   { q: 'How do I post a job?', a: 'Tap the + button on the Jobs tab to create a new job posting. Fill in the details and pros in your area will be notified.' },
                   { q: 'How are pros verified?', a: 'All pros undergo license verification, insurance checks, and background screening before being approved on the platform.' },
                   { q: 'What if I need emergency service?', a: 'Mark your job as "Emergency" when posting. Nearby available pros will receive priority notifications.' },
-                  { q: 'How do payments work?', a: 'Payments are held in escrow until the job is complete and you approve the work. We support credit cards and bank transfers.' },
+                  { q: 'How do payments work?', a: 'Payments are processed via Stripe with marketplace payment protection — released to the contractor after job completion and your approval. We support credit cards and bank transfers.' },
                   { q: 'Can I cancel a job?', a: 'Yes, you can cancel before a pro accepts. After acceptance, cancellation fees may apply per the pro\'s terms.' },
                 ].map((faq, i) => (
                   <Pressable

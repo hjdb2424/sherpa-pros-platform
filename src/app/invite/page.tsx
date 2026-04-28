@@ -79,7 +79,7 @@ export default async function InvitePage({ searchParams }: Props) {
             </div>
             <h2 className="text-base font-semibold text-zinc-900">Homeowner / Client</h2>
             <p className="mt-2 text-xs leading-relaxed text-zinc-500">
-              Post a job, get verified bids, escrow-protected payments
+              Post a job, get verified bids, marketplace-protected payments
             </p>
           </Link>
         </div>

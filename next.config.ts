@@ -5,14 +5,21 @@ const nextConfig: NextConfig = {
   // /dataroom/* route handler can read files from it at runtime.
   // Files outside public/ aren't auto-traced by Vercel's File Tracing
   // unless explicitly included here. No-op on non-Vercel hosts (DO, etc).
-  // Ship docs-pdf/ HTML files to the serverless function bundle so the
-  // /dataroom route handler can read them at runtime. Try multiple keys
-  // because Next.js's File Tracing matching for catch-all routes can be
-  // finicky — better to over-include than miss files.
+  // Ship docs-pdf/ files to the serverless function bundle so the
+  // /dataroom route handler can read them at runtime. Use a broad "**"
+  // pattern because Next.js's File Tracing key matching for optional
+  // catch-all routes (`[[...path]]`) is unreliable — narrow keys like
+  // "/dataroom/**" may not match the route's actual function name.
   outputFileTracingIncludes: {
-    "/dataroom/**": ["./docs-pdf/**/*"],
-    "/dataroom/[[...path]]": ["./docs-pdf/**/*"],
-    "/dataroom": ["./docs-pdf/**/*"],
+    "**": [
+      "./docs-pdf/**/*.html",
+      "./docs-pdf/**/*.pdf",
+      "./docs-pdf/**/*.pptx",
+      "./docs-pdf/**/*.png",
+      "./docs-pdf/**/*.jpg",
+      "./docs-pdf/**/*.svg",
+      "./docs-pdf/**/*.css",
+    ],
   },
 };
 

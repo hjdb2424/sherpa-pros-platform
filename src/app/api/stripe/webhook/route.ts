@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { updateStripeAccountStatus } from '@/db/queries/users';
+import { markEventProcessed } from '@/db/queries/stripe-events';
+import { markPaymentHeld, deletePaymentRow } from '@/db/queries/payments';
 import type { StripeAccountStatus } from '@/lib/services/payments/types';
 
 /**
@@ -22,16 +24,21 @@ export async function POST(request: Request) {
   // Read raw body BEFORE any parsing — constructEvent needs the exact bytes.
   const rawBody = await request.text();
 
-  // In dev with no STRIPE_WEBHOOK_SECRET, skip validation. Production env
-  // always has the secret set; this branch is for local Vitest runs without env.
+  // C-4 fix: only Vitest (NODE_ENV=test) bypasses signature validation.
+  // Any other env without the secret is a security risk for money events
+  // (forged payment_intent.succeeded could flip rows to held without an
+  // actual charge). Local dev MUST run `stripe listen` to provide the secret.
   if (!webhookSecret) {
-    console.warn('[stripe-webhook] running without secrets — skipping signature validation');
-    try {
-      const parsed = JSON.parse(rawBody);
-      return await handleEvent(parsed);
-    } catch {
-      return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 });
+    if (process.env.NODE_ENV === 'test') {
+      try {
+        const parsed = JSON.parse(rawBody);
+        return await handleEvent(parsed);
+      } catch {
+        return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 });
+      }
     }
+    console.error('[stripe-webhook] STRIPE_WEBHOOK_SECRET not set in non-test env');
+    return NextResponse.json({ error: 'webhook_secret_required' }, { status: 503 });
   }
 
   if (!signature) {
@@ -61,6 +68,44 @@ async function handleEvent(event: Stripe.Event): Promise<Response> {
       const status = deriveAccountStatus(account);
       await updateStripeAccountStatus(account.id, status);
       console.log(`[stripe-webhook] account.updated ${account.id} -> ${status}`);
+      break;
+    }
+
+    case 'payment_intent.succeeded': {
+      const intent = event.data.object as Stripe.PaymentIntent;
+      const paymentRowId = intent.metadata?.paymentRowId;
+      if (!paymentRowId) {
+        console.warn(
+          `[stripe-webhook] payment_intent.succeeded without paymentRowId metadata: ${intent.id}`,
+        );
+        break;
+      }
+      const isFirst = await markEventProcessed(event.id, event.type);
+      if (!isFirst) {
+        console.log(
+          `[stripe-webhook] duplicate payment_intent.succeeded for event ${event.id} — skipping`,
+        );
+        break;
+      }
+      await markPaymentHeld(paymentRowId);
+      console.log(
+        `[stripe-webhook] payment_intent.succeeded → payment ${paymentRowId} held`,
+      );
+      break;
+    }
+
+    case 'payment_intent.payment_failed': {
+      const intent = event.data.object as Stripe.PaymentIntent;
+      const paymentRowId = intent.metadata?.paymentRowId;
+      if (!paymentRowId) break;
+      const isFirst = await markEventProcessed(event.id, event.type);
+      if (!isFirst) break;
+      // DELETE rather than introducing a 'failed' status so we avoid a
+      // CHECK-constraint migration; failed rows shouldn't inflate the cap.
+      await deletePaymentRow(paymentRowId);
+      console.log(
+        `[stripe-webhook] payment_intent.payment_failed → payment ${paymentRowId} deleted`,
+      );
       break;
     }
 

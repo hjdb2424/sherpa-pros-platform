@@ -521,6 +521,24 @@ export function JobDetailContent({ jobId }: JobDetailContentProps) {
                             ? 'Payment Protected'
                             : 'Upcoming'}
                       </span>
+                      {/* Plan 2a — Fund / Funded button (real schema status) */}
+                      {(ms as { status?: string }).status === 'pending' && (
+                        <Link
+                          href={`/client/my-jobs/${jobId}/milestones/${ms.id}/fund`}
+                          className="mt-1 inline-flex items-center gap-1 rounded-lg bg-[#00a9e0] px-3 py-1.5 text-xs font-semibold text-white hover:bg-[#0ea5e9] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#00a9e0]"
+                        >
+                          Fund ${ms.amount} →
+                        </Link>
+                      )}
+                      {(ms as { status?: string }).status === 'funded' && (
+                        <span className="mt-1 inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400">
+                          <span
+                            className="h-1.5 w-1.5 rounded-full bg-emerald-500"
+                            aria-hidden="true"
+                          />
+                          Funded ✓
+                        </span>
+                      )}
                     </div>
                   </div>
                 ))}

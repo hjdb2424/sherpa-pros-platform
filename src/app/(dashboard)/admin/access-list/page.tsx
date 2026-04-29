@@ -559,22 +559,25 @@ export default function AccessListPage() {
                                     const role = toAppRole(entry.defaultRole);
                                     const inviteText =
                                       "Hi " + entry.name + ",\n\n" +
-                                      "You've been invited to test Sherpa Pros - the smart platform for trade work.\n\n" +
+                                      "You've been invited to test Sherpa Pros — trade work, done right.\n" +
+                                      "One place for the hire, the work, and the money.\n\n" +
+                                      "WHAT YOU'LL GET INSIDE\n" +
+                                      "• Sherpa Marketplace — vetted pros, on-demand dispatch, real-time tracking\n" +
+                                      "• Code-Verified Quotes — every bid validated against local building codes\n" +
+                                      "• Marketplace Payment Protection — your money is held until the work passes inspection\n" +
+                                      "• Materials Dispatch — materials ordered + delivered straight to the job site\n" +
+                                      "• Sherpa Success Manager — a real human (not a chatbot) manages your project\n" +
+                                      "• Smart Scan OCR, In-App Messaging, Sherpa Score, Rewards Program, Finance Hub\n\n" +
                                       "🌐 WEB ACCESS\n" +
-                                      "Sign in here: https://thesherpapros.com/sign-in\n" +
+                                      "Sign in: https://thesherpapros.com/sign-in\n" +
                                       "Use this email (" + to + ") to access the platform.\n\n" +
                                       "📱 MOBILE APP\n" +
-                                      "iPhone (TestFlight): https://thesherpapros.com/install\n" +
-                                      "Android (web app): https://thesherpapros.com/install\n" +
-                                      "The /install page walks you through TestFlight setup and what you'll see in the app.\n\n" +
-                                      "Quick start (web):\n" +
-                                      "1. Visit the sign-in link above\n" +
-                                      "2. Click \"Continue with Google\" or enter your email\n" +
-                                      "3. Complete the 30-second setup\n" +
-                                      "4. Take the guided tour\n\n" +
+                                      "Walkthrough: https://thesherpapros.com/install\n" +
+                                      "iPhone uses TestFlight (Apple's beta app). Android uses the web app for now —\n" +
+                                      "/install has step-by-step instructions for both.\n\n" +
                                       "Your role-specific guide: https://thesherpapros.com/invite/" + role + "\n\n" +
                                       "Questions? Reply to this email or contact info@thesherpapros.com\n\n" +
-                                      "- The Sherpa Pros Team";
+                                      "— The Sherpa Pros Team";
 
                                     // Try sending via API first
                                     try {

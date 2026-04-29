@@ -29,11 +29,24 @@ export async function POST(request: NextRequest) {
 
         <p style="font-size: 15px; color: #3f3f46; line-height: 1.6;">
           You've been invited to test <strong>Sherpa Pros</strong> as a <strong>${roleLabel}</strong>.
-          We're building the smart platform for trade work and we want your feedback before we launch.
+          <em>Trade work, done right — one place for the hire, the work, and the money.</em>
+          We want your feedback before we launch in your area.
         </p>
 
+        <div style="background: #fafafa; border: 1px solid #e4e4e7; border-radius: 12px; padding: 24px; margin: 24px 0;">
+          <p style="font-size: 14px; font-weight: 600; color: #18181b; margin: 0 0 12px 0;">What you'll see inside:</p>
+          <ul style="font-size: 14px; color: #3f3f46; line-height: 1.8; margin: 0; padding-left: 20px;">
+            <li><strong>Sherpa Marketplace</strong> — vetted pros, on-demand dispatch, real-time tracking</li>
+            <li><strong>Code-Verified Quotes</strong> — every bid validated against local building codes</li>
+            <li><strong>Marketplace Payment Protection</strong> — your money is held until the work passes inspection</li>
+            <li><strong>Materials Dispatch</strong> — materials ordered + delivered to the job site</li>
+            <li><strong>Sherpa Success Manager</strong> — a real human (not a chatbot) on your project</li>
+            <li><strong>Smart Scan OCR, In-App Messaging, Sherpa Score, Rewards, Finance Hub</strong></li>
+          </ul>
+        </div>
+
         <div style="background: #f4f4f5; border-radius: 12px; padding: 24px; margin: 24px 0;">
-          <p style="font-size: 14px; font-weight: 600; color: #18181b; margin: 0 0 16px 0;">Quick Start:</p>
+          <p style="font-size: 14px; font-weight: 600; color: #18181b; margin: 0 0 16px 0;">Quick Start (web):</p>
           <ol style="font-size: 14px; color: #3f3f46; line-height: 1.8; margin: 0; padding-left: 20px;">
             <li>Visit <a href="https://thesherpapros.com/sign-in" style="color: #00a9e0; text-decoration: none; font-weight: 600;">thesherpapros.com/sign-in</a></li>
             <li>Click "Continue with Google" or enter your email: <strong>${to}</strong></li>

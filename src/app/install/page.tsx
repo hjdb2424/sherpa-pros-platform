@@ -13,24 +13,30 @@ export const metadata: Metadata = {
 };
 
 const PRO_FEATURES = [
-  { icon: "🛠️", title: "Job feed", body: "See jobs near you in real time. Accept with one tap." },
-  { icon: "📍", title: "Live dispatch", body: "GPS routing to the job site. Customer sees you on the map." },
-  { icon: "💬", title: "Masked chat", body: "Talk to clients without sharing your real number." },
-  { icon: "💰", title: "Auto payouts", body: "Stripe deposits to your bank within 1-2 business days." },
+  { icon: "🚫", title: "No lead fees", body: "We never charge to bid. You only pay a small service fee when the job is completed and the client pays." },
+  { icon: "📍", title: "Sherpa Marketplace", body: "Vetted jobs from real clients. On-demand dispatch routes you to nearby work in real time." },
+  { icon: "💬", title: "In-App Messaging", body: "Chat with clients in the app. Synced to SMS via Twilio so you never miss a message." },
+  { icon: "🛡️", title: "Sherpa Score & Rewards", body: "Your 12-metric quality score grows with every job. Earn points redeemable for tools, gear, and gift cards." },
+  { icon: "💰", title: "Finance Hub", body: "Track expenses, mileage, and quarterly estimates. 1099-ready when tax time hits." },
+  { icon: "🌟", title: "Sherpa Flex (optional)", body: "Side-hustle pros welcome. No LLC required. Per-project insurance included. 18% fee covers everything." },
 ];
 
 const CLIENT_FEATURES = [
-  { icon: "📝", title: "Post a job", body: "Describe what you need. Sherpa Materials auto-suggests parts." },
-  { icon: "🎯", title: "Smart match", body: "Verified pros bid on your job. We rank by distance + rating." },
-  { icon: "🚚", title: "Materials & delivery", body: "Approve materials with one tap. Same-day delivery available." },
-  { icon: "⭐", title: "Rate the work", body: "Two-way ratings keep the marketplace honest." },
+  { icon: "📝", title: "Post the job in plain words", body: "Describe what you need + a few photos. Free, no card required." },
+  { icon: "✅", title: "Code-Verified Quotes", body: "Every bid is validated against local building codes and market pricing before it reaches you. Right scope, right number, the first time." },
+  { icon: "🛡️", title: "Marketplace Payment Protection", body: "Your payment is held until the work passes inspection. The pro gets paid when the job is done right. Your money stays protected." },
+  { icon: "📦", title: "Materials Dispatch", body: "Materials ordered and delivered to the job site. No more supply runs." },
+  { icon: "🤝", title: "Sherpa Success Manager", body: "A real human (not a chatbot) manages your project, handles vendor coordination, and makes sure the job finishes on time and on budget." },
+  { icon: "🔧", title: "37 Service Categories", body: "251+ services from smart home to landscaping to finish carpentry. One platform for everything." },
 ];
 
 const PM_FEATURES = [
-  { icon: "🏢", title: "Property dashboard", body: "All your properties in one place. Filter work orders by site." },
-  { icon: "🔧", title: "Recurring work orders", body: "Set up plumbing/HVAC/electrical templates. Reuse with one click." },
-  { icon: "💵", title: "Per-property budgets", body: "Track spending per address. Export to QuickBooks." },
-  { icon: "📊", title: "Trade reports", body: "See which trades cost you the most. Compare vendors." },
+  { icon: "🏢", title: "Combined Maintenance", body: "Kanban boards, schedules, and drill-down views across every unit and property." },
+  { icon: "🔁", title: "Multi-Trade Coordination", body: "One job, multiple trades. We coordinate the handoffs so you don't have to." },
+  { icon: "💵", title: "Finance Hub", body: "Track every dollar across every unit. 1099-ready exports for accounting." },
+  { icon: "📸", title: "Smart Scan OCR", body: "Snap a receipt, scan a document. AI-powered document processing built in." },
+  { icon: "🛡️", title: "Marketplace Payment Protection", body: "Milestone-based payments held until work is verified. No more chasing pros for fixes." },
+  { icon: "🤝", title: "Sherpa Success Manager", body: "Dedicated account manager. Project oversight + dispute resolution baked in." },
 ];
 
 function Badge({ children }: { children: React.ReactNode }) {
@@ -79,6 +85,9 @@ export default function InstallPage() {
           <h1 className="mt-4 text-4xl font-bold tracking-tight text-zinc-900 sm:text-5xl">
             Install Sherpa Pros
           </h1>
+          <p className="mt-2 text-base font-medium text-[#00a9e0]">
+            Trade work, done right. One place for the hire, the work, and the money.
+          </p>
           <p className="mt-4 text-lg leading-relaxed text-zinc-600">
             You've been invited to test our beta. Pick your phone below and follow the steps.
             iOS testers use <strong>TestFlight</strong> (Apple's official beta app).
@@ -263,10 +272,10 @@ export default function InstallPage() {
         <div className="mx-auto max-w-3xl">
           <h2 className="text-2xl font-bold text-zinc-900">What you'll see in the app</h2>
           <p className="mt-2 text-zinc-600">
-            The app adapts to your role. Here's what each role gets.
+            The app adapts to your role. Pick the section that matches you.
           </p>
 
-          <div className="mt-8 grid gap-8 sm:grid-cols-3">
+          <div className="mt-8 grid gap-10 lg:grid-cols-3">
             <div>
               <div className="mb-3 text-sm font-semibold uppercase tracking-wider text-[#00a9e0]">
                 If you're a Pro
@@ -279,7 +288,7 @@ export default function InstallPage() {
             </div>
             <div>
               <div className="mb-3 text-sm font-semibold uppercase tracking-wider text-emerald-600">
-                If you're a Client
+                If you're a Homeowner / Client
               </div>
               <div className="space-y-4">
                 {CLIENT_FEATURES.map((f) => (
@@ -289,7 +298,7 @@ export default function InstallPage() {
             </div>
             <div>
               <div className="mb-3 text-sm font-semibold uppercase tracking-wider text-amber-600">
-                If you're a PM
+                If you're a Property Manager
               </div>
               <div className="space-y-4">
                 {PM_FEATURES.map((f) => (
@@ -297,6 +306,12 @@ export default function InstallPage() {
                 ))}
               </div>
             </div>
+          </div>
+
+          <div className="mt-10 rounded-xl border border-zinc-200 bg-zinc-50 p-5 text-sm text-zinc-700">
+            <strong>The Sherpa Ecosystem:</strong> Marketplace (live), Hub (coming soon — physical
+            pickup + tool rental), Home (coming soon — homeowner subscription), and Sherpa Success
+            Manager (live — your dedicated human account manager).
           </div>
         </div>
       </section>

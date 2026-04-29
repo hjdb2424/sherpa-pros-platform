@@ -38,6 +38,20 @@ export async function findById(id: string): Promise<Job | undefined> {
 }
 
 /**
+ * Get a job by its primary key. Returns the Drizzle-inferred row type
+ * (camelCase keys matching the schema) rather than the legacy snake_case
+ * Job interface in src/db/types.ts. Capture-flow code accesses camelCase.
+ * @param id - Job UUID
+ * @returns The job row or null if not found
+ */
+export type JobRow = typeof jobs.$inferSelect;
+
+export async function getJob(id: string): Promise<JobRow | null> {
+  const rows = await db.select().from(jobs).where(eq(jobs.id, id)).limit(1);
+  return rows[0] ?? null;
+}
+
+/**
  * Find all jobs matching a given status, ordered by most recent first.
  * @param status - Job status to filter by
  * @param limit - Maximum number of results (default 50)

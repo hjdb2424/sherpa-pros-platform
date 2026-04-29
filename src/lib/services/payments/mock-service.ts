@@ -10,6 +10,8 @@ import type {
   ConnectedAccountResult,
   AccountSessionResult,
   StripeAccountStatus,
+  CapturePaymentInput,
+  CapturePaymentResult,
 } from './types';
 
 const accounts = new Map<string, ConnectedAccountResult>();
@@ -37,6 +39,21 @@ export const mockPaymentService: PaymentService = {
     return {
       clientSecret: nextId('cs'),
       expiresAt: Math.floor(Date.now() / 1000) + 30 * 60,
+    };
+  },
+
+  async capturePayment(input: CapturePaymentInput): Promise<CapturePaymentResult> {
+    return {
+      paymentIntentId: `pi_mock_${input.paymentRowId}`,
+      clientSecret: `pi_mock_${input.paymentRowId}_secret`,
+    };
+  },
+
+  async retrievePaymentIntent(intentId: string) {
+    return {
+      id: intentId,
+      status: 'requires_payment_method',
+      client_secret: `${intentId}_secret`,
     };
   },
 };

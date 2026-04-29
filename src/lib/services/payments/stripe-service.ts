@@ -15,6 +15,8 @@ import type {
   ConnectedAccountResult,
   AccountSessionResult,
   StripeAccountStatus,
+  CapturePaymentInput,
+  CapturePaymentResult,
 } from './types';
 
 type StripeClient = Stripe;
@@ -82,6 +84,34 @@ export const stripePaymentService: PaymentService = {
     return {
       clientSecret: session.client_secret,
       expiresAt: session.expires_at,
+    };
+  },
+
+  async capturePayment(input: CapturePaymentInput): Promise<CapturePaymentResult> {
+    const client = getStripeClient();
+    const intent = await client.paymentIntents.create({
+      amount: input.amountCents,
+      currency: 'usd',
+      payment_method_types: ['card'],
+      description: input.description,
+      metadata: input.metadata,
+    });
+    if (!intent.client_secret) {
+      throw new Error('Stripe returned PaymentIntent without client_secret');
+    }
+    return {
+      paymentIntentId: intent.id,
+      clientSecret: intent.client_secret,
+    };
+  },
+
+  async retrievePaymentIntent(intentId: string) {
+    const client = getStripeClient();
+    const intent = await client.paymentIntents.retrieve(intentId);
+    return {
+      id: intent.id,
+      status: intent.status,
+      client_secret: intent.client_secret,
     };
   },
 };

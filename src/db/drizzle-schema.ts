@@ -547,6 +547,7 @@ export const payments = pgTable(
     commissionCents: integer("commission_cents").notNull().default(0),
     serviceFeeCents: integer("service_fee_cents").notNull().default(0),
     stripePaymentIntentId: varchar("stripe_payment_intent_id", { length: 255 }),
+    stripeTransferId: varchar("stripe_transfer_id", { length: 64 }),
     status: varchar("status", { length: 15 }).notNull().default("pending"),
     heldAt: timestamp("held_at", { withTimezone: true }),
     releasedAt: timestamp("released_at", { withTimezone: true }),
@@ -890,3 +891,22 @@ export const deliveryRequests = pgTable(
     index("idx_delivery_requests_order").on(table.materialOrderId),
   ],
 );
+
+// ---------------------------------------------------------------------------
+// STRIPE WEBHOOK IDEMPOTENCY (Migration 013)
+// ---------------------------------------------------------------------------
+
+// Note: the partial unique index uq_payments_pending_per_milestone
+// (CREATE UNIQUE INDEX ... WHERE status='pending') lives in the SQL
+// migration — Drizzle's index helper doesn't express partial indexes
+// cleanly. The migration is the source of truth.
+export const stripeEventsProcessed = pgTable("stripe_events_processed", {
+  eventId: varchar("event_id", { length: 64 }).primaryKey(),
+  // 128 leaves headroom for future Stripe event-type strings; current
+  // longest known is `financial_connections.account.refreshed` (46 chars),
+  // and Stripe does not publish a cap.
+  eventType: varchar("event_type", { length: 128 }).notNull(),
+  processedAt: timestamp("processed_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+});

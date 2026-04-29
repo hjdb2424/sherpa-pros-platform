@@ -11,6 +11,16 @@ import { users } from '../drizzle-schema';
 import type { StripeAccountStatus } from '@/lib/services/payments/types';
 
 /**
+ * Find a user by their internal UUID.
+ * @param id - Internal user UUID
+ * @returns The user row or null if not found
+ */
+export async function getUserById(id: string) {
+  const rows = await db.select().from(users).where(eq(users.id, id)).limit(1);
+  return rows[0] ?? null;
+}
+
+/**
  * Find a user by their Clerk user ID.
  * @param clerkId - Clerk's user ID (e.g. "user_abc123")
  * @returns The user row or null if not found

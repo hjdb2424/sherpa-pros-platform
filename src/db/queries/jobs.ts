@@ -38,6 +38,16 @@ export async function findById(id: string): Promise<Job | undefined> {
 }
 
 /**
+ * Get a job by its primary key. Returns null (not undefined) for capture-flow compatibility.
+ * @param id - Job UUID
+ * @returns The job row or null if not found
+ */
+export async function getJob(id: string): Promise<Job | null> {
+  const rows = await db.select().from(jobs).where(eq(jobs.id, id)).limit(1);
+  return (rows[0] as unknown as Job | undefined) ?? null;
+}
+
+/**
  * Find all jobs matching a given status, ordered by most recent first.
  * @param status - Job status to filter by
  * @param limit - Maximum number of results (default 50)

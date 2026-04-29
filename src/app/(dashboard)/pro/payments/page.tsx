@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import BalanceCard from '@/components/payments/BalanceCard';
 import CommissionExplainer from '@/components/payments/CommissionExplainer';
-import StripeConnectButton from '@/components/payments/StripeConnectButton';
 import PayoutHistory from '@/components/payments/PayoutHistory';
 import type { Payout } from '@/components/payments/PayoutHistory';
 import EmptyState from '@/components/EmptyState';
@@ -141,7 +141,27 @@ export default async function ProPaymentsPage() {
             for completed jobs. The setup takes about 5 minutes.
           </p>
           <div className="mt-6 flex justify-center">
-            <StripeConnectButton proId={data.proId} email={data.email} />
+            <Link
+              href="/pro/onboarding/payouts"
+              className="inline-flex items-center gap-2 rounded-lg bg-[#00a9e0] px-5 py-3 text-sm font-semibold text-white shadow-sm transition-all hover:bg-[#0ea5e9] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#00a9e0]"
+            >
+              <svg
+                className="h-4 w-4"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+              >
+                <path
+                  d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              Set Up Payments
+            </Link>
           </div>
           <p className="mt-4 text-xs text-zinc-400 dark:text-zinc-500">
             Powered by Stripe. Your banking information is never stored on our
@@ -211,7 +231,7 @@ export default async function ProPaymentsPage() {
               title="No payment history"
               description="Payments appear here after completed jobs. Connect Stripe to enable payouts."
               ctaLabel="Connect Stripe"
-              ctaHref="/pro/payments"
+              ctaHref="/pro/onboarding/payouts"
             />
           ) : (
             <PayoutHistory

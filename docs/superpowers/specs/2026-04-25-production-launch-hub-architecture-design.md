@@ -136,8 +136,9 @@ Client funds milestone
 - `payments` table already exists — add `stripe_payment_intent_id`, `stripe_transfer_id`
 
 ### API Endpoints
-- `POST /api/stripe/connect` — create connected account, return onboarding URL
-- `POST /api/stripe/webhooks` — handle payment_intent.succeeded, account.updated, transfer.created, charge.dispute.created
+- `POST /api/stripe/connect/account` — create or fetch connected account
+- `POST /api/stripe/connect/account-session` — generate AccountSession for embedded onboarding component
+- `POST /api/stripe/webhook` — handle payment_intent.succeeded, account.updated, transfer.created, charge.dispute.created
 - `POST /api/payments/capture` — capture payment for milestone
 - `POST /api/payments/release` — release payout to pro
 

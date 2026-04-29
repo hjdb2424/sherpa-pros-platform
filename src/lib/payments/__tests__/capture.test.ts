@@ -226,3 +226,40 @@ describe('runCaptureForMilestone — reuse-pending', () => {
     expect(result.ok).toBe(true);
   });
 });
+
+describe('runCaptureForMilestone — partial-unique-index race', () => {
+  it('falls into reuse-pending when insertPendingPayment loses the race', async () => {
+    // First call: lookup finds nothing (race not yet visible)
+    // Second call (after recursion): the row that won the race
+    const winner = {
+      id: 'pay_winner',
+      jobId: 'job_1',
+      milestoneId: 'ms_1',
+      payerUserId: 'user_client',
+      payeeUserId: 'user_pro',
+      amountCents: 25000,
+      status: 'pending' as const,
+      stripePaymentIntentId: 'pi_winner',
+      heldAt: null,
+    };
+    mockGetPendingPaymentForMilestone
+      .mockResolvedValueOnce(null)
+      .mockResolvedValueOnce(winner);
+    // Insert loses the race
+    mockInsertPendingPayment.mockResolvedValue({ inserted: false, existing: winner });
+    // Reuse-pending path on the second pass: retrieve returns 'requires_payment_method'
+    mockRetrievePaymentIntent.mockResolvedValue({
+      id: 'pi_winner',
+      status: 'requires_payment_method',
+      client_secret: 'pi_winner_secret',
+    });
+
+    const result = await runCaptureForMilestone(baseInput);
+    expect(result.ok).toBe(true);
+    if (result.ok && 'paymentRowId' in result) {
+      expect(result.paymentRowId).toBe('pay_winner');
+    }
+    // capturePayment should NOT fire on the recursive call — reuse-pending wins
+    expect(mockCapturePayment).not.toHaveBeenCalled();
+  });
+});

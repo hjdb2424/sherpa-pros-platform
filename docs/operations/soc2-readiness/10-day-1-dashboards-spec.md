@@ -52,7 +52,7 @@ Defines the eight Day-1 dashboards required for Sherpa Pros production observabi
 
 ## D2: Payment Success Funnel
 
-**Purpose**: End-to-end payment flow visibility. Stripe Connect escrow is mission-critical; any silent failure costs trust + revenue.
+**Purpose**: End-to-end payment flow visibility. Stripe Connect payment protection is mission-critical; any silent failure costs trust + revenue.
 
 **Owner**: Engineering — payments lead
 
@@ -60,11 +60,11 @@ Defines the eight Day-1 dashboards required for Sherpa Pros production observabi
 
 | Panel | Metric | Type | Filters | Time ranges |
 |-------|--------|------|---------|-------------|
-| Funnel | `sherpa.payment.intent_created` → `sherpa.payment.intent_succeeded` → `sherpa.escrow.held` → `sherpa.escrow.released` | funnel viz | last 24h | 1h / 24h / 7d / 30d |
+| Funnel | `sherpa.payment.intent_created` → `sherpa.payment.intent_succeeded` → `sherpa.settlement.held` → `sherpa.settlement.released` | funnel viz | last 24h | 1h / 24h / 7d / 30d |
 | Drop-off rate per stage | derived from funnel counts | bar | n/a | 24h |
 | Payment failure count by reason | `sherpa.payment.failure` | timeseries stacked | by `reason` (Stripe error code) | 24h |
 | Webhook signature failure | `sherpa.stripe.webhook_signature_failure` | timeseries | n/a | 24h |
-| Escrow balance | `sherpa.escrow.balance_cents` | line gauge | n/a | 7d |
+| Payment Protection balance | `sherpa.settlement.balance_cents` | line gauge | n/a | 7d |
 | Refund count | `sherpa.payment.refund_initiated` | timeseries | by `reason` | 7d |
 | Time-to-payout for pros | `sherpa.payout.completion_seconds` | distribution | by `pro_tier` | 7d |
 | Stripe API error rate | `sherpa.external.stripe_api_error` | timeseries | by `endpoint` | 24h |

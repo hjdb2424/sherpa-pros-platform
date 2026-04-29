@@ -158,7 +158,7 @@ Sherpa Pros enters Massachusetts as part of a four-metro Phase 1–2 GTM (Portsm
 > 2. **Legal opinion on 1099 vs W-2 contractor classification** for marketplace platforms — independently licensed pros with own insurance and own client books, matched via the platform but not employed by it. This is critical-path before scaled MA operations.
 > 3. **OpenSign beta agreement template review** — pro service agreement, beta terms, dispute mediation clause
 > 4. **USPTO Old-House Verified trademark filing support**
-> 5. **Stripe Connect compliance review** — marketplace splits, escrow, 1099-NEC reporting
+> 5. **Stripe Connect compliance review** — marketplace splits, payment protection, 1099-NEC reporting
 > 6. **MA AG / MA DOL pre-clearance correspondence** on marketplace classification (if recommended after the 1099/W-2 opinion is in hand)
 > 7. **Wefunder Reg CF SAFE template review** for our planned community round
 >

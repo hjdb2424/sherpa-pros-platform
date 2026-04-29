@@ -386,7 +386,7 @@ Every action a person takes in Sherpa Pros — every work order assigned, every 
 | Role | Sees | Can do |
 |---|---|---|
 | **Owner** | Full portfolio, all properties, all units, all financials | Everything |
-| **Admin** | Full portfolio (configurable property scope) | Approve vendors, release escrow, configure tiers |
+| **Admin** | Full portfolio (configurable property scope) | Approve vendors, release payment protection, configure tiers |
 | **Project Manager** | Assigned properties + units | Dispatch work orders, approve invoices |
 | **Pro** | Own assigned work orders only | Bid, message, mark complete, upload receipts |
 | **Client / Tenant** | Own jobs and own units only | Post work orders, message, rate |
@@ -397,7 +397,7 @@ Every action a person takes in Sherpa Pros — every work order assigned, every 
 |---|---|---|---|---|
 | Work order #4017 dispatched | jdoe@portfolio.com | PM | Building 12 / Unit 4B | 2026-04-25 09:14:22 ET |
 | Vendor approved | mgray@portfolio.com | Admin | ABC Plumbing LLC | 2026-04-25 09:18:47 ET |
-| Escrow released $475.00 | mgray@portfolio.com | Admin | Work order #4017 | 2026-04-25 11:32:09 ET |
+| Funds released $475.00 | mgray@portfolio.com | Admin | Work order #4017 | 2026-04-25 11:32:09 ET |
 | Insurance lapsed — auto-blocked | system | RBAC engine | XYZ Electric LLC | 2026-04-25 12:00:00 ET |
 
 **Why this matters at audit time:** when your accountant asks who approved the $12,000 capital expenditure on Property C in Q2, the answer is one filtered audit-log query — not a week of email archaeology. When a regulator asks how you ensure every vendor on a unit had current insurance, the answer is "RBAC blocks dispatch the moment a Certificate of Insurance lapses." When your insurance carrier asks for a chain of custody on a vendor incident, the answer is the audit log, exported to comma-separated values (CSV).

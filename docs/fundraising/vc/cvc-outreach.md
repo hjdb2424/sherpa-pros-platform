@@ -143,7 +143,7 @@ NGP track record: $450M+ deployed across 50+ investments since 2018, including 5
 > ## Operational integration paths
 >
 > 1. **National Grid Turnkey EV (MA)** — Sherpa Pros becomes the installer-dispatch backend Turnkey customers route through. Faster installs, lower customer-service load on Turnkey ops team.
-> 2. **Mass Save Heat Pump Installer Network (HPIN, joint with Eversource)** — Sherpa Pros is the marketplace surface above the HPIN list, adding dispatch + escrow + reviews + code validation that the static list does not provide.
+> 2. **Mass Save Heat Pump Installer Network (HPIN, joint with Eversource)** — Sherpa Pros is the marketplace surface above the HPIN list, adding dispatch + payment protection + reviews + code validation that the static list does not provide.
 > 3. **NextGrid Alliance** — pilot rollout to 1–2 additional utilities (e.g., NSTAR Gas, Berkshire Gas, ConEdison NY) within 12 months of investment.
 >
 > ## Strategic asks (negotiable)
@@ -229,7 +229,7 @@ NGP track record: $450M+ deployed across 50+ investments since 2018, including 5
 >
 > I'm writing you specifically because the Mass Save heat-pump program has a throughput problem you already know better than I do: HPIN-listed installers are oversubscribed, homeowner wait times are weeks to months, and the static find-an-installer page on masssave.com isn't a marketplace — it's a directory.
 >
-> I built Sherpa Pros to be the marketplace surface above that directory. Verified-license dispatch in minutes (not weeks). Code-aware quote validation against MA Electrical, NEC, IRC, and Mass Save rebate eligibility before the homeowner accepts. Stripe-Connect escrow so the installer gets paid on completion, not on lead-purchase. Live now at www.thesherpapros.com, with a Boston specialty cohort already onboarding (Mass Save heat pumps, EV chargers, panel upgrades, old-house specialists).
+> I built Sherpa Pros to be the marketplace surface above that directory. Verified-license dispatch in minutes (not weeks). Code-aware quote validation against MA Electrical, NEC, IRC, and Mass Save rebate eligibility before the homeowner accepts. Stripe-Connect payment protection so the installer gets paid on completion, not on lead-purchase. Live now at www.thesherpapros.com, with a Boston specialty cohort already onboarding (Mass Save heat pumps, EV chargers, panel upgrades, old-house specialists).
 >
 > I'm not pitching equity here. I'm asking whether the Mass Save Program Administrator office would consider a 90-day pilot in one MA metro (Boston or Worcester), measured on:
 >
@@ -274,7 +274,7 @@ NGP track record: $450M+ deployed across 50+ investments since 2018, including 5
 > | Static directory listing | Live, geo-aware, license-verified marketplace |
 > | Homeowner picks from a list, calls, waits | Dispatch in minutes; pro accepts in app |
 > | No quote validation | Code-validated against MA Electrical, NEC, IRC, rebate eligibility |
-> | No escrow | Stripe-Connect 7-day hold protects both sides |
+> | No payment protection | Stripe-Connect 7-day hold protects both sides |
 > | No completion tracking | Real-time throughput dashboard for Mass Save program ops |
 > | No homeowner satisfaction signal | NPS + reviews per completed install |
 >

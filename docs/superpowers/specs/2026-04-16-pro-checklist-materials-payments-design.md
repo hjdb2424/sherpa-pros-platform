@@ -262,7 +262,7 @@ When a Pro needs materials not on the original list:
 ### Payment Capture
 - **Card hold:** Stripe captures the authorized amount (materials + fees + any change orders)
 - **Wisetack:** Loan is already funded — no additional capture needed. Wisetack handles client repayment.
-- **Labor payment:** Separate capture for the job bid amount (existing escrow flow)
+- **Labor payment:** Separate capture for the job bid amount (existing payment protection flow)
 
 ### Pro Payout
 - Commission deducted (sliding 8-15% on labor)

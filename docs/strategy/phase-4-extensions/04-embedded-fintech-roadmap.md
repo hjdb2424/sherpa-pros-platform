@@ -15,7 +15,7 @@ classification: Internal — executive + finance team
 
 ## Purpose
 
-Phase 0-3 stood up the foundational fintech rails: Stripe Connect for marketplace splits and escrow, Tremendous for Sherpa Rewards real-money fulfillment, and per-project liability insurance bundled into Sherpa Flex tier. Phase 4 expands from "fintech that supports the marketplace" to "fintech as a category of revenue." Five new product surfaces, phased over Years 1-3 of Phase 4, that together turn Sherpa Pros into an embedded financial-services platform for the licensed-trade economy.
+Phase 0-3 stood up the foundational fintech rails: Stripe Connect for marketplace splits and payment protection, Tremendous for Sherpa Rewards real-money fulfillment, and per-project liability insurance bundled into Sherpa Flex tier. Phase 4 expands from "fintech that supports the marketplace" to "fintech as a category of revenue." Five new product surfaces, phased over Years 1-3 of Phase 4, that together turn Sherpa Pros into an embedded financial-services platform for the licensed-trade economy.
 
 **The thesis.** Pros and trade-professional clients move through Sherpa Pros workflows that already touch the most expensive moments in their financial lives: paying for materials before invoicing the client (working capital), warranting work quality (insurance), receiving job payouts (banking), and large client purchases (consumer financing). Each moment is a fintech revenue opportunity that Sherpa Pros is uniquely positioned to capture because we already own the workflow, the trust signal (Sherpa Score), and the customer relationship.
 

@@ -89,7 +89,7 @@ Critical paths to wrap:
 
 - `dispatch.match_pros` — sherpa-score-driven matching
 - `payment.create_intent` — Stripe intent creation
-- `payment.escrow_release` — release on job completion
+- `payment.settlement_release` — release on job completion
 - `audit.write` — every write to `audit_logs`
 - `materials.order_zinc` — Zinc API call
 - `delivery.uber_direct` — Uber Direct call
@@ -143,7 +143,7 @@ export const metrics = new StatsD({ prefix: 'sherpa.' });
 metrics.timing('dispatch.match_latency_ms', durationMs, [`metro:${metro}`, `trade:${trade}`]);
 metrics.increment('payment.success', 1, [`tier:${tier}`]);
 metrics.increment('payment.failure', 1, [`reason:${stripeErrorCode}`]);
-metrics.gauge('escrow.balance_cents', currentBalance);
+metrics.gauge('settlement.balance_cents', currentBalance);
 metrics.histogram('bid.response_time_seconds', responseSec, [`pro_tier:${proTier}`]);
 metrics.increment('job_funnel.posted', 1, [`metro:${metro}`]);
 metrics.increment('job_funnel.bid_received', 1);
@@ -171,7 +171,7 @@ metrics.increment('audit_log.write', 1, [`action:${action}`]);
 | Sign-in (pm_admin) | Every 5 min | us-east-1 | Same |
 | Post a job (homeowner end-to-end) | Every 15 min | us-east-1 | Page on 2 consecutive failures |
 | Pro accepts a bid | Every 15 min | us-east-1 | Same |
-| Stripe escrow + release flow | Every 15 min | us-east-1 | Page on any failure |
+| Stripe payment protection + release flow | Every 15 min | us-east-1 | Page on any failure |
 | Sherpa Guard middleware tier check (synthetic unauthorized request) | Every 5 min | us-east-1, us-west-2 | Page if middleware allows when it should block |
 | Static page (`/`, `/pricing`, `/trust`) | Every 1 min | 5 global locations | Warn on >2s LCP, page on 5xx |
 

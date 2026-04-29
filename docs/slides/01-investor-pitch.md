@@ -187,7 +187,7 @@ Real jobs flowing today across NH, ME, and Boston specialty lanes.
 **Live at www.thesherpapros.com**
 iOS via TestFlight · PWA on Android.
 
-Built on Next.js 16 · Stripe Connect (escrow) · Neon Postgres + PostGIS · Clerk · Twilio.
+Built on Next.js 16 · Stripe Connect (payment protection) · Neon Postgres + PostGIS · Clerk · Twilio.
 
 ![bg right:50%](placeholder-product-shot.jpg)
 
@@ -318,7 +318,7 @@ Each lane = a **branded, defensible category.** Old-House Verified is filed for 
 
 # $[Z]
 
-## Gross Merchandise Value transacted via Stripe Connect escrow in the first 60 days.
+## Gross Merchandise Value transacted via Stripe Connect payment protection in the first 60 days.
 
 <!-- ASSET REQUIRED: Phyrom replaces [Z] with live Stripe Connect dashboard total. If the absolute number is small, replace this slide with the slope (week-over-week growth %). -->
 

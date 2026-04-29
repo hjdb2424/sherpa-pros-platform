@@ -207,7 +207,7 @@ Run within 10 min of every production deploy.
 ```
 □ Datadog synthetics passing (auto)
 □ Sign-in flow (homeowner + pro + pm_admin) — manual or synthetic
-□ Post-job → bid received → accept bid → escrow hold (synthetic)
+□ Post-job → bid received → accept bid → payment protection hold (synthetic)
 □ Stripe webhook receipt verified in audit log
 □ Twilio dispatch SMS delivery confirmed in dispatch log
 □ Sherpa Guard middleware blocks unauthorized cross-tier access (synthetic test)

@@ -32,7 +32,7 @@ Home-services platforms split three ways:
 
 **All have well-documented structural weaknesses around licensed-trade verification, code/permit awareness, and contractor economics.**
 
-State-run installer-finders (Mass Save) cover narrow scope (energy efficiency), no marketplace mechanics — no dispatch, no escrow, no review system.
+State-run installer-finders (Mass Save) cover narrow scope (energy efficiency), no marketplace mechanics — no dispatch, no payment protection, no review system.
 
 **Sherpa Pros plants the flag in the empty quadrant.**
 
@@ -54,7 +54,7 @@ The coordination cost the homeowner pays today is exactly the cost Sherpa Pros e
 
 | Layer | What it does | Incumbents | Sherpa Pros |
 |---|---|---|---|
-| **1. Labor** | Match licensed pro | Angi · Thumbtack · TaskRabbit · Houzz Pro | **Sherpa Marketplace** — code-aware, 5–10% take, Stripe escrow |
+| **1. Labor** | Match licensed pro | Angi · Thumbtack · TaskRabbit · Houzz Pro | **Sherpa Marketplace** — code-aware, 5–10% take, Stripe payment protection |
 | **2. Materials** | Source parts | FW Webb · Grainger · Home Depot Pro · supplyhouse.com | **Sherpa Materials engine** — auto-derives parts list, Zinc API |
 | **3. Last-mile** | Same-day delivery | Uber Direct · DoorDash Drive · Roadie | **Uber Direct** integrated as the rail inside Sherpa Materials |
 | **4. Coordination** | Multi-trade timeline | BuildBook · BuilderTrend · JobNimbus · Procore | **Sherpa Dispatch** — sequences handoffs, surfaces blockers |
@@ -99,7 +99,7 @@ The coordination cost the homeowner pays today is exactly the cost Sherpa Pros e
 - BBB **pattern-of-complaints review completed Nov 2025**
 - Does not mediate "price disagreements" with deposit-keeping contractors
 
-**Sherpa Pros advantage:** Stripe Connect escrow with 7-day hold reduces deposit-theft risk. License + insurance verified before listing. No shared/blasted leads — single matched dispatch.
+**Sherpa Pros advantage:** Stripe Connect payment protection with 7-day hold reduces deposit-theft risk. License + insurance verified before listing. No shared/blasted leads — single matched dispatch.
 
 ---
 
@@ -156,9 +156,9 @@ The coordination cost the homeowner pays today is exactly the cost Sherpa Pros e
 
 **Coverage:** Energy efficiency only — heat pumps, HPC contractors, insulation/air-sealing IICs.
 
-**Critical gap:** **No marketplace mechanics.** No dispatch, no escrow, no scheduling, no quotes, no reviews, no in-app messaging, no payment, no permit assist, no rebate calculator, no matching algorithm. **It is a static listing.**
+**Critical gap:** **No marketplace mechanics.** No dispatch, no payment protection, no scheduling, no quotes, no reviews, no in-app messaging, no payment, no permit assist, no rebate calculator, no matching algorithm. **It is a static listing.**
 
-**Sherpa Pros opportunity:** Become the **execution layer** Mass Save's listing is missing. Apply for Mass Save Network → inherit funnel → provide dispatch/escrow/review layer the program cannot.
+**Sherpa Pros opportunity:** Become the **execution layer** Mass Save's listing is missing. Apply for Mass Save Network → inherit funnel → provide dispatch/payment protection/review layer the program cannot.
 
 ---
 
@@ -178,7 +178,7 @@ The coordination cost the homeowner pays today is exactly the cost Sherpa Pros e
 | Code intelligence (NEC/IRC) | ✗ | ✗ | ✗ | ✗ | ✗ | partial | **✓** |
 | Permit-aware quoting | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | **✓** |
 | Rebate-aware (Mass Save) | ✗ | ✗ | ✗ | ✗ | ✗ | ✓ | **✓** |
-| Escrow / payment protection | ✗ | ✗ | partial | ✓ | ✗ | ✗ | **✓** |
+| Payment protection | ✗ | ✗ | partial | ✓ | ✗ | ✗ | **✓** |
 | Single-pro dispatch | ✗ | ✗ | ✓ | ✓ | ✗ | ✗ | **✓** |
 | Take-rate vs. lead-fee | lead | lead | 22.5% | 15–20% | lead+SaaS | n/a | **5–10%** |
 | Founder-built by working GC | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | **✓** |

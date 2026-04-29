@@ -77,11 +77,11 @@ This register inventories every third-party vendor with access to Sherpa Pros cu
 | **Data residency** | US |
 | **Compensating controls** | MFA mandatory; session timeout 12hr; suspicious sign-in alerts wired to PagerDuty |
 
-### 3.4 Stripe Connect — Payments + Escrow
+### 3.4 Stripe Connect — Payments + Payment Protection
 
 | Field | Value |
 |-------|-------|
-| **Service** | Payment processing, escrow, payouts to pros |
+| **Service** | Payment processing, payment protection, payouts to pros |
 | **SOC 2** | Type 2 ✓ |
 | **Other certs** | PCI DSS Level 1, ISO 27001, HIPAA-eligible |
 | **Last review** | 2026-04-25 |

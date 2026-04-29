@@ -24,6 +24,22 @@ export interface AccountSessionResult {
   expiresAt: number;
 }
 
+export interface CapturePaymentInput {
+  paymentRowId: string;
+  amountCents: number;
+  description: string;
+  metadata: {
+    jobId: string;
+    milestoneId: string;
+    paymentRowId: string;
+  };
+}
+
+export interface CapturePaymentResult {
+  paymentIntentId: string;
+  clientSecret: string;
+}
+
 export interface PaymentService {
   /**
    * Idempotent. Reads existing stripe_account_id; creates new Connected
@@ -39,4 +55,11 @@ export interface PaymentService {
    * component. Used by <ConnectAccountOnboarding> to render the embedded form.
    */
   createAccountSession(stripeAccountId: string): Promise<AccountSessionResult>;
+
+  /**
+   * Plan 2a — capture half of money flow. Creates a PaymentIntent on the
+   * platform account (no transfer_data) so funds park in the platform
+   * balance until Plan 2b's release path runs.
+   */
+  capturePayment(input: CapturePaymentInput): Promise<CapturePaymentResult>;
 }

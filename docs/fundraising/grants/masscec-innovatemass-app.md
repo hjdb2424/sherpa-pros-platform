@@ -74,7 +74,7 @@ The funding ask is **$350,000** over 18 months. Projected outcomes by month 18: 
 
 Existing matching infrastructure is inadequate:
 
-1. **Mass Save Find-an-Installer** is a static contractor listing — no dispatch, no scheduling, no quote validation, no escrow, no in-app messaging, no permit assist, no rebate calculator. A homeowner finds names and phone numbers and is on their own [Mass Save Trade Partners directory].
+1. **Mass Save Find-an-Installer** is a static contractor listing — no dispatch, no scheduling, no quote validation, no payment protection, no in-app messaging, no permit assist, no rebate calculator. A homeowner finds names and phone numbers and is on their own [Mass Save Trade Partners directory].
 2. **Lead-gen platforms (Angi, Thumbtack, HomeAdvisor)** charge contractors $30–$100 per shared lead, do not verify EPA Heat Pump Installer Network (HPIN) status, do not validate quotes against MA Electrical Code, and do not surface rebate eligibility. The MA AG and Vermont AG have publicly settled on misleading "Certified Pro" terminology with these platforms [Vermont AG Oct 2025 settlement; Sherpa Pros competitive analysis §2].
 3. **National Grid Turnkey EV** publishes program rules but routes installer matching to the homeowner's own search effort; the program does not currently have a software layer that sequences panel-upgrade + EV-charger install into a single contractor dispatch.
 
@@ -97,7 +97,7 @@ Existing matching infrastructure is inadequate:
 | Frontend (web) | Next.js 16 (App Router), Tailwind CSS 4, deployed on Vercel | Homeowner job posting, pro dashboard, code-checked quote review |
 | Frontend (mobile) | PWA + iOS TestFlight (Expo wrapper) | Field-pro mobile workflow |
 | Auth | Clerk (Pro/Client role separation) | License verification, insurance verification, EPA cert tracking |
-| Payments | Stripe Connect | Marketplace splits, 7-day escrow hold, 1099-NEC reporting for pros >$600/yr |
+| Payments | Stripe Connect | Marketplace splits, 7-day payment protection hold, 1099-NEC reporting for pros >$600/yr |
 | Database | Neon PostgreSQL + PostGIS (Drizzle ORM) | Geo-matching, 20-table marketplace schema |
 | Maps | Google Maps JavaScript API (@vis.gl/react-google-maps) | Uber-style dispatch UX |
 | Communication | Twilio (masked phone + SMS) | Privacy-preserving contractor-homeowner messaging |

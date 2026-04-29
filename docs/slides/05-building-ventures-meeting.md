@@ -114,7 +114,7 @@ Lead-gen platforms are extracting **$400–$800 per closed job** from contractor
 | **Angi** | Lead fees often shared with up to 40 competitors | BBB un-accredited · Vermont Attorney General settlement October 2025 |
 | **Thumbtack** | Pros buy contact for jobs that ghost | Documented contractor-deposit-theft pattern · BBB pattern-of-complaints November 2025 |
 | **TaskRabbit** | 22.5% effective fee load | Doesn't cover licensed trades at all |
-| **Mass Save Find-an-Installer** | (free, but no transaction layer) | Static utility listing · no dispatch, no escrow, no review · 3–6 month wait |
+| **Mass Save Find-an-Installer** | (free, but no transaction layer) | Static utility listing · no dispatch, no payment protection, no review · 3–6 month wait |
 
 Massachusetts has the **largest construction labor shortage in the nation** *(2.5% construction unemployment, lowest in 17+ years).* That's demand-side pull, not a saturated market.
 
@@ -251,7 +251,7 @@ Five lanes the national lead-gen platforms structurally cannot serve. **Boston i
 
 # $[Z]
 
-## Gross Merchandise Value transacted via Stripe Connect escrow in the first 60 days.
+## Gross Merchandise Value transacted via Stripe Connect payment protection in the first 60 days.
 
 <!-- ASSET REQUIRED: Phyrom replaces [Z] with live Stripe Connect dashboard total within 24h of meeting. -->
 

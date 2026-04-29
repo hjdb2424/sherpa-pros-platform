@@ -18,7 +18,7 @@ The whole stack at a glance:
 | **Neon Postgres** | Production database | `neon.tech` | Free tier |
 | **Wix** | DNS authoritative for `thesherpapros.com` | `wix.com` | Domain registration |
 | **Cloudflare** | (Set up but NOT authoritative) — could later be DNS+CDN | `dash.cloudflare.com` | Free |
-| **Stripe Connect** | Marketplace payments + escrow | `dashboard.stripe.com` | 2.9% + 30¢ per txn |
+| **Stripe Connect** | Marketplace payments + payment protection | `dashboard.stripe.com` | 2.9% + 30¢ per txn |
 | **Twilio** | SMS / masked-number messaging | `console.twilio.com` | Pay-as-you-go |
 | **Zinc API** | Cross-retailer materials orders (Sherpa Materials engine) | `zinc.io` | Per-order fee |
 | **Uber Direct** | Same-day materials delivery | `direct.uber.com` | Per-delivery fee |

@@ -421,7 +421,7 @@ Phyrom runs every demo personally per Workstream B Task B2 Step 3.
 
 - [ ] **(5 min) Bid + quote:** Pro views the job, submits a bid. Show the code-aware quote validation flag a missing scope item. "This is the part Angi cannot do. Every quote is checked against your state and town code before the client sees it. So you stop losing jobs to a guy who left half the work out of his bid."
 
-- [ ] **(5 min) Close + Stripe payout:** Show client accepting bid → escrow → completion → Stripe payout in 24–48 hr (Quick Job) or 7 day (Project). "Money hits your bank in days, not Net 30."
+- [ ] **(5 min) Close + Stripe payout:** Show client accepting bid → payment protection → completion → Stripe payout in 24–48 hr (Quick Job) or 7 day (Project). "Money hits your bank in days, not Net 30."
 
 - [ ] **(3 min) Founding Pro benefits:** Half-price forever (5%), no $49 sub, direct line to me, marketing exposure, 90-day commitment with mutual termination.
 

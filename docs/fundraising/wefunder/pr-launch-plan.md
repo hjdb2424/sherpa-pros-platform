@@ -335,16 +335,16 @@ The social launch is run primarily on **Phyrom's personal LinkedIn** (founder-vo
 
 #### W6
 - **Final pre-launch push.** Phyrom calls the 10 highest-priority Tier 1 holdouts. Asks for soft-commit confirmations.
-- **Soft-commit count.** Tally and document. Goal: $100K+ soft-circled (not in escrow yet, but verbally pledged).
+- **Soft-commit count.** Tally and document. Goal: $100K+ soft-circled (not deposited yet, but verbally pledged).
 - **Last-mile content.** Founder bio doc finalized for distribution. Loom pitch video uploaded. Screenshots replaced. Brand Guardian agent does final review for forbidden phrases.
 - **Press release embargo emails sent W6 Friday.** Top 10 reporters get the embargoed release with Tuesday W7 release date.
 
 ### W7–W8 — Public launch + PR push
 
-**Goal: hit $100K committed (in escrow, not just soft-circled) within 14 days of public launch. This is the trust-signal threshold that drives organic Wefunder discovery momentum.**
+**Goal: hit $100K committed (deposited, not just soft-circled) within 14 days of public launch. This is the trust-signal threshold that drives organic Wefunder discovery momentum.**
 
 - **W7 (launch week):** see Section 4 (Social Launch Playbook).
-- **W8:** sustained drive. Press follow-up. Podcast bookings. Conversion of W3–W6 soft-commits to actual escrow checks. Goal: convert 70%+ of soft-commits within 14 days.
+- **W8:** sustained drive. Press follow-up. Podcast bookings. Conversion of W3–W6 soft-commits to deposited investments. Goal: convert 70%+ of soft-commits within 14 days.
 
 ### W9–W12 — Sustained drive to $250K committed
 

@@ -161,7 +161,7 @@ Sources: [Uber Insurance 2026](https://www.uber.com/us/en/drive/insurance/) · [
 - Work outside of agreed scope (homeowner asked for "more")
 - Cosmetic preferences ("I don't like the color") — matching color must be in scope
 
-**Stripe Connect 7-day hold = the escrow mechanism:**
+**Stripe Connect 7-day hold = the payment protection mechanism:**
 - Customer pays at job completion → funds held by Stripe for 7 days
 - Pro can request earlier release via in-app button (waives dispute window)
 - During 7-day window, customer can file dispute → funds frozen until resolved

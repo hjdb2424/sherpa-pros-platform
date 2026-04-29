@@ -172,7 +172,7 @@ Job in overlap zone (e.g., Nashua — between Manchester + Lowell hubs)
 
 ---
 
-## 4. Payments, Escrow & Money Flow
+## 4. Payments, Payment Protection & Money Flow
 
 ### Payment Architecture
 
@@ -286,7 +286,7 @@ Maps:           Mapbox GL JS + react-map-gl + deck.gl
 Geocoding:      Mapbox Geocoding API + Google Places Autocomplete
 Real-time:      Vercel Functions + Pusher/Ably for live bids/chat
 Payments:       Stripe Connect (marketplace splits + instant payouts)
-Escrow:         Mercury Treasury (~4% APY on held funds)
+Payment Protection:         Mercury Treasury (~4% APY on held funds)
 SMS:            Twilio (masked communication)
 Background:     Checkr API ($30/Pro)
 AI:             Vercel AI SDK + BldSync Wiseman APIs
@@ -396,7 +396,7 @@ Month 8-12:  Seed ($1.5-3M at $10-15M post) — proof: $150K+/mo GMV, insurance 
 4. Pro retainers ($200-$1,000/mo for emergency/insurance tiers)
 5. Instant payout fees (1%)
 6. Cancellation fees ($25)
-7. Mercury Treasury interest on escrow float
+7. Mercury Treasury interest on settlement float
 8. Future: Insurance MRN dispatch fees
 ```
 

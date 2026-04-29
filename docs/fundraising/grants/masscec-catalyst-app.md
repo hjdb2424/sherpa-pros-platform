@@ -68,7 +68,7 @@ Massachusetts has the largest construction labor shortage in the US (2.5% constr
 
 Existing matching infrastructure is inadequate:
 
-- **Mass Save Find-an-Installer** is a static contractor directory with no dispatch, scheduling, escrow, in-app messaging, permit assist, rebate calculator, or marketplace mechanics [Mass Save Trade Partners].
+- **Mass Save Find-an-Installer** is a static contractor directory with no dispatch, scheduling, payment protection, in-app messaging, permit assist, rebate calculator, or marketplace mechanics [Mass Save Trade Partners].
 - **Lead-gen platforms (Angi, Thumbtack)** charge contractors $30–$100 per shared lead, do not verify EPA HPIN status, do not validate quotes against MA Electrical Code, and have well-documented quality issues (Vermont AG October 2025 settlement on misleading "Certified Pro" terminology) [Sherpa Pros competitive analysis §2].
 
 Every Mass Save / National Grid program dollar sits in a queue waiting for a verified installer with capacity. **The Catalyst-funded prototype directly attacks this matching bottleneck.**

@@ -110,11 +110,33 @@ const COPY: Record<InviteAppRole, RoleCopy> = {
   },
 };
 
+// ── "Who else is on the platform" cards (the other 2 personas) ────────
+
+interface OtherRoleCard {
+  role: InviteAppRole;
+  label: string;        // "Pros" / "Homeowners & Clients" / "Property Managers"
+  oneLiner: string;     // value prop in one sentence
+}
+
+const OTHER_ROLE_CARDS: Record<InviteAppRole, OtherRoleCard> = {
+  pro:    { role: "pro",    label: "Pros",                    oneLiner: "Licensed trades, handymen, and skilled carpenters get vetted jobs with zero lead fees and milestone-based payment protection." },
+  client: { role: "client", label: "Homeowners & Clients",    oneLiner: "Homeowners and small-property owners get code-verified quotes from licensed pros, with payment held until the work passes inspection." },
+  pm:     { role: "pm",     label: "Property Managers",       oneLiner: "Commercial PMs get a Combined Maintenance kanban, Multi-Trade Coordination, and per-property cost tracking — no more chasing vendors." },
+};
+
+/** Returns the OTHER 2 role cards (everything except the recipient's own role). */
+function otherRoleCards(myRole: InviteAppRole): OtherRoleCard[] {
+  return (Object.keys(OTHER_ROLE_CARDS) as InviteAppRole[])
+    .filter((r) => r !== myRole)
+    .map((r) => OTHER_ROLE_CARDS[r]);
+}
+
 // ── Plain text ────────────────────────────────────────────────────────
 
 export function buildInvitePlainText({ name, role, to }: InviteOpts): string {
   const c = COPY[role];
   const inviteUrl = `https://www.thesherpapros.com/invite/${role}`;
+  const others = otherRoleCards(role);
 
   return [
     `Hi ${name},`,
@@ -133,9 +155,18 @@ export function buildInvitePlainText({ name, role, to }: InviteOpts): string {
     `${c.cohort} What you get that later joiners don't:`,
     ...c.perks.map((p) => `• ${p}`),
     "",
+    `WHO ELSE IS ON THE PLATFORM`,
+    "Sherpa Pros is a real two-sided market. While you're testing, the other roles are too:",
+    ...others.flatMap((o) => [
+      `• ${o.label} — ${o.oneLiner}`,
+      `  (more: https://www.thesherpapros.com/invite/${o.role})`,
+    ]),
+    "",
+    `Full platform overview: https://www.thesherpapros.com`,
+    "",
     `→ Sign in:    https://www.thesherpapros.com/sign-in`,
     `→ Install on phone: https://www.thesherpapros.com/install`,
-    `→ Read more (your role page): ${inviteUrl}`,
+    `→ Read your role-specific page: ${inviteUrl}`,
     "",
     `Use this email (${to}) when you sign in.`,
     "",
@@ -264,10 +295,37 @@ export function buildInviteHtml({ name, role, to }: InviteOpts): string {
                 </div>
 
                 <!-- Read more / role page -->
-                <p style="font-size: 13px; color: #71717a; text-align: center; margin: 0 0 24px 0;">
+                <p style="font-size: 13px; color: #71717a; text-align: center; margin: 0 0 28px 0;">
                   Want the full picture for your role first?
                   <a href="${inviteUrl}" style="color: ${BRAND_BLUE}; text-decoration: none; font-weight: 600;">
                     Read your beta page &rarr;
+                  </a>
+                </p>
+
+                <!-- Who else is on the platform -->
+                <p style="font-size: 13px; font-weight: 700; color: #71717a; text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 8px 0;">
+                  Who else is on the platform
+                </p>
+                <p style="font-size: 13px; color: #71717a; line-height: 1.5; margin: 0 0 14px 0;">
+                  Sherpa Pros is a real two-sided market &mdash; while you&apos;re testing, the other roles are testing alongside you:
+                </p>
+                ${otherRoleCards(role)
+                  .map(
+                    (o) => `
+                <div style="border: 1px solid #e4e4e7; border-radius: 8px; padding: 14px 16px; margin: 0 0 10px 0; background: #fafafa;">
+                  <p style="font-size: 14px; font-weight: 700; color: #18181b; margin: 0 0 4px 0;">${o.label}</p>
+                  <p style="font-size: 13px; color: #3f3f46; line-height: 1.5; margin: 0 0 8px 0;">${o.oneLiner}</p>
+                  <a href="https://www.thesherpapros.com/invite/${o.role}" style="font-size: 12px; color: ${BRAND_BLUE}; text-decoration: none; font-weight: 600;">
+                    See the ${o.label.toLowerCase()} beta page &rarr;
+                  </a>
+                </div>`,
+                  )
+                  .join("")}
+
+                <p style="font-size: 13px; color: #71717a; text-align: center; margin: 16px 0 28px 0;">
+                  Curious about the whole platform?
+                  <a href="https://www.thesherpapros.com" style="color: ${BRAND_BLUE}; text-decoration: none; font-weight: 600;">
+                    See the full Sherpa Pros overview &rarr;
                   </a>
                 </p>
 

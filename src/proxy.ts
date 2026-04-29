@@ -93,11 +93,20 @@ async function withClerk(req: NextRequest) {
 
 // ---- Main proxy handler ----
 export default async function proxy(req: NextRequest) {
-  if (clerkConfigured) {
+  // Dev-only Clerk bypass: lets local /admin/* testing skip the Clerk
+  // sign-in flow when working on localhost. The cookie is set by
+  // /api/dev/grant-admin which itself is NODE_ENV-guarded. This bypass
+  // is also NODE_ENV-guarded so flipping the cookie on a production
+  // deploy does nothing — both layers must be in development.
+  const devBypass =
+    process.env.NODE_ENV === "development" &&
+    req.cookies.get("sherpa-dev-bypass")?.value === "true";
+
+  if (clerkConfigured && !devBypass) {
     return withClerk(req);
   }
 
-  // No Clerk configured — still enforce RBAC via cookies
+  // No Clerk configured (or dev bypass active) — still enforce RBAC via cookies
   const rbacResponse = enforceRBAC(req);
   if (rbacResponse) return rbacResponse;
 

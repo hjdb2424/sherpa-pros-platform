@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
         body: JSON.stringify({
           from: 'Sherpa Pros <invite@thesherpapros.com>',
           to: [to],
-          subject: inviteSubject(),
+          subject: inviteSubject(appRole),
           html: htmlBody,
         }),
       });

@@ -584,7 +584,7 @@ export default function AccessListPage() {
                                     // 2. Fallback: copy as RICH HTML + plain-text fallback so
                                     //    pasting into Gmail/Outlook/Apple Mail preserves the
                                     //    formatted layout (CTA buttons, "What you'll see" box, etc.)
-                                    const subject = inviteSubject();
+                                    const subject = inviteSubject(role);
                                     const wrappedHtml = `<div>${html}</div>`;
                                     const fallbackText =
                                       `To: ${to}\nSubject: ${subject}\n\n${text}`;

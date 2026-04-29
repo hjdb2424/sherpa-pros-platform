@@ -21,21 +21,85 @@ type SortDir = "asc" | "desc";
 
 // ── Helpers ─────────────────────────────────────────────────────────
 
-const ROLE_COLORS: Record<string, string> = {
+/**
+ * Role taxonomy. The DB stores the short `code`. The UI shows `label`.
+ * `appRole` maps the granular category to one of the three app-side roles
+ * (client / pm / pro) which drives the /invite/[role] deep link.
+ *
+ * Legacy values (pm, pro, client, tenant) are preserved for backwards compat
+ * with the original 24 seeded testers — they continue rendering correctly
+ * until you re-categorize them via the Edit button on each row.
+ */
+type AppRole = "client" | "pm" | "pro";
+type RoleDef = { code: string; label: string; appRole: AppRole; group: string };
+
+const ROLE_OPTIONS: RoleDef[] = [
+  // Clients
+  { code: "res_owner", label: "Residential Homeowner",          appRole: "client", group: "Clients" },
+  { code: "res_multi", label: "Residential Multi Property",     appRole: "client", group: "Clients" },
+  { code: "com_owner", label: "Commercial Single Property",     appRole: "client", group: "Clients" },
+  // Property Managers
+  { code: "com_pm",    label: "Commercial Property Manager",    appRole: "pm",     group: "Property Managers" },
+  // Pros
+  { code: "handyman",  label: "Pros — Handyman",                appRole: "pro",    group: "Pros" },
+  { code: "trades",    label: "Pros — Licensed Trades",         appRole: "pro",    group: "Pros" },
+  { code: "skilled",   label: "Pros — Skilled (carpentry/finish/framing)", appRole: "pro", group: "Pros" },
+  // Legacy values (kept so existing rows render until re-categorized)
+  { code: "pm",        label: "PM (legacy)",                    appRole: "pm",     group: "Legacy" },
+  { code: "pro",       label: "Pro (legacy)",                   appRole: "pro",    group: "Legacy" },
+  { code: "client",    label: "Client (legacy)",                appRole: "client", group: "Legacy" },
+  { code: "tenant",    label: "Tenant (legacy)",                appRole: "client", group: "Legacy" },
+];
+
+const ROLE_BY_CODE: Record<string, RoleDef> = Object.fromEntries(ROLE_OPTIONS.map(r => [r.code, r]));
+
+const ROLE_COLORS: Record<AppRole, string> = {
+  client: "bg-blue-100 text-blue-700",
   pm: "bg-purple-100 text-purple-700",
   pro: "bg-orange-100 text-orange-700",
-  client: "bg-blue-100 text-blue-700",
-  tenant: "bg-teal-100 text-teal-700",
 };
+
+/** Map any role code (granular or legacy) to one of client/pm/pro for /invite links. */
+function toAppRole(code: string | null | undefined): AppRole {
+  if (!code) return "client";
+  return ROLE_BY_CODE[code]?.appRole ?? "client";
+}
 
 function RoleBadge({ role }: { role: string | null }) {
   if (!role) return <span className="text-xs text-zinc-400">--</span>;
+  const def = ROLE_BY_CODE[role];
+  const label = def?.label ?? role;
+  const color = def ? ROLE_COLORS[def.appRole] : "bg-zinc-100 text-zinc-600";
   return (
     <span
-      className={`inline-block rounded-full px-2.5 py-0.5 text-xs font-semibold uppercase ${ROLE_COLORS[role] ?? "bg-zinc-100 text-zinc-600"}`}
+      className={`inline-block rounded-full px-2.5 py-0.5 text-xs font-semibold ${color}`}
+      title={role}
     >
-      {role}
+      {label}
     </span>
+  );
+}
+
+/** Render a <select> with role options grouped by category. */
+function RoleSelect({
+  value, onChange, className,
+}: { value: string; onChange: (v: string) => void; className?: string }) {
+  const groups = Array.from(new Set(ROLE_OPTIONS.map(r => r.group)));
+  return (
+    <select
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      className={className}
+    >
+      <option value="">— Choose —</option>
+      {groups.map((g) => (
+        <optgroup key={g} label={g}>
+          {ROLE_OPTIONS.filter((r) => r.group === g).map((r) => (
+            <option key={r.code} value={r.code}>{r.label}</option>
+          ))}
+        </optgroup>
+      ))}
+    </select>
   );
 }
 
@@ -311,17 +375,11 @@ export default function AccessListPage() {
             </div>
             <div>
               <label className="mb-1 block text-xs font-medium text-zinc-500">Default Role</label>
-              <select
+              <RoleSelect
                 value={addRole}
-                onChange={(e) => setAddRole(e.target.value)}
+                onChange={setAddRole}
                 className="w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-[#00a9e0] focus:outline-none focus:ring-1 focus:ring-[#00a9e0]"
-              >
-                <option value="">None (choose on sign-in)</option>
-                <option value="pm">PM</option>
-                <option value="pro">Pro</option>
-                <option value="client">Client</option>
-                <option value="tenant">Tenant</option>
-              </select>
+              />
             </div>
             <div>
               <label className="mb-1 block text-xs font-medium text-zinc-500">Notes</label>
@@ -435,17 +493,11 @@ export default function AccessListPage() {
                   </td>
                   <td className="px-4 py-3">
                     {isEditing ? (
-                      <select
+                      <RoleSelect
                         value={editRole}
-                        onChange={(e) => setEditRole(e.target.value)}
+                        onChange={setEditRole}
                         className="rounded border border-zinc-300 px-2 py-1 text-sm"
-                      >
-                        <option value="">None</option>
-                        <option value="pm">PM</option>
-                        <option value="pro">Pro</option>
-                        <option value="client">Client</option>
-                        <option value="tenant">Tenant</option>
-                      </select>
+                      />
                     ) : (
                       <RoleBadge role={entry.defaultRole} />
                     )}
@@ -480,7 +532,7 @@ export default function AccessListPage() {
                         ) : (
                           <>
                             <a
-                              href={`/invite/${entry.defaultRole === "pm" ? "pm" : entry.defaultRole === "pro" ? "pro" : "client"}`}
+                              href={`/invite/${toAppRole(entry.defaultRole)}`}
                               target="_blank"
                               rel="noopener noreferrer"
                               className="rounded bg-[#00a9e0] px-2.5 py-1 text-xs font-medium text-white hover:bg-[#0090c0]"
@@ -504,7 +556,7 @@ export default function AccessListPage() {
                                 <button
                                   onClick={async () => {
                                     const to = inviteEmail.trim() || entry.email;
-                                    const role = entry.defaultRole === "pm" ? "pm" : entry.defaultRole === "pro" ? "pro" : "client";
+                                    const role = toAppRole(entry.defaultRole);
                                     const inviteText =
                                       "Hi " + entry.name + ",\n\n" +
                                       "You've been invited to test Sherpa Pros - the smart platform for trade work.\n\n" +

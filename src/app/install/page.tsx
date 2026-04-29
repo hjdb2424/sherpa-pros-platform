@@ -165,6 +165,45 @@ export default function InstallPage() {
             <strong>Heads up:</strong> TestFlight builds expire after 90 days. We'll push fresh builds
             every couple of weeks during beta — just open TestFlight and tap Update.
           </div>
+
+          {/* What to expect */}
+          <div className="mt-8 rounded-xl border border-zinc-200 bg-white p-6">
+            <h3 className="text-base font-semibold text-zinc-900">What to expect (heads-up before you start)</h3>
+            <ul className="mt-3 space-y-3 text-sm text-zinc-700">
+              <li>
+                <strong>If you don't already have TestFlight,</strong> tapping our invite link the first
+                time will land on an Apple page that says "this beta isn't available yet." Don't panic —
+                that's Apple telling you to install the TestFlight app first. Tap{" "}
+                <em>View in App Store</em> on that page → install TestFlight (free, ~10 sec) → then{" "}
+                <strong>come back to your invite email and tap our link again</strong>. The second tap
+                opens TestFlight directly with the Sherpa Pros invite. This re-tap step trips most
+                people up — totally normal.
+              </li>
+              <li>
+                <strong>On a non-iPhone device</strong> (laptop, Android), the invite link won't do
+                anything useful. Email or text it to yourself and open it on your iPhone, or use the
+                web app at{" "}
+                <a href="https://thesherpapros.com/sign-in" className="font-medium text-[#00a9e0] hover:underline">
+                  thesherpapros.com/sign-in
+                </a>{" "}
+                instead.
+              </li>
+              <li>
+                <strong>First launch of the app</strong> asks you to pick a role (Pro / Client /
+                Property Manager). Pick whichever matches how you'll use the app — you can switch later
+                if you wear multiple hats.
+              </li>
+              <li>
+                <strong>The app icon shows a small orange dot</strong> for the first day or two
+                after install. That's TestFlight's way of marking it as a beta build. Normal, ignore.
+              </li>
+              <li>
+                <strong>If you see &quot;this build has expired&quot;</strong> down the road, open
+                TestFlight, find Sherpa Pros, tap Update. Apple expires beta builds every 90 days;
+                we push fresh ones every couple of weeks.
+              </li>
+            </ul>
+          </div>
         </div>
       </section>
 

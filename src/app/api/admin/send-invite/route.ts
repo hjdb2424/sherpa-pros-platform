@@ -49,6 +49,21 @@ export async function POST(request: NextRequest) {
           </a>
         </div>
 
+        <div style="background: #fff7ed; border: 1px solid #fed7aa; border-radius: 12px; padding: 24px; margin: 24px 0;">
+          <p style="font-size: 14px; font-weight: 600; color: #9a3412; margin: 0 0 8px 0;">📱 Want it on your phone?</p>
+          <p style="font-size: 14px; color: #7c2d12; line-height: 1.6; margin: 0 0 12px 0;">
+            <strong>iPhone:</strong> install via Apple TestFlight (free Apple beta app).
+            <strong>Android:</strong> use the web app for now — installs to your home screen like a real app.
+          </p>
+          <a href="https://thesherpapros.com/install"
+             style="display: inline-block; background: #ff4500; color: white; font-size: 14px; font-weight: 600; padding: 10px 20px; border-radius: 6px; text-decoration: none;">
+            Install the app →
+          </a>
+          <p style="font-size: 12px; color: #9a3412; margin: 12px 0 0 0;">
+            The install page walks you through the steps and shows what you'll see in the app.
+          </p>
+        </div>
+
         <p style="font-size: 14px; color: #71717a; line-height: 1.6;">
           Your role-specific guide: <a href="${inviteUrl}" style="color: #00a9e0; text-decoration: none;">${inviteUrl}</a>
         </p>

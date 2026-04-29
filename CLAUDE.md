@@ -11,7 +11,7 @@ Construction marketplace (Uber for contractors) connecting clients with verified
 - **Language:** TypeScript (strict mode)
 - **Styling:** Tailwind CSS 4
 - **Auth:** Clerk (Pro/Client role selection)
-- **Payments:** Stripe Connect (marketplace splits, escrow)
+- **Payments:** Stripe Connect (marketplace splits, payment protection)
 - **Database:** Neon PostgreSQL + PostGIS (Drizzle ORM)
 - **Maps:** Google Maps JavaScript API (@vis.gl/react-google-maps) — Uber-like map interface
 - **Communication:** Twilio masked messaging (mock mode for dev)

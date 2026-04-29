@@ -508,10 +508,15 @@ export default function AccessListPage() {
                                     const inviteText =
                                       "Hi " + entry.name + ",\n\n" +
                                       "You've been invited to test Sherpa Pros - the smart platform for trade work.\n\n" +
+                                      "🌐 WEB ACCESS\n" +
                                       "Sign in here: https://thesherpapros.com/sign-in\n" +
                                       "Use this email (" + to + ") to access the platform.\n\n" +
-                                      "Quick start:\n" +
-                                      "1. Visit the link above\n" +
+                                      "📱 MOBILE APP\n" +
+                                      "iPhone (TestFlight): https://thesherpapros.com/install\n" +
+                                      "Android (web app): https://thesherpapros.com/install\n" +
+                                      "The /install page walks you through TestFlight setup and what you'll see in the app.\n\n" +
+                                      "Quick start (web):\n" +
+                                      "1. Visit the sign-in link above\n" +
                                       "2. Click \"Continue with Google\" or enter your email\n" +
                                       "3. Complete the 30-second setup\n" +
                                       "4. Take the guided tour\n\n" +

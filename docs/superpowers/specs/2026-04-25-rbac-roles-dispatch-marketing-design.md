@@ -253,7 +253,7 @@ Sections:
 - Ecosystem section: add Flex messaging
 - New "Platform Features" showcase section highlighting ALL built features:
   - Sherpa Score, Rewards, Smart Scan OCR, Messaging + SMS sync
-  - Combined Maintenance, Finance Hub, Escrow payments
+  - Combined Maintenance, Finance Hub, Payment Protection
   - Code-verified quotes, 37 categories / 251+ services
   - Sherpa Success Manager
   - NEW: Dispatch Model ("Materials delivered to the job site")

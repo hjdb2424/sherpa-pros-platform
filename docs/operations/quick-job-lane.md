@@ -56,7 +56,7 @@ The spec is heavily tuned for **Project mode** — multi-bid, code-aware, Wisema
 |---|---|---|
 | **Job size** | $1,500+ typical, up to $50K+ | $200–$1,500 |
 | **Examples** | Kitchen remodel, heat pump install, panel upgrade, full repaint, roof replacement, old-house specialty | Toilet install, faucet swap, drywall patch, single-wall paint, ceiling fan install, GFCI outlet, leaky valve replacement, garbage disposal install |
-| **Customer flow** | Post job → describe scope → 3 pros bid → customer picks → Wiseman validates → schedule → escrow → complete → 7-day hold → release | Pick from menu → see flat price + ETA → confirm pro → confirmed within 30 min → completed within 24–48hr → instant release |
+| **Customer flow** | Post job → describe scope → 3 pros bid → customer picks → Wiseman validates → schedule → payment protection → complete → 7-day hold → release | Pick from menu → see flat price + ETA → confirm pro → confirmed within 30 min → completed within 24–48hr → instant release |
 | **Pricing model** | Pro bids, Wiseman validates fairness | Sherpa Pros sets price band per task per metro; pro opts in to lane |
 | **Match style** | Multi-bid (2–3 pros), customer picks | Match-and-go (1 pro auto-assigned, customer confirms) |
 | **Wiseman code validation** | YES (NEC, IRC, MA Electrical, NH RSA, permits) | LIGHT (basic safety + obvious-mistake catch only — full validation overhead not warranted) |

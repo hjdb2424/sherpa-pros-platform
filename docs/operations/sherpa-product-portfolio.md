@@ -31,7 +31,7 @@ Sherpa Pros is no longer a single marketplace — it is a **six-product brand un
 **What it does.**
 - Matches verified licensed pros to homeowner jobs in two distinct lanes: **Project mode** (multi-bid, code-aware, $1.5K–$50K+) and **Quick Job mode** (pre-priced flat-rate menu, single-pro auto-assign, $200–$1,500).
 - Validates scope, code compliance, permits, and rebates through the internal Wiseman intelligence layer (never exposed externally).
-- Handles escrow, payouts, ratings, dispute resolution, and (Phase 1+) optional Project Protection insurance at checkout.
+- Handles marketplace settlement, payouts, ratings, dispute resolution, and (Phase 1+) optional Project Protection insurance at checkout.
 
 **Pricing model.** Beta: $0 subscription + 5% take rate. Standard: $49/mo subscription + 10% take rate. Founding Pros grandfathered at 5% forever. Same take rate across Project and Quick Job lanes.
 
@@ -275,7 +275,7 @@ Underneath the six products, three platform-level capabilities span every produc
 
 ### 2.7.5 Sherpa Flex Landing + Sherpa Splash — *acquisition surface* (LIVE)
 
-**What it does.** Two coordinated public surfaces. **(a) Sherpa Flex Landing** lives at `/flex` ("Do work on the side? We've got you covered."), the splash-page ecosystem section is updated with Flex, and invite pages now include a Flex option — together they make a dedicated front door for side-bandwidth tradespeople (W-2 employees with available time, moonlighters, construction-company employees who want to test the platform before forming a Limited Liability Company / LLC). **(b) Sherpa Splash** is the public capability showcase on the splash page — it now displays the full lineup: Sherpa Score, Sherpa Rewards, Sherpa Smart Scan, Sherpa Threads, Maintenance, Finance Hub, Escrow, code-verified quotes, 37 trade categories, Sherpa Success Manager, plus the new Sherpa Dispatch model and Multi-Trade Coordination.
+**What it does.** Two coordinated public surfaces. **(a) Sherpa Flex Landing** lives at `/flex` ("Do work on the side? We've got you covered."), the splash-page ecosystem section is updated with Flex, and invite pages now include a Flex option — together they make a dedicated front door for side-bandwidth tradespeople (W-2 employees with available time, moonlighters, construction-company employees who want to test the platform before forming a Limited Liability Company / LLC). **(b) Sherpa Splash** is the public capability showcase on the splash page — it now displays the full lineup: Sherpa Score, Sherpa Rewards, Sherpa Smart Scan, Sherpa Threads, Maintenance, Finance Hub, Payment Protection, code-verified quotes, 37 trade categories, Sherpa Success Manager, plus the new Sherpa Dispatch model and Multi-Trade Coordination.
 
 **Who it's for.** **Sherpa Flex Landing** targets the side-hustle tradesperson — the audience the existing pro funnel was not built to reach. **Sherpa Splash** targets every prospect (homeowner, pro, Property Manager) who lands on the public site cold and needs the full value proposition in one screen, not piecemeal through the product navigation.
 

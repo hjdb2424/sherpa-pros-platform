@@ -81,7 +81,7 @@ total_year_1_vendor_budget: $48,000–$78,000 (line-item totals below)
 ### 3.1 Why OpenSign
 
 - **Cost** — open-source, self-hostable, $0 base cost (vs DocuSign Business Pro ~$600/year per user); reference doc `reference_esign_research.md` already validated OpenSign for beta deployment
-- **Control** — self-hosted means franchise agreement signing data stays on Sherpa Pros infrastructure (no third-party SaaS escrow risk)
+- **Control** — self-hosted means franchise agreement signing data stays on Sherpa Pros infrastructure (no third-party SaaS payment protection risk)
 - **FTC compliance** — supports the audit-trail requirements for Item 23 receipt pages (date/time stamping, IP capture, signed document hash chain)
 - **Scale path** — adequate for Phase 4 Years 1–3 franchise agreement volume (5–25 signings per year); migrate to DocuSeal or DocuSign at scale
 

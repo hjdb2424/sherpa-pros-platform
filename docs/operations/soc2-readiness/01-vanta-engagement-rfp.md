@@ -26,7 +26,7 @@ This RFP solicits proposals from compliance-automation platforms to manage our S
 - **Headcount projection**: 6 by end of Q3 2026 (1 SRE/Compliance, 2 senior engineers, 1 ops, 1 marketplace ops, 1 customer concierge)
 - **Hosting**: Vercel (compute), Neon Postgres (database), AWS (Secrets Manager + S3 backup), Cloudflare (WAF)
 - **Auth + identity**: Clerk + Okta or Google Workspace SSO
-- **Payment processor**: Stripe Connect (escrow + payouts)
+- **Payment processor**: Stripe Connect (payment protection + payouts)
 - **Customer base at audit start**: 10-pro beta cohort plus closed homeowner pilot in metro Atkinson NH
 - **Regulated data classes**: PII (homeowners + pros), payment instruments (tokenized via Stripe), homeowner property data, audit logs (7-year retention per Sherpa Guard policy)
 

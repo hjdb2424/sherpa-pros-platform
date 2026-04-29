@@ -62,7 +62,7 @@ MassDevelopment's Biz-M-Power program provides a $1-for-$1 matching grant (up to
 **Live operational footprint:**
 - Web: www.thesherpapros.com (Next.js 16, deployed on Vercel)
 - Mobile: PWA + iOS TestFlight
-- Payments: Stripe Connect (marketplace splits + escrow + 1099-NEC reporting)
+- Payments: Stripe Connect (marketplace splits + payment protection + 1099-NEC reporting)
 - Database: Neon PostgreSQL + PostGIS for geo-matching
 - Auth: Clerk (Pro/Client role separation, license + insurance verification)
 

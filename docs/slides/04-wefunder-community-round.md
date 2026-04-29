@@ -485,7 +485,7 @@ A **licensed-trade marketplace for New Hampshire, Maine, and Massachusetts** —
   <div class="uof-row">
     <div class="pct">~40%</div>
     <div class="name">Engineering<br/>and product</div>
-    <div class="what">iOS App Store launch, Android PWA polish, code-aware quote validation expansion to more state codes, Property Manager tier features, dispute and escrow refinement.</div>
+    <div class="what">iOS App Store launch, Android PWA polish, code-aware quote validation expansion to more state codes, Property Manager tier features, dispute and payment protection refinement.</div>
   </div>
   <div class="uof-row">
     <div class="pct">~30%</div>

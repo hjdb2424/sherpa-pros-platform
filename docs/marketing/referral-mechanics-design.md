@@ -509,7 +509,7 @@ The Sherpa Rewards points grant fires on the same trigger as the Loop 1 sub-waiv
 
 ### Anti-fraud overlap
 
-The 500 pts inherits the same anti-fraud surface as the Loop 1 reward — no separate fraud queue. If a referral gets flagged and held under §5.3, the Sherpa Rewards points are held in escrow alongside the sub-waiver until manual review clears.
+The 500 pts inherits the same anti-fraud surface as the Loop 1 reward — no separate fraud queue. If a referral gets flagged and held under §5.3, the Sherpa Rewards points are held in fraud review alongside the sub-waiver until manual review clears.
 
 ### Copy update — Loop 1 in-app banner variants (§5.5)
 

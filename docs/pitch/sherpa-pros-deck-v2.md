@@ -100,7 +100,7 @@ We close that loop. **One platform makes the labor verifiable to homeowners and 
 1. **Code Intelligence Layer** (NEC, IRC, MA Electrical, NH RSA real-time).
 2. **Sherpa Dispatch engine** (7-factor pro-to-job matching, multi-trade timeline coordination).
 3. **Materials Orchestration Engine** (Zinc + Uber Direct + distributor APIs).
-4. **Payments + Escrow** (Stripe Connect, marketplace splits, dispute resolution).
+4. **Payments + Payment Protection** (Stripe Connect, marketplace splits, dispute resolution).
 5. **Identity + License Verification** (Clerk + state license API integrations).
 6. **Permit + Rebate Engine** (Mass Save, National Grid, EV charger, federal IRA hooks).
 7. **Multi-Trade Scheduling Graph** (coordinates 2-5 trades across one project).
@@ -465,7 +465,7 @@ The international play is *not* speculative — it's the same regulatory pattern
 |---|---|
 | **Two-sided marketplace cold-start.** | Pre-seeded with 50+ founding pros + 500+ homeowner accounts. Founding-pro pricing grandfathered forever — high retention. |
 | **Distributor concentration (FW Webb).** | Hub #1 with FW Webb. Hub #2 already in conversation with second distributor. Sherpa Materials engine is distributor-agnostic by design. |
-| **Regulatory exposure** (multi-state licensing, payments handling, escrow). | Stripe Connect handles payments compliance. License verification API per-state. Legal counsel engaged Phase 1. SOC 2 Type 2 by M30. |
+| **Regulatory exposure** (multi-state licensing, payments handling, payment protection). | Stripe Connect handles payments compliance. License verification API per-state. Legal counsel engaged Phase 1. SOC 2 Type 2 by M30. |
 | **Code intelligence accuracy.** | Code Intelligence Layer audited per-state by licensed inspectors. Auto-fix is opt-in, never silent. Pro retains liability — we are decision-support, not the licensed signer. |
 | **AI/ML talent + cost.** | First Series-A hire is a senior ML engineer. Inference cost modeled per-job, included in unit economics (Slide 13). |
 | **Macro: housing slowdown.** | Materials + multi-trade dispatch + utility white-label de-correlate revenue from new-construction housing starts. Mass Save / IRA / EV-charger rebate flow grows in any housing cycle. |

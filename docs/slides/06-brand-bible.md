@@ -85,7 +85,7 @@ Saying who we are not is how we say who we are.
 | Platform | What they do | Why we are different |
 |---|---|---|
 | **Angi** | Sells leads to contractors | We send jobs, not leads. Pros pay only when work happens. |
-| **Thumbtack** | Sells leads + collects deposits | We hold money in escrow. Documented deposit-theft losses $300–$1,600 are not our model. |
+| **Thumbtack** | Sells leads + collects deposits | We hold customer payment until the job is done. Documented deposit-theft losses $300–$1,600 are not our model. |
 | **TaskRabbit** | Unskilled task / assembly | We are licensed trade work. Toilet installs, panels, heat pumps. |
 | **Houzz** | Designer portfolio + magazine | We move money and dispatch crews. Not a magazine. |
 | **Handy** | Subscription cleanings + assembly | We are jobs by the job. No subscription bundle. |

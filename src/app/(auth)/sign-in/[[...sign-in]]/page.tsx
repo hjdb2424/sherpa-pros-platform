@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { SignIn } from "@clerk/nextjs";
 import Logo from "@/components/brand/Logo";
 import LanguageSwitcher from "@/components/i18n/LanguageSwitcher";
 import { useI18n } from "@/lib/i18n/context";
@@ -13,6 +12,8 @@ import { seedUserData } from "@/lib/seed-user-data";
 // Clerk-based sign-in (only rendered when Clerk env vars are present)
 // ---------------------------------------------------------------------------
 function ClerkSignIn() {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const { SignIn } = require("@clerk/nextjs");
   const { t } = useI18n();
 
   return (

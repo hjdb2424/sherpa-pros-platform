@@ -7,7 +7,6 @@ import {
   ShieldCheckIcon,
   BeakerIcon,
 } from "@heroicons/react/24/outline";
-import { SignUp } from "@clerk/nextjs";
 import Logo from "@/components/brand/Logo";
 import { seedUserData } from "@/lib/seed-user-data";
 
@@ -15,6 +14,9 @@ import { seedUserData } from "@/lib/seed-user-data";
 // Clerk-based sign-up (only rendered when Clerk env vars are present)
 // ---------------------------------------------------------------------------
 function ClerkSignUp() {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const { SignUp } = require("@clerk/nextjs");
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-white px-4">
       <div className="w-full max-w-md">

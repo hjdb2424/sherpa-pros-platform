@@ -1,6 +1,11 @@
 "use client";
 
 import { useEffect, useState, useCallback, useMemo } from "react";
+import {
+  buildInviteHtml,
+  buildInvitePlainText,
+  inviteSubject,
+} from "@/lib/invites/template";
 
 // ── Types ───────────────────────────────────────────────────────────
 
@@ -557,29 +562,11 @@ export default function AccessListPage() {
                                   onClick={async () => {
                                     const to = inviteEmail.trim() || entry.email;
                                     const role = toAppRole(entry.defaultRole);
-                                    const inviteText =
-                                      "Hi " + entry.name + ",\n\n" +
-                                      "You've been invited to test Sherpa Pros — trade work, done right.\n" +
-                                      "One place for the hire, the work, and the money.\n\n" +
-                                      "WHAT YOU'LL GET INSIDE\n" +
-                                      "• Sherpa Marketplace — vetted pros, on-demand dispatch, real-time tracking\n" +
-                                      "• Code-Verified Quotes — every bid validated against local building codes\n" +
-                                      "• Marketplace Payment Protection — your money is held until the work passes inspection\n" +
-                                      "• Materials Dispatch — materials ordered + delivered straight to the job site\n" +
-                                      "• Sherpa Success Manager — a real human (not a chatbot) manages your project\n" +
-                                      "• Smart Scan OCR, In-App Messaging, Sherpa Score, Rewards Program, Finance Hub\n\n" +
-                                      "🌐 WEB ACCESS\n" +
-                                      "Sign in: https://thesherpapros.com/sign-in\n" +
-                                      "Use this email (" + to + ") to access the platform.\n\n" +
-                                      "📱 MOBILE APP\n" +
-                                      "Walkthrough: https://thesherpapros.com/install\n" +
-                                      "iPhone uses TestFlight (Apple's beta app). Android uses the web app for now —\n" +
-                                      "/install has step-by-step instructions for both.\n\n" +
-                                      "Your role-specific guide: https://thesherpapros.com/invite/" + role + "\n\n" +
-                                      "Questions? Reply to this email or contact info@thesherpapros.com\n\n" +
-                                      "— The Sherpa Pros Team";
+                                    const opts = { name: entry.name, role, to };
+                                    const html = buildInviteHtml(opts);
+                                    const text = buildInvitePlainText(opts);
 
-                                    // Try sending via API first
+                                    // 1. Try sending via API (Resend)
                                     try {
                                       const res = await fetch("/api/admin/send-invite", {
                                         method: "POST",
@@ -594,14 +581,41 @@ export default function AccessListPage() {
                                       }
                                     } catch { /* fall through to clipboard */ }
 
-                                    // Fallback: copy to clipboard
-                                    await navigator.clipboard.writeText(
-                                      "To: " + to + "\nSubject: You're invited to Sherpa Pros Beta\n\n" + inviteText
-                                    );
+                                    // 2. Fallback: copy as RICH HTML + plain-text fallback so
+                                    //    pasting into Gmail/Outlook/Apple Mail preserves the
+                                    //    formatted layout (CTA buttons, "What you'll see" box, etc.)
+                                    const subject = inviteSubject();
+                                    const wrappedHtml = `<div>${html}</div>`;
+                                    const fallbackText =
+                                      `To: ${to}\nSubject: ${subject}\n\n${text}`;
+
+                                    let copyMode: "html" | "text" = "text";
+                                    try {
+                                      // Modern path: ClipboardItem with text/html + text/plain
+                                      const item = new ClipboardItem({
+                                        "text/html": new Blob([wrappedHtml], { type: "text/html" }),
+                                        "text/plain": new Blob([fallbackText], { type: "text/plain" }),
+                                      });
+                                      await navigator.clipboard.write([item]);
+                                      copyMode = "html";
+                                    } catch {
+                                      // Older browser fallback (no ClipboardItem support)
+                                      await navigator.clipboard.writeText(fallbackText);
+                                    }
+
                                     setInviteSent(entry.id);
                                     setInviteId(null);
                                     setTimeout(() => setInviteSent(null), 3000);
-                                    alert("Invite copied to clipboard! Paste into your email app.");
+
+                                    if (copyMode === "html") {
+                                      alert(
+                                        `Invite copied as HTML.\n\nPaste into your email app's compose window (Gmail, Apple Mail, Outlook). Subject: "${subject}". Recipient: ${to}.`
+                                      );
+                                    } else {
+                                      alert(
+                                        `Invite copied as plain text (your browser does not support rich clipboard).\n\nPaste into your email app. Subject: "${subject}". Recipient: ${to}.`
+                                      );
+                                    }
                                   }}
                                   className="rounded bg-emerald-500 px-2 py-1 text-xs font-medium text-white hover:bg-emerald-600"
                                 >

@@ -192,8 +192,8 @@ export default function InstallPage() {
                 <strong>On a non-iPhone device</strong> (laptop, Android), the invite link won't do
                 anything useful. Email or text it to yourself and open it on your iPhone, or use the
                 web app at{" "}
-                <a href="https://thesherpapros.com/sign-in" className="font-medium text-[#00a9e0] hover:underline">
-                  thesherpapros.com/sign-in
+                <a href="https://www.thesherpapros.com/sign-in" className="font-medium text-[#00a9e0] hover:underline">
+                  www.thesherpapros.com/sign-in
                 </a>{" "}
                 instead.
               </li>
@@ -238,10 +238,10 @@ export default function InstallPage() {
                 <>
                   Visit{" "}
                   <a
-                    href="https://thesherpapros.com"
+                    href="https://www.thesherpapros.com"
                     className="font-medium text-[#00a9e0] hover:underline"
                   >
-                    thesherpapros.com
+                    www.thesherpapros.com
                   </a>{" "}
                   in Chrome.
                 </>
@@ -322,8 +322,8 @@ export default function InstallPage() {
           <h2 className="text-2xl font-bold text-zinc-900">Or just use the web</h2>
           <p className="mt-3 text-zinc-600">
             The full platform is also available in any browser at{" "}
-            <a href="https://thesherpapros.com/sign-in" className="font-medium text-[#00a9e0] hover:underline">
-              thesherpapros.com/sign-in
+            <a href="https://www.thesherpapros.com/sign-in" className="font-medium text-[#00a9e0] hover:underline">
+              www.thesherpapros.com/sign-in
             </a>
             . Same data, same features. Use this if you don't want to install anything yet — you can
             always switch to the app later.
@@ -344,7 +344,7 @@ export default function InstallPage() {
           </p>
           <p className="mt-6 text-sm text-zinc-500">
             <Link href="/" className="hover:underline">
-              ← Back to thesherpapros.com
+              ← Back to www.thesherpapros.com
             </Link>
           </p>
         </div>

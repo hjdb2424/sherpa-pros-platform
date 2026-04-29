@@ -1,11 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { buildInviteHtml, inviteSubject, type InviteAppRole } from '@/lib/invites/template';
 
 /**
  * POST /api/admin/send-invite
  * Sends a beta invite email. Currently supports:
  * - Resend (set RESEND_API_KEY env var)
  * - Falls back to 501 if no email service is configured
- *   (client-side will copy to clipboard instead)
+ *   (client-side will copy HTML+plain-text to clipboard instead)
+ *
+ * The email body is rendered from the shared template at
+ * src/lib/invites/template.ts so the auto-sent path and the clipboard
+ * fallback stay in lockstep.
  */
 export async function POST(request: NextRequest) {
   try {
@@ -15,85 +20,9 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Missing to or name' }, { status: 400 });
     }
 
-    const roleLabel = role === 'pm' ? 'Property Manager' : role === 'pro' ? 'Trade Professional' : 'Client';
-    const inviteUrl = `https://thesherpapros.com/invite/${role === 'pm' ? 'pm' : role === 'pro' ? 'pro' : 'client'}`;
+    const appRole: InviteAppRole = role === 'pm' ? 'pm' : role === 'pro' ? 'pro' : 'client';
+    const htmlBody = buildInviteHtml({ name, role: appRole, to });
 
-    const htmlBody = `
-      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; padding: 40px 20px;">
-        <div style="text-align: center; margin-bottom: 32px;">
-          <h1 style="font-size: 24px; font-weight: 700; color: #18181b; margin: 0;">Sherpa Pros</h1>
-          <p style="color: #71717a; font-size: 14px; margin-top: 4px;">Trade work, done right.</p>
-        </div>
-
-        <p style="font-size: 16px; color: #27272a;">Hi ${name},</p>
-
-        <p style="font-size: 15px; color: #3f3f46; line-height: 1.6;">
-          You've been invited to test <strong>Sherpa Pros</strong> as a <strong>${roleLabel}</strong>.
-          <em>Trade work, done right — one place for the hire, the work, and the money.</em>
-          We want your feedback before we launch in your area.
-        </p>
-
-        <div style="background: #fafafa; border: 1px solid #e4e4e7; border-radius: 12px; padding: 24px; margin: 24px 0;">
-          <p style="font-size: 14px; font-weight: 600; color: #18181b; margin: 0 0 12px 0;">What you'll see inside:</p>
-          <ul style="font-size: 14px; color: #3f3f46; line-height: 1.8; margin: 0; padding-left: 20px;">
-            <li><strong>Sherpa Marketplace</strong> — vetted pros, on-demand dispatch, real-time tracking</li>
-            <li><strong>Code-Verified Quotes</strong> — every bid validated against local building codes</li>
-            <li><strong>Marketplace Payment Protection</strong> — your money is held until the work passes inspection</li>
-            <li><strong>Materials Dispatch</strong> — materials ordered + delivered to the job site</li>
-            <li><strong>Sherpa Success Manager</strong> — a real human (not a chatbot) on your project</li>
-            <li><strong>Smart Scan OCR, In-App Messaging, Sherpa Score, Rewards, Finance Hub</strong></li>
-          </ul>
-        </div>
-
-        <div style="background: #f4f4f5; border-radius: 12px; padding: 24px; margin: 24px 0;">
-          <p style="font-size: 14px; font-weight: 600; color: #18181b; margin: 0 0 16px 0;">Quick Start (web):</p>
-          <ol style="font-size: 14px; color: #3f3f46; line-height: 1.8; margin: 0; padding-left: 20px;">
-            <li>Visit <a href="https://thesherpapros.com/sign-in" style="color: #00a9e0; text-decoration: none; font-weight: 600;">thesherpapros.com/sign-in</a></li>
-            <li>Click "Continue with Google" or enter your email: <strong>${to}</strong></li>
-            <li>Complete the 30-second setup</li>
-            <li>Take the guided tour</li>
-          </ol>
-        </div>
-
-        <div style="text-align: center; margin: 32px 0;">
-          <a href="https://thesherpapros.com/sign-in"
-             style="display: inline-block; background: #00a9e0; color: white; font-size: 15px; font-weight: 600; padding: 14px 32px; border-radius: 8px; text-decoration: none;">
-            Sign In Now
-          </a>
-        </div>
-
-        <div style="background: #fff7ed; border: 1px solid #fed7aa; border-radius: 12px; padding: 24px; margin: 24px 0;">
-          <p style="font-size: 14px; font-weight: 600; color: #9a3412; margin: 0 0 8px 0;">📱 Want it on your phone?</p>
-          <p style="font-size: 14px; color: #7c2d12; line-height: 1.6; margin: 0 0 12px 0;">
-            <strong>iPhone:</strong> install via Apple TestFlight (free Apple beta app).
-            <strong>Android:</strong> use the web app for now — installs to your home screen like a real app.
-          </p>
-          <a href="https://thesherpapros.com/install"
-             style="display: inline-block; background: #ff4500; color: white; font-size: 14px; font-weight: 600; padding: 10px 20px; border-radius: 6px; text-decoration: none;">
-            Install the app →
-          </a>
-          <p style="font-size: 12px; color: #9a3412; margin: 12px 0 0 0;">
-            The install page walks you through the steps and shows what you'll see in the app.
-          </p>
-        </div>
-
-        <p style="font-size: 14px; color: #71717a; line-height: 1.6;">
-          Your role-specific guide: <a href="${inviteUrl}" style="color: #00a9e0; text-decoration: none;">${inviteUrl}</a>
-        </p>
-
-        <hr style="border: none; border-top: 1px solid #e4e4e7; margin: 32px 0;" />
-
-        <p style="font-size: 13px; color: #a1a1aa; text-align: center;">
-          Questions? Reply to this email or contact
-          <a href="mailto:info@thesherpapros.com" style="color: #00a9e0; text-decoration: none;">info@thesherpapros.com</a>
-        </p>
-        <p style="font-size: 12px; color: #d4d4d8; text-align: center; margin-top: 8px;">
-          &copy; 2026 Sherpa Pros. All rights reserved.
-        </p>
-      </div>
-    `;
-
-    // Try Resend
     if (process.env.RESEND_API_KEY) {
       const res = await fetch('https://api.resend.com/emails', {
         method: 'POST',
@@ -104,7 +33,7 @@ export async function POST(request: NextRequest) {
         body: JSON.stringify({
           from: 'Sherpa Pros <invite@thesherpapros.com>',
           to: [to],
-          subject: "You're invited to Sherpa Pros Beta",
+          subject: inviteSubject(),
           html: htmlBody,
         }),
       });
@@ -115,7 +44,6 @@ export async function POST(request: NextRequest) {
       console.error('Resend error:', await res.text());
     }
 
-    // No email service configured
     return NextResponse.json(
       { sent: false, error: 'No email service configured. Invite copied to clipboard instead.' },
       { status: 501 },

@@ -1,7 +1,7 @@
 # Sherpa Pros — Beta Tester Onboarding
 
 Copy-paste-ready onboarding text for emailing/Slacking/DMing testers outside the system.
-The same content lives at `https://thesherpapros.com/install` if you'd rather just send a link.
+The same content lives at `https://www.thesherpapros.com/install` if you'd rather just send a link.
 
 ---
 
@@ -9,8 +9,8 @@ The same content lives at `https://thesherpapros.com/install` if you'd rather ju
 
 > Hey [Name] — you're in the Sherpa Pros beta. Two ways to use it:
 >
-> **Web (any device):** thesherpapros.com/sign-in
-> **iPhone app:** thesherpapros.com/install (TestFlight setup walks you through it)
+> **Web (any device):** www.thesherpapros.com/sign-in
+> **iPhone app:** www.thesherpapros.com/install (TestFlight setup walks you through it)
 > **Android:** use the web app for now — install it to your home screen via Chrome menu → Install
 >
 > Sign in with this exact email — it's already on the access list. Reply if you hit anything weird.
@@ -30,16 +30,16 @@ Thanks for agreeing to test Sherpa Pros. You're one of ~24 people we're inviting
 You have **three options** — pick whichever you prefer. They all read/write the same data, so you can mix and match.
 
 **1. Web (works everywhere, zero install):**
-Visit https://thesherpapros.com/sign-in and sign in with this email. Works on iPhone, Android, laptop — anything with a browser.
+Visit https://www.thesherpapros.com/sign-in and sign in with this email. Works on iPhone, Android, laptop — anything with a browser.
 
 **2. iPhone app (recommended for Pros):**
 Apple's TestFlight is the official way to install beta apps on iPhone. It's free and lives next to your other apps.
 - Install TestFlight from the App Store: https://apps.apple.com/us/app/testflight/id899247664
-- Then visit our walkthrough: https://thesherpapros.com/install
+- Then visit our walkthrough: https://www.thesherpapros.com/install
 - It will show you our TestFlight invite link + step-by-step screenshots
 
 **3. Android (web app for now):**
-A native Android app is coming. For now, the web app installs to your home screen with full-screen icon + push notifications. Open https://thesherpapros.com in Chrome → menu (⋮) → "Install app".
+A native Android app is coming. For now, the web app installs to your home screen with full-screen icon + push notifications. Open https://www.thesherpapros.com in Chrome → menu (⋮) → "Install app".
 
 ### What you'll see when you sign in
 

@@ -19,7 +19,7 @@ Sherpa Pros seeks a SOC 2 audit firm to perform our **SOC 2 Type 1 audit in Q4 2
 
 ## 2. Company Context
 
-See `01-vanta-engagement-rfp.md` Section 2. In summary: Next.js / Neon / Clerk / Stripe Connect / Vercel SaaS platform; 1 employee today, 6 by Q3 2026; Northeast US two-sided marketplace; payment payment protection flowing through Stripe Connect; 7-year audit log retention via Sherpa Guard.
+See `01-vanta-engagement-rfp.md` Section 2. In summary: Next.js / Neon / Clerk / Stripe Connect / Vercel SaaS platform; 1 employee today, 6 by Q3 2026; Northeast US two-sided marketplace; marketplace settlement flowing through Stripe Connect; 7-year audit log retention via Sherpa Guard.
 
 ## 3. Scope of Work
 

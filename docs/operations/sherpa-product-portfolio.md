@@ -31,7 +31,7 @@ Sherpa Pros is no longer a single marketplace — it is a **six-product brand un
 **What it does.**
 - Matches verified licensed pros to homeowner jobs in two distinct lanes: **Project mode** (multi-bid, code-aware, $1.5K–$50K+) and **Quick Job mode** (pre-priced flat-rate menu, single-pro auto-assign, $200–$1,500).
 - Validates scope, code compliance, permits, and rebates through the internal Wiseman intelligence layer (never exposed externally).
-- Handles payment protection, payouts, ratings, dispute resolution, and (Phase 1+) optional Project Protection insurance at checkout.
+- Handles marketplace settlement, payouts, ratings, dispute resolution, and (Phase 1+) optional Project Protection insurance at checkout.
 
 **Pricing model.** Beta: $0 subscription + 5% take rate. Standard: $49/mo subscription + 10% take rate. Founding Pros grandfathered at 5% forever. Same take rate across Project and Quick Job lanes.
 

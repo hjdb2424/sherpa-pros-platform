@@ -286,7 +286,7 @@ Maps:           Mapbox GL JS + react-map-gl + deck.gl
 Geocoding:      Mapbox Geocoding API + Google Places Autocomplete
 Real-time:      Vercel Functions + Pusher/Ably for live bids/chat
 Payments:       Stripe Connect (marketplace splits + instant payouts)
-Payment Protection:         Mercury Treasury (~4% APY on held funds)
+Settlement:     Mercury Treasury (~4% APY on held funds)
 SMS:            Twilio (masked communication)
 Background:     Checkr API ($30/Pro)
 AI:             Vercel AI SDK + BldSync Wiseman APIs

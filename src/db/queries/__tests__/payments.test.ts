@@ -196,16 +196,28 @@ describe('getCapturedTotalForJob', () => {
 });
 
 describe('markPaymentHeld (transactional)', () => {
-  it('updates payments.status=held AND job_milestones.status=funded in one transaction', async () => {
-    const txWhere = vi.fn().mockResolvedValue(undefined);
-    const txSet = vi.fn(() => ({ where: txWhere }));
-    const txUpdate = vi.fn(() => ({ set: txSet }));
+  function buildTxMock(updateAffectedRows: number) {
+    const txReturning = vi.fn().mockResolvedValue(
+      updateAffectedRows > 0 ? [{ id: 'pay_1' }] : [],
+    );
+    // First update call (payments) → returning(); second (job_milestones) → resolves
+    const txWhereWithReturning = vi.fn(() => ({ returning: txReturning }));
+    const txWhereVoid = vi.fn().mockResolvedValue(undefined);
+    const txSetA = vi.fn(() => ({ where: txWhereWithReturning }));
+    const txSetB = vi.fn(() => ({ where: txWhereVoid }));
+    const txUpdate = vi
+      .fn()
+      .mockReturnValueOnce({ set: txSetA })
+      .mockReturnValueOnce({ set: txSetB });
     const txLimit = vi.fn().mockResolvedValue([{ milestoneId: 'ms_1' }]);
     const txWhereSelect = vi.fn(() => ({ limit: txLimit }));
     const txFrom = vi.fn(() => ({ where: txWhereSelect }));
     const txSelect = vi.fn(() => ({ from: txFrom }));
-    const tx = { select: txSelect, update: txUpdate };
+    return { tx: { select: txSelect, update: txUpdate }, txUpdate };
+  }
 
+  it('updates payments.status=held AND job_milestones.status=funded when row is pending', async () => {
+    const { tx, txUpdate } = buildTxMock(1);
     mockTransaction.mockImplementation(
       async (cb: (tx: typeof tx) => Promise<void>) => cb(tx),
     );
@@ -213,6 +225,21 @@ describe('markPaymentHeld (transactional)', () => {
     await markPaymentHeld('pay_1');
     expect(mockTransaction).toHaveBeenCalledOnce();
     expect(txUpdate).toHaveBeenCalledTimes(2);
+  });
+
+  it('skips milestone update and warns when payments UPDATE affects 0 rows', async () => {
+    const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const { tx, txUpdate } = buildTxMock(0);
+    mockTransaction.mockImplementation(
+      async (cb: (tx: typeof tx) => Promise<void>) => cb(tx),
+    );
+
+    await markPaymentHeld('pay_1');
+    expect(mockTransaction).toHaveBeenCalledOnce();
+    // Only the payments UPDATE fires; milestone UPDATE is skipped
+    expect(txUpdate).toHaveBeenCalledTimes(1);
+    expect(consoleSpy).toHaveBeenCalled();
+    consoleSpy.mockRestore();
   });
 });
 

@@ -37,7 +37,17 @@ export interface CaptureInput {
 const TERMINAL_JOB_STATES = new Set(['cancelled', 'completed']);
 const BETA_CAP_CENTS = 50000;
 
-export async function runCaptureForMilestone(input: CaptureInput): Promise<CaptureResult> {
+const MAX_RACE_RECURSION_DEPTH = 2;
+
+export async function runCaptureForMilestone(
+  input: CaptureInput,
+  _depth = 0,
+): Promise<CaptureResult> {
+  if (_depth > MAX_RACE_RECURSION_DEPTH) {
+    throw new Error(
+      `runCaptureForMilestone: exceeded max recursion depth (${MAX_RACE_RECURSION_DEPTH})`,
+    );
+  }
   // Gate 1: auth + user exists
   const dbUser = await getUserById(input.clientUserId);
   if (!dbUser) {
@@ -147,7 +157,7 @@ export async function runCaptureForMilestone(input: CaptureInput): Promise<Captu
   });
   if (!insertResult.inserted) {
     // Race lost — re-enter reuse-pending logic with the row that won.
-    return runCaptureForMilestone(input);
+    return runCaptureForMilestone(input, _depth + 1);
   }
 
   const paymentService = getPaymentService();

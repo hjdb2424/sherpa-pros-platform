@@ -110,7 +110,7 @@ export default async function FundMilestonePage({ params }: Params) {
       <div className="mt-6 rounded-xl border border-zinc-200 bg-white p-6 dark:border-zinc-700 dark:bg-zinc-800">
         <PaymentElementClient
           clientSecret={result.clientSecret}
-          returnUrl={`/client/my-jobs/${jobId}?funded=${milestoneId}`}
+          returnUrl={`${process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'}/client/my-jobs/${jobId}?funded=${milestoneId}`}
         />
       </div>
       <p className="mt-3 text-xs text-zinc-500">

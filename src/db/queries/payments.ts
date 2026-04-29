@@ -126,6 +126,15 @@ export async function getCapturedTotalForJob(jobId: string): Promise<number> {
  * Webhook-driven transition: status='held' on payments + status='funded'
  * + funded_at on job_milestones. Single transaction so the two writes
  * are atomic. (I-2 fix.)
+ *
+ * Defensive guards (added during PR review):
+ * - The payments UPDATE has an `AND status='pending'` predicate so a
+ *   late-arriving duplicate event after the row is already 'held' or
+ *   'released' becomes a no-op rather than overwriting heldAt
+ * - When the UPDATE affects 0 rows (row was deleted by the payment_failed
+ *   handler or already transitioned), we log a warning and skip the
+ *   milestone UPDATE — prevents stuck "Funded ✓ — finalizing" UI without
+ *   server-side trace
  */
 export async function markPaymentHeld(paymentRowId: string): Promise<void> {
   await db.transaction(async (tx) => {
@@ -135,10 +144,18 @@ export async function markPaymentHeld(paymentRowId: string): Promise<void> {
       .where(eq(payments.id, paymentRowId))
       .limit(1);
 
-    await tx
+    const updated = await tx
       .update(payments)
       .set({ status: 'held', heldAt: new Date() })
-      .where(eq(payments.id, paymentRowId));
+      .where(and(eq(payments.id, paymentRowId), eq(payments.status, 'pending')))
+      .returning({ id: payments.id });
+
+    if (updated.length === 0) {
+      console.warn(
+        `[markPaymentHeld] payment row ${paymentRowId} not found or not pending — skipping milestone update`,
+      );
+      return;
+    }
 
     if (paymentRow?.milestoneId) {
       await tx

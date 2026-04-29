@@ -1,79 +1,150 @@
-/**
- * Payment Query Helpers
- *
- * Typed CRUD operations for the payments table including escrow balance calculation.
- */
+import { db } from '@/db';
+import { payments, jobMilestones } from '@/db/drizzle-schema';
+import { and, eq, sum, inArray } from 'drizzle-orm';
 
-import { eq, sql } from "drizzle-orm";
-import { db } from "../drizzle";
-import { payments } from "../drizzle-schema";
-import type { Payment, PaymentStatus } from "../types";
-
-/**
- * Create a new payment record.
- * @param data - Payment creation fields matching the Drizzle schema
- * @returns The newly created payment row
- */
-export async function create(
-  data: typeof payments.$inferInsert,
-): Promise<Payment> {
-  const rows = await db.insert(payments).values(data).returning();
-  return rows[0] as unknown as Payment;
+export interface PaymentRow {
+  id: string;
+  jobId: string;
+  milestoneId: string | null;
+  payerUserId: string;
+  payeeUserId: string;
+  amountCents: number;
+  status: 'pending' | 'held' | 'released' | 'refunded' | 'disputed';
+  stripePaymentIntentId: string | null;
+  heldAt: Date | null;
 }
 
 /**
- * Find all payments for a specific job.
- * @param jobId - Job UUID
- * @returns Array of payment rows for the job
+ * Find the pending payment row for (jobId, milestoneId, payerUserId), if any.
+ * Used by the reuse-pending path on funding-page reload.
  */
-export async function findByJob(jobId: string): Promise<Payment[]> {
+export async function getPendingPaymentForMilestone(
+  jobId: string,
+  milestoneId: string,
+  payerUserId: string,
+): Promise<PaymentRow | null> {
   const rows = await db
     .select()
     .from(payments)
-    .where(eq(payments.jobId, jobId));
-  return rows as unknown as Payment[];
+    .where(
+      and(
+        eq(payments.jobId, jobId),
+        eq(payments.milestoneId, milestoneId),
+        eq(payments.payerUserId, payerUserId),
+        eq(payments.status, 'pending'),
+      ),
+    )
+    .limit(1);
+  return (rows[0] as PaymentRow | undefined) ?? null;
 }
 
 /**
- * Update a payment's status and set relevant timestamps.
- * @param id - Payment UUID
- * @param status - New payment status
- * @returns The updated payment row or undefined if not found
+ * Insert a pending payment row. The partial unique index
+ * uq_payments_pending_per_milestone serializes concurrent inserts on the
+ * same (jobId, milestoneId, payerUserId) tuple; on conflict we refetch
+ * and return the existing row.
  */
-export async function updateStatus(
-  id: string,
-  status: PaymentStatus,
-): Promise<Payment | undefined> {
-  const now = new Date();
-  const timestampUpdates: Record<string, Date> = {};
-  if (status === "held") timestampUpdates.heldAt = now;
-  if (status === "released") timestampUpdates.releasedAt = now;
+export async function insertPendingPayment(input: {
+  id: string;
+  jobId: string;
+  milestoneId: string;
+  payerUserId: string;
+  payeeUserId: string;
+  amountCents: number;
+}): Promise<{ inserted: true } | { inserted: false; existing: PaymentRow }> {
+  try {
+    await db
+      .insert(payments)
+      .values({
+        id: input.id,
+        jobId: input.jobId,
+        milestoneId: input.milestoneId,
+        payerUserId: input.payerUserId,
+        payeeUserId: input.payeeUserId,
+        amountCents: input.amountCents,
+        status: 'pending',
+      })
+      .returning();
+    return { inserted: true };
+  } catch (err: unknown) {
+    if (
+      typeof err === 'object' &&
+      err !== null &&
+      'code' in err &&
+      (err as { code: string }).code === '23505'
+    ) {
+      const existing = await getPendingPaymentForMilestone(
+        input.jobId,
+        input.milestoneId,
+        input.payerUserId,
+      );
+      if (!existing) {
+        throw new Error(
+          'insertPendingPayment: unique violation but no existing pending row',
+        );
+      }
+      return { inserted: false, existing };
+    }
+    throw err;
+  }
+}
 
-  const rows = await db
+export async function setPaymentIntentId(
+  paymentRowId: string,
+  paymentIntentId: string,
+): Promise<void> {
+  await db
     .update(payments)
-    .set({ status, ...timestampUpdates })
-    .where(eq(payments.id, id))
-    .returning();
-  return rows[0] as unknown as Payment | undefined;
+    .set({ stripePaymentIntentId: paymentIntentId })
+    .where(eq(payments.id, paymentRowId));
+}
+
+export async function deletePaymentRow(paymentRowId: string): Promise<void> {
+  await db.delete(payments).where(eq(payments.id, paymentRowId));
 }
 
 /**
- * Calculate the total escrow balance for a job (sum of held payments minus released).
- * @param jobId - Job UUID
- * @returns Escrow balance in cents
+ * Sum of amount_cents for the job across statuses that count toward the cap:
+ * pending + held + released. The cap-check uses this BEFORE inserting the
+ * new pending row; the partial unique index then handles same-milestone races.
  */
-export async function calculateEscrowBalance(jobId: string): Promise<number> {
-  const result = await db
-    .select({
-      balance: sql<number>`
-        COALESCE(
-          SUM(CASE WHEN ${payments.status} = 'held' THEN ${payments.amountCents} ELSE 0 END) -
-          SUM(CASE WHEN ${payments.status} = 'released' THEN ${payments.amountCents} ELSE 0 END),
-          0
-        )
-      `,
-    })
+export async function getCapturedTotalForJob(jobId: string): Promise<number> {
+  const rows = await db
+    .select({ total: sum(payments.amountCents) })
     .from(payments)
-    .where(eq(payments.jobId, jobId));
-  return result[0]?.balance ?? 0;
+    .where(
+      and(
+        eq(payments.jobId, jobId),
+        inArray(payments.status, ['pending', 'held', 'released']),
+      ),
+    );
+  const total = rows[0]?.total;
+  return total ? Number(total) : 0;
+}
+
+/**
+ * Webhook-driven transition: status='held' on payments + status='funded'
+ * + funded_at on job_milestones. Single transaction so the two writes
+ * are atomic. (I-2 fix.)
+ */
+export async function markPaymentHeld(paymentRowId: string): Promise<void> {
+  await db.transaction(async (tx) => {
+    const [paymentRow] = await tx
+      .select({ milestoneId: payments.milestoneId })
+      .from(payments)
+      .where(eq(payments.id, paymentRowId))
+      .limit(1);
+
+    await tx
+      .update(payments)
+      .set({ status: 'held', heldAt: new Date() })
+      .where(eq(payments.id, paymentRowId));
+
+    if (paymentRow?.milestoneId) {
+      await tx
+        .update(jobMilestones)
+        .set({ status: 'funded', fundedAt: new Date() })
+        .where(eq(jobMilestones.id, paymentRow.milestoneId));
+    }
+  });
 }

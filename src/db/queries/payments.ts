@@ -1,5 +1,5 @@
 import { db } from '@/db';
-import { payments, jobMilestones } from '@/db/drizzle-schema';
+import { payments, jobMilestones, bids, pros, users } from '@/db/drizzle-schema';
 import { and, eq, sum, inArray } from 'drizzle-orm';
 
 export interface PaymentRow {
@@ -147,4 +147,54 @@ export async function markPaymentHeld(paymentRowId: string): Promise<void> {
         .where(eq(jobMilestones.id, paymentRow.milestoneId));
     }
   });
+}
+
+export interface BidRow {
+  id: string;
+  jobId: string;
+  proId: string;
+  status: string;
+  amountCents: number;
+}
+
+export interface UserRow {
+  id: string;
+  email: string;
+  stripeAccountStatus:
+    | 'none'
+    | 'pending'
+    | 'active'
+    | 'restricted'
+    | 'disabled'
+    | null;
+}
+
+/**
+ * Get the single accepted bid for a job, if any. Plan 2a's capture flow
+ * uses this to resolve the pro user via bids→pros→users.
+ */
+export async function getAcceptedBidForJob(jobId: string): Promise<BidRow | null> {
+  const rows = await db
+    .select()
+    .from(bids)
+    .where(and(eq(bids.jobId, jobId), eq(bids.status, 'accepted')))
+    .limit(1);
+  return (rows[0] as BidRow | undefined) ?? null;
+}
+
+/**
+ * Resolve a pro_id to its user row via the pros→users join.
+ */
+export async function getUserByProId(proId: string): Promise<UserRow | null> {
+  const rows = await db
+    .select({
+      id: users.id,
+      email: users.email,
+      stripeAccountStatus: users.stripeAccountStatus,
+    })
+    .from(pros)
+    .innerJoin(users, eq(users.id, pros.userId))
+    .where(eq(pros.id, proId))
+    .limit(1);
+  return (rows[0] as UserRow | undefined) ?? null;
 }

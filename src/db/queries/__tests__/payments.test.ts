@@ -35,6 +35,22 @@ vi.mock('@/db/drizzle-schema', () => ({
     status: 'status',
     fundedAt: 'funded_at',
   },
+  bids: {
+    id: 'id',
+    jobId: 'job_id',
+    proId: 'pro_id',
+    status: 'status',
+    amountCents: 'amount_cents',
+  },
+  pros: {
+    id: 'id',
+    userId: 'user_id',
+  },
+  users: {
+    id: 'id',
+    email: 'email',
+    stripeAccountStatus: 'stripe_account_status',
+  },
 }));
 
 import {
@@ -44,6 +60,8 @@ import {
   deletePaymentRow,
   getCapturedTotalForJob,
   markPaymentHeld,
+  getAcceptedBidForJob,
+  getUserByProId,
 } from '../payments';
 
 beforeEach(() => {
@@ -195,5 +213,53 @@ describe('markPaymentHeld (transactional)', () => {
     await markPaymentHeld('pay_1');
     expect(mockTransaction).toHaveBeenCalledOnce();
     expect(txUpdate).toHaveBeenCalledTimes(2);
+  });
+});
+
+describe('getAcceptedBidForJob', () => {
+  it('returns the accepted bid for the job', async () => {
+    const bid = { id: 'bid_1', jobId: 'job_1', proId: 'pro_1', status: 'accepted', amountCents: 250000 };
+    const limit = vi.fn().mockResolvedValue([bid]);
+    const where = vi.fn(() => ({ limit }));
+    const from = vi.fn(() => ({ where }));
+    mockSelect.mockReturnValue({ from });
+
+    const result = await getAcceptedBidForJob('job_1');
+    expect(result).toEqual(bid);
+  });
+
+  it('returns null when no accepted bid exists', async () => {
+    const limit = vi.fn().mockResolvedValue([]);
+    const where = vi.fn(() => ({ limit }));
+    const from = vi.fn(() => ({ where }));
+    mockSelect.mockReturnValue({ from });
+
+    const result = await getAcceptedBidForJob('job_1');
+    expect(result).toBeNull();
+  });
+});
+
+describe('getUserByProId', () => {
+  it('joins pros→users and returns the user row', async () => {
+    const user = { id: 'user_pro', email: 'pro@example.com', stripeAccountStatus: 'active' };
+    const limit = vi.fn().mockResolvedValue([user]);
+    const where = vi.fn(() => ({ limit }));
+    const innerJoin = vi.fn(() => ({ where }));
+    const from = vi.fn(() => ({ innerJoin }));
+    mockSelect.mockReturnValue({ from });
+
+    const result = await getUserByProId('pro_1');
+    expect(result).toEqual(user);
+  });
+
+  it('returns null when the pro_id does not match', async () => {
+    const limit = vi.fn().mockResolvedValue([]);
+    const where = vi.fn(() => ({ limit }));
+    const innerJoin = vi.fn(() => ({ where }));
+    const from = vi.fn(() => ({ innerJoin }));
+    mockSelect.mockReturnValue({ from });
+
+    const result = await getUserByProId('pro_unknown');
+    expect(result).toBeNull();
   });
 });

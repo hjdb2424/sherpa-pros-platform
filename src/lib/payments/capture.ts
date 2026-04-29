@@ -2,10 +2,15 @@ import {
   getAcceptedBidForJob,
   getUserByProId,
   getCapturedTotalForJob,
+  getPendingPaymentForMilestone,
+  insertPendingPayment,
+  setPaymentIntentId,
+  deletePaymentRow,
 } from '@/db/queries/payments';
 import { getUserById } from '@/db/queries/users';
 import { getJob } from '@/db/queries/jobs';
 import { getMilestone } from '@/db/queries/milestones';
+import { getPaymentService } from '@/lib/services/payments';
 
 export type CaptureError =
   | 'unauthorized'
@@ -91,6 +96,83 @@ export async function runCaptureForMilestone(input: CaptureInput): Promise<Captu
     };
   }
 
-  // Happy path lands in Task 8.
-  throw new Error('Not implemented yet — see Task 8');
+  // Reuse-pending: if a pending row exists, check its Stripe-side state.
+  const existingPending = await getPendingPaymentForMilestone(
+    input.jobId,
+    input.milestoneId,
+    input.clientUserId,
+  );
+  if (existingPending && existingPending.stripePaymentIntentId) {
+    const paymentService = getPaymentService();
+    const intent = await paymentService.retrievePaymentIntent(
+      existingPending.stripePaymentIntentId,
+    );
+    if (intent.status === 'succeeded') {
+      return { ok: true, alreadyFunded: true };
+    }
+    if (intent.status === 'canceled') {
+      // Stale row — delete and fall through to new-intent creation.
+      await deletePaymentRow(existingPending.id);
+    } else if (
+      intent.status === 'requires_payment_method' ||
+      intent.status === 'requires_confirmation' ||
+      intent.status === 'processing'
+    ) {
+      if (!intent.client_secret) {
+        throw new Error(`PaymentIntent ${intent.id} missing client_secret`);
+      }
+      return {
+        ok: true,
+        clientSecret: intent.client_secret,
+        paymentRowId: existingPending.id,
+        paymentIntentId: intent.id,
+      };
+    } else {
+      console.error(
+        `[capture] unexpected PaymentIntent status ${intent.status} for ${intent.id}`,
+      );
+      throw new Error(`unexpected PaymentIntent status: ${intent.status}`);
+    }
+  }
+
+  // New PaymentIntent path
+  const paymentRowId = crypto.randomUUID();
+  const insertResult = await insertPendingPayment({
+    id: paymentRowId,
+    jobId: input.jobId,
+    milestoneId: input.milestoneId,
+    payerUserId: input.clientUserId,
+    payeeUserId: proUser.id,
+    amountCents: input.amountCents,
+  });
+  if (!insertResult.inserted) {
+    // Race lost — re-enter reuse-pending logic with the row that won.
+    return runCaptureForMilestone(input);
+  }
+
+  const paymentService = getPaymentService();
+  let captureResult;
+  try {
+    captureResult = await paymentService.capturePayment({
+      paymentRowId,
+      amountCents: input.amountCents,
+      description: `Job ${input.jobId} milestone ${input.milestoneId}`,
+      metadata: {
+        jobId: input.jobId,
+        milestoneId: input.milestoneId,
+        paymentRowId,
+      },
+    });
+  } catch (err) {
+    await deletePaymentRow(paymentRowId);
+    throw err;
+  }
+  await setPaymentIntentId(paymentRowId, captureResult.paymentIntentId);
+
+  return {
+    ok: true,
+    clientSecret: captureResult.clientSecret,
+    paymentRowId,
+    paymentIntentId: captureResult.paymentIntentId,
+  };
 }

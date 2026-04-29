@@ -104,6 +104,16 @@ export const stripePaymentService: PaymentService = {
       clientSecret: intent.client_secret,
     };
   },
+
+  async retrievePaymentIntent(intentId: string) {
+    const client = getStripeClient();
+    const intent = await client.paymentIntents.retrieve(intentId);
+    return {
+      id: intent.id,
+      status: intent.status,
+      client_secret: intent.client_secret,
+    };
+  },
 };
 
 // Exported for test isolation

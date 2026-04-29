@@ -48,6 +48,14 @@ export const mockPaymentService: PaymentService = {
       clientSecret: `pi_mock_${input.paymentRowId}_secret`,
     };
   },
+
+  async retrievePaymentIntent(intentId: string) {
+    return {
+      id: intentId,
+      status: 'requires_payment_method',
+      client_secret: `${intentId}_secret`,
+    };
+  },
 };
 
 // Test helpers

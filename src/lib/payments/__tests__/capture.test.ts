@@ -7,6 +7,12 @@ const {
   mockGetAcceptedBidForJob,
   mockGetUserByProId,
   mockGetCapturedTotalForJob,
+  mockGetPendingPaymentForMilestone,
+  mockInsertPendingPayment,
+  mockSetPaymentIntentId,
+  mockDeletePaymentRow,
+  mockCapturePayment,
+  mockRetrievePaymentIntent,
 } = vi.hoisted(() => ({
   mockGetUserById: vi.fn(),
   mockGetJob: vi.fn(),
@@ -14,16 +20,22 @@ const {
   mockGetAcceptedBidForJob: vi.fn(),
   mockGetUserByProId: vi.fn(),
   mockGetCapturedTotalForJob: vi.fn(),
+  mockGetPendingPaymentForMilestone: vi.fn(),
+  mockInsertPendingPayment: vi.fn(),
+  mockSetPaymentIntentId: vi.fn(),
+  mockDeletePaymentRow: vi.fn(),
+  mockCapturePayment: vi.fn(),
+  mockRetrievePaymentIntent: vi.fn(),
 }));
 
 vi.mock('@/db/queries/payments', () => ({
   getAcceptedBidForJob: mockGetAcceptedBidForJob,
   getUserByProId: mockGetUserByProId,
   getCapturedTotalForJob: mockGetCapturedTotalForJob,
-  getPendingPaymentForMilestone: vi.fn(),
-  insertPendingPayment: vi.fn(),
-  setPaymentIntentId: vi.fn(),
-  deletePaymentRow: vi.fn(),
+  getPendingPaymentForMilestone: mockGetPendingPaymentForMilestone,
+  insertPendingPayment: mockInsertPendingPayment,
+  setPaymentIntentId: mockSetPaymentIntentId,
+  deletePaymentRow: mockDeletePaymentRow,
 }));
 
 vi.mock('@/db/queries/users', () => ({
@@ -39,7 +51,10 @@ vi.mock('@/db/queries/milestones', () => ({
 }));
 
 vi.mock('@/lib/services/payments', () => ({
-  getPaymentService: () => ({ capturePayment: vi.fn() }),
+  getPaymentService: () => ({
+    capturePayment: mockCapturePayment,
+    retrievePaymentIntent: mockRetrievePaymentIntent,
+  }),
 }));
 
 import { runCaptureForMilestone } from '../capture';
@@ -115,5 +130,99 @@ describe('runCaptureForMilestone — gates', () => {
     const result = await runCaptureForMilestone({ ...baseInput, amountCents: 15000 });
     expect(result.ok).toBe(false);
     if (!result.ok) expect(result.error).toBe('beta_cap_exceeded');
+  });
+});
+
+describe('runCaptureForMilestone — happy path', () => {
+  it('creates a new pending row, calls Stripe, persists intent id, returns clientSecret', async () => {
+    mockGetPendingPaymentForMilestone.mockResolvedValue(null);
+    mockInsertPendingPayment.mockResolvedValue({ inserted: true });
+    mockCapturePayment.mockResolvedValue({
+      paymentIntentId: 'pi_test_xyz',
+      clientSecret: 'pi_test_xyz_secret',
+    });
+
+    const result = await runCaptureForMilestone(baseInput);
+    expect(result.ok).toBe(true);
+    if (result.ok && 'clientSecret' in result) {
+      expect(result.clientSecret).toBe('pi_test_xyz_secret');
+      expect(result.paymentIntentId).toBe('pi_test_xyz');
+    }
+    expect(mockInsertPendingPayment).toHaveBeenCalledOnce();
+    expect(mockSetPaymentIntentId).toHaveBeenCalledWith(
+      expect.any(String),
+      'pi_test_xyz',
+    );
+  });
+
+  it('deletes the orphan payment row on Stripe error', async () => {
+    mockGetPendingPaymentForMilestone.mockResolvedValue(null);
+    mockInsertPendingPayment.mockResolvedValue({ inserted: true });
+    mockCapturePayment.mockRejectedValue(new Error('Stripe down'));
+
+    await expect(runCaptureForMilestone(baseInput)).rejects.toThrow('Stripe down');
+    expect(mockDeletePaymentRow).toHaveBeenCalledOnce();
+  });
+});
+
+describe('runCaptureForMilestone — reuse-pending', () => {
+  beforeEach(() => {
+    mockGetPendingPaymentForMilestone.mockResolvedValue({
+      id: 'pay_existing',
+      jobId: 'job_1',
+      milestoneId: 'ms_1',
+      payerUserId: 'user_client',
+      payeeUserId: 'user_pro',
+      amountCents: 25000,
+      status: 'pending',
+      stripePaymentIntentId: 'pi_existing',
+      heldAt: null,
+    });
+  });
+
+  it('returns existing client_secret when intent.status=requires_payment_method', async () => {
+    mockRetrievePaymentIntent.mockResolvedValue({
+      id: 'pi_existing',
+      status: 'requires_payment_method',
+      client_secret: 'pi_existing_secret',
+    });
+
+    const result = await runCaptureForMilestone(baseInput);
+    expect(result.ok).toBe(true);
+    if (result.ok && 'clientSecret' in result) {
+      expect(result.clientSecret).toBe('pi_existing_secret');
+      expect(result.paymentRowId).toBe('pay_existing');
+    }
+    expect(mockCapturePayment).not.toHaveBeenCalled();
+  });
+
+  it('returns alreadyFunded=true when intent.status=succeeded', async () => {
+    mockRetrievePaymentIntent.mockResolvedValue({
+      id: 'pi_existing',
+      status: 'succeeded',
+      client_secret: null,
+    });
+
+    const result = await runCaptureForMilestone(baseInput);
+    expect(result).toEqual({ ok: true, alreadyFunded: true });
+    expect(mockCapturePayment).not.toHaveBeenCalled();
+  });
+
+  it('deletes stale row and creates a new PaymentIntent when intent.status=canceled', async () => {
+    mockRetrievePaymentIntent.mockResolvedValue({
+      id: 'pi_existing',
+      status: 'canceled',
+      client_secret: null,
+    });
+    mockInsertPendingPayment.mockResolvedValue({ inserted: true });
+    mockCapturePayment.mockResolvedValue({
+      paymentIntentId: 'pi_new',
+      clientSecret: 'pi_new_secret',
+    });
+
+    const result = await runCaptureForMilestone(baseInput);
+    expect(mockDeletePaymentRow).toHaveBeenCalledWith('pay_existing');
+    expect(mockCapturePayment).toHaveBeenCalledOnce();
+    expect(result.ok).toBe(true);
   });
 });

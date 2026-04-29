@@ -62,4 +62,15 @@ export interface PaymentService {
    * balance until Plan 2b's release path runs.
    */
   capturePayment(input: CapturePaymentInput): Promise<CapturePaymentResult>;
+
+  /**
+   * Plan 2a — used by the reuse-pending logic on funding-page reload.
+   * Returns the PaymentIntent's current Stripe-side state so the caller
+   * can branch on succeeded / canceled / requires_payment_method.
+   */
+  retrievePaymentIntent(intentId: string): Promise<{
+    id: string;
+    status: string;
+    client_secret: string | null;
+  }>;
 }

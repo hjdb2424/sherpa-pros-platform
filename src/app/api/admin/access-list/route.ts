@@ -33,6 +33,11 @@ interface DbRow {
   notes: string;
   created_at: string;
   last_sign_in: string | null;
+  // Migration 014 — temp password tracking. Columns may be missing on
+  // older DBs that haven't run the migration yet, so we tolerate undefined.
+  temp_password_set_at?: string | null;
+  temp_password_expires_at?: string | null;
+  password_changed?: boolean | null;
 }
 
 function mapRow(row: DbRow) {
@@ -46,6 +51,9 @@ function mapRow(row: DbRow) {
     notes: row.notes ?? '',
     createdAt: row.created_at,
     lastSignIn: row.last_sign_in,
+    tempPasswordSetAt: row.temp_password_set_at ?? null,
+    tempPasswordExpiresAt: row.temp_password_expires_at ?? null,
+    passwordChanged: row.password_changed ?? true,
   };
 }
 
@@ -74,6 +82,9 @@ export async function GET() {
       notes: '',
       createdAt: null,
       lastSignIn: null,
+      tempPasswordSetAt: null,
+      tempPasswordExpiresAt: null,
+      passwordChanged: true,
     }));
     return NextResponse.json({ entries: hardcoded, readonly: true });
   }

@@ -19,6 +19,10 @@ interface Entry {
   notes: string;
   createdAt: string | null;
   lastSignIn: string | null;
+  // Migration 014 — temp password tracking
+  tempPasswordSetAt: string | null;
+  tempPasswordExpiresAt: string | null;
+  passwordChanged: boolean;
 }
 
 type SortKey = "name" | "email" | "defaultRole" | "createdAt" | "lastSignIn";
@@ -163,6 +167,59 @@ export default function AccessListPage() {
   const [inviteId, setInviteId] = useState<number | null>(null);
   const [inviteEmail, setInviteEmail] = useState("");
   const [inviteSent, setInviteSent] = useState<number | null>(null);
+
+  // Temp password flow (migration 014)
+  // - tempPwGenerating: which row is mid-request (disables the button)
+  // - tempPwResult:     populated once the API responds; drives the modal
+  const [tempPwGenerating, setTempPwGenerating] = useState<number | null>(null);
+  const [tempPwResult, setTempPwResult] = useState<{
+    email: string;
+    name: string;
+    password: string;
+    expiresAt: string;
+  } | null>(null);
+  const [tempPwError, setTempPwError] = useState<string>("");
+  const [tempPwCopied, setTempPwCopied] = useState(false);
+
+  async function generateTempPassword(entry: Entry) {
+    setTempPwError("");
+    setTempPwCopied(false);
+    setTempPwGenerating(entry.id);
+    try {
+      const res = await fetch("/api/admin/access-list/temp-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: entry.email }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setTempPwError(data.error ?? "Failed to generate temp password");
+        return;
+      }
+      setTempPwResult({
+        email: entry.email,
+        name: entry.name,
+        password: data.password,
+        expiresAt: data.expiresAt,
+      });
+      // Refresh row data so the new expiry/flag show in the table.
+      fetchEntries();
+    } catch {
+      setTempPwError("Network error");
+    } finally {
+      setTempPwGenerating(null);
+    }
+  }
+
+  async function copyTempPassword(pw: string) {
+    try {
+      await navigator.clipboard.writeText(pw);
+      setTempPwCopied(true);
+      setTimeout(() => setTempPwCopied(false), 2000);
+    } catch {
+      // ignore — user can select+copy manually from the modal
+    }
+  }
 
   // ── Fetch ───────────────────────────────────────────────────────
 
@@ -652,6 +709,16 @@ export default function AccessListPage() {
                               Edit
                             </button>
                             <button
+                              onClick={() => generateTempPassword(entry)}
+                              disabled={tempPwGenerating === entry.id}
+                              className="rounded bg-amber-500 px-2.5 py-1 text-xs font-medium text-white hover:bg-amber-600 disabled:opacity-50"
+                              title="Generate a 5-day temporary password (set on Clerk)"
+                            >
+                              {tempPwGenerating === entry.id
+                                ? "..."
+                                : "Temp PW"}
+                            </button>
+                            <button
                               onClick={() => toggleStatus(entry)}
                               className={`rounded px-2.5 py-1 text-xs font-medium text-white ${
                                 entry.status === "active"
@@ -682,6 +749,111 @@ export default function AccessListPage() {
           </tbody>
         </table>
       </div>
+
+      {/* Temp password error toast */}
+      {tempPwError && !tempPwResult && (
+        <div className="fixed bottom-6 right-6 z-50 max-w-sm rounded-lg border border-red-200 bg-red-50 p-4 shadow-lg">
+          <div className="flex items-start gap-3">
+            <div className="flex-1 text-sm text-red-700">{tempPwError}</div>
+            <button
+              onClick={() => setTempPwError("")}
+              className="text-red-400 hover:text-red-600"
+              aria-label="Dismiss"
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Temp password result modal — plaintext is shown ONCE */}
+      {tempPwResult && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4"
+          onClick={() => setTempPwResult(null)}
+        >
+          <div
+            className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="mb-4 flex items-start justify-between">
+              <div>
+                <h2 className="text-lg font-bold text-zinc-900">
+                  Temporary Password Generated
+                </h2>
+                <p className="mt-1 text-xs text-zinc-500">
+                  Copy this NOW — it will not be shown again.
+                </p>
+              </div>
+              <button
+                onClick={() => setTempPwResult(null)}
+                className="text-zinc-400 hover:text-zinc-700"
+                aria-label="Close"
+              >
+                ✕
+              </button>
+            </div>
+
+            <dl className="mb-4 space-y-2 text-sm">
+              <div>
+                <dt className="text-xs font-medium uppercase tracking-wide text-zinc-500">
+                  User
+                </dt>
+                <dd className="text-zinc-900">
+                  {tempPwResult.name || tempPwResult.email}
+                  <span className="ml-2 text-zinc-500">
+                    {tempPwResult.email}
+                  </span>
+                </dd>
+              </div>
+              <div>
+                <dt className="text-xs font-medium uppercase tracking-wide text-zinc-500">
+                  Expires
+                </dt>
+                <dd className="text-zinc-900">
+                  {new Date(tempPwResult.expiresAt).toLocaleString()}
+                </dd>
+              </div>
+            </dl>
+
+            <div className="mb-4">
+              <label className="mb-1 block text-xs font-medium uppercase tracking-wide text-zinc-500">
+                Password
+              </label>
+              <div className="flex items-center gap-2">
+                <input
+                  readOnly
+                  value={tempPwResult.password}
+                  onFocus={(e) => e.currentTarget.select()}
+                  className="flex-1 rounded-lg border border-zinc-300 bg-zinc-50 px-3 py-2 font-mono text-sm text-zinc-900 focus:border-[#00a9e0] focus:outline-none focus:ring-1 focus:ring-[#00a9e0]"
+                />
+                <button
+                  onClick={() => copyTempPassword(tempPwResult.password)}
+                  className="rounded-lg bg-[#00a9e0] px-3 py-2 text-sm font-semibold text-white transition hover:bg-[#0090c0]"
+                >
+                  {tempPwCopied ? "Copied ✓" : "Copy"}
+                </button>
+              </div>
+            </div>
+
+            <div className="rounded-lg bg-amber-50 p-3 text-xs text-amber-800">
+              Paste this into the invite email yourself. Sherpa Pros never
+              stores the plaintext password — once you close this dialog
+              it is gone. The user will be force-redirected to change it
+              after {new Date(tempPwResult.expiresAt).toLocaleDateString()}.
+            </div>
+
+            <div className="mt-4 flex justify-end">
+              <button
+                onClick={() => setTempPwResult(null)}
+                className="rounded-lg border border-zinc-300 px-4 py-2 text-sm font-medium text-zinc-700 hover:bg-zinc-50"
+              >
+                Done
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Notes inline edit */}
       {editId !== null && (

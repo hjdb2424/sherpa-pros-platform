@@ -7,6 +7,48 @@ import {
   type UserRole,
 } from "@/lib/auth/roles";
 
+// Routes the temp-password check must NOT redirect (otherwise the user
+// gets stuck in a loop on the very page they're supposed to use).
+const TEMP_PW_BYPASS_PATHS = new Set<string>([
+  "/account/change-password",
+  "/api/account/password-changed",
+]);
+
+// Per-runtime memo so we don't hammer the DB on every request for the
+// same email. Tiny TTL (60s) — enough to amortize across navigation
+// bursts but short enough that flipping password_changed=true takes
+// effect quickly. Process-level only, no cross-instance coherence
+// required.
+type TempPwCacheEntry = { mustChange: boolean; cachedAt: number };
+const tempPwCache = new Map<string, TempPwCacheEntry>();
+const TEMP_PW_CACHE_TTL_MS = 60 * 1000;
+
+async function userMustChangeTempPassword(email: string): Promise<boolean> {
+  const now = Date.now();
+  const cached = tempPwCache.get(email);
+  if (cached && now - cached.cachedAt < TEMP_PW_CACHE_TTL_MS) {
+    return cached.mustChange;
+  }
+
+  try {
+    const { query } = await import("@/db/connection");
+    const rows = await query<{ must_change: boolean }>(
+      `SELECT (password_changed = FALSE
+               AND temp_password_expires_at IS NOT NULL
+               AND NOW() > temp_password_expires_at) AS must_change
+         FROM access_list
+        WHERE email = $1`,
+      [email],
+    );
+    const mustChange = rows[0]?.must_change === true;
+    tempPwCache.set(email, { mustChange, cachedAt: now });
+    return mustChange;
+  } catch {
+    // Fail-open: if DB is unreachable, don't trap the user in a redirect.
+    return false;
+  }
+}
+
 // ---------------------------------------------------------------------------
 // Proxy — Sherpa Pros Platform (Next.js 16)
 //
@@ -90,6 +132,8 @@ async function loadClerkHandler() {
     `/${ROLES.TENANT}(.*)`,
     "/admin(.*)",
     "/select-role",
+    // Migration 014: account section (force-redirect target for expired temp pws)
+    "/account(.*)",
   ]);
 
   const handler = clerkMiddleware(
@@ -100,6 +144,56 @@ async function loadClerkHandler() {
         const signInUrl = new URL("/sign-in", request.url);
         signInUrl.searchParams.set("redirect_url", request.url);
         await auth.protect({ unauthenticatedUrl: signInUrl.toString() });
+
+        // Temp-password expiry check (migration 014). Runs only AFTER
+        // auth.protect() — at this point the user is signed in. Skip
+        // entirely on /account/change-password and its API counterpart
+        // to avoid a redirect loop.
+        const { pathname } = request.nextUrl;
+        if (!TEMP_PW_BYPASS_PATHS.has(pathname)) {
+          try {
+            const { userId, sessionClaims } = await auth();
+            if (userId) {
+              // Try sessionClaims first (zero round-trip). Fall back to
+              // a Clerk lookup if the email isn't on the JWT.
+              type EmailClaims = {
+                email?: string;
+                primaryEmail?: string;
+                primary_email?: string;
+              };
+              const claims = (sessionClaims ?? {}) as EmailClaims;
+              let email: string | undefined =
+                claims.email ??
+                claims.primaryEmail ??
+                claims.primary_email;
+
+              if (!email) {
+                const { clerkClient } = await import("@clerk/nextjs/server");
+                const client = await clerkClient();
+                const user = await client.users.getUser(userId);
+                const primary = user.emailAddresses.find(
+                  (e) => e.id === user.primaryEmailAddressId,
+                );
+                email = primary?.emailAddress
+                  ?? user.emailAddresses[0]?.emailAddress;
+              }
+
+              if (email) {
+                const mustChange = await userMustChangeTempPassword(
+                  email.trim().toLowerCase(),
+                );
+                if (mustChange) {
+                  const redirectUrl = request.nextUrl.clone();
+                  redirectUrl.pathname = "/account/change-password";
+                  redirectUrl.search = "";
+                  return NextResponse.redirect(redirectUrl);
+                }
+              }
+            }
+          } catch {
+            // Fail-open: never trap the user if the check itself errors.
+          }
+        }
       }
       const rbacResponse = enforceRBAC(request as NextRequest);
       if (rbacResponse) return rbacResponse;

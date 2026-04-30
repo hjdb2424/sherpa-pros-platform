@@ -4,7 +4,8 @@ import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Logo from "@/components/brand/Logo";
 import LanguageSwitcher from "@/components/i18n/LanguageSwitcher";
-import { isEmailAllowed, getAccessEntry } from "@/lib/access-list";
+import { isEmailAllowed, getAccessEntry, toUserRole } from "@/lib/access-list";
+import { getDashboardPath } from "@/lib/auth/roles";
 import { seedUserData } from "@/lib/seed-user-data";
 
 // ---------------------------------------------------------------------------
@@ -48,19 +49,18 @@ function BetaPortal() {
     localStorage.setItem("sherpa-test-email", normalizedEmail);
     localStorage.setItem("sherpa-test-name", entry?.name ?? email.split("@")[0]);
 
-    // Check if user has an existing role
+    // Check if user has an existing role (returning user)
     const existingRole = localStorage.getItem(`sherpa:${normalizedEmail}:role`);
-    const role = existingRole ?? entry?.defaultRole;
+    // Map either the existing role or the access-list default to a UserRole
+    // (handles granular codes like res_owner, com_pm, multi_view_tester, etc.).
+    const mappedRole = toUserRole(existingRole) ?? toUserRole(entry?.defaultRole ?? null);
 
-    if (role) {
-      localStorage.setItem("sherpa-test-role", role);
-      localStorage.setItem(`sherpa:${normalizedEmail}:role`, role);
-      seedUserData(normalizedEmail, role);
-
-      if (role === "pm") router.push("/pm/dashboard");
-      else if (role === "pro") router.push("/pro/dashboard");
-      else if (role === "tenant") router.push("/tenant/dashboard");
-      else router.push("/client/dashboard");
+    if (mappedRole) {
+      localStorage.setItem("sherpa-test-role", mappedRole);
+      localStorage.setItem(`sherpa:${normalizedEmail}:role`, mappedRole);
+      document.cookie = `sherpa-role=${mappedRole}; path=/; max-age=${60 * 60 * 24 * 30}; samesite=lax`;
+      seedUserData(normalizedEmail, mappedRole);
+      router.push(getDashboardPath(mappedRole));
     } else {
       // No default role — let them choose
       router.push("/select-role");

@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import Logo from '@/components/brand/Logo';
 import { seedUserData } from '@/lib/seed-user-data';
 import { isValidRole, getDashboardPath } from '@/lib/auth/roles';
-import type { UserRole } from '@/lib/auth/roles';
+import { toUserRole } from '@/lib/access-list';
 
 function CallbackHandler() {
   const router = useRouter();
@@ -38,18 +38,20 @@ function CallbackHandler() {
       return;
     }
 
-    // New user with a default role from the access list — skip role selection
-    if (defaultRole && isValidRole(defaultRole)) {
-      const role = defaultRole as UserRole;
-      localStorage.setItem('sherpa-test-role', role);
-      localStorage.setItem(`sherpa:${email}:role`, role);
-      document.cookie = `sherpa-role=${role}; path=/; max-age=${60 * 60 * 24 * 30}; samesite=lax`;
-      seedUserData(email, role);
-      router.replace(getDashboardPath(role));
+    // New user with a default role from the access list — skip role selection.
+    // toUserRole() handles both legacy codes (pm/pro/client/tenant) and granular
+    // codes (res_owner, com_pm, multi_view_tester, etc.) — see lib/access-list.ts.
+    const mappedRole = toUserRole(defaultRole);
+    if (mappedRole) {
+      localStorage.setItem('sherpa-test-role', mappedRole);
+      localStorage.setItem(`sherpa:${email}:role`, mappedRole);
+      document.cookie = `sherpa-role=${mappedRole}; path=/; max-age=${60 * 60 * 24 * 30}; samesite=lax`;
+      seedUserData(email, mappedRole);
+      router.replace(getDashboardPath(mappedRole));
       return;
     }
 
-    // New user, no default role — go to role selection
+    // No default role on access_list — let them choose
     router.replace('/select-role');
   }, [router, searchParams]);
 

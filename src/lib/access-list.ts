@@ -12,8 +12,45 @@
  */
 
 import { query } from '@/db/connection';
+import type { UserRole } from '@/lib/auth/roles';
 
 export type AccessRole = 'pm' | 'pro' | 'client' | 'tenant' | null;
+
+/**
+ * Map an access_list `default_role` value (which can be a granular code like
+ * `res_owner`, `com_pm`, `multi_view_tester`, or a legacy code like `pm`/`pro`/
+ * `client`/`tenant`) to one of the four routable UserRole values.
+ *
+ * Returns `null` when the code is missing or unknown — caller should send the
+ * user to /select-role to pick a role manually.
+ *
+ * Multi-view testers are routed to "client" as their landing dashboard; the
+ * power-tester FAB (gated by POWER_TESTER_EMAILS) gives them the cross-role
+ * switching capability on top of that.
+ */
+export function toUserRole(code: string | null | undefined): UserRole | null {
+  if (!code) return null;
+  const map: Record<string, UserRole> = {
+    // Legacy codes (the original 4-role taxonomy)
+    pm: 'pm',
+    pro: 'pro',
+    client: 'client',
+    tenant: 'tenant',
+    // Granular client codes
+    res_owner: 'client',
+    res_multi: 'client',
+    com_owner: 'client',
+    // Granular PM code
+    com_pm: 'pm',
+    // Granular pro codes
+    handyman: 'pro',
+    trades: 'pro',
+    skilled: 'pro',
+    // Beta meta-role: lands on client view, FAB enables view-switching
+    multi_view_tester: 'client',
+  };
+  return map[code] ?? null;
+}
 
 export interface AccessEntry {
   email: string;

@@ -32,10 +32,16 @@ async function userMustChangeTempPassword(email: string): Promise<boolean> {
 
   try {
     const { query } = await import("@/db/connection");
+    // Force change on every sign-in until password_changed=TRUE.
+    // temp_password_set_at is the source-of-truth signal that the user has
+    // been issued a temp password. temp_password_expires_at is record-keeping
+    // only (audit/tracking) and is NOT used by this query — gating on expiry
+    // would let users sign in with a temp password indefinitely until it
+    // "expires" and then trap them on a password they may no longer be able
+    // to use.
     const rows = await query<{ must_change: boolean }>(
       `SELECT (password_changed = FALSE
-               AND temp_password_expires_at IS NOT NULL
-               AND NOW() > temp_password_expires_at) AS must_change
+               AND temp_password_set_at IS NOT NULL) AS must_change
          FROM access_list
         WHERE email = $1`,
       [email],
@@ -75,7 +81,13 @@ const ROUTE_PREFIXES = Object.keys(ROUTE_ROLES);
 function enforceRBAC(request: NextRequest): NextResponse | null {
   const { pathname } = request.nextUrl;
 
-  const prefix = ROUTE_PREFIXES.find((p) => pathname.startsWith(p));
+  // Segment-aware prefix match: a raw startsWith would let `/pro` match
+  // `/protect`, `/profile`, or `/project/123`. Require the pathname to be
+  // exactly the prefix, or the prefix followed by a `/` boundary, so we
+  // only fire RBAC on the actual role/admin route trees.
+  const prefix = ROUTE_PREFIXES.find(
+    (p) => pathname === p || pathname.startsWith(p + "/"),
+  );
   if (!prefix) return null;
 
   const requiredRole = ROUTE_ROLES[prefix];

@@ -3,21 +3,23 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { isValidRole, getDashboardPath, type UserRole } from "./roles";
+import { isPowerTesterEmail } from "./power-testers";
 
 /**
- * Power-User profile switcher. Lets a Sherpa Pros admin (Phyrom + future
- * staff) view any role's dashboard without losing their admin identity.
+ * Profile switcher for admins + multi-view beta testers. Lets a privileged
+ * user view any role's dashboard without losing their underlying identity.
  *
  * Why a separate action from `setUserRole`: the public select-role flow
- * mutates Clerk publicMetadata so the user's "real" role is updated. The
- * admin switcher only flips the `sherpa-role` cookie — the underlying
- * Clerk identity stays whatever it is, and `sherpa-is-admin=true` keeps
- * /admin/* accessible from any role view.
+ * mutates Clerk publicMetadata so the user's "real" role is updated. This
+ * action only flips the `sherpa-role` cookie — the underlying Clerk
+ * identity stays whatever it is.
  *
- * Gated entirely on the `sherpa-is-admin=true` cookie. The cookie is set
- * by /api/dev/grant-admin in development and by the admin-promotion path
- * in production. Non-admins calling this action get a 403-equivalent
- * (thrown error) — there is no UI surface that exposes it to them.
+ * Two acceptable signals (either is sufficient):
+ *   1. `sherpa-is-admin=true` cookie — full admin.
+ *   2. Signed-in email matches POWER_TESTER_EMAILS — beta multi-view tester.
+ *
+ * Non-privileged callers get a thrown error. There is no UI surface that
+ * exposes the FAB to them.
  */
 export async function switchToRoleAsAdmin(role: UserRole) {
   if (!isValidRole(role)) {
@@ -26,8 +28,9 @@ export async function switchToRoleAsAdmin(role: UserRole) {
 
   const cookieStore = await cookies();
   const isAdmin = cookieStore.get("sherpa-is-admin")?.value === "true";
-  if (!isAdmin) {
-    throw new Error("Forbidden: admin cookie required");
+  const allowed = isAdmin || (await isCallerPowerTester(cookieStore));
+  if (!allowed) {
+    throw new Error("Forbidden: admin or multi-view tester required");
   }
 
   cookieStore.set("sherpa-role", role, {
@@ -39,4 +42,29 @@ export async function switchToRoleAsAdmin(role: UserRole) {
   });
 
   redirect(getDashboardPath(role));
+}
+
+async function isCallerPowerTester(
+  cookieStore: Awaited<ReturnType<typeof cookies>>,
+): Promise<boolean> {
+  // Same email-resolution order as RoleSwitcherMount: sherpa-user cookie
+  // first (Google/Apple OAuth path), then Clerk currentUser() if configured.
+  const userRaw = cookieStore.get("sherpa-user")?.value;
+  if (userRaw) {
+    try {
+      const parsed = JSON.parse(userRaw) as { email?: string };
+      if (isPowerTesterEmail(parsed.email)) return true;
+    } catch {
+      // fall through
+    }
+  }
+
+  if (!process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY) return false;
+  try {
+    const { currentUser } = await import("@clerk/nextjs/server");
+    const user = await currentUser();
+    return isPowerTesterEmail(user?.emailAddresses[0]?.emailAddress);
+  } catch {
+    return false;
+  }
 }

@@ -6,6 +6,12 @@ import { ROLES, type UserRole } from "@/lib/auth/roles";
 
 type Props = {
   currentRole: UserRole | null;
+  /**
+   * True when the viewer has `sherpa-is-admin=true`. Drives whether we
+   * render the "Admin home" link — multi-view beta testers don't have
+   * /admin/* access, so we hide that escape hatch for them.
+   */
+  isAdmin: boolean;
 };
 
 const OPTIONS: { role: UserRole; label: string; emoji: string }[] = [
@@ -15,7 +21,7 @@ const OPTIONS: { role: UserRole; label: string; emoji: string }[] = [
   { role: ROLES.TENANT, label: "Tenant", emoji: "🔑" },
 ];
 
-export default function RoleSwitcherFab({ currentRole }: Props) {
+export default function RoleSwitcherFab({ currentRole, isAdmin }: Props) {
   const [open, setOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
 
@@ -34,7 +40,7 @@ export default function RoleSwitcherFab({ currentRole }: Props) {
           aria-label="Switch profile"
         >
           <div className="border-b border-zinc-200 px-3 py-2 text-[11px] font-semibold uppercase tracking-wide text-zinc-500 dark:border-zinc-700 dark:text-zinc-400">
-            Super Beta Tester
+            {isAdmin ? "Super Beta Tester (Admin)" : "Multi-View Tester"}
           </div>
           {OPTIONS.map((opt) => {
             const active = opt.role === currentRole;
@@ -57,12 +63,14 @@ export default function RoleSwitcherFab({ currentRole }: Props) {
               </button>
             );
           })}
-          <a
-            href="/admin/access-list"
-            className="block border-t border-zinc-200 px-3 py-2 text-sm text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-200 dark:hover:bg-zinc-800"
-          >
-            ⚙️ Admin home
-          </a>
+          {isAdmin && (
+            <a
+              href="/admin/access-list"
+              className="block border-t border-zinc-200 px-3 py-2 text-sm text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-200 dark:hover:bg-zinc-800"
+            >
+              ⚙️ Admin home
+            </a>
+          )}
         </div>
       )}
       <button

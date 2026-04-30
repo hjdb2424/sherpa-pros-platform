@@ -6,6 +6,15 @@ import Logo from "@/components/brand/Logo";
 import { seedUserData } from "@/lib/seed-user-data";
 import type { UserRole, UserSubtype } from "@/lib/auth/roles";
 import { getDashboardPath } from "@/lib/auth/roles";
+import { setUserRole } from "./actions";
+
+// When Clerk is configured, the real auth path is Clerk: we delegate the
+// role write to the server action so Clerk publicMetadata.role is the source
+// of truth (otherwise getAppUser/requireRole on the server side will see
+// undefined and bounce the user back here in a loop). When Clerk is NOT
+// configured we're on the BetaPortal/test path, which writes to localStorage
+// before navigating here, so the existing client-side cookie write is fine.
+const clerkAvailable = !!process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
 
 type Step = "role" | "subtype";
 
@@ -15,8 +24,21 @@ export default function SelectRolePage() {
   const [selectedRole, setSelectedRole] = useState<UserRole | null>(null);
   const router = useRouter();
 
-  function commit(role: UserRole, subtype: UserSubtype) {
+  async function commit(role: UserRole, subtype: UserSubtype) {
     setIsPending(true);
+
+    if (clerkAvailable) {
+      // Clerk path: server action reads the user's real email from
+      // currentUser(), writes Clerk publicMetadata.role, sets the
+      // sherpa-role cookie, and redirects to the dashboard. We do NOT
+      // call router.replace() here — the action's redirect() handles it.
+      await setUserRole(role);
+      return;
+    }
+
+    // BetaPortal/test path: no Clerk, so the email was stashed in
+    // localStorage at sign-in time and the cookie is the only signal
+    // middleware/proxy.ts will see.
     const email = localStorage.getItem("sherpa-test-email") ?? "user@test.com";
 
     // localStorage keys

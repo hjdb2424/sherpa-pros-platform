@@ -31,7 +31,7 @@ export async function setUserRole(role: UserRole) {
     path: "/",
     maxAge: 60 * 60 * 24 * 365,
     sameSite: "lax",
-    secure: true,
+    secure: process.env.NODE_ENV === "production",
     httpOnly: false,
   });
 

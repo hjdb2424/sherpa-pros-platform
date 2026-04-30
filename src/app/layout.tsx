@@ -6,16 +6,8 @@ import { I18nProvider } from "@/lib/i18n/context";
 // Conditionally import ClerkProvider — skip when Clerk keys aren't configured
 const clerkConfigured = !!process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
 
-// Same-origin proxy URL. When set, ClerkJS routes its frontend-API calls
-// through `/__clerk/*` on the app's own origin instead of the
-// `clerk.thesherpapros.com` subdomain. This avoids cross-site cookie blocking
-// in privacy browsers (Brave, Safari, Chrome 3PCP cohort). The actual proxy
-// is wired in `src/middleware.ts` via `clerkMiddleware({ frontendApiProxy: { enabled: true } })`.
-const clerkProxyUrl = process.env.NEXT_PUBLIC_CLERK_PROXY_URL;
-
 type ClerkProviderProps = {
   children: React.ReactNode;
-  proxyUrl?: string;
 };
 
 let ClerkProvider: React.ComponentType<ClerkProviderProps> | null = null;
@@ -79,7 +71,7 @@ export default function RootLayout({
           </a>
           <I18nProvider>
           {ClerkProvider ? (
-            <ClerkProvider proxyUrl={clerkProxyUrl}>
+            <ClerkProvider>
               <main id="main-content">{children}</main>
             </ClerkProvider>
           ) : (

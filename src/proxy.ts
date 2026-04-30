@@ -31,12 +31,16 @@ function enforceRBAC(request: NextRequest): NextResponse | null {
   const requiredRole = ROUTE_ROLES[prefix];
   const currentRole = request.cookies.get("sherpa-role")?.value;
 
-  // No auth at all → redirect to sign-in
-  if (!currentRole) {
-    const signInUrl = request.nextUrl.clone();
-    signInUrl.pathname = "/sign-in";
-    signInUrl.searchParams.set("redirect", pathname);
-    return NextResponse.redirect(signInUrl);
+  // No role cookie → user hasn't picked a role yet. When Clerk is configured,
+  // by the time this runs the user has already passed auth.protect(), so they
+  // ARE signed in — they just need to choose a role. Redirect to /select-role
+  // (NOT /sign-in, which would loop forever for already-signed-in users).
+  if (!currentRole || !["pro", "client", "pm"].includes(currentRole)) {
+    if (pathname === "/select-role") return null; // already there
+    const roleUrl = request.nextUrl.clone();
+    roleUrl.pathname = "/select-role";
+    roleUrl.searchParams.set("redirect", pathname);
+    return NextResponse.redirect(roleUrl);
   }
 
   // Admin routes: check is_admin flag cookie
@@ -48,13 +52,6 @@ function enforceRBAC(request: NextRequest): NextResponse | null {
       return NextResponse.redirect(dashUrl);
     }
     return null;
-  }
-
-  // No role selected yet → redirect to role selection
-  if (!["pro", "client", "pm"].includes(currentRole)) {
-    const roleUrl = request.nextUrl.clone();
-    roleUrl.pathname = "/select-role";
-    return NextResponse.redirect(roleUrl);
   }
 
   // Wrong role → redirect to correct dashboard

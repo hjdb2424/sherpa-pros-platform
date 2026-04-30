@@ -284,7 +284,7 @@ export function buildInviteHtml({ name, role, to }: InviteOpts): string {
                       ${ctaButton("https://www.thesherpapros.com/sign-up", "Get started — sign up &rarr;", BRAND_BLUE)}
                     </td>
                     <td style="padding: 0 8px 12px 8px;" align="center">
-                      ${ctaButton("https://www.thesherpapros.com/install", "📱 Install on phone &rarr;", BRAND_ORANGE)}
+                      ${ctaButton("https://www.thesherpapros.com/install", "Install on phone &rarr;", BRAND_ORANGE)}
                     </td>
                   </tr>
                 </table>

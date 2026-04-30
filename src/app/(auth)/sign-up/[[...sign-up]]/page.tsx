@@ -27,6 +27,9 @@ function ClerkSignUp() {
           <p className="mt-4 text-sm text-zinc-500">Create your account</p>
         </div>
         <SignUp
+          // Without this Clerk has nowhere to send the user post-verify and the page hangs.
+          // /select-role auto-forwards returning users with an existing role cookie to their dashboard.
+          signUpFallbackRedirectUrl="/select-role"
           appearance={{
             elements: {
               rootBox: "mx-auto w-full",
@@ -45,6 +48,10 @@ function ClerkSignUp() {
               socialButtonsBlockButtonText: "text-zinc-900",
               dividerLine: "bg-zinc-200",
               dividerText: "text-zinc-400",
+              // Hide social buttons + "or" divider during beta — testers use email+password only.
+              // Underlying SSO connections in Clerk Dashboard remain enabled.
+              socialButtonsRoot: "hidden",
+              dividerRow: "hidden",
             },
           }}
         />

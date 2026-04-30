@@ -28,6 +28,9 @@ function ClerkSignIn() {
           </p>
         </div>
         <SignIn
+          // Without this Clerk has nowhere to send the user post-auth and the page hangs.
+          // /select-role auto-forwards returning users with an existing role cookie to their dashboard.
+          signInFallbackRedirectUrl="/select-role"
           appearance={{
             elements: {
               rootBox: "mx-auto w-full",
@@ -46,6 +49,10 @@ function ClerkSignIn() {
               socialButtonsBlockButtonText: "text-zinc-900",
               dividerLine: "bg-zinc-200",
               dividerText: "text-zinc-400",
+              // Hide social buttons + "or" divider during beta — testers use email+password only.
+              // Underlying SSO connections in Clerk Dashboard remain enabled.
+              socialButtonsRoot: "hidden",
+              dividerRow: "hidden",
             },
           }}
         />

@@ -81,14 +81,34 @@ async function withClerk(req: NextRequest) {
     "/select-role",
   ]);
 
-  return clerkMiddleware(async (auth, request) => {
-    if (isProtectedRoute(request)) {
-      await auth.protect();
-    }
-    // After Clerk auth passes, enforce RBAC
-    const rbacResponse = enforceRBAC(request as NextRequest);
-    if (rbacResponse) return rbacResponse;
-  })(req, {} as any);
+  return clerkMiddleware(
+    async (auth, request) => {
+      if (isProtectedRoute(request)) {
+        // Pass unauthenticatedUrl explicitly so Clerk redirects unauthenticated
+        // users to the in-app /sign-in route on the current origin instead of
+        // bouncing them to the Account Portal at accounts.thesherpapros.com
+        // (which is the default when NEXT_PUBLIC_CLERK_SIGN_IN_URL is unset
+        // at runtime on Vercel Edge).
+        await auth.protect({
+          unauthenticatedUrl: new URL(
+            "/sign-in",
+            request.url,
+          ).toString(),
+        });
+      }
+      // After Clerk auth passes, enforce RBAC
+      const rbacResponse = enforceRBAC(request as NextRequest);
+      if (rbacResponse) return rbacResponse;
+    },
+    {
+      // signInUrl/signUpUrl take precedence over env vars and the Portal
+      // default. Required because the next.config `env` override only
+      // inlines NEXT_PUBLIC_CLERK_SIGN_IN_URL into the client bundle —
+      // server-side middleware reads process.env at runtime on Vercel Edge.
+      signInUrl: "/sign-in",
+      signUpUrl: "/sign-up",
+    },
+  )(req, {} as any);
 }
 
 // ---- Main proxy handler ----

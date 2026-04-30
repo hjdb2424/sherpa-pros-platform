@@ -1,4 +1,4 @@
-import { currentUser } from "@clerk/nextjs/server";
+import { getAppUser } from "./get-user";
 
 export type DataroomAccessState =
   | "granted"
@@ -9,14 +9,8 @@ export type DataroomAccessState =
  * Investor data room access check.
  *
  * Orthogonal to the pro/client/pm role hierarchy — investors aren't operating
- * the marketplace. Granted via Clerk publicMetadata: `{ dataroom: true }`.
- *
- * To grant access:
- *   1. Open Clerk dashboard → Users → select investor
- *   2. Edit Public metadata → add: { "dataroom": true }
- *   3. Save. Access is immediate; no server restart needed.
- *
- * To revoke: set `dataroom: false` or remove the key.
+ * the marketplace. Granted by `sherpa-dataroom=true` cookie (set by the OAuth
+ * callback for emails on the dataroom allow-list).
  *
  * Returns three states so the route handler can render the right UI:
  *   - "granted"             → serve the requested file
@@ -24,17 +18,14 @@ export type DataroomAccessState =
  *   - "not_signed_in"       → redirect to /sign-in
  */
 export async function getDataroomAccessState(): Promise<DataroomAccessState> {
-  if (!process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY) return "not_signed_in";
+  const user = await getAppUser();
+  if (!user) return "not_signed_in";
 
-  try {
-    const user = await currentUser();
-    if (!user) return "not_signed_in";
-    return user.publicMetadata?.dataroom === true
-      ? "granted"
-      : "signed_in_no_access";
-  } catch {
-    return "not_signed_in";
-  }
+  // Cookie-based gate. Mirrors the pattern used by sherpa-is-admin.
+  const { cookies } = await import("next/headers");
+  const cookieStore = await cookies();
+  const granted = cookieStore.get("sherpa-dataroom")?.value === "true";
+  return granted ? "granted" : "signed_in_no_access";
 }
 
 /** Convenience boolean check; preserved for backward compat. */

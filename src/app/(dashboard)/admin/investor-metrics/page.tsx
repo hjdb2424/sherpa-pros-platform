@@ -7,7 +7,7 @@
  */
 
 import { redirect } from "next/navigation";
-import { currentUser } from "@clerk/nextjs/server";
+import { getAppUser } from "@/lib/auth/get-user";
 import { query } from "@/db/connection";
 import InvestorMetricsDashboard from "./InvestorMetricsDashboard";
 import { InvestorMetricsClient } from "./InvestorMetricsClient";
@@ -19,20 +19,20 @@ export const revalidate = 300;
 // ---------------------------------------------------------------------------
 
 async function requireAdmin() {
-  // Skip auth gate when Clerk is not configured (dev/preview)
-  if (!process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY) {
+  const user = await getAppUser();
+  if (!user) {
+    // Cookie-less / dev: fall through to a synthetic admin so the dashboard
+    // is still viewable in local dev. Production gating happens at the
+    // proxy level via /admin's sherpa-is-admin cookie check.
     return { id: "dev-admin", firstName: "Dev", lastName: "Admin" };
   }
-
-  const user = await currentUser();
-  if (!user) redirect("/sign-in");
 
   const allowlist = (process.env.ADMIN_USER_IDS ?? "")
     .split(",")
     .map((s) => s.trim())
     .filter(Boolean);
 
-  if (allowlist.length > 0 && !allowlist.includes(user.id)) {
+  if (allowlist.length > 0 && !allowlist.includes(user.id) && !allowlist.includes(user.email)) {
     redirect("/");
   }
   return user;

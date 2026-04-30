@@ -10,8 +10,7 @@ import { isPowerTesterEmail } from "@/lib/auth/power-testers";
  * Two gates, in priority order:
  *   1. `sherpa-is-admin=true` cookie — full admin (sees Admin Home link).
  *   2. `sherpa-user` cookie email matches POWER_TESTER_EMAILS — multi-view
- *      beta tester (no admin link, role-switcher only). Falls through to
- *      Clerk's `currentUser()` if `sherpa-user` is absent.
+ *      beta tester (no admin link, role-switcher only).
  *
  * Read entirely server-side so non-privileged users never receive the
  * FAB markup at all.
@@ -27,8 +26,8 @@ export default async function RoleSwitcherMount() {
     return <RoleSwitcherFab currentRole={currentRole} isAdmin={true} />;
   }
 
-  // Power-tester gate: read email from sherpa-user cookie or Clerk session.
-  const email = await getSignedInEmail(cookieStore);
+  // Power-tester gate: read email from sherpa-user cookie only.
+  const email = getSignedInEmail(cookieStore);
   if (isPowerTesterEmail(email)) {
     return <RoleSwitcherFab currentRole={currentRole} isAdmin={false} />;
   }
@@ -36,26 +35,14 @@ export default async function RoleSwitcherMount() {
   return null;
 }
 
-async function getSignedInEmail(
+function getSignedInEmail(
   cookieStore: Awaited<ReturnType<typeof cookies>>,
-): Promise<string | null> {
-  // 1. Google/Apple OAuth path: email is JSON-encoded in the sherpa-user cookie.
+): string | null {
   const userRaw = cookieStore.get("sherpa-user")?.value;
-  if (userRaw) {
-    try {
-      const parsed = JSON.parse(userRaw) as { email?: string };
-      if (parsed.email) return parsed.email;
-    } catch {
-      // fall through
-    }
-  }
-
-  // 2. Clerk path: read from currentUser() if Clerk is configured.
-  if (!process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY) return null;
+  if (!userRaw) return null;
   try {
-    const { currentUser } = await import("@clerk/nextjs/server");
-    const user = await currentUser();
-    return user?.emailAddresses[0]?.emailAddress ?? null;
+    const parsed = JSON.parse(userRaw) as { email?: string };
+    return parsed.email ?? null;
   } catch {
     return null;
   }

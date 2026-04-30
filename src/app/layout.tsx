@@ -4,19 +4,6 @@ import "./globals.css";
 import { I18nProvider } from "@/lib/i18n/context";
 import RoleSwitcherMount from "@/components/admin/RoleSwitcherMount";
 
-// Conditionally import ClerkProvider — skip when Clerk keys aren't configured
-const clerkConfigured = !!process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
-
-type ClerkProviderProps = {
-  children: React.ReactNode;
-};
-
-let ClerkProvider: React.ComponentType<ClerkProviderProps> | null = null;
-if (clerkConfigured) {
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  ClerkProvider = require("@clerk/nextjs").ClerkProvider;
-}
-
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -71,14 +58,8 @@ export default function RootLayout({
             Skip to main content
           </a>
           <I18nProvider>
-          {ClerkProvider ? (
-            <ClerkProvider>
-              <main id="main-content">{children}</main>
-            </ClerkProvider>
-          ) : (
             <main id="main-content">{children}</main>
-          )}
-          <RoleSwitcherMount />
+            <RoleSwitcherMount />
           </I18nProvider>
         </body>
     </html>

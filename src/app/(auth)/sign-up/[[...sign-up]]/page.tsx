@@ -11,57 +11,7 @@ import Logo from "@/components/brand/Logo";
 import { seedUserData } from "@/lib/seed-user-data";
 
 // ---------------------------------------------------------------------------
-// Clerk-based sign-up (only rendered when Clerk env vars are present)
-// ---------------------------------------------------------------------------
-function ClerkSignUp() {
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const { SignUp } = require("@clerk/nextjs");
-
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-white px-4">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <div className="flex justify-center">
-            <Logo size="xl" />
-          </div>
-          <p className="mt-4 text-sm text-zinc-500">Create your account</p>
-        </div>
-        <SignUp
-          // Without this Clerk has nowhere to send the user post-verify and the page hangs.
-          // /select-role auto-forwards returning users with an existing role cookie to their dashboard.
-          signUpFallbackRedirectUrl="/select-role"
-          appearance={{
-            elements: {
-              rootBox: "mx-auto w-full",
-              card: "bg-white border border-zinc-200 shadow-sm",
-              headerTitle: "text-zinc-900",
-              headerSubtitle: "text-zinc-500",
-              formButtonPrimary:
-                "bg-[#00a9e0] hover:bg-[#0090c0] text-white font-semibold",
-              formFieldInput:
-                "bg-white border-zinc-300 text-zinc-900 placeholder:text-zinc-400",
-              formFieldLabel: "text-zinc-700",
-              footerActionLink: "text-[#00a9e0] hover:text-[#0090c0]",
-              identityPreviewEditButton: "text-[#00a9e0]",
-              socialButtonsBlockButton:
-                "border-zinc-200 text-zinc-900 hover:bg-zinc-50",
-              socialButtonsBlockButtonText: "text-zinc-900",
-              dividerLine: "bg-zinc-200",
-              dividerText: "text-zinc-400",
-              // Hide social buttons + "or" divider during beta — testers use email+password only.
-              // Underlying SSO connections in Clerk Dashboard remain enabled.
-              socialButtonsRoot: "hidden",
-              dividerRow: "hidden",
-            },
-          }}
-        />
-      </div>
-    </div>
-  );
-}
-
-// ---------------------------------------------------------------------------
-// Test sign-up form (used when Clerk is not configured)
+// Test sign-up form
 // ---------------------------------------------------------------------------
 function TestSignUp() {
   const [name, setName] = useState("");
@@ -245,11 +195,6 @@ function TestSignUp() {
 // ---------------------------------------------------------------------------
 // Page export
 // ---------------------------------------------------------------------------
-const clerkAvailable = !!process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
-
 export default function SignUpPage() {
-  if (clerkAvailable) {
-    return <ClerkSignUp />;
-  }
   return <TestSignUp />;
 }

@@ -1,4 +1,4 @@
-import { currentUser } from "@clerk/nextjs/server";
+import { cookies } from "next/headers";
 import type { UserRole } from "./roles";
 import { isValidRole } from "./roles";
 
@@ -11,23 +11,54 @@ export interface AppUser {
   imageUrl: string;
 }
 
+/**
+ * Cookie-based user lookup. Reads `sherpa-user` (JSON, set by Google OAuth
+ * callback) for identity and `sherpa-role` for the active role.
+ *
+ * Returns null when the user cookie is missing or unparseable.
+ */
 export async function getAppUser(): Promise<AppUser | null> {
-  // Skip Clerk call when not configured (dev/preview)
-  if (!process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY) return null;
-
   try {
-    const user = await currentUser();
-    if (!user) return null;
+    const cookieStore = await cookies();
+    const userRaw = cookieStore.get("sherpa-user")?.value;
+    if (!userRaw) return null;
 
-    const role = user.publicMetadata?.role;
+    let parsed: {
+      id?: string;
+      email?: string;
+      firstName?: string | null;
+      lastName?: string | null;
+      name?: string | null;
+      imageUrl?: string;
+      picture?: string;
+    };
+    try {
+      parsed = JSON.parse(userRaw);
+    } catch {
+      return null;
+    }
+
+    if (!parsed.email) return null;
+
+    const roleCookie = cookieStore.get("sherpa-role")?.value;
+    const role = isValidRole(roleCookie) ? roleCookie : null;
+
+    // Best-effort first/last split if only `name` is present.
+    let firstName: string | null = parsed.firstName ?? null;
+    let lastName: string | null = parsed.lastName ?? null;
+    if (!firstName && !lastName && parsed.name) {
+      const parts = parsed.name.trim().split(/\s+/);
+      firstName = parts[0] ?? null;
+      lastName = parts.length > 1 ? parts.slice(1).join(" ") : null;
+    }
 
     return {
-      id: user.id,
-      email: user.emailAddresses[0]?.emailAddress ?? "",
-      firstName: user.firstName,
-      lastName: user.lastName,
-      role: isValidRole(role) ? role : null,
-      imageUrl: user.imageUrl,
+      id: parsed.id ?? parsed.email,
+      email: parsed.email,
+      firstName,
+      lastName,
+      role,
+      imageUrl: parsed.imageUrl ?? parsed.picture ?? "",
     };
   } catch {
     return null;
@@ -35,15 +66,10 @@ export async function getAppUser(): Promise<AppUser | null> {
 }
 
 export async function getUserRole(): Promise<UserRole | null> {
-  // Skip Clerk call when not configured (dev/preview)
-  if (!process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY) return null;
-
   try {
-    const user = await currentUser();
-    if (!user) return null;
-
-    const role = user.publicMetadata?.role;
-    return isValidRole(role) ? role : null;
+    const cookieStore = await cookies();
+    const roleCookie = cookieStore.get("sherpa-role")?.value;
+    return isValidRole(roleCookie) ? roleCookie : null;
   } catch {
     return null;
   }

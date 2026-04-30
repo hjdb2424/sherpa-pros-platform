@@ -6,15 +6,6 @@ import Logo from "@/components/brand/Logo";
 import { seedUserData } from "@/lib/seed-user-data";
 import type { UserRole, UserSubtype } from "@/lib/auth/roles";
 import { getDashboardPath } from "@/lib/auth/roles";
-import { setUserRole } from "./actions";
-
-// When Clerk is configured, the real auth path is Clerk: we delegate the
-// role write to the server action so Clerk publicMetadata.role is the source
-// of truth (otherwise getAppUser/requireRole on the server side will see
-// undefined and bounce the user back here in a loop). When Clerk is NOT
-// configured we're on the BetaPortal/test path, which writes to localStorage
-// before navigating here, so the existing client-side cookie write is fine.
-const clerkAvailable = !!process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
 
 type Step = "role" | "subtype";
 
@@ -27,28 +18,19 @@ export default function SelectRolePage() {
   async function commit(role: UserRole, subtype: UserSubtype) {
     setIsPending(true);
 
-    if (clerkAvailable) {
-      // Clerk path: server action reads the user's real email from
-      // currentUser(), writes Clerk publicMetadata.role, sets the
-      // sherpa-role cookie, and redirects to the dashboard. We do NOT
-      // call router.replace() here — the action's redirect() handles it.
-      await setUserRole(role);
-      return;
-    }
+    // Cookie-based role write. The email source-of-truth is the sherpa-user
+    // cookie (Google OAuth) or sherpa-test-email localStorage (BetaPortal).
+    const email =
+      localStorage.getItem("sherpa-test-email") ?? "user@test.com";
 
-    // BetaPortal/test path: no Clerk, so the email was stashed in
-    // localStorage at sign-in time and the cookie is the only signal
-    // middleware/proxy.ts will see.
-    const email = localStorage.getItem("sherpa-test-email") ?? "user@test.com";
-
-    // localStorage keys
+    // localStorage keys (BetaPortal path)
     localStorage.setItem("sherpa-test-role", role);
     localStorage.setItem(`sherpa:${email}:role`, role);
     if (subtype) {
       localStorage.setItem(`sherpa:${email}:subtype`, subtype);
     }
 
-    // Cookie for middleware (expires in 30 days)
+    // Cookie for proxy.ts RBAC (expires in 30 days)
     document.cookie = `sherpa-role=${role}; path=/; max-age=${60 * 60 * 24 * 30}; samesite=lax`;
 
     seedUserData(email, role);

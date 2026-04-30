@@ -1,16 +1,22 @@
 import type { NextConfig } from "next";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+// Pin Turbopack's workspace root to this project. Without this, Turbopack's
+// auto-inference walks up looking for a lockfile and can land on the user's
+// home dir if a stray ~/package-lock.json exists — which then breaks
+// node_modules resolution (e.g. "Can't resolve 'tailwindcss' in '/Users/poum'").
+const projectRoot = path.dirname(fileURLToPath(import.meta.url));
 
 const nextConfig: NextConfig = {
-  // Build-time Clerk overrides. The Clerk SDK reads several env vars directly
-  // (e.g. `props.proxyUrl || process.env.NEXT_PUBLIC_CLERK_PROXY_URL || ""`),
-  // so empty/missing props can't override a Vercel env-var (both are falsy
-  // under `||`). Set values explicitly here to win at build time.
-  // - PROXY_URL "" → kill the same-origin proxy until we re-enable deliberately
-  // - SIGN_IN_URL/SIGN_UP_URL → force Clerk's middleware and components to
-  //   use the LOCAL /sign-in and /sign-up routes instead of bouncing users
-  //   to the hosted Account Portal at accounts.thesherpapros.com (which was
-  //   the redirect users were seeing on protected-route hits).
-  // See docs/superpowers/handoff/2026-04-29-session-handoff.md.
+  turbopack: {
+    root: projectRoot,
+  },
+  // The Clerk SDK reads these env vars directly (`props.proxyUrl || process.env.NEXT_PUBLIC_CLERK_PROXY_URL || ""`),
+  // so an empty prop can't override a Vercel env-var (both falsy under `||`).
+  // Set values here to win at build time. Without explicit SIGN_IN_URL,
+  // Clerk bounces protected-route hits to the hosted Account Portal at
+  // accounts.thesherpapros.com. See docs/superpowers/handoff/2026-04-29-session-handoff.md.
   env: {
     NEXT_PUBLIC_CLERK_PROXY_URL: "",
     NEXT_PUBLIC_CLERK_SIGN_IN_URL: "/sign-in",

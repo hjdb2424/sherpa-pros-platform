@@ -11,18 +11,21 @@ export async function setUserRole(role: UserRole) {
     throw new Error("Invalid role");
   }
 
-  const { userId } = await auth();
+  const [{ userId }, client] = await Promise.all([auth(), clerkClient()]);
   if (!userId) {
     redirect("/sign-in");
   }
 
-  const client = await clerkClient();
   await client.users.updateUser(userId, {
     publicMetadata: { role },
   });
 
-  // Mirror role to a cookie so proxy.ts's enforceRBAC can authorize the
-  // immediately-following request without round-tripping to Clerk for metadata.
+  // TODO(auth): Clerk publicMetadata is the source of truth; this cookie is
+  // a perf cache so proxy.ts can authorize without round-tripping. Sign-ins
+  // on a fresh device will lack the cookie — middleware should read the
+  // role from auth().sessionClaims and lazily backfill the cookie.
+  // Other writers (sign-out, auth/callback) use document.cookie, so keep
+  // httpOnly off here for symmetry until that migration happens.
   const cookieStore = await cookies();
   cookieStore.set("sherpa-role", role, {
     path: "/",

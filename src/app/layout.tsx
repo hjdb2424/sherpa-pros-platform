@@ -6,8 +6,19 @@ import { I18nProvider } from "@/lib/i18n/context";
 // Conditionally import ClerkProvider — skip when Clerk keys aren't configured
 const clerkConfigured = !!process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
 
-let ClerkProvider: React.ComponentType<{ children: React.ReactNode }> | null =
-  null;
+// Same-origin proxy URL. When set, ClerkJS routes its frontend-API calls
+// through `/__clerk/*` on the app's own origin instead of the
+// `clerk.thesherpapros.com` subdomain. This avoids cross-site cookie blocking
+// in privacy browsers (Brave, Safari, Chrome 3PCP cohort). The actual proxy
+// is wired in `src/middleware.ts` via `clerkMiddleware({ frontendApiProxy: { enabled: true } })`.
+const clerkProxyUrl = process.env.NEXT_PUBLIC_CLERK_PROXY_URL;
+
+type ClerkProviderProps = {
+  children: React.ReactNode;
+  proxyUrl?: string;
+};
+
+let ClerkProvider: React.ComponentType<ClerkProviderProps> | null = null;
 if (clerkConfigured) {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   ClerkProvider = require("@clerk/nextjs").ClerkProvider;
@@ -68,7 +79,9 @@ export default function RootLayout({
           </a>
           <I18nProvider>
           {ClerkProvider ? (
-            <ClerkProvider><main id="main-content">{children}</main></ClerkProvider>
+            <ClerkProvider proxyUrl={clerkProxyUrl}>
+              <main id="main-content">{children}</main>
+            </ClerkProvider>
           ) : (
             <main id="main-content">{children}</main>
           )}

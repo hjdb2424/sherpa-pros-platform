@@ -84,17 +84,13 @@ async function withClerk(req: NextRequest) {
   return clerkMiddleware(
     async (auth, request) => {
       if (isProtectedRoute(request)) {
-        // Pass unauthenticatedUrl explicitly so Clerk redirects unauthenticated
-        // users to the in-app /sign-in route on the current origin instead of
-        // bouncing them to the Account Portal at accounts.thesherpapros.com
-        // (which is the default when NEXT_PUBLIC_CLERK_SIGN_IN_URL is unset
-        // at runtime on Vercel Edge).
-        await auth.protect({
-          unauthenticatedUrl: new URL(
-            "/sign-in",
-            request.url,
-          ).toString(),
-        });
+        // Redirect unauthenticated users to the in-app /sign-in on the current
+        // origin (avoids bouncing to the Account Portal). Preserve the original
+        // path as `redirect_url` so Clerk's <SignIn> sends the user back where
+        // they were trying to go after they authenticate.
+        const signInUrl = new URL("/sign-in", request.url);
+        signInUrl.searchParams.set("redirect_url", request.url);
+        await auth.protect({ unauthenticatedUrl: signInUrl.toString() });
       }
       // After Clerk auth passes, enforce RBAC
       const rbacResponse = enforceRBAC(request as NextRequest);

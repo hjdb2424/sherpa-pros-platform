@@ -81,14 +81,23 @@ async function withClerk(req: NextRequest) {
     "/select-role",
   ]);
 
-  return clerkMiddleware(async (auth, request) => {
-    if (isProtectedRoute(request)) {
-      await auth.protect();
-    }
-    // After Clerk auth passes, enforce RBAC
-    const rbacResponse = enforceRBAC(request as NextRequest);
-    if (rbacResponse) return rbacResponse;
-  })(req, {} as any);
+  return clerkMiddleware(
+    async (auth, request) => {
+      if (isProtectedRoute(request)) {
+        await auth.protect();
+      }
+      // After Clerk auth passes, enforce RBAC
+      const rbacResponse = enforceRBAC(request as NextRequest);
+      if (rbacResponse) return rbacResponse;
+    },
+    {
+      // Same-origin proxy for ClerkJS frontend API. Routes /__clerk/* on this
+      // app's origin to Clerk's frontend API. Eliminates cross-site cookie
+      // blocking for Brave / Safari / Chrome 3rd-party-cookie-phaseout users.
+      // Matched with the proxyUrl prop on <ClerkProvider> in src/app/layout.tsx.
+      frontendApiProxy: { enabled: true },
+    },
+  )(req, {} as any);
 }
 
 // ---- Main proxy handler ----
@@ -117,7 +126,7 @@ export const config = {
   matcher: [
     // Skip Next.js internals and static files
     "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
-    // Always run for API routes
-    "/(api|trpc)(.*)",
+    // Always run for API routes and the Clerk same-origin proxy path
+    "/(api|trpc|__clerk)(.*)",
   ],
 };

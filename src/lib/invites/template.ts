@@ -13,7 +13,7 @@
  * copy-to-clipboard fallback update at the same time.
  */
 
-export type InviteAppRole = "client" | "pm" | "pro";
+export type InviteAppRole = "client" | "pm" | "pro" | "multi_view";
 
 export interface InviteOpts {
   name: string;
@@ -24,9 +24,10 @@ export interface InviteOpts {
 // ── Subjects ──────────────────────────────────────────────────────────
 
 const SUBJECTS: Record<InviteAppRole, string> = {
-  pro:    "Stop paying for leads that ghost — your Sherpa Pros beta seat",
-  client: "Stop paying contractors and praying — your Sherpa Pros beta access",
-  pm:     "Stop chasing vendors — your PM beta seat at Sherpa Pros",
+  pro:        "Stop paying for leads that ghost — your Sherpa Pros beta seat",
+  client:     "Stop paying contractors and praying — your Sherpa Pros beta access",
+  pm:         "Stop chasing vendors — your PM beta seat at Sherpa Pros",
+  multi_view: "You're a Multi-View Beta Tester — see every Sherpa Pros viewpoint",
 };
 
 export function inviteSubject(role: InviteAppRole = "client"): string {
@@ -106,37 +107,68 @@ const COPY: Record<InviteAppRole, RoleCopy> = {
     cohort: "You're 1 of only 3 PMs in this beta cohort.",
     signoff: "Tell me what's missing. Your feedback shapes what ships next quarter.",
   },
+
+  multi_view: {
+    hero: "You're not just a user — you're testing every viewpoint on Sherpa Pros.",
+    pain:
+      "Most beta tools dump you into one role. You can't see what the other side sees, can't catch bugs in the persona handoffs, can't tell us when a flow feels weird from the contractor's chair vs the homeowner's. We need eyes across the whole marketplace, not just one corner.",
+    fix: [
+      { name: "Floating Profile Switcher", desc: "Hit the 🦸 button bottom-left to flip between Pro / Client / PM / Tenant views in one click. Same identity, every dashboard." },
+      { name: "Test the handoffs", desc: "Post a job as a Client → switch to Pro → bid on it. See exactly how the marketplace looks from both sides of the same trade." },
+      { name: "Code-Verified Quote flows in every view", desc: "The same quote is rendered four different ways depending on who's looking at it. Tell us where it breaks." },
+      { name: "Direct line to me", desc: "Text/WhatsApp for fast feedback. Bug reports, copy nits, missing edge cases — send everything you find." },
+    ],
+    perks: [
+      "\"Multi-View Tester\" badge across every dashboard you visit",
+      "Free Sherpa Home subscription for life when it launches",
+      "First look at unreleased Wisemen and roadmap bets — your input shapes what we build next",
+    ],
+    cohort: "You're 1 of only 2-3 Multi-View Testers in this cohort.",
+    signoff: "Tell me where the seams are. Where does it feel weird going from one role to another? That's the gold I'm looking for.",
+  },
 };
 
-// ── "Who else is on the platform" cards (the other 2 personas) ────────
+// ── "Who else is on the platform" cards (the other personas) ──────────
+
+type StandardRole = "client" | "pm" | "pro";
+const STANDARD_ROLES: StandardRole[] = ["client", "pm", "pro"];
 
 interface OtherRoleCard {
-  role: InviteAppRole;
+  role: StandardRole;
   label: string;        // "Pros" / "Homeowners & Clients" / "Property Managers"
   oneLiner: string;     // value prop in one sentence
 }
 
-const OTHER_ROLE_CARDS: Record<InviteAppRole, OtherRoleCard> = {
+const OTHER_ROLE_CARDS: Record<StandardRole, OtherRoleCard> = {
   pro:    { role: "pro",    label: "Pros",                    oneLiner: "Licensed trades, handymen, and skilled carpenters get vetted jobs with zero lead fees and milestone-based payment protection." },
   client: { role: "client", label: "Homeowners & Clients",    oneLiner: "Homeowners and small-property owners get code-verified quotes from licensed pros, with payment held until the work passes inspection." },
   pm:     { role: "pm",     label: "Property Managers",       oneLiner: "Commercial PMs get a Combined Maintenance kanban, Multi-Trade Coordination, and per-property cost tracking — no more chasing vendors." },
 };
 
-/** Returns the OTHER 2 role cards (everything except the recipient's own role). */
+/**
+ * Returns the persona cards the recipient should see.
+ * - Standard roles (pro/client/pm): the OTHER two personas
+ * - multi_view: ALL three personas (they test every viewpoint)
+ */
 function otherRoleCards(myRole: InviteAppRole): OtherRoleCard[] {
-  return (Object.keys(OTHER_ROLE_CARDS) as InviteAppRole[])
-    .filter((r) => r !== myRole)
-    .map((r) => OTHER_ROLE_CARDS[r]);
+  if (myRole === "multi_view") {
+    return STANDARD_ROLES.map((r) => OTHER_ROLE_CARDS[r]);
+  }
+  return STANDARD_ROLES.filter((r) => r !== myRole).map((r) => OTHER_ROLE_CARDS[r]);
+}
+
+/** Roles with a public landing page at /invite/{role}. multi_view has no public page. */
+function hasPublicInvitePage(role: InviteAppRole): boolean {
+  return role !== "multi_view";
 }
 
 // ── Plain text ────────────────────────────────────────────────────────
 
 export function buildInvitePlainText({ name, role, to }: InviteOpts): string {
   const c = COPY[role];
-  const inviteUrl = `https://www.thesherpapros.com/invite/${role}`;
   const others = otherRoleCards(role);
 
-  return [
+  const lines = [
     `Hi ${name},`,
     "",
     VISION,
@@ -164,7 +196,13 @@ export function buildInvitePlainText({ name, role, to }: InviteOpts): string {
     "",
     `→ Sign in:    https://www.thesherpapros.com/sign-in`,
     `→ Install on phone: https://www.thesherpapros.com/install`,
-    `→ Read your role-specific page: ${inviteUrl}`,
+  ];
+
+  if (hasPublicInvitePage(role)) {
+    lines.push(`→ Read your role-specific page: https://www.thesherpapros.com/invite/${role}`);
+  }
+
+  lines.push(
     "",
     `Use this email (${to}) when you sign in.`,
     "",
@@ -173,7 +211,9 @@ export function buildInvitePlainText({ name, role, to }: InviteOpts): string {
     "— Phyrom",
     "Founder, Sherpa Pros",
     "info@thesherpapros.com",
-  ].join("\n");
+  );
+
+  return lines.join("\n");
 }
 
 // ── HTML ──────────────────────────────────────────────────────────────
@@ -191,7 +231,8 @@ function ctaButton(href: string, label: string, color: string): string {
 
 export function buildInviteHtml({ name, role, to }: InviteOpts): string {
   const c = COPY[role];
-  const inviteUrl = `https://www.thesherpapros.com/invite/${role}`;
+  const showRolePageLink = hasPublicInvitePage(role);
+  const inviteUrl = showRolePageLink ? `https://www.thesherpapros.com/invite/${role}` : "";
 
   const fixList = c.fix
     .map(
@@ -292,13 +333,14 @@ export function buildInviteHtml({ name, role, to }: InviteOpts): string {
                   ${ctaButton("https://www.thesherpapros.com/install", "Install on phone &rarr;", BRAND_ORANGE)}
                 </div>
 
-                <!-- Read more / role page -->
+                <!-- Read more / role page (omitted for multi_view — no public page) -->
+                ${showRolePageLink ? `
                 <p style="font-size: 13px; color: #71717a; text-align: center; margin: 0 0 28px 0;">
                   Want the full picture for your role first?
                   <a href="${inviteUrl}" style="color: ${BRAND_BLUE}; text-decoration: none; font-weight: 600;">
                     Read your beta page &rarr;
                   </a>
-                </p>
+                </p>` : ""}
 
                 <!-- Who else is on the platform -->
                 <p style="font-size: 13px; font-weight: 700; color: #71717a; text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 8px 0;">

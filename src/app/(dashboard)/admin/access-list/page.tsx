@@ -35,7 +35,7 @@ type SortDir = "asc" | "desc";
  * with the original 24 seeded testers — they continue rendering correctly
  * until you re-categorize them via the Edit button on each row.
  */
-type AppRole = "client" | "pm" | "pro";
+type AppRole = "client" | "pm" | "pro" | "multi_view";
 type RoleDef = { code: string; label: string; appRole: AppRole; group: string };
 
 const ROLE_OPTIONS: RoleDef[] = [
@@ -49,6 +49,8 @@ const ROLE_OPTIONS: RoleDef[] = [
   { code: "handyman",  label: "Pros — Handyman",                appRole: "pro",    group: "Pros" },
   { code: "trades",    label: "Pros — Licensed Trades",         appRole: "pro",    group: "Pros" },
   { code: "skilled",   label: "Pros — Skilled (carpentry/finish/framing)", appRole: "pro", group: "Pros" },
+  // Beta Testers — meta-role for IT/dev pros who need to see every viewpoint
+  { code: "multi_view_tester", label: "Multi-View Tester (all profiles)", appRole: "multi_view", group: "Beta Testers" },
   // Legacy values (kept so existing rows render until re-categorized)
   { code: "pm",        label: "PM (legacy)",                    appRole: "pm",     group: "Legacy" },
   { code: "pro",       label: "Pro (legacy)",                   appRole: "pro",    group: "Legacy" },
@@ -62,9 +64,10 @@ const ROLE_COLORS: Record<AppRole, string> = {
   client: "bg-blue-100 text-blue-700",
   pm: "bg-purple-100 text-purple-700",
   pro: "bg-orange-100 text-orange-700",
+  multi_view: "bg-amber-100 text-amber-800 ring-1 ring-amber-400/40",
 };
 
-/** Map any role code (granular or legacy) to one of client/pm/pro for /invite links. */
+/** Map any role code (granular, legacy, or multi-view) to the invite-template's role. */
 function toAppRole(code: string | null | undefined): AppRole {
   if (!code) return "client";
   return ROLE_BY_CODE[code]?.appRole ?? "client";

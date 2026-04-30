@@ -157,9 +157,9 @@ function otherRoleCards(myRole: InviteAppRole): OtherRoleCard[] {
   return STANDARD_ROLES.filter((r) => r !== myRole).map((r) => OTHER_ROLE_CARDS[r]);
 }
 
-/** Roles with a public landing page at /invite/{role}. multi_view has no public page. */
-function hasPublicInvitePage(role: InviteAppRole): boolean {
-  return role !== "multi_view";
+/** Every role has a public landing page at /invite/{role}, including multi_view. */
+function hasPublicInvitePage(_role: InviteAppRole): boolean {
+  return true;
 }
 
 // ── Plain text ────────────────────────────────────────────────────────

@@ -173,10 +173,11 @@ export default function ClientInvitePage() {
           <Link href="/install" className="inline-flex items-center gap-2 rounded-lg border border-zinc-300 bg-white px-6 py-2.5 text-sm font-semibold text-zinc-900 shadow-sm transition-all hover:border-zinc-400 hover:shadow-md">
             Install on phone
           </Link>
-          <Link href="/sign-in" className="inline-flex items-center gap-2 rounded-lg bg-[#00a9e0] px-6 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-[#0090c0] hover:shadow-md">
-            Sign in now &rarr;
+          <Link href="/sign-up" className="inline-flex items-center gap-2 rounded-lg bg-[#00a9e0] px-6 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-[#0090c0] hover:shadow-md">
+            Get started — sign up &rarr;
           </Link>
         </div>
+        <div className="mt-3 text-center print:hidden"><p className="text-sm text-zinc-500">Already have an account? <Link href="/sign-in" className="text-[#00a9e0] hover:underline font-semibold">Sign in</Link></p></div>
       </div>
     </div>
   );

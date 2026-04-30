@@ -194,7 +194,8 @@ export function buildInvitePlainText({ name, role, to }: InviteOpts): string {
     "",
     `Full platform overview: https://www.thesherpapros.com`,
     "",
-    `→ Sign in:    https://www.thesherpapros.com/sign-in`,
+    `→ Sign up:    https://www.thesherpapros.com/sign-up`,
+    `→ Already have an account? Sign in: https://www.thesherpapros.com/sign-in`,
     `→ Install on phone: https://www.thesherpapros.com/install`,
   ];
 
@@ -314,13 +315,14 @@ export function buildInviteHtml({ name, role, to }: InviteOpts): string {
 
                 <!-- Primary CTA -->
                 <div style="text-align: center; margin: 0 0 16px 0;">
-                  ${ctaButton("https://www.thesherpapros.com/sign-in", "Sign in now &rarr;", BRAND_BLUE)}
+                  ${ctaButton("https://www.thesherpapros.com/sign-up", "Get started — sign up &rarr;", BRAND_BLUE)}
                 </div>
 
                 <!-- Sign-in helper -->
                 <p style="font-size: 13px; color: #71717a; text-align: center; margin: 0 0 28px 0;">
                   Use <strong style="color: #18181b;">${to}</strong> &middot; takes about 30 seconds
                 </p>
+                <p style="font-size: 13px; color: #71717a; text-align: center; margin: 0 0 28px 0;">Already have an account? <a href="https://www.thesherpapros.com/sign-in" style="color: ${BRAND_BLUE}; text-decoration: none; font-weight: 600;">Sign in &rarr;</a></p>
 
                 <!-- Mobile install secondary CTA -->
                 <div style="background: ${BRAND_ORANGE}08; border: 1px solid ${BRAND_ORANGE}30; border-radius: 12px; padding: 20px; margin: 0 0 24px 0; text-align: center;">

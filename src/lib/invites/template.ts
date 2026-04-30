@@ -224,7 +224,7 @@ const BRAND_ORANGE = "#ff4500";
 
 function ctaButton(href: string, label: string, color: string): string {
   return `
-    <a href="${href}" style="display: inline-block; background: ${color}; color: #ffffff; font-size: 15px; font-weight: 600; padding: 14px 28px; border-radius: 8px; text-decoration: none; line-height: 1;">
+    <a href="${href}" style="display: inline-block; background: ${color}; color: #ffffff; font-size: 17px; font-weight: 700; padding: 18px 36px; border-radius: 10px; text-decoration: none; line-height: 1; box-shadow: 0 2px 6px rgba(0,0,0,0.08);">
       ${label}
     </a>
   `;
@@ -277,6 +277,24 @@ export function buildInviteHtml({ name, role, to }: InviteOpts): string {
                   ${VISION}
                 </p>
 
+                <!-- Top action row: Sign up + Install on phone (large, side-by-side) -->
+                <table cellpadding="0" cellspacing="0" border="0" align="center" style="margin: 0 auto 12px auto;">
+                  <tr>
+                    <td style="padding: 0 8px 12px 8px;" align="center">
+                      ${ctaButton("https://www.thesherpapros.com/sign-up", "Get started — sign up &rarr;", BRAND_BLUE)}
+                    </td>
+                    <td style="padding: 0 8px 12px 8px;" align="center">
+                      ${ctaButton("https://www.thesherpapros.com/install", "📱 Install on phone &rarr;", BRAND_ORANGE)}
+                    </td>
+                  </tr>
+                </table>
+                <p style="font-size: 13px; color: #71717a; text-align: center; margin: 0 0 6px 0;">
+                  Use <strong style="color: #18181b;">${to}</strong> &middot; takes about 30 seconds
+                </p>
+                <p style="font-size: 13px; color: #71717a; text-align: center; margin: 0 0 28px 0;">
+                  Already have an account? <a href="https://www.thesherpapros.com/sign-in" style="color: ${BRAND_BLUE}; text-decoration: none; font-weight: 600;">Sign in &rarr;</a>
+                </p>
+
                 <!-- Hero hook -->
                 <div style="background: linear-gradient(135deg, ${BRAND_BLUE}10 0%, ${BRAND_BLUE}05 100%); border-left: 4px solid ${BRAND_BLUE}; padding: 16px 20px; margin: 0 0 24px 0; border-radius: 4px;">
                   <p style="font-size: 17px; font-weight: 600; color: #18181b; margin: 0; line-height: 1.4;">
@@ -311,28 +329,6 @@ export function buildInviteHtml({ name, role, to }: InviteOpts): string {
                   <ul style="font-size: 14px; line-height: 1.5; margin: 0; padding-left: 0; list-style: none;">
                     ${perksList}
                   </ul>
-                </div>
-
-                <!-- Primary CTA -->
-                <div style="text-align: center; margin: 0 0 16px 0;">
-                  ${ctaButton("https://www.thesherpapros.com/sign-up", "Get started — sign up &rarr;", BRAND_BLUE)}
-                </div>
-
-                <!-- Sign-in helper -->
-                <p style="font-size: 13px; color: #71717a; text-align: center; margin: 0 0 28px 0;">
-                  Use <strong style="color: #18181b;">${to}</strong> &middot; takes about 30 seconds
-                </p>
-                <p style="font-size: 13px; color: #71717a; text-align: center; margin: 0 0 28px 0;">Already have an account? <a href="https://www.thesherpapros.com/sign-in" style="color: ${BRAND_BLUE}; text-decoration: none; font-weight: 600;">Sign in &rarr;</a></p>
-
-                <!-- Mobile install secondary CTA -->
-                <div style="background: ${BRAND_ORANGE}08; border: 1px solid ${BRAND_ORANGE}30; border-radius: 12px; padding: 20px; margin: 0 0 24px 0; text-align: center;">
-                  <p style="font-size: 14px; font-weight: 600; color: #9a3412; margin: 0 0 6px 0;">
-                    📱 Want it on your phone?
-                  </p>
-                  <p style="font-size: 13px; color: #7c2d12; line-height: 1.5; margin: 0 0 14px 0;">
-                    iPhone via TestFlight, Android as a PWA. The /install page walks you through it.
-                  </p>
-                  ${ctaButton("https://www.thesherpapros.com/install", "Install on phone &rarr;", BRAND_ORANGE)}
                 </div>
 
                 <!-- Read more / role page (omitted for multi_view — no public page) -->

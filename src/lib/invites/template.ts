@@ -33,11 +33,15 @@ export function inviteSubject(role: InviteAppRole = "client"): string {
   return SUBJECTS[role];
 }
 
+// ── Shared vision (used by all 3 role variants) ───────────────────────
+
+const VISION =
+  "Sherpa Pros is the first on-demand local logistics and trade-job delivery platform — connecting consumers with a network of independent contractors through a marketplace built so trade work actually works for everyone in it. Code-verified quotes go in, payment protection holds the money until the work passes the Sherpa Pros checklist and inspection, and a real human owns coordination and disputes.";
+
 // ── Per-role copy ─────────────────────────────────────────────────────
 
 interface RoleCopy {
   hero: string;          // bold one-liner, the hook
-  intro: string;         // 2-3 sentences — who Phyrom is, why he's emailing them
   pain: string;          // 1-sentence pain statement
   fix: { name: string; desc: string }[]; // 3-4 bullets — features that solve the pain
   perks: string[];       // 3 founding-tester perks (concrete, persona-specific)
@@ -48,15 +52,13 @@ interface RoleCopy {
 const COPY: Record<InviteAppRole, RoleCopy> = {
   pro: {
     hero: "Stop paying for leads that ghost. Get paid when the work passes.",
-    intro:
-      "I'm Phyrom — I run an NH GC, which means I've been on the same Angi/Thumbtack treadmill you probably have. Built Sherpa Pros for the people actually doing the work. You're one of the first 10 Pros I'm letting in.",
     pain:
       "Paying $35 every time a homeowner clicks your name and never picks up. Bidding wars with lowballers. Chasing invoices after the job's done.",
     fix: [
-      { name: "Zero lead fees, ever", desc: "You only pay a service fee when the homeowner pays you. No leads-that-ghost tax." },
-      { name: "Code-Verified Quotes", desc: "Every bid is checked against local building codes before it hits the client. The cheapest guess doesn't auto-win." },
       { name: "Marketplace Payment Protection", desc: "Client funds the job up front. Money releases on milestones. You don't chase invoices." },
+      { name: "Code-Verified Quotes", desc: "Every bid is checked against local building codes before it hits the client. The cheapest guess doesn't auto-win." },
       { name: "Sherpa Success Manager", desc: "Real human handles disputes and no-shows. Not a chatbot, not an offshore reviewer." },
+      { name: "Zero lead fees, ever", desc: "You only pay a service fee when the homeowner pays you. No leads-that-ghost tax." },
     ],
     perks: [
       "Free Sherpa Home subscription for life (the homeowner perk, on the house)",
@@ -69,13 +71,11 @@ const COPY: Record<InviteAppRole, RoleCopy> = {
 
   client: {
     hero: "Stop getting three quotes you can't compare. Stop paying and praying.",
-    intro:
-      "I'm Phyrom — I run an NH GC, which means I've watched too many homeowners get burned by contractors. Built Sherpa Pros so you don't have to play that gambling game anymore. You're one of 11 Clients I'm letting into the beta.",
     pain:
       "Three bids, three different scopes, no way to tell who's padding and who forgot something. Pay the deposit, hope the contractor shows up, hope the work is good. Most of the time it isn't.",
     fix: [
-      { name: "Code-Verified Quotes", desc: "Every bid is validated against local building codes and market pricing. You see apples-to-apples comparisons, not guesses." },
       { name: "Marketplace Payment Protection", desc: "Your money is held until the work passes inspection. No more deposit-and-ghost." },
+      { name: "Code-Verified Quotes", desc: "Every bid is validated against local building codes and market pricing. You see apples-to-apples comparisons, not guesses." },
       { name: "Sherpa Success Manager", desc: "A real human handles vendor coordination and disputes. Not a chatbot." },
       { name: "Materials Dispatch", desc: "Materials delivered straight to the job site. Your job goes faster, the pro doesn't disappear for supply runs." },
     ],
@@ -90,14 +90,12 @@ const COPY: Record<InviteAppRole, RoleCopy> = {
 
   pm: {
     hero: "Stop chasing vendors. Stop paying for bad work.",
-    intro:
-      "I'm Phyrom — I run an NH GC, which means I've been on both sides of the work-order email chain. Built Sherpa Pros so commercial PMs stop being unpaid vendor-coordinators. You're one of only 3 PMs I'm letting into the beta.",
     pain:
       "Vendor coordination is on you. Per-property cost visibility happens at month-end (too late). When work is bad, you have no leverage — the vendor invoiced, you pay anyway.",
     fix: [
+      { name: "Marketplace Payment Protection", desc: "Funds hold until the work passes inspection. Milestone-based release. You don't pay for bad work." },
       { name: "Combined Maintenance kanban", desc: "One board across every property. Drill into any unit for full work-order history." },
       { name: "Multi-Trade Coordination", desc: "One job, multiple trades — we sequence the handoffs so you don't play project manager." },
-      { name: "Marketplace Payment Protection", desc: "Funds hold until the work passes inspection. Milestone-based release. You don't pay for bad work." },
       { name: "Sherpa Success Manager (LIVE)", desc: "Dedicated human owns project oversight and dispute resolution. Day-one assignment for beta PMs." },
     ],
     perks: [
@@ -141,7 +139,7 @@ export function buildInvitePlainText({ name, role, to }: InviteOpts): string {
   return [
     `Hi ${name},`,
     "",
-    c.intro,
+    VISION,
     "",
     `${c.hero}`,
     "",
@@ -223,18 +221,18 @@ export function buildInviteHtml({ name, role, to }: InviteOpts): string {
             <tr>
               <td style="padding: 40px 32px;">
 
-                <!-- Brand header -->
+                <!-- Brand header (logo + tagline) -->
                 <div style="text-align: center; margin-bottom: 24px;">
-                  <h1 style="font-size: 22px; font-weight: 700; color: #18181b; margin: 0; letter-spacing: -0.01em;">Sherpa Pros</h1>
+                  <img src="https://www.thesherpapros.com/logo.png" alt="Sherpa Pros" width="180" style="display: block; margin: 0 auto 6px; height: auto; max-width: 60%;" />
                   <p style="color: ${BRAND_BLUE}; font-size: 13px; margin: 4px 0 0 0; font-weight: 500;">Trade work, done right.</p>
                 </div>
 
                 <!-- Greeting -->
                 <p style="font-size: 16px; color: #18181b; margin: 0 0 16px 0;">Hi ${name},</p>
 
-                <!-- Phyrom intro -->
+                <!-- Vision -->
                 <p style="font-size: 15px; color: #3f3f46; line-height: 1.6; margin: 0 0 24px 0;">
-                  ${c.intro}
+                  ${VISION}
                 </p>
 
                 <!-- Hero hook -->
@@ -353,4 +351,43 @@ export function buildInviteHtml({ name, role, to }: InviteOpts): string {
       </tr>
     </table>
   `;
+}
+
+// ── Clipboard-only variants ───────────────────────────────────────────
+//
+// The /admin/access-list "Email" button copies the invite to the clipboard
+// when Resend isn't configured. These wrappers prepend a subject-line block
+// so Phyrom can cut/paste the subject into Gmail's Subject field after pasting
+// the body. Resend's send-path keeps using the plain builders above — its API
+// call passes `subject` separately, so a redundant in-body subject would
+// pollute the auto-sent email.
+
+export function buildInviteHtmlForClipboard(opts: InviteOpts): string {
+  const subject = inviteSubject(opts.role);
+  const subjectBlock = `
+    <table cellpadding="0" cellspacing="0" border="0" width="100%" style="background: #fef3c7; border: 2px dashed #f59e0b; padding: 14px 18px; margin: 0 0 16px 0; border-radius: 8px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+      <tr>
+        <td>
+          <p style="font-size: 11px; font-weight: 700; color: #92400e; text-transform: uppercase; letter-spacing: 0.06em; margin: 0 0 6px 0;">
+            ✂ Cut this line and paste into the Subject field above
+          </p>
+          <p style="font-size: 16px; font-weight: 600; color: #18181b; margin: 0; line-height: 1.4;">
+            ${subject}
+          </p>
+        </td>
+      </tr>
+    </table>
+  `;
+  return subjectBlock + buildInviteHtml(opts);
+}
+
+export function buildInvitePlainTextForClipboard(opts: InviteOpts): string {
+  const subject = inviteSubject(opts.role);
+  return [
+    `--- SUBJECT LINE (cut and paste into Subject field) ---`,
+    subject,
+    `------------------------------------------------------`,
+    ``,
+    buildInvitePlainText(opts),
+  ].join("\n");
 }

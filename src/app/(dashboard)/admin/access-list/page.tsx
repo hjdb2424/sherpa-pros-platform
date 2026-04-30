@@ -2,8 +2,8 @@
 
 import { useEffect, useState, useCallback, useMemo } from "react";
 import {
-  buildInviteHtml,
-  buildInvitePlainText,
+  buildInviteHtmlForClipboard,
+  buildInvitePlainTextForClipboard,
   inviteSubject,
 } from "@/lib/invites/template";
 
@@ -563,8 +563,8 @@ export default function AccessListPage() {
                                     const to = inviteEmail.trim() || entry.email;
                                     const role = toAppRole(entry.defaultRole);
                                     const opts = { name: entry.name, role, to };
-                                    const html = buildInviteHtml(opts);
-                                    const text = buildInvitePlainText(opts);
+                                    const html = buildInviteHtmlForClipboard(opts);
+                                    const text = buildInvitePlainTextForClipboard(opts);
 
                                     // 1. Try sending via API (Resend)
                                     try {

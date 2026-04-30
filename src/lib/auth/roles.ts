@@ -1,11 +1,12 @@
 // ---------------------------------------------------------------------------
 // Role + Subtype Model — Sherpa Pros Platform
 //
-// 3 base roles: pro, client, pm
+// 4 base roles: pro, client, pm, tenant
 // Subtypes add granularity for commission rates, UI, and routing.
+// Tenant is a dashboard tree assigned by a PM, not a self-select sign-up role.
 // ---------------------------------------------------------------------------
 
-export type UserRole = "pro" | "client" | "pm";
+export type UserRole = "pro" | "client" | "pm" | "tenant";
 export type ClientSubtype = "residential" | "residential_pro" | "commercial";
 export type ProSubtype = "standard" | "flex";
 export type UserSubtype = ClientSubtype | ProSubtype | null;
@@ -14,6 +15,7 @@ export const ROLES = {
   PRO: "pro" as const,
   CLIENT: "client" as const,
   PM: "pm" as const,
+  TENANT: "tenant" as const,
 };
 
 export const SUBTYPES = {
@@ -28,7 +30,7 @@ export const SUBTYPES = {
 // Validation
 // ---------------------------------------------------------------------------
 
-const VALID_ROLES: ReadonlySet<string> = new Set([ROLES.PRO, ROLES.CLIENT, ROLES.PM]);
+const VALID_ROLES: ReadonlySet<string> = new Set([ROLES.PRO, ROLES.CLIENT, ROLES.PM, ROLES.TENANT]);
 
 const VALID_SUBTYPES: ReadonlySet<string> = new Set([
   SUBTYPES.CLIENT_RESIDENTIAL,
@@ -42,6 +44,7 @@ const ROLE_SUBTYPES: Record<UserRole, ReadonlySet<string> | null> = {
   pro: new Set([SUBTYPES.PRO_STANDARD, SUBTYPES.PRO_FLEX]),
   client: new Set([SUBTYPES.CLIENT_RESIDENTIAL, SUBTYPES.CLIENT_RESIDENTIAL_PRO, SUBTYPES.CLIENT_COMMERCIAL]),
   pm: null, // PM has no subtypes
+  tenant: null, // Tenant has no subtypes
 };
 
 export function isValidRole(role: unknown): role is UserRole {
@@ -66,6 +69,7 @@ export function isValidSubtypeForRole(role: UserRole, subtype: UserSubtype): boo
 
 export function getDashboardPath(role: UserRole): string {
   if (role === ROLES.PM) return "/pm/dashboard";
+  if (role === ROLES.TENANT) return "/tenant/dashboard";
   return role === ROLES.PRO ? "/pro/dashboard" : "/client/dashboard";
 }
 
@@ -81,6 +85,7 @@ const ROLE_LABELS: Record<UserRole, string> = {
   pro: "Pro",
   client: "Client",
   pm: "Property Manager",
+  tenant: "Tenant",
 };
 
 const SUBTYPE_LABELS: Record<string, string> = {

@@ -23,6 +23,7 @@ const ROUTE_ROLES: Record<string, UserRole | "admin"> = {
   [`/${ROLES.PRO}`]: ROLES.PRO,
   [`/${ROLES.CLIENT}`]: ROLES.CLIENT,
   [`/${ROLES.PM}`]: ROLES.PM,
+  [`/${ROLES.TENANT}`]: ROLES.TENANT,
   "/admin": "admin",
 };
 
@@ -86,6 +87,7 @@ async function loadClerkHandler() {
     `/${ROLES.PRO}(.*)`,
     `/${ROLES.CLIENT}(.*)`,
     `/${ROLES.PM}(.*)`,
+    `/${ROLES.TENANT}(.*)`,
     "/admin(.*)",
     "/select-role",
   ]);

@@ -77,48 +77,47 @@ function enforceRBAC(request: NextRequest): NextResponse | null {
 // `clerkMiddleware()` returns a request handler. The previous version rebuilt
 // it (plus `createRouteMatcher` and the dynamic import await) on every
 // request. Memoize at module scope so cold-start pays the cost once.
-type ClerkHandler = (req: NextRequest) => Promise<Response | undefined>;
-let clerkHandlerPromise: Promise<ClerkHandler> | null = null;
+async function loadClerkHandler() {
+  const { clerkMiddleware, createRouteMatcher } = await import(
+    "@clerk/nextjs/server"
+  );
 
-function getClerkHandler(): Promise<ClerkHandler> {
-  if (!clerkHandlerPromise) {
-    clerkHandlerPromise = (async () => {
-      const { clerkMiddleware, createRouteMatcher } = await import(
-        "@clerk/nextjs/server"
-      );
+  const isProtectedRoute = createRouteMatcher([
+    `/${ROLES.PRO}(.*)`,
+    `/${ROLES.CLIENT}(.*)`,
+    `/${ROLES.PM}(.*)`,
+    "/admin(.*)",
+    "/select-role",
+  ]);
 
-      const isProtectedRoute = createRouteMatcher([
-        `/${ROLES.PRO}(.*)`,
-        `/${ROLES.CLIENT}(.*)`,
-        `/${ROLES.PM}(.*)`,
-        "/admin(.*)",
-        "/select-role",
-      ]);
+  const handler = clerkMiddleware(
+    async (auth, request) => {
+      if (isProtectedRoute(request)) {
+        // Preserve original path so Clerk's <SignIn> returns the user
+        // there after authentication.
+        const signInUrl = new URL("/sign-in", request.url);
+        signInUrl.searchParams.set("redirect_url", request.url);
+        await auth.protect({ unauthenticatedUrl: signInUrl.toString() });
+      }
+      const rbacResponse = enforceRBAC(request as NextRequest);
+      if (rbacResponse) return rbacResponse;
+    },
+    {
+      // Required at runtime: the next.config `env` override only inlines
+      // NEXT_PUBLIC_CLERK_SIGN_IN_URL into the client bundle; server-side
+      // middleware on Vercel Edge reads process.env separately.
+      signInUrl: "/sign-in",
+      signUpUrl: "/sign-up",
+    },
+  );
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return (req: NextRequest) => handler(req, {} as any);
+}
 
-      const handler = clerkMiddleware(
-        async (auth, request) => {
-          if (isProtectedRoute(request)) {
-            // Preserve original path so Clerk's <SignIn> returns the user
-            // there after authentication.
-            const signInUrl = new URL("/sign-in", request.url);
-            signInUrl.searchParams.set("redirect_url", request.url);
-            await auth.protect({ unauthenticatedUrl: signInUrl.toString() });
-          }
-          const rbacResponse = enforceRBAC(request as NextRequest);
-          if (rbacResponse) return rbacResponse;
-        },
-        {
-          // Required at runtime: the next.config `env` override only inlines
-          // NEXT_PUBLIC_CLERK_SIGN_IN_URL into the client bundle; server-side
-          // middleware on Vercel Edge reads process.env separately.
-          signInUrl: "/sign-in",
-          signUpUrl: "/sign-up",
-        },
-      );
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      return (req: NextRequest) => handler(req, {} as any);
-    })();
-  }
+let clerkHandlerPromise: ReturnType<typeof loadClerkHandler> | null = null;
+
+function getClerkHandler() {
+  if (!clerkHandlerPromise) clerkHandlerPromise = loadClerkHandler();
   return clerkHandlerPromise;
 }
 

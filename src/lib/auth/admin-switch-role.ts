@@ -63,7 +63,14 @@ async function isCallerPowerTester(
   try {
     const { currentUser } = await import("@clerk/nextjs/server");
     const user = await currentUser();
-    return isPowerTesterEmail(user?.emailAddresses[0]?.emailAddress);
+    if (!user) return false;
+    // Prefer the verified primary email; fall back to first address.
+    const primary = user.emailAddresses.find(
+      (e) => e.id === user.primaryEmailAddressId,
+    );
+    const email =
+      primary?.emailAddress ?? user.emailAddresses[0]?.emailAddress;
+    return isPowerTesterEmail(email);
   } catch {
     return false;
   }

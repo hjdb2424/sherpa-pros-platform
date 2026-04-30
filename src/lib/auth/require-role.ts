@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import type { UserRole } from "./roles";
+import { getDashboardPath, type UserRole } from "./roles";
 import { getAppUser } from "./get-user";
 
 /**
@@ -20,9 +20,7 @@ export async function requireRole(requiredRole: UserRole) {
   }
 
   if (user.role !== requiredRole) {
-    redirect(
-      user.role === "pro" ? "/pro/dashboard" : "/client/dashboard"
-    );
+    redirect(getDashboardPath(user.role));
   }
 
   return user;

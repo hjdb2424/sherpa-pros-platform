@@ -33,6 +33,21 @@ export default function ClientInvitePage() {
           </p>
         </div>
 
+        {/* Top action row — same CTAs as the bottom, above the fold for scan-and-bounce readers */}
+        <div className="mt-6 flex flex-col items-center gap-3 print:hidden">
+          <div className="flex flex-wrap justify-center gap-3">
+            <Link href="/sign-up" className="inline-flex items-center gap-2 rounded-xl bg-[#00a9e0] px-8 py-4 text-base font-bold text-white shadow-md transition-all hover:bg-[#0090c0] hover:shadow-lg">
+              Get started — sign up &rarr;
+            </Link>
+            <Link href="/install" className="inline-flex items-center gap-2 rounded-xl border-2 border-[#ff4500] bg-white px-8 py-4 text-base font-bold text-[#ff4500] shadow-md transition-all hover:bg-[#ff4500]/[0.04] hover:shadow-lg">
+              Install on phone &rarr;
+            </Link>
+          </div>
+          <p className="text-sm text-zinc-500">
+            Already have an account? <Link href="/sign-in" className="text-[#00a9e0] hover:underline font-semibold">Sign in</Link>
+          </p>
+        </div>
+
         {/* Pain — trust problem */}
         <div className="mt-8 print:mt-4">
           <h2 className="text-lg font-bold text-zinc-900">The trade industry has a trust problem</h2>
@@ -170,10 +185,10 @@ export default function ClientInvitePage() {
         {/* Actions (hidden on print) */}
         <div className="mt-8 flex flex-wrap justify-center gap-3 print:hidden">
           <PrintButton />
-          <Link href="/install" className="inline-flex items-center gap-2 rounded-lg border border-zinc-300 bg-white px-6 py-2.5 text-sm font-semibold text-zinc-900 shadow-sm transition-all hover:border-zinc-400 hover:shadow-md">
-            Install on phone
+          <Link href="/install" className="inline-flex items-center gap-2 rounded-xl border-2 border-[#ff4500] bg-white px-8 py-4 text-base font-bold text-[#ff4500] shadow-md transition-all hover:bg-[#ff4500]/[0.04] hover:shadow-lg">
+            Install on phone &rarr;
           </Link>
-          <Link href="/sign-up" className="inline-flex items-center gap-2 rounded-lg bg-[#00a9e0] px-6 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-[#0090c0] hover:shadow-md">
+          <Link href="/sign-up" className="inline-flex items-center gap-2 rounded-xl bg-[#00a9e0] px-8 py-4 text-base font-bold text-white shadow-md transition-all hover:bg-[#0090c0] hover:shadow-lg">
             Get started — sign up &rarr;
           </Link>
         </div>

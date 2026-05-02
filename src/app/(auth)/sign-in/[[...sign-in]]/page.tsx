@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Logo from "@/components/brand/Logo";
 import LanguageSwitcher from "@/components/i18n/LanguageSwitcher";
-import { isEmailAllowed, getAccessEntry, toUserRole } from "@/lib/access-list";
+import { toUserRole } from "@/lib/access-list";
 import { getDashboardPath } from "@/lib/auth/roles";
 import { seedUserData } from "@/lib/seed-user-data";
 
@@ -29,31 +29,51 @@ function BetaPortal() {
     }
   }, [searchParams]);
 
-  function handleSignIn(e: React.FormEvent) {
+  async function handleSignIn(e: React.FormEvent) {
     e.preventDefault();
     setError("");
 
     const normalizedEmail = email.trim().toLowerCase();
+    setLoading(true);
 
-    if (!isEmailAllowed(normalizedEmail)) {
-      setError(
-        "This email is not on the beta access list. Contact info@thesherpapros.com to request access."
-      );
+    let res: Response;
+    try {
+      res = await fetch("/api/auth/check-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: normalizedEmail }),
+      });
+    } catch {
+      setError("Sign-in is temporarily unavailable. Please try Google sign-in or try again in a moment.");
+      setLoading(false);
       return;
     }
 
-    const entry = getAccessEntry(normalizedEmail);
-    setLoading(true);
+    if (res.status === 503) {
+      setError("Sign-in is temporarily unavailable. Please try Google sign-in or try again in a moment.");
+      setLoading(false);
+      return;
+    }
+
+    const data = (await res.json().catch(() => null)) as
+      | { ok: true; name: string; defaultRole: string | null }
+      | { ok: false; error: string }
+      | null;
+
+    if (!data || !data.ok) {
+      setError(
+        "This email is not on the beta access list. Contact info@thesherpapros.com to request access."
+      );
+      setLoading(false);
+      return;
+    }
 
     localStorage.setItem("sherpa-test-auth", "true");
     localStorage.setItem("sherpa-test-email", normalizedEmail);
-    localStorage.setItem("sherpa-test-name", entry?.name ?? email.split("@")[0]);
+    localStorage.setItem("sherpa-test-name", data.name ?? email.split("@")[0]);
 
-    // Check if user has an existing role (returning user)
     const existingRole = localStorage.getItem(`sherpa:${normalizedEmail}:role`);
-    // Map either the existing role or the access-list default to a UserRole
-    // (handles granular codes like res_owner, com_pm, multi_view_tester, etc.).
-    const mappedRole = toUserRole(existingRole) ?? toUserRole(entry?.defaultRole ?? null);
+    const mappedRole = toUserRole(existingRole) ?? toUserRole(data.defaultRole);
 
     if (mappedRole) {
       localStorage.setItem("sherpa-test-role", mappedRole);
@@ -62,7 +82,6 @@ function BetaPortal() {
       seedUserData(normalizedEmail, mappedRole);
       router.push(getDashboardPath(mappedRole));
     } else {
-      // No default role — let them choose
       router.push("/select-role");
     }
   }

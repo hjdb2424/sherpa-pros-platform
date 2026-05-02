@@ -16,36 +16,26 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as Haptics from 'expo-haptics';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '@/lib/auth';
+import { API_BASE } from '@/lib/api';
 import { colors, shadows, spacing, borderRadius } from '@/lib/theme';
 import Logo from '@/components/brand/Logo';
 import { t } from '@/lib/i18n';
 
-// Access list check (matches web pattern)
-const ALLOWED_EMAILS = [
-  'poum@hjd.builders',
-  'lisa.park@test.com', 'david.chen@test.com', 'rachel.torres@test.com',
-  'mike.rodriguez@test.com', 'james.wilson@test.com', 'sarah.chen@test.com',
-  'carlos.rivera@test.com', 'diana.brooks@test.com', 'tom.sullivan@test.com',
-  'maria.santos@test.com', 'kevin.obrien@test.com', 'andre.mitchell@test.com',
-  'jenny.kim@test.com',
-  'jamie.davis@test.com', 'alex.rivera@test.com', 'morgan.lee@test.com',
-  'sam.patel@test.com', 'chris.thompson@test.com', 'taylor.kim@test.com',
-  'jordan.williams@test.com', 'casey.martin@test.com', 'riley.anderson@test.com',
-  'avery.brown@test.com',
-];
+type MobileRole = 'pm' | 'pro' | 'client';
 
-// Role mapping for known test accounts
-const ROLE_MAP: Record<string, 'pm' | 'pro' | 'client'> = {
-  'lisa.park@test.com': 'pm', 'david.chen@test.com': 'pm', 'rachel.torres@test.com': 'pm',
-  'mike.rodriguez@test.com': 'pro', 'james.wilson@test.com': 'pro', 'sarah.chen@test.com': 'pro',
-  'carlos.rivera@test.com': 'pro', 'diana.brooks@test.com': 'pro', 'tom.sullivan@test.com': 'pro',
-  'maria.santos@test.com': 'pro', 'kevin.obrien@test.com': 'pro', 'andre.mitchell@test.com': 'pro',
-  'jenny.kim@test.com': 'pro',
-  'jamie.davis@test.com': 'client', 'alex.rivera@test.com': 'client', 'morgan.lee@test.com': 'client',
-  'sam.patel@test.com': 'client', 'chris.thompson@test.com': 'client', 'taylor.kim@test.com': 'client',
-  'jordan.williams@test.com': 'client', 'casey.martin@test.com': 'client', 'riley.anderson@test.com': 'client',
-  'avery.brown@test.com': 'client',
-};
+// Mirrors toUserRole() in web src/lib/access-list.ts. Mobile has no
+// `tenant` surface yet, so a tenant default-role falls through to
+// /select-role for the user to pick manually.
+function toMobileRole(code: string | null | undefined): MobileRole | null {
+  if (!code) return null;
+  const map: Record<string, MobileRole> = {
+    pm: 'pm', com_pm: 'pm',
+    pro: 'pro', handyman: 'pro', trades: 'pro', skilled: 'pro',
+    client: 'client', res_owner: 'client', res_multi: 'client',
+    com_owner: 'client', multi_view_tester: 'client',
+  };
+  return map[code] ?? null;
+}
 
 export default function SignInScreen() {
   const router = useRouter();
@@ -73,20 +63,46 @@ export default function SignInScreen() {
       return;
     }
 
-    if (!ALLOWED_EMAILS.includes(normalized)) {
-      setError('This email is not on the beta access list. Contact info@thesherpapros.com to request access.');
-      return;
-    }
-
     setLoading(true);
     setError('');
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
 
-    const role = ROLE_MAP[normalized] ?? null;
-    const name = normalized.split('@')[0].replace(/\./g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+    let res: Response;
+    try {
+      res = await fetch(`${API_BASE}/auth/check-email`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: normalized }),
+      });
+    } catch {
+      setError('Sign-in is temporarily unavailable. Please check your connection and try again.');
+      setLoading(false);
+      return;
+    }
+
+    if (res.status === 503) {
+      setError('Sign-in is temporarily unavailable. Please try again in a moment.');
+      setLoading(false);
+      return;
+    }
+
+    type CheckEmailOk = { ok: true; name: string; defaultRole: string | null };
+    type CheckEmailErr = { ok: false; error: string };
+    const data = (await res.json().catch(() => null)) as
+      | CheckEmailOk
+      | CheckEmailErr
+      | null;
+
+    if (!data || !data.ok) {
+      setError('This email is not on the beta access list. Contact info@thesherpapros.com to request access.');
+      setLoading(false);
+      return;
+    }
+
+    const role = toMobileRole(data.defaultRole);
 
     try {
-      await signIn(role, name, normalized);
+      await signIn(role, data.name, normalized);
       if (role === 'pm') router.replace('/(pm)');
       else if (role === 'pro') router.replace('/(pro)');
       else if (role === 'client') router.replace('/(client)');

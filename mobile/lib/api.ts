@@ -1,6 +1,6 @@
-const API_BASE = __DEV__
-  ? 'http://localhost:3001/api'
-  : 'https://sherpa-pros-platform.vercel.app/api';
+export const API_BASE = __DEV__
+  ? 'http://localhost:3000/api'
+  : 'https://www.thesherpapros.com/api';
 
 export async function apiFetch<T>(
   path: string,

@@ -1,7 +1,8 @@
 # Sherpa Pros — Session Handoff
 
-**Last updated:** 2026-05-02 (late evening)
-**Current HEAD:** `15bcb26` on `main`, all pushed.
+**Last updated:** 2026-05-03
+**Current HEAD:** `a6de8aa` on `main`, all pushed (this doc is the latest commit).
+**Build 8 status (when session ended 2026-05-02 evening):** submitted to App Store Connect, Apple binary processing in flight — Apple email confirmation expected within 5–15 min of submit.
 
 ---
 

@@ -14,7 +14,10 @@
  *    fail-soft (returning 200 ok regardless, per spec).
  */
 
-const FROM_ADDRESS = 'Sherpa Pros <noreply@thesherpapros.com>';
+// Match the existing send-invite from-address — confirmed working in
+// production Resend setup. Using a different alias (e.g. noreply@) requires
+// that alias to be domain-verified in Resend; otherwise sends silently fail.
+const FROM_ADDRESS = 'Sherpa Pros <invite@thesherpapros.com>';
 const SUBJECT = 'Your Sherpa Pros sign-in code';
 
 export interface SendOtpEmailInput {

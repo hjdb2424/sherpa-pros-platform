@@ -1,0 +1,22 @@
+# Local agent + worktree state — never deploy to Vercel
+.claude/
+.worktrees/
+
+# Mobile app — has its own deployment pipeline (EAS), not Vercel
+mobile/
+
+# Local docs / specs — not needed in production runtime
+docs/superpowers/
+
+# Stray local artifacts (DB exports, scratch files)
+*.csv
+/app.json
+
+# Test files — exclude from production bundle
+__tests__/
+**/*.test.ts
+**/*.test.tsx
+
+# Misc dev-only
+*.log
+.DS_Store

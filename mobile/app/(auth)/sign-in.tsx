@@ -19,8 +19,10 @@ import { useAuth } from '@/lib/auth';
 import { API_BASE } from '@/lib/api';
 import { colors, shadows, borderRadius } from '@/lib/theme';
 import Logo from '@/components/brand/Logo';
+import CodeInput from '@/components/auth/CodeInput';
 
 type MobileRole = 'pm' | 'pro' | 'client';
+type Step = 'email' | 'code';
 
 // Mirrors toUserRole() in web src/lib/access-list.ts. Mobile has no
 // `tenant` surface yet — tenant codes default to client (most common
@@ -44,9 +46,13 @@ export default function SignInScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { signIn } = useAuth();
+  const [step, setStep] = useState<Step>('email');
   const [email, setEmail] = useState('');
+  const [code, setCode] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  // When true, surface a "Send a new code" affordance on the code step.
+  const [canResend, setCanResend] = useState(false);
 
   // Fade-in animation
   const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -59,11 +65,20 @@ export default function SignInScreen() {
     ]).start();
   }, [fadeAnim, slideAnim]);
 
-  const handleEmailSignIn = async () => {
+  const navigateForRole = (role: MobileRole) => {
+    if (role === 'pm') router.replace('/(pm)');
+    else if (role === 'pro') router.replace('/(pro)');
+    else router.replace('/(client)');
+  };
+
+  // STEP 1: Email → request a 6-digit code via /auth/email/request-code.
+  // Backend returns {ok: true} regardless of access_list membership to
+  // prevent enumeration; we always advance to step 'code' on 200.
+  const handleSendCode = async () => {
     const normalized = email.trim().toLowerCase();
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailPattern.test(normalized)) {
-      setError('Please enter a valid email address.');
+      setError('Please enter a valid email.');
       return;
     }
 
@@ -73,7 +88,7 @@ export default function SignInScreen() {
 
     let res: Response;
     try {
-      res = await fetch(`${API_BASE}/auth/check-email`, {
+      res = await fetch(`${API_BASE}/auth/email/request-code`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: normalized }),
@@ -89,36 +104,134 @@ export default function SignInScreen() {
       setLoading(false);
       return;
     }
+    if (res.status === 429) {
+      setError('Too many code requests. Try again in an hour.');
+      setLoading(false);
+      return;
+    }
+    if (res.status === 400) {
+      setError('Please enter a valid email.');
+      setLoading(false);
+      return;
+    }
 
-    type CheckEmailOk = { ok: true; name: string; defaultRole: string | null };
-    type CheckEmailErr = { ok: false; error: string };
-    const data = (await res.json().catch(() => null)) as
-      | CheckEmailOk
-      | CheckEmailErr
-      | null;
-
+    type Resp = { ok: true } | { ok: false; error?: string };
+    const data = (await res.json().catch(() => null)) as Resp | null;
     if (!data || !data.ok) {
-      const code = data && !data.ok ? data.error : undefined;
-      if (code === 'invalid_body' || code === 'email_required') {
-        setError('Please enter a valid email address.');
-      } else {
-        setError('This email is not on the beta access list. Contact info@thesherpapros.com to request access.');
+      setError('Sign-in is temporarily unavailable. Please try again in a moment.');
+      setLoading(false);
+      return;
+    }
+
+    // Persist normalized email for the verify step.
+    setEmail(normalized);
+    setStep('code');
+    setCode('');
+    setCanResend(false);
+    setLoading(false);
+  };
+
+  // STEP 2: Verify the entered code via /auth/email/verify-code.
+  // Per spec, on {ok:true} call signIn(role, name, email) and route by role.
+  const handleVerifyCode = async (overrideCode?: string) => {
+    const submitCode = (overrideCode ?? code).trim();
+    if (submitCode.length !== 6 || !/^\d{6}$/.test(submitCode)) {
+      setError('Please enter the 6-digit code.');
+      return;
+    }
+
+    setLoading(true);
+    setError('');
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+
+    let res: Response;
+    try {
+      res = await fetch(`${API_BASE}/auth/email/verify-code`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, code: submitCode }),
+      });
+    } catch {
+      setError('Sign-in is temporarily unavailable. Please check your connection and try again.');
+      setLoading(false);
+      return;
+    }
+
+    if (res.status === 503) {
+      setError('Sign-in is temporarily unavailable. Please try again in a moment.');
+      setLoading(false);
+      return;
+    }
+
+    type OkResp = { ok: true; name: string; defaultRole: string | null };
+    type ErrResp = {
+      ok: false;
+      error: 'invalid_code' | 'code_expired' | 'code_locked' | 'code_consumed' | string;
+      attemptsLeft?: number;
+    };
+    const data = (await res.json().catch(() => null)) as OkResp | ErrResp | null;
+
+    if (!data) {
+      setError('Sign-in is temporarily unavailable. Please try again in a moment.');
+      setLoading(false);
+      return;
+    }
+
+    if (!data.ok) {
+      switch (data.error) {
+        case 'invalid_code': {
+          const left = data.attemptsLeft;
+          if (typeof left === 'number') {
+            setError(`Invalid code. ${left} ${left === 1 ? 'attempt' : 'attempts'} remaining.`);
+          } else {
+            setError('Invalid code.');
+          }
+          setCanResend(false);
+          break;
+        }
+        case 'code_expired':
+          setError('Code expired. Request a new one.');
+          setCanResend(true);
+          break;
+        case 'code_locked':
+          setError('Too many attempts. Request a new code.');
+          setCanResend(true);
+          break;
+        case 'code_consumed':
+          setError('Code already used. Request a new one.');
+          setCanResend(true);
+          break;
+        default:
+          setError('Sign-in failed. Please try again.');
+          setCanResend(false);
       }
       setLoading(false);
       return;
     }
 
     const role = toMobileRole(data.defaultRole);
-
     try {
-      await signIn(role, data.name, normalized);
-      if (role === 'pm') router.replace('/(pm)');
-      else if (role === 'pro') router.replace('/(pro)');
-      else router.replace('/(client)');
+      await signIn(role, data.name, email);
+      navigateForRole(role);
     } catch {
       setError('Sign-in failed. Please try again.');
       setLoading(false);
     }
+  };
+
+  const handleResend = async () => {
+    setCode('');
+    setCanResend(false);
+    await handleSendCode();
+    // handleSendCode advances back to step 'code' on success — same step,
+    // so no navigation. Error remains on screen if it failed.
+  };
+
+  const handleBackToEmail = () => {
+    setStep('email');
+    setCode('');
+    setError('');
+    setCanResend(false);
   };
 
   const handleAppleSignIn = async () => {
@@ -194,9 +307,7 @@ export default function SignInScreen() {
 
     try {
       await signIn(role, displayName, emailForSession);
-      if (role === 'pm') router.replace('/(pm)');
-      else if (role === 'pro') router.replace('/(pro)');
-      else router.replace('/(client)');
+      navigateForRole(role);
     } catch {
       setError('Sign-in failed. Please try again.');
       setLoading(false);
@@ -219,12 +330,14 @@ export default function SignInScreen() {
         {/* Welcome text */}
         <Text style={styles.welcomeTitle}>Welcome to the beta</Text>
         <Text style={styles.welcomeSubtitle}>
-          Sign in with the email from your invite.
+          {step === 'email'
+            ? 'Sign in with the email from your invite.'
+            : `We emailed a code to ${email}. Enter it below.`}
         </Text>
 
-        {/* Sign in with Apple — Apple HIG requires SIWA above other third-party
-            options. Hidden on Android (handled by Google there once that lands). */}
-        {Platform.OS === 'ios' && (
+        {/* Apple SIWA — only shown on the email step. Apple HIG requires
+            SIWA above other third-party options. Hidden on Android. */}
+        {step === 'email' && Platform.OS === 'ios' && (
           <AppleAuthentication.AppleAuthenticationButton
             buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
             buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
@@ -235,36 +348,53 @@ export default function SignInScreen() {
         )}
 
         {/* Google OAuth — disabled until deep link redirect is configured */}
-        <View style={[styles.googleButton, { opacity: 0.4 }]}>
-          <Ionicons name="logo-google" size={18} color={colors.textMuted} />
-          <Text style={[styles.googleButtonText, { color: colors.textMuted }]}>Continue with Google</Text>
-          <Text style={{ fontSize: 10, color: colors.textMuted, marginLeft: 4 }}>(coming soon)</Text>
-        </View>
+        {step === 'email' && (
+          <View style={[styles.googleButton, { opacity: 0.4 }]}>
+            <Ionicons name="logo-google" size={18} color={colors.textMuted} />
+            <Text style={[styles.googleButtonText, { color: colors.textMuted }]}>Continue with Google</Text>
+            <Text style={{ fontSize: 10, color: colors.textMuted, marginLeft: 4 }}>(coming soon)</Text>
+          </View>
+        )}
 
-        {/* Divider */}
-        <View style={styles.divider}>
-          <View style={styles.dividerLine} />
-          <Text style={styles.dividerText}>or sign in with your invite email</Text>
-          <View style={styles.dividerLine} />
-        </View>
+        {/* Divider — only on email step */}
+        {step === 'email' && (
+          <View style={styles.divider}>
+            <View style={styles.dividerLine} />
+            <Text style={styles.dividerText}>or sign in with your invite email</Text>
+            <View style={styles.dividerLine} />
+          </View>
+        )}
 
-        {/* Email input */}
-        <View style={styles.inputContainer}>
-          <Text style={styles.inputLabel}>Email address</Text>
-          <TextInput
-            style={styles.emailInput}
-            value={email}
-            onChangeText={(t) => { setEmail(t); setError(''); }}
-            placeholder="you@company.com"
-            placeholderTextColor={colors.textMuted}
-            keyboardType="email-address"
-            autoCapitalize="none"
-            autoCorrect={false}
-            autoComplete="email"
-            returnKeyType="go"
-            onSubmitEditing={handleEmailSignIn}
-          />
-        </View>
+        {step === 'email' ? (
+          /* Email input */
+          <View style={styles.inputContainer}>
+            <Text style={styles.inputLabel}>Email address</Text>
+            <TextInput
+              style={styles.emailInput}
+              value={email}
+              onChangeText={(t) => { setEmail(t); setError(''); }}
+              placeholder="you@company.com"
+              placeholderTextColor={colors.textMuted}
+              keyboardType="email-address"
+              autoCapitalize="none"
+              autoCorrect={false}
+              autoComplete="email"
+              returnKeyType="go"
+              onSubmitEditing={handleSendCode}
+            />
+          </View>
+        ) : (
+          /* Code input */
+          <View style={styles.inputContainer}>
+            <Text style={styles.inputLabel}>6-digit code</Text>
+            <CodeInput
+              value={code}
+              onChangeText={(s) => { setCode(s); setError(''); }}
+              onComplete={(s) => { void handleVerifyCode(s); }}
+              disabled={loading}
+            />
+          </View>
+        )}
 
         {/* Error */}
         {error ? (
@@ -273,22 +403,60 @@ export default function SignInScreen() {
           </View>
         ) : null}
 
-        {/* Sign In button */}
-        <Pressable
-          style={[styles.signInButton, (!email.trim() || loading) && styles.signInButtonDisabled]}
-          onPress={handleEmailSignIn}
-          disabled={!email.trim() || loading}
-          accessibilityLabel="Sign in"
-          accessibilityRole="button"
-        >
-          <Text style={styles.signInButtonText}>
-            {loading ? 'Signing in...' : 'Sign In'}
-          </Text>
-        </Pressable>
+        {/* Primary CTA */}
+        {step === 'email' ? (
+          <Pressable
+            style={[styles.signInButton, (!email.trim() || loading) && styles.signInButtonDisabled]}
+            onPress={handleSendCode}
+            disabled={!email.trim() || loading}
+            accessibilityLabel="Send code"
+            accessibilityRole="button"
+          >
+            <Text style={styles.signInButtonText}>
+              {loading ? 'Sending...' : 'Send code'}
+            </Text>
+          </Pressable>
+        ) : (
+          <>
+            <Pressable
+              style={[styles.signInButton, (code.length !== 6 || loading) && styles.signInButtonDisabled]}
+              onPress={() => handleVerifyCode()}
+              disabled={code.length !== 6 || loading}
+              accessibilityLabel="Verify code"
+              accessibilityRole="button"
+            >
+              <Text style={styles.signInButtonText}>
+                {loading ? 'Verifying...' : 'Verify'}
+              </Text>
+            </Pressable>
+
+            {canResend && (
+              <Pressable
+                style={styles.resendButton}
+                onPress={handleResend}
+                disabled={loading}
+                accessibilityLabel="Send a new code"
+                accessibilityRole="button"
+              >
+                <Text style={styles.resendButtonText}>Send a new code</Text>
+              </Pressable>
+            )}
+
+            <Pressable
+              style={styles.backLink}
+              onPress={handleBackToEmail}
+              disabled={loading}
+              accessibilityLabel="Use a different email"
+              accessibilityRole="button"
+            >
+              <Text style={styles.backLinkText}>Use a different email</Text>
+            </Pressable>
+          </>
+        )}
 
         {/* Footer */}
         <Text style={styles.footer}>
-          Don't have an invite? Visit thesherpapros.com to join the waitlist.
+          Don&apos;t have an invite? Visit thesherpapros.com to join the waitlist.
         </Text>
       </Animated.View>
     </ScrollView>
@@ -352,5 +520,17 @@ const styles = StyleSheet.create({
   },
   signInButtonDisabled: { opacity: 0.5 },
   signInButtonText: { fontSize: 15, fontWeight: '600', color: colors.textInverse },
+  resendButton: {
+    marginTop: 12,
+    paddingVertical: 12,
+    alignItems: 'center',
+    borderRadius: borderRadius.lg,
+    borderWidth: 1.5,
+    borderColor: colors.borderMedium,
+    backgroundColor: colors.background,
+  },
+  resendButtonText: { fontSize: 14, fontWeight: '600', color: colors.text },
+  backLink: { marginTop: 16, alignItems: 'center' },
+  backLinkText: { fontSize: 13, color: colors.primary, fontWeight: '500' },
   footer: { textAlign: 'center', fontSize: 12, color: colors.textMuted, marginTop: 32 },
 });

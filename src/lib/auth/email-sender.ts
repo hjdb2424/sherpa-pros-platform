@@ -14,10 +14,12 @@
  *    fail-soft (returning 200 ok regardless, per spec).
  */
 
-// Match the existing send-invite from-address — confirmed working in
-// production Resend setup. Using a different alias (e.g. noreply@) requires
-// that alias to be domain-verified in Resend; otherwise sends silently fail.
-const FROM_ADDRESS = 'Sherpa Pros <invite@thesherpapros.com>';
+// TEMPORARY: thesherpapros.com is not yet verified in Resend, so all
+// sends from invite@thesherpapros.com return 403. Using Resend's
+// pre-verified default address as a workaround so OTP works during the
+// closed beta. Switch back to invite@thesherpapros.com once Phyrom adds
+// the DNS records at https://resend.com/domains and verification flips.
+const FROM_ADDRESS = 'Sherpa Pros <onboarding@resend.dev>';
 const SUBJECT = 'Your Sherpa Pros sign-in code';
 
 export interface SendOtpEmailInput {

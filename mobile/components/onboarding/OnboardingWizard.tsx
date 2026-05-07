@@ -189,8 +189,8 @@ export default function OnboardingWizard({ role, onComplete }: Props) {
         <Picker label="State" value={data.state || ''} options={US_STATES} onSelect={(v) => set('state', v)} />
       </>;
       return <>
-        <ChipGroup label="Property Types Managed" options={PROPERTY_TYPES_PM} selected={data.propertyTypes || []} onChange={(v) => set('propertyTypes', v)} />
-        <RadioList label="What's most important to you?" options={PM_PRIORITIES} value={data.priority || ''} onChange={(v) => set('priority', v)} />
+        <ChipGroup label="Property Types Managed (select all that apply)" options={PROPERTY_TYPES_PM} selected={data.propertyTypes || []} onChange={(v) => set('propertyTypes', v)} />
+        <ChipGroup label="What's most important to you? (select all that apply)" options={PM_PRIORITIES} selected={data.priorities || []} onChange={(v) => set('priorities', v)} />
       </>;
     }
     if (role === 'pro') {
@@ -229,8 +229,8 @@ export default function OnboardingWizard({ role, onComplete }: Props) {
       <Picker label="State" value={data.state || ''} options={US_STATES} onSelect={(v) => set('state', v)} />
     </>;
     return <>
-      <RadioList label="Property Type" options={CLIENT_PROPERTY_TYPES} value={data.propertyType || ''} onChange={(v) => set('propertyType', v)} />
-      <RadioList label="What brings you here?" options={CLIENT_REASONS} value={data.reason || ''} onChange={(v) => set('reason', v)} />
+      <ChipGroup label="Property Type (select all that apply)" options={CLIENT_PROPERTY_TYPES} selected={data.propertyTypes || []} onChange={(v) => set('propertyTypes', v)} />
+      <ChipGroup label="What brings you here? (select all that apply)" options={CLIENT_REASONS} selected={data.reasons || []} onChange={(v) => set('reasons', v)} />
     </>;
   };
 

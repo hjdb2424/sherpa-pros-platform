@@ -17,6 +17,7 @@
     "ios": {
       "bundleIdentifier": "com.thesherpapros.app",
       "supportsTablet": true,
+      "usesAppleSignIn": true,
       "config": {
         "googleMapsApiKey": "AIzaSyA8xY_ho-7i8UjyhcAfaP7wBbh-9Nd2kWU"
       },
@@ -67,7 +68,8 @@
         {
           "locationWhenInUsePermission": "Sherpa Pros needs your location to find nearby pros and jobs."
         }
-      ]
+      ],
+      "expo-web-browser"
     ],
     "extra": {
       "router": {},

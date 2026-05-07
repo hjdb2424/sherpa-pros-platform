@@ -8,31 +8,36 @@ import {
   Animated,
   Easing,
   TextInput,
+  Platform,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as Haptics from 'expo-haptics';
+import * as AppleAuthentication from 'expo-apple-authentication';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '@/lib/auth';
 import { API_BASE } from '@/lib/api';
-import { colors, shadows, spacing, borderRadius } from '@/lib/theme';
+import { colors, shadows, borderRadius } from '@/lib/theme';
 import Logo from '@/components/brand/Logo';
-import { t } from '@/lib/i18n';
 
 type MobileRole = 'pm' | 'pro' | 'client';
 
 // Mirrors toUserRole() in web src/lib/access-list.ts. Mobile has no
-// `tenant` surface yet, so a tenant default-role falls through to
-// /select-role for the user to pick manually.
-function toMobileRole(code: string | null | undefined): MobileRole | null {
-  if (!code) return null;
+// `tenant` surface yet — tenant codes default to client (most common
+// surface for property residents).
+//
+// Returns 'client' for unknown/missing codes so the user lands on the
+// most common surface instead of the role-picker. They can switch via
+// the FAB or settings if their primary role is different.
+function toMobileRole(code: string | null | undefined): MobileRole {
+  if (!code) return 'client';
   const map: Record<string, MobileRole> = {
     pm: 'pm', com_pm: 'pm',
     pro: 'pro', handyman: 'pro', trades: 'pro', skilled: 'pro',
     client: 'client', res_owner: 'client', res_multi: 'client',
     com_owner: 'client', multi_view_tester: 'client',
   };
-  return map[code] ?? null;
+  return map[code] ?? 'client';
 }
 
 export default function SignInScreen() {
@@ -109,8 +114,89 @@ export default function SignInScreen() {
       await signIn(role, data.name, normalized);
       if (role === 'pm') router.replace('/(pm)');
       else if (role === 'pro') router.replace('/(pro)');
-      else if (role === 'client') router.replace('/(client)');
-      else router.replace('/(auth)/select-role');
+      else router.replace('/(client)');
+    } catch {
+      setError('Sign-in failed. Please try again.');
+      setLoading(false);
+    }
+  };
+
+  const handleAppleSignIn = async () => {
+    setError('');
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    let credential: AppleAuthentication.AppleAuthenticationCredential;
+    try {
+      credential = await AppleAuthentication.signInAsync({
+        requestedScopes: [
+          AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+          AppleAuthentication.AppleAuthenticationScope.EMAIL,
+        ],
+      });
+    } catch (err: unknown) {
+      const code = (err as { code?: string })?.code;
+      if (code === 'ERR_REQUEST_CANCELED') return;
+      setError('Sign in with Apple was unavailable. Please try email instead.');
+      return;
+    }
+
+    if (!credential.identityToken) {
+      setError('Sign in with Apple did not return a valid token. Please try again.');
+      return;
+    }
+
+    setLoading(true);
+    const fullName = credential.fullName
+      ? [credential.fullName.givenName, credential.fullName.familyName]
+          .filter(Boolean)
+          .join(' ')
+          .trim()
+      : '';
+
+    let res: Response;
+    try {
+      res = await fetch(`${API_BASE}/auth/apple/mobile`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          identityToken: credential.identityToken,
+          fullName: fullName || undefined,
+        }),
+      });
+    } catch {
+      setError('Sign-in is temporarily unavailable. Please check your connection and try again.');
+      setLoading(false);
+      return;
+    }
+
+    if (res.status === 503) {
+      setError('Sign-in is temporarily unavailable. Please try again in a moment.');
+      setLoading(false);
+      return;
+    }
+
+    type OkResp = { ok: true; name: string; defaultRole: string | null };
+    type ErrResp = { ok: false; error: string };
+    const data = (await res.json().catch(() => null)) as OkResp | ErrResp | null;
+
+    if (!data || !data.ok) {
+      setError(
+        'This Apple ID is not on the beta access list. Contact info@thesherpapros.com to request access.'
+      );
+      setLoading(false);
+      return;
+    }
+
+    const role = toMobileRole(data.defaultRole);
+    const displayName = data.name || fullName || 'Beta tester';
+    // Apple may omit email on subsequent sign-ins, so use what we received
+    // from the backend (which decoded it from the JWT).
+    const emailForSession = credential.email ?? '';
+
+    try {
+      await signIn(role, displayName, emailForSession);
+      if (role === 'pm') router.replace('/(pm)');
+      else if (role === 'pro') router.replace('/(pro)');
+      else router.replace('/(client)');
     } catch {
       setError('Sign-in failed. Please try again.');
       setLoading(false);
@@ -135,6 +221,18 @@ export default function SignInScreen() {
         <Text style={styles.welcomeSubtitle}>
           Sign in with the email from your invite.
         </Text>
+
+        {/* Sign in with Apple — Apple HIG requires SIWA above other third-party
+            options. Hidden on Android (handled by Google there once that lands). */}
+        {Platform.OS === 'ios' && (
+          <AppleAuthentication.AppleAuthenticationButton
+            buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
+            buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
+            cornerRadius={borderRadius.lg}
+            style={styles.appleButton}
+            onPress={handleAppleSignIn}
+          />
+        )}
 
         {/* Google OAuth — disabled until deep link redirect is configured */}
         <View style={[styles.googleButton, { opacity: 0.4 }]}>
@@ -204,6 +302,11 @@ const styles = StyleSheet.create({
   tagline: { fontSize: 14, color: colors.textMuted, marginTop: 8 },
   welcomeTitle: { fontSize: 24, fontWeight: '700', color: colors.text, textAlign: 'center' },
   welcomeSubtitle: { fontSize: 14, color: colors.textMuted, textAlign: 'center', marginTop: 8, marginBottom: 24 },
+  appleButton: {
+    width: '100%',
+    height: 48,
+    marginBottom: 12,
+  },
   googleButton: {
     flexDirection: 'row',
     alignItems: 'center',

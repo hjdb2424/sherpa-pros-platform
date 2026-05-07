@@ -8,8 +8,6 @@ import {
   Animated,
   Easing,
   TextInput,
-  Alert,
-  Linking,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -58,7 +56,8 @@ export default function SignInScreen() {
 
   const handleEmailSignIn = async () => {
     const normalized = email.trim().toLowerCase();
-    if (!normalized || !normalized.includes('@')) {
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(normalized)) {
       setError('Please enter a valid email address.');
       return;
     }
@@ -94,7 +93,12 @@ export default function SignInScreen() {
       | null;
 
     if (!data || !data.ok) {
-      setError('This email is not on the beta access list. Contact info@thesherpapros.com to request access.');
+      const code = data && !data.ok ? data.error : undefined;
+      if (code === 'invalid_body' || code === 'email_required') {
+        setError('Please enter a valid email address.');
+      } else {
+        setError('This email is not on the beta access list. Contact info@thesherpapros.com to request access.');
+      }
       setLoading(false);
       return;
     }
@@ -111,12 +115,6 @@ export default function SignInScreen() {
       setError('Sign-in failed. Please try again.');
       setLoading(false);
     }
-  };
-
-  const handleGoogleSignIn = () => {
-    // Open the web OAuth flow — the app will handle the redirect
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-    Linking.openURL('https://thesherpapros.com/sign-in');
   };
 
   return (

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { query } from '@/db/connection';
-import { getAccessEntry } from '@/lib/access-list';
+import { getAccessEntry, updateLastSignIn } from '@/lib/access-list';
 
 interface DbRow {
   email: string;
@@ -38,6 +38,7 @@ export async function POST(req: NextRequest) {
 
     if (rows.length > 0) {
       const row = rows[0];
+      void updateLastSignIn(email);
       return NextResponse.json({
         ok: true,
         name: row.name,

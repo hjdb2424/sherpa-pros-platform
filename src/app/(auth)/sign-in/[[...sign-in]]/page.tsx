@@ -78,7 +78,8 @@ function BetaPortal() {
     if (mappedRole) {
       localStorage.setItem("sherpa-test-role", mappedRole);
       localStorage.setItem(`sherpa:${normalizedEmail}:role`, mappedRole);
-      document.cookie = `sherpa-role=${mappedRole}; path=/; max-age=${60 * 60 * 24 * 30}; samesite=lax`;
+      const secure = window.location.protocol === "https:" ? "; secure" : "";
+      document.cookie = `sherpa-role=${mappedRole}; path=/; max-age=${60 * 60 * 24 * 30}; samesite=lax${secure}`;
       seedUserData(normalizedEmail, mappedRole);
       router.push(getDashboardPath(mappedRole));
     } else {

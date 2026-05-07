@@ -155,35 +155,46 @@ export function getAllAccessEntries(): AccessEntry[] {
 
 // ── Async functions (DB-first with hardcoded fallback) ──────────────
 
-/** Check if an email is allowed (async, DB-first) */
+/** Check if an email is allowed (async, DB-first).
+ *
+ *  Prod: healthy DB + no row → false. Hardcoded fixture is dev-only.
+ *  Dev:  unchanged — fixture fallback so local work without seeded DB still functions.
+ */
 export async function isEmailAllowedAsync(email: string): Promise<boolean> {
   const normalized = email.trim().toLowerCase();
+  const isProd = process.env.NODE_ENV === 'production';
   try {
     const rows = await query<DbRow>(
       'SELECT * FROM access_list WHERE email = $1 AND status = $2',
       [normalized, 'active']
     );
     if (rows.length > 0) return true;
-    // DB reachable but email not found — still check hardcoded as fallback
+    if (isProd) return false;
     return EMAIL_MAP.has(normalized);
   } catch {
-    // DB unreachable — fall back to hardcoded list
+    // DB unreachable — fall back to hardcoded list (dev) or refuse (prod, fail closed)
+    if (isProd) return false;
     return EMAIL_MAP.has(normalized);
   }
 }
 
-/** Get the full access entry (async, DB-first) */
+/** Get the full access entry (async, DB-first).
+ *
+ *  Same prod-vs-dev branching as isEmailAllowedAsync.
+ */
 export async function getAccessEntryAsync(email: string): Promise<AccessEntryFull | AccessEntry | null> {
   const normalized = email.trim().toLowerCase();
+  const isProd = process.env.NODE_ENV === 'production';
   try {
     const rows = await query<DbRow>(
       'SELECT * FROM access_list WHERE email = $1 AND status = $2',
       [normalized, 'active']
     );
     if (rows.length > 0) return mapRow(rows[0]);
-    // DB reachable but not found — check hardcoded
+    if (isProd) return null;
     return EMAIL_MAP.get(normalized) ?? null;
   } catch {
+    if (isProd) return null;
     return EMAIL_MAP.get(normalized) ?? null;
   }
 }

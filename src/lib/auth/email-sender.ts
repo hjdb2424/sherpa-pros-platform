@@ -96,9 +96,15 @@ export async function sendOtpEmail(
   const { to, code, name } = input;
 
   if (!process.env.RESEND_API_KEY) {
-    // Local dev fallback: log the code to the server console so the flow
-    // still works without configuring email. Never log codes when an API
-    // key is present.
+    // In dev: fall back to console.log so the flow still works without
+    // configuring email. In prod: refuse to silently succeed — the route
+    // can decide whether to surface 503 or fail-soft.
+    if (process.env.NODE_ENV === 'production') {
+      console.error(
+        '[email-otp] RESEND_API_KEY missing in production — refusing to fake success'
+      );
+      return { ok: false };
+    }
     console.log(`[email-otp][dev] code for ${to}: ${code}`);
     return { ok: true };
   }

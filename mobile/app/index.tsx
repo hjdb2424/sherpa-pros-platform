@@ -26,12 +26,11 @@ export default function RootIndex() {
     return <Redirect href="/(pm)" />;
   }
 
-  if (role === 'client') {
-    return <Redirect href="/(client)" />;
-  }
-
-  // No role set — go to role selection
-  return <Redirect href="/(auth)/select-role" />;
+  // Authenticated but role missing or unrecognized — default to client.
+  // Mirrors toMobileRole() in sign-in.tsx so role-picker is never an
+  // automatic destination. Users can still reach /select-role manually
+  // for role-switching from their profile screen.
+  return <Redirect href="/(client)" />;
 }
 
 const styles = StyleSheet.create({

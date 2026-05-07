@@ -15,6 +15,8 @@ export async function GET(req: NextRequest) {
   }
 
   const to = searchParams.get('to') ?? 'poum@hjd.builders';
+  const from =
+    searchParams.get('from') ?? 'Sherpa Pros <onboarding@resend.dev>';
 
   if (!process.env.RESEND_API_KEY) {
     return NextResponse.json({ stage: 'no-key', RESEND_API_KEY_present: false });
@@ -32,7 +34,7 @@ export async function GET(req: NextRequest) {
         Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
       },
       body: JSON.stringify({
-        from: 'Sherpa Pros <invite@thesherpapros.com>',
+        from: from,
         to: [to],
         subject: '[debug] Resend diagnostic test',
         html: '<p>This is a diagnostic test from /api/admin/resend-check. Safe to ignore.</p>',
@@ -47,7 +49,7 @@ export async function GET(req: NextRequest) {
   return NextResponse.json({
     stage: 'sent',
     to,
-    from: 'Sherpa Pros <invite@thesherpapros.com>',
+    from: from,
     resendStatus,
     resendBody: resendBody ? resendBody.slice(0, 500) : null,
     fetchErr,
